@@ -190,3 +190,33 @@ static Position DoubleRotateWithLeft(Position K3)
 	//Rotation between k3 and k2
 	return SingleRotateWithRight(K3);
 }
+
+void PreTraverse(avlTree T, (void *)func(Position node))
+{
+	if (NULL != T)
+	{
+		func(T);
+		PreTraverse(T->Left, func);
+		PreTraverse(T->Right, func);
+	}
+}
+
+void MidTraverse(avlTree T, (void *)func(Position node))
+{
+	if (NULL != T)
+	{
+		PreTraverse(T->Left, func);
+		func(T);
+		PreTraverse(T->Right, func);
+	}
+}
+
+void PostTraverse(avlTree T, (void *)func(Position node))
+{
+	if (NULL != T)
+	{
+		PreTraverse(T->Left, func);
+		PreTraverse(T->Right, func);
+		func(T);		
+	}
+}

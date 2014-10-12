@@ -27,7 +27,9 @@ Position FindMin(avlTree T);
 Position FindMax(avlTree T);
 avlTree Insert(ElementType X, avlTree T);
 avlTree Delete(ElementType X, avlTree T);
-
+void PreTraverse(avlTree T, (void *)func(Position node));
+void MidTraverse(avlTree T, (void *)func(Position node));
+void PostTraverse(avlTree T, (void *)func(Position node));
 #endif
 
 //tutorial for functions
@@ -58,6 +60,18 @@ Position FindMin(avlTree T);
 Position FindMax(avlTree T);
 	Find max in avlTree. Using iterate method.
 
+-----------------------------------------
+void PreTraverse(avlTree T, (void *)func(Position node));
+	Traverse avlTree in pre-order, apply function func
+	to each node in the avlTree.
+	
+-----------------------------------------
+void MidTraverse(avlTree T, (void *)func(Position node));
+	Traverse avlTree in mid-order, apply function func
+	to each node in the avlTree.
 
-
+-----------------------------------------
+void PostTraverse(avlTree T, (void *)func(Position node));
+	Traverse avlTree in post-order, apply function func
+	to each node in the avlTree.
 */
