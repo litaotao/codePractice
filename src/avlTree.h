@@ -1,10 +1,10 @@
 /*
- * header for avlTree.c.
- * Copyright (C) 2014 Taotao.li
- * Email: litaotao@vip.163.com
- *
- * version: 0.0.1
- * last updated: Oct.12th.2014
+* header for avlTree.c.
+* Copyright (C) 2014 Taotao.li
+* Email: litaotao@vip.163.com
+*
+* version: 0.0.1
+* last updated: Oct.12th.2014
 */
 
 #ifndef _AVLTREE_H

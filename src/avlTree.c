@@ -58,3 +58,70 @@ avlTree Insert(ElementType X, avlTree T)
 	return T;
 }
 
+/*
+* This function can be called only if K2 has a left child,
+* Perform a rotate between a node(K2) and its left child,
+* Update heights, then return new root.
+*/
+static Position SingleRotateWithLeft(Position K2)
+{
+	Position K1;
+	K1 = K2->Left;
+	K2->Left = K1->Right;
+	K1->Right = K2;
+
+	K2->Height = max(Height(K2->Right), Height(K2->Right)) + 1;
+	K1->Height = max(Height(K1->Right), Height(K1->Right)) + 1;
+
+	return K1;
+}
+
+/*
+* This function can be called only if K2 has a right child,
+* Perform a rotate between a node(K2) and its right child,
+* Update heights, then return new root.
+*/
+static Position SingleRotateWithRight(Position K2)
+{
+	Position K1;
+	K1 = K2->Right;
+	K2->Right = K1->Left;
+	K1->Left = K2;
+
+	K2->Height = max(Height(K2->Right), Height(K2->Right)) + 1;
+	K1->Height = max(Height(K1->Right), Height(K1->Right)) + 1;
+
+	return K1;
+}
+
+/*
+* This function can be called only if K3 has a left
+* child and K3's left child has a right child, do the 
+* left-right double rotation.
+* update heights, then return the new root.
+*/
+
+static Position DoubleRotateWithLeft(Position K3)
+{
+	//Rotation between K1 and K2
+	K3->Left = SingleRotateWithRight(K3->Left);
+
+	//Rotation between k3 and k2
+	return SingleRotateWithLeft(K3);
+}
+
+/*
+* This function can be called only if K3 has a right
+* child and K3's right child has a left child, do the 
+* right-left double rotation.
+* update heights, then return the new root.
+*/
+
+static Position DoubleRotateWithLeft(Position K3)
+{
+	//Rotation between K1 and K2
+	K3->Right = SingleRotateWithLeft(K3->Right);
+
+	//Rotation between k3 and k2
+	return SingleRotateWithRight(K3);
+}
