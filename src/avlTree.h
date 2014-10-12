@@ -26,15 +26,38 @@ Position Find(ElementType X, avlTree T);
 Position FindMin(avlTree T);
 Position FindMax(avlTree T);
 avlTree Insert(ElementType X, avlTree T);
+avlTree Delete(ElementType X, avlTree T);
+
+#endif
+
+//tutorial for functions
 /*
+-----------------------------------------
+avlTree Insert(ElementType X, avlTree T);
+	Insert a node into avlTree.
 	step 1: recursively find a NULL node to insert X;
 	step 2: judge whether we need to rotate T or not,
 			and execute the coordinate rotate method.
 	Question:
 		if we insert a number which are already in T.
+
+-----------------------------------------
+avlTree MakeEmpty(avlTree T);
+	Erase all nodes and free memory of avlTree.
+
+-----------------------------------------
+Position Find(ElementType X, avlTree T);
+	Find an element X in avlTree T, return its position
+	in the tree. Is a procedure of binary search.
+
+-----------------------------------------
+Position FindMin(avlTree T);
+	Find min in avlTree. Using recursive method.
+
+-----------------------------------------
+Position FindMax(avlTree T);
+	Find max in avlTree. Using iterate method.
+
+
+
 */
-
-avlTree Delete(ElementType X, avlTree T);
-
-#endif
-

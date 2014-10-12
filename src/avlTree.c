@@ -15,6 +15,73 @@ static int Height(Position P){
 	return (NULL==P?-1:P->Height);
 }
 
+avlTree MakeEmpty(avlTree T)
+{
+	if (NULL != T)
+	{
+		MakeEmpty(T->Right);
+		MakeEmpty(T->Left);
+		free(T);
+	}
+	return NULL;
+}
+
+Position Find(ElementType X, avlTree T)
+{
+	if (NULL != T)
+	{
+		if (X == T->Element)
+		{
+			return T;
+		}
+		else if (X < T->Element)
+		{
+			return Find(X, T->Left);
+		}
+		else(X > T->Element)
+		{
+			return Find(X, T->Right);
+		}
+	}
+
+	return NULL;
+}
+
+Position FindMin(avlTree T)
+{
+	if (NULL != T)
+	{
+		// (NULL!=T->Left)?return FindMin(T->Left) : return T;
+		if (NULL != T->Left)
+		{
+			return FindMin(T->Left);
+		}
+		else
+		{
+			return T;
+		}
+	}
+
+	return NULL;
+}
+
+Position FindMax(avlTree T)
+{
+	if (NULL != T)
+	{
+		while(NULL != T->Right)
+		{
+			T = T->Right;
+		}
+		return T;
+	}
+
+	return NULL;
+}
+
+
+
+
 avlTree Insert(ElementType X, avlTree T)
 {
 	if (NULL == T)
@@ -100,7 +167,6 @@ static Position SingleRotateWithRight(Position K2)
 * left-right double rotation.
 * update heights, then return the new root.
 */
-
 static Position DoubleRotateWithLeft(Position K3)
 {
 	//Rotation between K1 and K2
@@ -116,7 +182,6 @@ static Position DoubleRotateWithLeft(Position K3)
 * right-left double rotation.
 * update heights, then return the new root.
 */
-
 static Position DoubleRotateWithLeft(Position K3)
 {
 	//Rotation between K1 and K2
