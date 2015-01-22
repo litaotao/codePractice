@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<!-- saved from url=(0239)http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#2 -->
+<html lang="en" dir="ltr" class="js no-touch localstorage sessionstorage contenteditable use-opacity-transitions"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Disqus Comments</title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    
+    <style>
+        html {
+            overflow: hidden;
+        }
+        
+    </style>
+
+<style type="text/css"></style><link rel="stylesheet" href="http://a.disquscdn.com/next/styles/lounge.11ce744335ce453d8e0bb4a6559d76fe.css" media="all"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="remote/config" src="config.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="common.bundle" src="common.0f1aaac85bae064436ec016f71aa9e06.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="lounge.bundle" src="lounge.ec4f1ec1ba2c00a4cd70b5a99e67b651.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="http://www.google-analytics.com/ga.js" src="ga.js"></script><style id="css_1419436714454"></style><!--<base target="_parent">--><base href="." target="_parent"><script src="event.js" async="" charset="UTF-8"></script><link rel="stylesheet" href="http://a.disquscdn.com/next/styles/discovery.c299e37422569a91c0e57e7bb42885cd.css" media="all"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="discovery/main" src="discovery.d4f3c3ef79bdcee6e81e08c7efa38773.js"></script><script src="event(1).js" async="" charset="UTF-8"></script></head>
+<body>
+    
+    <!--[if lte IE 8]>
+<script src="//a.disquscdn.com/1418954381/build/vendor/ie8.js"></script>
+<![endif]-->
+<!--[if IE 9]>
+<script src="//a.disquscdn.com/1418954381/build/vendor/ie9.js"></script>
+<![endif]-->
+
+    
+<script type="text/json" id="disqus-urls">{
+    "root":"//disqus.com",
+    "next":"//a.disquscdn.com/next/366531e3"
+}</script>
+
+    
+
+    <div id="error" style="display:none; text-align: center">
+        <p>We were unable to load Disqus. If you are a moderator please see our <a href="http://docs.disqus.com/help/83/"> troubleshooting guide</a>. </p>
+    </div>
+
+    
+    <script type="text/json" id="disqus-forumData">{"session":{"isReadOnly":false,"canModerate":false,"audienceSyncVerified":false,"canReply":true,"mustVerifyEmail":false},"features":{},"forum":{"category":null,"description":null,"founder":"271397","settings":{"canEnableSponsoredComments":false,"discoveryVariant":"default","allowAnonPost":false,"allowMedia":true,"moderatorText":"","typeface":"auto","disable3rdPartyTrackers":false,"promotedDiscoveryEnabled":false,"discoveryMax":false,"ssoRequired":false,"discoveryLocked":false,"audienceSyncEnabled":false,"hasCustomAvatar":false,"organicDiscoveryEnabled":true,"discoverySettingsUrl":"https://mongodb.disqus.com/admin/settings/ads/","discoveryThumbnailsEnabled":false,"colorScheme":"auto","sponsoredCommentsEnabled":false,"linkAffiliationEnabled":false},"url":"http://www.mongodb.org/","guidelines":null,"favicon":{"permalink":"http://disqus.com/api/forums/favicons/mongodb.jpg","cache":"//a.disquscdn.com/uploads/forums/30/2016/favicon.png"},"language":"en","avatar":{"small":{"permalink":"http://disqus.com/api/forums/avatars/mongodb.jpg?size=32","cache":"//a.disquscdn.com/1418954381/images/noavatar32.png"},"large":{"permalink":"http://disqus.com/api/forums/avatars/mongodb.jpg?size=92","cache":"//a.disquscdn.com/1418954381/images/noavatar92.png"}},"pk":302016,"raw_guidelines":null,"id":"mongodb","channel":null,"name":"MongoDB etc. "}}</script>
+
+    
+    <script type="text/json" id="disqus-threadData">{"cursor":{"hasPrev":false,"prev":null,"total":7,"hasNext":false,"next":"1:0:0"},"code":0,"response":{"lastModified":1418320269,"posts":[{"isFlagged":false,"forum":"mongodb","parent":null,"author":{"username":"timothyjwarnock","about":"","name":"Timothy J Warnock","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.232222,"profileUrl":"https://disqus.com/by/timothyjwarnock/","reputation":1.232222,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2014-08-10T16:55:52","id":"117683183","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/timothyjwarnock.jpg","cache":"//a.disquscdn.com/uploads/users/11768/3183/avatar32.jpg?1407689804"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/timothyjwarnock.jpg","cache":"//a.disquscdn.com/uploads/users/11768/3183/avatar92.jpg?1407689804","large":{"permalink":"http://disqus.com/api/users/avatars/timothyjwarnock.jpg","cache":"//a.disquscdn.com/uploads/users/11768/3183/avatar92.jpg?1407689804"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"I can't seem to find any information on many-to-many data modeling in mongo. I don't mean many-to-few, I mean \"squillions-to-squillions\"\n\ne.g., we have millions of articles, and millions of users, there's hundreds of millions of read-events per week, and I need to model users reading documents such that I can run the following queries,\n\nfor a user, show which articles they read\nfor an article, show which users read that article\nshow top articles\nshow top users\netc\n\nI feel like it's a pretty basic data modeling use case. I can do this data in an in-memory relational table on modest hardware.\n\nThe only model that seems to make sense is a normalized relational mapping table, but I'm not sure that's the best approach with mongo -- especially if I have to do application level joins.\n\nWhat is the recommended approach?","createdAt":"2014-08-10T16:56:42","id":"1536250444","thread":"2755542200","depth":0,"numReports":0,"likes":1,"isEdited":false,"message":"\u003cp>I can't seem to find any information on many-to-many data modeling in mongo. I don't mean many-to-few, I mean \"squillions-to-squillions\"\u003c/p>\u003cp>e.g., we have millions of articles, and millions of users, there's hundreds of millions of read-events per week, and I need to model users reading documents such that I can run the following queries,\u003c/p>\u003cp>for a user, show which articles they read\u003cbr>for an article, show which users read that article\u003cbr>show top articles\u003cbr>show top users\u003cbr>etc\u003c/p>\u003cp>I feel like it's a pretty basic data modeling use case. I can do this data in an in-memory relational table on modest hardware.\u003c/p>\u003cp>The only model that seems to make sense is a normalized relational mapping table, but I'm not sure that's the best approach with mongo -- especially if I have to do application level joins.\u003c/p>\u003cp>What is the recommended approach?\u003c/p>","isSpam":false,"isHighlighted":false,"points":1},{"isFlagged":false,"forum":"mongodb","parent":1536250444,"author":{"username":"thomasramfjord","about":"","name":"Thomas Ramfjord","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.232222,"profileUrl":"https://disqus.com/by/thomasramfjord/","reputation":1.232222,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2014-10-02T18:48:30","id":"124195737","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/thomasramfjord.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar32.png"},"isCustom":false,"permalink":"http://disqus.com/api/users/avatars/thomasramfjord.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar92.png","large":{"permalink":"http://disqus.com/api/users/avatars/thomasramfjord.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar92.png"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"If you have relational data, consider using a relational database. Not having joins means this any solution you eventually reach is going to be a lot more complicated than it would be in SQL.  Your data probably isn't the best use case for mongo db.","createdAt":"2014-10-02T18:52:09","id":"1616878668","thread":"2755542200","depth":1,"numReports":0,"likes":1,"isEdited":false,"message":"\u003cp>If you have relational data, consider using a relational database. Not having joins means this any solution you eventually reach is going to be a lot more complicated than it would be in SQL.  Your data probably isn't the best use case for mongo db.\u003c/p>","isSpam":false,"isHighlighted":false,"points":1},{"isFlagged":false,"forum":"mongodb","parent":null,"author":{"username":"sagarsodah","about":"","name":"Sagar Sodah","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.2324929999999998,"profileUrl":"https://disqus.com/by/sagarsodah/","reputation":1.2324929999999998,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2014-09-17T11:46:36","id":"122298176","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/sagarsodah.jpg","cache":"//a.disquscdn.com/uploads/users/12229/8176/avatar32.jpg?1411795570"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/sagarsodah.jpg","cache":"//a.disquscdn.com/uploads/users/12229/8176/avatar92.jpg?1411795570","large":{"permalink":"http://disqus.com/api/users/avatars/sagarsodah.jpg","cache":"//a.disquscdn.com/uploads/users/12229/8176/avatar92.jpg?1411795570"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"Very well articulated. Thanks!","createdAt":"2014-09-17T11:46:59","id":"1592901421","thread":"2755542200","depth":0,"numReports":0,"likes":0,"isEdited":false,"message":"\u003cp>Very well articulated. Thanks!\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"isFlagged":false,"forum":"mongodb","parent":null,"author":{"username":"artgorr","about":"Software Engineer","name":"Art Gorr","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.232862,"profileUrl":"https://disqus.com/by/artgorr/","reputation":1.232862,"location":"Minnesota","isPrivate":false,"isPrimary":true,"joinedAt":"2014-08-20T14:21:06","id":"118896044","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/artgorr.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar32.png"},"isCustom":false,"permalink":"http://disqus.com/api/users/avatars/artgorr.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar92.png","large":{"permalink":"http://disqus.com/api/users/avatars/artgorr.jpg","cache":"//a.disquscdn.com/1418954381/images/noavatar92.png"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"Very much appreciate the series.  Thank you.","createdAt":"2014-08-20T14:22:16","id":"1551161012","thread":"2755542200","depth":0,"numReports":0,"likes":0,"isEdited":false,"message":"\u003cp>Very much appreciate the series.  Thank you.\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"isFlagged":false,"forum":"mongodb","parent":null,"author":{"username":"arthurketcham","about":"","name":"Arthur Ketcham","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.236056,"profileUrl":"https://disqus.com/by/arthurketcham/","reputation":1.236056,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2013-01-31T19:21:12","id":"42617794","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar32.jpg?1416159668"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668","large":{"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"\"if there are 8 candidates for denormalization in a relationship\", can you elaborate on this assertion and its context?","createdAt":"2014-07-17T18:39:45","id":"1490215876","thread":"2755542200","depth":0,"numReports":0,"likes":0,"isEdited":false,"message":"\u003cp>\"if there are 8 candidates for denormalization in a relationship\", can you elaborate on this assertion and its context?\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"isFlagged":false,"forum":"mongodb","parent":1490215876,"author":{"username":"williamzola","about":"","name":"William Zola","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.2329599999999998,"profileUrl":"https://disqus.com/by/williamzola/","reputation":1.2329599999999998,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2014-07-13T19:22:53","id":"114250456","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/williamzola.jpg","cache":"//a.disquscdn.com/uploads/users/11425/456/avatar32.jpg?1405279374"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/williamzola.jpg","cache":"//a.disquscdn.com/uploads/users/11425/456/avatar92.jpg?1405279374","large":{"permalink":"http://disqus.com/api/users/avatars/williamzola.jpg","cache":"//a.disquscdn.com/uploads/users/11425/456/avatar92.jpg?1405279374"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"Hi Arthur -- it's easiest to explain this with an example. \n\nSo, let's say you have a 1->many relationship of Product -> Parts.  And let's further say that each Part is a separate document, with fields 'partName', 'partNumber', and 'partQtyOnHand'.\n\nSo what are your choices for denormalization here?  Well, you could denormalize any combination of the 3 fields from Part -> Product.  How many combinations is that?\n\nIf you look at just 'partName', you could either denormalize it or not, so 2 combinations there.  Independently, you could choose to denormalize 'partNumber' or not.  If you look at them both, there's (2 * 2) combinations.  In addition, you could choose to denormalize 'partQtyOnHand' or not -- if you look at all three there are (2 * 2 * 2) combinations.  \n\nIn general, if you have M fields that are candidates for denormalization, you have 2^^M different ways to denormalize.  So if there are 8 candidates for denormalization, you have 2^^8 different ways to denormalize.\n","createdAt":"2014-07-19T18:43:49","id":"1493214256","thread":"2755542200","depth":1,"numReports":0,"likes":0,"isEdited":true,"message":"\u003cp>Hi Arthur -- it's easiest to explain this with an example.\u003c/p>\u003cp>So, let's say you have a 1-&gt;many relationship of Product -&gt; Parts.  And let's further say that each Part is a separate document, with fields 'partName', 'partNumber', and 'partQtyOnHand'.\u003c/p>\u003cp>So what are your choices for denormalization here?  Well, you could denormalize any combination of the 3 fields from Part -&gt; Product.  How many combinations is that?\u003c/p>\u003cp>If you look at just 'partName', you could either denormalize it or not, so 2 combinations there.  Independently, you could choose to denormalize 'partNumber' or not.  If you look at them both, there's (2 * 2) combinations.  In addition, you could choose to denormalize 'partQtyOnHand' or not -- if you look at all three there are (2 * 2 * 2) combinations.\u003c/p>\u003cp>In general, if you have M fields that are candidates for denormalization, you have 2^^M different ways to denormalize.  So if there are 8 candidates for denormalization, you have 2^^8 different ways to denormalize.\u003cbr>\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"isFlagged":false,"forum":"mongodb","parent":1493214256,"author":{"username":"arthurketcham","about":"","name":"Arthur Ketcham","disable3rdPartyTrackers":false,"url":"","isAnonymous":false,"rep":1.236056,"profileUrl":"https://disqus.com/by/arthurketcham/","reputation":1.236056,"location":"","isPrivate":false,"isPrimary":true,"joinedAt":"2013-01-31T19:21:12","id":"42617794","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar32.jpg?1416159668"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668","large":{"permalink":"http://disqus.com/api/users/avatars/arthurketcham.jpg","cache":"//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668"}}},"media":[],"isDeleted":false,"isApproved":true,"dislikes":0,"raw_message":"Okay that makes sense. Thank you for the illustration, and the wonderful article overall.","createdAt":"2014-07-19T21:03:34","id":"1493358736","thread":"2755542200","depth":2,"numReports":0,"likes":0,"isEdited":false,"message":"\u003cp>Okay that makes sense. Thank you for the illustration, and the wonderful article overall.\u003c/p>","isSpam":false,"isHighlighted":false,"points":0}],"thread":{"feed":"https://mongodb.disqus.com/mongodb_blog_300/latest.rss","uploadAdd":"//mongodb.disqus.com/thread/mongodb_blog_300/async_media_upload/","identifiers":[],"dislikes":0,"likes":1,"message":"","id":"2755542200","isDeleted":false,"category":"310033","clean_title":"MongoDB Blog","userScore":0,"userSubscription":false,"createdAt":"2014-06-11T14:03:33","hasStreaming":false,"uploadRemove":"//mongodb.disqus.com/thread/mongodb_blog_300/async_media_remove/","raw_message":"","isClosed":false,"link":"http://blog.mongodb.org/post/88473035333","slug":"mongodb_blog_300","forum":"mongodb","author":"271397","posts":7,"moderators":[5138276,271397,157160,66475,2142860,3359568,1374321,6918453,2142680,27624345,9854906,7565156],"title":"MongoDB Blog","highlightedPost":null}},"order":"popular"}</script>
+
+    
+
+    <div id="fixed-content"></div>
+
+    <script src="lounge.load.js" id="bootstrap-script" data-app="lounge"></script>
+
+
+<div id="layout" data-tracking-area="layout">
+
+<div id="discovery-top" data-tracking-area="discovery-north"></div>
+
+<div id="onboard" data-tracking-area="onboard"></div>
+
+<div id="highlighted-post" data-tracking-area="highlighted" class="highlighted-post" style="display: none;"></div>
+
+<header id="main-nav" data-tracking-area="main-nav">
+<nav class="nav nav-primary">
+<ul>
+<li class="tab-conversation active">
+<a href="https://disqus.com/home/discussions/mongodb/mongodb_blog_300/" data-role="post-count" class="publisher-nav-color" data-nav="conversation"><span class="comment-count">
+7 comments
+</span>
+
+<span class="comment-count-placeholder">
+Comments
+</span>
+</a>
+</li>
+<li class="tab-community">
+<a href="https://disqus.com/home/forums/mongodb/" class="publisher-nav-color" data-action="community-sidebar" data-forum="mongodb" id="community-tab">
+<span class="community-name">
+<strong>MongoDB etc. </strong>
+
+</span>
+
+<strong class="community-name-placeholder">Community</strong>
+</a>
+</li>
+<li class="dropdown user-menu" data-role="logout"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="dropdown-toggle" data-toggle="dropdown">
+<span class="dropdown-toggle-wrapper">
+
+<span>
+Login
+</span>
+
+</span> <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="auth:disqus">Disqus</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="auth:facebook">Facebook</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="auth:twitter">Twitter</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="auth:google">Google</a>
+</li>
+
+
+
+</ul>
+</li>
+<li class="notification-menu" data-role="notification-menu"><a href="https://disqus.com/home/inbox/" class="notification-container" data-nav="dashboard">
+<span class="notification-icon icon-comment"></span>
+<span class="notification-count" data-role="notification-count"></span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+
+
+
+<section id="conversation" data-role="main" data-tracking-area="main">
+<div class="nav nav-secondary" data-tracking-area="secondary-nav">
+<ul>
+<li data-role="post-sort" class="dropdown sorting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="dropdown-toggle" data-nav="conversation" data-toggle="dropdown">
+Sort by Best
+
+
+<span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+<li class="selected">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="sort" data-sort="popular">Best<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="sort" data-sort="desc">Newest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="sort" data-sort="asc">Oldest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+</ul>
+</li>
+
+<li id="thread-votes" class="favorite pull-right">
+<!-- rendered dynamically -->
+<div class="thread-likes" data-role="vote-button"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="upvote" title="Favorite this discussion">
+<span class="label">Favorite</span>
+<span class="icon-star"></span>
+<span class="icon-check"></span>
+</a>
+</div></li>
+
+<li id="thread-share-menu" class="dropdown share-menu">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="dropdown-toggle" data-toggle="dropdown" title="Share">
+<span class="label">Share</span> <span class="icon-export"></span>
+</a>
+<ul class="share-menu dropdown-menu pull-right">
+<li class="share">Share this discussion on
+<ul>
+<li class="twitter">
+<a data-action="share:twitter" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#">Twitter</a>
+</li>
+<li class="facebook">
+<a data-action="share:facebook" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#">Facebook</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div id="posts">
+<div id="form"><form class="reply">
+<div class="postbox">
+<div role="alert"></div>
+<div class="avatar">
+<span class="user">
+<img data-role="user-avatar" src="noavatar92.b677f9ddbee6f4bb22f473ae3bd61b85.png" alt="Avatar">
+</span>
+</div>
+
+<div class="textarea-wrapper" data-role="textarea" dir="auto"><div><span class="placeholder">Join the discussion…</span><div class="textarea" tabindex="0" role="textbox" aria-multiline="true" contenteditable="true" data-role="editable" aria-label="Join the discussion…" style="overflow: auto; max-height: 350px;"><p><br></p></div><div style="display: none;"><ul class="suggestions">
+<li class="header">
+<h5>in this conversation</h5>
+</li>
+</ul>
+</div></div>
+<div data-role="drag-drop-placeholder" class="media-drag-hover" style="display: none">
+<div class="drag-text">
+⬇ Drag and drop your images here to upload them.
+</div>
+</div>
+<div class="media-preview empty" data-role="media-preview">
+<ul data-role="media-legacy-list"></ul>
+<ul data-role="media-progress-list"></ul>
+<ul data-role="media-rich-list"></ul>
+<div class="media-expanded empty" data-role="media-preview-expanded">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-role="media-preview-expanded-image" alt="Media preview placeholder">
+</div>
+</div>
+<div class="edit-alert" role="postbox-alert"></div>
+<div class="post-actions">
+<ul class="wysiwyg">
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" tabindex="-1" data-action="attach" class="attach" title="Upload Images"><span>Attach</span></a>
+<input type="file" data-role="media-upload" tabindex="-1" class="regular" accept="image/*">
+</li>
+</ul>
+</div>
+</div>
+
+<div data-role="login-form"><div><section class="auth-section logged-out">
+<div class="connect">
+<h6>Sign in with</h6>
+<ul data-role="login-menu" class="services login-buttons">
+
+
+<li class="auth-disqus">
+<button type="button" data-action="auth:disqus" title="Disqus"><i class="icon-disqus"></i></button>
+</li>
+<li class="auth-facebook">
+<button type="button" data-action="auth:facebook" title="Facebook"><i class="icon-facebook-circle"></i></button>
+</li>
+<li class="auth-twitter">
+<button type="button" data-action="auth:twitter" title="Twitter"><i class="icon-twitter-circle"></i></button>
+</li>
+<li class="auth-google">
+<button type="button" data-action="auth:google" title="Google"><i class="icon-google-plus-circle"></i></button>
+</li>
+<li class="auth-signup">
+<button type="button" data-action="auth:disqus" title="Disqus">Sign up for Disqus</button>
+</li>
+</ul>
+</div>
+<div class="guest">
+<h6 class="guest-form-title">
+or register with Disqus
+</h6>
+
+<div class="what-is-disqus help-icon">
+<div id="rules" class="tooltip show">
+<h3>Disqus is a conversation network</h3>
+<ul>
+<li><span>Disqus never moderates or censors. The rules on this community are its own.</span></li>
+<li><span>Your email is safe with us. It's only used for moderation and optional notifications.</span></li>
+<li><span>Don't be a jerk or do anything illegal. Everything is easier that way.</span></li>
+</ul>
+<p class="clearfix"><a href="http://docs.disqus.com/kb/terms-and-policies/" class="btn btn-small" target="_blank">Read full terms and conditions</a></p>
+</div>
+</div>
+
+<p class="input-wrapper">
+<input dir="auto" type="text" placeholder="Name" name="display_name" id="view145_display_name" maxlength="30">
+</p>
+
+<div class="guest-details " data-role="guest-details">
+<p class="input-wrapper">
+<input dir="auto" type="email" placeholder="Email" name="email" id="view145_email">
+</p>
+
+<p class="input-wrapper">
+<input dir="auto" type="password" placeholder="Password" name="password" id="view145_password">
+</p>
+<input type="checkbox" name="author-guest" style="display:none">
+</div>
+</div>
+<div class="proceed">
+<button type="submit" class="btn submit" aria-label="Next"><span class="icon-proceed"></span></button>
+</div>
+</section>
+
+</div></div>
+</div>
+</form></div>
+
+<button class="alert realtime" style="display: none;" data-role="realtime-notification">
+</button>
+
+<div id="no-posts" style="display: none;">Be the first to comment.</div>
+
+<ul id="post-list" class="post-list"><li class="post" id="post-1536250444"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/timothyjwarnock/" class="user" data-action="profile" data-username="timothyjwarnock" data-user="117683183">
+<img data-role="user-avatar" data-user="117683183" src="noavatar92.png" data-src="//a.disquscdn.com/uploads/users/11768/3183/avatar92.jpg?1407689804" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/timothyjwarnock/" data-action="profile" data-user="117683183" data-username="timothyjwarnock" data-role="username">Timothy J Warnock</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1536250444" data-role="relative-time" class="time-ago" title="Monday, August 11, 2014 12:56 AM">
+4 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>I can't seem to find any information on many-to-many data modeling in mongo. I don't mean many-to-few, I mean "squillions-to-squillions"</p><p>e.g., we have millions of articles, and millions of users, there's hundreds of millions of read-events per week, and I need to model users reading documents such that I can run the following queries,</p><p>for a user, show which articles they read<br>for an article, show which users read that article<br>show top articles<br>show top users<br>etc</p><p>I feel like it's a pretty basic data modeling use case. I can do this data in an in-memory relational table on modest hardware.</p><p>The only model that seems to make sense is a normalized relational mapping table, but I'm not sure that's the best approach with mongo -- especially if I have to do application level joins.</p><p>What is the recommended approach?</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-1" data-action="upvote" title="">
+<span class="updatable count" data-role="likes">1</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1536250444">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1536250444">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li class="post" id="post-1616878668"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/thomasramfjord/" class="user" data-action="profile" data-username="thomasramfjord" data-user="124195737">
+<img data-role="user-avatar" data-user="124195737" src="noavatar92.png" data-src="//a.disquscdn.com/1418954381/images/noavatar92.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/thomasramfjord/" data-action="profile" data-user="124195737" data-username="thomasramfjord" data-role="username">Thomas Ramfjord</a></span>
+
+<span><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1536250444" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> Timothy J Warnock</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1616878668" data-role="relative-time" class="time-ago" title="Friday, October 3, 2014 2:52 AM">
+3 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>If you have relational data, consider using a relational database. Not having joins means this any solution you eventually reach is going to be a lot more complicated than it would be in SQL.  Your data probably isn't the best use case for mongo db.</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-1" data-action="upvote" title="">
+<span class="updatable count" data-role="likes">1</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1616878668">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1616878668">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li></ul>
+
+</li><li class="post" id="post-1592901421"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/sagarsodah/" class="user" data-action="profile" data-username="sagarsodah" data-user="122298176">
+<img data-role="user-avatar" data-user="122298176" src="noavatar92.png" data-src="//a.disquscdn.com/uploads/users/12229/8176/avatar92.jpg?1411795570" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/sagarsodah/" data-action="profile" data-user="122298176" data-username="sagarsodah" data-role="username">Sagar Sodah</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1592901421" data-role="relative-time" class="time-ago" title="Wednesday, September 17, 2014 7:46 PM">
+3 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Very well articulated. Thanks!</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1592901421">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1592901421">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li><li class="post" id="post-1551161012"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/artgorr/" class="user" data-action="profile" data-username="artgorr" data-user="118896044">
+<img data-role="user-avatar" data-user="118896044" src="noavatar92.png" data-src="//a.disquscdn.com/1418954381/images/noavatar92.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/artgorr/" data-action="profile" data-user="118896044" data-username="artgorr" data-role="username">Art Gorr</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1551161012" data-role="relative-time" class="time-ago" title="Wednesday, August 20, 2014 10:22 PM">
+4 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Very much appreciate the series.  Thank you.</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1551161012">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1551161012">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li><li class="post" id="post-1490215876"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/arthurketcham/" class="user" data-action="profile" data-username="arthurketcham" data-user="42617794">
+<img data-role="user-avatar" data-user="42617794" src="noavatar92.png" data-src="//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/arthurketcham/" data-action="profile" data-user="42617794" data-username="arthurketcham" data-role="username">Arthur Ketcham</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1490215876" data-role="relative-time" class="time-ago" title="Friday, July 18, 2014 2:39 AM">
+5 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>"if there are 8 candidates for denormalization in a relationship", can you elaborate on this assertion and its context?</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1490215876">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1490215876">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li class="post" id="post-1493214256"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/williamzola/" class="user" data-action="profile" data-username="williamzola" data-user="114250456">
+<img data-role="user-avatar" data-user="114250456" src="noavatar92.png" data-src="//a.disquscdn.com/uploads/users/11425/456/avatar92.jpg?1405279374" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/williamzola/" data-action="profile" data-user="114250456" data-username="williamzola" data-role="username">William Zola</a></span>
+
+<span><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1490215876" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> Arthur Ketcham</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1493214256" data-role="relative-time" class="time-ago" title="Sunday, July 20, 2014 2:43 AM">
+5 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Hi Arthur -- it's easiest to explain this with an example.</p><p>So, let's say you have a 1-&gt;many relationship of Product -&gt; Parts.  And let's further say that each Part is a separate document, with fields 'partName', 'partNumber', and 'partQtyOnHand'.</p><p>So what are your choices for denormalization here?  Well, you could denormalize any combination of the 3 fields from Part -&gt; Product.  How many combinations is that?</p><p>If you look at just 'partName', you could either denormalize it or not, so 2 combinations there.  Independently, you could choose to denormalize 'partNumber' or not.  If you look at them both, there's (2 * 2) combinations.  In addition, you could choose to denormalize 'partQtyOnHand' or not -- if you look at all three there are (2 * 2 * 2) combinations.</p><p>In general, if you have M fields that are candidates for denormalization, you have 2^^M different ways to denormalize.  So if there are 8 candidates for denormalization, you have 2^^8 different ways to denormalize.<br></p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1493214256">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1493214256">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li class="post" id="post-1493358736"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/home/user/arthurketcham/" class="user" data-action="profile" data-username="arthurketcham" data-user="42617794">
+<img data-role="user-avatar" data-user="42617794" src="noavatar92.png" data-src="//a.disquscdn.com/uploads/users/4261/7794/avatar92.jpg?1416159668" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/home/user/arthurketcham/" data-action="profile" data-user="42617794" data-username="arthurketcham" data-role="username">Arthur Ketcham</a></span>
+
+<span><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1493214256" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> William Zola</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1493358736" data-role="relative-time" class="time-ago" title="Sunday, July 20, 2014 5:03 AM">
+5 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>Okay that makes sense. Thank you for the illustration, and the wonderful article overall.</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" title="Vote down">
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+<span class="tooltip">You must sign in to down-vote this post.</span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://blog.mongodb.org/post/88473035333/6-rules-of-thumb-for-mongodb-schema-design-part-3#comment-1493358736">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:1493358736">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+<div class="load-more" data-role="more" style="display: none;">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="more-posts" class="btn">Load more comments</a>
+</div>
+</div>
+
+</section>
+
+<section id="community" data-tracking-area="main" style="display:none" data-role="main" data-outbound-link="embed:community">
+</section>
+
+<section id="dashboard" style="display:none" data-role="main" data-tracking-area="main">
+<p style="line-height: 1.4">Nothing for you here ... yet. But as you comment with Disqus and follow
+other Disqus users, you will start to receive notifications here, as well as a personalized
+feed of activity by you and the people you follow. So get out there and participate in
+some discussions!</p>
+</section>
+
+<section id="profile" style="display:none" data-role="main" data-tracking-area="main">
+</section>
+
+<div id="discovery" data-tracking-area="discovery-south"></div>
+
+<div id="footer" data-tracking-area="footer">
+<ul>
+<li class="logo"><a href="http://disqus.com/" title="Powered by Disqus">Powered by Disqus</a></li>
+<li id="thread-subscribe-button" class="email"> 
+<div class="default">
+<a href="http://disqus.com/embed/comments/?base=default&disqus_version=366531e3&f=mongodb&t_u=http%3A%2F%2Fblog.mongodb.org%2Fpost%2F88473035333%2F6-rules-of-thumb-for-mongodb-schema-design-part-3&t_d=MongoDB%20Blog&t_t=MongoDB%20Blog&s_o=default#" data-action="subscribe" title="Subscribe and get email updates from this discussion"><i aria-hidden="true" class="icon-mail"></i><span class="clip">Subscribe</span> <i aria-hidden="true" class="icon-checkmark"></i></a>
+</div>
+<div class="form">
+<div class="input-wrapper"><input id="thread-subscribe-email" type="email" placeholder="yourname@email.com"></div>
+</div>
+</li>
+<li class="install">
+<a href="https://disqus.com/websites/?utm_source=mongodb&utm_medium=Disqus-Footer" target="_blank">
+<i aria-hidden="true" class="icon-disqus"></i>
+<span class="clip">Add Disqus to your site</span>
+</a>
+</li>
+<li class="privacy">
+<a href="https://help.disqus.com/customer/portal/articles/1657951?utm_source=disqus&utm_medium=embed-footer&utm_content=privacy-btn" target="_blank">
+<i aria-hidden="true" class="icon-privacy"></i>
+<span class="clip">Privacy</span>
+</a>
+</li>
+</ul>
+</div>
+</div></body></html>

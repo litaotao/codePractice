@@ -1,0 +1,889 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0055)http://mytrix.me/2013/08/matplotlib-animation-tutorial/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Matplotlib动画指南 | the 3rd. Place</title>
+<link rel="stylesheet" href="./Matplotlib动画指南   the 3rd. Place_files/style.css" type="text/css" media="all">
+<link rel="pingback" href="http://mathematrix.sinaapp.com/xmlrpc.php">
+<link rel="stylesheet" href="http://mathematrix.sinaapp.com/wp-content/themes/contango/highlight.css">  
+<link rel="alternate" type="application/rss+xml" title="the 3rd. Place » Feed" href="http://mytrix.me/feed/">
+<link rel="alternate" type="application/rss+xml" title="the 3rd. Place » 评论Feed" href="http://mytrix.me/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="the 3rd. Place » Matplotlib动画指南评论Feed" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/feed/">
+<link rel="stylesheet" id="crayon-css" href="./Matplotlib动画指南   the 3rd. Place_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="contango-css-960-css" href="./Matplotlib动画指南   the 3rd. Place_files/960.css" type="text/css" media="all">
+<link rel="stylesheet" id="contango-google-fonts-css" href="./Matplotlib动画指南   the 3rd. Place_files/OpenSans.NixieOne.GoogleAPI.ver.3.8.CSS" type="text/css" media="all">
+<script src="./Matplotlib动画指南   the 3rd. Place_files/hm.js"></script><script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/jquery.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.4.3","is_admin":"0","ajaxurl":"http:\/\/mathematrix.sinaapp.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/crayon.min.js"></script>
+<script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/comment-reply.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://mathematrix.sinaapp.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://mathematrix.sinaapp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="最近的博客" href="http://mytrix.me/2013/08/update-wordpress/">
+<link rel="next" title="《Pro Git》阅读笔记一：起步" href="http://mytrix.me/2013/08/progit-notes-introductio/">
+<meta name="generator" content="WordPress 3.8">
+<link rel="canonical" href="./Matplotlib动画指南   the 3rd. Place_files/Matplotlib动画指南   the 3rd. Place.htm">
+<link rel="shortlink" href="http://mytrix.me/?p=428">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #e9e9e9; background-image: url('http://mathematrix.sinaapp.com/wp-content/themes/contango/images/bg-pattern.png'); background-repeat: repeat; background-position: top left; background-attachment: fixed; }
+</style>
+<meta name="keywords" content="animation, dynamic, matplotlib, Python, 动画,">
+<meta name="description" content="本文由Mathematrix译自由Jake Vanderplas撰写的Matplotlib Animation Tutorial
+Matplotlib 1.1 版新添加了一些非常帅的用来制作动画的工具，你可以在Matplotlib的Example页看到一些非常棒��">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?c651763dad230100a73feb050353f9c5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body class="single single-post postid-428 single-format-standard custom-background">
+<div class="wrapper">  
+  
+  <div id="header">
+    <div class="container_16 clearfix">
+      <div class="grid_16">
+        <div id="headimg">
+
+    
+  <div id="logo-text">
+    <span class="site-name"><a href="http://mytrix.me/" title="the 3rd. Place" rel="home">the 3rd. Place</a></span>
+    <span class="site-description">MatheMatrix[PG]'s blog</span>
+  </div><!-- end of #logo -->
+  
+  
+</div>      </div>
+    </div>     
+  </div>
+  
+  
+  <div class="container_16 clearfix">
+    <div id="nav" class="grid_16">
+      <div class="menu clearfix"><ul id="menu-%e8%8f%9c%e5%8d%951" class="sf-menu sf-js-enabled"><li id="menu-item-674" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-674"><a href="http://mytrix.me/">首页</a></li>
+<li id="menu-item-675" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-675"><a href="http://mytrix.me/aboutblog/">关于本博客</a></li>
+<li id="menu-item-676" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-676"><a href="http://mytrix.me/aboutcomments/">关于评论</a></li>
+</ul></div>    </div>
+  </div>
+
+  
+<div class="container_16 clearfix">
+  
+  <div class="grid_11">
+    <div id="content">	  
+	  
+	        
+                
+          <div id="post-428" class="post-428 post type-post status-publish format-standard hentry category-python-study-note tag-animation tag-dynamic tag-matplotlib tag-python tag-82">
+  
+  <div class="entry-meta-group clearfix">
+    <div class="grid_2 alpha">
+      <span class="entry-date"><a href="./Matplotlib动画指南   the 3rd. Place_files/Matplotlib动画指南   the 3rd. Place.htm" title="2013 年 8 月 18 日 下午 3:59" rel="bookmark"><span class="entry-date-day">18</span><span class="entry-date-month-year">八 2013</span></a></span>    </div>
+    <div class="grid_8 omega">
+      <h1 class="entry-title entry-title-single">Matplotlib动画指南</h1>
+      <div class="entry-meta">    
+		<span class="entry-author author vcard"><a href="http://mytrix.me/author/mathematrix/" title="by MatheMatrix" rel="author">MatheMatrix</a></span><span class="entry-meta-sep"> ⋅ </span><span class="comments-link"><a href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#comments">4 Comments</a></span>      </div><!-- .entry-meta -->
+    </div>
+  </div>
+  
+  <div class="entry-content clearfix">
+  	<p align="left">本文由<a href="http://mathematrix.sinaapp.com/">Mathematrix</a>译自由<a href="http://www.astro.washington.edu/users/vanderplas">Jake Vanderplas</a>撰写的<a href="http://jakevdp.github.io/blog/2012/08/18/matplotlib-animation-tutorial/" target="_blank">Matplotlib Animation Tutorial</a></p>
+<p>Matplotlib 1.1 版新添加了一些非常帅的用来制作动画的工具，你可以在Matplotlib的Example页看到一些非常棒的例子（<a href="http://matplotlib.org/examples/old_animation/">OldExample</a>, <a href="http://matplotlib.org/examples/animation/index.html">Example</a>）。在这里我与大家分享下我使用这些工具的一些经验。</p>
+<h2>基本动画</h2>
+<p>动画工具的中心是matplotlib.animation.Animation基类，这个类提供了动画功能的基础。两个主要接口则分别是imeAnimation和FuncAnimation，你可以在<a href="http://matplotlib.org/api/animation_api.html">这里</a>查看API文档。下面我说说怎么使用我认为最实用的FuncAnimation。</p>
+<p>首先我们用FuncAnimation做一个基本的动画，这个动画可以在屏幕上动态显示正弦函数的图像。</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-py">
+<li class="alt"><span><span class="string">“”" </span>&nbsp;</span></li>
+<li><span><span class="string">matplotlib&nbsp;animation&nbsp;example </span>&nbsp;</span></li>
+<li class="alt"><span>&nbsp;</span></li>
+<li><span><span class="string">author:&nbsp;jake&nbsp;vanderplas </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">email:&nbsp;vanderplas@astro.washington.edu </span>&nbsp;</span></li>
+<li><span><span class="string">website:&nbsp;http://jakevdp.github.com </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">license:&nbsp;bsd </span>&nbsp;</span></li>
+<li><span><span class="string">please&nbsp;feel&nbsp;free&nbsp;to&nbsp;use&nbsp;and&nbsp;modify&nbsp;this,&nbsp;but&nbsp;keep&nbsp;the&nbsp;above&nbsp;information.&nbsp;thanks! </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">“”"</span><span>&nbsp;&nbsp;</span></span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">import</span><span>&nbsp;numpy&nbsp;as&nbsp;np &nbsp;&nbsp;</span></li>
+<li><span class="keyword">from</span><span>&nbsp;matplotlib&nbsp;</span><span class="keyword">import</span><span>&nbsp;pyplot&nbsp;as&nbsp;plt &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">from</span><span>&nbsp;matplotlib&nbsp;</span><span class="keyword">import</span><span>&nbsp;animation &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;first&nbsp;set&nbsp;up&nbsp;the&nbsp;figure,&nbsp;the&nbsp;axis,&nbsp;and&nbsp;the&nbsp;plot&nbsp;element&nbsp;we&nbsp;want&nbsp;to&nbsp;animate </span><span>&nbsp;&nbsp;</span></li>
+<li><span>fig&nbsp;=&nbsp;plt.figure() &nbsp;&nbsp;</span></li>
+<li class="alt"><span>ax&nbsp;=&nbsp;plt.axes(xlim=(0,&nbsp;2),&nbsp;ylim=(-2,&nbsp;2)) &nbsp;&nbsp;</span></li>
+<li><span>line,&nbsp;=&nbsp;ax.plot([],&nbsp;[],&nbsp;lw=2) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;initialization&nbsp;function:&nbsp;plot&nbsp;the&nbsp;background&nbsp;of&nbsp;each&nbsp;frame </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">def</span><span>&nbsp;init(): &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;line.set_data([],&nbsp;[]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;line, &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;animation&nbsp;function.&nbsp;&nbsp;this&nbsp;is&nbsp;called&nbsp;sequentially </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">def</span><span>&nbsp;animate(i): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;np.linspace(0,&nbsp;2,&nbsp;1000) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;np.sin(2&nbsp;*&nbsp;np.pi&nbsp;*&nbsp;(x&nbsp;-&nbsp;0.01&nbsp;*&nbsp;i)) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;line.set_data(x,&nbsp;y) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;line, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;call&nbsp;the&nbsp;animator.&nbsp;&nbsp;blit=true&nbsp;means&nbsp;only&nbsp;re-draw&nbsp;the&nbsp;parts&nbsp;that&nbsp;have&nbsp;changed. </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>anim&nbsp;=&nbsp;animation.funcanimation(fig,&nbsp;animate,&nbsp;init_func=init, &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frames=200,&nbsp;interval=20,&nbsp;blit=</span><span class="builtins">true</span><span>) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;save&nbsp;the&nbsp;animation&nbsp;as&nbsp;an&nbsp;mp4.&nbsp;&nbsp;this&nbsp;requires&nbsp;ffmpeg&nbsp;or&nbsp;mencoder&nbsp;to&nbsp;be </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;installed.&nbsp;&nbsp;the&nbsp;extra_args&nbsp;ensure&nbsp;that&nbsp;the&nbsp;x264&nbsp;codec&nbsp;is&nbsp;used,&nbsp;so&nbsp;that </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;the&nbsp;video&nbsp;can&nbsp;be&nbsp;embedded&nbsp;in&nbsp;html5.&nbsp;&nbsp;you&nbsp;may&nbsp;need&nbsp;to&nbsp;adjust&nbsp;this&nbsp;for </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;your&nbsp;system:&nbsp;for&nbsp;more&nbsp;information,&nbsp;see </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;http://matplotlib.sourceforge.net/api/animation_api.html </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>anim.save(‘basic_animation.mp4′,&nbsp;fps=30,&nbsp;extra_args=['-vcodec',&nbsp;'libx264']) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>plt.show()&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>让我们一步一步来研究这个并看看下面将会发生什么。在引入几个必须的numpy和matplotlib库后，脚本开始设置这个plot:</p>
+<div class="dp-highlighter">
+<ol class="dp-py">
+<li class="alt"><span><span>fig&nbsp;=&nbsp;plt.figure() &nbsp;&nbsp;</span></span></li>
+<li><span>ax&nbsp;=&nbsp;plt.axes(xlim=(0,&nbsp;2),&nbsp;ylim=(-2,&nbsp;2)) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>line,&nbsp;=&nbsp;ax.plot([],&nbsp;[],&nbsp;lw=2)&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>这里我们建立了一个figure窗口，然后建立了一个轴，接着建立了一个我们要在动画中不断被修改的line对象。注意我们现在仅仅是画了一个空白的线，我们将稍后添加数据</p>
+<p>下面我们就创建动画发生时调用的函数了。Init()是我们的动画在在创建动画基础框架(base frame)时调用的函数。这里我们们用一个非常简单的对line什么都不做的函数。这个函数一定要返回line对象，这个很重要，因为这样就能告诉动画之后要更新的内容，也就是动作的内容是line。</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-py">
+<li class="alt"><span><span class="keyword">def</span><span>&nbsp;init(): &nbsp;&nbsp;</span></span></li>
+<li><span>line.set_data([],&nbsp;[]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">return</span><span>&nbsp;line,&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>下面是动画函数。这个函数需要一个参数i，就是帧数，并且一边位移一边根据i画出正弦函数图象。</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-j">
+<li class="alt"><span><span>#&nbsp;animation&nbsp;function.&nbsp;</span><span class="keyword">this</span><span>&nbsp;is&nbsp;called&nbsp;sequentially &nbsp;&nbsp;</span></span></li>
+<li><span>def&nbsp;animate(i): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>x&nbsp;=&nbsp;np.linspace(</span><span class="number">0</span><span>,&nbsp;</span><span class="number">2</span><span>,&nbsp;</span><span class="number">1000</span><span>) &nbsp;&nbsp;</span></li>
+<li><span>y&nbsp;=&nbsp;np.sin(</span><span class="number">2</span><span>&nbsp;*&nbsp;np.pi&nbsp;*&nbsp;(x&nbsp;-&nbsp;</span><span class="number">0.01</span><span>&nbsp;*&nbsp;i)) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>line.set_data(x,&nbsp;y) &nbsp;&nbsp;</span></li>
+<li><span class="keyword">return</span><span>&nbsp;line,&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>再一次注意这里我们返回了我们修改过的对象，这将告诉动画框架哪一部分是要有动作的。</p>
+<p>最后，我们创建动画对象</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-py">
+<li class="alt"><span><span>anim&nbsp;=&nbsp;animation.funcanimation(fig,&nbsp;animate,&nbsp;init_func=init,&nbsp;frames=100,&nbsp;interval=20,&nbsp;blit=</span><span class="builtins">true</span><span>)&nbsp;&nbsp;</span></span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>这个对象需要持续存在，所有我们要将它赋给一个变量，我们选择了一个100帧的动画（译者注：你上边的代码还是200帧，怎么到这儿就变成100帧了……，另外，这里也不一定一定要是个数字，可以是个generator 或iterable，详见API说明）并且帧与帧之间间隔20ms，blit是一个非常重要的关键字，它告诉动画只重绘修改的部分，结合上面保存的时间， blit=true会使动画显示得会非常非常快。</p>
+<p>我们用一个可选的保存命令来结束，并且用一个show()函数让这个图像显示出来，下面是运行的结果：</p>
+<p><object width="100%" height="405" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf"><param name="flashvars" value="url=http%3A//jakevdp.github.io/downloads/videos/basic_animation.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/basic_animation_frame.png"><param name="allowfullscreen" value="true"><param name="allowscriptaccess" value="true"><embed width="100%" height="405" type="application/x-shockwave-flash" src="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf" flashvars="url=http%3A//jakevdp.github.io/downloads/videos/basic_animation.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/basic_animation_frame.png" allowfullscreen="true" allowscriptaccess="true"></object></p>
+<p>这个生成和保存动画的框架非常的强大且有着良好的灵活性：如果我们在动画中添加一些物理原理，那么可能性将是无止境的。下面是我试验过的两个物理动画。</p>
+<h2>二级摆</h2>
+<p>第一个例子讲给大家展示二级摆。这个例子是通过提前计算好摆在10s内的位置，然后用动画的形式播放出来。当我刚开始看到这个的时候还在怀疑python能不能把这个图形跑得足够快使人们看起来球就像是在非一样。代码是这样的：</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-py">
+<li class="alt"><span><span class="string">“”" </span>&nbsp;</span></li>
+<li><span><span class="string">general&nbsp;numerical&nbsp;solver&nbsp;for&nbsp;the&nbsp;1d&nbsp;time-dependent&nbsp;schrodinger’s&nbsp;equation. </span>&nbsp;</span></li>
+<li class="alt"><span>&nbsp;</span></li>
+<li><span><span class="string">adapted&nbsp;from&nbsp;code&nbsp;at&nbsp;http://matplotlib.sourceforge.net/examples/animation/double_pendulum_animated.py </span>&nbsp;</span></li>
+<li class="alt"><span>&nbsp;</span></li>
+<li><span><span class="string">double&nbsp;pendulum&nbsp;formula&nbsp;translated&nbsp;from&nbsp;the&nbsp;c&nbsp;code&nbsp;at </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">http://www.physics.usyd.edu.au/~wheat/dpend_html/solve_dpend.c </span>&nbsp;</span></li>
+<li><span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">author:&nbsp;jake&nbsp;vanderplas </span>&nbsp;</span></li>
+<li><span><span class="string">email:&nbsp;vanderplas@astro.washington.edu </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">website:&nbsp;http://jakevdp.github.com </span>&nbsp;</span></li>
+<li><span><span class="string">license:&nbsp;bsd </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">please&nbsp;feel&nbsp;free&nbsp;to&nbsp;use&nbsp;and&nbsp;modify&nbsp;this,&nbsp;but&nbsp;keep&nbsp;the&nbsp;above&nbsp;information.&nbsp;thanks! </span>&nbsp;</span></li>
+<li><span><span class="string">“”"</span><span>&nbsp;&nbsp;</span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">from</span><span>&nbsp;numpy&nbsp;</span><span class="keyword">import</span><span>&nbsp;sin,&nbsp;cos &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">import</span><span>&nbsp;numpy&nbsp;as&nbsp;np &nbsp;&nbsp;</span></li>
+<li><span class="keyword">import</span><span>&nbsp;matplotlib.pyplot&nbsp;as&nbsp;plt &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">import</span><span>&nbsp;scipy.integrate&nbsp;as&nbsp;integrate &nbsp;&nbsp;</span></li>
+<li><span class="keyword">import</span><span>&nbsp;matplotlib.animation&nbsp;as&nbsp;animation &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">class</span><span>&nbsp;doublependulum: &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"double&nbsp;pendulum&nbsp;class </span></li>
+<li><span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;init_state&nbsp;is&nbsp;[theta1,&nbsp;omega1,&nbsp;theta2,&nbsp;omega2]&nbsp;in&nbsp;degrees, </span>&nbsp;</span></li>
+<li><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;where&nbsp;theta1,&nbsp;omega1&nbsp;is&nbsp;the&nbsp;angular&nbsp;position&nbsp;and&nbsp;velocity&nbsp;of&nbsp;the&nbsp;first </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;pendulum&nbsp;arm,&nbsp;and&nbsp;theta2,&nbsp;omega2&nbsp;is&nbsp;that&nbsp;of&nbsp;the&nbsp;second&nbsp;pendulum&nbsp;arm </span>&nbsp;</span></li>
+<li><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;”"”</span><span>&nbsp;&nbsp;</span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;</span><span class="magicmethods">__init__</span><span>(</span><span class="builtins">self</span><span>, &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_state&nbsp;=&nbsp;[120,&nbsp;0,&nbsp;-20,&nbsp;0], &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1=1.0,&nbsp;&nbsp;</span><span class="comment">#&nbsp;length&nbsp;of&nbsp;pendulum&nbsp;1&nbsp;in&nbsp;m </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2=1.0,&nbsp;&nbsp;</span><span class="comment">#&nbsp;length&nbsp;of&nbsp;pendulum&nbsp;2&nbsp;in&nbsp;m </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m1=1.0,&nbsp;&nbsp;</span><span class="comment">#&nbsp;mass&nbsp;of&nbsp;pendulum&nbsp;1&nbsp;in&nbsp;kg </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m2=1.0,&nbsp;&nbsp;</span><span class="comment">#&nbsp;mass&nbsp;of&nbsp;pendulum&nbsp;2&nbsp;in&nbsp;kg </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g=9.8,&nbsp;&nbsp;</span><span class="comment">#&nbsp;acceleration&nbsp;due&nbsp;to&nbsp;gravity,&nbsp;in&nbsp;m/s^2 </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;origin=(0,&nbsp;0)):&nbsp; &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.init_state&nbsp;=&nbsp;np.asarray(init_state,&nbsp;dtype=’</span><span class="builtins">float</span><span>‘) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.params&nbsp;=&nbsp;(l1,&nbsp;l2,&nbsp;m1,&nbsp;m2,&nbsp;g) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.origin&nbsp;=&nbsp;origin &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.time_elapsed&nbsp;=&nbsp;0 &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.init_state&nbsp;*&nbsp;np.pi&nbsp;/&nbsp;180. &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;position(</span><span class="builtins">self</span><span>): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"compute&nbsp;the&nbsp;current&nbsp;x,y&nbsp;positions&nbsp;of&nbsp;the&nbsp;pendulum&nbsp;arms”"”</span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l1,&nbsp;l2,&nbsp;m1,&nbsp;m2,&nbsp;g)&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.params &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;np.cumsum([</span><span class="builtins">self</span><span>.origin[0], &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;np.cumsum([</span><span class="builtins">self</span><span>.origin[1], &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-l1&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-l2&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;(x,&nbsp;y) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;energy(</span><span class="builtins">self</span><span>): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"compute&nbsp;the&nbsp;energy&nbsp;of&nbsp;the&nbsp;current&nbsp;state”"”</span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(l1,&nbsp;l2,&nbsp;m1,&nbsp;m2,&nbsp;g)&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.params &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;np.cumsum([l1&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;np.cumsum([-l1&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-l2&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vx&nbsp;=&nbsp;np.cumsum([l1&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.state[1]&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.state[3]&nbsp;*&nbsp;cos(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vy&nbsp;=&nbsp;np.cumsum([l1&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.state[1]&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[0]), &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.state[3]&nbsp;*&nbsp;sin(</span><span class="builtins">self</span><span>.state[2])]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&nbsp;=&nbsp;g&nbsp;*&nbsp;(m1&nbsp;*&nbsp;y[0]&nbsp;+&nbsp;m2&nbsp;*&nbsp;y[1]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;k&nbsp;=&nbsp;0.5&nbsp;*&nbsp;(m1&nbsp;*&nbsp;np.dot(vx,&nbsp;vx)&nbsp;+&nbsp;m2&nbsp;*&nbsp;np.dot(vy,&nbsp;vy)) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;u&nbsp;+&nbsp;k &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;dstate_dt(</span><span class="builtins">self</span><span>,&nbsp;state,&nbsp;t): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"compute&nbsp;the&nbsp;derivative&nbsp;of&nbsp;the&nbsp;given&nbsp;state”"”</span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m1,&nbsp;m2,&nbsp;l1,&nbsp;l2,&nbsp;g)&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.params &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dydx&nbsp;=&nbsp;np.zeros_like(state) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dydx[0]&nbsp;=&nbsp;state[1] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dydx[2]&nbsp;=&nbsp;state[3] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cos_delta&nbsp;=&nbsp;cos(state[2]&nbsp;-&nbsp;state[0]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin_delta&nbsp;=&nbsp;sin(state[2]&nbsp;-&nbsp;state[0]) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;den1&nbsp;=&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp;*&nbsp;l1&nbsp;-&nbsp;m2&nbsp;*&nbsp;l1&nbsp;*&nbsp;cos_delta&nbsp;*&nbsp;cos_delta &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dydx[1]&nbsp;=&nbsp;(m2&nbsp;*&nbsp;l1&nbsp;*&nbsp;state[1]&nbsp;*&nbsp;state[1]&nbsp;*&nbsp;sin_delta&nbsp;*&nbsp;cos_delta &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;m2&nbsp;*&nbsp;g&nbsp;*&nbsp;sin(state[2])&nbsp;*&nbsp;cos_delta &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;m2&nbsp;*&nbsp;l2&nbsp;*&nbsp;state[3]&nbsp;*&nbsp;state[3]&nbsp;*&nbsp;sin_delta &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp;*&nbsp;g&nbsp;*&nbsp;sin(state[0]))&nbsp;/&nbsp;den1 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;den2&nbsp;=&nbsp;(l2&nbsp;/&nbsp;l1)&nbsp;*&nbsp;den1 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dydx[3]&nbsp;=&nbsp;(-m2&nbsp;*&nbsp;l2&nbsp;*&nbsp;state[3]&nbsp;*&nbsp;state[3]&nbsp;*&nbsp;sin_delta&nbsp;*&nbsp;cos_delta &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp;*&nbsp;g&nbsp;*&nbsp;sin(state[0])&nbsp;*&nbsp;cos_delta &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp;*&nbsp;l1&nbsp;*&nbsp;state[1]&nbsp;*&nbsp;state[1]&nbsp;*&nbsp;sin_delta &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp;*&nbsp;g&nbsp;*&nbsp;sin(state[2]))&nbsp;/&nbsp;den2 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;dydx &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;step(</span><span class="builtins">self</span><span>,&nbsp;dt): &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"execute&nbsp;one&nbsp;time&nbsp;step&nbsp;of&nbsp;length&nbsp;dt&nbsp;and&nbsp;update&nbsp;state”"”</span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state&nbsp;=&nbsp;integrate.odeint(</span><span class="builtins">self</span><span>.dstate_dt,&nbsp;</span><span class="builtins">self</span><span>.state,&nbsp;[0,&nbsp;dt])[1] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.time_elapsed&nbsp;+=&nbsp;dt &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#———————————————————— </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;set&nbsp;up&nbsp;initial&nbsp;state&nbsp;and&nbsp;global&nbsp;variables </span><span>&nbsp;&nbsp;</span></li>
+<li><span>pendulum&nbsp;=&nbsp;doublependulum([180.,&nbsp;0.0,&nbsp;-20.,&nbsp;0.0]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>dt&nbsp;=&nbsp;1./30&nbsp;</span><span class="comment">#&nbsp;30&nbsp;fps </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#———————————————————— </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;set&nbsp;up&nbsp;figure&nbsp;and&nbsp;animation </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>fig&nbsp;=&nbsp;plt.figure() &nbsp;&nbsp;</span></li>
+<li><span>ax&nbsp;=&nbsp;fig.add_subplot(111,&nbsp;aspect=’equal’,&nbsp;autoscale_on=</span><span class="builtins">false</span><span>, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlim=(-2,&nbsp;2),&nbsp;ylim=(-2,&nbsp;2)) &nbsp;&nbsp;</span></li>
+<li><span>ax.grid() &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>line,&nbsp;=&nbsp;ax.plot([],&nbsp;[],&nbsp;’o-’,&nbsp;lw=2) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>time_text&nbsp;=&nbsp;ax.text(0.02,&nbsp;0.95,&nbsp;”,&nbsp;transform=ax.transaxes) &nbsp;&nbsp;</span></li>
+<li><span>energy_text&nbsp;=&nbsp;ax.text(0.02,&nbsp;0.90,&nbsp;”,&nbsp;transform=ax.transaxes) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">def</span><span>&nbsp;init(): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"initialize&nbsp;animation”"”</span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;line.set_data([],&nbsp;[]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;time_text.set_text(”) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;energy_text.set_text(”) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;line,&nbsp;time_text,&nbsp;energy_text &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">def</span><span>&nbsp;animate(i): &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"perform&nbsp;animation&nbsp;step”"”</span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">global</span><span>&nbsp;pendulum,&nbsp;dt &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;pendulum.step(dt) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;line.set_data(*pendulum.position()) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;time_text.set_text(‘</span><span class="commonlibs">time</span><span>&nbsp;=&nbsp;%.1f’&nbsp;%&nbsp;pendulum.time_elapsed) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;energy_text.set_text(‘energy&nbsp;=&nbsp;%.3f&nbsp;j’&nbsp;%&nbsp;pendulum.energy()) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;line,&nbsp;time_text,&nbsp;energy_text &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;choose&nbsp;the&nbsp;interval&nbsp;based&nbsp;on&nbsp;dt&nbsp;and&nbsp;the&nbsp;time&nbsp;to&nbsp;animate&nbsp;one&nbsp;step </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">from</span><span>&nbsp;</span><span class="commonlibs">time</span><span>&nbsp;</span><span class="keyword">import</span><span>&nbsp;</span><span class="commonlibs">time</span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>t0&nbsp;=&nbsp;</span><span class="commonlibs">time</span><span>() &nbsp;&nbsp;</span></li>
+<li><span>animate(0) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>t1&nbsp;=&nbsp;</span><span class="commonlibs">time</span><span>() &nbsp;&nbsp;</span></li>
+<li><span>interval&nbsp;=&nbsp;1000&nbsp;*&nbsp;dt&nbsp;-&nbsp;(t1&nbsp;-&nbsp;t0) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>ani&nbsp;=&nbsp;animation.funcanimation(fig,&nbsp;animate,&nbsp;frames=300, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval=interval,&nbsp;blit=</span><span class="builtins">true</span><span>,&nbsp;init_func=init) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;save&nbsp;the&nbsp;animation&nbsp;as&nbsp;an&nbsp;mp4.&nbsp;&nbsp;this&nbsp;requires&nbsp;ffmpeg&nbsp;or&nbsp;mencoder&nbsp;to&nbsp;be </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;installed.&nbsp;&nbsp;the&nbsp;extra_args&nbsp;ensure&nbsp;that&nbsp;the&nbsp;x264&nbsp;codec&nbsp;is&nbsp;used,&nbsp;so&nbsp;that </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;the&nbsp;video&nbsp;can&nbsp;be&nbsp;embedded&nbsp;in&nbsp;html5.&nbsp;&nbsp;you&nbsp;may&nbsp;need&nbsp;to&nbsp;adjust&nbsp;this&nbsp;for </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;your&nbsp;system:&nbsp;for&nbsp;more&nbsp;information,&nbsp;see </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;http://matplotlib.sourceforge.net/api/animation_api.html </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#ani.save(‘double_pendulum.mp4′,&nbsp;fps=30,&nbsp;extra_args=['-vcodec',&nbsp;'libx264']) </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>plt.show()&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>这里我们建了一个类来保存二级摆的状态（包括摆臂的角度和角速度）并且提供了一些函数来计算这些动作。动画函数（animation functions）和上面是一样的，但是我们让更新函数（update function）要比以前稍稍复杂一些：现在我们不知要改变点的位置，还要让左上角显示两行字去追踪时间和能量状态（如果我们的数学公式没错的话能量应该是个定值）。下面的视频只录制了10s，但是通过观看运行后的脚本你可以看到二级摆不断混乱地（chaotically）摆动直到你笔记本跑完最后一点电力：</p>
+<p><object width="100%" height="405" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf"><param name="flashvars" value="url=http%3A//jakevdp.github.io/downloads/videos/double_pendulum.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/double_pendulum_frame.png"><param name="allowfullscreen" value="true"><param name="allowscriptaccess" value="true"><embed width="100%" height="405" type="application/x-shockwave-flash" src="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf" flashvars="url=http%3A//jakevdp.github.io/downloads/videos/double_pendulum.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/double_pendulum_frame.png" allowfullscreen="true" allowscriptaccess="true"></object></p>
+<h2>盒子里的粒子</h2>
+<p>另外一个我做的动画是一些粒子在重力的作用下在一个盒子里不断地发生弹性碰撞。注意，碰撞都是弹性的，每个里都具有一定的能量和平面上的动量，而且每当粒子碰到了盒子的内壁上都会栩栩如生地反弹到另一个方向并且所有粒子都受重力影响会向下落：</p>
+<div class="dp-highlighter">
+<div class="bar"></div>
+<ol class="dp-py">
+<li class="alt"><span><span class="string">“”" </span>&nbsp;</span></li>
+<li><span><span class="string">animation&nbsp;of&nbsp;elastic&nbsp;collisions&nbsp;with&nbsp;gravity </span>&nbsp;</span></li>
+<li class="alt"><span>&nbsp;</span></li>
+<li><span><span class="string">author:&nbsp;jake&nbsp;vanderplas </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">email:&nbsp;vanderplas@astro.washington.edu </span>&nbsp;</span></li>
+<li><span><span class="string">website:&nbsp;http://jakevdp.github.com </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">license:&nbsp;bsd </span>&nbsp;</span></li>
+<li><span><span class="string">please&nbsp;feel&nbsp;free&nbsp;to&nbsp;use&nbsp;and&nbsp;modify&nbsp;this,&nbsp;but&nbsp;keep&nbsp;the&nbsp;above&nbsp;information.&nbsp;thanks! </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">“”"</span><span>&nbsp;&nbsp;</span></span></li>
+<li><span class="keyword">import</span><span>&nbsp;numpy&nbsp;as&nbsp;np &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">from</span><span>&nbsp;scipy.spatial.distance&nbsp;</span><span class="keyword">import</span><span>&nbsp;pdist,&nbsp;squareform &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">import</span><span>&nbsp;matplotlib.pyplot&nbsp;as&nbsp;plt &nbsp;&nbsp;</span></li>
+<li><span class="keyword">import</span><span>&nbsp;scipy.integrate&nbsp;as&nbsp;integrate &nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">import</span><span>&nbsp;matplotlib.animation&nbsp;as&nbsp;animation &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">class</span><span>&nbsp;particlebox: &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"orbits&nbsp;class </span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp; </span>&nbsp;</span></li>
+<li><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;init_state&nbsp;is&nbsp;an&nbsp;[n&nbsp;x&nbsp;4]&nbsp;array,&nbsp;where&nbsp;n&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;particles: </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[x1,&nbsp;y1,&nbsp;vx1,&nbsp;vy1], </span>&nbsp;</span></li>
+<li><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[x2,&nbsp;y2,&nbsp;vx2,&nbsp;vy2], </span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;…&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;] </span>&nbsp;</span></li>
+<li><span>&nbsp;</span></li>
+<li class="alt"><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;bounds&nbsp;is&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;box:&nbsp;[xmin,&nbsp;xmax,&nbsp;ymin,&nbsp;ymax] </span>&nbsp;</span></li>
+<li><span><span class="string">&nbsp;&nbsp;&nbsp;&nbsp;”"”</span><span>&nbsp;&nbsp;</span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;</span><span class="magicmethods">__init__</span><span>(</span><span class="builtins">self</span><span>, &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_state&nbsp;=&nbsp;[[1,&nbsp;0,&nbsp;0,&nbsp;-1], &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-0.5,&nbsp;0.5,&nbsp;0.5,&nbsp;0.5], &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-0.5,&nbsp;-0.5,&nbsp;-0.5,&nbsp;0.5]], &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bounds&nbsp;=&nbsp;[-2,&nbsp;2,&nbsp;-2,&nbsp;2], &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;=&nbsp;0.04, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m&nbsp;=&nbsp;0.05, &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g&nbsp;=&nbsp;9.8): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.init_state&nbsp;=&nbsp;np.asarray(init_state,&nbsp;dtype=</span><span class="builtins">float</span><span>) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.m&nbsp;=&nbsp;m&nbsp;*&nbsp;np.ones(</span><span class="builtins">self</span><span>.init_state.shape[0]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.size&nbsp;=&nbsp;size &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.init_state.</span><span class="builtins">copy</span><span class="commonlibs">copy</span><span>() &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.time_elapsed&nbsp;=&nbsp;0 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.bounds&nbsp;=&nbsp;bounds &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.g&nbsp;=&nbsp;g &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">def</span><span>&nbsp;step(</span><span class="builtins">self</span><span>,&nbsp;dt): &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"step&nbsp;once&nbsp;by&nbsp;dt&nbsp;seconds”"”</span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.time_elapsed&nbsp;+=&nbsp;dt &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;update&nbsp;positions </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[:,&nbsp;:2]&nbsp;+=&nbsp;dt&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.state[:,&nbsp;2:] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;find&nbsp;pairs&nbsp;of&nbsp;particles&nbsp;undergoing&nbsp;a&nbsp;collision </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d&nbsp;=&nbsp;squareform(pdist(</span><span class="builtins">self</span><span>.state[:,&nbsp;:2])) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ind1,&nbsp;ind2&nbsp;=&nbsp;np.where(d&nbsp;&lt;&nbsp;2&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.size) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unique&nbsp;=&nbsp;(ind1&nbsp;&lt;&nbsp;ind2) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ind1&nbsp;=&nbsp;ind1[unique] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ind2&nbsp;=&nbsp;ind2[unique] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;update&nbsp;velocities&nbsp;of&nbsp;colliding&nbsp;pairs </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">for</span><span>&nbsp;i1,&nbsp;i2&nbsp;</span><span class="keyword">in</span><span>&nbsp;</span><span class="builtins">zip</span><span>(ind1,&nbsp;ind2): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;mass </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m1&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.m[i1] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m2&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.m[i2] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;location&nbsp;vector </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r1&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.state[i1,&nbsp;:2] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r2&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.state[i2,&nbsp;:2] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;velocity&nbsp;vector </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.state[i1,&nbsp;2:] &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v2&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.state[i2,&nbsp;2:] &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;relative&nbsp;location&nbsp;&amp;&nbsp;velocity&nbsp;vectors </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r_rel&nbsp;=&nbsp;r1&nbsp;-&nbsp;r2 &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_rel&nbsp;=&nbsp;v1&nbsp;-&nbsp;v2 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;momentum&nbsp;vector&nbsp;of&nbsp;the&nbsp;center&nbsp;of&nbsp;mass </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_cm&nbsp;=&nbsp;(m1&nbsp;*&nbsp;v1&nbsp;+&nbsp;m2&nbsp;*&nbsp;v2)&nbsp;/&nbsp;(m1&nbsp;+&nbsp;m2) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;collisions&nbsp;of&nbsp;spheres&nbsp;reflect&nbsp;v_rel&nbsp;over&nbsp;r_rel </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rr_rel&nbsp;=&nbsp;np.dot(r_rel,&nbsp;r_rel) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vr_rel&nbsp;=&nbsp;np.dot(v_rel,&nbsp;r_rel) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v_rel&nbsp;=&nbsp;2&nbsp;*&nbsp;r_rel&nbsp;*&nbsp;vr_rel&nbsp;/&nbsp;rr_rel&nbsp;-&nbsp;v_rel &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;assign&nbsp;new&nbsp;velocities </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[i1,&nbsp;2:]&nbsp;=&nbsp;v_cm&nbsp;+&nbsp;v_rel&nbsp;*&nbsp;m2&nbsp;/&nbsp;(m1&nbsp;+&nbsp;m2) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[i2,&nbsp;2:]&nbsp;=&nbsp;v_cm&nbsp;-&nbsp;v_rel&nbsp;*&nbsp;m1&nbsp;/&nbsp;(m1&nbsp;+&nbsp;m2)&nbsp; &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;check&nbsp;for&nbsp;crossing&nbsp;boundary </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossed_x1&nbsp;=&nbsp;(</span><span class="builtins">self</span><span>.state[:,&nbsp;0]&nbsp;&lt;&nbsp;</span><span class="builtins">self</span><span>.bounds[0]&nbsp;+&nbsp;</span><span class="builtins">self</span><span>.size) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossed_x2&nbsp;=&nbsp;(</span><span class="builtins">self</span><span>.state[:,&nbsp;0]&nbsp;&gt;&nbsp;</span><span class="builtins">self</span><span>.bounds[1]&nbsp;-&nbsp;</span><span class="builtins">self</span><span>.size) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossed_y1&nbsp;=&nbsp;(</span><span class="builtins">self</span><span>.state[:,&nbsp;1]&nbsp;&lt;&nbsp;</span><span class="builtins">self</span><span>.bounds[2]&nbsp;+&nbsp;</span><span class="builtins">self</span><span>.size) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;crossed_y2&nbsp;=&nbsp;(</span><span class="builtins">self</span><span>.state[:,&nbsp;1]&nbsp;&gt;&nbsp;</span><span class="builtins">self</span><span>.bounds[3]&nbsp;-&nbsp;</span><span class="builtins">self</span><span>.size) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_x1,&nbsp;0]&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.bounds[0]&nbsp;+&nbsp;</span><span class="builtins">self</span><span>.size &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_x2,&nbsp;0]&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.bounds[1]&nbsp;-&nbsp;</span><span class="builtins">self</span><span>.size &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_y1,&nbsp;1]&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.bounds[2]&nbsp;+&nbsp;</span><span class="builtins">self</span><span>.size &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_y2,&nbsp;1]&nbsp;=&nbsp;</span><span class="builtins">self</span><span>.bounds[3]&nbsp;-&nbsp;</span><span class="builtins">self</span><span>.size &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_x1&nbsp;|&nbsp;crossed_x2,&nbsp;2]&nbsp;*=&nbsp;-1 &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[crossed_y1&nbsp;|&nbsp;crossed_y2,&nbsp;3]&nbsp;*=&nbsp;-1 &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;add&nbsp;gravity </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="builtins">self</span><span>.state[:,&nbsp;3]&nbsp;-=&nbsp;</span><span class="builtins">self</span><span>.m&nbsp;*&nbsp;</span><span class="builtins">self</span><span>.g&nbsp;*&nbsp;dt &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#———————————————————— </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;set&nbsp;up&nbsp;initial&nbsp;state </span><span>&nbsp;&nbsp;</span></li>
+<li><span>np.</span><span class="commonlibs">random</span><span>.seed(0) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>init_state&nbsp;=&nbsp;-0.5&nbsp;+&nbsp;np.</span><span class="commonlibs">random</span><span>.</span><span class="commonlibs">random</span><span>((50,&nbsp;4)) &nbsp;&nbsp;</span></li>
+<li><span>init_state[:,&nbsp;:2]&nbsp;*=&nbsp;3.9 &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>box&nbsp;=&nbsp;particlebox(init_state,&nbsp;size=0.04) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>dt&nbsp;=&nbsp;1.&nbsp;/&nbsp;30&nbsp;</span><span class="comment">#&nbsp;30fps </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#———————————————————— </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;set&nbsp;up&nbsp;figure&nbsp;and&nbsp;animation </span><span>&nbsp;&nbsp;</span></li>
+<li><span>fig&nbsp;=&nbsp;plt.figure() &nbsp;&nbsp;</span></li>
+<li class="alt"><span>fig.subplots_adjust(left=0,&nbsp;right=1,&nbsp;bottom=0,&nbsp;top=1) &nbsp;&nbsp;</span></li>
+<li><span>ax&nbsp;=&nbsp;fig.add_subplot(111,&nbsp;aspect=’equal’,&nbsp;autoscale_on=</span><span class="builtins">false</span><span>, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xlim=(-3.2,&nbsp;3.2),&nbsp;ylim=(-2.4,&nbsp;2.4)) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;particles&nbsp;holds&nbsp;the&nbsp;locations&nbsp;of&nbsp;the&nbsp;particles </span><span>&nbsp;&nbsp;</span></li>
+<li><span>particles,&nbsp;=&nbsp;ax.plot([],&nbsp;[],&nbsp;’bo’,&nbsp;ms=6) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;rect&nbsp;is&nbsp;the&nbsp;box&nbsp;edge </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>rect&nbsp;=&nbsp;plt.rectangle(box.bounds[::2], &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box.bounds[1]&nbsp;-&nbsp;box.bounds[0], &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box.bounds[3]&nbsp;-&nbsp;box.bounds[2], &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ec=’none’,&nbsp;lw=2,&nbsp;fc=’none’) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>ax.add_patch(rect) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="keyword">def</span><span>&nbsp;init(): &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"initialize&nbsp;animation”"”</span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">global</span><span>&nbsp;box,&nbsp;rect &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;particles.set_data([],&nbsp;[]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;rect.set_edgecolor(‘none’) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;particles,&nbsp;rect &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="keyword">def</span><span>&nbsp;animate(i): &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">“”"perform&nbsp;animation&nbsp;step”"”</span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">global</span><span>&nbsp;box,&nbsp;rect,&nbsp;dt,&nbsp;ax,&nbsp;fig &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;box.step(dt) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;ms&nbsp;=&nbsp;</span><span class="builtins">int</span><span>(fig.dpi&nbsp;*&nbsp;2&nbsp;*&nbsp;box.size&nbsp;*&nbsp;fig.get_figwidth() &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;np.diff(ax.get_xbound())[0]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">#&nbsp;update&nbsp;pieces&nbsp;of&nbsp;the&nbsp;animation </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;rect.set_edgecolor(‘k’) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;particles.set_data(box.state[:,&nbsp;0],&nbsp;box.state[:,&nbsp;1]) &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;particles.set_markersize(ms) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;particles,&nbsp;rect &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span>ani&nbsp;=&nbsp;animation.funcanimation(fig,&nbsp;animate,&nbsp;frames=600, &nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval=10,&nbsp;blit=</span><span class="builtins">true</span><span>,&nbsp;init_func=init) &nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;save&nbsp;the&nbsp;animation&nbsp;as&nbsp;an&nbsp;mp4.&nbsp;&nbsp;this&nbsp;requires&nbsp;ffmpeg&nbsp;or&nbsp;mencoder&nbsp;to&nbsp;be </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;installed.&nbsp;&nbsp;the&nbsp;extra_args&nbsp;ensure&nbsp;that&nbsp;the&nbsp;x264&nbsp;codec&nbsp;is&nbsp;used,&nbsp;so&nbsp;that </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;the&nbsp;video&nbsp;can&nbsp;be&nbsp;embedded&nbsp;in&nbsp;html5.&nbsp;&nbsp;you&nbsp;may&nbsp;need&nbsp;to&nbsp;adjust&nbsp;this&nbsp;for </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#&nbsp;your&nbsp;system:&nbsp;for&nbsp;more&nbsp;information,&nbsp;see </span><span>&nbsp;&nbsp;</span></li>
+<li><span class="comment">#&nbsp;http://matplotlib.sourceforge.net/api/animation_api.html </span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span class="comment">#ani.save(‘particle_box.mp4′,&nbsp;fps=30,&nbsp;extra_args=['-vcodec',&nbsp;'libx264']) </span><span>&nbsp;&nbsp;</span></li>
+<li><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span>plt.show()&nbsp;&nbsp;</span></li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p>如果你稍学过一些物理学知识，就应该不会对里面的公式太陌生，而且最终运行结果是令人入迷的。我在飞机上把代码写了出来，然后坐着看了它差不多10分钟。</p>
+<p><object width="100%" height="405" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf"><param name="flashvars" value="url=http%3A//jakevdp.github.io/downloads/videos/particle_box.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/particle_box_frame.png"><param name="allowfullscreen" value="true"><param name="allowscriptaccess" value="true"><embed width="100%" height="405" type="application/x-shockwave-flash" src="http://mathematrix.sinaapp.com/wp-includes/js/tinymce/plugins/media/moxieplayer.swf" flashvars="url=http%3A//jakevdp.github.io/downloads/videos/particle_box.mp4&amp;poster=http%3A//jakevdp.github.io/downloads/videos/particle_box_frame.png" allowfullscreen="true" allowscriptaccess="true"></object></p>
+<p>这仅仅是个开始：往这些动画里加些别的元素是个很有趣的锻炼，像计算温度和气压来说明合理的油价（译者注：原话为like computation of the temperature and pressure to demonstrate the ideal gas law，考虑到美国油价以为加仑计量单位，原作者是名物理学的博士，所以这里应该是调侃油价计算应该仔细考虑温度和气压）或者是画速度分布的实时曲线来观察它能否接近麦克斯韦分布（译者注：麦克斯韦-玻尔兹曼分布，统计力学中的一个概率分布）。这个为可视化物理学演示打开了太多的可能……</p>
+<h2>总结</h2>
+<p>Matplotlib的动画模块可以说是对本来就很出色的Matplotlib一个非常好的改进。我认为我认为我已经用这些工具抓到了一些浅显的可能……你们还有什么能做出很酷的动画的电子么？</p>
+<p>修改：在<a href="http://jakevdp.github.io/blog/2012/09/05/quantum-python/">这篇博文</a>里，我展示了如何做一个简单的量子力学系统的演示动画。</p>
+<p align="left">
+  </p></div> <!-- end .entry-content -->
+  
+    
+  <div class="entry-meta-bottom">
+  <span class="cat-links"><span class="entry-utility-prep entry-utility-prep-cat-links">Posted in:</span> <a href="http://mytrix.me/category/study/python-study-note/" title="查看Python学习笔记中的全部文章" rel="category tag">Python学习笔记</a></span><span class="entry-meta-sep"> ⋅ </span><span class="tag-links"><span class="entry-utility-prep entry-utility-prep-tag-links">Tagged:</span> <a href="http://mytrix.me/tag/animation/" rel="tag">animation</a>, <a href="http://mytrix.me/tag/dynamic/" rel="tag">dynamic</a>, <a href="http://mytrix.me/tag/matplotlib/" rel="tag">matplotlib</a>, <a href="http://mytrix.me/tag/python/" rel="tag">Python</a>, <a href="http://mytrix.me/tag/%e5%8a%a8%e7%94%bb/" rel="tag">动画</a></span>  </div><!-- .entry-meta -->
+
+</div> <!-- end #post-428 .post_class -->
+
+ 
+
+<div id="comments" class="grid_inside">
+  
+  
+    
+  <h3 id="comments-title">
+    4 Thoughts on “<span>Matplotlib动画指南</span>”  </h3>
+
+  <ol class="commentlist">
+    			
+            <li class="comment even thread-even depth-1" id="li-comment-100">
+				
+				<div id="comment-100" class="comment">
+	    
+					<div class="comment-meta">
+						<div class="comment-author vcard">
+		    
+							<img alt="" src="./Matplotlib动画指南   the 3rd. Place_files/f3f37a57b218e97575f256b0d4f7c246" class="avatar avatar-60 photo" height="60" width="60">                            
+                            <span class="fn"><a href="http://luly.lamost.org/" rel="external nofollow" class="url">styr</a></span> on <a href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#comment-100"><span pubdate="" datetime="2013-10-29T22:47:55+00:00">2013 年 10 月 29 日 at 下午 10:47</span></a> <span class="says">said:</span>
+									  
+						</div> <!-- end .comment-author .vcard -->
+
+						
+					</div> <!-- end .comment-meta -->
+
+					<div class="comment-content">
+					  <p>谢谢你的翻译！<br>
+顺便提醒一下，译文里贴的代码里的大小写都丢失了，比如true应作True。不然代码无法运行。</p>
+                    </div> <!-- end .comment-content -->
+
+					<div class="reply">
+						<a class="comment-reply-link" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/?replytocom=100#respond" onclick="return addComment.moveForm(&quot;comment-100&quot;, &quot;100&quot;, &quot;respond&quot;, &quot;428&quot;)">Reply<span>↓</span></a>					</div><!-- .reply -->
+		
+				</div><!-- end #comment-100 -->
+
+		<ul class="children">
+			
+            <li class="comment byuser comment-author-mathematrix bypostauthor odd alt depth-2" id="li-comment-101">
+				
+				<div id="comment-101" class="comment">
+	    
+					<div class="comment-meta">
+						<div class="comment-author vcard">
+		    
+							<img alt="" src="./Matplotlib动画指南   the 3rd. Place_files/261fe1a553d8e138d88140a4c25026d2" class="avatar avatar-60 photo" height="60" width="60">                            
+                            <span class="fn">MatheMatrix</span> on <a href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#comment-101"><span pubdate="" datetime="2013-10-31T23:05:10+00:00">2013 年 10 月 31 日 at 下午 11:05</span></a> <span class="says">said:</span>
+									  
+						</div> <!-- end .comment-author .vcard -->
+
+						
+					</div> <!-- end .comment-meta -->
+
+					<div class="comment-content">
+					  <p>感谢指正，我会抽时间修改的:-)<br>
+不知道怎么所有代码都变成小写了，刚才测试了下，无论是从原网站下载或者直接拷贝代码，都不会出现大写变小写的问题，我的第一反应还以为是像WordPress那样有什么直接拷贝代码的bug呢。</p>
+                    </div> <!-- end .comment-content -->
+
+					<div class="reply">
+						<a class="comment-reply-link" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/?replytocom=101#respond" onclick="return addComment.moveForm(&quot;comment-101&quot;, &quot;101&quot;, &quot;respond&quot;, &quot;428&quot;)">Reply<span>↓</span></a>					</div><!-- .reply -->
+		
+				</div><!-- end #comment-101 -->
+
+		</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+			
+            <li class="comment even thread-odd thread-alt depth-1" id="li-comment-302">
+				
+				<div id="comment-302" class="comment">
+	    
+					<div class="comment-meta">
+						<div class="comment-author vcard">
+		    
+							<img alt="" src="./Matplotlib动画指南   the 3rd. Place_files/4811f8a4b181c8012c82f1bff619dc6f" class="avatar avatar-60 photo" height="60" width="60">                            
+                            <span class="fn">gomeze</span> on <a href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#comment-302"><span pubdate="" datetime="2014-05-12T19:33:44+00:00">2014 年 5 月 12 日 at 下午 7:33</span></a> <span class="says">said:</span>
+									  
+						</div> <!-- end .comment-author .vcard -->
+
+						
+					</div> <!-- end .comment-meta -->
+
+					<div class="comment-content">
+					  <p>多谢，我想问一下，生成出来动画之后，如何保存？<br>
+我看你给出的是swf格式的，我想知道你是直接保存成swf的还是用MP4转成swf的？</p>
+                    </div> <!-- end .comment-content -->
+
+					<div class="reply">
+						<a class="comment-reply-link" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/?replytocom=302#respond" onclick="return addComment.moveForm(&quot;comment-302&quot;, &quot;302&quot;, &quot;respond&quot;, &quot;428&quot;)">Reply<span>↓</span></a>					</div><!-- .reply -->
+		
+				</div><!-- end #comment-302 -->
+
+		<ul class="children">
+			
+            <li class="comment byuser comment-author-mathematrix bypostauthor odd alt depth-2" id="li-comment-303">
+				
+				<div id="comment-303" class="comment">
+	    
+					<div class="comment-meta">
+						<div class="comment-author vcard">
+		    
+							<img alt="" src="./Matplotlib动画指南   the 3rd. Place_files/261fe1a553d8e138d88140a4c25026d2" class="avatar avatar-60 photo" height="60" width="60">                            
+                            <span class="fn">MatheMatrix</span> on <a href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#comment-303"><span pubdate="" datetime="2014-05-12T20:27:22+00:00">2014 年 5 月 12 日 at 下午 8:27</span></a> <span class="says">said:</span>
+									  
+						</div> <!-- end .comment-author .vcard -->
+
+						
+					</div> <!-- end .comment-meta -->
+
+					<div class="comment-content">
+					  <p>我这里引用的是源文档中的 mp4 格式动画，我自己没试过保存动画 <img src="./Matplotlib动画指南   the 3rd. Place_files/icon_smile.gif" alt=":-)" class="wp-smiley"> </p>
+<p>从作者的源代码里看，也是保存成 mp4 格式的：</p>
+<p>anim.save(‘basic_animation.mp4′, fps=30, extra_args=['-vcodec', 'libx264'])</p>
+<p>（后面的代码的保存部分都在注释里）</p>
+<p>更多看这里吧：<br>
+<a href="http://matplotlib.org/api/animation_api.html" rel="nofollow">http://matplotlib.org/api/animation_api.html</a><br>
+<a href="http://stackoverflow.com/questions/18016390/save-matplotlib-animation" rel="nofollow">http://stackoverflow.com/questions/18016390/save-matplotlib-animation</a></p>
+                    </div> <!-- end .comment-content -->
+
+					<div class="reply">
+						<a class="comment-reply-link" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/?replytocom=303#respond" onclick="return addComment.moveForm(&quot;comment-303&quot;, &quot;303&quot;, &quot;respond&quot;, &quot;428&quot;)">Reply<span>↓</span></a>					</div><!-- .reply -->
+		
+				</div><!-- end #comment-303 -->
+
+		</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+  </ol>
+
+  
+  
+  								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://mytrix.me/2013/08/matplotlib-animation-tutorial/#respond" style="display:none;">取消回复</a></small></h3>
+									<form action="http://mathematrix.sinaapp.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes">电子邮件地址不会被公开。 必填项已用<span class="required">*</span>标注</p>							<p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="text" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">您可以使用这些<abbr title="HyperText Markup Language">HTML</abbr>标签和属性： <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code class="" title="" data-url=""&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre class="" title="" data-url=""&gt; &lt;span class="" title="" data-url=""&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="发表评论">
+							<input type="hidden" name="comment_post_ID" value="428" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="de91ea8b09"></p><!-- BEGIN: Email notification plugin by Elance360: http://elance360.com/ --><p><label for="subscribe-reloaded"> 当本文章有新回复时：<br><select name="subscribe-reloaded" id="subscribe-reloaded"><option value="none">请勿发送邮件提醒</option><option value="yes" selected="selected">只在有人回复我时请发送邮件提醒</option><option value="replies">总发送邮件提醒</option></select></label></p><!-- END: Email notification plugin by Elance360: http://elance360.com/ -->					</form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments -->        
+              
+            
+      <div id="loop-nav-singlular-post" class="clearfix">
+  <h3 class="assistive-text">Post Navigation</h3>
+  <div class="loop-nav-previous grid_5 alpha">
+    <a href="http://mytrix.me/2013/08/update-wordpress/" rel="prev"><span class="meta-nav">←</span> Previous Post</a>  </div>
+  <div class="loop-nav-next grid_5 omega">
+	<a href="http://mytrix.me/2013/08/progit-notes-introductio/" rel="next">Next Post <span class="meta-nav">→</span></a>  </div>
+</div><!-- end #loop-nav-singular-post -->
+    
+    </div> <!-- end #content -->
+  </div> <!-- end .grid_11 -->
+  
+  <div class="grid_5">
+  <div id="sidebar">
+  
+	<div id="search-3" class="widget widget_search widget-widget_search clearfix"><div class="widget-wrap widget-inside"><div class="search">
+  <form method="get" class="searchform" action="http://mytrix.me/">
+    <label for="s" class="assistive-text">Search for:</label>
+    <input type="text" class="field" name="s" id="s" value="Search" onfocus="if(this.value==this.defaultValue)this.value=&#39;&#39;;" onblur="if(this.value==&#39;&#39;)this.value=this.defaultValue;">
+    <input type="submit" class="submit" name="submit" id="searchsubmit" value="Search">
+  </form>
+</div><!-- end .search --></div></div>		<div id="recent-posts-3" class="widget widget_recent_entries widget-widget_recent_entries clearfix"><div class="widget-wrap widget-inside">		<h3 class="widget-title">近期文章</h3>		<ul>
+					<li>
+				<a href="http://mytrix.me/2014/12/neutron-kilo-priorities/">Neutron 社区 K 版项目重点</a>
+						</li>
+					<li>
+				<a href="http://mytrix.me/2014/11/software_arch_of_neutron/">Neutron 的软件架构</a>
+						</li>
+					<li>
+				<a href="http://mytrix.me/2014/11/things_i_am_doing/">我在做的事情</a>
+						</li>
+					<li>
+				<a href="http://mytrix.me/2014/05/dive-into-neutron-server-part-1/">Neutron Server 启动过程详解-Part 1</a>
+						</li>
+					<li>
+				<a href="http://mytrix.me/2014/04/dive-into-openstack-neutron-on-compute-node/">OpenStack计算节点上虚拟网络（Neutron）详解</a>
+						</li>
+				</ul>
+		</div></div><div id="recent-comments-3" class="widget widget_recent_comments widget-widget_recent_comments clearfix"><div class="widget-wrap widget-inside"><h3 class="widget-title">近期评论</h3><ul id="recentcomments"><li class="recentcomments"><a href="http://www.countrybowl.com/template.html" rel="external nofollow" class="url">http://www.countrybowl.com/template.html</a>发表在《<a href="http://mytrix.me/2014/01/experiment-on-keystone/#comment-946">关于Keystone的实验</a>》</li><li class="recentcomments">Feng发表在《<a href="http://mytrix.me/2014/11/things_i_am_doing/#comment-945">我在做的事情</a>》</li><li class="recentcomments">Lingxian Kong发表在《<a href="http://mytrix.me/2014/11/things_i_am_doing/#comment-928">我在做的事情</a>》</li><li class="recentcomments">麦兜发表在《<a href="http://mytrix.me/2014/05/dive-into-neutron-server-part-1/#comment-927">Neutron Server 启动过程详解-Part 1</a>》</li><li class="recentcomments">MatheMatrix发表在《<a href="http://mytrix.me/2014/12/neutron-kilo-priorities/#comment-926">Neutron 社区 K 版项目重点</a>》</li></ul></div></div><div id="categories-3" class="widget widget_categories widget-widget_categories clearfix"><div class="widget-wrap widget-inside"><h3 class="widget-title">分类目录</h3>		<ul>
+	<li class="cat-item cat-item-3"><a href="http://mytrix.me/category/study/" title="关于读书，关于学习。">学习</a> (41)
+<ul class="children">
+	<li class="cat-item cat-item-89"><a href="http://mytrix.me/category/study/git-study-note/" title="Git学习笔记，包括但不限于阅读留下的笔记">Git学习笔记</a> (4)
+</li>
+	<li class="cat-item cat-item-97"><a href="http://mytrix.me/category/study/linux-study-note/" title="使用Linux（主要为CentOS6.5）时留下的学习笔记
+But
+Not only Linux">Linux学习笔记</a> (1)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://mytrix.me/category/study/matlab-study-note/" title="看《Matlab在数学建模中的应用》留下的笔记">Matlab学习笔记</a> (12)
+</li>
+	<li class="cat-item cat-item-106"><a href="http://mytrix.me/category/study/openstack%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0/" title="查看OpenStack学习笔记下的所有文章">OpenStack学习笔记</a> (10)
+</li>
+	<li class="cat-item cat-item-55"><a href="http://mytrix.me/category/study/prolog-study-note/" title="学习Prolog，主要是Hyry的《Prolog与人工智能》留下的笔记。">Prolog学习笔记</a> (5)
+</li>
+	<li class="cat-item cat-item-67"><a href="http://mytrix.me/category/study/python-study-note/" title="学习Python留下的笔记，看的书包括但不限于Dive into Python 3">Python学习笔记</a> (8)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://mytrix.me/category/thought/" title="关于观点，关于思考。">思考</a> (3)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://mytrix.me/category/life/" title="关于身边，关于生活。">生活</a> (10)
+</li>
+		</ul>
+</div></div><div id="archives-3" class="widget widget_archive widget-widget_archive clearfix"><div class="widget-wrap widget-inside"><h3 class="widget-title">文章归档</h3>		<ul>
+			<li><a href="http://mytrix.me/2014/12/">2014年十二月</a></li>
+	<li><a href="http://mytrix.me/2014/11/">2014年十一月</a></li>
+	<li><a href="http://mytrix.me/2014/05/">2014年五月</a></li>
+	<li><a href="http://mytrix.me/2014/04/">2014年四月</a></li>
+	<li><a href="http://mytrix.me/2014/03/">2014年三月</a></li>
+	<li><a href="http://mytrix.me/2014/02/">2014年二月</a></li>
+	<li><a href="http://mytrix.me/2014/01/">2014年一月</a></li>
+	<li><a href="http://mytrix.me/2013/12/">2013年十二月</a></li>
+	<li><a href="http://mytrix.me/2013/11/">2013年十一月</a></li>
+	<li><a href="http://mytrix.me/2013/10/">2013年十月</a></li>
+	<li><a href="http://mytrix.me/2013/09/">2013年九月</a></li>
+	<li><a href="http://mytrix.me/2013/08/">2013年八月</a></li>
+	<li><a href="http://mytrix.me/2013/07/">2013年七月</a></li>
+	<li><a href="http://mytrix.me/2013/06/">2013年六月</a></li>
+	<li><a href="http://mytrix.me/2013/05/">2013年五月</a></li>
+	<li><a href="http://mytrix.me/2013/04/">2013年四月</a></li>
+	<li><a href="http://mytrix.me/2013/03/">2013年三月</a></li>
+	<li><a href="http://mytrix.me/2012/11/">2012年十一月</a></li>
+	<li><a href="http://mytrix.me/2012/10/">2012年十月</a></li>
+	<li><a href="http://mytrix.me/2012/09/">2012年九月</a></li>
+	<li><a href="http://mytrix.me/2012/08/">2012年八月</a></li>
+	<li><a href="http://mytrix.me/2012/07/">2012年七月</a></li>
+	<li><a href="http://mytrix.me/2012/06/">2012年六月</a></li>
+		</ul>
+</div></div><div id="linkcat-2" class="widget widget_links widget-widget_links clearfix"><div class="widget-wrap widget-inside"><h3 class="widget-title">链接表</h3>
+	<ul class="xoxo blogroll">
+<li><a href="http://44670.org/" title="44670[PG] | Dream::Cast()" target="_blank">44670</a></li>
+<li><a href="http://blog.youxu.info/" title="徐宥’sblog" target="_blank">4G spaces</a></li>
+<li><a href="http://forbetty.com/" title="Betty’s Blog" target="_blank">BETTY　DIARY</a></li>
+<li><a href="https://www.byvoid.com/zhs/blog" title="Beyond the Void" target="_blank">BYVoid</a></li>
+<li><a href="http://chichou.0ginr.com/blog/" title="ChiChou’s Blog | 我在0GiNr的新据点" target="_blank">ChiChou's Blog</a></li>
+<li><a href="http://foreverbell.0ginr.com/blog/" rel="friend" title="ForeverBell[PG] | I am a ZombieCoder" target="_blank">ForeverBell</a></li>
+<li><a href="http://www.kaieconblog.net/" target="_blank">Kaiguo's blog</a></li>
+<li><a href="http://ytliu.info/" title="What I learned in IT, as well as thought about life" target="_blank">Mctrain's Blog</a></li>
+<li><a href="http://oldj.net/" title="oldj’s blog | 编程，写作，以及涂鸦" target="_blank">oldj's blog</a></li>
+<li><a href="https://www.pystack.org/" title="PyStack.org | Time waits for no one…" target="_blank">PyStack.org</a></li>
+<li><a href="http://www.lixiaolai.com/" target="_blank">Reborn's blog</a></li>
+<li><a href="http://blog.solrex.org/" title="Solrex’s blog" target="_blank">Solrex</a></li>
+<li><a href="http://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a></li>
+<li><a href="http://liushuaikobe.github.io/" title="Blog of liushuaikobe." target="_blank">To be a tough man.</a></li>
+<li><a href="http://wordpress.org/news/">WordPress Blog</a></li>
+<li><a href="http://wp4sae.sinaapp.com/">WordPress for SAE</a></li>
+<li><a href="http://xiaoxia.org/" title="Yesterday is history, tomorrow is mistery, today is a gift!" target="_blank">Xiaoxia's blog</a></li>
+<li><a href="http://codingnow.com/" title="云风的 BLOG" target="_blank">云风的 BLOG</a></li>
+<li><a href="http://www.codecho.com/" title="Leyond’s blog" target="_blank">代码回音</a></li>
+<li><a href="http://lilydjwg.is-programmer.com/" title="Happy coding, happy living!" target="_blank">依云's Blog</a></li>
+<li><a href="http://mindhacks.cn/" title="前C++的罗浮宫" target="_blank">刘未鹏 | Mind Hacks</a></li>
+<li><a href="http://chenxiaohua.net/" title="金陵奇葩陈小花" target="_blank">努力加餐饭</a></li>
+<li><a href="http://blog.sina.com.cn/u/2508185000" title="夏天的新浪博客" target="_blank">夏天的博客</a></li>
+<li><a href="http://blog.s135.com/" title="张宴的博客" target="_blank">张宴的博客</a></li>
+<li><a href="https://github.com/MatheMatrix" title="我的Github" target="_blank">我的 Github</a></li>
+<li><a href="http://easwy.com/blog/" title="关注Linux, Scala, Android, Java, 开源软件和嵌入式系统" target="_blank">易水博客</a></li>
+<li><a href="http://hzzz.lengzzz.com/blog" title="while (new Love); 爱你直到内存溢出" target="_blank">程序员和小女生</a></li>
+<li><a href="http://dbanotes.net/" title="DBA Notes | 闲思录" target="_blank">闲思录</a></li>
+<li><a href="http://blog.chunshengster.me/" title="香草的技术博客">香草的技术博客</a></li>
+<li><a href="http://youngsterxyf.github.io/" title="xyf’s blog" target="_blank">黑 * 白</a></li>
+
+	</ul>
+</div></div>
+<div id="tag_cloud-3" class="widget widget_tag_cloud widget-widget_tag_cloud clearfix"><div class="widget-wrap widget-inside"><h3 class="widget-title">标签</h3><div class="tagcloud"><a href="http://mytrix.me/tag/amqp/" class="tag-link-116" title="2个话题" style="font-size: 11.1111111111pt;">amqp</a>
+<a href="http://mytrix.me/tag/ascii/" class="tag-link-30" title="1个话题" style="font-size: 8pt;">ASCII</a>
+<a href="http://mytrix.me/tag/csharp/" class="tag-link-19" title="1个话题" style="font-size: 8pt;">C#</a>
+<a href="http://mytrix.me/tag/excel/" class="tag-link-26" title="1个话题" style="font-size: 8pt;">Excel</a>
+<a href="http://mytrix.me/tag/fit/" class="tag-link-34" title="2个话题" style="font-size: 11.1111111111pt;">fit</a>
+<a href="http://mytrix.me/tag/fitting/" class="tag-link-38" title="1个话题" style="font-size: 8pt;">fitting</a>
+<a href="http://mytrix.me/tag/fprintf/" class="tag-link-32" title="1个话题" style="font-size: 8pt;">fprintf</a>
+<a href="http://mytrix.me/tag/git/" class="tag-link-90" title="4个话题" style="font-size: 14.9135802469pt;">git</a>
+<a href="http://mytrix.me/tag/graph/" class="tag-link-39" title="1个话题" style="font-size: 8pt;">graph</a>
+<a href="http://mytrix.me/tag/keystone/" class="tag-link-108" title="2个话题" style="font-size: 11.1111111111pt;">keystone</a>
+<a href="http://mytrix.me/tag/life-2/" class="tag-link-12" title="2个话题" style="font-size: 11.1111111111pt;">life</a>
+<a href="http://mytrix.me/tag/load/" class="tag-link-29" title="1个话题" style="font-size: 8pt;">Load</a>
+<a href="http://mytrix.me/tag/logistic/" class="tag-link-37" title="1个话题" style="font-size: 8pt;">Logistic</a>
+<a href="http://mytrix.me/tag/matlab/" class="tag-link-23" title="12个话题" style="font-size: 22pt;">Matlab</a>
+<a href="http://mytrix.me/tag/neutron/" class="tag-link-124" title="4个话题" style="font-size: 14.9135802469pt;">Neutron</a>
+<a href="http://mytrix.me/tag/onenote/" class="tag-link-24" title="1个话题" style="font-size: 8pt;">OneNote</a>
+<a href="http://mytrix.me/tag/openstack/" class="tag-link-107" title="10个话题" style="font-size: 20.7901234568pt;">OpenStack</a>
+<a href="http://mytrix.me/tag/plan/" class="tag-link-7" title="1个话题" style="font-size: 8pt;">plan</a>
+<a href="http://mytrix.me/tag/poly/" class="tag-link-33" title="1个话题" style="font-size: 8pt;">poly</a>
+<a href="http://mytrix.me/tag/program/" class="tag-link-45" title="6个话题" style="font-size: 17.5061728395pt;">program</a>
+<a href="http://mytrix.me/tag/prolog/" class="tag-link-51" title="5个话题" style="font-size: 16.2962962963pt;">Prolog</a>
+<a href="http://mytrix.me/tag/python/" class="tag-link-68" title="9个话题" style="font-size: 20.0987654321pt;">Python</a>
+<a href="http://mytrix.me/tag/qpid/" class="tag-link-114" title="2个话题" style="font-size: 11.1111111111pt;">qpid</a>
+<a href="http://mytrix.me/tag/review/" class="tag-link-14" title="1个话题" style="font-size: 8pt;">review</a>
+<a href="http://mytrix.me/tag/scistus/" class="tag-link-58" title="2个话题" style="font-size: 11.1111111111pt;">SCIStus</a>
+<a href="http://mytrix.me/tag/sick/" class="tag-link-13" title="1个话题" style="font-size: 8pt;">sick</a>
+<a href="http://mytrix.me/tag/summary/" class="tag-link-6" title="1个话题" style="font-size: 8pt;">summary</a>
+<a href="http://mytrix.me/tag/textread/" class="tag-link-31" title="1个话题" style="font-size: 8pt;">textread</a>
+<a href="http://mytrix.me/tag/word/" class="tag-link-20" title="1个话题" style="font-size: 8pt;">Word</a>
+<a href="http://mytrix.me/tag/interaction/" class="tag-link-28" title="1个话题" style="font-size: 8pt;">交互</a>
+<a href="http://mytrix.me/tag/%e5%8a%a8%e7%94%bb/" class="tag-link-82" title="2个话题" style="font-size: 11.1111111111pt;">动画</a>
+<a href="http://mytrix.me/tag/%e5%a4%8d%e4%b9%a0/" class="tag-link-15" title="1个话题" style="font-size: 8pt;">复习</a>
+<a href="http://mytrix.me/tag/%e5%a4%9a%e9%a1%b9%e5%bc%8f/" class="tag-link-35" title="1个话题" style="font-size: 8pt;">多项式</a>
+<a href="http://mytrix.me/tag/%e6%80%bb%e7%bb%93/" class="tag-link-8" title="2个话题" style="font-size: 11.1111111111pt;">总结</a>
+<a href="http://mytrix.me/tag/%e6%8a%a5%e8%a1%a8/" class="tag-link-21" title="1个话题" style="font-size: 8pt;">报表</a>
+<a href="http://mytrix.me/tag/%e6%8b%9f%e5%90%88/" class="tag-link-36" title="3个话题" style="font-size: 13.1851851852pt;">拟合</a>
+<a href="http://mytrix.me/tag/mathematics/" class="tag-link-11" title="1个话题" style="font-size: 8pt;">数学</a>
+<a href="http://mytrix.me/tag/%e6%95%b0%e6%8d%ae/" class="tag-link-27" title="1个话题" style="font-size: 8pt;">数据</a>
+<a href="http://mytrix.me/tag/%e7%83%ad/" class="tag-link-16" title="1个话题" style="font-size: 8pt;">热</a>
+<a href="http://mytrix.me/tag/%e7%94%9f%e6%b4%bb/" class="tag-link-18" title="5个话题" style="font-size: 16.2962962963pt;">生活</a>
+<a href="http://mytrix.me/tag/%e7%94%9f%e7%97%85/" class="tag-link-17" title="1个话题" style="font-size: 8pt;">生病</a>
+<a href="http://mytrix.me/tag/%e7%ac%94%e8%ae%b0/" class="tag-link-25" title="1个话题" style="font-size: 8pt;">笔记</a>
+<a href="http://mytrix.me/tag/%e7%bc%96%e7%a8%8b/" class="tag-link-54" title="8个话题" style="font-size: 19.2345679012pt;">编程</a>
+<a href="http://mytrix.me/tag/english/" class="tag-link-10" title="1个话题" style="font-size: 8pt;">英语</a>
+<a href="http://mytrix.me/tag/%e8%ae%a1%e5%88%92/" class="tag-link-9" title="2个话题" style="font-size: 11.1111111111pt;">计划</a></div>
+</div></div><div id="text-4" class="widget widget_text widget-widget_text clearfix"><div class="widget-wrap widget-inside">			<div class="textwidget"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/"><img alt="知识共享许可协议" style="border-width:0" src="./Matplotlib动画指南   the 3rd. Place_files/88x31.png"></a></div><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+		</a></div></div><div id="text-5" class="widget widget_text widget-widget_text clearfix"><div class="widget-wrap widget-inside"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">			<div class="textwidget"><script src="./Matplotlib动画指南   the 3rd. Place_files/radiowidget.js"></script><div id="douban_ra"><img src="./Matplotlib动画指南   the 3rd. Place_files/red-heart.gif"> &nbsp;我最近喜欢的歌曲<ul><li><a target="_blank" title="和那誰的" href="http://music.douban.com/subject/6966578/"><img src="./Matplotlib动画指南   the 3rd. Place_files/s6988079.jpg"></a><div class="overimg_back1"></div><div class="overimg_back2"></div><div class="overimg_word1"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/6966578/">那谁</a></div></div><div class="overimg_word2"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/6966578/">苏永康</a></div></div></li><li><a target="_blank" title="9 Crimes" href="http://music.douban.com/subject/2286005/"><img src="./Matplotlib动画指南   the 3rd. Place_files/s3341606.jpg"></a><div class="overimg_back1"></div><div class="overimg_back2"></div><div class="overimg_word1"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/2286005/">9 Crimes</a></div></div><div class="overimg_word2"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/2286005/">Damien Rice</a></div></div></li><li><a target="_blank" title="All I Ever Wanted" href="http://music.douban.com/subject/3407171/"><img src="./Matplotlib动画指南   the 3rd. Place_files/s3546665.jpg"></a><div class="overimg_back1"></div><div class="overimg_back2"></div><div class="overimg_word1"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/3407171/">My Life Would Suck Without You</a></div></div><div class="overimg_word2"><div class="overimg_title"><a target="_blank" href="http://music.douban.com/subject/3407171/">Kelly Clarkson</a></div></div></li></ul><div class="dbbottom"><a target="_blank" href="http://douban.fm/">douban.fm</a></div></div><link href="./Matplotlib动画指南   the 3rd. Place_files/radiowidget.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/favsongs"></script> </div>
+		</a></div></div><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">  
+  </a></div><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/"> <!-- end #sidebar -->
+</a></div><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">  <!-- end .grid_5 -->
+</a></div><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/"> <!-- end .container_16 -->
+  
+  </a><div class="container_16 containter_footer"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+    </a><div id="footer" class="grid_16"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+      </a><div class="grid_5 alpha"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+  </a><div class="copyright_inside"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">
+    © Copyright 2015 - </a><a href="http://mytrix.me/">the 3rd. Place</a>  </div>
+</div>
+<div class="grid_11 omega">
+  <div class="credit_inside">
+    Contango Theme by <a href="http://designorbital.com/" title="DesignOrbital">DesignOrbital</a> ⋅ <a href="http://wordpress.org/" title="WordPress">WordPress</a>
+  </div>
+</div>
+    </div>
+  </div>
+
+</div> <!-- end .wrapper -->
+<script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/superfish-combine.min.js"></script>
+<script type="text/javascript" src="./Matplotlib动画指南   the 3rd. Place_files/common.js"></script>
+
+</body></html>

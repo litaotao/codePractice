@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://blog.jobbole.com/80600/ -->
+<html lang="zh-CN" prefix="og: http://ogp.me/ns#" xmlns:wb="http://open.weibo.com/wb" class=" js rgba borderradius boxshadow textshadow opacity cssanimations cssgradients csstransitions fontface generatedcontent video audio js"><!--<![endif]--><!-- BEGIN head --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/ckepop.js" charset="utf-8"></script><div class="fit-vids-style">­<style>               .fluid-width-video-wrapper {                 width: 100%;                              position: relative;                       padding: 0;                            }                                                                                   .fluid-width-video-wrapper iframe,        .fluid-width-video-wrapper object,        .fluid-width-video-wrapper embed {           position: absolute;                       top: 0;                                   left: 0;                                  width: 100%;                              height: 100%;                          }                                       </style></div><script src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shares.php" charset="utf-8"></script>
+
+	<!-- Title -->
+	<title>【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线</title>
+	
+	<!-- Meta Tags -->
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Favicon & Mobileicon -->
+	<link rel="shortcut icon" href="http://jbcdn2.b0.upaiyun.com/2013/12/favicon.png">
+	<link rel="apple-touch-icon" href="http://jbcdn2.b0.upaiyun.com/2013/12/jobbole-blog-logo-mobile.png">
+	
+	<!-- RSS, Atom & Pingbacks -->
+		<link rel="alternate" title="博客 – 伯乐在线 RSS Feed" href="http://blog.jobbole.com/feed/">
+		<link rel="alternate" title="RSS .92" href="http://blog.jobbole.com/feed/rss/">
+	<link rel="alternate" title="Atom 0.3" href="http://blog.jobbole.com/feed/atom/">
+	<link rel="pingback" href="http://blog.jobbole.com/xmlrpc.php">
+	
+	<!-- Theme Hook -->
+	
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.13 - http://yoast.com/wordpress/seo/ -->
+<meta name="description" content="Nginx（发音同engine x），它是由俄罗斯程序员Igor Sysoev所开发的。起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Microsoft Windows等操作系统中运行。">
+<link rel="canonical" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线.htm">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线">
+<meta property="og:description" content="Nginx（发音同engine x），它是由俄罗斯程序员Igor Sysoev所开发的。起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Microsoft Windows等操作系统中运行。">
+<meta property="og:url" content="http://blog.jobbole.com/80600/">
+<meta property="og:site_name" content="博客 - 伯乐在线">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerfe6ahj20rr0ifgmk.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/7178f37ejw1emxerfr0hej20g807wt8y.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerg2rq8j20g807w0sw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerge7t3j20qh0gcjs5.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxet9y9lqg203d00w0ah.gif">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/7178f37ejw1emxergwn2mj20go0a6wey.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerha76cj20qz0injsc.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/7178f37ejw1emxerhnehdj207g03pdgh.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/7178f37ejw1emxerid393j20t80gpq73.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerizis2j20t70gcq73.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerjj5aaj207505jgmk.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerk45w2j20b800zmx4.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerkfuvfj20bo01474a.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerl67jrj20hw0cgdkn.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/7178f37ejw1emxerlreg4j20j507zq4t.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxermd7l0j20dw06z75v.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxermxvswj209w02974i.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerna2x4j20mz03hq4o.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/7178f37ejw1emxernvw1aj20aj04j0tf.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/7178f37ejw1emxero7ovfj209x04jwf1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/7178f37ejw1emxerou3moj209g04ot9b.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerpho2nj20gf09kq3y.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/7178f37ejw1emxerqa3qcg20pm0hkn5h.gif">
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="stylesheet" id="v48fv_images-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/images.css" type="text/css" media="all">
+<link rel="stylesheet" id="v48fv_front-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/front.css" type="text/css" media="all">
+<link rel="stylesheet" id="v48fv_common-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/common.css" type="text/css" media="all">
+<link rel="stylesheet" id="bbp-default-bbpress-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/bbpress.css" type="text/css" media="screen">
+<link rel="stylesheet" id="bp-legacy-css-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/buddypress.css" type="text/css" media="screen">
+<link rel="stylesheet" id="wp-polls-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/polls-css.css" type="text/css" media="all">
+<link rel="stylesheet" id="bpbbpst-bbpress-widget-css-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/bpbbpst-bbpress-widget.css" type="text/css" media="all">
+<link rel="stylesheet" id="core3.0-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shCore.css" type="text/css" media="all">
+<link rel="stylesheet" id="core-Default3.0-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shCoreDefault.css" type="text/css" media="all">
+<link rel="stylesheet" id="theme-Default3.0-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shThemeDefault.css" type="text/css" media="all">
+<link rel="stylesheet" id="lightboxStyle-css" href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/colorbox.css" type="text/css" media="screen">
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jquery.js"></script><style type="text/css"></style>
+<script type="text/javascript">
+/* <![CDATA[ */
+var BP_DTheme = {"my_favs":"\u6211\u7684\u6536\u85cf","accepted":"\u5df2\u63a5\u53d7","rejected":"\u5df2\u62d2\u7edd","show_all_comments":"\u663e\u793a\u8be5\u8bdd\u9898\u6240\u6709\u8bc4\u8bba","show_all":"\u663e\u793a\u5168\u90e8","comments":"\u8bc4\u8bba","close":"\u5173\u95ed","view":"\u67e5\u770b","mark_as_fav":"\u6536\u85cf","remove_fav":"\u79fb\u9664\u6536\u85cf"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/buddypress.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/modernizr.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/rc-textarea-hl.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.jobbole.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.jobbole.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="http://blog.jobbole.com/?p=80600">
+
+		<script type="text/javascript">
+			/* <![CDATA[ */
+			
+						jQuery(document).ready( function() {
+
+				/* Use backticks instead of <code> for the Code button in the editor */
+				if ( typeof( edButtons ) !== 'undefined' ) {
+					edButtons[110] = new QTags.TagButton( 'code', 'code', '`', '`', 'c' );
+					QTags._buttonsInit();
+				}
+
+				/* Tab from topic title */
+				jQuery( '#bbp_topic_title' ).bind( 'keydown.editor-focus', function(e) {
+					if ( e.which !== 9 )
+						return;
+
+					if ( !e.ctrlKey && !e.altKey && !e.shiftKey ) {
+						if ( typeof( tinymce ) !== 'undefined' ) {
+							if ( ! tinymce.activeEditor.isHidden() ) {
+								var editor = tinymce.activeEditor.editorContainer;
+								jQuery( '#' + editor + ' td.mceToolbar > a' ).focus();
+							} else {
+								jQuery( 'textarea.bbp-the-content' ).focus();
+							}
+						} else {
+							jQuery( 'textarea.bbp-the-content' ).focus();
+						}
+
+						e.preventDefault();
+					}
+				});
+
+				/* Shift + tab from topic tags */
+				jQuery( '#bbp_topic_tags' ).bind( 'keydown.editor-focus', function(e) {
+					if ( e.which !== 9 )
+						return;
+
+					if ( e.shiftKey && !e.ctrlKey && !e.altKey ) {
+						if ( typeof( tinymce ) !== 'undefined' ) {
+							if ( ! tinymce.activeEditor.isHidden() ) {
+								var editor = tinymce.activeEditor.editorContainer;
+								jQuery( '#' + editor + ' td.mceToolbar > a' ).focus();
+							} else {
+								jQuery( 'textarea.bbp-the-content' ).focus();
+							}
+						} else {
+							jQuery( 'textarea.bbp-the-content' ).focus();
+						}
+
+						e.preventDefault();
+					}
+				});
+			});
+						/* ]]> */
+		</script>
+
+	
+	<script type="text/javascript">var ajaxurl = 'http://blog.jobbole.com/wp-admin/admin-ajax.php';</script>
+
+
+<!-- Comment Rating plugin Version: 2.9.32 by Bob King, http://wealthynetizen.com/, dynamic comment voting & styling. --> 
+<style type="text/css" media="screen">
+   .ckrating_highly_rated {background-color:#FFFFCC !important;}
+   .ckrating_poorly_rated {opacity:0.6;filter:alpha(opacity=60) !important;}
+   .ckrating_hotly_debated {background-color:#FFF0F5 !important;}
+</style>
+
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'http://dtmvdvtzf8rz0.cloudfront.net/static/';
+	window._wp_rp_wp_ajax_url = "http://blog.jobbole.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '2.8';
+	window._wp_rp_post_id = '80600';
+	window._wp_rp_num_rel_posts = '10';
+</script>
+<style type="text/css">
+.wp-polls .pollbar {
+	margin: 1px;
+	font-size: 6px;
+	line-height: 8px;
+	height: 8px;
+	background: #0CA3C4;
+	border: 1px solid #fff;
+}
+</style>
+
+<!-- WP SyntaxHighlighter Ver.1.7.3 CSS for code Begin -->
+<style type="text/css">
+.syntaxhighlighter,
+.syntaxhighlighter a,
+.syntaxhighlighter div,
+.syntaxhighlighter code,
+.syntaxhighlighter table,
+.syntaxhighlighter table td,
+.syntaxhighlighter table tr,
+.syntaxhighlighter table tbody,
+.syntaxhighlighter table thead,
+.syntaxhighlighter table caption,
+.syntaxhighlighter textarea {
+font-size: 12px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.syntaxhighlighter table caption {
+/* For Title(Caption) */  
+font-size: 14px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.syntaxhighlighter.nogutter td.code .line {
+/* Set the left padding space when no-gutter in ver. 3.0 */  
+padding-left: 3px !important;
+}
+.syntaxhighlighter {
+/* For Chrome/Safari(WebKit) */  
+/* Hide the superfluous vertical scrollbar in ver. 3.0 */  
+overflow-y: hidden !important;
+padding: 1px !important;
+}
+.widget-area.syntaxhighlighter a,
+.widget-area.syntaxhighlighter div,
+.widget-area.syntaxhighlighter code,
+.widget-area.syntaxhighlighter table,
+.widget-area.syntaxhighlighter table td,
+.widget-area.syntaxhighlighter table tr,
+.widget-area.syntaxhighlighter table tbody,
+.widget-area.syntaxhighlighter table thead,
+.widget-area.syntaxhighlighter table caption,
+.widget-area.syntaxhighlighter textarea {
+/* For Widget */  
+font-size: 14px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.widget-area table caption {
+/* For Widget */  
+/* For Title(Caption) */  
+font-size: 10px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+</style>
+<!-- WP SyntaxHighlighter Ver.1.7.3 CSS for code End -->
+	
+	<!-- CSS -->
+	<link rel="stylesheet" href="http://blog.jobbole.com/wp-content/themes/jobboleblogv3/style.css" media="screen">
+	<!-- link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text:400,700italic,700,400italic" media="screen" / -->
+	<style>
+				*::selection { background: #0099cc; }
+		*::-moz-selection { background: #0099cc; }
+		body { background: #ffffff  }
+		a, .tabs ul.nav li a:hover, .tabs ul.nav li.active a, .dropcap, .toggle.hover .toggle-title, li.comment cite a:hover, h3.widget-title, .post-meta .meta-title:hover, .the-latest a:hover h4, .aw_socialcounter_widget li a:hover, .aw_tabbed_widget #tab-latest-comments a:hover { color: #0099cc; }
+		a:hover { color: #b30000; }
+		input:focus, textarea:focus { border-color: #0099cc; }
+		#searchsubmit, .highlight, .aw_tabbed_widget .tabs ul.nav li.active a, footer .aw_tabbed_widget .tabs ul.nav li.active a, #top .aw_tabbed_widget .tabs ul.nav li.active a, .aw_tabbed_widget .tabs ul.nav li a:hover, footer .aw_tabbed_widget .tabs ul.nav li a:hover, #top .aw_tabbed_widget .tabs ul.nav li a:hover, .aw_twitter_widget .twitter-icon, .testimonial-icon, #top-closed:hover, .flex-control-nav a:hover, .flex-control-nav a.flex-active { background-color: #0099cc; }
+		.submit { background-color: #0099cc; border-color: #007399; }
+		.submit:hover { background-color: #b30000; border-color: #860000; }
+		#searchsubmit:hover { background-color: #b30000; }
+		.toggle.hover .toggle-icon { border-top-color: #0099cc; }
+		.toggle.hover.active .toggle-icon { border-bottom-color: #0099cc; }
+		.flex-direction-nav li .flex-prev:hover { border-right-color: #0099cc; }
+		.flex-direction-nav li .flex-next:hover { border-left-color: #0099cc; }
+		@media only screen and (min-width: 768px) and (max-width: 959px) {
+			.aw_tabbed_widget .tabs ul.nav li a:hover, .tabs ul.nav li.active a { color: #0099cc; }
+		}
+		@media screen and (max-width: 767px) {
+			.tabs ul.nav li a:hover, .tabs ul.nav li.active a { color: #0099cc; }
+		}
+	</style>
+		
+	<!--[if IE 8]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+
+	<!-- Links: RSS + Atom Syndication + Pingback etc. -->
+	<link rel="alternate" type="application/rss+xml" title="博客 – 伯乐在线 RSS Feed" href="http://blog.jobbole.com/feed/">
+	<link rel="alternate" type="text/xml" title="RSS .92" href="http://blog.jobbole.com/feed/rss/">
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://blog.jobbole.com/feed/atom/">
+	<link rel="pingback" href="http://blog.jobbole.com/xmlrpc.php">
+    <script src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/wb.js" type="text/javascript" charset="utf-8"></script><script charset="UTF-8" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/query"></script>
+
+<!-- END head -->
+<script charset="UTF-8" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/bundle.js"></script><script charset="UTF-8" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/iframeWidget.js"></script></head>
+
+<!-- BEGIN body -->
+<body class="single single-post postid-80600 single-format-standard chrome js"><iframe id="sina_anywhere_iframe" style="display: none;"></iframe><link href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jiathis_counter.css" rel="stylesheet" type="text/css"><script src="http://tajs.qq.com/jiathis.php?uid=1745061&dm=blog.jobbole.com" charset="utf-8"></script><link href="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jiathis_share.css" rel="stylesheet" type="text/css"><iframe frameborder="0" style="position: absolute; display: none; opacity: 0; top: 377px; left: 455px; width: 242px; height: 278px;"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;"></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto; top: 377px; left: 454.5px;"><div class="jiadiv_01"><div style="width:100%;background:#F2F2F2;border-bottom:1px solid #E5E5E5;line-height:200%;padding-left:5px;font-size:12px"><table width="100%"><tbody><tr class="jt_sharetitle"><td align="left" style="text-align:left;line-height:25px;font-size:14px;font-weight:bold;color:#000000;">分享到...</td><td align="right" style="text-align:right;"></td></tr></tbody></table></div><div class="jiadiv_02" style="width:100%;" id="jiathis_sers"><a href="javascript:;" onclick="jiathis_sendto(&#39;copy&#39;);return false;" class="jiatitle"><span class="jtico jtico_copy">复制网址</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;email&#39;);return false;" class="jiatitle"><span class="jtico jtico_email">邮件</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qzone&#39;);return false;" class="jiatitle"><span class="jtico jtico_qzone">QQ空间</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsina&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsina">新浪微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_tqq">腾讯微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;weixin&#39;);return false;" class="jiatitle"><span class="jtico jtico_weixin">微信</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;renren&#39;);return false;" class="jiatitle"><span class="jtico jtico_renren">人人网</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;yixin&#39;);return false;" class="jiatitle"><span class="jtico jtico_yixin">易信</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;t163&#39;);return false;" class="jiatitle"><span class="jtico jtico_t163">网易微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsohu&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsohu">搜狐微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;cqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_cqq">QQ好友</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;kaixin001&#39;);return false;" class="jiatitle"><span class="jtico jtico_kaixin001">开心网</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;feixin&#39;);return false;" class="jiatitle"><span class="jtico jtico_feixin">飞信</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;douban&#39;);return false;" class="jiatitle"><span class="jtico jtico_douban">豆瓣</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ishare&#39;);return false;" class="jiatitle"><span class="jtico jtico_ishare">一键分享</span></a><a href="javascript:;" onclick="$CKE.center(this);return false;" class="jiatitle"><span class="jtico jtico_jiathis">查看更多(122)</span></a><div style="clear:both"></div></div><div class="ckepopBottom" style="width:100%;"><div style="float:left;font-size:10px"><a href="http://www.jiathis.com/help/html/what-is-jiathis" class="link_01" style="color:#333333;" target="_blank">这是什么工具?</a></div><div style="float:right;font-size:11px;margin:0 5px 0 0;"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/img_012.gif" align="absmiddle" border="0"><a href="http://www.jiathis.com/index2" style="color:#333333;padding:0 3px;" class="link_01" target="_blank">JiaThis</a></div><div style="clear:both"></div></div></div></div><iframe frameborder="0" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jiathis_utility.htm" style="display: none;"></iframe>
+
+		
+	
+	<!-- BEGIN #top-nav -->
+	<nav id="top-nav" class="menu-nav">
+		
+		<!-- BEGIN .container -->
+		<div class="container">
+
+			            <div class="grid-12">
+                <ul id="menu-main-menu" class="menu sf-js-enabled">
+                    <li id="menu-item-46856" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46856"><a href="http://top.jobbole.com/?utm_source=jobboleblog-top-nav">头条</a></li>
+                    <li id="menu-item-46858" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46858"><a href="http://blog.jobbole.com/?utm_source=jobboleblog-top-nav">博客</a></li>
+                    <li id="menu-item-46860" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46860"><a href="http://hao.jobbole.com/?utm_source=jobboleblog-top-nav">资源</a></li>
+                    <li id="menu-item-74449" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-74449"><a href="http://fanyi.jobbole.com/?utm_source=jobboleblog-top-nav">翻译</a></li>
+                    <li id="menu-item-46858" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46858"><a href="http://www.jobbole.com/groups?utm_source=jobboleblog-top-nav">小组</a></li>
+                    <li id="menu-item-46858" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46858"><a href="http://date.jobbole.com/?utm_source=jobboleblog-top-nav">相亲</a></li>
+                                        <li id="menu-item-46861" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46861"><a href="http://www.jobbole.com/register/?utm_source=jobboleblog-top-nav">注册</a></li>
+                    <li id="menu-item-46862" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46862"><a href="http://www.jobbole.com/wp-login.php">登录</a></li>
+                                    </ul>
+            </div>
+			<div class="clear"></div>
+		
+		</div>
+		<!-- END .container -->
+    
+	</nav>
+	<!-- END #top-nav -->
+	
+	  	
+	<!-- BEGIN #wrapper -->
+	<div id="wrapper" class="container">
+
+		<!-- BEGIN header -->
+		<header>
+		
+						
+			<div class="header-wrapper">
+								
+				<!-- BEGIN #logo -->
+				<div id="logo" class="leaderboard-true">
+				
+										<a href="http://blog.jobbole.com/"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jbblog-logo.png" width="137" height="85" alt="博客 – 伯乐在线"></a>
+									
+				</div>
+				<!-- END #logo -->
+				
+				<!-- BEGIN #leaderboard -->
+				<div id="leaderboard">
+				
+					<script language="javascript"> 
+var randomNumTop = Math.round(Math.random()*1);
+var imageTop=new Array(2);
+imageTop[0]="http://jbcdn2.b0.upaiyun.com/2014/12/57d2e41b0d036ed16dbe90f851676f64.png";
+imageTop[1]="http://jbcdn2.b0.upaiyun.com/2014/12/57d2e41b0d036ed16dbe90f851676f64.png";
+var imageUrlTop=imageTop[randomNumTop];
+var urlsTop=new Array(2);
+urlsTop[0]="http://www.imooc.com/course/list?from=jobboleblog";
+urlsTop[1]="http://www.imooc.com/course/list?from=jobboleblog";
+var urlTop = urlsTop[randomNumTop];
+var adHTML = "<a href='"+urlTop+"' target='_blank'><img src='"+imageUrlTop+"' border='0'></a>";
+document.write(adHTML);
+</script><a href="http://www.imooc.com/course/list?from=jobboleblog" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/57d2e41b0d036ed16dbe90f851676f64.png" border="0"></a>				
+				</div>
+				<!-- END #leaderboard -->
+				
+				<div class="clear"></div>
+			
+			</div>
+			
+						
+			<div class="clear"></div>
+			
+			<!-- BEGIN #main-nav -->
+			<nav id="main-nav" class="grid-12 menu-nav">
+
+				<div class="menu-sub-menu-container"><ul id="main-nav-menu" class="menu sf-js-enabled"><li id="menu-item-33290" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-33290"><a href="http://blog.jobbole.com/">首页</a></li>
+<li id="menu-item-33406" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-33406"><a href="http://blog.jobbole.com/all-posts/">最新文章</a></li>
+<li id="menu-item-70342" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-70342"><a href="http://blog.jobbole.com/category/online-courses/">在线课程</a></li>
+<li id="menu-item-33325" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33325"><a href="http://blog.jobbole.com/category/news/">业界</a></li>
+<li id="menu-item-33319" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33319"><a href="http://blog.jobbole.com/category/programmer/">开发</a></li>
+<li id="menu-item-33313" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-33313"><a href="http://blog.jobbole.com/category/it-tech/">IT技术</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-55604" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55604"><a href="http://blog.jobbole.com/tag/linux/">Linux</a></li>
+	<li id="menu-item-55607" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55607"><a href="http://blog.jobbole.com/tag/unix/">UNIX</a></li>
+	<li id="menu-item-55605" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55605"><a href="http://blog.jobbole.com/tag/mysql/" style="padding-left: 10px;">MySQL</a></li>
+	<li id="menu-item-55621" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55621"><a href="http://blog.jobbole.com/tag/nosql/">NoSQL</a></li>
+	<li id="menu-item-55622" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55622"><a href="http://blog.jobbole.com/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li>
+	<li id="menu-item-55606" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55606"><a href="http://blog.jobbole.com/tag/git/" style="padding-left: 10px;">Git</a></li>
+	<li id="menu-item-55635" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55635"><a href="http://blog.jobbole.com/tag/%E7%AE%97%E6%B3%95/">算法</a></li>
+	<li id="menu-item-55612" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55612"><a href="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/">测试</a></li>
+	<li id="menu-item-55618" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55618"><a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/" style="padding-left: 10px;">信息安全</a></li>
+	<li id="menu-item-55636" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55636"><a href="http://blog.jobbole.com/tag/vim/">Vim</a></li>
+</ul>
+</li>
+<li id="menu-item-33323" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33323"><a href="http://blog.jobbole.com/category/design/">设计</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-55610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55610"><a href="http://blog.jobbole.com/tag/%e7%bd%91%e9%a1%b5%e8%ae%be%e8%ae%a1/">网页设计</a></li>
+	<li id="menu-item-55608" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55608"><a href="http://blog.jobbole.com/tag/ui/">UI设计</a></li>
+	<li id="menu-item-55609" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55609"><a href="http://blog.jobbole.com/tag/%e4%ba%a4%e4%ba%92%e8%ae%be%e8%ae%a1/">交互设计</a></li>
+	<li id="menu-item-55611" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55611"><a href="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c/">用户体验</a></li>
+</ul>
+</li>
+<li id="menu-item-33317" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33317"><a href="http://blog.jobbole.com/category/startup/">创业</a></li>
+<li id="menu-item-33390" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33390"><a href="http://blog.jobbole.com/category/career/">IT职场</a></li>
+<li id="menu-item-56110" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56110"><a href="http://blog.jobbole.com/category/overseas/">在国外</a></li>
+<li id="menu-item-59536" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-59536"><a href="http://blog.jobbole.com/80600/#">频道</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-81047" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-81047"><a href="http://web.jobbole.com/">Web前端</a></li>
+	<li id="menu-item-56557" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56557"><a href="http://blog.jobbole.com/category/ios/">iOS</a></li>
+	<li id="menu-item-59344" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-59344"><a href="http://blog.jobbole.com/category/android/">Android</a></li>
+	<li id="menu-item-56965" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56965"><a href="http://blog.jobbole.com/category/python/">Python</a></li>
+	<li id="menu-item-53194" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53194"><a href="http://www.importnew.com/">Java</a></li>
+	<li id="menu-item-57616" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-57616"><a href="http://blog.jobbole.com/category/c-cpp/">C/C++</a></li>
+	<li id="menu-item-57003" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-57003"><a href="http://blog.jobbole.com/category/php-programmer/">PHP</a></li>
+	<li id="menu-item-55603" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55603"><a href="http://blog.jobbole.com/tag/ruby/">Ruby</a></li>
+	<li id="menu-item-70347" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-70347"><a href="http://blog.jobbole.com/tag/go/">Go</a></li>
+</ul>
+</li>
+<li id="menu-item-33388" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33388"><a href="http://blog.jobbole.com/category/other/">更多 &gt;</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-56094" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56094"><a href="http://blog.jobbole.com/category/interview/">访谈</a></li>
+	<li id="menu-item-56111" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56111"><a href="http://blog.jobbole.com/tag/featuredpost/">经典回顾</a></li>
+	<li id="menu-item-33665" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33665"><a href="http://blog.jobbole.com/category/humor-comic/">趣文</a></li>
+	<li id="menu-item-33321" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33321"><a href="http://blog.jobbole.com/category/freelance/">自由职业</a></li>
+	<li id="menu-item-33408" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33408"><a href="http://blog.jobbole.com/category/resources/">工具与资源</a></li>
+	<li id="menu-item-33407" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33407"><a href="http://blog.jobbole.com/category/books/">书籍与教程</a></li>
+</ul>
+</li>
+</ul><select class="selectnav" id="selectnav1"><option value="">- 导航条 -</option><option value="http://blog.jobbole.com/">首页</option><option value="http://blog.jobbole.com/all-posts/">最新文章</option><option value="http://blog.jobbole.com/category/online-courses/">在线课程</option><option value="http://blog.jobbole.com/category/news/">业界</option><option value="http://blog.jobbole.com/category/programmer/">开发</option><option value="http://blog.jobbole.com/category/it-tech/">IT技术</option><option value="http://blog.jobbole.com/tag/linux/">- Linux</option><option value="http://blog.jobbole.com/tag/unix/">- UNIX</option><option value="http://blog.jobbole.com/tag/mysql/">- MySQL</option><option value="http://blog.jobbole.com/tag/nosql/">- NoSQL</option><option value="http://blog.jobbole.com/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/">- 数据库</option><option value="http://blog.jobbole.com/tag/git/">- Git</option><option value="http://blog.jobbole.com/tag/%E7%AE%97%E6%B3%95/">- 算法</option><option value="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/">- 测试</option><option value="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/">- 信息安全</option><option value="http://blog.jobbole.com/tag/vim/">- Vim</option><option value="http://blog.jobbole.com/category/design/">设计</option><option value="http://blog.jobbole.com/tag/%e7%bd%91%e9%a1%b5%e8%ae%be%e8%ae%a1/">- 网页设计</option><option value="http://blog.jobbole.com/tag/ui/">- UI设计</option><option value="http://blog.jobbole.com/tag/%e4%ba%a4%e4%ba%92%e8%ae%be%e8%ae%a1/">- 交互设计</option><option value="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c/">- 用户体验</option><option value="http://blog.jobbole.com/category/startup/">创业</option><option value="http://blog.jobbole.com/category/career/">IT职场</option><option value="http://blog.jobbole.com/category/overseas/">在国外</option><option value="http://blog.jobbole.com/80600/#">频道</option><option value="http://web.jobbole.com/">- Web前端</option><option value="http://blog.jobbole.com/category/ios/">- iOS</option><option value="http://blog.jobbole.com/category/android/">- Android</option><option value="http://blog.jobbole.com/category/python/">- Python</option><option value="http://www.importnew.com/">- Java</option><option value="http://blog.jobbole.com/category/c-cpp/">- C/C++</option><option value="http://blog.jobbole.com/category/php-programmer/">- PHP</option><option value="http://blog.jobbole.com/tag/ruby/">- Ruby</option><option value="http://blog.jobbole.com/tag/go/">- Go</option><option value="http://blog.jobbole.com/category/other/">更多 &gt;</option><option value="http://blog.jobbole.com/category/interview/">- 访谈</option><option value="http://blog.jobbole.com/tag/featuredpost/">- 经典回顾</option><option value="http://blog.jobbole.com/category/humor-comic/">- 趣文</option><option value="http://blog.jobbole.com/category/freelance/">- 自由职业</option><option value="http://blog.jobbole.com/category/resources/">- 工具与资源</option><option value="http://blog.jobbole.com/category/books/">- 书籍与教程</option></select></div>				
+				<div class="clear"></div>
+            
+			</nav>
+			<!-- END #main-nav -->
+			
+			<div class="clear"></div>
+		
+		</header>
+		<!-- END header -->
+		
+		<div id="breadcrumb" class="grid-12 margin-20"><div class="breadcrumb-wrapper"><!-- Breadcrumb NavXT 4.4.0 -->
+<a title="Go to 伯乐在线." href="http://www.jobbole.com/" class="main-home">伯乐在线</a> &gt; <a href="http://blog.jobbole.com/" class="home">首页</a> &gt; <a href="http://blog.jobbole.com/all-posts/" class="post-root post-post">所有文章</a> &gt; <a href="http://blog.jobbole.com/category/it-tech/" class="category">IT技术</a> &gt; 【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器</div></div><div class="clear"></div>
+
+<!-- BEGIN .grid-8 -->
+<div class="grid-8">
+
+		
+	<!-- BEGIN .post -->
+<div class="post-80600 post type-post status-publish format-standard hentry category-it-tech tag-nginx tag-311 odd" id="post-80600">
+	
+	<!-- BEGIN .entry-header -->
+	<div class="entry-header">
+	
+				
+		<h1>【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器</h1>
+		
+							
+	</div>
+	<!-- BEGIN .entry-header -->
+	
+	<!-- BEGIN .entry-meta -->
+	<div class="entry-meta">
+	
+		<p class="entry-meta-hide-on-mobile">2014/12/04 | 分类： <a href="http://blog.jobbole.com/category/it-tech/" title="查看 IT技术 中的全部文章" rel="category tag">IT技术</a> | <a href="http://blog.jobbole.com/80600/#comments" title="《【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器》上的评论">2  条评论</a>
+
+		 | 标签： <a href="http://blog.jobbole.com/tag/nginx/">Nginx</a>, <a href="http://blog.jobbole.com/tag/%e6%9c%8d%e5%8a%a1%e5%99%a8/">服务器</a></p>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style" style="display: block; margin: 0 0px; clear: both;"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+<a class="jiathis_button_weixin" title="分享到微信"><span class="jiathis_txt jtico jtico_weixin"></span></a>
+<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+<a class="jiathis_button_fb" title="分享到Facebook"><span class="jiathis_txt jtico jtico_fb"></span></a>
+<a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+<a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+<a class="jiathis_button_readitlater"></a>
+<a class="jiathis_button_evernote" title="分享到EverNote"><span class="jiathis_txt jtico jtico_evernote"></span></a>
+<a class="jiathis_button_ydnote" title="分享到有道云笔记"><span class="jiathis_txt jtico jtico_ydnote"></span></a>
+<a href="http://www.jiathis.com/share?uid=1745061" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"><span class="jiathis_button_expanded jiathis_counter jiathis_bubble_style" id="jiathis_counter_70" title="累计分享20次">20</span></a>
+</div>
+<!-- JiaThis Button END -->
+
+
+	</div>
+	<!-- END .entry-meta -->
+
+	<!-- BEGIN .entry -->
+	<div class="entry">
+        <div style="margin-bottom: 10px;">
+            <script language="javascript">
+                var randomNumLuobo = Math.round(Math.random()*1);
+                var imageLuobo=new Array(2);
+                imageLuobo[0]="http://jbcdn2.b0.upaiyun.com/2014/11/luobo-620x60.png";
+                imageLuobo[1]="http://jbcdn2.b0.upaiyun.com/2014/11/luobo-620x60.png";
+                var imageUrlLuobo=imageLuobo[randomNumLuobo];
+                var urlsLuobo=new Array(2);
+                urlsLuobo[0]="http://www.luobo360.com";
+                urlsLuobo[1]="http://www.luobo360.com";
+                var urlLuobo = urlsLuobo[randomNumLuobo];
+                var adHTML = "<a href='"+urlLuobo+"' target='_blank'><img src='"+imageUrlLuobo+"' border='0'></a>";
+                document.write(adHTML);
+            </script><a href="http://www.luobo360.com/" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/luobo-620x60.png" border="0"></a>
+        </div>
+
+		<div class="copyright-area">原文出处： <a ref="nofollow" target="_blank" href="http://www.cnblogs.com/edisonchou/p/4126742.html">周旭龙的博客（@周旭龙）</a>&nbsp;&nbsp;&nbsp;欢迎分享原创到<a href="http://top.jobbole.com/?utm_source=jobboleblog-article" target="_blank">伯乐头条</a></div>
+<h1>一、反向代理：Web服务器的“经纪人”</h1>
+<h2>1.1 反向代理初印象</h2>
+<p>反向代理（Reverse Proxy）方式是指以<strong>代理服务器来</strong>接受internet上的连接请求，然后将<strong>请求转发</strong>给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为<em><strong>一个服务器</strong></em>。</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerfe6ahj20rr0ifgmk.jpg"></p>
+<p>从上图可以看出：反向代理服务器位于<strong>网站机房</strong>，代理网站Web服务器接收Http请求，对请求进行转发。</p>
+<h2>1.2 反向代理的作用</h2>
+<p>①<strong>保护网站安全：</strong>任何来自Internet的请求都必须先经过代理服务器；</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerfr0hej20g807wt8y.jpg"></p>
+<p>②<strong>通过配置缓存功能加速Web请求：</strong>可以缓存真实Web服务器上的某些静态资源，减轻真实Web服务器的负载压力；</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerg2rq8j20g807w0sw.jpg"></p>
+<p>③<strong>实现负载均衡：</strong>充当负载均衡服务器均衡地分发请求，平衡集群中各个服务器的负载压力；</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerge7t3j20qh0gcjs5.jpg"></p>
+<h1>二、初识Nginx：简单却不平凡</h1>
+<h2>2.1 Nginx是神马？</h2>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxet9y9lqg203d00w0ah.gif"></p>
+<p>Nginx是一款<strong>轻量级</strong>的网页服务器、反向代理器以及电子邮件代理服务器。其将源代码以类BSD许可证的形式发布，因它的稳定性、丰富的功能集、示例配置文件和低系统资源的消耗而闻名。</p>
+<p><span style="color: #888888;"><strong>Source：</strong>Nginx（发音同engine x），它是由俄罗斯程序员<strong>Igor Sysoev</strong>所开发的。起初是供俄国大型的门户网站及搜索引擎<strong>Rambler</strong>（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Microsoft Windows等操作系统中运行。</span></p>
+<p>说到Web服务器，Apache服务器和IIS服务器是两大巨头；但是运行速度更快、更灵活的对手：<strong>Nginx&nbsp;</strong>正在迎头赶上。</p>
+<h2>2.2 Nginx的应用现状</h2>
+<p>Nginx 已经在俄罗斯最大的门户网站──&nbsp;<strong>Rambler Media</strong>（<a href="http://www.rambler.ru/">www.rambler.ru</a>）上运行了3年时间，同时俄罗斯超过20%的虚拟主机平台采用Nginx作为反向代理服务器。</p>
+<p>在国内，已经有 淘宝、新浪博客、新浪播客、网易新闻、六间房、56.com、Discuz!、水木社区、豆瓣、YUPOO、海内、迅雷在线 等多家网站使用 Nginx 作为Web服务器或反向代理服务器。</p>
+<h2>2.3 Nginx的核心特点</h2>
+<p>（1）<strong>跨平台：</strong>Nginx 可以在大多数 Unix like OS编译运行，而且也有Windows的移植版本；</p>
+<p>（2）<strong>配置异常简单：</strong>非常容易上手。配置风格跟程序开发一样，神一般的配置；</p>
+<p>（3）<strong>非阻塞、高并发连接：</strong>数据复制时，磁盘I/O的第一阶段是非阻塞的。官方测试能够支撑<strong>5万</strong>并发连接，在实际生产环境中跑到<strong>2～3</strong>万并发连接数。（这得益于Nginx使用了最新的epoll模型）；</p>
+<p><span style="color: #888888;"><strong>PS：</strong>对于一个Web服务器来说，首先看一个请求的基本过程：建立连接—接收数据—发送数据，在系统底层看来 ：上述过程（建立连接—接收数据—发送数据）在系统底层就是<strong>读写事件</strong>。</span></p>
+<p><span style="color: #888888;">①如果采用<strong>阻塞调用</strong>的方式，当读写事件没有准备好时，必然不能够进行读写事件，那么久只好等待，等事件准备好了，才能进行读写事件，那么请求就会被耽搁 。</span></p>
+<p><span style="color: #888888;">②既然没有准备好阻塞调用不行，那么采用<strong>非阻塞调用</strong>方式。非阻塞就是：事件马上返回，告诉你事件还没准备好呢，你慌什么，过会再来吧。好吧，你过一会，再来检查一下事件，直到事件准备好了为止，在这期间，你就可以先去做其它事情，然后再来看看事件好了没。虽然不阻塞了，但你得<strong>不时地过来检查</strong>一下事件的状态，你可以做更多的事情了，但带来的<strong>开销</strong>也是不小的。</span></p>
+<p>（4）<strong>事件驱动：</strong>通信机制采用<strong>epoll</strong>模型，支持更大的并发连接。</p>
+<p><span style="color: #888888;">①非阻塞通过不断检查事件的状态来判断是否进行读写操作，这样带来的开销很大，因此就有了<strong>异步非阻塞的事件处理机制</strong>。这种机制让你可以同时监控多个事件，调用他们是阻塞的，但可以设置超时时间，在超时时间之内，如果有事件准备好了，就返回。这种机制解决了上面阻塞调用与非阻塞调用的两个问题。</span></p>
+<p><span style="color: #888888;">②以<strong>epoll模型</strong>为例：当事件没有准备好时，就放入epoll(队列)里面。如果有事件准备好了，那么就去处理；如果事件返回的是EAGAIN，那么继续将其放入epoll里面。从而，只要有事件准备好了，我们就去处理它，只有当所有事件都没有准备好时，才在epoll里面等着。这样，我们就可以并发处理大量的并发了，当然，这里的并发请求，是指未处理完的请求，线程只有一个，所以同时能处理的请求当然只有一个了，只是在请求间进行不断地切换而已，切换也是因为异步事件未准备好，而主动让出的。这里的切换是没有任何代价，你可以理解为循环处理多个准备好的事件，事实上就是这样的。</span></p>
+<p><span style="color: #888888;">③与多线程方式相比，这种事件处理方式是有很大的优势的，<strong>不需要创建线程</strong>，每个请求占用的内存也很少，<strong>没有上下文切换</strong>，事件处理非常的轻量级，并发数再多也不会导致无谓的资源浪费（上下文切换）。对于IIS服务器，每个请求会独占一个工作线程，当并发数上到几千时，就同时有几千的线程在处理请求了。这对操作系统来说，是个不小的挑战：因为线程带来的内存占用非常大，线程的上下文切换带来的cpu开销很大，自然性能就上不去，从而导致在高并发场景下性能下降严重。</span></p>
+<p><span style="color: #888888;"><strong>总结：<em>通过异步非阻塞的事件处理机制，Nginx实现由进程循环处理多个准备好的事件，从而实现高并发和轻量级</em></strong>。&nbsp;</span></p>
+<p>（5）<strong>Master/Worker结构</strong>：一个master进程，生成一个或多个worker进程。</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxergwn2mj20go0a6wey.jpg"></p>
+<p><span style="color: #888888;"><strong>PS：</strong>Master-Worker设计模式核心思想是<strong>将原来串行的逻辑并行化</strong>，并将逻辑拆分成很多独立模块并行执行。其中主要包含两个主要组件Master和Worker，Master主要将逻辑进行拆分，拆分为互相独立的部分，同时维护了Worker队列，将每个独立部分下发到多个Worker并行执行，Worker主要进行实际逻辑计算，并将结果返回给Master。</span></p>
+<p><span style="color: #888888;"><strong>问：</strong>nginx采用这种进程模型有什么好处？</span></p>
+<p><span style="color: #888888;"><strong>答：</strong>采用独立的进程，可以让互相之间不会影响，一个进程退出后，其它进程还在工作，服务不会中断，Master进程则很快重新启动新的Worker进程。当然，Worker进程的异常退出，肯定是程序有bug了，异常退出，会导致当前Worker上的所有请求失败，不过不会影响到所有请求，所以降低了风险。</span></p>
+<p>（6）<strong>内存消耗小：</strong>处理大并发的请求内存消耗非常小。在3万并发连接下，开启的10个Nginx 进程才消耗150M内存（15M*10=150M）。</p>
+<p>（7）<strong>内置的健康检查功能：</strong>如果 Nginx 代理的后端的某台 Web 服务器宕机了，不会影响前端访问。</p>
+<p>（8）<strong>节省带宽：</strong>支持 GZIP 压缩，可以添加浏览器本地缓存的 Header 头。</p>
+<p>（9）<strong>稳定性高：</strong>用于反向代理，宕机的概率微乎其微。</p>
+<h1>三、构建实战：Nginx+IIS构筑Web服务器集群的负载均衡</h1>
+<p>这里我们主要在Windows环境下，通过将同一个Web网站部署到不同服务器的IIS上，再通过一个统一的Nginx反响代理服务器对外提供统一访问接入，实现一个最简化的反向代理和负载均衡服务。但是，<strong>受限于实验条件</strong>，我们这里主要在一台计算机上进行反向代理、IIS集群的模拟，具体的实验环境如下图所示：我们将nginx服务和web网站都部署在一台计算机上，nginx监听http80端口，而web网站分别以不同的端口号（这里是8050及8060）部署在同一个IIS服务器上，用户访问localhost时，nginx作为反向代理将请求均衡地转发给两个IIS中不同端口的Web应用程序进行处理。虽然实验环境很简单而且有限，但是对于一个简单的负载均衡效果而言，本文是可以达到并且展示的。</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerha76cj20qz0injsc.jpg"></p>
+<h2>3.1 准备一个ASP.NET网站部署到IIS服务器集群中</h2>
+<p>（1）在VS中新建一个ASP.NET Web应用程序，但是为了在一台计算机上展示效果，我们将这个Web程序复制一份，并修改两个Web程序的Default.aspx，让其的首页显示不同的一点信息。这里Web1展示的是“The First Web：”，而Web2展示的则是“The Second Web”。</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerhnehdj207g03pdgh.jpg"></p>
+<p>（2）调试运行，看看两个网站的效果如何？</p>
+<p>①Web1的展示效果：</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerid393j20t80gpq73.jpg"></p>
+<p>②Web2的展示效果：</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerizis2j20t70gcq73.jpg"></p>
+<p>③部署到IIS中，分配不同的端口号：这里我选择了Web1:8050，Web2:8060</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerjj5aaj207505jgmk.jpg"></p>
+<p>（3）<strong>总结：<em>在真实环境中，构建Web应用服务器集群的实现是将同一个Web应用程序部署到Web服务器集群中的多个Web服务器上</em></strong>。</p>
+<h2>3.2 下载Nginx并部署到服务器中作为自启动的Windows服务</h2>
+<p>（1）到Nginx官网下载Nginx的Windows版本：<a href="http://nginx.org/en/download.html" target="_blank">http://nginx.org/en/download.html</a>（这里我们使用nginx/Windows-1.4.7版本进行实验，本文底部有下载地址）</p>
+<p>（2）解压到磁盘任意目录，例如这里我解压到了：D:\Servers\nginx-1.4.7</p>
+<p>（3）启动、停止和重新加载服务：通过cmd以守护进程方式启动nginx.exe：<strong>start nginx.exe</strong>，停止服务：<strong>nginx -s stop</strong>，重新加载配置：<strong>nginx -s&nbsp; reload</strong>；</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerk45w2j20b800zmx4.jpg"></p>
+<p>（4）每次以cmd方式启动Nginx服务不符合实际要求，于是我们想到将其注册为Windows服务，并设置为自动启动模式。这里，我们使用一个不错的小程序：“Windows Service Wrapper”，将nginx.exe注册为Windows服务，具体的步凑如下：</p>
+<p>①下载最新版的 Windows Service Wrapper 程序，比如我下载的名称是 “winsw-1.8-bin.exe”（本文底部有下载地址），然后把它命名成你想要的名字（比如: “nginx-service.exe”，当然，你也可以不改名）</p>
+<p>②将重命名后的 nginx-service.exe&nbsp;复制到 nginx 的安装目录（比如，我这里是 “D:\Servers\nginx-1.4.7″）</p>
+<p>③在同一个目录下创建一个Windows Service Wrapper 的XML配置文件，名称必须与第一步重命名时使用的名称一致（比如我这里是 “nginx-service.xml”, &nbsp;如果，你没有重命名，则应该是 “winsw-1.8-bin.xml”），这个XML的内容如下：</p>
+<div><div id="highlighter_181695" class="syntaxhighlighter notranslate xml"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="xml plain">&lt;?</code><code class="xml keyword">xml</code> <code class="xml color1">version</code><code class="xml plain">=</code><code class="xml string">"1.0"</code> <code class="xml color1">encoding</code><code class="xml plain">=</code><code class="xml string">"UTF-8"</code> <code class="xml plain">?&gt;</code></div><div class="line number2 index1 alt1"><code class="xml plain">&lt;</code><code class="xml keyword">service</code><code class="xml plain">&gt;</code></div><div class="line number3 index2 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">id</code><code class="xml plain">&gt;nginx&lt;/</code><code class="xml keyword">id</code><code class="xml plain">&gt;</code></div><div class="line number4 index3 alt1"><code class="xml plain">&lt;</code><code class="xml keyword">name</code><code class="xml plain">&gt;Nginx Service&lt;/</code><code class="xml keyword">name</code><code class="xml plain">&gt;</code></div><div class="line number5 index4 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">description</code><code class="xml plain">&gt;High Performance Nginx Service&lt;/</code><code class="xml keyword">description</code><code class="xml plain">&gt;</code></div><div class="line number6 index5 alt1"><code class="xml plain">&lt;</code><code class="xml keyword">executable</code><code class="xml plain">&gt;D:\Servers\nginx-1.4.7\nginx.exe&lt;/</code><code class="xml keyword">executable</code><code class="xml plain">&gt;</code></div><div class="line number7 index6 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">logpath</code><code class="xml plain">&gt;D:\Servers\nginx-1.4.7\&lt;/</code><code class="xml keyword">logpath</code><code class="xml plain">&gt;</code></div><div class="line number8 index7 alt1"><code class="xml plain">&lt;</code><code class="xml keyword">logmode</code><code class="xml plain">&gt;roll&lt;/</code><code class="xml keyword">logmode</code><code class="xml plain">&gt;</code></div><div class="line number9 index8 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">depend</code><code class="xml plain">&gt;&lt;/</code><code class="xml keyword">depend</code><code class="xml plain">&gt;</code></div><div class="line number10 index9 alt1"><code class="xml plain">&lt;</code><code class="xml keyword">startargument</code><code class="xml plain">&gt;-p D:\Servers\nginx-1.4.7&lt;/</code><code class="xml keyword">startargument</code><code class="xml plain">&gt;</code></div><div class="line number11 index10 alt2"><code class="xml plain">&lt;</code><code class="xml keyword">stopargument</code><code class="xml plain">&gt;-p D:\Servers\nginx-1.4.7 -s stop&lt;/</code><code class="xml keyword">stopargument</code><code class="xml plain">&gt;</code></div><div class="line number12 index11 alt1"><code class="xml plain">&lt;/</code><code class="xml keyword">service</code><code class="xml plain">&gt;</code></div></div></td></tr></tbody></table></div></div>
+<p>④在命令行下执行以下命令，以便将其注册成Windows服务：<strong>nginx-service.exe install</strong></p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerkfuvfj20bo01474a.jpg"></p>
+<p>⑤接下来就可以在Windows服务列表看到Nginx服务了，这里我们可以将其设置为自动启动了：</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerl67jrj20hw0cgdkn.jpg"></p>
+<p>（5）<strong>总结：<em>在Windows环境中，要对外提供的Windows服务一般都要将其启动类型设置为自动</em></strong>。</p>
+<h2>3.3 修改Nginx核心配置文件nginx.conf</h2>
+<p>（1）进程数与每个进程的最大连接数：</p>
+<div>
+<ul>
+<li>nginx进程数，建议设置为等于CPU总核心数</li>
+<li>单个进程最大连接数，那么该服务器的最大连接数=连接数*进程数</li>
+</ul>
+</div>
+<div>
+<div><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerlreg4j20j507zq4t.jpg"></div>
+<div>
+<p>（2）Nginx的基本配置：</p>
+<div>
+<ul>
+<li>监听端口一般都为http端口：80;</li>
+<li>域名可以有多个，用空格隔开：例如&nbsp;server_name www.ha97.com ha97.com;</li>
+</ul>
+</div>
+<div><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxermd7l0j20dw06z75v.jpg"></div>
+<div>
+<p>（3）负载均衡列表基本配置：</p>
+<ul>
+<li>location / {}：对aspx后缀的进行负载均衡请求，假如我们要对所有的aspx后缀的文件进行负载均衡时，可以这样写：location ~ .*\.aspx$ {}</li>
+<li>proxy_pass：请求转向自定义的服务器列表，这里我们将请求都转向标识为http://cuitccol.com的负载均衡服务器列表；</li>
+</ul>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxermxvswj209w02974i.jpg"></p>
+<ul>
+<li>在负载均衡服务器列表的配置中，weight是权重，可以根据机器配置定义权重（如果某台服务器的硬件配置十分好，可以处理更多的请求，那么可以为其设置一个比较高的weight；而有一台的服务器的硬件配置比较差，那么可以将前一台的weight配置为weight=2，后一台差的配置为weight=1）。weigth参数表示权值，权值越高被分配到的几率越大；</li>
+</ul>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerna2x4j20mz03hq4o.jpg"></p>
+<p>（4）<strong>总结：<em>最基本的Nginx配置差不多就是上面这些内容，当然仅仅是最基础的配置</em><em>。</em></strong>（详细的配置内容请下载底部的nginx-1.4.7详细查看）</p>
+<h2>3.4 添加Nginx对于静态文件的缓存配置</h2>
+<p>为了提高响应速度，减轻真实服务器的负载，对于静态资源我们可以在反向代理服务器中进行缓存，这也是反向代理服务器的一个重要的作用。</p>
+<p>（1）缓存静态资源之图片文件</p>
+<p>root /nginx-1.4.7/staticresources/image：对于配置中提到的jpg/png等文件均定为到/nginx-1.4.7/staticresources/image文件夹中进行寻找匹配并将文件返回；</p>
+<p>expires 7d：过期时效为7天，静态文件不怎么更新，过期时效可以设大一点，如果频繁更新，则可以设置得小一点；</p>
+<p>TIPS：下面的样式、脚本缓存配置同这里一样，只是定位的文件夹不一样而已，不再赘述。</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxernvw1aj20aj04j0tf.jpg"></p>
+<p>（2）缓存静态资源之样式文件</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxero7ovfj209x04jwf1.jpg"></p>
+<p>（3）缓存静态资源之脚本文件</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerou3moj209g04ot9b.jpg"></p>
+<p>（4）在nginx服务文件夹中创建静态资源文件夹，并要缓存的静态文件拷贝进去：这里我主要将Web程序中用到的image、css以及js文件拷贝了进去；</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerpho2nj20gf09kq3y.jpg"></p>
+<p>（5）<strong>总结：<em>通过配置静态文件的缓存设置，对于这些静态文件的请求可以直接从反向代理服务器中直接返回，而无需再将这些静态资源请求转发到具体的Web服务器进行处理了，可以提高响应速度，减轻真实Web服务器的负载压力</em></strong>。</p>
+<h2>3.5 简单测试Nginx反向代理实现负载均衡效果</h2>
+<p>（1）第一次访问http://localhost/Default.aspx时从127.0.0.1:8050处理响应返回结果</p>
+<p>（2）第二次访问http://localhost/Default.aspx时从127.0.0.1:8060处理响应返回结果</p>
+<p>（3）多次访问http://localhost/Default.aspx时的截屏：</p>
+<p><img alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7178f37ejw1emxerqa3qcg20pm0hkn5h.gif"></p>
+<h1>学习小结</h1>
+<p>在本文中，借助了Nginx这个神器简单地在Windows环境下搭建了一个反向代理服务，并模拟了一个IIS服务器集群的负载均衡效果。从这个DEMO中，我们可以简单地感受到反向代理为我们所做的事情，并体会负载均衡是怎么一回事。但是，在目前大多数的应用中，都会将Nginx部署在Linux服务器中，并且会做一些针对负载均衡的优化配置，这里我们所做的仅仅就是一个小小的使用而已（just修改一下配置文件）。不过，万丈高楼平地起，前期的小小体会，也会帮助我们向后期的深入学习奠定一点点的基础。</p>
+<p>突然在QQ空间里看到了朋友送的礼物，猛然发现今天居然是我的阳历生日，好吧，我祝我自己生日快乐，希望自己在未来的日子中能够做更多的实践，分享更多的内容。当然，如果你觉得本文还可以，那也麻烦点个赞，不要吝啬你的鼠标左键哟。</p>
+<h1>参考资料</h1>
+<p>（1）丁胖胖，《图解正向代理、反向代理与透明代理》：<a href="http://z00w00.blog.51cto.com/515114/1031287" target="_blank">http://z00w00.blog.51cto.com/515114/1031287</a></p>
+<p>（2）特种兵-AK47，《正向代理与反向代理的区别》：<a href="http://blog.csdn.net/m13666368773/article/details/8060481" target="_blank">http://blog.csdn.net/m13666368773/article/details/8060481</a></p>
+<p>（3）百度百科，Nginx：<a href="http://baike.baidu.com/view/926025.htm?fr=aladdin" target="_blank">http://baike.baidu.com/view/926025.htm?fr=aladdin</a></p>
+<p>（4）51CTO，《Nginx安装配置与服务搭建专题》：<a href="http://os.51cto.com/art/201111/304611.htm" target="_blank">http://os.51cto.com/art/201111/304611.htm</a></p>
+<p>（5）红黑联盟，《Nginx配置文件nginx.conf中文详解总结》：<a href="http://www.2cto.com/os/201212/176520.html" target="_blank">http://www.2cto.com/os/201212/176520.html</a></p>
+<p>（6）360doc，《Linux下同步模式、异步模式、阻塞调用与非阻塞调用总结》：<a href="http://www.360doc.com/content/13/0117/12/5073814_260691714.shtml" target="_blank">http://www.360doc.com/content/13/0117/12/5073814_260691714.shtml</a>&nbsp;（<strong>好文一篇，值得阅读</strong>）</p>
+<p>（7）e路相扶，《同步、异步、阻塞与非阻塞》：<a href="http://www.cnblogs.com/zhangjun516/archive/2013/04/17/3025902.html" target="_blank">http://www.cnblogs.com/zhangjun516/archive/2013/04/17/3025902.html</a></p>
+<p>（8）feitianxuxue，《处理大并发之对异步非阻塞的理解》：<a href="http://blog.csdn.net/feitianxuxue/article/details/8936802" target="_blank">http://blog.csdn.net/feitianxuxue/article/details/8936802</a></p>
+<h1>附件下载</h1>
+<p>（1）nginx-1.4.7：<a href="http://pan.baidu.com/s/1dD2C2zB" target="_blank">http://pan.baidu.com/s/1dD2C2zB</a></p>
+<p>（2）winsw-1.8-bin.exe：<a href="http://pan.baidu.com/s/1kTihzk7" target="_blank">http://pan.baidu.com/s/1kTihzk7</a></p>
+<p>（3）SimpleNginxDemo：<a href="http://pan.baidu.com/s/1bnq5oYz" target="_blank">http://pan.baidu.com/s/1bnq5oYz</a></p>
+</div>
+</div>
+</div>
+
+
+<!-- div id="ad1">
+</div -->
+
+<p>
+    <a target="_blank" rel="nofollow" href="http://ghtools.sinaapp.com/bole.html">
+        <img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/bole.png">
+    </a>
+</p>
+	
+
+
+	</div>
+	<!-- END .entry -->
+
+
+
+
+
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+<a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+<a class="jiathis_button_weixin" title="分享到微信"><span class="jiathis_txt jtico jtico_weixin"></span></a>
+<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+<a class="jiathis_button_fb" title="分享到Facebook"><span class="jiathis_txt jtico jtico_fb"></span></a>
+<a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+<a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+<a class="jiathis_button_googleplus" title="分享到Google+"><span class="jiathis_txt jtico jtico_googleplus"></span></a>
+<a class="jiathis_button_readitlater"></a>
+<a class="jiathis_button_evernote" title="分享到EverNote"><span class="jiathis_txt jtico jtico_evernote"></span></a>
+<a class="jiathis_button_ydnote" title="分享到有道云笔记"><span class="jiathis_txt jtico jtico_ydnote"></span></a>
+<a href="http://www.jiathis.com/share?uid=1745061" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"><span class="jiathis_button_expanded jiathis_counter jiathis_bubble_style" id="jiathis_counter_99" title="累计分享20次">20</span></a>
+</div>
+
+
+<script type="text/javascript">
+var jiathis_config={
+	data_track_clickback:false,
+	title:"《【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器》",
+	summary:"Nginx（发音同engine x），它是由俄罗斯程序员Igor Sysoev所开发的。起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Microsoft Windows等操作系统中运行。",
+	pic:"http://ww4.sinaimg.cn/mw690/7178f37ejw1emxerfe6ahj20rr0ifgmk.jpg",
+	appkey:{
+                "tsina":2606191112
+        },
+	ralateuid:{
+		"tsina":1670481425
+	},
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<br><br>
+
+
+</div>
+<!-- END .post -->		
+	<!-- BEGIN #author-bio -->
+
+
+<!-- END #author-bio -->	
+	
+<div class="wp_rp_wrap  wp_rp_plain" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp" style="visibility: visible"><li><a href="http://blog.jobbole.com/50121/" class="wp_rp_title">如何正确配置Nginx+PHP</a></li><li><a href="http://blog.jobbole.com/42507/" class="wp_rp_title">Nginx成为全球Top1000网站最受欢迎的Web服务器</a></li><li><a href="http://blog.jobbole.com/51861/" class="wp_rp_title">Nginx 战斗准备 —— 优化指南</a></li><li><a href="http://blog.jobbole.com/19043/" class="wp_rp_title">常见的nginx的配置选项</a></li><li><a href="http://blog.jobbole.com/44844/" class="wp_rp_title">Nginx SSL性能调优</a></li><li><a href="http://blog.jobbole.com/72102/" class="wp_rp_title">ngxtop：在命令行实时监控 Nginx 的神器</a></li><li><a href="http://blog.jobbole.com/38654/" class="wp_rp_title">Nginx模块fastcgi_cache的几个注意点</a></li><li><a href="http://blog.jobbole.com/48195/" class="wp_rp_title">如何保证Linux服务器的安全</a></li><li><a href="http://blog.jobbole.com/41036/" class="wp_rp_title">在Nginx下对网站进行密码保护</a></li><li><a href="http://blog.jobbole.com/24574/" class="wp_rp_title">解析 Nginx 负载均衡</a></li></ul></div></div>
+			
+	
+<!-- BEGIN #respond -->
+<div id="respond">
+
+	<h3 class="widget-title">发表评论</h3>
+	
+	<!-- BEGIN .cancel-comment-reply -->
+	<p class="cancel-comment-reply">
+		
+		<a rel="nofollow" id="cancel-comment-reply-link" href="http://blog.jobbole.com/80600/#respond" style="display:none;">点击这里取消回复。</a>		
+	</p>
+	<!-- END .cancel-comment-reply -->
+
+		
+	<!-- BEGIN #comment-form -->
+	<form action="http://blog.jobbole.com/wp-comments-post.php" method="post" id="comment-form">
+		
+		<fieldset>
+		
+			<legend class="none">Comment form</legend>
+			
+			<!-- BEGIN .container -->
+			<div class="container">
+			
+							
+				<div class="grid-4 margin-20">
+					<label for="author">Name<span class="red">*</span></label>
+				</div>
+				
+				<div class="grid-4 margin-20">
+					<div class="input-wrapper"><input type="text" name="author" id="author" value="" tabindex="1" size="30" class="required" placeholder="姓名"></div>
+				</div>
+				<div class="clear"></div>
+				
+				<div class="grid-4 margin-20">
+					<label for="email">邮箱<span class="red">*</span></label>
+				</div>
+				
+				<div class="grid-4 margin-20">
+					<div class="input-wrapper"><input type="email" name="email" id="email" value="" tabindex="2" size="30" class="required email" placeholder="请填写邮箱"></div>
+				</div>
+				<div class="clear"></div>
+				
+				<div class="grid-4 margin-20">
+					<label for="url">网站 (请以 http://开头)</label>
+				</div>
+				
+				<div class="grid-4 margin-20">
+					<div class="input-wrapper"><input type="url" name="url" id="url" value="" tabindex="3" size="30" placeholder="请填写网站地址"></div>
+				</div>
+				<div class="clear"></div>
+				
+								
+				<div class="grid-8 margin-20">
+					<label for="comment" class="none margin-20">评论内容<span class="red">*</span></label>
+					<div class="input-wrapper"><textarea name="comment" id="comment" rows="20" cols="30" class="required" tabindex="4" onkeydown="if(event.ctrlKey &amp;&amp; event.keyCode==13){document.getElementById(&#39;comment-form-submit&#39;).click(); return false;}" placeholder="请填写评论内容"></textarea></div>
+				</div>
+				<div class="clear"></div>
+				
+			</div>
+			<!-- END .container -->
+			
+			<p>(<span class="red">*</span>) 表示必填项</p>
+			<p></p><div class="submit-wrapper"><a id="comment-form-submit" class="submit">提交评论</a></div><p></p>
+			<input type="hidden" name="comment_post_ID" value="80600" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+			<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="066d99d8ac"></p>			
+		</fieldset>
+		
+	</form>
+	<!-- END #comment-form -->
+	
+	
+</div>
+<!-- END #respond -->
+
+	<h3 id="comments" class="widget-title">2 条评论</h3>
+	
+	<!-- BEGIN .commentlist -->
+	<ol class="commentlist">
+	
+				<li class="comment byuser comment-author-dingou66 even thread-even depth-1" id="comment-83088">
+				<div id="div-comment-83088" class="comment-body">
+				<div class="comment-author vcard">
+				<cite class="fn"><a href="http://www.jobbole.com/members/dingou66/" rel="external nofollow" class="url">dingou66</a></cite> <span class="says">说道：</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://blog.jobbole.com/80600/#comment-83088">
+			2014/12/04 下午 4:47</a>		</div>
+
+		<p>介绍的很用心</p>
+<p> <img style="padding: 0px; border: none; cursor: pointer;" onmouseover="this.width=this.width*1.3" onmouseout="this.width=this.width/1.2" id="up-83088" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/1_14_up.png" alt="Thumb up" onclick="javascript:ckratingKarma(&#39;83088&#39;, &#39;add&#39;, &#39;blog.jobbole.com/wp-content/plugins/comment-rating/&#39;, &#39;1_14_&#39;);" title="赞同"> <span id="karma-83088-up" style="font-size:12px; color:#009933;">0</span>&nbsp;<img style="padding: 0px; border: none; cursor: pointer;" onmouseover="this.width=this.width*1.3" onmouseout="this.width=this.width/1.2" id="down-83088" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/1_14_down.png" alt="Thumb down" onclick="javascript:ckratingKarma(&#39;83088&#39;, &#39;subtract&#39;, &#39;blog.jobbole.com/wp-content/plugins/comment-rating/&#39;, &#39;1_14_&#39;)" title="反对"> <span id="karma-83088-down" style="font-size:12px; color:#990033;">0</span></p>
+		<div class="reply">
+		<a class="comment-reply-link" href="http://blog.jobbole.com/80600/?replytocom=83088#respond" onclick="return addComment.moveForm(&quot;div-comment-83088&quot;, &quot;83088&quot;, &quot;respond&quot;, &quot;80600&quot;)">回复</a>		</div>
+				</div>
+		</li>
+		<li class="comment byuser comment-author-xunathan odd alt thread-odd thread-alt depth-1" id="comment-83173">
+				<div id="div-comment-83173" class="comment-body">
+				<div class="comment-author vcard">
+				<cite class="fn"><a href="http://www.jobbole.com/members/xunathan/" rel="external nofollow" class="url">xunathan</a></cite> <span class="says">说道：</span>		</div>
+
+		<div class="comment-meta commentmetadata"><a href="http://blog.jobbole.com/80600/#comment-83173">
+			2014/12/04 下午 8:10</a>		</div>
+
+		<p>很详细！顶一个</p>
+<p> <img style="padding: 0px; border: none; cursor: pointer;" onmouseover="this.width=this.width*1.3" onmouseout="this.width=this.width/1.2" id="up-83173" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/1_14_up.png" alt="Thumb up" onclick="javascript:ckratingKarma(&#39;83173&#39;, &#39;add&#39;, &#39;blog.jobbole.com/wp-content/plugins/comment-rating/&#39;, &#39;1_14_&#39;);" title="赞同"> <span id="karma-83173-up" style="font-size:12px; color:#009933;">3</span>&nbsp;<img style="padding: 0px; border: none; cursor: pointer;" onmouseover="this.width=this.width*1.3" onmouseout="this.width=this.width/1.2" id="down-83173" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/1_14_down.png" alt="Thumb down" onclick="javascript:ckratingKarma(&#39;83173&#39;, &#39;subtract&#39;, &#39;blog.jobbole.com/wp-content/plugins/comment-rating/&#39;, &#39;1_14_&#39;)" title="反对"> <span id="karma-83173-down" style="font-size:12px; color:#990033;">0</span></p>
+		<div class="reply">
+		<a class="comment-reply-link" href="http://blog.jobbole.com/80600/?replytocom=83173#respond" onclick="return addComment.moveForm(&quot;div-comment-83173&quot;, &quot;83173&quot;, &quot;respond&quot;, &quot;80600&quot;)">回复</a>		</div>
+				</div>
+		</li>
+	
+	</ol>
+
+	<!-- END .commentlist -->
+
+		
+ 
+<h3 id="comments-from-weibo" class="widget-title">来自微博的评论</h3>
+<wb:comments url="http://blog.jobbole.com/80600/" border="y" width="auto" color="e8e8e8,ffffff,4c4c4c,5093d5,cccccc,f0f0f0" appkey="2606191112" ralateuid="1670481425"><iframe id="WBCommentFrame" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/comments.htm" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" style="height: 1384px;"></iframe></wb:comments>
+
+
+
+		
+				
+	<!-- BEGIN .navigation -->
+	<div class="navigation margin-20">
+	
+		<div class="alignleft"><a href="http://blog.jobbole.com/80591/" rel="prev">« SSL/TLS部署最佳实践</a></div>
+		<div class="alignright"><a href="http://blog.jobbole.com/80619/" rel="next">MapReduce原理与设计思想 »</a></div>
+		<div class="clear"></div>
+
+	</div>
+	<!-- END .navigation -->
+	
+		
+</div>
+<!-- END .grid-8 -->
+
+<!-- BEGIN #sidebar -->
+<div id="sidebar" class="grid-4">
+
+	<div id="search-3" class="widget widget_search"><!-- BEGIN #searchform -->
+<form method="get" id="searchform" action="http://blog.jobbole.com/">
+
+	<label class="none" for="s">Search for:</label>
+	<div class="input-wrapper"><input type="text" value="" name="s" id="s" placeholder="Search"></div>
+	<input type="submit" id="searchsubmit" value="Search">
+	
+</form>
+<!-- END #searchform --></div><div id="text-34" class="widget widget_text">			<div class="textwidget"><div class="floated-thumb">
+<div class="post-thumb"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/weixin-iprogrammer.jpg" width="90" height="90" class="attachment-grid-1 wp-post-image"></div>
+<div class="post-meta">
+<p><b>微信关注: iProgrammer </b><br> 最热门的技术类微信公共账号之一，全文推送精选技术文章。扫描加关注，碎片时间学习新技能！</p>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+		</div><div id="text-43" class="widget widget_text">			<div class="textwidget"><p><script language="javascript"> 
+var randomNum = Math.round(Math.random()*1);
+var image=new Array(2);
+image[0]="http://jbcdn2.b0.upaiyun.com/2014/12/09f8239cb19ed3be5ddd3a8140717357.jpg";
+image[1]="http://jbcdn2.b0.upaiyun.com/2014/12/383c45bc31dd440ad2c3f907058ad061.jpg";
+var imageUrl=image[randomNum];
+var urls=new Array(2);
+urls[0]="http://www.jikexueyuan.com/event/html5.html?hmsr=job_blog_html5event";
+urls[1]="http://www.jikexueyuan.com/event/ios.html?hmsr=job_blog_iosevent";
+var url = urls[randomNum];
+var adHTML = "<a href='"+url+"' target='_blank'><img src='"+imageUrl+"' border='0'></a>";
+document.write(adHTML);
+</script><a href="http://www.jikexueyuan.com/event/html5.html?hmsr=job_blog_html5event" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/09f8239cb19ed3be5ddd3a8140717357.jpg" border="0"></a></p>
+</div>
+		</div><div id="aw_tabbed_widget-8" class="widget aw_tabbed_widget"><div class="tabs"><ul class="nav clearfix"><li class="active"><a id="link-most-discussed" href="http://blog.jobbole.com/80600/#tab-most-discussed" title="本周热门文章">本周热门文章</a></li><li><a id="link-latest-comments" href="http://blog.jobbole.com/80600/#tab-latest-comments" title="本月热门文章">本月热门文章</a></li><li><a id="link-tags" href="http://blog.jobbole.com/80600/#tab-tags" title="热门标签">热门标签</a></li></ul><div id="tab-most-discussed" class="tab" style="display: block;"><div class="floated-thumb">							
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">0</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/81039/" title="编程应该用 Mac，还是 PC ?">编程应该用 Mac，还是 PC ?</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">1</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/81010/" title="谈谈javascript语法里一些难点问题（一）">谈谈javascript语法里一些难点问题（一）</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">2</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/79734/" title="你的代码写的很烂">你的代码写的很烂</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">3</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80696/" title="13岁Python开发者写给青少年的多人游戏编程（下）">13岁Python开发者写的多人游戏编程（下）</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">4</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80721/" title="一位连续创业者写给20多岁年轻人的创业生存指南">写给20多岁年轻人的创业生存指南</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">5</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80875/" title="盘点 VS 2015 预览版的 5 个新特性">盘点 VS 2015 预览版的 5 个新特性</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">6</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80620/" title="关于 Zsh，我最喜欢的那些特性">关于 Zsh，我最喜欢的那些特性</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">7</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80634/" title="AngularJS最佳编码实践指南">AngularJS最佳编码实践指南</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">8</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80658/" title="如何研究学习一个机器学习算法">如何研究学习一个机器学习算法</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+							
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">9</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80659/" title="超酷算法：Levenshtein自动机">超酷算法：Levenshtein自动机</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+						</div></div><div id="tab-latest-comments" class="tab" style="display: none;"><div class="floated-thumb">							
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">0</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80241/" title="老码农冒死揭开行业黑幕：如何编写无法维护的代码">涨姿势：如何编写无法维护的代码</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">1</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/75812/" title="21个挑战题，几杯咖啡的时间，来试试">21个挑战题，几杯咖啡的时间</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">2</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/79736/" title="成为谷歌软件工程师你需要准备什么？">成为谷歌软件工程师你需要准备什么？</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">3</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80378/" title="计算机实际上是如何工作的">计算机实际上是如何工作的</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">4</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80500/" title="从把3000行代码重构成15行代码谈起">从把3000行代码重构成15行代码谈起</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">5</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/81039/" title="编程应该用 Mac，还是 PC ?">编程应该用 Mac，还是 PC ?</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">6</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/79484/" title="JavaScript 风格指南/编码规范（Airbnb公司版）">JavaScript 风格指南/编码规范</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta ">
+							
+								<p>
+								    <span class="numb">7</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/79737/" title="" hello="" world!"="" 混乱代码比赛第一名作品解析"="">"Hello world!" 混乱代码比赛第一名作品解析</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">8</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/79943/" title="程序员，换身行头的时候到了！">程序员，换身行头的时候到了！</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+													
+											
+							<!-- BEGIN .post-meta -->
+							<div class="post-meta  no-thumb">
+							
+								<p>
+								    <span class="numb">9</span>
+								    <a class="meta-title" target="_blank" href="http://blog.jobbole.com/80478/" title="10 个 Python IDE 和代码编辑器">10 个 Python IDE 和代码编辑器</a><br>
+								</p>
+									
+							</div>
+							<!-- END .post-meta -->
+							
+							<div class="clear"></div>
+							
+						</div></div><div id="tab-tags" class="tab" style="display: none;"><p><a href="http://blog.jobbole.com/tag/android/" class="tag-link-467" title="140 个话题" style="font-size: 14.897058823529px;">Android</a>
+<a href="http://blog.jobbole.com/tag/apple/" class="tag-link-180" title="34 个话题" style="font-size: 8.6176470588235px;">apple</a>
+<a href="http://blog.jobbole.com/tag/bug/" class="tag-link-218" title="46 个话题" style="font-size: 9.9558823529412px;">Bug</a>
+<a href="http://blog.jobbole.com/tag/cpp/" class="tag-link-807" title="35 个话题" style="font-size: 8.8235294117647px;">C++</a>
+<a href="http://blog.jobbole.com/tag/chrome/" class="tag-link-527" title="31 个话题" style="font-size: 8.3088235294118px;">Chrome</a>
+<a href="http://blog.jobbole.com/tag/c-sharp/" class="tag-link-2197" title="30 个话题" style="font-size: 8.1029411764706px;">C sharp</a>
+<a href="http://blog.jobbole.com/tag/css/" class="tag-link-711" title="64 个话题" style="font-size: 11.397058823529px;">CSS</a>
+<a href="http://blog.jobbole.com/tag/c/" class="tag-link-757" title="105 个话题" style="font-size: 13.661764705882px;">C语言</a>
+<a href="http://blog.jobbole.com/tag/facebook/" class="tag-link-164" title="95 个话题" style="font-size: 13.147058823529px;">Facebook</a>
+<a href="http://blog.jobbole.com/tag/featuredpost/" class="tag-link-2241" title="462 个话题" style="font-size: 20.25px;">featuredpost</a>
+<a href="http://blog.jobbole.com/tag/git/" class="tag-link-885" title="54 个话题" style="font-size: 10.676470588235px;">Git</a>
+<a href="http://blog.jobbole.com/tag/github/" class="tag-link-1253" title="53 个话题" style="font-size: 10.573529411765px;">Github</a>
+<a href="http://blog.jobbole.com/tag/google/" class="tag-link-198" title="240 个话题" style="font-size: 17.264705882353px;">Google</a>
+<a href="http://blog.jobbole.com/tag/html5/" class="tag-link-182" title="80 个话题" style="font-size: 12.426470588235px;">HTML5</a>
+<a href="http://blog.jobbole.com/tag/ie/" class="tag-link-1531" title="33 个话题" style="font-size: 8.5147058823529px;">IE</a>
+<a href="http://blog.jobbole.com/tag/ie-css-bug/" class="tag-link-2785" title="31 个话题" style="font-size: 8.3088235294118px;">IE CSS Bug</a>
+<a href="http://blog.jobbole.com/tag/ios/" class="tag-link-860" title="206 个话题" style="font-size: 16.647058823529px;">iOS</a>
+<a href="http://blog.jobbole.com/tag/it/" class="tag-link-513" title="43 个话题" style="font-size: 9.6470588235294px;">IT</a>
+<a href="http://blog.jobbole.com/tag/java/" class="tag-link-457" title="131 个话题" style="font-size: 14.588235294118px;">java</a>
+<a href="http://blog.jobbole.com/tag/javascript/" class="tag-link-683" title="264 个话题" style="font-size: 17.676470588235px;">Javascript</a>
+<a href="http://blog.jobbole.com/tag/jquery/" class="tag-link-459" title="56 个话题" style="font-size: 10.882352941176px;">jQuery</a>
+<a href="http://blog.jobbole.com/tag/linux/" class="tag-link-190" title="131 个话题" style="font-size: 14.588235294118px;">Linux</a>
+<a href="http://blog.jobbole.com/tag/mysql/" class="tag-link-191" title="30 个话题" style="font-size: 8.1029411764706px;">MySQL</a>
+<a href="http://blog.jobbole.com/tag/node-js/" class="tag-link-896" title="41 个话题" style="font-size: 9.4411764705882px;">Node.js</a>
+<a href="http://blog.jobbole.com/tag/nosql/" class="tag-link-967" title="29 个话题" style="font-size: 8px;">NoSQL</a>
+<a href="http://blog.jobbole.com/tag/objective-c/" class="tag-link-829" title="37 个话题" style="font-size: 9.0294117647059px;">Objective-C</a>
+<a href="http://blog.jobbole.com/tag/php/" class="tag-link-168" title="63 个话题" style="font-size: 11.397058823529px;">php</a>
+<a href="http://blog.jobbole.com/tag/python/" class="tag-link-663" title="158 个话题" style="font-size: 15.411764705882px;">Python</a>
+<a href="http://blog.jobbole.com/tag/ruby/" class="tag-link-647" title="36 个话题" style="font-size: 8.9264705882353px;">Ruby</a>
+<a href="http://blog.jobbole.com/tag/soho/" class="tag-link-153" title="39 个话题" style="font-size: 9.2352941176471px;">soho</a>
+<a href="http://blog.jobbole.com/tag/tiobe/" class="tag-link-1493" title="31 个话题" style="font-size: 8.3088235294118px;">TIOBE</a>
+<a href="http://blog.jobbole.com/tag/twitter/" class="tag-link-419" title="32 个话题" style="font-size: 8.4117647058824px;">Twitter</a>
+<a href="http://blog.jobbole.com/tag/ui/" class="tag-link-1143" title="30 个话题" style="font-size: 8.1029411764706px;">UI</a>
+<a href="http://blog.jobbole.com/tag/web-fundamentals/" class="tag-link-3560" title="38 个话题" style="font-size: 9.1323529411765px;">web fundamentals</a>
+<a href="http://blog.jobbole.com/tag/web%e5%bc%80%e5%8f%91/" class="tag-link-493" title="115 个话题" style="font-size: 13.970588235294px;">Web开发</a>
+<a href="http://blog.jobbole.com/tag/%e4%b9%94%e5%b8%83%e6%96%af/" class="tag-link-301" title="32 个话题" style="font-size: 8.4117647058824px;">乔布斯</a>
+<a href="http://blog.jobbole.com/tag/%e4%b9%a6%e7%b1%8d/" class="tag-link-1022" title="41 个话题" style="font-size: 9.4411764705882px;">书籍</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%92%e8%81%94%e7%bd%91/" class="tag-link-40" title="80 个话题" style="font-size: 12.426470588235px;">互联网</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a4%e4%ba%92%e8%ae%be%e8%ae%a1/" class="tag-link-648" title="63 个话题" style="font-size: 11.397058823529px;">交互设计</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a7%e5%93%81/" class="tag-link-522" title="58 个话题" style="font-size: 10.985294117647px;">产品</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a7%e5%93%81%e7%bb%8f%e7%90%86/" class="tag-link-549" title="48 个话题" style="font-size: 10.161764705882px;">产品经理</a>
+<a href="http://blog.jobbole.com/tag/%e4%bb%a3%e7%a0%81/" class="tag-link-489" title="94 个话题" style="font-size: 13.147058823529px;">代码</a>
+<a href="http://blog.jobbole.com/tag/%e4%bc%af%e4%b9%90%e5%91%a8%e5%88%8a/" class="tag-link-1576" title="29 个话题" style="font-size: 8px;">伯乐周刊</a>
+<a href="http://blog.jobbole.com/tag/startup/" class="tag-link-4" title="199 个话题" style="font-size: 16.441176470588px;">创业</a>
+<a href="http://blog.jobbole.com/tag/%e5%89%8d%e7%ab%af/" class="tag-link-1138" title="58 个话题" style="font-size: 10.985294117647px;">前端</a>
+<a href="http://blog.jobbole.com/tag/%e5%89%8d%e7%ab%af%e5%bc%80%e5%8f%91/" class="tag-link-775" title="33 个话题" style="font-size: 8.5147058823529px;">前端开发</a>
+<a href="http://blog.jobbole.com/tag/%e5%9b%a2%e9%98%9f/" class="tag-link-551" title="54 个话题" style="font-size: 10.676470588235px;">团队</a>
+<a href="http://blog.jobbole.com/tag/%e5%a4%a7%e6%95%b0%e6%8d%ae/" class="tag-link-884" title="32 个话题" style="font-size: 8.4117647058824px;">大数据</a>
+<a href="http://blog.jobbole.com/tag/%e5%a5%b3%e7%a8%8b%e5%ba%8f%e5%91%98/" class="tag-link-1460" title="47 个话题" style="font-size: 10.058823529412px;">女程序员</a>
+<a href="http://blog.jobbole.com/tag/%e5%a8%81%e5%ae%a2/" class="tag-link-129" title="40 个话题" style="font-size: 9.3382352941176px;">威客</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/" class="tag-link-1214" title="109 个话题" style="font-size: 13.764705882353px;">安全</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%8d%93%e5%bc%80%e5%8f%91/" class="tag-link-3362" title="59 个话题" style="font-size: 11.088235294118px;">安卓开发</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%a2%e6%88%b7/" class="tag-link-174" title="51 个话题" style="font-size: 10.470588235294px;">客户</a>
+<a href="http://blog.jobbole.com/tag/%e5%b7%a5%e5%85%b7/" class="tag-link-18" title="108 个话题" style="font-size: 13.764705882353px;">工具</a>
+<a href="http://blog.jobbole.com/tag/%e5%b7%a5%e7%a8%8b%e5%b8%88/" class="tag-link-470" title="32 个话题" style="font-size: 8.4117647058824px;">工程师</a>
+<a href="http://blog.jobbole.com/tag/%e5%bb%ba%e8%ae%ae/" class="tag-link-512" title="31 个话题" style="font-size: 8.3088235294118px;">建议</a>
+<a href="http://blog.jobbole.com/tag/%e5%bc%80%e5%8f%91%e4%ba%ba%e5%91%98/" class="tag-link-370" title="123 个话题" style="font-size: 14.279411764706px;">开发人员</a>
+<a href="http://blog.jobbole.com/tag/%e5%bc%80%e6%ba%90/" class="tag-link-196" title="73 个话题" style="font-size: 12.014705882353px;">开源</a>
+<a href="http://blog.jobbole.com/tag/%e5%be%ae%e8%bd%af/" class="tag-link-429" title="73 个话题" style="font-size: 12.014705882353px;">微软</a>
+<a href="http://blog.jobbole.com/tag/%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95/" class="tag-link-1876" title="34 个话题" style="font-size: 8.6176470588235px;">技术面试</a>
+<a href="http://blog.jobbole.com/tag/%e6%8b%9b%e8%81%98/" class="tag-link-326" title="47 个话题" style="font-size: 10.058823529412px;">招聘</a>
+<a href="http://blog.jobbole.com/tag/%e6%95%88%e7%8e%87/" class="tag-link-415" title="42 个话题" style="font-size: 9.5441176470588px;">效率</a>
+<a href="http://blog.jobbole.com/tag/%e6%95%b0%e6%8d%ae%e5%ba%93/" class="tag-link-353" title="53 个话题" style="font-size: 10.573529411765px;">数据库</a>
+<a href="http://blog.jobbole.com/tag/%e6%97%b6%e9%97%b4%e7%ae%a1%e7%90%86/" class="tag-link-271" title="41 个话题" style="font-size: 9.4411764705882px;">时间管理</a>
+<a href="http://blog.jobbole.com/tag/%e6%9c%8d%e5%8a%a1%e5%99%a8/" class="tag-link-311" title="31 个话题" style="font-size: 8.3088235294118px;">服务器</a>
+<a href="http://blog.jobbole.com/tag/%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0/" class="tag-link-1910" title="31 个话题" style="font-size: 8.3088235294118px;">机器学习</a>
+<a href="http://blog.jobbole.com/tag/%e6%9e%b6%e6%9e%84/" class="tag-link-603" title="34 个话题" style="font-size: 8.6176470588235px;">架构</a>
+<a href="http://blog.jobbole.com/tag/%e6%b1%82%e8%81%8c/" class="tag-link-172" title="30 个话题" style="font-size: 8.1029411764706px;">求职</a>
+<a href="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/" class="tag-link-678" title="79 个话题" style="font-size: 12.323529411765px;">测试</a>
+<a href="http://blog.jobbole.com/tag/%e6%b5%8f%e8%a7%88%e5%99%a8/" class="tag-link-63" title="48 个话题" style="font-size: 10.161764705882px;">浏览器</a>
+<a href="http://blog.jobbole.com/tag/%e6%b8%b8%e6%88%8f/" class="tag-link-797" title="56 个话题" style="font-size: 10.882352941176px;">游戏</a>
+<a href="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7/" class="tag-link-460" title="56 个话题" style="font-size: 10.882352941176px;">用户</a>
+<a href="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c/" class="tag-link-580" title="96 个话题" style="font-size: 13.25px;">用户体验</a>
+<a href="http://blog.jobbole.com/tag/%e7%a0%81%e5%86%9c%e6%95%85%e4%ba%8b/" class="tag-link-2863" title="55 个话题" style="font-size: 10.779411764706px;">码农故事</a>
+<a href="http://blog.jobbole.com/tag/%e7%a7%bb%e5%8a%a8%e5%ba%94%e7%94%a8/" class="tag-link-654" title="66 个话题" style="font-size: 11.602941176471px;">移动应用</a>
+<a href="http://blog.jobbole.com/tag/%e7%a8%8b%e5%ba%8f%e5%91%98/" class="tag-link-368" title="696 个话题" style="font-size: 22px;">程序员</a>
+<a href="http://blog.jobbole.com/tag/%e7%ae%97%e6%b3%95/" class="tag-link-650" title="129 个话题" style="font-size: 14.485294117647px;">算法</a>
+<a href="http://blog.jobbole.com/tag/management/" class="tag-link-32" title="33 个话题" style="font-size: 8.5147058823529px;">管理</a>
+<a href="http://blog.jobbole.com/tag/%e7%bc%96%e7%a8%8b/" class="tag-link-389" title="124 个话题" style="font-size: 14.382352941176px;">编程</a>
+<a href="http://blog.jobbole.com/tag/%e7%bc%96%e7%a8%8b%e8%af%ad%e8%a8%80/" class="tag-link-596" title="112 个话题" style="font-size: 13.867647058824px;">编程语言</a>
+<a href="http://blog.jobbole.com/tag/%e7%bc%96%e7%a8%8b%e8%af%ad%e8%a8%80%e6%8e%92%e8%a1%8c%e6%a6%9c/" class="tag-link-1621" title="35 个话题" style="font-size: 8.8235294117647px;">编程语言排行榜</a>
+<a href="http://blog.jobbole.com/tag/%e7%bd%91%e7%ab%99/" class="tag-link-150" title="30 个话题" style="font-size: 8.1029411764706px;">网站</a>
+<a href="http://blog.jobbole.com/tag/%e7%bd%91%e9%a1%b5%e8%ae%be%e8%ae%a1/" class="tag-link-454" title="70 个话题" style="font-size: 11.808823529412px;">网页设计</a>
+<a href="http://blog.jobbole.com/tag/%e8%81%8c%e5%9c%ba/" class="tag-link-253" title="238 个话题" style="font-size: 17.264705882353px;">职场</a>
+<a href="http://blog.jobbole.com/tag/%e8%87%aa%e7%94%b1%e8%81%8c%e4%b8%9a/" class="tag-link-315" title="128 个话题" style="font-size: 14.485294117647px;">自由职业</a>
+<a href="http://blog.jobbole.com/tag/translation/" class="tag-link-49" title="40 个话题" style="font-size: 9.3382352941176px;">英语</a>
+<a href="http://blog.jobbole.com/tag/%e8%8b%b9%e6%9e%9c/" class="tag-link-183" title="47 个话题" style="font-size: 10.058823529412px;">苹果</a>
+<a href="http://blog.jobbole.com/tag/%e8%90%a5%e9%94%80/" class="tag-link-262" title="34 个话题" style="font-size: 8.6176470588235px;">营销</a>
+<a href="http://blog.jobbole.com/tag/%e8%a5%bf%e8%a5%bf%e5%90%b9%e9%9b%aa/" class="tag-link-2282" title="29 个话题" style="font-size: 8px;">西西吹雪</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1/" class="tag-link-431" title="123 个话题" style="font-size: 14.279411764706px;">设计</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1%e5%b8%88/" class="tag-link-436" title="101 个话题" style="font-size: 13.455882352941px;">设计师</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/" class="tag-link-1845" title="44 个话题" style="font-size: 9.75px;">设计模式</a>
+<a href="http://blog.jobbole.com/tag/%e8%b6%a3%e6%96%87/" class="tag-link-2105" title="39 个话题" style="font-size: 9.2352941176471px;">趣文</a>
+<a href="http://blog.jobbole.com/tag/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b%e5%b8%88/" class="tag-link-400" title="38 个话题" style="font-size: 9.1323529411765px;">软件工程师</a>
+<a href="http://blog.jobbole.com/tag/%e8%bd%af%e4%bb%b6%e5%bc%80%e5%8f%91/" class="tag-link-38" title="67 个话题" style="font-size: 11.602941176471px;">软件开发</a>
+<a href="http://blog.jobbole.com/tag/%e9%87%8d%e6%9e%84/" class="tag-link-728" title="30 个话题" style="font-size: 8.1029411764706px;">重构</a>
+<a href="http://blog.jobbole.com/tag/%e9%9d%a2%e8%af%95/" class="tag-link-173" title="98 个话题" style="font-size: 13.352941176471px;">面试</a>
+<a href="http://blog.jobbole.com/tag/%e9%a1%b9%e7%9b%ae/" class="tag-link-177" title="38 个话题" style="font-size: 9.1323529411765px;">项目</a>
+<a href="http://blog.jobbole.com/tag/%e9%a1%b9%e7%9b%ae%e7%bb%8f%e7%90%86/" class="tag-link-1049" title="38 个话题" style="font-size: 9.1323529411765px;">项目经理</a>
+<a href="http://blog.jobbole.com/tag/%e9%bb%91%e5%ae%a2/" class="tag-link-617" title="55 个话题" style="font-size: 10.779411764706px;">黑客</a></p></div></div></div><div id="text-19" class="widget widget_text">			<div class="textwidget"><p><script language="javascript"> 
+var worktileRandomNum = Math.round(Math.random()*2);
+var worktileImage=new Array(3);
+worktileImage[0]="http://jbcdn2.b0.upaiyun.com/2014/11/9cc890c2a3e959a4011a98b831d0b589.jpg";
+worktileImage[1]="http://jbcdn2.b0.upaiyun.com/2014/11/09ede4202ddccf008a5e8b54cd49b5b4.png";
+worktileImage[2]="http://jbcdn2.b0.upaiyun.com/2014/12/710ce06730a47845d22707745d36fdf8.png";
+var worktileImageUrl=worktileImage[worktileRandomNum];
+var worktileUrls=new Array(3);
+worktileUrls[0]="https://worktile.com/?hmsr=http%3A%2F%2Fblog.jobbole.com%2F&#038;hmmd=%E5%9B%BE%E7%89%87%E5%B9%BF%E5%91%8A&#038;hmpl=&#038;hmkw=&#038;hmci=";
+worktileUrls[1]="https://worktile.com/?hmsr=http%3A%2F%2Fblog.jobbole.com%2F&#038;hmmd=%E5%9B%BE%E7%89%87%E5%B9%BF%E5%91%8A&#038;hmpl=&#038;hmkw=&#038;hmci=";
+worktileUrls[2]="https://worktile.com/?hmsr=http%3A%2F%2Fblog.jobbole.com%2F&#038;hmmd=%E5%9B%BE%E7%89%87%E5%B9%BF%E5%91%8A&#038;hmpl=&#038;hmkw=&#038;hmci=";
+var worktileUrl = worktileUrls[worktileRandomNum];
+var worktileAdHTML = "<a href='"+worktileUrl+"' target='_blank'><img src='"+worktileImageUrl+"' border='0'></a>";
+document.write(worktileAdHTML);
+</script><a href="https://worktile.com/?hmsr=http%3A%2F%2Fblog.jobbole.com%2F&hmmd=%E5%9B%BE%E7%89%87%E5%B9%BF%E5%91%8A&hmpl=&hmkw=&hmci=" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/09ede4202ddccf008a5e8b54cd49b5b4.png" border="0"></a></p>
+</div>
+		</div><div id="recent_comments_widget-3" class="widget recent_comments_widget">		<h3 class="widget-title">最新评论（期待您也参与评论）</h3>
+		<ul>
+		
+					
+			<li id="rc-comment-88172" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/16979/#comment-88172" rel="nofollow">省时利器：代码美化与格式化工具</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				一般不都是使用编辑器么？这些格式化工具格式化之后，再用编辑器打开用？程序员会这样搞一下？？？								<span class="rc-reviewer"> 五毒公子</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-88144" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/70549/#comment-88144" rel="nofollow">如果看了此文你还不懂傅里叶变换，那就过来掐死我吧【完整版】</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				写的非常好！very good!								<span class="rc-reviewer"> 朱静</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-88113" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/80621/#comment-88113" rel="nofollow">Google技术开发指南：给大学生自学的建议</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				英文的重要性								<span class="rc-reviewer"> xunathan</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-88059" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/81039/#comment-88059" rel="nofollow">编程应该用 Mac，还是 PC ?</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				我来总结一下啊！尼玛你爱用Mac用Mac，爱用Win用Win！								<span class="rc-reviewer"> vital</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-88012" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/33099/#comment-88012" rel="nofollow">从 JavaScript 数组去重谈性能优化</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				【优化的本质是做减法，做减法最困难的是选择放弃。】  谢谢你这句话。 醍醐灌顶。 有时候面对自己的代...								<span class="rc-reviewer"> rambo</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-87419" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/81039/#comment-87419" rel="nofollow">编程应该用 Mac，还是 PC ?</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				基本等于什么也没说就是把大家都知道的东西重新复述了一遍而且这是2012年的文章现在linux的桌面环...									<a class="rc-reviewer" target="_blank" href="http://bluek404.net/" rel="nofollow external"> Bluek404</a>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-87217" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/7884/#comment-87217" rel="nofollow">一个计算机专业毕业生工作5年后的困惑</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				握手 ，跟楼主一样。。06年出来大学没毕业。。都玩游戏去了，比楼主还差些，连毕业证都没拿现在游戏行业...								<span class="rc-reviewer"> 哇猪</span>
+								</div>
+			</li>
+			
+						
+			<li id="rc-comment-87176" class="rc-item rc-comment rc-clearfix">
+				<img class="rc-avatar rc-left" width="32" height="32" alt="" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/cb962c0fddc4ba5282bbf2996f3ee0d2.png">
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" href="http://blog.jobbole.com/81039/#comment-87176" rel="nofollow">编程应该用 Mac，还是 PC ?</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				总结一下 就是MACOSX结合了WIN+linux所以最好.  我TM想问 能说的具体点吗?  说这...								<span class="rc-reviewer"> 呵呵</span>
+								</div>
+			</li>
+			
+					
+		</ul>
+        </div><div id="text-69" class="widget widget_text">			<div class="textwidget"><p><script language="javascript"> 
+var maizieduRandomNum = Math.round(Math.random()*3);
+var maizieduImage=new Array(4);
+maizieduImage[0]="http://jbcdn2.b0.upaiyun.com/2014/11/638b1b2d21119ae7d3d45040240f9906.jpg";
+maizieduImage[1]="http://jbcdn2.b0.upaiyun.com/2014/11/283231cee6e496fb73766c9ca3fc2bfa.jpg";
+maizieduImage[2]="http://jbcdn2.b0.upaiyun.com/2014/11/0b5eb7bfb2c9636ed11091f4b20dcbca.jpg";
+maizieduImage[3]="http://jbcdn2.b0.upaiyun.com/2014/11/0b5eb7bfb2c9636ed11091f4b20dcbca.jpg";
+var maizieduImageUrl=maizieduImage[maizieduRandomNum];
+var maizieduUrls=new Array(4);
+maizieduUrls[0]="http://www.maiziedu.com/course/2/?utm_source=jobboleblog";
+maizieduUrls[1]="http://www.maiziedu.com/course/2/?utm_source=jobboleblog";
+maizieduUrls[2]="http://www.maiziedu.com/course/3/?utm_source=jobboleblog";
+maizieduUrls[3]="http://www.maiziedu.com/course/3/?utm_source=jobboleblog";
+var maizieduUrl = maizieduUrls[maizieduRandomNum];
+var maizieduAdHTML = "<a href='"+maizieduUrl+"' target='_blank'><img src='"+maizieduImageUrl+"' border='0'></a>";
+document.write(maizieduAdHTML);
+</script><a href="http://www.maiziedu.com/course/3/?utm_source=jobboleblog" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/0b5eb7bfb2c9636ed11091f4b20dcbca.jpg" border="0"></a></p>
+</div>
+		</div><div id="text-9" class="widget widget_text"><h3 class="widget-title">热点话题</h3>			<div class="textwidget"><div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://top.jobbole.com/tag/python/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/36c4ed88b6ffefc5c83fce3881952875.png" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://top.jobbole.com/tag/python/?utm_source=jobboleblog-sidebar-topic" target="_blank">Python开发</a><br> 汇集优质的Python技术文章和资源。人生苦短，我用Python！</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://top.jobbole.com/tag/swift/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/swift.png" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://top.jobbole.com/tag/swift/?utm_source=jobboleblog-sidebar-topic" target="_blank">Swift开发</a><br>Swift开发教程、文章、资讯和各种工具！</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://top.jobbole.com/tag/algorithm/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/algorithm-icon.jpg" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://top.jobbole.com/tag/algorithm/?utm_source=jobboleblog-sidebar-topic" target="_blank">算法</a><br>分享各种算法教程、视频和工具。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://top.jobbole.com/tag/machine-learning/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/machine-learning.jpeg" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://top.jobbole.com/tag/machine-learning/?utm_source=jobboleblog-sidebar-topic" target="_blank">机器学习</a><br>持续更新的机器学习领域热门技术分享。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+</div>
+		</div><div id="text-80" class="widget widget_text">			<div class="textwidget"><p><a href="https://100offer.com/join/jobbole" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/b61e8bb459fc154a606958efcfd3cb28.jpg" border="0"></a></p>
+</div>
+		</div><div id="text-79" class="widget widget_text"><h3 class="widget-title">热门频道</h3>			<div class="textwidget"><div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://top.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/53a397f357d0212df7f0f4dbb2f33732.jpg" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://top.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank">伯乐头条</a><br>为作者带来更多读者；为读者筛选优质内容；专注IT互联网。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://fanyi.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/7561219c1abc47e8c9653f0edb65c93c.jpg" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://fanyi.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank">伯乐翻译小组</a><br>由数百名译者组成，立志翻译传播优秀的外文技术干货。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://date.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/65cc2ac965f6b213ee056d29eda39cbb.jpg" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://date.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank">程序员相亲</a><br>一个专门为IT单身男女服务的征婚传播平台。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+<div class="floated-thumb">
+<div class="post-thumb">
+                <a href="http://hao.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank"><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/fd62c3d72eda679ca7f89f3965f2ee4e.png" width="50" height="50" class="attachment-grid-1 wp-post-image"></a>
+        </div>
+<div class="post-meta">
+<p><a class="meta-title" href="http://hao.jobbole.com/?utm_source=jobboleblog-sidebar-topic" target="_blank">资源导航</a><br>收录优秀的工具资源，覆盖开发、设计、产品和管理等。</p>
+<p></p></div>
+<div class="clear"></div>
+</div>
+</div>
+		</div>	
+	<!-- BEGIN .container -->
+	<div class="container">
+	
+		<!-- BEGIN .grid-2 -->
+		<div class="grid-2">
+			
+						
+		</div>
+		<!-- END .grid-2 -->
+		
+		<!-- BEGIN .grid-2 -->
+		<div class="grid-2">
+			
+						
+		</div>
+		<!-- END .grid-2 -->
+		
+		<div class="clear"></div>
+			
+	</div>
+	<!-- END .container -->
+
+</div>
+<!-- END #sidebar -->
+<div class="clear"></div>	
+
+
+</div>
+<!-- END #wrapper -->
+
+<!-- BEGIN footer -->
+<footer>
+
+	<!-- BEGIN .container -->
+	<div class="container">
+		
+		<!-- BEGIN .grid-4 -->
+		<div class="grid-4">
+			
+			<div id="text-3" class="widget widget_text"><h3 class="widget-title">关于伯乐在线博客</h3>			<div class="textwidget"><p>在这个信息爆炸的时代，人们已然被大量、快速并且简短的信息所包围。然而，我们相信：过多“快餐”式的阅读只会令人“虚胖”，缺乏实质的内涵。伯乐在线博客团队正试图以我们微薄的力量，把优秀的原创/译文分享给读者，为“快餐”添加一些“营养”元素。</p>
+<p>伯乐在线-博客( blog.JobBole.com )专注于分享职业相关的博客文章、业界资讯和职业相关的优秀工具和资源。博文类别包括：程序员、设计、营销、互联网、IT技术、自由职业、创业、运营、管理、翻译和人力资源等等。期待您通过<a href="http://blog.jobbole.com/feed/">RSS订阅</a>和<a href="http://weibo.com/jobbole">微博</a>关注我们。如果您也愿意分享一份自己的原创/译文，可以<a target="_blank" href="http://top.jobbole.com/">从这里开始</a>～</p>
+</div>
+		</div>			
+		</div>
+		<!-- END .grid-4 -->
+		
+		<!-- BEGIN .grid-4 -->
+		<div class="grid-4">
+			
+			<div id="text-7" class="widget widget_text"><h3 class="widget-title">联系我们</h3>			<div class="textwidget"><p><strong>商务合作</strong></p>
+<p>Email：<a href="mailto:bd@jobbole.com">bd@Jobbole.com</a><br>
+QQ： 630772296  （加好友请注明来意）</p>
+<p><strong>网站使用问题</strong></p>
+<p>请直接<a href="mailto:webmaster@jobbole.com">联系我们</a>询问或者反馈</p>
+</div>
+		</div>			
+		</div>
+		<!-- END .grid-4 -->
+		
+		<!-- BEGIN .grid-4 -->
+		<div class="grid-4">
+			
+			<div id="text-4" class="widget widget_text"><h3 class="widget-title">欢迎关注并订阅伯乐在线博客</h3>			<div class="textwidget"><div id="aw_socialcounter_widget-2" class="widget aw_socialcounter_widget">
+<ul>
+<li>
+<a target="_blank" href="http://weibo.com/jobbole"><img class="alignleft" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/sina_32.png" alt="关注我们的新浪微博" title="关注我们的新浪微博"></a><p></p>
+<div class="view-rss"><a target="_blank" href="http://blog.jobbole.com/feed/" class="rss-link"><img class="alignleft" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/rss_32.png" alt="RSS订阅" title="RSS订阅"></a></div>
+<p><a target="_blank" href="http://list.qq.com/cgi-bin/qf_invite?id=f12eb90e095ea83b9c0683e2822949378899f8628c96050b"><img class="alignleft" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/email_32.png" alt="邮件订阅" title="邮件订阅"></a>
+</p></li>
+</ul>
+</div>
+<p><br><br>
+<script language="javascript"> 
+var randomNum = Math.round(Math.random()*4);
+var image=new Array(5);
+image[0]="design-weixin-logo.jpg";
+image[1]="jobbole-weixin-logo.jpg";
+image[2]="programmer-weixin-logo.jpg";
+image[3]="geekfan-weixin.png";
+image[4]="importnew-weixin.png";
+var imageUrl="http://blog.jobbole.com/wp-content/themes/jobboleblogv3/_assets/img/"+image[randomNum];
+var titles=new Array(5);
+titles[0]="扫描关注设计的那些事，微信号：AboutDesigner";
+titles[1]="扫描关注伯乐在线，微信号：Jobbole";
+titles[2]="扫描关注程序员的那些事，微信号：iProgrammer";
+titles[3]="扫描关注极客范，微信号：iGeekFan";
+titles[4]="扫描关注ImportNew，微信号：importnew";
+var imageTitle = titles[randomNum];
+var adHTML = "<img src='"+imageUrl+"' title='"+imageTitle+"' alt='"+imageTitle+"' border='0'>";
+document.write(adHTML);
+</script><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jobbole-weixin-logo.jpg" title="扫描关注伯乐在线，微信号：Jobbole" alt="扫描关注伯乐在线，微信号：Jobbole" border="0"></p>
+</div>
+		</div>			
+		</div>
+		<!-- END .grid-4 -->
+		
+		<div class="clear"></div>
+	
+	</div>
+	<!-- END .container -->
+
+	<!-- BEGIN #bottom -->
+	<div id="bottom">
+	
+		<!-- BEGIN .container -->
+		<div class="container">
+		
+			<!-- BEGIN .grid-12 -->
+			<div class="grid-12">
+	
+				<p>© 2014 伯乐在线
+                <span style="margin-left: 40px;">
+                <a href="http://top.jobbole.com/?utm_source=jobboleblog-bottom-nav">头条</a>&nbsp;&nbsp;
+                <a href="http://blog.jobbole.com/?utm_source=jobboleblog-bottom-nav">博客</a>&nbsp;&nbsp;
+                <a href="http://hao.jobbole.com/?utm_source=jobboleblog-bottom-nav">资源</a>&nbsp;&nbsp;
+                <a href="http://fanyi.jobbole.com/?utm_source=jobboleblog-bottom-nav">翻译</a>&nbsp;&nbsp;
+                <a href="http://www.jobbole.com/groups/?utm_source=jobboleblog-bottom-nav">小组</a>&nbsp;&nbsp;
+                <a href="http://date.jobbole.com/groups/?utm_source=jobboleblog-bottom-nav">相亲</a>
+                </span>
+                <span style="float:right; ">
+                    本站由 <a href="http://www.ucloud.cn/" target="_blank">UCloud</a> 赞助云主机，<a href="http://www.qiniu.com/" target="_blank">七牛</a> 赞助云存储
+                </span>
+                </p>
+			
+			</div>
+			<!-- END .grid-12 -->
+			
+			<div class="clear"></div>
+						
+		</div>
+		<!-- END .container -->
+		
+	</div>
+	<!-- END #bottom -->
+	
+</footer>
+<!-- END footer -->
+
+
+	
+
+<!-- Generated in 0.798 seconds. (291 q) -->
+
+	
+<!-- WP SyntaxHighlighter Ver.1.7.3 Begin -->
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shCore.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shLegacy.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shAutoloader.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushAppleScript.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushAS3.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushBash.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushColdFusion.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushCpp.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushCSharp.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushCss.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushDelphi.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushDiff.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushErlang.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushJava.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushJavaFX.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushJScript.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushPerl.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushPhp.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushPlain.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushPowerShell.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushPython.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushRuby.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushSass.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushScala.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushSql.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushVb.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/shBrushXml.js"></script>
+<script type="text/javascript">//<![CDATA[
+	SyntaxHighlighter.autoloader(
+	"applescript	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushAppleScript.js?ver=3.0"
+	,"as3 actionscript3	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushAS3.js?ver=3.0"
+	,"bash shell	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0"
+	,"cf coldfusion	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushColdFusion.js?ver=3.0"
+	,"cpp c	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=3.0"
+	,"c# c-sharp csharp	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCSharp.js?ver=3.0"
+	,"css	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCss.js?ver=3.0"
+	,"delphi pas pascal	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushDelphi.js?ver=3.0"
+	,"diff patch	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushDiff.js?ver=3.0"
+	,"erl erlang	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushErlang.js?ver=3.0"
+	,"java	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJava.js?ver=3.0"
+	,"jfx javafx	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJavaFX.js?ver=3.0"
+	,"js jscript javascript	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJScript.js?ver=3.0"
+	,"perl pl	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPerl.js?ver=3.0"
+	,"php	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPhp.js?ver=3.0"
+	,"plain text	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0"
+	,"ps powershell	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPowerShell.js?ver=3.0"
+	,"py python	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPython.js?ver=3.0"
+	,"rails ror ruby rb	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushRuby.js?ver=3.0"
+	,"sass scss	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushSass.js?ver=3.0"
+	,"scala	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushScala.js?ver=3.0"
+	,"sql	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushSql.js?ver=3.0"
+	,"vb vbnet	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushVb.js?ver=3.0"
+	,"xml xhtml xslt html	http://blog.jobbole.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/scripts/shBrushXml.js?ver=3.0"
+	);
+	SyntaxHighlighter.defaults['auto-links'] = false;
+	SyntaxHighlighter.defaults['quick-code'] = true;
+	SyntaxHighlighter.defaults['title'] = '';
+	SyntaxHighlighter.defaults['class-name'] = 'notranslate';
+	SyntaxHighlighter.defaults['collapse'] = false;
+	SyntaxHighlighter.defaults['first-line'] = 1;
+	SyntaxHighlighter.defaults['gutter'] = true;
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['smart-tabs'] = true;
+	SyntaxHighlighter.defaults['tab-size'] = 4;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+ SyntaxHighlighter.config.stripBrs = true;
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = "Can't find brush for: ";
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = "Brush wasn't configured for html-script option: ";
+	SyntaxHighlighter.all();
+	dp.SyntaxHighlighter.HighlightAll('code')
+//]]></script>
+<!-- WP SyntaxHighlighter Ver.1.7.3 End -->
+<!-- Lightbox Plus ColorBox v2.6/1.3.32 - 2013.01.24 - Message: 0-->
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  $("a[rel*=lightbox]").colorbox({speed:450,initialWidth:"300",initialHeight:"100",opacity:0.8,loop:false,scrolling:false,escKey:false,arrowKey:false,top:false,right:false,bottom:false,left:false});
+});
+</script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/ck-karma.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/blog.jobbole.com\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"\u6700\u591a\u53ea\u5141\u8bb8\u6295\u7684\u9009\u9879\uff1a","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/polls-js.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/ready.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/easing.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/superfish.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/validate.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/touchwipe.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/caroufredsel.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/flexslider.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jplayer.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/fitvids.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/selectnav.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/effects.js"></script>
+<script type="text/javascript" src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/jquery.colorbox.1.3.32.js"></script>
+
+
+<div id="full-btm" style="position:fixed; left:50%; top:550px;  z-index:100; text-align:center; cursor:pointer;">
+<a><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/back-btm.png" width="20" border="0" alt="跳到底部" title="跳到底部"></a>
+</div>
+
+<script type="text/javascript">
+jQuery('#full-btm').click(function(){
+    jQuery('html, body').animate({scrollTop:jQuery(document).height()}, 'slow');
+    return false;
+});
+</script>
+
+<div id="full-top" style="position:fixed; left:50%; top:520px; margin-left:495px; z-index:100; text-align:center; cursor:pointer;">
+<a><img src="./【大型网站技术实践】初级篇：借助Nginx搭建反向代理服务器 - 博客 - 伯乐在线_files/back-top.png" width="20" border="0" alt="返回顶部" title="返回顶部"></a>
+</div>
+
+<script type="text/javascript">
+jQuery('#full-top').click(function(){
+    jQuery('html, body').animate({scrollTop:0}, 'slow');
+    return false;
+});
+</script>
+
+<!-- script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','/_assets/js/analytics.js','ga');
+
+    ga('create', 'UA-15621043-1', 'jobbole.com');
+    ga('send', 'pageview');
+
+</script -->
+
+
+<!-- END body -->
+
+
+<!-- END html --><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><div id="cboxNext" style="float: left;"></div><div id="cboxPrevious" style="float: left;"></div><div id="cboxSlideshow" style="float: left;"></div><div id="cboxClose" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div></div></body></html>

@@ -1,0 +1,1 @@
+document.write('ЛЖг­РДЕНCNWЃЁ<a href="http://passport.cnw.com.cn/api/agent.php?login" target="_blank">[ЕЧТМ]</a> <a href="http://passport.cnw.com.cn/api/agent.php?reg&fromcnw" target="_blank">[зЂВс]</a> <a href="http://passport.cnw.com.cn/findpw.html.php" target="_blank" class="forget_Password" >[УмТыевЛи]</a> ')

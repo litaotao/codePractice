@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://machenxiatjry.lofter.com/cmtheightproxy.html#height=36 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>commentHeightIframeProxy</title>
+<script>
+(function(){
+try{
+	var _hash = location.hash;
+	var _isFirstClick = _hash.indexOf('&firstclick')>=0;
+	_hash = _hash.replace('&firstclick', '');
+    var height = _hash.replace(/#?height=/, ''),
+        iframe = parent.parent.document.getElementById('comment_frame');
+    iframe.setAttribute('height', height);
+    iframe.height = height;
+    if(!_isFirstClick) parent.parent.focus();
+    //parent.parent.document.getElementById('lofter_controls').style.zoom = '1';
+}catch(ex){}
+})();
+</script>
+<style type="text/css"></style></head>
+<body>
+
+</body></html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0068)http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="http://scripts.widgethost.com/pax/counter.js?counter=ctr-k9bda5os65&_=1416981112822"></script><script async="" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery1707494348788168281_1416981112427&adModuleId=2&content=Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E&_=1416981112694"></script>
+
+<title>Nginx配置文件详细说明 - 小刚qq - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/bundle-sea.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/xiaogangqq123/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/xiaogangqq123/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/xiaogangqq123/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/gpt.js"></script><script src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">var currentBlogApp = 'xiaogangqq123', cb_enable_mathjax=false;</script>
+<script src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="header">
+	
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/xiaogangqq123/">每一点知识的积累都是对生命的充实!!!</a><br>
+		----- 小刚的博客
+	</div>
+</div>
+
+</div>
+
+<div id="mytopmenu">
+	
+		<div id="mylinks">
+<!--done-->
+<a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a> &nbsp;
+<a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/xiaogangqq123/">首页</a> &nbsp;
+<a href="http://q.cnblogs.com/" class="menu">博问</a> &nbsp;
+<a href="http://home.cnblogs.com/ing/" class="menu">闪存</a> &nbsp;
+<a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a> &nbsp;
+<a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/%e5%b0%8f%e5%88%9aqq">联系</a> &nbsp;
+<a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/xiaogangqq123/rss">订阅</a><a id="MyLinks1_XMLLink" href="http://www.cnblogs.com/xiaogangqq123/rss"><img src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/xml.gif" alt="订阅"></a>&nbsp;
+<a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a>
+</div>
+		<div id="mystats">
+<!--done-->
+随笔-77&nbsp;
+评论-289&nbsp;
+文章-1&nbsp;
+trackbacks-0
+</div>
+	
+</div>
+<div id="centercontent">
+	
+
+<div class="post">
+	<h1 class="postTitle"><a id="cb_post_title_url" class="postTitle2" href="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/Nginx配置文件详细说明 - 小刚qq - 博客园.htm">Nginx配置文件详细说明</a></h1>
+	<div id="cnblogs_post_body"><p>在此记录下Nginx服务器nginx.conf的配置文件说明, 部分注释收集与网络.</p>
+<blockquote>
+<p>#运行用户<br>user www-data;&nbsp;&nbsp;&nbsp; <br>#启动进程,通常设置成和cpu的数量相等<br>worker_processes&nbsp; 1;</p>
+<p>#全局错误日志及PID文件<br>error_log&nbsp; /var/log/nginx/error.log;<br>pid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /var/run/nginx.pid;</p>
+<p>#工作模式及连接数上限<br>events {<br>&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp; epoll;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #epoll是多路复用IO(I/O Multiplexing)中的一种方式,但是仅用于linux2.6以上内核,可以大大提高nginx的性能<br>&nbsp;&nbsp;&nbsp; worker_connections&nbsp; 1024;#单个后台worker process进程的最大并发链接数<br>&nbsp;&nbsp;&nbsp; # multi_accept on; <br>}</p>
+<p>#设定http服务器，利用它的反向代理功能提供负载均衡支持<br>http {<br>&nbsp;&nbsp;&nbsp;&nbsp; #设定mime类型,类型由mime.type文件定义<br>&nbsp;&nbsp;&nbsp; include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /etc/nginx/mime.types;<br>&nbsp;&nbsp;&nbsp; default_type&nbsp; application/octet-stream;<br>&nbsp;&nbsp;&nbsp; #设定日志格式<br>&nbsp;&nbsp;&nbsp; access_log&nbsp;&nbsp;&nbsp; /var/log/nginx/access.log;</p>
+<p>&nbsp;&nbsp;&nbsp; #sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，对于普通应用，<br>&nbsp;&nbsp;&nbsp; #必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.<br>&nbsp;&nbsp;&nbsp; sendfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on;<br>&nbsp;&nbsp;&nbsp; #tcp_nopush&nbsp;&nbsp;&nbsp;&nbsp; on;</p>
+<p>&nbsp;&nbsp;&nbsp; #连接超时时间<br>&nbsp;&nbsp;&nbsp; #keepalive_timeout&nbsp; 0;<br>&nbsp;&nbsp;&nbsp; keepalive_timeout&nbsp; 65;<br>&nbsp;&nbsp;&nbsp; tcp_nodelay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on;<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; #开启gzip压缩<br>&nbsp;&nbsp;&nbsp; gzip&nbsp; on;<br>&nbsp;&nbsp;&nbsp; gzip_disable "MSIE [1-6]\.(?!.*SV1)";</p>
+<p>&nbsp;&nbsp;&nbsp; #设定请求缓冲<br>&nbsp;&nbsp;&nbsp; client_header_buffer_size&nbsp;&nbsp;&nbsp; 1k;<br>&nbsp;&nbsp;&nbsp; large_client_header_buffers&nbsp; 4 4k;</p>
+<p>&nbsp;&nbsp;&nbsp; include /etc/nginx/conf.d/*.conf;<br>&nbsp;&nbsp;&nbsp; include /etc/nginx/sites-enabled/*;</p>
+<p>&nbsp;&nbsp;&nbsp; #设定负载均衡的服务器列表<br>&nbsp;&nbsp;&nbsp;&nbsp; upstream mysvr {<br>&nbsp;&nbsp;&nbsp; #weigth参数表示权值，权值越高被分配到的几率越大<br>&nbsp;&nbsp;&nbsp; #本机上的Squid开启3128端口<br>&nbsp;&nbsp;&nbsp; server 192.168.8.1:3128 weight=5;<br>&nbsp;&nbsp;&nbsp; server 192.168.8.2:80&nbsp; weight=1;<br>&nbsp;&nbsp;&nbsp; server 192.168.8.3:80&nbsp; weight=6;<br>&nbsp;&nbsp;&nbsp; }</p>
+<p><br>&nbsp;&nbsp; server {<br>&nbsp;&nbsp;&nbsp; #侦听80端口<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; listen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 80;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #定义使用<a href="http://www.xx.com/">www.xx.com</a>访问<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; server_name&nbsp; www.xx.com;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #设定本虚拟主机的访问日志<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; access_log&nbsp; logs/www.xx.com.access.log&nbsp; main;</p>
+<p>&nbsp;&nbsp;&nbsp; #默认请求<br>&nbsp;&nbsp;&nbsp; location / {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp; /root;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #定义服务器的默认网站根目录位置<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; index index.php index.html index.htm;&nbsp;&nbsp; #定义首页索引文件的名称</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fastcgi_pass&nbsp; www.xx.com;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fastcgi_param&nbsp; SCRIPT_FILENAME&nbsp; $document_root/$fastcgi_script_name; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; include /etc/nginx/fastcgi_params;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; # 定义错误提示页面<br>&nbsp;&nbsp;&nbsp; error_page&nbsp;&nbsp; 500 502 503 504 /50x.html;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; location = /50x.html {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp; /root;<br>&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; #静态文件，nginx自己处理<br>&nbsp;&nbsp;&nbsp; location ~ ^/(images|javascript|js|css|flash|media|static)/ {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root /var/www/virtual/htdocs;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expires 30d;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; #PHP 脚本请求全部转发到 FastCGI处理. 使用FastCGI默认配置.<br>&nbsp;&nbsp;&nbsp; location ~ \.php$ {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root /root;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fastcgi_pass 127.0.0.1:9000;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fastcgi_index index.php;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fastcgi_param SCRIPT_FILENAME /home/www/www$fastcgi_script_name;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; include fastcgi_params;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; #设定查看Nginx状态的地址<br>&nbsp;&nbsp;&nbsp; location /NginxStatus {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stub_status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; access_log&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; auth_basic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "NginxStatus";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; auth_basic_user_file&nbsp; conf/htpasswd;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; #禁止访问 .htxxx 文件<br>&nbsp;&nbsp;&nbsp; location ~ /\.ht {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; deny all;<br>&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp; }<br>}</p>
+
+
+</blockquote>
+<p>以上是一些基本的配置,使用Nginx最大的好处就是负载均衡</p>
+<p>如果要使用负载均衡的话,可以修改配置http节点如下：</p>
+<blockquote>
+<p>#设定http服务器，利用它的反向代理功能提供负载均衡支持<br>http {<br>&nbsp;&nbsp;&nbsp;&nbsp; #设定mime类型,类型由mime.type文件定义<br>&nbsp;&nbsp;&nbsp; include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /etc/nginx/mime.types;<br>&nbsp;&nbsp;&nbsp; default_type&nbsp; application/octet-stream;<br>&nbsp;&nbsp;&nbsp; #设定日志格式<br>&nbsp;&nbsp;&nbsp; access_log&nbsp;&nbsp;&nbsp; /var/log/nginx/access.log;</p>
+<p>&nbsp;&nbsp;&nbsp; #省略上文有的一些配置节点</p>
+<p>&nbsp;&nbsp;&nbsp; #。。。。。。。。。。</p>
+<p>&nbsp;&nbsp;&nbsp; #设定负载均衡的服务器列表<br>&nbsp;&nbsp;&nbsp;&nbsp; upstream mysvr {<br>&nbsp;&nbsp;&nbsp; #weigth参数表示权值，权值越高被分配到的几率越大<br>&nbsp;&nbsp;&nbsp; server 192.168.8.1x:3128 weight=5;#本机上的Squid开启3128端口<br>&nbsp;&nbsp;&nbsp; server 192.168.8.2x:80&nbsp; weight=1;<br>&nbsp;&nbsp;&nbsp; server 192.168.8.3x:80&nbsp; weight=6;<br>&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp; upstream mysvr2 {<br>&nbsp;&nbsp;&nbsp; #weigth参数表示权值，权值越高被分配到的几率越大</p>
+<p>&nbsp;&nbsp;&nbsp; server 192.168.8.x:80&nbsp; weight=1;<br>&nbsp;&nbsp;&nbsp; server 192.168.8.x:80&nbsp; weight=6;<br>&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp; #第一个虚拟服务器<br>&nbsp;&nbsp; server {<br>&nbsp;&nbsp;&nbsp; #侦听192.168.8.x的80端口<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; listen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 80;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; server_name&nbsp; 192.168.8.x;</p>
+<p>&nbsp; &nbsp; &nbsp; #对aspx后缀的进行负载均衡请求<br>&nbsp; &nbsp;&nbsp;location ~ .*\.aspx$ {</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; root &nbsp; /root; &nbsp; &nbsp;&nbsp; #定义服务器的默认网站根目录位置<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; index index.php index.html index.htm;&nbsp;&nbsp; #定义首页索引文件的名称</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_pass&nbsp; http://mysvr ;#请求转向mysvr 定义的服务器列表</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #以下是一些反向代理的配置可删除.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_redirect off;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #后端的Web服务器可以通过X-Forwarded-For获取用户真实IP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_set_header Host $host;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_set_header X-Real-IP $remote_addr;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; client_max_body_size 10m;&nbsp;&nbsp;&nbsp; #允许客户端请求的最大单文件字节数<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; client_body_buffer_size 128k;&nbsp; #缓冲区代理缓冲用户端请求的最大字节数，<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_connect_timeout 90;&nbsp; #nginx跟后端服务器连接超时时间(代理连接超时)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_send_timeout 90;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #后端服务器数据回传时间(代理发送超时)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_read_timeout 90;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #连接成功后，后端服务器响应时间(代理接收超时)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_buffer_size 4k;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #设置代理服务器（nginx）保存用户头信息的缓冲区大小<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_buffers 4 32k;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #proxy_buffers缓冲区，网页平均在32k以下的话，这样设置<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_busy_buffers_size 64k;&nbsp;&nbsp;&nbsp; #高负荷下缓冲大小（proxy_buffers*2）<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proxy_temp_file_write_size 64k;&nbsp; #设定缓存文件夹大小，大于这个值，将从upstream服务器传</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; }<br>}</p>
+
+
+</blockquote>
+<p>更多内容请访问：<a href="http://xiaogangblog.com/">小刚的博客</a></p>
+
+</div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/xiaogangqq123/category/287044.html">【Mono】</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(1969006,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/%e5%b0%8f%e5%88%9aqq" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/xiaogangqq123/" target="_blank"><img src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/u78707.png" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/xiaogangqq123/">小刚qq</a><br>
+<a href="http://home.cnblogs.com/u/xiaogangqq123/followees">关注 - 6</a><br>
+<a href="http://home.cnblogs.com/u/xiaogangqq123/followers">粉丝 - 82</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(1969006,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">11</span>
+    </div>
+	<div class="buryit" onclick="votePost(1969006,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/02/28/1967345.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/02/28/1967345.html" title="发布于2011-02-28 18:08">Ubuntu10.10下Mono2.10+Nginx+fastcgi 部署asp.net网站</a><br><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04/1971002.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04/1971002.html" title="发布于2011-03-04 16:18">Nginx负载均衡</a><br></div>
+</div>
+
+
+	<div class="postDesc">posted on <span id="post-date">2011-03-02 16:11</span> <a href="http://www.cnblogs.com/xiaogangqq123/">小刚qq</a> 阅读(<span id="post_view_count">205946</span>) 评论(<span id="post_comment_count">3</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=1969006" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#" onclick="AddToWz(1969006);return false;">收藏</a></div>
+</div>
+<script type="text/javascript">var allowComments=true,isLogined=true,cb_blogId=60864,cb_entryId=1969006,cb_blogApp=currentBlogApp,cb_blogUserGuid='1e008c81-b57a-de11-be36-001cf0cd104b',cb_entryCreatedDate='2011/3/2 16:11:00';loadViewCount(cb_entryId);</script>
+
+<a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<br>
+<b>评论:</b>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+			<a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#2057385" class="layer">#1楼</a><a name="2057385" id="comment_anchor_2057385"></a>
+				 <span class="comment_date">2011-03-29 14:03</span> | <a id="a_comment_author_2057385" href="http://www.cnblogs.com/asilan/" target="_blank">阿斯兰</a> <a href="http://msg.cnblogs.com/msg/send/%e9%98%bf%e6%96%af%e5%85%b0" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_2057385" class="blog_comment_body">好文。收藏了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2057385,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2057385,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2057385_avatar" style="display:none;">http://pic.cnitblog.com/face/u119388.gif</span>&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2057385,&#39;h2uff2rshjm17XXso4SdLrI1UMsUgd/oRaRpYdg34ZEAABgTnrSZtA==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2057385,&#39;h2uff2rshjm17XXso4SdLrI1UMsUgd/oRaRpYdg34ZEAABgTnrSZtA==&#39;)">引用</a></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+			<a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#2746767" class="layer">#2楼</a><a name="2746767" id="comment_anchor_2746767"></a>
+				 <span class="comment_date">2013-08-09 02:24</span> | <a id="a_comment_author_2746767" href="http://www.cnblogs.com/eimsteim/" target="_blank">eimsteim</a> <a href="http://msg.cnblogs.com/msg/send/eimsteim" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_2746767" class="blog_comment_body">请问一下，<br>#静态文件，nginx自己处理<br>    location ~ ^/(images|javascript|js|css|flash|media|static)/ {<br>        root /var/www/virtual/htdocs;<br>        #过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。<br>        expires 30d;<br>    }<br><br>这个设置里的root /var/www/virtual/htdocs;的含义是什么啊？<br>是否意味着假如/var/www/virtual/htdocs目录下有个a.jpg的文件，在页面通过<a href="http://localhost/a.jpg%E6%98%AF%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E5%88%B0%E5%91%A2" target="_blank">http://localhost/a.jpg是可以访问到呢</a>？<br>但我这样配置以后并访问不到，求楼主指点~~~</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2746767,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2746767,&#39;Bury&#39;,this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2746767,&#39;grI3r7WypQZ1m5tuzFuhJzcvxey7ikDOiYzErRW7JzO3rUXWKqVNLA==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2746767,&#39;grI3r7WypQZ1m5tuzFuhJzcvxey7ikDOiYzErRW7JzO3rUXWKqVNLA==&#39;)">引用</a></span></div>
+			</div>
+			
+			
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+			<a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#2757303" class="layer">#3楼</a><a name="2757303" id="comment_anchor_2757303"></a><span id="comment-maxId" style="display:none;">2757303</span><span id="comment-maxDate" style="display:none;">2013/8/21 23:04:54</span>
+				 <span class="comment_date">2013-08-21 23:04</span> | <a id="a_comment_author_2757303" href="http://home.cnblogs.com/u/559809/" target="_blank">FrankWong</a> <a href="http://msg.cnblogs.com/msg/send/FrankWong" title="发送站内短消息" class="sendMsg2This">&nbsp;</a><br>
+				<div align="left"><div id="comment_body_2757303" class="blog_comment_body"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#2746767" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,2746767);">@</a>eimsteim<br>可以尝试两种方法<br>1.location ~ ^/(images|javascript|js|css|flash|media|static)/ <br> 替换成location ~ .(htm|html|gif|jpg|jpeg|png|ico|rar|css|js|zip|txt|flv|swf|doc|ppt|xls|pdf)$<br>2.http://localhost/a.jpg 替换成http://localhost/images/a.jpg<br>refer to <a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/null" target="_blank">http://gitsea.com/2013/05/23/nginx-%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E8%AE%BE%E7%BD%AE%E6%8A%80%E5%B7%A7/</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2757303,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2757303,&#39;Bury&#39;,this)">反对(0)</a></div>&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2757303,&#39;m+S/AKiUItA8BHCHFI5VMB8MvPw5O0fmT7kqSJrxyJ74ZHb7C2sjqQ==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2757303,&#39;m+S/AKiUItA8BHCHFI5VMB8MvPw5O0fmT7kqSJrxyJ74ZHb7C2sjqQ==&#39;)">引用</a></span></div>
+			</div>
+			
+			
+		</div>
+	
+
+
+
+<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02/1969006.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div id="commentform_title">发表评论</div>
+<span id="tip_comment" style="color:Red"></span>
+<p>
+昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50" value="h4breeze">
+</p>
+<div class="commentbox_main">
+<div class="commentbox_title">
+<div class="commentbox_title_left">评论内容：</div>
+<div class="commentbox_title_right">
+<img id="ubb_quote" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/quote.gif" alt="引用" title="添加引用" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;quote&#39;)">
+<img id="ubb_bold" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/b.png" alt="粗体" title="添加粗体" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;b&#39;)">
+<img id="ubb_url" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/lk.png" alt="链接" title="添加链接" onclick="insertUbbUrl(&#39;tbCommentBody&#39;)">
+<img id="ubb_indent" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/indent.png" alt="缩进" title="添加首行缩进" onclick="insertIndent(&#39;tbCommentBody&#39;)">
+<img id="ubb_code" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/InsertCode.gif" alt="代码" title="添加代码" onclick="insertUbbCode()">
+<img id="ubb_img" class="comment_icon" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/img.gif" alt="图片" title="上传图片" onclick="OpenImageUploadWindow();">
+</div>
+</div>
+<div class="clear"></div>
+<textarea id="tbCommentBody" class="comment_textarea" rows="20" cols="50"></textarea>
+</div>
+<p id="commentbox_opt">
+<input id="btn_comment_submit" type="button" class="comment_btn" value="提交评论">
+<span id="span_comment_canceledit" style="display:none"><a href="javascript:void(0);" onclick="return CancelCommentEdit()">不改了</a></span>
+<a href="javascript:void(0);" onclick="return logout();">注销</a>
+        <a id="commentbox_opt_sub" href="javascript:void(0);" title="订阅后有新评论时会邮件通知您" onclick="commentManager.Subscribe()">订阅评论</a>
+</p>
+<p>
+[使用Ctrl+Enter键快速提交]
+</p>
+<div style="display:none">
+<span id="comment_edit_id"></span><span id="span_parentcomment_id"></span>
+<span id="span_parent_id"></span>
+<span id="span_comment_replyto"></span>
+<span id="span_comment_posted"></span>
+</div>
+</div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/509480/" target="_blank">魅族手机的问题究竟在哪？</a><br> ·  <a href="http://news.cnblogs.com/n/509479/" target="_blank">研发一种新药，要花掉25亿美元</a><br> ·  <a href="http://news.cnblogs.com/n/509478/" target="_blank">腾讯泼漆门主角谈隐情：网站被电脑管家标注为虚假导致没落</a><br> ·  <a href="http://news.cnblogs.com/n/509477/" target="_blank">微博整治微信推广，阿里腾讯互相拷问“开放”底线</a><br> ·  <a href="http://news.cnblogs.com/n/509476/" target="_blank">TED演讲译文：大数据好东西，会偷走我们的工作……</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/508478/" target="_blank">SOA与API的分裂和统一</a><br> ·  <a href="http://kb.cnblogs.com/page/509278/" target="_blank">可测性分析和实践</a><br> ·  <a href="http://kb.cnblogs.com/page/509236/" target="_blank">OWIN初探</a><br> ·  <a href="http://kb.cnblogs.com/page/509126/" target="_blank">也谈如何构建高性能服务端程序</a><br> ·  <a href="http://kb.cnblogs.com/page/508772/" target="_blank">什么是自组织团队？</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+</div>
+<div id="leftcontent">
+	
+		<div id="leftcontentcontainer">
+			
+<!--done-->
+<div class="newsItem">
+	<div id="blog-news"><p>
+</p><p><strong>公告:</strong></p>
+<p><strong>个人博客:</strong> <a href="http://xiaogangblog.com/" target="_blank">http://xiaogangblog.com</a></p>
+<p>探讨技术问题请加本人QQ:<font style="color:red">897985126 </font></p>
+<p>小刚技术圈:<font style="color:red">92382635</font></p>
+<p>小刚产品圈:<font style="color:red">166560460</font></p>
+<p><strong>我的微博:</strong><a href="http://weibo.com/xiaogangblog" target="_blank">weibo.com/xiaogangblog</a></p>
+<p>这次不怕上不了Google了: <a href="http://www.weigwl.cn/g/" target="_blank">http://www.weigwl.cn/g/</a></p>
+<p><img src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/getqrcode.jpg" width="185">
+<span>微信扫一下吧，宅男必备，帮人挂的+_+</span>
+</p>
+<p></p>
+<p>
+</p>
+<p>
+</p><p>访问统计:</p>
+<div style="display: none" id="__document_write_ajax_div-1"></div>
+<noscript>&lt;a href="http://www.pax.com/free-counters.html"&gt;&lt;img src="http://counter.pax.com/counter/image?counter=ctr-k9bda5os65&amp;noscript=1" alt="Free Hit Counter" border="0" /&gt;&lt;/a&gt;</noscript>
+
+<!-- Tab Code Start -->
+<div style="display: none" id="__document_write_ajax_div-2"></div>
+<!-- Tab Code End -->
+<p></p>
+
+<center>
+</center>
+<div id="clustrback" style="margin: 0 auto; width:160px; height:152px;  background:#ffffff url(http://clustrmaps.com/admin/3d/images/style3_gradient_white.png)  center no-repeat; text-align:center;">
+  <a href="http://www3.clustrmaps.com/counter/maps.php?url=http://www.cnblogs.com/xiaogangqq123/" style="width:160px; display:block; margin:0 auto;" id="clustrMapsLink" target="_blank">
+    <img src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/index2.php" style="border:0px; margin:23px auto;margin:23px auto;" alt="Locations of visitors to this page" title="Locations of visitors to this page" id="clustrMapsImg">
+  </a>
+</div><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/xiaogangqq123/">小刚qq</a><br>园龄：<a href="http://home.cnblogs.com/u/xiaogangqq123/" title="入园时间：2009-07-27">5年4个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/xiaogangqq123/followers/">82</a><br>关注：<a href="http://home.cnblogs.com/u/xiaogangqq123/followees/">6</a><div id="p_b_follow"></div><div style="display: none" id="__document_write_ajax_div-3"></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar"><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2011/02/01&#39;);return false;">&lt;</a></td><td align="center">2011年3月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2011/04/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td align="center">1</td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/02.html"><u>2</u></a></td><td align="center">3</td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04.html"><u>4</u></a></td><td class="CalWeekendDay" align="center">5</td></tr><tr><td class="CalWeekendDay" align="center">6</td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/07.html"><u>7</u></a></td><td align="center">8</td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/09.html"><u>9</u></a></td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/10.html"><u>10</u></a></td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/11.html"><u>11</u></a></td><td class="CalWeekendDay" align="center">12</td></tr><tr><td class="CalWeekendDay" align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td class="CalWeekendDay" align="center">19</td></tr><tr><td class="CalWeekendDay" align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/25.html"><u>25</u></a></td><td class="CalWeekendDay" align="center">26</td></tr><tr><td class="CalWeekendDay" align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script><br>
+			<div id="blog-sidecolumn">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/xiaogangqq123/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+
+</div>
+<h3 class="catListTitle">最新随笔</h3>
+<div class="RecentComment" id="RecentPosts">
+<ul style="word-break:break-all">
+<li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/08/27/2658716.html">1. DropBox反向代理+CDN加速，做外链和图床</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/05/07/2487166.html">2. WPF DataGrid 样式分享</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/05/07/2487149.html">3. WPF LinkLabel 控件</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/03/19/2405805.html">4. Git初级使用教程</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/03/19/2405730.html">5. 使用Inno Setup 打包.NET程序,并自动安装.Net Framework</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/09/30/2196730.html">6. SQLServer 事务日志传送</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/09/30/2196727.html">7. SQLServer BCP 导入导出数据</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/09/05/2167846.html">8. SQLServer 镜像功能完全实现</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/08/29/2158318.html">9. WPF 开机一键启动程序V1.0【原创】</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/08/24/2152415.html">10. WCF 匿名客户端证书安全验证</a></li>
+</ul>
+</div>
+
+		<h3 class="catListTitle">随笔分类</h3>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_0" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287043.html">【ASP.NET】(27)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_1" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287045.html">【C#】(3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_2" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287044.html">【Mono】(4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_3" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287047.html">【Silverlight】(12)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_4" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287050.html">【辅助工具】(8)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_5" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287046.html">【关于产品】(10)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_6" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287048.html">【关于生活】(4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_7" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/291228.html">【胡侃烂说】(3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_0_Link_8" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/category/287049.html">【数据库】(9)</a></li>
+			
+				</ul>
+			
+	
+		<h3 class="catListTitle">随笔档案</h3>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_0" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2012/08.html">2012年8月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_1" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2012/05.html">2012年5月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_2" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2012/03.html">2012年3月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_3" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/09.html">2011年9月 (3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_4" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/08.html">2011年8月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_5" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/07.html">2011年7月 (9)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_6" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/06.html">2011年6月 (5)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_7" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/05.html">2011年5月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_8" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/04.html">2011年4月 (4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_9" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03.html">2011年3月 (7)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_10" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/02.html">2011年2月 (3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_11" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2011/01.html">2011年1月 (3)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_12" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/12.html">2010年12月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_13" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/11.html">2010年11月 (5)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_14" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/10.html">2010年10月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_15" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/09.html">2010年9月 (1)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_16" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/08.html">2010年8月 (6)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_17" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/07.html">2010年7月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_18" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/06.html">2010年6月 (2)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_19" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/05.html">2010年5月 (11)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_20" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2010/04.html">2010年4月 (4)</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_1_Link_21" class="listitem" href="http://www.cnblogs.com/xiaogangqq123/archive/2009/09.html">2009年9月 (1)</a></li>
+			
+				</ul>
+			
+	
+		<h3 class="catListTitle">友情链接</h3>
+		
+				<ul class="catList">
+			
+				<li class="catListItem"> <a id="CatList_LinkList_2_Link_0" class="listitem" href="http://www.it100.info/" rel="nofollow">大气象IT博客</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_2_Link_1" class="listitem" href="http://revit.5d6d.com/" rel="nofollow">国内最专业的Revit二次开发论坛</a></li>
+			
+				<li class="catListItem"> <a id="CatList_LinkList_2_Link_2" class="listitem" href="http://xiaogangblog.com/" rel="nofollow" target="_blank">小刚的个人博客</a></li>
+			
+				</ul>
+			
+	
+
+<h3>积分与排名</h3>
+<ul>
+	<li>
+		积分 -
+		111755
+	</li><li>
+		排名 -
+		1273
+	</li>
+</ul>
+<div id="recent_comments_wrap">
+<h3 class="catListTitle">最新评论</h3>
+<div class="RecentComment" id="RecentComments">
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/07/01/2095431.html#3047440">1. Re:IBatis.net Log4Net日志记录</a></li>
+    <li class="recent_comment_body">楼主，你的好贴，解决了我好大好大的困惑，太感激了。</li>
+    <li class="recent_comment_author">--为你婷留</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04/1971002.html#3033467">2. Re:Nginx负载均衡</a></li>
+    <li class="recent_comment_body">请教一下，未能将挂掉的服务器踢除出去，可能会是什么原因啊？</li>
+    <li class="recent_comment_author">--娇娇家的美衣阁</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/05/05/1727815.html#2931646">3. Re:WPF做的一款虚拟桌面切换程序,喜欢的朋友拿来试试</a></li>
+    <li class="recent_comment_body">如果楼主能看到的话，能发一份到pcbzw914@163.com吗？csdn上没有分了。</li>
+    <li class="recent_comment_author">--祁临芯</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/06/24/1764282.html#2925350">4. Re:MSChart使用技巧总结</a></li>
+    <li class="recent_comment_body">VS2012用不了，在编辑界面打不开报错，但是能运行起来。</li>
+    <li class="recent_comment_author">--workhard</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/03/19/2405730.html#2924724">5. Re:使用Inno Setup 打包.NET程序,并自动安装.Net Framework</a></li>
+    <li class="recent_comment_body">您的代码用到我的上面报错！这是怎么回事啊？有没有好一点的解决办法啊</li>
+    <li class="recent_comment_author">--小锴</li>
+</ul>
+</div>
+</div>
+</div><div id="topview_posts_wrap">
+<h3 class="catListTitle">阅读排行榜</h3>
+<div class="RecentComment" id="TopViewPosts"> 
+	<div id="TopViewPostsBlock"><ul><li><a href="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/Nginx配置文件详细说明 - 小刚qq - 博客园.htm">1. Nginx配置文件详细说明(205944)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04/1971002.html">2. Nginx负载均衡(51207)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/06/24/1764282.html">3. MSChart使用技巧总结(19820)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2012/03/19/2405805.html">4. Git初级使用教程(15963)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/08/25/1808290.html">5. open-flash-chart 和 FusionCharts Free 探究(12650)</a></li></ul></div>
+</div>
+</div><div id="topfeedback_posts_wrap">
+<h3 class="catListTitle">评论排行榜</h3>
+<div class="RecentComment" id="TopCommentsPosts">
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/06/24/1764282.html">1. MSChart使用技巧总结(26)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/08/29/2158318.html">2. WPF 开机一键启动程序V1.0【原创】(25)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/06/29/2093250.html">3. IBatis.net ORM初体验(20)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/05/05/1727815.html">4. WPF做的一款虚拟桌面切换程序,喜欢的朋友拿来试试(19)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/04/26/2029426.html">5. Mongodb从配置到应用(16)</a></li></ul></div>
+</div></div><div id="topdigg_posts_wrap">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2010/06/24/1764282.html">1. MSChart使用技巧总结(19)</a></li><li><a href="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/Nginx配置文件详细说明 - 小刚qq - 博客园.htm">2. Nginx配置文件详细说明(11)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/03/04/1971002.html">3. Nginx负载均衡(7)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/08/29/2158318.html">4. WPF 开机一键启动程序V1.0【原创】(6)</a></li><li><a href="http://www.cnblogs.com/xiaogangqq123/archive/2011/09/05/2167846.html">5. SQLServer 镜像功能完全实现(5)</a></li></ul></div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script></div>
+	
+</div>
+
+<!--done-->
+<div class="footer">
+	Powered by: <a href="http://www.cnblogs.com/">博客园</a>	模板提供：<a href="http://blog.hjenglish.com/">沪江博客</a>
+	Copyright ©2014 小刚qq
+</div>
+
+
+
+<!--PageEndHtml Block Begin-->
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0e8f678d582cf252b75034be304c7db8' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://hm.baidu.com/h.js?0e8f678d582cf252b75034be304c7db8" type="text/javascript"></script><iframe src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/container.htm" style="visibility: hidden; display: none;"></iframe>
+
+
+<script type="text/javascript">
+  var _jdt = new Date().toDateString().replace(/\s/g, '');
+  document.write(unescape("%3Cscript src='http://js.juandou.com/a.js?v="+_jdt+".js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://js.juandou.com/a.js?v=WedNov262014.js" type="text/javascript"></script> 
+<script type="text/javascript">
+try{
+  var _jd = JuanDou.__init__();
+  _jd._setCID(10032304);
+  _jd._run();
+}catch(e){}
+</script>
+
+<script language="javascript" type="text/javascript" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/3817709.js"></script><a href="http://www.51.la/?3817709" target="_blank"><img alt="51.la 专业、免费、强健的访问统计" src="./Nginx配置文件详细说明 - 小刚qq - 博客园_files/icon_0.gif" style="border:none"></a>
+
+<noscript>&lt;a href="http://www.51.la/?3817709" target="_blank"&gt;&lt;img alt="&amp;#x6211;&amp;#x8981;&amp;#x5566;&amp;#x514D;&amp;#x8D39;&amp;#x7EDF;&amp;#x8BA1;" src="http://img.users.51.la/3817709.asp" style="border:none" /&gt;&lt;/a&gt;</noscript>
+<!--PageEndHtml Block End-->
+
+
+</body></html>

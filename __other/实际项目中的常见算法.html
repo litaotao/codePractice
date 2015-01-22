@@ -1,0 +1,2045 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0061)http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>实际项目中的常见算法</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./实际项目中的常见算法_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./实际项目中的常见算法_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./实际项目中的常见算法_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn2.infoqstatic.com/favicon.ico?20141119-0542" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn1.infoqstatic.com/apple-touch-icon.png?20141119-0542">
+
+        <link rel="stylesheet" href="./实际项目中的常见算法_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./实际项目中的常见算法_files/ga.js"></script><script async="" type="text/javascript" src="./实际项目中的常见算法_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./实际项目中的常见算法_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()])</script>
+	
+    <script type="text/javascript" src="./实际项目中的常见算法_files/forum.js"></script>
+	<meta name="keywords" content="Core algorithms deployed,语言 &amp; 开发,Facebook,Chrome,社交网络,Linux,操作系统,算法,">
+	<meta name="description" content="近日Emanuele Viola在Stackexchange上提了这样的一个问题，他希望有人能够列举一些目前软件、硬件等中正在使用的算法的实际案例来证明算法的重要性，对于大家可能给到的回答，他还提出了几点要求，Vijay D的回复获得了最佳答案，他的内容具体回复内容如下：">
+	<meta name="tprox" content="1385792580000">
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+<meta property="og:title" content="实际项目中的常见算法 ">
+<meta property="og:description" content="近日Emanuele Viola在Stackexchange上提了这样的一个问题，他希望有人能够列举一些目前软件、硬件等中正在使用的算法的实际案例来证明算法的重要性，对于大家可能给到的回答，他还提出了几点要求，Vijay D的回复获得了最佳答案，他的内容具体回复内容如下：">
+<meta property="og:site_name" content="InfoQ">
+
+
+        
+        
+			<link rel="image_src" href="http://cdn2.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+			<meta property="og:image" content="http://cdn1.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+		
+    <script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><iframe src="./实际项目中的常见算法_files/container.html" style="visibility: hidden; display: none;"></iframe><script src="./实际项目中的常见算法_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./实际项目中的常见算法_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./实际项目中的常见算法_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./实际项目中的常见算法_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="KppYzoABEEJVEvNC">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./实际项目中的常见算法_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/container-cloud">容器化的云</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./实际项目中的常见算法_files/chrisswan_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">我们今天所使用的云几乎都是用虚拟机搭建的，虚拟机是过去十年IT界的颠覆性技术。现在情况即将改变，容器的使用将成为下一个十年的颠覆性技术。本次演讲，我们将关注容器是什么，与其伴生的生态系统，以及为什么说这一技术是颠覆性的。我们还将探讨一下容器化的云的未来，同时思考该技术对运维模型和经济模型的影响。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/container-cloud">容器化的云</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./实际项目中的常见算法_files/chrisswan_100(1).jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">我们今天所使用的云几乎都是用虚拟机搭建的，虚拟机是过去十年IT界的颠覆性技术。现在情况即将改变，容器的使用将成为下一个十年的颠覆性技术。本次演讲，我们将关注容器是什么，与其伴生的生态系统，以及为什么说这一技术是颠覆性的。我们还将探讨一下容器化的云的未来，同时思考该技术对运维模型和经济模型的影响。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/kanban-agenda-part1-sustainability">看板中的“可持续议题”</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./实际项目中的常见算法_files/logo.png" alt="" border="0">
+							<span id="process-practicesHDSummary">本文属于“3大议题，9种价值观”看板模型系列文章的第一篇，探讨“可持续”议题：这是在个人和团队层面实施看板的常见方法，不可持续的实践和工作负载会让人们需要缓解和放松，并由此激发他们采纳看板。可持续议题重点讨论看板如下三个价值观：透明、平衡、协作。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/aws-fault-isolation">AWS全球范围故障隔离案例研究</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./实际项目中的常见算法_files/aws4.png" alt="" border="0">
+							<span id="operations-infrastructureHDSummary"></span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/banking-vs-gaming">银行业和游戏业的技术体系架构</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./实际项目中的常见算法_files/Orcs-1.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">在本文中，Ben Evans考量了金融系统企业体系架构的一些特性并将这些特性与他作为玩家所观察到的游戏系统环境的一些特性进行对比。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn2.infoqstatic.com/images/ads/banners/qcon/cn/2014/20141111_banner.jpg?20141119-0542" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://2015.qconbeijing.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/news?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="新闻">新闻</a>
+                
+		
+		<span class="last">实际项目中的常见算法</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+<h1 class="general">实际项目中的常见算法</h1>
+<span class="author_general">
+    作者
+    
+        
+    
+    <a href="http://www.infoq.com/cn/author/%E6%B0%B4%E7%BE%BD%E5%93%B2" class="editorlink f_taxonomyEditor">
+水羽哲</a>
+
+    
+    发布于
+    2013年11月30日
+    <em>|</em>
+    
+<a id="noOfComments" title="" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#theCommentsSection" class="comments_like">
+		
+	    
+	        <span class="comments_counts">
+	        	<span class="nr">
+					讨论
+	        	</span>
+	        </span>
+	    
+	</a></span>
+
+
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1416834121476">
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="Bookmarks.bookmarkContent(&#39;news&#39;, &#39;2013/11/Core-algorithms-deployed&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+
+<div class="clear"></div>
+<div class="article_page_left news_container text_content_container">
+			
+	<div class="text_info">
+   		<p>【编者按】本文原始内容来源于<a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">stackexchange</a>，遵循<a href="http://creativecommons.org/licenses/by-sa/3.0/">cc-wiki</a>协议；</p>
+<p>近日<a href="http://cstheory.stackexchange.com/posts/19759/revisions">Emanuele Viola</a>在Stackexchange上提了这样的一个<a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">问题</a>，他希望有人能够列举一些目前软件、硬件中正在使用的算法的实际案例来证明算法的重要性，对于大家可能给到的回答，他还提出了几点要求：</p>
+<ol>
+    <li>使用这些算法的软件或者硬件应该是被广泛应用的；</li>
+    <li>例子需要具体，并给出确切的系统、算法的引用地址；</li>
+    <li>在经典的本科生或者博士的课程中应该教过这些算法或者数据结构；</li>
+</ol>
+<p><a href="http://cstheory.stackexchange.com/posts/19773/revisions">Vijay D</a>的回复获得了最佳答案，他的具体回复内容如下：</p>
+<h2>Linux内核中的基本数据结构和算法</h2>
+<ol>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/lib/llist.c">链表</a>、<a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/list.h">双向链表</a>和<a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/llist.h">无锁链表</a></li>
+    <li>
+    <p><a href="https://github.com/mirrors/linux-2.6/blob/39caa0916ef27cf1da5026eb708a2b8413156f75/lib/btree.c">B+ 树</a>，代码中的注释将会告诉你一些教科书中不能学到的内容：</p>
+    <blockquote>
+    <p>这是一个简单的B+树实现，我写它的目的是作为练习，并以此了解B+树的工作原理。结果该实现发挥了它的实用价值。</p>
+    <p>...</p>
+    <p>一个不经常在教科书中提及的技巧：最小值应该放在右侧，而不是左侧。一个节点内所有被使用的槽位应该在左侧，没有使用的节点应该为NUL，大部分的操作只遍历一次所有的槽位，在第一个NUL处终止。</p>
+    </blockquote></li>
+    <li>
+    <p><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/plist.h">带权重的有序列表</a>用于<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/include/linux/rtmutex.h">互斥锁</a>、<a href="https://github.com/mirrors/linux-2.6/blob/f0d55cc1a65852e6647d4f5d707c1c9b5471ce3c/drivers/powercap/intel_rapl.c">驱动</a>等；</p>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/rbtree.h">红黑树</a><a href="http://lwn.net/Articles/184495/">用于</a>调度、虚拟内存管理、跟踪文件描述符和目录条目等；</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/interval_tree.h">区间树</a></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/radix-tree.h">Radix树</a>，用于内存管理、NFS相关查找和网络相关的功能；  <blockquote>
+    <p>radix树的一个常见的用法是保存页面结构体的指针；</p>
+    </blockquote></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/include/linux/prio_heap.h">优先级堆</a>，文字上的描述，主要是在教科书中实现，用于<a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/include/linux/cgroup.h">control group系统</a>;  <blockquote>
+    <p>包含指针的只允许简单插入的静态大小优先级堆，基于CLR（算法导论）第七章</p>
+    </blockquote></li>
+    <li>
+    <p>哈希函数，引用Knuth和他的一篇论文：</p>
+    <blockquote>
+    <p>Knuth建议选择与机器字长所能表达的最大整数约成黄金比例的素数来做乘法散列，Chuck Lever 证实了这个技术的有效性；</p>
+    <p><a href="http://www.citi.umich.edu/techreports/reports/citi-tr-00-1.pdf">http://www.citi.umich.edu/techreports/reports/citi-tr-00-1.pdf</a></p>
+    <p>这些选择的素数是位稀疏的，也就是说对他们的操作可以使用位移和加法来替换机器中很慢的乘法操作；</p>
+    </blockquote></li>
+    <li>
+    <p>有些代码，比如这个<a href="https://github.com/mirrors/linux-2.6/blob/0b1e73ed225d8f7aeef96b74147215ca8b990dce/drivers/staging/lustre/lustre/lov/lov_pool.c">驱动</a>，他们是自己实现的哈希函数</p>
+    </li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/hashtable.h">哈希表</a>，用于实现<a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/fs/inode.c">索引节点</a>、<a href="https://github.com/mirrors/linux-2.6/blob/ff812d724254b95df76b7775d1359d856927a840/fs/btrfs/check-integrity.c">文件系统完整性检查</a>等；</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/bitmap.h">位数组</a>，用于处理flags、中断等，在Knuth第四卷中有对其特性的描述；</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/semaphore.h">Semaphores</a> 和 <a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/spinlock.h">spin locks</a></li>
+    <li>二叉树搜索用于<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/sh/intc/chip.c">中断处理</a>、<a href="https://github.com/mirrors/linux-2.6/blob/10d0c9705e80bbd3d587c5fad24599aabaca6688/drivers/base/regmap/regcache.c">登记缓存查找</a>等；</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/fs/befs/btree.c">使用B-树进行二叉树查找</a>；</li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/a9238741987386bb549d61572973c7e62b2a4145/drivers/acpi/acpica/nswalk.c">深度优先搜索</a>和他的变体被应用于<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/fs/configfs/dir.c">目录配置</a>；  <blockquote>
+    <p>在命名空间树中执行一个修改过的深度优先算法，开始（和终止于）start_handle所确定的节点。当与参数匹配的节点被发现以后，回调函数将会被调用。如果回调函数返回一个非空的值，搜索将会立即终止，这个值将会回传给调用函数；</p>
+    </blockquote></li>
+    <li><a href="https://github.com/mirrors/linux-2.6/blob/4fbf888accb39af423f271111d44e8186f053723/kernel/locking/lockdep.c">广度优先搜索</a>用于在运行时检查锁的正确性；</li>
+    <li>链表上的<a href="https://github.com/mirrors/linux-2.6/blob/master/lib/list_sort.c">合并排序</a>用于<a href="https://github.com/mirrors/linux-2.6/blob/42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd/fs/ubifs/gc.c">垃圾回收</a>、<a href="https://github.com/mirrors/linux-2.6/blob/ff812d724254b95df76b7775d1359d856927a840/fs/btrfs/raid56.c">文件系统管理</a>等；</li>
+    <li>在某个<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/drivers/media/common/saa7146/saa7146_hlp.c">驱动程序的库函数</a>里，冒泡排序居然也被实现了</li>
+    <li>
+    <p><a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/lib/ts_kmp.c">Knuth-Morris-Pratt 字符串匹配</a>；</p>
+    <blockquote>
+    <p>Knuth、Morris和 Pratt [1]实现了一个线性时间复杂度字符串匹配算法。该算法完全规避了对转换函数DELTA的显式计算。其匹配时间为O(n)（其中n是文本长度），只使用一个辅助函数PI[1...m]（其中m是模式的长度），模式的预处理时间是O(m)。PI这个数组允许DELTA函数在需要时能迅速运行。大体上，对任意状态q=0,1,...,m和任意SIGMA中的字符"a"，PI["q"]保存了独立于"a"的信息，并用于计算DELTA("q", "a")。由于PI这个数组只包含m个条目，而DELTA包含O(m|SIGMA|)个条目，我们通过计算PI进而在预处理时间保存|SIGMA|的系数，而非计算DELTA。</p>
+    <p>[1] Cormen, Leiserson, Rivest, Stein Introdcution to Algorithms, 2nd Edition, MIT Press</p>
+    <p>[2] See finite automation theory</p>
+    </blockquote></li>
+    <li>
+    <p>Boyer-Moore模式匹配，如下是引用和对其他算法的使用建议；</p>
+    <blockquote>
+    <p>Boyer-Moore字符串匹配算法:</p>
+    <p>[1] A Fast String Searching Algorithm, R.S. Boyer and Moore. Communications of the Association for Computing Machinery, 20(10), 1977, pp. 762-772. <a href="http://www.cs.utexas.edu/users/moore/publications/fstrpos.pdf">http://www.cs.utexas.edu/users/moore/publications/fstrpos.pdf</a></p>
+    <p>[2] Handbook of Exact String Matching Algorithms, Thierry Lecroq, 2004 <a href="http://www-igm.univ-mlv.fr/~lecroq/string/string.pdf">http://www-igm.univ-mlv.fr/~lecroq/string/string.pdf</a></p>
+    <p>注意：由于Boyer-Moore（BM）自右向左做匹配，有一种可能性是一个匹配分布在不同的块中，这种情况下是不能找到任何匹配的。</p>
+    <p>如果你想确保这样的事情不会发生，使用Knuth-Pratt-Morris（KMP）算法来替代。也就是说，根据你的设置选择合适的字符串查找算法。</p>
+    <p>如果你使用文本搜索架构来过滤、网络入侵检测（NIDS）或者任何安全为目的，那么选择KMP。如果你关乎性能，比如你在分类数据包，并应用服务质量（QoS）策略，并且你不介意可能需要在分布在多个片段中匹配，然后就选择BM。</p>
+    </blockquote></li>
+</ol>
+<h2>Chromium 浏览器中的数据结构和算法</h2>
+<ol>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/v8/src/splay-tree.h">伸展树</a>  <blockquote>
+    <p>此树会被分配策略参数化，这个策略负责在C的自由存储空间和区域中分配列表，参见zone.h</p>
+    </blockquote></li>
+    <li>Demo中使用了<a href="https://code.google.com/p/chromium/codesearch#chromium/src/native_client_sdk/src/examples/demo/voronoi/index.html">Voronoi</a>图</li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/chrome/browser/ui/cocoa/tabs/tab_strip_controller.mm">基于Bresenham算法的标签管理</a></li>
+</ol>
+<p>同时，代码中还包含了一些第三方的算法和数据结构，例如：</p>
+<ol>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/bintree.py">二叉树</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/rbtree.py">红黑树</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/bintrees/bintrees/avltree.py">AVL树</a></li>
+    <li>用于压缩的<a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/zlib/deflate.c">Rabin-Karp字符串匹配</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/native_client/src/trusted/validator_ragel/dfa_traversal.py">计算自动机的后缀</a></li>
+    <li>苹果实现的<a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/wtf/BloomFilter.h">布隆过滤器</a></li>
+    <li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/libvpx/source/libvpx/vp8/common/textblit.c">布氏算法</a></li>
+</ol>
+<h2>编程语言类库</h2>
+<ol>
+    <li><a href="http://www.cplusplus.com/reference/stl/">C++ STL</a>，包含的有列表、堆、栈、向量、<a href="http://www.cplusplus.com/reference/algorithm/">排序、搜索和堆操作算法</a></li>
+    <li><a href="http://docs.oracle.com/javase/7/docs/api/">Java API </a>非常广泛，包含的太多</li>
+    <li><a href="http://www.boost.org/doc/libs/1_55_0/libs/algorithm/doc/html/index.html#algorithm.description_and_rationale">Boost C++ 类库</a>，包含了诸如Boyer-Moore和Knuth-Morris-Pratt字符串匹配算法等；</li>
+</ol>
+<h2>分配和调度算法</h2>
+<ol>
+    <li>最近最少使用算法有多种实现方式，在Linux内核中是基于<a href="https://github.com/mirrors/linux-2.6/blob/master/include/linux/list_lru.h">列表实现</a>的；</li>
+    <li>其他可能需要了解的是先入先出、最不常用和轮询；</li>
+    <li>VAX、VMS系统中大量使用FIFO的变体；</li>
+    <li><a href="http://dl.acm.org/citation.cfm?id=4750">Richard Carr</a>的<a href="http://en.wikipedia.org/wiki/Page_replacement_algorithm#Clock">时钟算法</a>被用于Linux中页面帧替换；</li>
+    <li>Intel i860处理器中使用了随机替换策略；</li>
+    <li><a href="http://en.wikipedia.org/wiki/Adaptive_Replacement_Cache">自适应缓存替换</a>被用于一些IBM的存储控制中，由于<a href="http://www.varlena.com/GeneralBits/96.php">专利原因</a>在PostgreSQL只有简单的应用；</li>
+    <li>Knuth在TAOCP第一卷中提到的<a href="http://en.wikipedia.org/wiki/Buddy_memory_allocation">伙伴内存分配算法</a>被用于Linux内核中，FreeBSD和<a href="http://www.facebook.com/notes/facebook-engineering/scalable-memory-allocation-using-jemalloc/480222803919">Facebook</a>都在使用jemalloc并发分配器；</li>
+</ol>
+<h2>*nix系统中的核心组件</h2>
+<ol>
+    <li>grep和awk都实现了使用Thompson-McNaughton-Yamada构建算法实现从正则表达式中创建NFA</li>
+    <li>tsort实现了拓扑排序</li>
+    <li>fgrep实现了<a href="http://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_string_matching_algorithm">Aho-Corasick 字符串匹配算法</a>；</li>
+    <li>GNU grep，据作者Mike Haertel所说，<a href="http://lists.freebsd.org/pipermail/freebsd-current/2010-August/019310.html">实现了Boyer-Moore算法</a>；</li>
+    <li>Unix中的crypt(1)实现了<a href="http://zh.wikipedia.org/zh/%E6%81%A9%E5%B0%BC%E6%A0%BC%E7%8E%9B%E5%AF%86%E7%A0%81%E6%9C%BA">哑谜机</a>（Enigma Machine）中的加密算法的变种；</li>
+    <li>Doug Mcllroy基于和James合作的原型实现的<a href="http://www.cs.dartmouth.edu/~doug/diff.pdf">Unix diff</a>，比用来计算Levenshtein距离的标准动态规划算法更好，Linux版本被用来计算最短编辑距离；</li>
+</ol>
+<h2>加密算法</h2>
+<ol>
+    <li><a href="http://en.wikipedia.org/wiki/Merkle_tree">Merkle树</a>，尤其是Tiger Tree Hash的变种，用于点对点的程序，例如<a href="https://github.com/gtk-gnutella/bitter">GTK Gnutella</a> 和<a href="http://en.wikibooks.org/wiki/LimeWire">LimeWire</a>;</li>
+    <li><a href="http://en.wikipedia.org/wiki/MD5">MD5</a>用于为软件包提供校验码，还用于*nix系统（<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/crypto/md5.c">Linux实现</a>）中的完整性校验，同时他还支持Windows和OS X系统；</li>
+    <li><a href="http://www.openssl.org/">OpenSSL</a>实现了需要加密算法，诸如AES，Blowfish，DES，SHA-1，SHA-2，RSA，DES等；</li>
+</ol>
+<h2>编译器</h2>
+<ol>
+    <li>yacc和bison实现了<a href="http://en.wikipedia.org/wiki/LALR_parser">LALR解析器</a></li>
+    <li>支配算法用于基于SSA形式的最优化编译器；</li>
+    <li>lex和flex将正则表达式编译为NFA；</li>
+</ol>
+<h2>压缩和图片处理</h2>
+<ol>
+    <li>
+    <p>为GIF图片格式而出现的Lempel-Zivsraf算法在图片处理程序中经常被应用，从一个简单的*nix组件转化为一个复杂的程序；</p>
+    </li>
+    <li>
+    <p>运行长度编码被用于生成PCX文件（用于Paintbrush这个程序中），压缩BMP文件和TIFF文件；</p>
+    </li>
+    <li>
+    <p>小波压缩（Wavelet压缩）是JPEG 2000的基础，所以所有生成JPEG 2000文件的数码相机都是实现了这个算法；</p>
+    </li>
+    <li>
+    <p>Reed-Solomon纠错用于<a href="https://github.com/mirrors/linux-2.6/blob/b3a3a9c441e2c8f6b6760de9331023a7906a4ac6/lib/reed_solomon/reed_solomon.c">Linux内核</a>、CD驱动、条形码读取，并且结合卷积从航行团队进行图片传输；</p>
+    </li>
+</ol>
+<h2>冲突驱动条款学习算法（Conflict Driven Clause Learning）</h2>
+<p>自2000年以来，在工业标准中的SAT（布尔满足性问题）求解器的运行时间每年都在成倍减少。这一发展的一个非常重要的原因是冲突驱动条款学习算法（Conflict Driven Clause Learning）的使用，它结合了Davis Logemann和Loveland的约束编程和人工智能研究技术的原始论文中关于布尔约束传播的算法。具体来说，工业建模中SAT被认为是一个简单的问题（<a href="http://rjlipton.wordpress.com/2009/07/13/sat-solvers-is-sat-hard-or-easy/">见讨论</a>）。对我来说，这是近代最伟大的成功故事之一，因为它结合了先进的算法、巧妙的设计思路、实验反馈，并以一致的共同努力来解决这个问题。<a href="http://dl.acm.org/citation.cfm?id=1536637">Malik和Zhang的CACM论文是一个很好的阅读材料</a>。许多大学都在教授这个算法，但通常是在逻辑或形式化方法的课程中。</p>
+<h2>微博热议</h2>
+<p>Databricks大数据公司联合创始人<a href="http://weibo.com/hashjoin">@hashjoin</a>首先并在微博上传播了这个内容：</p>
+<blockquote>
+<p>很多学生和软件工程师都会好奇自己过去学习的算法有什么实际应用的价值。这个StackExchange的回答列出了各种经典算法在几个开源项目中的应用。<a href="http://t.cn/8kAP4yG">http://t.cn/8kAP4yG</a> 作者罗列出了从最基础的hash table到字符串匹配和加密算法等在Chromium和Linux内核的代码。查看开源代码是学习算法实现一个好途径。</p>
+</blockquote>
+<p>大家也纷纷发表了自己的看法：</p>
+<p><a href="http://weibo.com/n/GeniusVczh">@GeniusVczh</a>：</p>
+<blockquote>
+<p>所谓的算法实现就跟背书一样，所以如果不是为了学习语法，千万不要看那些带代码的编程书，或者编程书里面的代码。以学习为目的的话，东西就自己做，然后自己用，用出翔了，你就知道他为什么不好了。</p>
+</blockquote>
+<p><a href="http://weibo.com/n/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90">@左耳朵耗子</a>：</p>
+<blockquote>
+<p>说算法没啥用的人基本上说明他只在简单的堆砌业务功能代码的井底中。</p>
+</blockquote>
+<p><a href="http://weibo.com/n/%E8%96%9B%E6%AD%A3%E5%8D%8E-%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E9%99%A2">@薛正华-中国科学院</a>：</p>
+<blockquote>
+<p>我一直觉得在讲述每一个技术前，最好先让大家知道这个技术能干什么，曾经干过什么，将来或许能用在什么地方。这会增加大家对技术的兴趣、理解和灵活运用，会让大家学的更好。这挺重</p>
+</blockquote>
+<p><strong>原始问题链接：<a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">Core algorithms deployed</a></strong></p>
+<p>感谢吴峰光对本文的审校。</p>
+        <div style="margin-bottom:5px">【<a href="http://bj2014.archsummit.com/" target="_blank">ArchSummit北京2014</a>】解读“双11”背后淘宝、京东、一号店的技术支撑。年末的技术盛宴，CTO与架构师的大Party。11月30日前报名享受9折优惠，<a href="http://bj2014.archsummit.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Chrome" name="Chrome" id="4,570">Chrome</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Algorithm" name="Algorithm" id="7,033">算法</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Linux" name="Linux" id="848">Linux</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Facebook" name="Facebook" id="3,540">Facebook</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/OS" name="OS" id="3,658">操作系统</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/socialNetworking" name="socialNetworking" id="4,571">社交网络</a></li>
+			</ul>							
+		</div>
+		<div class="clear"></div>
+		
+		
+		
+		
+		
+	   	
+
+
+
+
+
+
+
+
+<div class="related_sponsors wholething" style="display: block;">
+	<div class="gray_section_related only1">
+	    <div class="related_editorial recommended">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        </div>
+	    </div>
+	    
+	        
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6193&t=f" target="_blank">
+	                                    “双11”背后淘宝、京东、一号店的技术支撑
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5997&t=f" target="_blank">
+	                                    率先在国内落地的全球化云服务，深度了解Windows Azure
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5998&t=f" target="_blank">
+	                                    利用开发测试云实现精益创业、快速迭代
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5999&t=f" target="_blank">
+	                                    Windows Azure自管理服务实现近乎零停机维护
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6000&t=f" target="_blank">
+	                                    Windows Azure专区上线，全面了解云服务
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    
+	                    
+	                    
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+	        
+        </div>
+        
+            <div class="paid_section only2last">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6044&t=f" target="_blank">
+                        <img src="./实际项目中的常见算法_files/100x50.jpg" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">Windows Azure专区上线，全面了解云服务</font><a href="http://www.infoq.com/infoq/url.action?i=6001&t=f" target="_blank"><font face="Verdana">精彩呈现</font></a>！</p>
+
+                </div>
+            </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "968,922,1343,315,2602,-1000,-1000", "title": "实际项目中的常见算法", "contentPath": "/news/2013/11/Core-algorithms-deployed", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": '2013/11/Core-algorithms-deployed',
+            "uriMapping": 'news'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var vcrColumn = $('.gray_section_related > .related_editorial.sponsored');
+            var vcrExists = $(vcrColumn).length === 1;
+            var sponsorshipColumn = $('.related_sponsors > .paid_section')
+            var sponsorshipExists = $(sponsorshipColumn).length === 1;
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || vcrExists || sponsorshipExists || researchExists) {
+                $('.related_sponsors.wholething').show(); // show the big related box
+            }
+			
+            if(recommendedExists || vcrExists){
+            	$('.gray_section_related').show(); // show the gray box for vcr and recommendations
+            }
+            
+            // in case all three available, leave now
+            if (recommendedExists && vcrExists && sponsorshipExists) {
+                return;
+            }
+            // in case only two of them available
+            if (recommendedExists && vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only2');
+                $(vcrColumn).addClass('only2last');
+                $(grayBox).addClass('only2 fullWidth');                
+            } else if (recommendedExists && sponsorshipExists && !vcrExists) {
+                $(recommendedColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            } else if (vcrExists && sponsorshipExists && !recommendedExists) {
+                $(vcrColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            }
+            // in case only one is available
+            else if (recommendedExists && !vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (vcrExists && !recommendedExists && !sponsorshipExists) {
+                $(vcrColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (sponsorshipExists && !recommendedExists && !vcrExists) {
+                $(sponsorshipColumn).addClass('only1');
+            }
+            // in case none is available, do not display upper border for the research category if any
+            else if (researchExists) {
+                $(researchRow).addClass('only1');
+            }
+        });
+</script>
+<div class="clear"></div>
+
+		<div class="clear"></div>
+
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=33405;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./实际项目中的常见算法_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./实际项目中的常见算法_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./实际项目中的常见算法_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck" style="display: none;">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+    </div>
+
+    <div class="all_comments">
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+			
+	<div class="clear"></div>
+</div>
+		
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="容器化的云" href="http://www.infoq.com/cn/presentations/container-cloud">
+					容器化的云
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Chris-Swan" class="editorlink" title="Chris Swan">
+Chris Swan</a>
+
+				11月23日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="容器化的云" href="http://www.infoq.com/cn/presentations/container-cloud">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/chrisswan_100(1).jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="银行中的跨国研发团队如何快速交付" href="http://www.infoq.com/cn/presentations/fast-delivery">
+					银行中的跨国研发团队如何快速交付
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E7%94%B3%E5%81%A5" class="editorlink" title="申健">
+申健</a>
+
+				11月23日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="银行中的跨国研发团队如何快速交付" href="http://www.infoq.com/cn/presentations/fast-delivery">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/shenjian_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="建设强大的工程师文化" href="http://www.infoq.com/cn/presentations/building-strong-engineer-culture">
+					建设强大的工程师文化
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Kevin-Goldsmith" class="editorlink" title="Kevin Goldsmith">
+Kevin Goldsmith</a>
+
+				11月22日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="建设强大的工程师文化" href="http://www.infoq.com/cn/presentations/building-strong-engineer-culture">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/kevin_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="商业变现创业产品快速交付的故事" href="http://www.infoq.com/cn/presentations/commercial-cash">
+					商业变现创业产品快速交付的故事
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E8%94%A1%E6%99%93%E9%B8%A5" class="editorlink" title="蔡晓鸥">
+蔡晓鸥</a>
+
+				11月22日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="商业变现创业产品快速交付的故事" href="http://www.infoq.com/cn/presentations/commercial-cash">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/caixiaoaou_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Java多线程编程模式实战指南：Active Object模式（上）" href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1">
+					Java多线程编程模式实战指南：Active Object模式（上）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%BB%84%E6%96%87%E6%B5%B7" class="editorlink" title="黄文海">
+黄文海</a>
+
+				11月21日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Java多线程编程模式实战指南：Active Object模式（上）" href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/java_logo.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="网页搜索核心模块架构重构" href="http://www.infoq.com/cn/presentations/architecture-reconstruction">
+					网页搜索核心模块架构重构
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%86%AF%E4%B8%8A%E3%80%81%E9%A9%AC%E6%B3%A2" class="editorlink" title="冯上、马波">
+冯上、马波</a>
+
+				11月21日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="网页搜索核心模块架构重构" href="http://www.infoq.com/cn/presentations/architecture-reconstruction">
+				<img border="0" alt="" src="./实际项目中的常见算法_files/fengshangmabo_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3'); });
+		 		</script>
+		 	</div>
+ 		</div>
+
+</div>
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./实际项目中的常见算法_files/infoqcn.js"></script>
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://js-agent.newrelic.com/nr-100.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","bfafe6a5f6",5582901,"YAFWMEEAW0RUVk1cCllLfjdjTltSQkYWRg1YExoOQBE=",0,94,new Date().getTime()])</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer">东京 2015年4月</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年9月21-25日">里约 2015年9月21-25日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./实际项目中的常见算法_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+    <li><a href="http://www.infoq.com/cn/aliyun/"><strong>阿里云专区</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./实际项目中的常见算法_files/engine.js" type="text/javascript"></script>
+            <script src="./实际项目中的常见算法_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./实际项目中的常见算法_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2013/11/Core-algorithms-deployed#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+$( this ).one( "mousemove", function() {
+	$.getScript("/scripts/__hd.ifq?hdt=KppYzoABEEJVEvNC");
+  });
+</script>
+
+    <script src="./实际项目中的常见算法_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="http://hm.baidu.com/h.js?5101210b73a0e033d1509b3e487c929c" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "实际项目中的常见算法";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn2.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141119-0542");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S1 -->
+<script type="text/javascript" async="" src="./实际项目中的常见算法_files/nr-100.js"></script><script type="text/javascript" src="./实际项目中的常见算法_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0042)http://edsionte.com/techblog/archives/2330 -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+
+<title>shell编程中的参数传递 »  edsionte's TechBlog</title>
+
+<link rel="stylesheet" href="./shell编程中的参数传递 » edsionte's TechBlog_files/style.css" type="text/css" media="all">
+<!--[if IE 6]>
+<link rel="stylesheet" href="http://edsionte.com/techblog/wordpress/wp-content/themes/cordobo-green-park-2/ie6.css" type="text/css" />
+<![endif]-->
+
+<meta name="robots" content="index,follow">
+<link rel="alternate" type="application/rss+xml" title="edsionte&#39;s TechBlog RSS Feed" href="http://edsionte.com/techblog/feed">
+<style type="text/css"></style><link rel="alternate" type="application/atom+xml" title="edsionte&#39;s TechBlog Atom Feed" href="http://edsionte.com/techblog/feed/atom">
+<link rel="pingback" href="http://edsionte.com/techblog/wordpress/xmlrpc.php">
+<link rel="shortcut icon" href="http://edsionte.com/techblog/wordpress/wp-content/themes/cordobo-green-park-2/favicon.ico" type="image/x-icon">
+
+
+<link rel="alternate" type="application/rss+xml" title="edsionte&#39;s TechBlog » shell编程中的参数传递评论Feed" href="http://edsionte.com/techblog/archives/2330/feed">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./shell编程中的参数传递 » edsionte's TechBlog_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://edsionte.com/techblog/wordpress/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://edsionte.com/techblog/wordpress/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="shell编程中的引用" href="http://edsionte.com/techblog/archives/2317">
+<link rel="next" title="shell编程中的判断语句" href="http://edsionte.com/techblog/archives/2341">
+<meta name="generator" content="WordPress 4.1">
+<link rel="canonical" href="./shell编程中的参数传递 » edsionte's TechBlog_files/shell编程中的参数传递 » edsionte's TechBlog.htm">
+<link rel="shortlink" href="http://edsionte.com/techblog/?p=2330">
+	<link type="text/css" rel="stylesheet" href="./shell编程中的参数传递 » edsionte's TechBlog_files/shCore.css">
+	<link type="text/css" rel="stylesheet" href="./shell编程中的参数传递 » edsionte's TechBlog_files/shThemeDefault.css">
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shCore.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushBash.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushCpp.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushCSharp.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushCss.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushDelphi.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushDiff.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushGroovy.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushJava.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushJScript.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushPerl.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushPhp.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushPlain.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushPython.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushRuby.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushScala.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushSql.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushVb.js"></script>
+	<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/shBrushXml.js"></script>
+	<script type="text/javascript">		
+		SyntaxHighlighter.config.clipboardSwf = 'http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+<!-- wp thread comment 1.4.9.4.002 -->
+<style type="text/css" media="screen">
+.editComment, .editableComment, .textComment{
+	display: inline;
+}
+.comment-childs{
+	border: 1px solid #999;
+	margin: 5px 2px 2px 4px;
+	padding: 4px 2px 2px 4px;
+	background-color: white;
+}
+.chalt{
+	background-color: #E2E2E2;
+}
+#newcomment{
+	border:1px dashed #777;width:90%;
+}
+#newcommentsubmit{
+	color:red;
+}
+.adminreplycomment{
+	border:1px dashed #777;
+	width:99%;
+	margin:4px;
+	padding:4px;
+}
+.mvccls{
+	color: #999;
+}
+			
+</style>
+</head>
+<body id="home">
+
+
+<div id="header" class="clearfix">
+
+	<ul id="accessibility">
+		<li><a href="http://edsionte.com/techblog/" title="返回首页">首页</a></li>
+		<li><a href="http://edsionte.com/techblog/archives/2330#content" title="Skip to content">内容</a></li>
+		<li><a href="http://edsionte.com/techblog/feed">RSS</a></li>
+						<li class="last-item"><a href="http://edsionte.com/techblog/wordpress/wp-login.php">登录</a></li>
+	</ul>
+
+	<div id="branding">
+		<h1 id="logo"><a href="http://edsionte.com/techblog/" title="edsionte&#39;s TechBlog">edsionte's TechBlog</a></h1>
+		<div class="description">
+		  No Pains, No Gains    </div>
+	</div>
+	
+	<div id="nav" class="clearfix">
+		<div id="nav-search">
+			<form role="search" method="get" id="searchform" class="searchform" action="http://edsionte.com/techblog/">
+				<div>
+					<label class="screen-reader-text" for="s">搜索：</label>
+					<input type="text" value="" name="s" id="s">
+					<input type="submit" id="searchsubmit" value="搜索">
+				</div>
+			</form>		</div>
+		<ul id="menu">
+  		<li class="page-item-home "><a href="http://edsionte.com/techblog/">首页</a></li>
+  		<li class="page_item page-item-2"><a href="http://edsionte.com/techblog/me">关于我</a></li><li class="page_item page-item-3975"><a href="http://edsionte.com/techblog/%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86">内存管理的那些事儿</a></li><li class="page_item page-item-2822"><a href="http://edsionte.com/techblog/%e5%86%85%e6%a0%b8%e6%96%b0%e6%89%8b%e5%8c%ba">内核新手区</a></li>		</ul>
+    <div id="submenu-bg">    
+          </div>
+	</div>
+
+</div>
+
+
+<div id="main" class="clearfix">
+	<div id="container">
+		<div id="content">
+
+	
+		<div class="post-2330 post type-post status-publish format-standard hentry category-shell tag-shell tag-linux" id="post-2330">
+			<h1>shell编程中的参数传递</h1>
+			<small class="meta">
+  			<span class="alignleft">
+          2011年1月27日 由 edsionte            			</span>
+        <a href="http://edsionte.com/techblog/archives/2330#comments" class="alignright button-style" rel="nofollow">留言 »</a>
+      </small>
+
+			<div class="entry">
+				<p>在shell程序中引入参数，shell程序就会灵活很多。本文首先简单介绍参数传递中的一些基本知识点，再通过一个通讯录的举例来加深对shell编程中参数传递的理解。</p>
+<h4>1. 参数的引用</h4>
+<p>当运行shell程序时，shell会自动将命令行中第一个参数保存在变量1中，第二个参数保存在变量2中，依次类推。因此，当需要在shell程序中使用这些参数时，便可以通过$1和$2这样的方法来引用。比如：</p>
+<div id="highlighter_851888" class="syntaxhighlighter  "><div class="bar                                            "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_851888_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_851888" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat myargs</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">echo </code><code class="string">"\"$1\" \"$2\" was passed"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte wu</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="string">"edsionte"</code> <code class="string">"wu"</code> <code class="plain">was passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="string">"edsionte"</code> <code class="string">""</code> <code class="plain">was passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte wu me</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="string">"edsionte"</code> <code class="string">"wu"</code> <code class="plain">was passed</code></td></tr></tbody></table></div></div></div>
+<p>通过上述举例可以看到，命令行中的第n个参数会自动传递给相应的特殊变量n。通过$n就可以在shell程序中对其进行引用；当引用未赋值的特殊变量时，其结果将会显示空。</p>
+<h4>2. #变量</h4>
+<p>每当shell程序运行时，特殊变量#中就会保存此次shell程序中键入的参数个数。比如：</p>
+<div id="highlighter_616865" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_616865_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_616865" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">echo </code><code class="string">"There are $# arguments passed"</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">echo </code><code class="string">"\"$1\" \"$2\" was passed"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">There are 1 arguments passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="string">"edsionte"</code> <code class="string">""</code> <code class="plain">was passed</code></td></tr></tbody></table></div></div></div>
+<p>命令行中的参数是以空格作为间隔。因此，下面这种结果也很合理：</p>
+<div id="highlighter_970582" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_970582_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_970582" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs </code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">There are 1 arguments passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="string">"edsionte wu"</code> <code class="string">""</code> <code class="plain">was passed</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ name=</code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs $name</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">There are 2 arguments passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="string">"edsionte"</code> <code class="string">"wu"</code> <code class="plain">was passed</code></td></tr></tbody></table></div></div></div>
+<h4>3. *变量</h4>
+<p>特殊变量*中会保存shell程序运行时用户键入的所有参数。在参数不确定或参数数目易变时，该变量就很有用。</p>
+<div id="highlighter_599595" class="syntaxhighlighter  "><div class="bar            "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_599595_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_599595" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat myargs </code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">echo </code><code class="string">"There are $# arguments passed"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">echo </code><code class="string">"\"$*\" was passed"</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte wu is me</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">There are 4 arguments passed</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="string">"edsionte wu is me"</code> <code class="plain">was passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./myargs edsionte wu</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="plain">There are 2 arguments passed</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>9</code></td><td class="content"><code class="string">"edsionte wu"</code> <code class="plain">was passed</code></td></tr></tbody></table></div></div></div>
+<h4>4. 通信录举例</h4>
+<p><strong>查找用户</strong></p>
+<p>现在需要通过用户姓名从通信录info中查找一个用户的个人信息。我们通过编写shell程序lu来实现这个功能。最简单的程序为：</p>
+<div id="highlighter_653906" class="syntaxhighlighter  "><div class="bar                                        show"><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_653906_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_653906" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">sen wang:female:hanzhong:15678675545</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="plain">ting li:male:guangzhou:15784859345</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="plain">jedsionte:male:xian:13556567884</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="plain">edison:male:hongkong:1384742488</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="plain">yun zhang:female:beijing:18654737473</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat lu</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="preprocessor"># look someone up in the info book</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="plain">grep $1 info</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu edsionte</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="plain">jedsionte:male:xian:13556567884</code></td></tr></tbody></table></div></div></div>
+<p>这个结果似乎并不令人满意，因为我们想找用户名为edsionte的用户。不过这个问题很好解决，我们可以这样改进程序：</p>
+<div id="highlighter_884553" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_884553_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_884553" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat lu</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="preprocessor"># look someone up in the info book</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">grep ^$1 info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu edsionte</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div></div></div>
+<p>如果我们想通过全名edsionte  wu来查找用户信息，就应该用双引号将全名作为一个整体引入其中。这样看似很完美，可是结果却不尽人意：</p>
+<div id="highlighter_601059" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_601059_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_601059" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu </code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">grep: wu: 没有那个文件或目录</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">info:edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div></div></div>
+<p>这是因为虽然edsionte  wu作为一个参数传递给特殊变量1，但是shell将其替换后，grep命令并不认为edsionte  wu是一个参数，而是将wu作为目标文件之一。为了避免这种情况，我们应该这样改进程序：</p>
+<div id="highlighter_118190" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_118190_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_118190" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat lu</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="preprocessor"># look someone up in the info book</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">grep </code><code class="string">"^$1"</code> <code class="plain">info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu </code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div></div></div>
+<p>这样就可以满足我们要求了。但是，如果info中的信息如下所示，那么上述lu程序还是不算完美。比如：</p>
+<div id="highlighter_658334" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_658334_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_658334" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">sen wang:female:hanzhong:15678675545</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="plain">edsionte wuee:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="plain">ting li:male:guangzhou:15784859345</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="plain">jedsionte:male:xian:13556567884</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="plain">edison:male:hongkong:1384742488</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="plain">yun zhang:female:beijing:18654737473</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu </code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">edsionte wuee:male:xian:18717375182</code></td></tr></tbody></table></div></div></div>
+<p>因此，我们也应该在参数的尾部也做一些“手脚”，使得grep命令只匹配我们所传递的参数：</p>
+<div id="highlighter_609244" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_609244_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_609244" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat lu</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="preprocessor"># look someone up in the info book</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">grep </code><code class="string">"^$1:"</code> <code class="plain">info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu </code><code class="string">"edsionte wu"</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div></div></div>
+<p>至此，查找程序完成。</p>
+<p><strong>添加用户</strong></p>
+<p>当向通讯录中增添新用户信息时，我们必须再编写一个add程序。增加用户程序很简单：</p>
+<div id="highlighter_783515" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_783515_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_783515" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat add</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="preprocessor"># add someone to the info book</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">echo </code><code class="string">"$1:$2:$3:$4"</code> <code class="plain">&gt;&gt; info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./add elva female taibei 1335676567</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./lu elva</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">elva:female:taibei:1335676567</code></td></tr></tbody></table></div></div></div>
+<p>&gt;&gt;使得新的信息会追加到原文件的末尾。在上述命令的基础上，我们还可以再增加按姓名排序的功能：</p>
+<div id="highlighter_217047" class="syntaxhighlighter  "><div class="bar   "><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_217047_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_217047" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat add</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="preprocessor"># add someone to the info book</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">echo </code><code class="string">"$1:$2:$3:$4"</code> <code class="plain">&gt;&gt; info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="plain">sort -o info info</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="plain">edison:male:hongkong:1384742488</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="plain">edsionte wuee:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="plain">elva:female:taibei:1335676567</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="plain">jedsionte:male:xian:13556567884</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">sen wang:female:hanzhong:15678675545</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">ting li:male:guangzhou:15784859345</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="plain">yun zhang:female:beijing:18654737473</code></td></tr></tbody></table></div></div></div>
+<p>添加程序结束。<br>
+<strong></strong></p>
+<p><strong>删除用户</strong></p>
+<p>有了上述两个程序的基础，删除用户程序则变得容易很多。首先通过sed命令将完全匹配给定人名的用户信息从info中删除；因为sed命令并不改变info文件本身的内容，因此需要将sed的输出结果暂存至缓冲区；最后通过mv命令替换文件名即可。</p>
+<div id="highlighter_208951" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://edsionte.com/techblog/archives/2330#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_208951_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_208951" menu="false" src="http://edsionte.com/techblog/wordpress/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf"></div><a href="http://edsionte.com/techblog/archives/2330#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://edsionte.com/techblog/archives/2330#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat del</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="preprocessor"># delete the given user from info</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">sed </code><code class="string">"/^$1:/d"</code> <code class="plain">info &gt; /tmp/info</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="plain">mv /tmp/info ./info</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ ./del elva</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="plain">edsionte@edsionte-laptop:~/shelltest$ cat info</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="plain">edison:male:hongkong:1384742488</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="plain">edsionte wuee:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="plain">edsionte wu:male:xian:18717375182</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="plain">jedsionte:male:xian:13556567884</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">sen wang:female:hanzhong:15678675545</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">ting li:male:guangzhou:15784859345</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="plain">yun zhang:female:beijing:18654737473</code></td></tr></tbody></table></div></div></div>
+<p>随着对shell编程的深入理解，上述通讯录程序还可以不断完善。</p>
+				
+      	<ul class="previousnext clearfix">
+      		<li class="previous_post"><a href="http://edsionte.com/techblog/archives/2317" rel="prev"><span>上一篇:</span> shell编程中的引用</a></li>      		<li class="next_post"><a href="http://edsionte.com/techblog/archives/2341" rel="next"><span>下一篇:</span> shell编程中的判断语句</a></li>      	</ul>
+			</div>
+			
+			<div class="postmetadata">
+			  <p class="categories">
+			    发表在<a href="http://edsionte.com/techblog/archives/category/shell%e7%bc%96%e7%a8%8b" rel="category tag">Shell学习笔记</a>        </p>
+  			<p class="tags">Tags: <a href="http://edsionte.com/techblog/archives/tag/shell" rel="tag">shell</a> <a href="http://edsionte.com/techblog/archives/tag/linux%e5%91%bd%e4%bb%a4" rel="tag">命令</a></p>        <p class="infos">
+						若要跟踪这篇文章的任何更新，你可以使用 <a href="http://edsionte.com/techblog/archives/2330/feed" rel="nofollow">RSS 2.0 Feed</a>. 
+
+													你可以直接转到文章底部进行评论，Pinging目前已关闭
+											</p>
+				</div>
+
+      <div class="something">
+  广告位		
+  <div class="somethingspecial">
+      </div>
+</div>
+		</div>
+
+  	
+<!-- You can start editing here. -->
+
+
+			<!-- If comments are open, but there are no comments. -->
+
+	 
+
+
+  <div id="respond">
+    <h3>发表评论</h3>
+    <div class="cancel-comment-reply">
+    	    	<a rel="nofollow" id="cancel-comment-reply-link" href="http://edsionte.com/techblog/archives/2330#respond" style="display:none;">点击这里取消回复。</a>    	
+    </div>
+  
+    
+  <form action="http://edsionte.com/techblog/wordpress/wp-comments-post.php" method="post" id="commentform">
+  
+    
+  <div class="respond-left">
+    <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required="true">
+    <label for="author">姓名 (required)</label></p>
+    
+    <p><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required="true">
+    <label for="email">电子邮件（不会被公开） (required)</label></p>
+    
+    <p><input type="text" name="url" id="url" value="" size="22" tabindex="3">
+    <label for="url">站点</label></p>
+  </div>
+  
+    
+   <p><input type="text" name="mcspvalue" id="mcspvalue" value="" size="22" tabindex="4">
+<label for="mcspvalue">请回答问题: 3 + 10 = ?</label>
+<input type="hidden" name="mcspinfo" value="577b2">
+</p>
+
+  <!--<p><small><strong>XHTML:</strong> 你可以使用这些标签: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p>-->
+  
+  <div class="respond-right">
+    <textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea>
+    <p><input name="submit" type="submit" id="submit" tabindex="5" value="发表评论">
+    <input type="hidden" name="comment_post_ID" value="2330" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+    </p>
+    <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="2ea1cf8a22"></p><p style="display: none;"></p><p><input type="hidden" id="comment_reply_ID" name="comment_reply_ID" value="0"><input type="hidden" id="comment_reply_dp" name="comment_reply_dp" value="0"></p><div id="cancel_reply" style="display:none;"><a href="javascript:void(0)" onclick="movecfm(null,0,1,null);" style="color:red;">点击取消回复</a></div><script type="text/javascript">
+/* <![CDATA[ */
+var commentformid = "commentform";
+var USERINFO = false;
+var atreply = "author";
+/* ]]> */
+</script>
+<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/wp-thread-comment.js.php"></script>
+  </div>
+  
+  <input type="hidden" id="ak_js" name="ak_js" value="1420429359795"></form>
+  
+    </div>
+  	 
+
+	
+		</div><!-- #content -->
+	</div><!-- #container -->
+
+<div id="sidebar">
+	<ul class="sb-list clearfix">
+<li id="tag_cloud-3" class="widget widget_tag_cloud"><div class="sb-title widgettitle">标签</div><div class="tagcloud"><a href="http://edsionte.com/techblog/archives/tag/c" class="tag-link-201" title="5 topics" style="font-size: 10.5454545455pt;">c++</a>
+<a href="http://edsionte.com/techblog/archives/tag/cs" class="tag-link-220" title="3 topics" style="font-size: 8pt;">C/S</a>
+<a href="http://edsionte.com/techblog/archives/tag/cgroup" class="tag-link-373" title="3 topics" style="font-size: 8pt;">cgroup</a>
+<a href="http://edsionte.com/techblog/archives/tag/c%e7%bc%96%e7%a8%8b" class="tag-link-109" title="30 topics" style="font-size: 20.5858585859pt;">C编程</a>
+<a href="http://edsionte.com/techblog/archives/tag/c%e8%af%ad%e8%a8%80" class="tag-link-74" title="5 topics" style="font-size: 10.5454545455pt;">C语言的那些事儿</a>
+<a href="http://edsionte.com/techblog/archives/tag/fork" class="tag-link-180" title="3 topics" style="font-size: 8pt;">fork</a>
+<a href="http://edsionte.com/techblog/archives/tag/gui" class="tag-link-202" title="8 topics" style="font-size: 12.9494949495pt;">GUI</a>
+<a href="http://edsionte.com/techblog/archives/tag/inotify" class="tag-link-252" title="3 topics" style="font-size: 8pt;">inotify</a>
+<a href="http://edsionte.com/techblog/archives/tag/ipc" class="tag-link-139" title="7 topics" style="font-size: 12.2424242424pt;">IPC</a>
+<a href="http://edsionte.com/techblog/archives/tag/kernel" class="tag-link-134" title="24 topics" style="font-size: 19.3131313131pt;">kernel</a>
+<a href="http://edsionte.com/techblog/archives/tag/linux" class="tag-link-108" title="38 topics" style="font-size: 22pt;">linux</a>
+<a href="http://edsionte.com/techblog/archives/tag/netlink" class="tag-link-354" title="3 topics" style="font-size: 8pt;">netlink</a>
+<a href="http://edsionte.com/techblog/archives/tag/qt" class="tag-link-200" title="10 topics" style="font-size: 14.2222222222pt;">Qt</a>
+<a href="http://edsionte.com/techblog/archives/tag/shell" class="tag-link-155" title="12 topics" style="font-size: 15.2121212121pt;">shell</a>
+<a href="http://edsionte.com/techblog/archives/tag/socket" class="tag-link-209" title="7 topics" style="font-size: 12.2424242424pt;">socket</a>
+<a href="http://edsionte.com/techblog/archives/tag/vfs" class="tag-link-174" title="6 topics" style="font-size: 11.5353535354pt;">VFS</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e4%b8%ad%e6%96%ad" class="tag-link-157" title="8 topics" style="font-size: 12.9494949495pt;">中断</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e4%bf%a1%e5%8f%b7%e9%87%8f" class="tag-link-142" title="3 topics" style="font-size: 8pt;">信号量</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" class="tag-link-266" title="9 topics" style="font-size: 13.6565656566pt;">内存管理</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e6%a0%b8" class="tag-link-181" title="4 topics" style="font-size: 9.41414141414pt;">内核</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e6%a0%b8%e5%88%86%e6%9e%90" class="tag-link-161" title="6 topics" style="font-size: 11.5353535354pt;">内核分析</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97" class="tag-link-147" title="10 topics" style="font-size: 14.2222222222pt;">内核模块</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e6%a0%b8%e7%ba%bf%e7%a8%8b" class="tag-link-170" title="3 topics" style="font-size: 8pt;">内核线程</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%86%85%e6%a0%b8%e7%bc%96%e7%a8%8b" class="tag-link-230" title="3 topics" style="font-size: 8pt;">内核编程</a>
+<a href="http://edsionte.com/techblog/archives/tag/linux%e5%91%bd%e4%bb%a4" class="tag-link-125" title="16 topics" style="font-size: 16.9090909091pt;">命令</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e5%b9%b6%e5%8f%91" class="tag-link-168" title="3 topics" style="font-size: 8pt;">并发</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%8c%87%e9%92%88" class="tag-link-165" title="6 topics" style="font-size: 11.5353535354pt;">指针</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%8e%92%e5%ba%8f" class="tag-link-219" title="3 topics" style="font-size: 8pt;">排序</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%95%b0%e7%bb%84" class="tag-link-166" title="5 topics" style="font-size: 10.5454545455pt;">数组</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%96%87%e4%bb%b6%e6%93%8d%e4%bd%9c" class="tag-link-107" title="17 topics" style="font-size: 17.3333333333pt;">文件操作</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="tag-link-175" title="6 topics" style="font-size: 11.5353535354pt;">文件系统</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%9c%89%e5%90%8d%e7%ae%a1%e9%81%93" class="tag-link-141" title="3 topics" style="font-size: 8pt;">有名管道</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e6%a8%a1%e5%9d%97%e7%bc%96%e7%a8%8b" class="tag-link-148" title="3 topics" style="font-size: 8pt;">模块编程</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%89%a9%e7%90%86%e5%86%85%e5%ad%98" class="tag-link-304" title="4 topics" style="font-size: 9.41414141414pt;">物理内存</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%ae%a1%e9%81%93" class="tag-link-138" title="5 topics" style="font-size: 10.5454545455pt;">管道</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8" class="tag-link-179" title="9 topics" style="font-size: 13.6565656566pt;">系统调用</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%ba%bf%e7%a8%8b" class="tag-link-118" title="3 topics" style="font-size: 8pt;">线程</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%bb%93%e6%9e%84%e4%bd%93" class="tag-link-123" title="3 topics" style="font-size: 8pt;">结构体</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b" class="tag-link-208" title="7 topics" style="font-size: 12.2424242424pt;">网络编程</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e8%99%9a%e6%8b%9f%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="tag-link-176" title="3 topics" style="font-size: 8pt;">虚拟文件系统</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e8%bf%9b%e7%a8%8b" class="tag-link-183" title="7 topics" style="font-size: 12.2424242424pt;">进程</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e8%bf%9b%e7%a8%8b%e8%b0%83%e5%ba%a6" class="tag-link-212" title="4 topics" style="font-size: 9.41414141414pt;">进程调度</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1" class="tag-link-140" title="8 topics" style="font-size: 12.9494949495pt;">进程间通信</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e9%a1%b5%e6%a1%86%e5%88%86%e9%85%8d" class="tag-link-302" title="6 topics" style="font-size: 11.5353535354pt;">页框分配</a>
+<a href="http://edsionte.com/techblog/archives/tag/%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91" class="tag-link-146" title="7 topics" style="font-size: 12.2424242424pt;">驱动开发</a></div>
+</li>
+
+<li>
+	<ul class="sb-tools clearfix">
+		<li class="previous-post"><a href="http://edsionte.com/techblog/archives/2317" rel="prev"><span>上一篇</span> shell编程中的引用</a></li>		<li class="next-post"><a href="http://edsionte.com/techblog/archives/2341" rel="next"><span>下一篇</span> shell编程中的判断语句</a></li>	</ul>	
+</li>
+
+
+<li id="about" class="clearfix">
+  <div class="sb-title">公告</div>
+  <ul>
+  	<li>
+  		<h5>本博客中的所有文字、图片及代码均可任意转载，但是请在转载时以超链接形式标明文章原始出处和<a href="http://edsionte.com/techblog/me" target="_blank">作者信息</a>。<br>		</h5></li>
+	</ul>
+</li>
+
+
+<li id="views-2" class="widget widget_views"><div class="sb-title widgettitle">热门文章</div><ul>
+<li><a href="http://edsionte.com/techblog/me" title="关于我">关于我</a> - 50,759 views</li><li><a href="http://edsionte.com/techblog/archives/4174" title="malloc()之后，内核发生了什么？">malloc()之后，内核发生了什么？</a> - 21,460 views</li><li><a href="http://edsionte.com/techblog/archives/3223" title="线程的那些事儿">线程的那些事儿</a> - 17,493 views</li><li><a href="http://edsionte.com/techblog/archives/1336" title="Hello，Kernel！">Hello，Kernel！</a> - 16,773 views</li><li><a href="http://edsionte.com/techblog/archives/1854" title="等待队列源码分析">等待队列源码分析</a> - 15,987 views</li><li><a href="http://edsionte.com/techblog/%e5%86%85%e6%a0%b8%e6%96%b0%e6%89%8b%e5%8c%ba" title="内核新手区">内核新手区</a> - 14,308 views</li><li><a href="http://edsionte.com/techblog/archives/4297" title="Linux下CPU的利用率">Linux下CPU的利用率</a> - 13,962 views</li><li><a href="http://edsionte.com/techblog/archives/1689" title="使用vim+ctags+cscope阅读内核源码">使用vim+ctags+cscope阅读内核源码</a> - 11,102 views</li><li><a href="http://edsionte.com/techblog/archives/1521" title="你的第一个中断程序！">你的第一个中断程序！</a> - 10,502 views</li><li><a href="http://edsionte.com/techblog/archives/3289" title="Ubuntu下编译3.0.4内核">Ubuntu下编译3.0.4内核</a> - 10,343 views</li><li><a href="http://edsionte.com/techblog/%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86" title="内存管理的那些事儿">内存管理的那些事儿</a> - 10,221 views</li><li><a href="http://edsionte.com/techblog/archives/1074" title="list.h头文件分析(1)">list.h头文件分析(1)</a> - 8,821 views</li><li><a href="http://edsionte.com/techblog/archives/1332" title="对Makefile、Kconfig与.config文件的再次理解">对Makefile、Kconfig与.config文件的再次理解</a> - 8,746 views</li><li><a href="http://edsionte.com/techblog/archives/2769" title="基于Qt的多窗口编程-界面的设计">基于Qt的多窗口编程-界面的设计</a> - 8,669 views</li><li><a href="http://edsionte.com/techblog/archives/1350" title="printf到printk的转变">printf到printk的转变</a> - 8,210 views</li><li><a href="http://edsionte.com/techblog/archives/3014" title="QTableWidget基本功能总结">QTableWidget基本功能总结</a> - 7,793 views</li><li><a href="http://edsionte.com/techblog/archives/4059" title="通过make编译多文件的内核模块">通过make编译多文件的内核模块</a> - 7,752 views</li><li><a href="http://edsionte.com/techblog/archives/2772" title="基于Qt的多窗口设计-窗体切换的实现">基于Qt的多窗口设计-窗体切换的实现</a> - 7,664 views</li><li><a href="http://edsionte.com/techblog/archives/3164" title="使用grep查找指定目录下的关键字">使用grep查找指定目录下的关键字</a> - 7,360 views</li><li><a href="http://edsionte.com/techblog/archives/2746" title="Linux下的socket编程-基于Qt的客户端">Linux下的socket编程-基于Qt的客户端</a> - 7,110 views</li></ul>
+</li>		<li id="recent-posts-3" class="widget widget_recent_entries">		<div class="sb-title widgettitle">近期文章</div>		<ul>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4457">AIX开发环境部署</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4433">在VMware10中为Solaris11.1安装图形界面</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4415">通过call_usermodehelper()在内核态执行用户程序</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4406">Linux内核中通过文件描述符获取绝对路径</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4389">Linux内核文件系统挂载分析</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4331">CFS中的虚拟运行时间</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4336">Cgroup简介-资源控制的实现</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4322">Cgroup简介-子系统与层级</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4314">Cgroup简介-概述</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4297">Linux下CPU的利用率</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4251">Linux下访问文件的基本模式</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4227">文件操作函数在VFS层的实现</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4217">页缓存概述</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4174">malloc()之后，内核发生了什么？</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4110">RPM包的管理</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4140">Netlink编程-使用NETLINK_INET_DIAG协议</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4134">Netlink编程-用户主动发起会话</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4131">Netlink编程-数据结构</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4114">网络协议栈入门知识</a>
+						</li>
+					<li>
+				<a href="http://edsionte.com/techblog/archives/4089">调用inotify_init()出现function not implemented的解决办法</a>
+						</li>
+				</ul>
+		</li><li id="recent-comments-4" class="widget widget_recent_comments"><div class="sb-title widgettitle">近期评论</div><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">edsionte</span>发表在《<a href="http://edsionte.com/techblog/archives/1074/comment-page-1#comment-7604">list.h头文件分析(1)</a>》</li><li class="recentcomments"><span class="comment-author-link">edsionte</span>发表在《<a href="http://edsionte.com/techblog/archives/1336/comment-page-2#comment-7603">Hello，Kernel！</a>》</li><li class="recentcomments"><span class="comment-author-link">李强</span>发表在《<a href="http://edsionte.com/techblog/archives/1074/comment-page-1#comment-7601">list.h头文件分析(1)</a>》</li><li class="recentcomments"><span class="comment-author-link">Yang</span>发表在《<a href="http://edsionte.com/techblog/archives/1336/comment-page-2#comment-7597">Hello，Kernel！</a>》</li><li class="recentcomments"><span class="comment-author-link">edsionte</span>发表在《<a href="http://edsionte.com/techblog/archives/1336/comment-page-2#comment-7596">Hello，Kernel！</a>》</li><li class="recentcomments"><span class="comment-author-link">Yang</span>发表在《<a href="http://edsionte.com/techblog/archives/1336/comment-page-2#comment-7595">Hello，Kernel！</a>》</li><li class="recentcomments"><span class="comment-author-link">mia</span>发表在《<a href="http://edsionte.com/techblog/archives/4114/comment-page-1#comment-7587">网络协议栈入门知识</a>》</li><li class="recentcomments"><span class="comment-author-link">李明</span>发表在《<a href="http://edsionte.com/techblog/archives/904/comment-page-1#comment-7582">实现cp命令–文件夹的拷贝</a>》</li><li class="recentcomments"><span class="comment-author-link">edsionte</span>发表在《<a href="http://edsionte.com/techblog/archives/904/comment-page-1#comment-7581">实现cp命令–文件夹的拷贝</a>》</li><li class="recentcomments"><span class="comment-author-link">李明</span>发表在《<a href="http://edsionte.com/techblog/archives/904/comment-page-1#comment-7580">实现cp命令–文件夹的拷贝</a>》</li></ul></li></ul>
+
+<ul class="group">
+<li id="categories-3" class="widget widget_categories"><div class="sb-title widgettitle">分类目录</div>		<ul>
+	<li class="cat-item cat-item-74"><a href="http://edsionte.com/techblog/archives/category/c%e8%af%ad%e8%a8%80">C语言的那些事儿</a> (15)
+</li>
+	<li class="cat-item cat-item-199"><a href="http://edsionte.com/techblog/archives/category/gui%e5%bc%80%e5%8f%91">GUI开发</a> (8)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://edsionte.com/techblog/archives/category/linuxc%e8%af%ad%e8%a8%80">Linux下C编程</a> (38)
+</li>
+	<li class="cat-item cat-item-110"><a href="http://edsionte.com/techblog/archives/category/linux%e5%86%85%e6%a0%b8">Linux内核源码分析</a> (73)
+<ul class="children">
+	<li class="cat-item cat-item-266"><a href="http://edsionte.com/techblog/archives/category/linux%e5%86%85%e6%a0%b8/%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86">内存管理</a> (19)
+</li>
+	<li class="cat-item cat-item-175"><a href="http://edsionte.com/techblog/archives/category/linux%e5%86%85%e6%a0%b8/%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f">文件系统</a> (4)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-278"><a href="http://edsionte.com/techblog/archives/category/linux%e5%86%85%e6%a0%b8%e7%bc%96%e7%a8%8b">Linux内核编程</a> (3)
+</li>
+	<li class="cat-item cat-item-377"><a href="http://edsionte.com/techblog/archives/category/linux%e5%ae%b9%e5%99%a8%e6%8a%80%e6%9c%af">Linux容器技术</a> (1)
+</li>
+	<li class="cat-item cat-item-353"><a href="http://edsionte.com/techblog/archives/category/netlink%e7%bc%96%e7%a8%8b">netlink编程</a> (3)
+</li>
+	<li class="cat-item cat-item-246"><a href="http://edsionte.com/techblog/archives/category/posix%e7%ba%bf%e7%a8%8b%e6%8a%80%e6%9c%af">POSIX线程技术</a> (2)
+</li>
+	<li class="cat-item cat-item-232"><a href="http://edsionte.com/techblog/archives/category/python%e5%85%a5%e9%97%a8">Python入门</a> (1)
+</li>
+	<li class="cat-item cat-item-153"><a href="http://edsionte.com/techblog/archives/category/shell%e7%bc%96%e7%a8%8b">Shell学习笔记</a> (14)
+</li>
+	<li class="cat-item cat-item-205"><a href="http://edsionte.com/techblog/archives/category/%e5%bc%80%e5%8f%91%e6%8a%80%e6%9c%af">开发技术</a> (6)
+</li>
+	<li class="cat-item cat-item-372"><a href="http://edsionte.com/techblog/archives/category/%e6%80%a7%e8%83%bd%e9%9a%94%e7%a6%bb">性能隔离</a> (2)
+</li>
+	<li class="cat-item cat-item-126"><a href="http://edsionte.com/techblog/archives/category/%e9%97%b2%e8%a8%80%e7%a2%8e%e8%af%ad">技术杂谈</a> (6)
+</li>
+	<li class="cat-item cat-item-253"><a href="http://edsionte.com/techblog/archives/category/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f">操作系统</a> (1)
+</li>
+	<li class="cat-item cat-item-215"><a href="http://edsionte.com/techblog/archives/category/%e7%ae%97%e6%b3%95%e5%88%86%e6%9e%90">算法分析</a> (5)
+</li>
+	<li class="cat-item cat-item-366"><a href="http://edsionte.com/techblog/archives/category/%e7%b3%bb%e7%bb%9f%e6%80%a7%e8%83%bd%e4%b8%8e%e4%bc%98%e5%8c%96">系统性能与优化</a> (1)
+</li>
+	<li class="cat-item cat-item-350"><a href="http://edsionte.com/techblog/archives/category/%e7%bd%91%e7%bb%9c%e5%8d%8f%e8%ae%ae%e6%a0%88">网络协议栈</a> (1)
+</li>
+	<li class="cat-item cat-item-208"><a href="http://edsionte.com/techblog/archives/category/%e7%bd%91%e7%bb%9c%e7%bc%96%e7%a8%8b">网络编程</a> (8)
+</li>
+	<li class="cat-item cat-item-285"><a href="http://edsionte.com/techblog/archives/category/%e8%ae%a1%e7%ae%97%e6%9c%ba%e4%bd%93%e7%b3%bb%e7%bb%93%e6%9e%84">计算机体系结构</a> (1)
+</li>
+	<li class="cat-item cat-item-140"><a href="http://edsionte.com/techblog/archives/category/%e8%bf%9b%e7%a8%8b%e9%97%b4%e9%80%9a%e4%bf%a1">进程间通信</a> (8)
+</li>
+	<li class="cat-item cat-item-146"><a href="http://edsionte.com/techblog/archives/category/%e9%a9%b1%e5%8a%a8%e5%bc%80%e5%8f%91">驱动开发</a> (5)
+</li>
+		</ul>
+</li><li id="archives-3" class="widget widget_archive"><div class="sb-title widgettitle">文章归档</div>		<ul>
+	<li><a href="http://edsionte.com/techblog/archives/date/2014/10">2014年十月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2014/05">2014年五月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2014/03">2014年三月</a>&nbsp;(2)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2014/02">2014年二月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2013/04">2013年四月</a>&nbsp;(2)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2013/03">2013年三月</a>&nbsp;(3)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/12">2012年十二月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/11">2012年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/10">2012年十月</a>&nbsp;(1)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/09">2012年九月</a>&nbsp;(2)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/08">2012年八月</a>&nbsp;(4)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/07">2012年七月</a>&nbsp;(2)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/06">2012年六月</a>&nbsp;(5)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/05">2012年五月</a>&nbsp;(3)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/04">2012年四月</a>&nbsp;(3)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/03">2012年三月</a>&nbsp;(8)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/02">2012年二月</a>&nbsp;(2)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2012/01">2012年一月</a>&nbsp;(4)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/12">2011年十二月</a>&nbsp;(3)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/11">2011年十一月</a>&nbsp;(5)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/10">2011年十月</a>&nbsp;(7)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/09">2011年九月</a>&nbsp;(6)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/08">2011年八月</a>&nbsp;(4)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/07">2011年七月</a>&nbsp;(5)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/06">2011年六月</a>&nbsp;(4)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/05">2011年五月</a>&nbsp;(5)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/04">2011年四月</a>&nbsp;(7)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/03">2011年三月</a>&nbsp;(7)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/02">2011年二月</a>&nbsp;(7)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2011/01">2011年一月</a>&nbsp;(9)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/12">2010年十二月</a>&nbsp;(6)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/11">2010年十一月</a>&nbsp;(10)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/10">2010年十月</a>&nbsp;(20)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/09">2010年九月</a>&nbsp;(14)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/08">2010年八月</a>&nbsp;(16)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/07">2010年七月</a>&nbsp;(12)</li>
+	<li><a href="http://edsionte.com/techblog/archives/date/2010/06">2010年六月</a>&nbsp;(7)</li>
+		</ul>
+</li></ul>
+
+
+<ul class="group">
+<li id="linkcat-67" class="widget widget_links"><div class="sb-title widgettitle">Linuxer</div>
+	<ul class="xoxo blogroll">
+<li><a href="http://amosk.info/blog/">孔建军</a></li>
+<li><a href="http://www.leeyang.org/blog/">李阳</a></li>
+<li><a href="http://niutao.cublog.cn/">牛涛</a></li>
+<li><a href="http://wangsenxiyou.cublog.cn/">王森</a></li>
+<li><a href="http://wangcong.org/blog">王聪</a></li>
+<li><a href="http://www.lupaworld.com/?401174">苏锦秀</a></li>
+<li><a href="http://zhwen.org/xlog/">许振文</a></li>
+<li><a href="http://harryxiyou.cublog.cn/">贾威</a></li>
+<li><a href="http://www.yaoguang.org/">贾耀光</a></li>
+<li><a href="http://www.linuxqiao.org/">赵桥</a></li>
+
+	</ul>
+</li>
+<li id="linkcat-329" class="widget widget_links"><div class="sb-title widgettitle">西邮Linux</div>
+	<ul class="xoxo blogroll">
+<li><a href="http://xiyoulinux.org/">xiyouLinux</a></li>
+<li><a href="http://www.kerneltravel.net/">内核之旅</a></li>
+<li><a href="http://home.lupaworld.com/?26540">陈莉君老师</a></li>
+
+	</ul>
+</li>
+</ul>
+
+</div> <!-- #sidebar --></div> <!-- #main -->
+
+
+<div id="footer" class="clearfix">
+<p class="alignright">
+  <a href="http://edsionte.com/techblog/archives/2330#home" class="top-link">返回顶端</a>
+</p>
+
+<p>
+	© 2015 edsionte's TechBlog  · Proudly powered by  <a href="http://wordpress.org/" title="由Wordpress提供的优秀博客程序">WordPress</a>
+	<span class="amp">&amp;</span>
+  <a href="http://cordobo.com/green-park-2/" title="Cordobo Green Park 2 Beta 5">Green Park 2</a>
+  由  <a href="http://cordobo.com/" title="Webdesign by Cordobo">Cordobo</a>.
+</p>
+
+<p class="signet">
+  XHTML 1.0验证通过 | CSS3验证通过  <br><br>
+	<img src="./shell编程中的参数传递 » edsionte's TechBlog_files/logo-cgp2.png" alt="Cordobo Green Park 2 logo" title="Cordobo Green Park 2" width="75" height="12">
+</p>
+
+</div>
+
+<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/form.js"></script>
+<script type="text/javascript" src="./shell编程中的参数传递 » edsionte's TechBlog_files/comment-reply.min.js"></script>
+
+
+
+
+<!--google--><form method="post" action="http://edsionte.com/techblog/archives/2330?" style="overflow: auto; width: 22pt; height: 30pt;position: absolute; display:none"><h3>windows 7 ultimate product key</h3><a href="http://freeserials.us/">windows 7 ultimate </a>product key <h3>winrar download free</h3><a href="http://allkeygens.ws/">winrar </a>download free <h3>winzip registration code</h3><a href="http://freeserials.us/">winzip registration </a>code <h3>winzip free download</h3><a href="http://myserials.net/">winzip free</a> download<h3>winzip activation code</h3><a href="http://allkeygens.ws/">winzip activation </a>code <h3>windows 7 key generator</h3><a href="http://myserials.net/">windows 7 </a>key generator <h3>winzip freeware</h3><a href="http://freeserials.us/">winzip</a> freeware<h3>winzip free download full version</h3><a href="http://allkeygens.ws/">winzip free download</a> full version<h3>free winrar download</h3><a href="http://allkeygens.ws/">free</a> winrar download<h3>free winrar</h3><a href="http://myserials.net/">free</a> winrar <h3>windows 7 crack</h3><a href="http://allkeygens.ws/">windows 7 </a>crack <h3>windows xp product key</h3><a href="http://freeserials.us/">windows xp</a> product key<h3>windows 7 activation crack</h3><a href="http://myserials.net/">windows7 activation</a> crack<h3>free winzip</h3><a href="http://myserials.net/">free </a>winzip <h3>winrar free download</h3><a href="http://myserials.net/">winrar free </a>download <h3>winrar free</h3><a href="http://freeserials.us/">winrar</a> free<h3>download winrar free</h3><a href="http://freeserials.us/">download winrar </a>free <h3>windows 7 product key</h3><a href="http://allkeygens.ws/">windows 7 product</a> key</form><!--/google-->
+
+
+
+</body></html>

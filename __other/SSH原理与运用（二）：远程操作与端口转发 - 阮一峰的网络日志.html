@@ -1,0 +1,1397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+<meta name="generator" content="Movable Type  5.2.2">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/styles.css" type="text/css">
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home">
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng">
+<script type="text/javascript" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/mt.js"></script>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2011/12/pain_builds_character.html">
+<dc:title>痛苦造就性格（也许还造就产品）</dc:title>
+<dc:description>如果你知道TechCrunch，那么你可能知道Michael Arrington。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2011-12-06T01:49:12+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" title="SSH原理与运用（一）：远程登录">
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2011/12/idaily.html" title="iDaily的诞生">
+    
+    <title>SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志</title>
+<style type="text/css"></style><script src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bsStatic.js" type="text/javascript" charset="utf-8"></script><script src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bs-engine.js" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bshareDiv,#bsPanel,#bsMorePanel,#bshareF{border:none;background:none;padding:0;margin:0;font:12px Helvetica,Calibri,Tahoma,Arial,宋体,sans-serif;line-height:14px;}#bsPanel div,#bsMorePanel div,#bshareF div{display:block;}.bsRlogo .bsPopupAwd,.bsRlogoSel .bsPopupAwd,.bsLogo .bsPopupAwd,.bsLogoSel .bsPopupAwd{line-height:16px !important;}a.bshareDiv div,#bsFloatTab div{*display:inline;zoom:1;display:inline-block;}a.bshareDiv img,a.bshareDiv div,a.bshareDiv span,a.bshareDiv a,#bshareF table,#bshareF tr,#bshareF td{text-decoration:none;background:none;margin:0;padding:0;border:none;line-height:1.2}a.bshareDiv span{display:inline;float:none;}div.buzzButton{cursor:pointer;font-weight:bold;}.buzzButton .shareCount a{color:#333}.bsStyle1 .shareCount a{color:#fff}span.bshareText{white-space:nowrap;}span.bshareText:hover{text-decoration:underline;}a.bshareDiv .bsPromo,div.bshare-custom .bsPromo{display:none;position:absolute;z-index:100;}a.bshareDiv .bsPromo.bsPromo1,div.bshare-custom .bsPromo.bsPromo1{width:51px;height:18px;top:-18px;left:0;line-height:16px;font-size:12px !important;font-weight:normal !important;color:#fff;text-align:center;background:url(http://static.bshare.cn/frame/images/bshare_box_sprite2.gif) no-repeat 0 -606px;}div.bshare-custom .bsPromo.bsPromo2{background:url(http://static.bshare.cn/frame/images/bshare_promo_sprite.gif) no-repeat;cursor:pointer;}</style><style type="text/css">.bsBox{display:none;z-index:100000001;font-size:12px;background:url(http://static.bshare.cn/frame/images//background-opaque-dark.gif) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}.bsClose{_overflow:hidden;cursor:pointer;position:absolute;z-index:10000000;color:#666;font-weight:bold;font-family:Helvetica,Arial;font-size:14px;line-height:20px;}.bsTop{color:#666;background:#f2f2f2;height:24px;line-height:24px;border-bottom:1px solid #e8e8e8;}.bsTop span{float:left;}.bsFrameDiv,#bsMorePanel{border:none;background:#fff;}.bsReturn{float:right;*margin-right:20px;margin-right:36px;text-align:right;cursor:pointer;line-height:24px;color:#666;opacity:0.5;}#bsReturn:hover{text-decoration:underline;opacity:1;}</style><script src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bsMore.js" type="text/javascript" charset="utf-8"></script><script src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bshareS1.js" type="text/javascript" charset="utf-8"></script><style type="text/css">div.bsClear{clear:both;height:0;line-height:0;overflow:hidden;font-size:0;}.bsSearchDiv{padding:5px 15px;background-color:#fafafa;}.bFind-wrapper-top{background:#fff;border-color:#ccc #aaa #aaa #ccc;border-style:solid;border-width:1px;height:16px;padding:4px;margin:0;}.bFind-wrapper-top input{padding:0 !important;border:none !important;box-shadow:none !important;line-height:16px !important;}.bFind-placeholder{background:url("http://static.bshare.cn/css/images/search-icon.gif") no-repeat;display:block;float:left;height:16px;width:16px;}.bFind{background:none;border:none;float:left;font-size:11px !important;height:16px !important;margin-left:3px;outline:none;padding:0;width:400px;}.bsPlatDiv{height:322px;background:#fff;overflow:auto;padding:0 15px;}#bsLogoList{display:block;list-style:none;overflow:hidden;margin:0;padding:0;}#bsLogoList li{float:left;display:inline-block;width:71px;text-align:center;font-size:12px;height:80px;margin:0 !important;}#bsLogoList .bsPlatIcon{cursor:pointer;display:block !important;text-align:center;}#bsLogoList .bsPlatImg{width:32px;height:32px;border:none !important;display:inline-block;}#bsLogoList .bsPlatImg:hover{-moz-border-radius:7px;-webkit-border-radius:7px;border-radius:7px;box-shadow:0 0 15px #a7a8ac;}#bsLogoList .bsPlatName{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;text-align:center;color:#333 !important;margin-top:2px;line-height:140%;*width:70px;}#bsLogoList .bsPromoM{text-align:center;}.bsFooterDiv{height:24px;line-height:24px;padding:0 15px;border-top:1px solid #e8e8e8;background:#f2f2f2;text-align:right;}a.bsLogoLink{color:#666;}.bsLogoLink:hover{text-decoration:underline;}.bsPromoM{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;}.bsNew,.bsHot,.bsRec,.bsAwd{background-position:0 -552px;width:19px;margin:5px auto 1px;line-height:16px;height:18px;font-size:12px;color:#fff;overflow:hidden;}.bsNew{background-position:0 -570px;}.bsRec{width:30px;background-position:0 -588px;}.bsAwd{background:url(http://static.bshare.cn/frame/images//promot/promote.gif) no-repeat;}</style><script src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bshare_view" type="text/javascript" charset="utf-8"></script><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style><style type="text/css">a.bsSiteLink{text-decoration:none;color:#666;}a.bsSiteLink:hover{text-decoration:underline;}a.bshareDiv{overflow:hidden;height:16px;line-height:18px;font-size:14px;color:#333;padding-left:0;}a.bshareDiv:hover{text-decoration:none;}div.bsTitle{padding:0 8px;border-bottom:1px solid #e8e8e8;color:#666;background:#f2f2f2;text-align:left;}div.buzzButton{cursor:pointer;}div.bsRlogo,div.bsRlogoSel{width:68px;float:left;margin:0;padding:2px 0;}div.bsRlogo a,div.bsRlogoSel a{float:left;}div.bsLogo,div.bsLogoSel{float:left;width:111px;text-align:left;height:auto;padding:2px 4px;margin:2px 0;white-space:nowrap;overflow:hidden;}div.bsLogoSel,div.bsRlogoSel{border:1px solid #ddd;background:#f1f1f1;}div.bsLogo,div.bsRlogo{border:1px solid #fff;background:#fff;}div.bsLogo a,div.bsLogoSel a{display:block;height:16px;line-height:16px;padding:0 0 0 24px;text-decoration:none;float:left;overflow:hidden;}div.bsLogoSel a,div.bsRlogoSel a{color:#000;border:none;}div.bsLogo a,div.bsRlogo a{color:#666;border:none;}div.bsLogoLink{width:121px;overflow:hidden;background:#FFF;float:left;margin:3px 0;}#bsLogin{float:right;text-align:right;overflow:hidden;height:100%;}#bsPanel{position:absolute;z-index:100000000;font-size:12px;width:258px;background:url(http://static.bshare.cn/frame/images/background-opaque-dark.png) !important;padding:6px !important;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}div.bsClear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}div.bsPopupAwd{background:url(http://static.bshare.cn/frame/images//bshare_box_sprite2.gif) no-repeat top left;background-position:0 -624px;width:18px;padding-left:3px;text-align:center;float:left;margin-left: 2px;height:15px;font-size:12px;color:#fff;overflow:hidden;}div.bsRlogo .bsPopupAwd,div.bsRlogoSel .bsPopupAwd{float:left;margin:5px 0 0 -14px;}</style></head>
+<body id="scrapbook" class="mt-entry-archive one-column" onload="individualArchivesOnLoad(commenter_name)">
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="http://www.ruanyifeng.com/blog/search.html" id="cse-search-box">
+      <div>
+        <input type="hidden" name="cx" value="016304377626642577906:b_e9skaywzq">
+    <input type="hidden" name="cof" value="FORID:11">
+    <input type="hidden" name="ie" value="UTF-8">
+        <input type="text" name="q" size="20" class="searchbox" id="sbi" value="">
+        <input type="image" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa">
+      </div>
+    </form>
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="http://www.ruanyifeng.com/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;">
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-1697" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" title="SSH原理与运用（一）：远程登录">SSH原理与运用（一）</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2011/12/idaily.html" title="iDaily的诞生">iDaily的诞生&nbsp;&nbsp;</a></li>
+</ul>
+</div>
+
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/computer/" rel="tag">理解计算机</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+
+                                            
+</div>
+                                </div>
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">SSH原理与运用（二）：远程操作与端口转发</h1>
+                                            <div id="share_button" style="float:right;padding-right:2em;padding-top:1em;"><a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a><script type="text/javascript" charset="utf-8" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/buttonLite.js"></script>                                       
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script></div>
+                                    <div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com/">阮一峰</a></p>
+
+
+                                    </div>
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p>接着前一次的<a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" target="_blank">文章</a>，继续介绍SSH的用法。</p>
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>=======================================</p>
+
+<p><strong>SSH原理与运用（二）：远程操作与端口转发</strong></p>
+
+<p>作者：阮一峰</p>
+
+<p><img src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/bg2011122301.jpg"></p>
+
+<p>（Image credit: <a href="http://www.flickr.com/photos/skiquel/" target="_blank">Tony Narlock</a>）</p>
+
+<p><strong>七、远程操作</strong></p>
+
+<p>SSH不仅可以用于远程主机登录，还可以直接在远程主机上执行操作。</p>
+
+<p>上一节的操作，就是一个例子：</p>
+
+<blockquote>
+
+<p>　　$ ssh user@host 'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys' &lt; ~/.ssh/id_rsa.pub</p>
+
+</blockquote>
+
+<p>单引号中间的部分，表示在远程主机上执行的操作；后面的输入重定向，表示数据通过SSH传向远程主机。</p>
+
+<p>这就是说，SSH可以在用户和远程主机之间，建立命令和数据的传输通道，因此很多事情都可以通过SSH来完成。</p>
+
+<p>下面看几个例子。</p>
+
+<p>【例1】 </p>
+
+<p>将$HOME/src/目录下面的所有文件，复制到远程主机的$HOME/src/目录。</p>
+
+<blockquote>
+
+<p>　　$ cd &amp;&amp; tar czv src | ssh user@host 'tar xz'</p>
+
+</blockquote>
+
+<p>【例2】</p>
+
+<p>将远程主机$HOME/src/目录下面的所有文件，复制到用户的当前目录。</p>
+
+<blockquote>
+
+<p>　　$ ssh user@host 'tar cz src' | tar xzv</p>
+
+</blockquote>
+
+<p>【例3】</p>
+
+<p>查看远程主机是否运行进程httpd。</p>
+
+<blockquote>
+
+<p>　　$ ssh user@host 'ps ax | grep [h]ttpd'</p>
+
+</blockquote>
+
+<p><strong>八、绑定本地端口</strong></p>
+
+<p>既然SSH可以传送数据，那么我们可以让那些不加密的网络连接，全部改走SSH连接，从而提高安全性。</p>
+
+<p>假定我们要让8080端口的数据，都通过SSH传向远程主机，命令就这样写：</p>
+
+<blockquote>
+
+<p>　　$ ssh -D 8080 user@host</p>
+
+</blockquote>
+
+<p>SSH会建立一个socket，去监听本地的8080端口。一旦有数据传向那个端口，就自动把它转移到SSH连接上面，发往远程主机。可以想象，如果8080端口原来是一个不加密端口，现在将变成一个加密端口。</p>
+
+<p><strong>九、本地端口转发</strong></p>
+
+<p>有时，绑定本地端口还不够，还必须指定数据传送的目标主机，从而形成点对点的"端口转发"。为了区别后文的"远程端口转发"，我们把这种情况称为"本地端口转发"（Local forwarding）。</p>
+
+<p>假定host1是本地主机，host2是远程主机。由于种种原因，这两台主机之间无法连通。但是，另外还有一台host3，可以同时连通前面两台主机。因此，很自然的想法就是，通过host3，将host1连上host2。</p>
+
+<p>我们在host1执行下面的命令：</p>
+
+<blockquote>
+
+<p>　　$ ssh -L 2121:host2:21 host3</p>
+
+</blockquote>
+
+<p>命令中的L参数一共接受三个值，分别是"本地端口:目标主机:目标主机端口"，它们之间用冒号分隔。这条命令的意思，就是指定SSH绑定本地端口2121，然后指定host3将所有的数据，转发到目标主机host2的21端口（假定host2运行FTP，默认端口为21）。</p>
+
+<p>这样一来，我们只要连接host1的2121端口，就等于连上了host2的21端口。</p>
+
+<blockquote>
+
+<p>　　$ ftp localhost:2121</p>
+
+</blockquote>
+
+<p>"本地端口转发"使得host1和host3之间仿佛形成一个数据传输的秘密隧道，因此又被称为"SSH隧道"。</p>
+
+<p>下面是一个比较有趣的例子。</p>
+
+<blockquote>
+
+<p>　　$ ssh -L 5900:localhost:5900 host3</p>
+
+</blockquote>
+
+<p>它表示将本机的5900端口绑定host3的5900端口（这里的localhost指的是host3，因为目标主机是相对host3而言的）。</p>
+
+<p>另一个例子是通过host3的端口转发，ssh登录host2。</p>
+
+<blockquote>
+
+<p>　　$ ssh -L 9001:host2:22 host3</p>
+
+</blockquote>
+
+<p>这时，只要ssh登录本机的9001端口，就相当于登录host2了。</p>
+
+<blockquote>
+
+<p>　　$ ssh -p 9001 localhost</p>
+
+</blockquote>
+
+<p>上面的-p参数表示指定登录端口。</p>
+
+<p><strong>十、远程端口转发</strong></p>
+
+<p>既然"本地端口转发"是指绑定本地端口的转发，那么"远程端口转发"（remote forwarding）当然是指绑定远程端口的转发。</p>
+
+<p>还是接着看上面那个例子，host1与host2之间无法连通，必须借助host3转发。但是，特殊情况出现了，host3是一台内网机器，它可以连接外网的host1，但是反过来就不行，外网的host1连不上内网的host3。这时，"本地端口转发"就不能用了，怎么办？</p>
+
+<p>解决办法是，既然host3可以连host1，那么就从host3上建立与host1的SSH连接，然后在host1上使用这条连接就可以了。</p>
+
+<p>我们在host3执行下面的命令：</p>
+
+<blockquote>
+
+<p>　　$ ssh -R 2121:host2:21 host1</p>
+
+</blockquote>
+
+<p>R参数也是接受三个值，分别是"远程主机端口:目标主机:目标主机端口"。这条命令的意思，就是让host1监听它自己的2121端口，然后将所有数据经由host3，转发到host2的21端口。由于对于host3来说，host1是远程主机，所以这种情况就被称为"远程端口绑定"。</p>
+
+<p>绑定之后，我们在host1就可以连接host2了：</p>
+
+<blockquote>
+
+<p>　　$ ftp localhost:2121</p>
+
+</blockquote>
+
+<p>这里必须指出，"远程端口转发"的前提条件是，host1和host3两台主机都有sshD和ssh客户端。</p>
+
+<p><strong>十一、SSH的其他参数</strong></p>
+
+<p>SSH还有一些别的参数，也值得介绍。</p>
+
+<p>N参数，表示只连接远程主机，不打开远程shell；T参数，表示不为这个连接分配TTY。这个两个参数可以放在一起用，代表这个SSH连接只用来传数据，不执行远程操作。</p>
+
+<blockquote>
+
+<p>　　$ ssh -NT -D 8080 host</p>
+
+</blockquote>
+
+<p>f参数，表示SSH连接成功后，转入后台运行。这样一来，你就可以在不中断SSH连接的情况下，在本地shell中执行其他操作。</p>
+
+<blockquote>
+
+<p>　　$ ssh -f -D 8080 host</p>
+
+</blockquote>
+
+<p>要关闭这个后台连接，就只有用kill命令去杀掉进程。</p>
+
+<p><strong>十二、参考文献</strong></p>
+
+<p>　　* SSH, The Secure Shell: The Definitive Guide: <a href="http://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch02_04.htm" target="_blank">2.4. Authentication by Cryptographic Key</a>, O'reilly</p>
+
+<p>　　* SSH, The Secure Shell: The Definitive Guide: <a href="http://docstore.mik.ua/orelly/networking_2ndEd/ssh/ch09_02.htm" target="_blank">9.2. Port Forwarding</a>, O'reilly</p>
+
+<p>　　* Shebang: <a href="http://shebang.brandonmintern.com/tips-for-remote-unix-work-ssh-screen-and-vnc" target="_blank">Tips for Remote Unix Work (SSH, screen, and VNC)</a> </p>
+
+<p>　　* brihatch: <a href="http://www.symantec.com/connect/articles/ssh-host-key-protection" target="_blank">SSH Host Key Protection</a></p>
+
+<p>　　* brihatch: <a href="http://www.symantec.com/connect/articles/ssh-user-identities" target="_blank">SSH User Identities</a></p>
+
+<p>　　* IBM developerWorks: <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/" target="_blank">实战 SSH 端口转发</a></p>
+
+<p>　　* Jianing YANG：<a href="http://blog.jianingy.com/2009/09/ssh%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF%E7%AE%80%E4%BB%8B/" target="_blank">ssh隧道技术简介</a></p>
+
+<p>　　* WikiBooks: <a href="http://en.wikibooks.org/wiki/Internet_Technologies/SSH" target="_blank">Internet Technologies/SSH</a></p>
+
+<p>　　* Buddhika Chamith: <a href="http://chamibuddhika.wordpress.com/2012/03/21/ssh-tunnelling-explained/" target="_blank">SSH Tunneling Explained</a></p>
+
+<p>（完）</p>
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2011-12-23T20:21:21+08:00">2011年12月23日</abbr></li>
+<li>更多内容： <a href="http://www.ruanyifeng.com/blog/archives.html" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEUxAAAdHRseHhwfHx0fHx4gIB4hIR8iIiAjIyCMbVMLAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeBgwBJS9jlhpuAAAAcUlEQVQI122OOxKAIAwFQYfegGCLBdjKUfAGNNZ6A49uws/GVDtvdnbCGB6fWLux4SnSNtwZg5PRQLKIMjiIGg5EHD1xFiBVQV0OnsWWRuvKoNFcaXEyIc80UtPklKBOEZjPo6pfDN9nfO8obMd/oawvhiwOwjTYfd0AAAAASUVORK5CYII=" style="border:0;"> 档案</a>  » 
+<a href="http://www.ruanyifeng.com/blog/computer/"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEUxAAAdHRseHhwfHx0fHx4gIB4hIR8iIiAjIyCMbVMLAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfeBgwBJS9jlhpuAAAAcUlEQVQI122OOxKAIAwFQYfegGCLBdjKUfAGNNZ6A49uws/GVDtvdnbCGB6fWLux4SnSNtwZg5PRQLKIMjiIGg5EHD1xFiBVQV0OnsWWRuvKoNFcaXEyIc80UtPklKBOEZjPo6pfDN9nfO8obMd/oawvhiwOwjTYfd0AAAAASUVORK5CYII=" style="border:0;"> 理解计算机</a> 
+</li>
+<li>付费支持：<a href="http://www.ruanyifeng.com/blog/2014/05/my_blog_book.html" target="_blank"><img src="data:image/png;base64,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" style="border:0;"> 购买文集</a></li>
+<li>社交媒体：<a href="https://twitter.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAk1JREFUeNqsVc9rE0EU/mZ3dhPNJl2bVIk/Km09aFBE8GLvnrwJXvwLxIsgCP4Fnit6E8Gb0IMHwUsL9SSNgiAoooJIpE1Joo1h82uT7IxvxmRN3Q32kAdvdrI773vfe+/bDTu9WioDcDAda3Ja8piepQ1avCkCeny0Y+R9KenKwOmHHLvPaKn7AtVOoO8dOWDCMpg+41gMQv5FNEJACgoE8MsPNLDBhgfoutMOsJDmWLmU037C4TApciljwQ/kHoohQxV06+wMXNvE7WINuaSpvdYVKLgWnl3O4zAxU3Z1IYVGT+B5qYWV9z2kbQaT/cOwTsxOUUYF+mB5Dkmi8HG3h2q9hxsFNwRTdvQgxxnXRrMvIdkEhllis/qtiWuLDm4WZnBlPoWnXz28LHdw0uGR7m9Wu3j0qYGEubfn4UlBfXO4gTZltRNMg9w9f0i7kNFxllsBlS0x75gYfxyWTBUjT2W5CSMSPBrQuG21+hiMDS8CeCzF8eSLp13uQ3Ab1IqMFZN8tFHPmgOBF99bYP8Be1Xp6t7OJszJgKpPSiZvaj7uf2hguz2IBQuozDvFH6RDBjuK9wdQDvt0nMpW+8efGyh5UcAeZb2+UcHbnz5Jx4wdlp4yJYU3kLiQtfBwOYeLc8nIwfXtNu69q2Oz4mMxbemYOOOjKarhvq51KUjg3GwiFPIuvcNF6pnSnWK0lOEabNLgQh1aJFAhlGB9rG110B2+oyRNPc0sZbRNFltmLKDKqj4Qrm1ojzOxDz2pyPQ0P7CK4c40/wJ+CzAAGYrXsvfFXR4AAAAASUVORK5CYII=" style="border:0;"> twitter</a>，<a href="http://weibo.com/ruanyf" target="_blank"><img src="data:image/png;base64,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" style="border:0;"> weibo</a></li>
+<li>Feed订阅： <a href="http://www.ruanyifeng.com/feed.html" target="_blank"><img src="data:image/gif;base64,R0lGODlhFAAUANU2APV1GfmrePZ8IeR5VPq2ieNkLf7p3NpFJveCJ/NoFfibVPR1IexiJfvdzuZrNfXGuOhUEueTevaFOfzIpNxDGeZZJNU6IOubifiVTfOnid1aLuZpLOFSJf/28vJtIvGcefaLSd5kNu9iFv/z6//48//t4uFfLfNkCeJNGuGNc/rCof/+/PVxEeldI/V5KeKMbu9nIvB2OvzQtNxMKfOPXP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAADYALAAAAAAUABQAAAb/QJstEjKZCsjCZsl0pIS2QWXaYsA8noVWIEAgFoNhhWNyMESi7Jbr/aZCFdRnZJAFJCwAt+vlOkwtEBk1hDUkExJ6bQJaGyYMLTQTDSOFHQF8jAseSFYiJwkuAQ2FE1xaHjBIMDAgARguJwABJIQTLJswDEgeIgSEJQQILAqVNQEiui1HHgkBhTUGCiwYtR0xLS0VJhtaEgoEBoQkGCfPNSoQY9xaCwAsCBPALgmkJA4cZN0CAAgY/PJqEIDwgVAECjM0bOAnwcAKGQJclKhRgoGDDjUeUDigkN8vQiBOfByAglSDAxw3IBCgYEU0FyJoEPpA4UGNDjMsaHDQR8EdPVYOMmQYQGHAhQgHLIRIsWAlgASsGMRBMWMGBQtYZ7yIsoBRKkhjOMxAiXJGGCEpHGxIYsSIhrcaQmy1EQQAOw==" style="border:0;"></a></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2014.09.07: <a href="http://www.ruanyifeng.com/blog/2014/09/information-entropy.html">数据压缩与信息熵</a></strong>
+
+                           <div class="entry-body">
+                              1992年，美国佐治亚州的WEB Technology公司，宣布做出了重大的技术突破。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2014.07.04: <a href="http://www.ruanyifeng.com/blog/2014/07/database_implementation.html">数据库的最简单实现</a></strong>
+
+                           <div class="entry-body">
+                              所有应用软件之中，数据库可能是最复杂的。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2013.11.29: <a href="http://www.ruanyifeng.com/blog/2013/11/stack.html">Stack的三种含义</a></strong>
+
+                           <div class="entry-body">
+                              学习编程的时候，经常会看到stack这个词，它的中文名字叫做"栈"。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2013.10.14: <a href="http://www.ruanyifeng.com/blog/2013/10/register.html">为什么寄存器比内存快？</a></strong>
+
+                           <div class="entry-body">
+                              计算机的存储层次（memory hierarchy）之中，寄存器（register）最快，内存其次，最慢的是硬盘。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="googlead1">
+<h2>广告<a href="http://www.ruanyifeng.com/ads.html">（购买广告位）</a></h2>
+<div id="googlead1-inner">
+<div id="googlead1-left">
+<a href="http://dxy.com/?utm_source=ruanyifeng.com" target="_blank"><img src="http://www.ruanyifeng.com/blog/images/ad_dxy.jpg" style="border: none; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;" width="0" height="0"></a>
+</div>
+<div id="googlead1-right">
+
+<a href="http://www.payssion.cn/?utm_source=ruanyifeng.com" target="_blank"><img src="http://www.ruanyifeng.com/blog/images/ad_payssion_300.gif" style="border: none; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;" width="0" height="0"></a>
+
+</div>
+</div>
+</div>
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（25条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-243185" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Time</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243185">
+            <p>讲解的非常清晰!<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243185"><abbr class="published" title="2011-12-23T21:40:29+08:00">2011年12月23日 21:40</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Time.html" title="Time的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Time的这条留言" onclick="return CommentQuote(&#39;comment-quote-243185&#39;,&#39;Time&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243198" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">autoxbc</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243198">
+            <p>"远程端口转发"的前提条件是，host1和host3两台主机都有sshD和ssh客户端。<br>
+----------------<br>
+这一句不理解，我的理解是本地转发和远端转发仅仅是建立 ssh 的方向不一样，都是只建立一重 ssh 连接，远端转发并不需要多一次 ssh。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243198"><abbr class="published" title="2011-12-23T23:15:59+08:00">2011年12月23日 23:15</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/autoxbc.html" title="autoxbc的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用autoxbc的这条留言" onclick="return CommentQuote(&#39;comment-quote-243198&#39;,&#39;autoxbc&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243238" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">monos</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243238">
+            <p>当然，ssh还有一个非常重要的用处，就是X11转发。有了它，先终端登录上去，ssh -X user@host，然后就可以在本地执行host上的GUI程序，最为关键的是这些是处于本地窗口管理器(Window Manager)管理。这一场景对于经常在内网登录工作站进行CAD的用户而言，相当常见。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243238"><abbr class="published" title="2011-12-24T10:51:01+08:00">2011年12月24日 10:51</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/monos.html" title="monos的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用monos的这条留言" onclick="return CommentQuote(&#39;comment-quote-243238&#39;,&#39;monos&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243256" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://ninehills.github.com" href="http://ninehills.github.com/" target="_blank" rel="nofollow">cynic</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243256">
+            <blockquote>
+<pre>引用autoxbc的发言：</pre>
+
+<p>"远程端口转发"的前提条件是，host1和host3两台主机都有sshD和ssh客户端。<br>
+----------------<br>
+这一句不理解，我的理解是本地转发和远端转发仅仅是建立 ssh 的方向不一样，都是只建立一重 ssh 连接，远端转发并不需要多一次 ssh。</p>
+
+</blockquote>
+
+<p>嗯，远程端口转发只需要host1有sshd服务端就好了，host3不需要<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243256"><abbr class="published" title="2011-12-24T14:51:09+08:00">2011年12月24日 14:51</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/cynic.html" title="cynic的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用cynic的这条留言" onclick="return CommentQuote(&#39;comment-quote-243256&#39;,&#39;cynic&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243263" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Zind</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243263">
+            <blockquote>
+<pre>引用monos的发言：</pre>
+
+<p>当然，ssh还有一个非常重要的用处，就是X11转发。有了它，先终端登录上去，ssh -X user@host，然后就可以在本地执行host上的GUI程序，最为关键的是这些是处于本地窗口管理器(Window Manager)管理。这一场景对于经常在内网登录工作站进行CAD的用户而言，相当常见。</p>
+
+</blockquote>
+X11 登录与 VNC 相比，优劣如何呢？
+
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243263"><abbr class="published" title="2011-12-24T18:44:17+08:00">2011年12月24日 18:44</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Zind.html" title="Zind的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Zind的这条留言" onclick="return CommentQuote(&#39;comment-quote-243263&#39;,&#39;Zind&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243318" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.chenshaoju.com" href="http://www.chenshaoju.com/" target="_blank" rel="nofollow">陈少举</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243318">
+            <p>Hi:关于SSH，我还有一个问题，我注意到在网路拥堵或者访问目标主机繁忙或无响应的时候，本地的 SOCKS Proxy Forwarding 服务会出现阻塞的情况，必须耐心等待或者直接断开SSH连接并重新连接。<br>
+我尝试设置过Linux服务器上的sshd_config文件的 MaxSessions 参数为更大的数值（比如128），但是在拥堵的情况下仍然会出现阻塞，不知道有没有什么参数可以调整一下？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243318"><abbr class="published" title="2011-12-25T11:10:47+08:00">2011年12月25日 11:10</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E9%99%88%E5%B0%91%E4%B8%BE.html" title="陈少举的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用陈少举的这条留言" onclick="return CommentQuote(&#39;comment-quote-243318&#39;,&#39;陈少举&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243319" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">阮一峰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243319">
+            <p>@陈少举：</p>
+
+<p>这个我也不太懂，猜想是不是某个网页发出了太多TCP连接，关掉浏览器重启可能会好一点？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243319"><abbr class="published" title="2011-12-25T12:09:53+08:00">2011年12月25日 12:09</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E9%98%AE%E4%B8%80%E5%B3%B0.html" title="阮一峰的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用阮一峰的这条留言" onclick="return CommentQuote(&#39;comment-quote-243319&#39;,&#39;阮一峰&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243341" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">autoxbc</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243341">
+            <blockquote>
+<pre>引用Zind的发言：</pre>
+X11 登录与 VNC 相比，优劣如何呢？
+</blockquote>
+VNC 是抓取图像传输，X11 是抓取绘制图像的命令传输，相同环境下X11得到的画面是无损的，并可以节约大量带宽，一种改进的压缩 X11 转发方式称为 NoMachine NX，是 Linux 下最好用的连接方式，类似的技术在 Windows 上就是 RDP。
+
+<p>X11 的劣势似乎是远程用户和本地用户不能共享同一个 sessions，即 X11 登录会启动一个新的 session，而不是接管当前用户正在用的那个，所以不能同时操作，甚至看不到对方的操作；RDP 登录使用的是同一个 session，尽管看不到对方的操作；VNC 使用的是同一个，并且远程和本地可以同时操作。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243341"><abbr class="published" title="2011-12-25T18:16:28+08:00">2011年12月25日 18:16</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/autoxbc.html" title="autoxbc的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用autoxbc的这条留言" onclick="return CommentQuote(&#39;comment-quote-243341&#39;,&#39;autoxbc&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243346" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://Www.wangyutang.com" href="http://www.wangyutang.com/" target="_blank" rel="nofollow">Ki</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243346">
+            <p>不过，x11a速度很慢。<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243346"><abbr class="published" title="2011-12-25T21:09:57+08:00">2011年12月25日 21:09</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Ki.html" title="Ki的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Ki的这条留言" onclick="return CommentQuote(&#39;comment-quote-243346&#39;,&#39;Ki&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243363" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://hi.baidu.com/chenshake" href="http://hi.baidu.com/chenshake" target="_blank" rel="nofollow">陈沙克</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243363">
+            <p>不好意思，下面这段话没读懂<br>
+还是接着看上面那个例子，host1与host2之间无法连通，必须借助host3转发。但是，特殊情况出现了，host3是一台内网机器，它可以连接外网的host1，但是反过来就不行，外网的host1连不上内网的host3。这时，"本地端口转发"就不能用了，怎么办？</p>
+
+<p>我的理解是这样的<br>
+host1  公司的台式机，在内网，</p>
+
+<p>host2，家里笔记本，在内网</p>
+
+<p>host3，公网vps，公网IP</p>
+
+<p>现在host2，需要访问host1，需要通过host3来中转。<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243363"><abbr class="published" title="2011-12-26T00:04:09+08:00">2011年12月26日 00:04</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E9%99%88%E6%B2%99%E5%85%8B.html" title="陈沙克的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用陈沙克的这条留言" onclick="return CommentQuote(&#39;comment-quote-243363&#39;,&#39;陈沙克&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243464" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">阮一峰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243464">
+            <p>@陈沙克：</p>
+
+<p>我的原意如下，没表达清楚：</p>
+
+<p>host1 是家用电脑，在公网</p>
+
+<p>host2 是公司主机（比如内部数据库）, 在内网</p>
+
+<p>host3 是公司办公电脑，在内网 </p>
+
+<p>现在，host1连不上host2，也连不上host3。但是，host3可以同时连上host1和host2，所以要通过它中转。<br>
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243464"><abbr class="published" title="2011-12-26T23:30:20+08:00">2011年12月26日 23:30</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E9%98%AE%E4%B8%80%E5%B3%B0.html" title="阮一峰的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用阮一峰的这条留言" onclick="return CommentQuote(&#39;comment-quote-243464&#39;,&#39;阮一峰&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243611" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">冯镇</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243611">
+            <p>请您抽空讲解一下hash文件，好像类似于数据库可以存储数据</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243611"><abbr class="published" title="2011-12-28T06:27:15+08:00">2011年12月28日 06:27</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E5%86%AF%E9%95%87.html" title="冯镇的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用冯镇的这条留言" onclick="return CommentQuote(&#39;comment-quote-243611&#39;,&#39;冯镇&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243613" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.basilwang.net" href="http://www.basilwang.net/" target="_blank" rel="nofollow">basilwang</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243613">
+            <p>本地端口转发没大看明白</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243613"><abbr class="published" title="2011-12-28T07:35:25+08:00">2011年12月28日 07:35</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/basilwang.html" title="basilwang的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用basilwang的这条留言" onclick="return CommentQuote(&#39;comment-quote-243613&#39;,&#39;basilwang&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-243973" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Matthew</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-243973">
+            <p>如何通过SHH实现DNS请求的远程解析呢？希望可以让所有需要DNS解析的程序都能通过SSH远程解析得到结果。原因您懂得！</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-243973"><abbr class="published" title="2012-01-01T21:24:46+08:00">2012年1月 1日 21:24</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Matthew.html" title="Matthew的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Matthew的这条留言" onclick="return CommentQuote(&#39;comment-quote-243973&#39;,&#39;Matthew&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-245380" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://chen-yuan.me" href="http://chen-yuan.me/" target="_blank" rel="nofollow">Brooklyn</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-245380">
+            <p>不动声色的介绍了ssh隧道fanqiang的原理。</p>
+
+<p>我的工作每天就是在各个服务器之间跳转，虽然很多命令已经熟悉，但是还是大有收获。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-245380"><abbr class="published" title="2012-01-15T13:52:51+08:00">2012年1月15日 13:52</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Brooklyn.html" title="Brooklyn的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Brooklyn的这条留言" onclick="return CommentQuote(&#39;comment-quote-245380&#39;,&#39;Brooklyn&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-245833" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">msmouse</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-245833">
+            <p>-D的原理和用法仿佛并没有说清楚~</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-245833"><abbr class="published" title="2012-01-19T20:52:22+08:00">2012年1月19日 20:52</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/msmouse.html" title="msmouse的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用msmouse的这条留言" onclick="return CommentQuote(&#39;comment-quote-245833&#39;,&#39;msmouse&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-251713" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.chenj.in/" href="http://www.chenj.in/" target="_blank" rel="nofollow">金晨</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-251713">
+            <p>不错的文章，对于理解SSH很有帮助，待会转载到我博客去。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-251713"><abbr class="published" title="2012-04-01T13:33:28+08:00">2012年4月 1日 13:33</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E9%87%91%E6%99%A8.html" title="金晨的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用金晨的这条留言" onclick="return CommentQuote(&#39;comment-quote-251713&#39;,&#39;金晨&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-256977" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">小强</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-256977">
+            <p>ssh针对ftp的端口转发貌似比较复杂，SSH The Secure Shell: The definitive guide用了整整一章节来解决各种各样的相关问题。(详见2nd, chapter 11, ftp and ssh)主要原因是ftp用21端口发控制命令，对数据传输则用其他的端口进行。建议楼主换个例子，或针对ftp的转发再做下详细的说明。 </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-256977"><abbr class="published" title="2012-06-18T17:10:15+08:00">2012年6月18日 17:10</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E5%B0%8F%E5%BC%BA.html" title="小强的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用小强的这条留言" onclick="return CommentQuote(&#39;comment-quote-256977&#39;,&#39;小强&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-268161" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://uxat.me" href="http://uxat.me/" target="_blank" rel="nofollow">Evan</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-268161">
+            <p>"这条命令的意思，就是让host1监听它自己的2121端口"<br>
+这里应该是 "让 host3 监听它自己的 2121 端口" 吧?</p>
+
+<p>另外想请教一下, SSH 隧道是否能保证远端主机转发出去的数据也能加密呢? 如例子中 host3 转发到 host2 的数据.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-268161"><abbr class="published" title="2013-01-22T13:57:22+08:00">2013年1月22日 13:57</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Evan.html" title="Evan的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Evan的这条留言" onclick="return CommentQuote(&#39;comment-quote-268161&#39;,&#39;Evan&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-268163" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://uxat.me" href="http://uxat.me/" target="_blank" rel="nofollow">Evan</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-268163">
+            <p>不好意思, 第一个问题我理解了, 原文无误. <br>
+第二个问题, 还是要请教 :-)</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-268163"><abbr class="published" title="2013-01-22T14:04:03+08:00">2013年1月22日 14:04</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/Evan.html" title="Evan的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用Evan的这条留言" onclick="return CommentQuote(&#39;comment-quote-268163&#39;,&#39;Evan&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-271338" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.bestsrc.com" href="http://www.bestsrc.com/" target="_blank" rel="nofollow">指尖上的奋斗</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-271338">
+            <p>写的是很用心,表示我直接看糊涂了,其实这种如果不说host1,host2,host3，举例子说内网，外网应该好理解.b不过还是这么用心的写文章!</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-271338"><abbr class="published" title="2013-05-06T20:13:56+08:00">2013年5月 6日 20:13</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/%E6%8C%87%E5%B0%96%E4%B8%8A%E7%9A%84%E5%A5%8B%E6%96%97.html" title="指尖上的奋斗的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用指尖上的奋斗的这条留言" onclick="return CommentQuote(&#39;comment-quote-271338&#39;,&#39;指尖上的奋斗&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-271800" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">hxg</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-271800">
+            <p>请问有人知道如何取消端口映射吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-271800"><abbr class="published" title="2013-05-28T17:23:48+08:00">2013年5月28日 17:23</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/hxg.html" title="hxg的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用hxg的这条留言" onclick="return CommentQuote(&#39;comment-quote-271800&#39;,&#39;hxg&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-277649" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://kangzj.net" href="http://kangzj.net/" target="_blank" rel="nofollow">kangzj</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-277649">
+            <p>SSH Agent也非常有意思，可以提升不少的工作效率，阮大可以讲讲</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-277649"><abbr class="published" title="2013-10-08T17:15:55+08:00">2013年10月 8日 17:15</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/kangzj.html" title="kangzj的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用kangzj的这条留言" onclick="return CommentQuote(&#39;comment-quote-277649&#39;,&#39;kangzj&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-277650" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://kangzj.net" href="http://kangzj.net/" target="_blank" rel="nofollow">kangzj</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-277650">
+            <p>SSH Agent也非常有意思，可以提升不少的工作效率，阮大可以讲讲</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-277650"><abbr class="published" title="2013-10-08T17:18:01+08:00">2013年10月 8日 17:18</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/kangzj.html" title="kangzj的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用kangzj的这条留言" onclick="return CommentQuote(&#39;comment-quote-277650&#39;,&#39;kangzj&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-288344" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">lili</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-288344">
+            <p>SSH 权威指南上对端口转发的讲解很透彻，还不太懂的同学，可以去看看</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-288344"><abbr class="published" title="2013-11-23T09:14:43+08:00">2013年11月23日 09:14</abbr></a>
+ | <a href="http://www.ruanyifeng.com/blog/user/lili.html" title="lili的全部留言">档案</a> 
+ | <a href="http://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html#comment-text" title="引用lili的这条留言" onclick="return CommentQuote(&#39;comment-quote-288344&#39;,&#39;lili&#39;);">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1">
+                <input type="hidden" name="entry_id" value="1697">
+                <input type="hidden" name="__lang" value="en">
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id">
+                <input type="hidden" name="armor" value="1">
+                <input type="hidden" name="preview" value="">
+                <input type="hidden" name="sid" value="">
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="">  <span class="hint"> «-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="">  <span class="hint"> «-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="">  <span class="hint"> «-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r"></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()">
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表">  <span class="hint"> «- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/prism.js"></script>
+
+            <div id="footer">
+    <div id="footer-inner">
+        <div id="footer-content">
+<p><a href="http://www.ruanyifeng.com/contact.html">联系方式</a> | ruanyifeng.com 2003 - 2014
+<!--WEBBOT bot="Script" startspan PREVIEW="Site Meter" -->
+<script type="text/javascript" language="JavaScript">var site="sm3bomoocom"</script>
+<a target="_top" href="http://www.sitemeter.com/stats.asp?site=sm3bomoocom" id="idSiteMeterHREF"><img border="0" alt="Site Meter" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/meter.asp"></a><iframe frameborder="0" width="0" height="0" src="about:blank" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;"></iframe><script type="text/javascript" language="JavaScript1.2" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/counter.js">
+</script>
+<noscript>
+&lt;a href="http://sm3.sitemeter.com/stats.asp?site=sm3bomoocom" target="_top"&gt;
+&lt;img src="http://sm3.sitemeter.com/meter.asp?site=sm3bomoocom" alt="Site Meter" border=0&gt;&lt;/a&gt;
+</noscript>
+<!-- Copyright (c)2002 Site Meter -->
+</p>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;"><a class="bshareDiv" href="http://www.bshare.cn/share" style="display: block; text-decoration: none; padding: 0px; margin: 0px; font-size: 12px; height: 21px; width: 51px;"><div class="bsPromo bsPromo1"></div><div class="buzzButton bsStyle10" style="height:21px;color:#333;;background:transparent url(http://static.bshare.cn/frame/images/button_custom10-zh-Orange.gif) no-repeat;text-align:center;width:51px;"></div><div style="clear:both;"></div></a><script type="text/javascript" charset="utf-8" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/buttonLite.js"></script>                                       
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script></div>
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+        </div>
+    </div><script type="application/javascript" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/analytics.js"></script>
+
+<iframe scrolling="no" width="0" height="0" src="about:blank" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 2px 2px;"></iframe><div id="bsBox" class="bsBox"><div class="bsClose">X</div><div class="bsTop"><div class="bsReturn">选择其他平台 &gt;&gt;</div><span style="margin-left:15px;">分享到</span><span class="bsPlatName"></span></div><div class="bsFrameDiv"><iframe class="bShareFrame" name="bsFrame733" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div><div id="bsMorePanel" style="display: none;"></div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><div id="bsPanelHolder"><div id="bsPanel" style="display:none;"><div class="bsTitle"><a style="float:left;height:20px;line-height:20px;font-weight:bold;" class="bsSiteLink" target="_blank" href="http://www.bshare.cn/intro">分享到...</a><a class="bsSiteLink" style="cursor:pointer;float:right;height:20px;line-height:20px;font-weight:bold;" onclick="document.getElementById(&#39;bsPanel&#39;).style.display=&#39;none&#39;;">X</a><div class="bsClear"></div></div><div class="bsClear"></div><div style="padding-left:8px;background:#fff;*height:244px;"><div style="height:47px;border-bottom:1px #ccc solid;padding:4px 0 4px 16px;margin-right:8px;_padding-left:12px;"><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;facebook&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/facebook.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Facebook</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;twitter&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/twitter.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">Twitter</div></a></div><div class="bsRlogo" onmouseover="javascript:this.className=&#39;bsRlogoSel&#39;" onmouseout="javascript:this.className=&#39;bsRlogo&#39;"><a href="javascript:;" onclick="javascript:bShare.share(event,&#39;sinaminiblog&#39;);return false;" style="text-decoration:none;line-height:120%;"><div style="cursor:pointer;width:24px;height:24px;margin:0 18px 2px;background:url(http://static.bshare.cn/frame/images//logos/m2/sinaminiblog.gif) no-repeat;"></div><div style="cursor:pointer;text-align:center;width:60px;height:16px !important;overflow:hidden;color:inherit;white-space:nowrap;line-height:120% !important;">新浪微博</div></a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Google+" onclick="javascript:bShare.share(event,&#39;gplus&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/gplus.png) no-repeat;">Google+</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ空间" onclick="javascript:bShare.share(event,&#39;qzone&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1566px;">QQ空间</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="网易微博" onclick="javascript:bShare.share(event,&#39;neteasemb&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1332px;">网易微博</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="飞信" onclick="javascript:bShare.share(event,&#39;feixin&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -702px;">飞信</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="开心网" onclick="javascript:bShare.share(event,&#39;kaixin001&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1008px;">开心网</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="饭否" onclick="javascript:bShare.share(event,&#39;fanfou&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -666px;">饭否</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="雪球" onclick="javascript:bShare.share(event,&#39;xueqiu&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/xueqiu.png) no-repeat;">雪球</a></div></div><div class="bsLogoLink"><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="腾讯微博" onclick="javascript:bShare.share(event,&#39;qqmb&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1512px;">腾讯微博</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="搜狐微博" onclick="javascript:bShare.share(event,&#39;sohuminiblog&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1800px;">搜狐微博</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="豆瓣网" onclick="javascript:bShare.share(event,&#39;douban&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -540px;">豆瓣网</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="人人网" onclick="javascript:bShare.share(event,&#39;renren&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -1674px;">人人网</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="QQ好友" onclick="javascript:bShare.share(event,&#39;qqim&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//logos/s4/qqim.png) no-repeat;">QQ好友</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="Instapaper" onclick="javascript:bShare.share(event,&#39;instapaper&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -954px;">Instapaper</a></div><div class="bsLogo" onmouseover="javascript:this.className=&#39;bsLogoSel&#39;" onmouseout="javascript:this.className=&#39;bsLogo&#39;"><a href="javascript:;" title="美味书签" onclick="javascript:bShare.share(event,&#39;delicious&#39;);return false;" style="background:url(http://static.bshare.cn/frame/images//slogos_sprite8.png) no-repeat 0 -432px;">美味书签</a></div></div><div class="bsClear"></div></div><div style="height:20px;line-height:20px;padding:0 8px;border-top:1px solid #e8e8e8;color:#666;background:#f2f2f2;"><div class="buzzButton" style="float:left;">更多平台... <font style="font-weight:normal;">(133)</font></div><div id="bsPower" style="float:right;text-align:right;overflow:hidden;height:100%;"><a class="bsSiteLink" style="font-size:10px;vertical-align:text-bottom;line-height:24px;cursor:pointer;" href="http://www.bshare.cn/" target="_blank"><span style="font-size:10px;vertical-align:text-bottom;"><span style="color:#f60;">b</span>Share</span></a></div></div></div></div></body><iframe frameborder="0" marginheight="0" marginwidth="0" scrolling="no" width="2" height="2" src="./SSH原理与运用（二）：远程操作与端口转发 - 阮一峰的网络日志_files/log.html" style="display: none;"></iframe></html>

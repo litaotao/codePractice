@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0505)http://img.techtarget.com.cn/common/commentpost.aspx?IsLogion=0&ContentID=86660&SiteID=14&CommentType=6&pagepath=http%3A%2F%2Fwww.searchbi.com.cn%2Fshowcontent_86660.htm&title=%E4%B8%89%E5%A4%A7%E6%A1%88%E4%BE%8B%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BA%92%E8%81%94%E7%BD%91%E6%96%B0%E5%85%B4%E4%BC%81%E4%B8%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%AE%9E%E6%97%B6%E6%B5%81%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20-%20%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20-%20%E5%95%86%E5%8A%A1%E6%99%BA%E8%83%BD -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="Language" content="zh-CN">
+    <meta name="Robots" content="None">
+    <title>发表评论</title>
+    <script type="text/javascript" async="" src="tem_specific.js"></script><script type="text/javascript" src="jquery.js"></script><style type="text/css"></style>
+    <script type="text/javascript" src="base.js"></script>
+    <style type="text/css">
+        body
+        {
+            text-align: center;
+            font-size: 12px;
+            margin: 0 auto;
+            background-repeat: repeat;
+            font-family: Verdana, "宋体";
+        }
+        #edit_center
+        {
+            width: 973px;
+            background-color: #FFFFFF;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 0;
+            margin-left: auto;
+            height: auto;
+        }
+        .line
+        {
+            border: 1px solid #B8BDC1;
+        }
+        .line1
+        {
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-color: #88C6BB;
+            border-bottom-color: #88C6BB;
+            border-left-color: #88C6BB;
+        }
+        .line2
+        {
+            border-bottom-width: 1px;
+            border-bottom-style: dashed;
+            border-bottom-color: #B8BDC1;
+        }
+        .gundong1
+        {
+            height: 410px;
+            font-size: 12px;
+            line-height: 22px;
+            color: #000000;
+            font-family: "宋体" ,Verdana;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-color: #B8BDC1;
+            border-bottom-color: #B8BDC1;
+            border-left-color: #B8BDC1;
+        }
+        .tarea
+        {
+            font-size: 12px;
+            color: #666666;
+            height: 60px;
+            width: 720px;
+        }
+        .inpu
+        {
+            font-size: 12px;
+            color: #666666;
+            height: 10px;
+            width: 120px;
+        }
+        .button
+        {
+            font-size: 12px;
+            color: #000000;
+            height: 20px;
+            width: 60px;
+            border: 1px solid #000000;
+            background-color: #B6B6B6;
+            margin-left: 20px;
+        }
+        #wb_user
+        {
+            padding: 5px;
+            text-align: left;
+        }
+        #wb_loginframe
+        {
+            height: 25px;
+            width: 50%;
+            margin-bottom: -5px;
+            margin-left: 10px;
+        }
+        #wb_checkbox, #useCur
+        {
+            display: none;
+        }
+    </style>
+<script type="text/javascript">
+    function AutoHeight() {
+        $("#proxy").remove();
+        var curheight = document.body.scrollHeight + 15;
+        $(window.parent.document).find("#comment").attr("height", curheight);
+        var proxy = $("<iframe id='proxy' width='0' height='0' frameborder='0' src='http://www.searchbi.com.cn/common/proxy.html?frame=ifm_plun&height=" + curheight + "'>");
+        $("body").append(proxy);
+    }
+    function ClickButton() {
+        if ($.trim(document.getElementById("tb_content").value) == "") {
+            alert('请输入评论内容！');
+            return false;
+        }
+        if (document.getElementById("tb_VerifyCode").value == "") {
+            alert('请输入验证码！');
+            return false;
+        }
+        if (wbname) {
+            $("#WbNickname").val(wbname);
+            if ($("#wb_pub").attr("checked") == "checked") {
+                var content = $.trim($("#tb_content").val());
+                var len = 125 - window.parent.wtitle.length;
+                if (content.length > len) content = content.substr(0, len - 1) + "…";
+                var status = window.parent.pagepath + content;
+                $(window.parent.document.body).append("<iframe  width='0' height='0' frameborder='0' src='http://img.techtarget.com.cn/weibo/update.html?status=" + encodeURI(status) + "'></iframe>");
+                return true;
+            }
+        }
+        var obj = document.getElementById("ck_dl_Checked");
+        var obj2 = document.getElementById("tb_nickname");
+        if (obj == null)
+            return true;
+        if (obj2 == null)
+            return true;
+        if (obj.checked == false) {
+            if (obj2.value == "") {
+                alert('请输入您的昵称或选择匿名发布复选框！');
+                return false;
+            }
+        }
+        return true;
+    }
+    var wbname = '';
+    $(document).ready(function () {
+        if (wbname) {
+            $("#wb_pub").attr("checked", "checked");
+            $("#wb_checkbox").show();
+        }
+        $("#useCur").toggle(function () { $("#p_Logion").show(); AutoHeight(); }, function () { $("#p_Logion").hide(); AutoHeight(); });
+        $("#wb_loginframe").attr("src", "http://img.techtarget.com.cn/weibo/loginbutton1.html?domainame=www.searchbi.com.cn");
+        $("#lbtn_fresh").click(function () {
+            $(this).prev().attr("src", "/common/VerifyCodeImg.aspx?id=mloginvc&len=4&change=1&t=" + new Date().getTime())
+        });
+        AutoHeight();
+    });
+</script></head>
+
+<body onload="AutoHeight()">
+    <form name="form1" method="post" action="http://img.techtarget.com.cn/common/commentpost.aspx?IsLogion=0&ContentID=86660&SiteID=14&CommentType=6&pagepath=http%3a%2f%2fwww.searchbi.com.cn%2fshowcontent_86660.htm&title=%u4e09%u5927%u6848%u4f8b%u544a%u8bc9%u4f60%u4e92%u8054%u7f51%u65b0%u5174%u4f01%u4e1a%u4e3a%u4ec0%u4e48%u9700%u8981%u5b9e%u65f6%u6d41%u6570%u636e%u5206%u6790+-+%u5927%u6570%u636e%u5206%u6790+-+%u5546%u52a1%u667a%u80fd" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE3MDU5MjQ0MDQPZBYCZg9kFgYCAQ8WAh4LXyFJdGVtQ291bnRmZAIDDw8WAh4EVGV4dAVX5pWs6K+36K+76ICF5Y+R6KGo6K+E6K6677yM5pys56uZ5L+d55WZ5Yig6Zmk5LiO5pys5paH5peg5YWz5ZKM5LiN6ZuF6K+E6K6655qE5p2D5Yqb44CCZGQCBQ9kFgICAg8QDxYCHgdWaXNpYmxlaGRkZGRkJGXYNNlF3c6E7jFd7jHVT93/dlGw5UfO9V7xRJi+ztM=">
+</div>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="FE84A2FF">
+</div>
+    <table width="99%" border="0" cellpadding="0" cellspacing="0" class="line">
+        
+        <tbody><tr>
+            <td align="center">
+                <span id="pages">敬请读者发表评论，本站保留删除与本文无关和不雅评论的权力。</span>
+            </td>
+        </tr>
+    </tbody></table>
+    <div id="p_Logion">
+	
+        <div style="line-height: 35px; padding-left: 8px; text-align: left;">
+            您还没有登录? 发表评论请先登录，未注册用户请先<a href="http://www.searchbi.com.cn/member/register.aspx" target="_blank">注册</a>。
+        </div>
+        <div style="line-height: 35px; padding-left: 8px; text-align: left;">
+            登录Email：<input name="email" type="text" id="email" style="width: 200px;">
+        </div>
+        <div style="line-height: 35px; padding-left: 8px; padding-bottom: 8px; text-align: left;">
+            密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：<input name="password" type="password" id="password" style="width: 200px;" maxlength="20">
+        </div>
+    
+</div>
+    <div id="wb_user">
+        <span id="CurUser"></span><a href="javascript:void(0);" id="useCur">使用本站账号</a><iframe id="wb_loginframe" name="wb_loginframe" src="loginbutton1.html" scrolling="no" frameborder="0"> </iframe>
+        <input type="hidden" name="WbNickname" id="WbNickname">
+    </div>
+    
+    <table class="tblcomm" width="100%">
+        <tbody><tr>
+            <td align="left">
+                <textarea name="tb_content" rows="2" cols="20" id="tb_content" class="tarea" style="height:86px;width:99%;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                验证码：<input name="tb_VerifyCode" type="text" id="tb_VerifyCode" class="inpu" style="height:18px;width:81px;">
+                <img alt="验证码" src="VerifyCodeImg.aspx" height="25">
+                <a href="javascript:void(0);" id="lbtn_fresh">看不清楚？换一个</a> &nbsp;&nbsp;&nbsp;&nbsp;<span id="wb_checkbox"><input id="wb_pub" type="checkbox">同步到微博</span>
+                <input type="submit" name="btnsave" value=" 发 布 " onclick="return ClickButton();" id="btnsave" class="button">
+            </td>
+        </tr>
+    </tbody></table>
+    </form>
+
+
+<iframe id="proxy" width="0" height="0" frameborder="0" src="proxy.html"></iframe></body></html>

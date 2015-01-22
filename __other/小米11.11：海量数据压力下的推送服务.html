@@ -1,0 +1,1947 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0060)http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>小米11.11：海量数据压力下的推送服务</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./小米11.11：海量数据压力下的推送服务_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./小米11.11：海量数据压力下的推送服务_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./小米11.11：海量数据压力下的推送服务_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn1.infoqstatic.com/favicon.ico?20141112-0054" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn1.infoqstatic.com/apple-touch-icon.png?20141112-0054">
+
+        <link rel="stylesheet" href="./小米11.11：海量数据压力下的推送服务_files/jquery.jscrollpane.css" type="text/css">
+
+        
+        <script type="text/javascript" async="" src="./小米11.11：海量数据压力下的推送服务_files/ga.js"></script><script async="" type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/gpt.js"></script><script src="./小米11.11：海量数据压力下的推送服务_files/__hd.ifq"></script><style type="text/css"></style>
+
+        <script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script>
+        <script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()])</script>
+	
+    <script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/forum.js"></script>
+	<meta name="keywords" content="xiaomi 1111 pushservice,架构 &amp; 设计,语言 &amp; 开发,Java,架构 ,移动,">
+	<meta name="description" content="11.11大促，随着移动端业务量的急剧提升，像小米推送这样的基础服务也经受了巨大的考验。11月12日，小米的项目总监汪轩然在微博上宣布，“小米推送服务共发出9.65亿条消息，平均每分钟发送67万条。”我们就小米推送服务的架构、特点和性能等问题对汪轩然进行了采访。">
+	<meta name="tprox" content="1415844000000">
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+<meta property="og:title" content="小米11.11：海量数据压力下的推送服务 ">
+<meta property="og:description" content="11.11大促，随着移动端业务量的急剧提升，像小米推送这样的基础服务也经受了巨大的考验。11月12日，小米的项目总监汪轩然在微博上宣布，“小米推送服务共发出9.65亿条消息，平均每分钟发送67万条。”我们就小米推送服务的架构、特点和性能等问题对汪轩然进行了采访。">
+<meta property="og:site_name" content="InfoQ">
+
+
+        
+        
+			<link rel="image_src" href="http://cdn1.infoqstatic.com/styles/i/logo-big.jpg?20141112-0054">
+			<meta property="og:image" content="http://cdn1.infoqstatic.com/styles/i/logo-big.jpg?20141112-0054">
+		
+    <script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><iframe src="./小米11.11：海量数据压力下的推送服务_files/container.html" style="visibility: hidden; display: none;"></iframe><script src="./小米11.11：海量数据压力下的推送服务_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        <div class="inline_header_container">
+            <div class="inline_header">
+                <a class="close">x</a> 你的观点很重要！请帮我们完成有关您阅读习惯的<a href="https://www.surveymonkey.com/s/FRXSFK5" class="message" target="_blank">InfoQ调研吧</a>！
+            </div>
+        </div>
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./小米11.11：海量数据压力下的推送服务_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./小米11.11：海量数据压力下的推送服务_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./小米11.11：海量数据压力下的推送服务_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="OMQxx54ts1SybCEx">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./小米11.11：海量数据压力下的推送服务_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/expose-mobile-application-performance">移动应用性能揭秘</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./小米11.11：海量数据压力下的推送服务_files/qinjie_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">目前大部分移动应用都是需要与服务器进行交互的，哪么影响这些应用程序性能的主要因素有哪些？如网络请求、IO操作、多线程等都会对性能产生影响，本议题将分享基调网络在移动应用性能监控中遇到的与移动应用性能提升相关的代码问题，希望能够为程序员开发高性能的应用提供帮助。
+听众受益：  1）影响移动应用性能的因素  2）提高移动应用性能的方法  3）移动应用性能瓶颈监测和解决方案</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/expose-mobile-application-performance">移动应用性能揭秘</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./小米11.11：海量数据压力下的推送服务_files/qinjie_100(1).jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">目前大部分移动应用都是需要与服务器进行交互的，哪么影响这些应用程序性能的主要因素有哪些？如网络请求、IO操作、多线程等都会对性能产生影响，本议题将分享基调网络在移动应用性能监控中遇到的与移动应用性能提升相关的代码问题，希望能够为程序员开发高性能的应用提供帮助。
+听众受益：  1）影响移动应用性能的因素  2）提高移动应用性能的方法  3）移动应用性能瓶颈监测和解决方案</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/interviews/agile2014-maccherone-cognitive-bias-metrics">Larry Maccherone 谈论认知偏差、决策制订和度量体</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./小米11.11：海量数据压力下的推送服务_files/Larry-Maccherone.png" alt="" border="0">
+							<span id="process-practicesHDSummary">在本次访谈中，Larry Maccherone探讨了多种使用度量体系的方式，可以用来克服认知偏见，做出正确决策，同时说明了如何使用它们来探索不同做事方法，推进与管理层的高效沟通，为未来前进的方向提供信心，而且这方向也与我们的价值观可以保持一致。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/Database-Risk">你的数据库危机四伏</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./小米11.11：海量数据压力下的推送服务_files/article-logo-yaniv.jpg" alt="" border="0">
+							<span id="operations-infrastructureHDSummary">从概念到产品，你如何合理地对数据库进行管理呢？Yaniv Yehuda讲述了开发人员不曾意识到的挑战并推荐了相应的数据库管理工具作为解决方案。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/soa-api-unification">SOA与API的分裂和统一</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./小米11.11：海量数据压力下的推送服务_files/logo.jpg" alt="" border="0">
+							<span id="enterprise-architectHDSummary">虽然API和SOA有着相似的商业和技术目标，许多API的支持者却坚持表示API与SOA几乎没什么关联，认为它们属于截然不同的方法。他们经常宣扬务实的REST API和SOA之间有着巨大的差异。本文将阐述它们的异同，以及如果创建一个同时包含SOA和REST的统一架构策略，什么时候适合创建服务，什么时候合适创建API。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn1.infoqstatic.com/images/ads/banners/qcon/cn/2014/20140808_banner.png?20141112-0054" usemap="#qconmap" style="margin-top:-40px;">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://2014.qconshanghai.com/" target="_blank" alt="QCon">
+  <area shape="rect" coords="0,55,200,110" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/news?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="新闻">新闻</a>
+                
+		
+		<span class="last">小米11.11：海量数据压力下的推送服务</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+<h1 class="general">小米11.11：海量数据压力下的推送服务</h1>
+<span class="author_general">
+    作者
+    
+        
+    
+    <a href="http://www.infoq.com/cn/author/%E8%87%A7%E7%A7%80%E6%B6%9B" class="editorlink f_taxonomyEditor">
+臧秀涛</a>
+
+    
+    发布于
+    2014年11月12日
+    <em>|</em>
+    
+<a id="noOfComments" title="" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#theCommentsSection" class="comments_like">
+		
+	    
+	        <span class="comments_counts">
+	        	<span class="nr">
+					讨论
+	        	</span>
+	        </span>
+	    
+	</a></span>
+
+
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1415881359843">
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="Bookmarks.bookmarkContent(&#39;news&#39;, &#39;2014/11/xiaomi-1111-pushservice&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+
+<div class="clear"></div>
+<div class="article_page_left news_container text_content_container">
+			
+	<div class="text_info">
+   		<p>11.11大促，随着移动端业务量的急剧提升，像小米推送这样的基础服务也经受了巨大的考验。11月12日，小米的项目总监汪轩然在<a href="http://weibo.com/1683458081/BvTxBwj5C?type=comment">微博</a>上宣布，“小米推送服务共发出9.65亿条消息，平均每分钟发送67万条。更值得一提的是，后台监控显示，推送服务后台系统在全天运作非常平稳，没有任何卡顿拥堵现象，让各种促销、返利、订单更新消息第一时间触达用户。”</p>
+
+<p align="left">汪轩然，2007年毕业于清华大学计算机系，后加入微软亚洲工程院，曾参与WP7上的浏览器的开发。2010年7月加入小米，曾担任米聊安卓团队的团队主管，现在在小米任项目总监，负责小米的开发者服务，掌管推送服务、统计服务和移动广告联盟三大业务，旨在为小米搭建一个移动App业务的互联网生态圈。</p>
+
+<p align="left">我们联系了汪轩然，就小米推送服务的架构、特点、性能等问题对他进行了采访，以下内容根据本次采访整理而成。</p>
+
+<h1 align="left"><strong>基础技术架构</strong></h1>
+
+<p align="left"><strong>协议是推送服务的核心。</strong>小米推送服务所采用的协议是由之前的米聊演变过来的，而米聊从一开始就选择使用XMPP协议，之后开发团队对XMPP协议做过几轮精简和重构。现在XMPP部分只是作为一个数据的传输层，之上跑着各种独立的业务，每个业务称为一个“channel”；每个channel上跑的数据格式可以是不一样的。消息推送服务是其中一个channel，这个channel上传输的数据是通过Thrift进行二进制化的协议格式。</p>
+
+<p align="left">再来看一下小米推送服务的<strong>服务端架构</strong>。下图是后台服务端的一个基本架构图。整个服务端包含如下几层：</p>
+
+<ol>
+	<li align="left"><strong>XMPP</strong><strong>前端：</strong>用于维护跟客户端之间的长连接，使用EJabberd项目来处理来自客户端的XMPP请求，同时通过XMQ模块来处理推送服务特有的XMPP消息协议。</li>
+	<li align="left"><strong>中间层：</strong>业务逻辑层，主要用于将消息请求异步化、创建和维护消息队列、以及处理客户端的一些命令请求（注册、设置别名、设置topic等）。</li>
+	<li align="left"><strong>HTTP</strong><strong>前端：</strong>这一层负责对接来自第三方App的服务器的发消息的HTTPS请求，以及来自客户端生成账号的HTTPS请求。</li>
+</ol>
+
+<p align="left">再就是数据存储，这里采用了小米的统一HBase存储，同时还使用MySQL来保存一些量不大，但需要复杂过滤条件的数据（topic等），并且为了降低对HBase的压力，中间还加了一层Redis作为缓存。</p>
+
+<p>(点击图像放大)</p>
+
+<p align="left"><a href="./小米11.11：海量数据压力下的推送服务_files/1.png"><img _href="img://null" _p="true" border="0" height="543" src="./小米11.11：海量数据压力下的推送服务_files/1.png" width="554"></a></p>
+
+<p align="left">最后看一下<strong>客户端架构</strong>。客户端SDK主要包含两个层次：SDK层和PushService层。前者提供了面向App接入的接口、回调方法以及对Thrift的数据进行反序列化的处理逻辑；后者用于维护XMPP长连接和收发消息。两层之间使用Intent方式来传输数据。值得一提的是，在MIUI系统上，PushService层是系统共用的，即MIUI系统提供了一个统一的PushService管理模块，不需要每个应用单独启动自己的PushService。</p>
+
+<p align="left"><img _href="img://null" _p="true" border="0" height="529" src="./小米11.11：海量数据压力下的推送服务_files/2.png" width="310"> <img _href="img://null" _p="true" border="0" height="543" src="./小米11.11：海量数据压力下的推送服务_files/3.png" width="339"></p>
+
+<p align="left">&nbsp;</p>
+
+<h1><strong>功能实现</strong></h1>
+
+<p align="left"><strong>小米推送服务支持单发和群发消息两种推送方式。</strong>单发消息支持针对regID和别名两种方式，regID是小米推送服务后台根据设备标识+appID+时间戳生成，为了减少设备碰撞概率，设备标识我们采用的依据是imei+AndroidID+build序列号。别名是App在客户端设置上报的，便于应用将自己的设备/用户标识符同我们的regID作关联，这样App就不需要在后台维护regID跟设备/用户的对应关系了。群发消息采用打标签的方式来区分，客户端和服务端都可以给指定设备设置标签，发消息的时候，只需选取指定标签发送即可，小米推送后台会将标签所对应的设备展开。一个标签支持的设备数无上限。</p>
+
+<p align="left">那小米推送服务的<strong>稳定性</strong>是如何保证的呢？小米推送服务采用多机房方案，平时流量均摊，一旦某个机房出现故障，流量无缝切换到其它机房，并且单个机房的容量能保证提供无损服务。目前是双机房部署，预计明年会扩展第三个机房。</p>
+
+<p align="left"><strong>安全性</strong>也是小米推送服务重点考虑的一个因素。数据传输过程中，得益于推送服务采用的双层协议方案，消息会采取双重加密，第一重是XMPP传输层，保证数据在网络传输的过程中不会被篡改、监听。第二重是在Thrift二进制层，用以保证消息到达Service之后，通过broadcast发送给App进程的过程中不会被截获和伪造。第二重加密往往会被其它第三方推送服务忽略，但其风险同样很大。</p>
+
+<h1 align="left"><strong>性能指标</strong></h1>
+
+<p align="left">11.11大促，所面对的请求量是在小米推送服务的设计容量之内的，目前设计和机器规模可以支持峰值每分钟1000万条消息；平时业务量至少每分钟40万，峰值每分钟600万条消息。</p>
+
+<p align="left">推送消息量平时波动很大，所以开发团队准备着流量随时可能忽增200%的情况，并在线下做好压力测试和优化；如果流量特别大，还有以下应对措施：</p>
+
+<ol>
+	<li align="left">异步排队处理，此时消息送达时间可能会比平时稍慢，但不会对整个系统有太大冲击；</li>
+	<li align="left">消息有优先级，广播消息会以低优先级处理；</li>
+	<li align="left">限流，控制开发者发送消息的频率；</li>
+	<li align="left">扩容，如果机器负载过高或者某个服务有瓶颈，可以很快速地增加机器，部署服务，增强系统处理能力。</li>
+</ol>
+
+<h1 align="left"><strong>小米推送服务所经历的重构</strong></h1>
+
+<p align="left">软件系统在开发和演进过程中，经常会经历较大规模的重构。小米推送服务有两次比较大的重构。</p>
+
+<p align="left">一是开发语言从Erlang 转为Java。&nbsp;小米原来的消息系统是使用Erlang开发的，所以推送系统的第一版也是基于Erlang；但是Erlang的社区不够活跃，开发人员很难找，学习曲线陡，支持工具和类库少，所以后来开发团队选择了使用Java重新开发；迁移到Java后，对开发人员的要求降低，各种工具和类库较多，大大提高了开发效率。</p>
+
+<p align="left">二是无处不在的Cache。客户端使用小米推送服务的SDK，开发者使用API的情况千变万化，很多场景是意料之外的；需要对调用频繁的业务添加Cache，尽可能在本地进程内处理；例如，对于客户端调用API设置别名和订阅topic，先检查Cache是否已经设置过，只有没有设置才往后端服务发送；优化后，后台服务的业务压力大大减少。</p>
+
+<h1 align="left"><strong>在开发小米推送过程中的一些感悟</strong></h1>
+
+<ol>
+	<li align="left">服务要支持水平扩展，尽可能实现为无状态，或者使用一致性哈希进行划分；方便扩容，可以保证即使系统暂时有性能瓶颈也能通过加机器解决。</li>
+	<li align="left">监控先行，能够很方便地采集、分析服务器的负载和业务的请求量、percentile、slow log，能够清楚了解到系统的瓶颈，有针对性地改进。</li>
+	<li align="left">不要过早优化，先实现功能并尽快上线，根据监控数据对关键地方进行优化。</li>
+	<li align="left">敏捷开发，快速迭代，日拱一卒，每天都有简短的站立会议，能够迅速响应变化，持续改进系统。</li>
+</ol>
+
+        <div style="margin-bottom:5px">【<a href="http://bj2014.archsummit.com/" target="_blank">ArchSummit北京2014</a>】解读“双11”背后淘宝、京东、一号店的技术支撑。年末的技术盛宴，CTO与架构师的大Party。11月30日前报名享受9折优惠，<a href="http://bj2014.archsummit.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture-design" name="architecture-design" id="6,821"><b>架构 &amp; 设计</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/mobile" name="mobile" id="849">移动</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture" name="architecture" id="1,390">架构 </a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/java" name="java" id="739">Java</a></li>
+			</ul>							
+		</div>
+		<div class="clear"></div>
+		
+		
+		
+		
+		
+	   	
+
+
+
+
+
+
+
+
+<div class="related_sponsors wholething" style="display: block;">
+	<div class="gray_section_related">
+	    <div class="related_editorial recommended" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/unusual-ways-to-create-a-mobile-app?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk">另辟蹊径创建移动应用</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/07/art-runtime?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk">ART：新的Android运行时库</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/06/qcon-shanghai-progress?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk">QCon上海2014大会15个热门专题征集演讲嘉宾</a></h3><h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/codenvy-architecture-part-2?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk">Codenvy架构：第二部分</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/04/thoughtworks-radar-201401?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk">Rebecca Parsons谈ThoughtWorks技术雷达</a></h3></div>
+	    </div>
+	    
+	        
+	            <div class="related_editorial sponsored">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6145&t=f" target="_blank">
+	                                    “双11”背后淘宝、京东、一号店的技术支撑。
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6146&t=f" target="_blank">
+	                                    小微金服、京东金融、微信红包的架构实现。
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6147&t=f" target="_blank">
+	                                    手淘、手Q、网易新闻客户端的成功之道。
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+	        
+        </div>
+        
+            <div class="paid_section">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6149&t=f" target="_blank">
+                        <img src="./小米11.11：海量数据压力下的推送服务_files/AS.png" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">ArchSummit全球架构师峰会，首次来到北京。12月19-20日，北京国际会议中心，</font><a href="http://www.infoq.com/infoq/url.action?i=6148&t=f" target="_blank"><font face="Verdana">敬请期待</font></a>！</p>
+
+                </div>
+            </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "1,317,876,-1000,-1000", "title": "小米11.11：海量数据压力下的推送服务", "contentPath": "/news/2014/11/xiaomi-1111-pushservice", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": '2014/11/xiaomi-1111-pushservice',
+            "uriMapping": 'news'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var vcrColumn = $('.gray_section_related > .related_editorial.sponsored');
+            var vcrExists = $(vcrColumn).length === 1;
+            var sponsorshipColumn = $('.related_sponsors > .paid_section')
+            var sponsorshipExists = $(sponsorshipColumn).length === 1;
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || vcrExists || sponsorshipExists || researchExists) {
+                $('.related_sponsors.wholething').show(); // show the big related box
+            }
+			
+            if(recommendedExists || vcrExists){
+            	$('.gray_section_related').show(); // show the gray box for vcr and recommendations
+            }
+            
+            // in case all three available, leave now
+            if (recommendedExists && vcrExists && sponsorshipExists) {
+                return;
+            }
+            // in case only two of them available
+            if (recommendedExists && vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only2');
+                $(vcrColumn).addClass('only2last');
+                $(grayBox).addClass('only2 fullWidth');                
+            } else if (recommendedExists && sponsorshipExists && !vcrExists) {
+                $(recommendedColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            } else if (vcrExists && sponsorshipExists && !recommendedExists) {
+                $(vcrColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            }
+            // in case only one is available
+            else if (recommendedExists && !vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (vcrExists && !recommendedExists && !sponsorshipExists) {
+                $(vcrColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (sponsorshipExists && !recommendedExists && !vcrExists) {
+                $(sponsorshipColumn).addClass('only1');
+            }
+            // in case none is available, do not display upper border for the research category if any
+            else if (researchExists) {
+                $(researchRow).addClass('only1');
+            }
+        });
+</script>
+<div class="clear"></div>
+
+		<div class="clear"></div>
+
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=39921;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+    </div>
+
+    <div class="all_comments">
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+			
+	<div class="clear"></div>
+</div>
+		
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="移动应用性能揭秘" href="http://www.infoq.com/cn/presentations/expose-mobile-application-performance">
+					移动应用性能揭秘
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E7%A7%A6%E6%9D%B0" class="editorlink" title="秦杰">
+秦杰</a>
+
+				11月12日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="移动应用性能揭秘" href="http://www.infoq.com/cn/presentations/expose-mobile-application-performance">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/qinjie_100(1).jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Red Gate的SQL Source Control工具简介" href="http://www.infoq.com/cn/articles/Red-Gate-SQL-Source-Control">
+					Red Gate的SQL Source Control工具简介
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/David-Atkinson" class="editorlink" title="David Atkinson">
+David Atkinson</a>
+
+				11月12日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Red Gate的SQL Source Control工具简介" href="http://www.infoq.com/cn/articles/Red-Gate-SQL-Source-Control">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/logo2.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="SOA与API的分裂和统一" href="http://www.infoq.com/cn/articles/soa-api-unification">
+					SOA与API的分裂和统一
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Chris-Haddad" class="editorlink" title="Chris Haddad">
+Chris Haddad</a>
+
+				11月11日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="SOA与API的分裂和统一" href="http://www.infoq.com/cn/articles/soa-api-unification">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/logo.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="从AutoCAD 360看云计算在CAD领域中的实践" href="http://www.infoq.com/cn/presentations/autocad-360-cloud-computing-practise-in-cad">
+					从AutoCAD 360看云计算在CAD领域中的实践
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%88%98%E4%BA%AE" class="editorlink" title="刘亮">
+刘亮</a>
+
+				11月11日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="从AutoCAD 360看云计算在CAD领域中的实践" href="http://www.infoq.com/cn/presentations/autocad-360-cloud-computing-practise-in-cad">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/liuliang_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="HDInsight——云上的Hadoop之旅" href="http://www.infoq.com/cn/presentations/hdInsight-cloud-hadoop">
+					HDInsight——云上的Hadoop之旅
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%9E%97%E9%BB%98" class="editorlink" title="林默">
+林默</a>
+
+				11月10日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="HDInsight——云上的Hadoop之旅" href="http://www.infoq.com/cn/presentations/hdInsight-cloud-hadoop">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/linmo1_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="Larry Maccherone 谈论认知偏差、决策制订和度量体" href="http://www.infoq.com/cn/interviews/agile2014-maccherone-cognitive-bias-metrics">
+					Larry Maccherone 谈论认知偏差、决策制订和度量体
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Larry-Maccherone" class="editorlink" title="Larry Maccherone">
+Larry Maccherone</a>
+
+				11月10日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Larry Maccherone 谈论认知偏差、决策制订和度量体" href="http://www.infoq.com/cn/interviews/agile2014-maccherone-cognitive-bias-metrics">
+				<img border="0" alt="" src="./小米11.11：海量数据压力下的推送服务_files/Larry-Maccherone.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3'); });
+		 		</script>
+		 	</div>
+ 		</div>
+
+</div>
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./小米11.11：海量数据压力下的推送服务_files/infoqcn.js"></script>
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://js-agent.newrelic.com/nr-100.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","bfafe6a5f6",5582901,"YAFWMEEAW0RUVk1cCllLfjdjTltSQkYWRg1YExoOQBE=",0,28,new Date().getTime()])</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2014/11/mono-unreal" title="Mono for Unreal Engine发布，C#进入虚幻引擎（Unreal Engine）">Mono for Unreal Engine发布，C#进入虚幻引擎（Unreal Engine）</a></p><p><a href="./小米11.11：海量数据压力下的推送服务_files/小米11.11：海量数据压力下的推送服务.html" title="小米11.11：海量数据压力下的推送服务">小米11.11：海量数据压力下的推送服务</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/reinvent-stats-update" title="AWS re:Invent主题演讲：运营数据更新与案例分享">AWS re:Invent主题演讲：运营数据更新与案例分享</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="./小米11.11：海量数据压力下的推送服务_files/小米11.11：海量数据压力下的推送服务.html" title="小米11.11：海量数据压力下的推送服务">小米11.11：海量数据压力下的推送服务</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture" title="蘑菇街11.11：流量超过预期，系统曾被冲垮">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></p><p><a href="http://www.infoq.com/cn/presentations/expose-mobile-application-performance" title="移动应用性能揭秘">移动应用性能揭秘</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture" title="蘑菇街11.11：流量超过预期，系统曾被冲垮">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></p><p><a href="http://www.infoq.com/cn/interviews/agile2014-maccherone-cognitive-bias-metrics" title="Larry Maccherone 谈论认知偏差、决策制订和度量体">Larry Maccherone 谈论认知偏差、决策制订和度量体</a></p><p><a href="http://www.infoq.com/cn/articles/aaron-sanders-user-experience" title="什么是用户体验，什么不是？">什么是用户体验，什么不是？</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture" title="蘑菇街11.11：流量超过预期，系统曾被冲垮">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aws-reinvent-sessions-to-see" title="AWS re:Invent Day 2值得关注的议题">AWS re:Invent Day 2值得关注的议题</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/vcloud-air-expands" title="VMware将vCloud Air推广至澳大利亚和日本">VMware将vCloud Air推广至澳大利亚和日本</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture" title="蘑菇街11.11：流量超过预期，系统曾被冲垮">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aws-reinvent-sessions-to-see" title="AWS re:Invent Day 2值得关注的议题">AWS re:Invent Day 2值得关注的议题</a></p><p><a href="http://www.infoq.com/cn/articles/soa-api-unification" title="SOA与API的分裂和统一">SOA与API的分裂和统一</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer">东京 2015年4月</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年9月21-25日">里约 2015年9月21-25日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./小米11.11：海量数据压力下的推送服务_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+    <li><a href="http://www.infoq.com/cn/aliyun/"><strong>阿里云专区</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./小米11.11：海量数据压力下的推送服务_files/engine.js" type="text/javascript"></script>
+            <script src="./小米11.11：海量数据压力下的推送服务_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./小米11.11：海量数据压力下的推送服务_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+    <script src="./小米11.11：海量数据压力下的推送服务_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="http://hm.baidu.com/h.js?5101210b73a0e033d1509b3e487c929c" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "小米11.11：海量数据压力下的推送服务";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn2.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141112-0054");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S1 -->
+<script type="text/javascript" async="" src="./小米11.11：海量数据压力下的推送服务_files/nr-100.js"></script><script type="text/javascript" src="./小米11.11：海量数据压力下的推送服务_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><script type="text/javascript" async="" src="./小米11.11：海量数据压力下的推送服务_files/nr-100.js"></script></body></html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://www.csdn.net/article/2014-12-17/2823183 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="http://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+
+	
+<title>门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET </title>
+<meta name="description" content="评论系统是所有门户网站的核心标准服务组件之一。本文作者曾负责新浪网评论系统多年，这套系统不仅服务于门户新闻业务，还包括调查、投票等产品，经历了从单机到多机再到集群，从简单到复杂再回归简单的过程。">
+<meta name="keywords" content="《程序员》杂志,2014年12月刊,技术架构,评论系统,新浪,系统架构,UGC">
+<meta name="author" content="CSDN.NET">
+<meta name="Copyright" content="CSDN.NET">
+<!-- toolbar start --> 
+<link href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/index.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" async="" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/ga.js"></script><script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/hm.js"></script><script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/jquery-1.9.1.min.js" type="text/javascript"></script><style type="text/css"></style>
+<!-- toolbar end -->
+<link href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/content.css" rel="stylesheet" type="text/css">
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/share.js"></script><link rel="stylesheet" type="text/css" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/comments.css"><script type="text/javascript" charset="utf-8" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/tracking.js"></script><script type="text/javascript" charset="utf-8" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/main.js"></script><link rel="stylesheet" type="text/css" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/highlighter.css"><link rel="stylesheet" type="text/css" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/style.css"><link type="text/css" rel="stylesheet" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/style(1).css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_32.css?v=9ebeb48a.css"></head>
+<body>
+<script type="text/javascript">
+  var protocol = window.location.protocol;
+  document.write('<script type="text/javascript" src="' +protocol+ '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></'+'script>');
+</script><script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/repoAddr2.js"></script>
+<script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://programmer.csdn.net"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://programmer.csdn.net/?ref=toolbar_logo" target="_blank" class="img news-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-left" style="margin-left:132px; width:18px; height:27px; white-space:nowrap; overflow:hidden;"><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div id="chasnew123" class="hasnew"></div>                <div id="cappsarea123" class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                      <dd> <a href="http://mall.csdn.net/?ref=toolbar" target="_blank">C币兑换<img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/new.gif" style="margin-top: -26px;"></a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>
+<div class="wrap">
+	<!-- 间歇滚动 -->
+	<script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script>
+	<script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/jquery.autoscroll.js" type="text/javascript"></script><!--滚动js-->
+	<!-- //间歇滚动 -->
+	<script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script>
+	<!--<div class="ad_960">
+		<div class="ad_230"><script type="text/javascript">BAIDU_CLB_fillSlot("421712");</script></div>
+		<div class="ad_728"><script type="text/javascript">BAIDU_CLB_fillSlot("421709");</script></div>
+	</div>-->
+
+</div>
+	<!-- nav -->
+	<div id="xcx_tabmenu" class="nav">
+		<div id="cx_tabmenu" class="cx_tabmenu">
+			<!-- lev one -->
+			<div id="ddimagetabs" class="lev_1">
+				<ul>
+				<li><a href="http://news.csdn.net/" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);" class="">业界</a></li>
+				<li><a href="http://mobile.csdn.net/" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);" class="">移动开发</a></li>
+				<li><a href="http://cloud.csdn.net/" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);" class="">云计算</a></li>
+				<li><a href="http://sd.csdn.net/" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);" class="">软件研发</a></li>
+				<li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank" class="current">程序员杂志</a></li>
+				<li><a href="http://geek.csdn.net/" id="sclink7" target="_blank" class="">极客头条</a></li>
+				<li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank" class="">专题</a></li>
+				<!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>-->
+				</ul>
+			</div>
+			<!-- lev two -->
+			<div id="tabcontentcontainer" class="lev_2">
+				<div class="tabcontent" id="sc1">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc2">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/news" target="_blank">游戏引擎</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc3">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc4">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc5" style="display: block;">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li>
+										</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script>
+ 
+<div class="wrap">
+	
+	
+	
+		
+	<div class="brea_nav">
+				<span class="fr">
+		<a href="http://news.csdn.net/rss_programmer.html" class="rss" target="_blank">订阅程序员杂志RSS</a>					
+		</span><a href="http://www.csdn.net/">CSDN首页</a><em>&gt;</em>
+		<a href="http://programmer.csdn.net/" target="_blank">程序员杂志</a>	</div>
+	
+	<div class="content">
+		<div class="left">
+			<div class="detail">
+				<h1 class="title">门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结</h1>
+				<h4>
+					<div class="tit_bar">
+						发表于<span class="ago">2014-12-17 14:00</span>|
+						<span class="view_time">6275次阅读</span>| 
+						来源<span class="ago">《程序员》</span>|
+						<span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">25</font> 条评论</span>| 
+						作者<span class="ago">刘立</span>
+					</div>
+				</h4>
+				<div class="tag"><a href="http://www.csdn.net/tag/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%8B%E6%9D%82%E5%BF%97/news">《程序员》杂志</a><a href="http://www.csdn.net/tag/2014%E5%B9%B412%E6%9C%88%E5%88%8A/news">2014年12月刊</a><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news">技术架构</a><a href="http://www.csdn.net/tag/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/news">评论系统</a><a href="http://www.csdn.net/tag/%E6%96%B0%E6%B5%AA/news">新浪</a><a href="http://www.csdn.net/tag/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/news">系统架构</a><a href="http://www.csdn.net/tag/ugc/news">UGC</a></div>
+				<div class="summary">
+					<input type="hidden" id="article_description" name="article_description" value="评论系统是所有门户网站的核心标准服务组件之一。本文作者曾负责新浪网评论系统多年，这套系统不仅服务于门户新闻业务，还包括调查、投票等产品，经历了从单机到多机再到集群，从简单到复杂再回归简单的过程。">
+				<script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/weiboshare.html" width="22" height="16"></iframe><strong>摘要：</strong>评论系统是所有门户网站的核心标准服务组件之一。本文作者曾负责新浪网评论系统多年，这套系统不仅服务于门户新闻业务，还包括调查、投票等产品，经历了从单机到多机再到集群，从简单到复杂再回归简单的过程。				</div>
+				<div class="con news_content">
+				<p abp="180">评论系统，或者称为跟帖、留言板，是所有门户网站的核心标准服务组件之一。与论坛、博客等其他互联网UGC系统相比，评论系统虽然从产品功能角度衡量相对简单，但因为需要能够在突发热点新闻事件时，在没有任何预警和准备的前提下支撑住短短几分钟内上百倍甚至更高的访问量暴涨，而评论系统既无法像静态新闻内容业务那样通过CDN和反向代理等中间缓存手段化解冲击，也不可能在平时储备大量冗余设备应对突发新闻，所以如何在有限的设备资源条件下提升系统的抗压性和伸缩性，也是对一个貌似简单的UGC系统的不小考验。</p><h3 abp="181"><b abp="182"><span style="color: rgb(49, 133, 155);" abp="183">新闻评论系统的起源</span></b></h3><p abp="184">新浪网很早就在新闻中提供了评论功能，最开始是使用Perl语言开发的简单脚本，目前能找到的最早具备评论功能的新闻是2000年4月7日的，经过多次系统升级，2014年前的评论地址已经失效了，但数据仍保存在数据库中。直到今天，评论仍是国内所有新闻网站的标配功能。</p><h3 abp="185"><span style="color: rgb(49, 133, 155);" abp="186">评论系统3.0</span></h3><p abp="187">2003年左右，我接手负责评论系统，系统版本为3.0。当时的评论系统运行在单机环境，一台x86版本Solaris系统的Dell 6300服务器提供了全部服务，包括MySQL和Apache，以及所有前后台CGI程序，使用C++开发。</p><p style="text-align: center;" abp="188"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911ed7d5bcd_middle.jpg" abp="189"><br abp="190"></p><p style="text-align: center;" abp="191">图1 &nbsp;3.0系统流程和架构</p><p abp="192">3.0系统的缓存模块设计得比较巧妙，以显示页面为单位缓存数据，因为评论页面依照提交时间降序排列，每新增一条评论，所有帖子都需要向下移动一位，所以缓存格式设计为每两页数据一个文件，前后相邻的两个文件有一页数据重复，最新的缓存文件通常情况下不满两页数据。<br abp="193"></p><p style="text-align: center;" abp="194"><img style="width: 468.32px; height: 207px;" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/5491180cea73a_middle.jpg" abp="195"><br abp="196"></p><p style="text-align: center;" abp="197">图2 &nbsp;页面缓存算法示意图</p><p abp="198">图2是假设评论总数95条，每页显示20条时的页面缓存结构，此时用户看到的第一页数据读取自“缓存页4”的95~76，第二页数据读取自“缓存页3”的75~56，以此类推。</p><p abp="199">这样发帖动作对应的缓存更新可简化为一次文件追加写操作，效率最高。而且可保证任意评论总量和显示顺序下的翻页动作，都可在一个缓存文件中读到所需的全部数据，而不需要跨页读取再合并。缺点是更新评论状态时（如删除），需要清空自被删除帖子开始的所有后续缓存文件。缓存模块采取主动+被动更新模式，发帖为主动，每次发帖后触发一次页面缓存追加写操作。更新评论状态为被动，所涉及缓存页面文件会被清空，直到下一次用户读取页面缓存时再连接数据库完成查询，然后更新页面缓存，以备下次读取。这个针对发帖优化的页面缓存算法继续沿用到了后续版本的评论系统中。</p><p abp="200">此时的评论系统就已具备了将同一专题事件下所有新闻评论汇总显示的能力，在很长一段时间内这都是新浪评论系统的独有功能。</p><p abp="201">虽然3.0系统基本满足了当时的产品需求，但毕竟是单机系统，热点新闻时瞬间涌来的大量发帖和读取操作，经常会压垮这台当时已属高配的4U服务器，频繁显示资源耗尽的错误页面。我接手后的首要任务就是尽量在最短时间内最大限度降低系统的宕机频率，通过观察分析确定主要性能瓶颈在数据库层面。</p><p abp="202">3.0系统中，每个新闻频道的全部评论数据都保存在一张MyISAM表中，部分频道的数据量已经超过百万，在当时已属海量规模，而且只有一个数据库实例，读写竞争非常严重。一旦有评论状态更新，就会导致很多缓存页面失效，瞬间引发大量数据库查询，进一步加剧了读写竞争。当所有CGI进程都阻塞在数据库环节无法退出时，殃及Apache，进而导致系统Load值急剧上升无法响应任何操作，只有重启才能恢复。</p><p abp="203">解决方案是增加了一台FreeBSD系统的低配服务器用于数据库分流，当时MySQL的版本是3.23，Replication主从同步还未发布，采取的办法是每天给数据表减肥，把超过一周的评论数据搬到2号服务器上，保证主服务器的评论表数据量维持在合理范围，在这样的临时方案下，3.0系统又撑了几个月。</p><p abp="204">现在看来，在相当简陋的系统架构下，新浪评论系统3.0与中国互联网产业的门户时代一起经历了南海撞机、911劫机、非典、孙志刚等新闻事件。</p><h3 abp="205"><strong abp="206"><span style="color: rgb(49, 133, 155);" abp="207">评论系统4.0启动</span></strong></h3><p abp="208">2004年左右，运行了近三年的3.0系统已无法支撑新浪新闻流量的持续上涨，技术部门启动了4.0计划，核心需求就是三个字：不宕机。</p><p abp="209">因为当时我还负责了新浪聊天系统的工作，不得不分身应对新旧系统的开发维护和其他项目任务，所以在现有评论系统线上服务不能中断的前提下，制定了数据库结构不变，历史数据全部保留，双系统逐步无缝切换，升级期间新旧系统并存的大方针。</p><h4 abp="210">第一阶段：文件系统代替数据库，基于ICE的分布式系统</h4><p abp="211">既然3.0系统数据库结构不可变，除了把数据库升级到MySQL 4.0启用Repliaction分解读写压力以外，最开始的设计重点是如何把数据库与用户行为隔离开。</p><p abp="212">解决方案是在MySQL数据库和页面缓存模块之间，新建一个带索引的数据文件层，每条新闻的所有评论都单独保存在一个索引文件和一个数据文件中，期望通过把对数据库单一表文件的读写操作，分解为文件系统上互不干涉可并发执行的读写操作，来提高系统并发处理能力。在新的索引数据模块中，查询评论总数、追加评论、更新评论状态都是针对性优化过的高效率操作。从这时起，MySQL数据库就降到了只提供归档备份和内部管理查询的角色，不再直接承载任何用户更新和查询请求了。</p><p abp="213">同时引入了数据库更新队列来缓解数据库并发写操作的压力，因为当时消息队列中间件远不如现在百花齐放，自行实现了一个简单的文件方式消息队列模块，逐步应用到4.0系统各个模块间异步通信场合中。</p><p style="text-align: center;" abp="214"><img style="width: 557.6px; height: 171px;" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911d68579b0_middle.jpg" abp="215"><br abp="216"></p><p style="text-align: center;" abp="217">图3 &nbsp;4.0系统流程</p><p abp="218">选用了ICE作为RPC组件，用于所有的模块间调用和网络通信，这大概是刚设计4.0系统时唯一没做错的选择，在整个4.0系统项目生命周期，ICE的稳定性和性能表现从未成为过问题。<br abp="219"></p><p style="text-align: center;" abp="220"><img style="width: 410.57px; height: 319px;" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/549118b3e6013_middle.jpg" abp="221"><br abp="222"></p><p style="text-align: center;" abp="223">图4 &nbsp;4.0索引缓存结构</p><p abp="224">4.0系统开发语言仍为C++，因为同时选用了MySQL 4.0、ICE、Linux系统和新文件系统等多项应用经验不足的新技术，也为后来的系统表现动荡埋下了伏笔（新浪到2005年左右才逐步从FreeBSD和Solaris迁移到了CentOS系统）。<br abp="225"></p><p style="text-align: center;" abp="226"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/5491193e61487_middle.jpg" abp="227"><br abp="228"></p><p style="text-align: center;" abp="229">图5 &nbsp;4.0系统架构</p><p abp="230">此时的4.0评论系统已从双机互备扩容到五机集群，进入小范围试用阶段，虽然扛过了刘翔第一次夺金时创纪录的发帖高峰，但倒在了2004年亚洲杯中国队1 : 3败于日本队的那个夜晚。</p><p abp="231">当时系统在进入宕机之前的最高发帖速度大约是每分钟千帖量级，在十年前还算得上是业界同类系统的峰值，最终确认问题出在文件系统的I/O负载上。</p><p abp="232">设计索引缓存模块时的设想过于理想化，虽然把单一数据表的读写操作分解到了文件系统的多个文件上，但不可避免地带来了对机械磁盘的大量随机读写操作，在CentOS默认的Ext3文件系统上，每条新闻对应两个文件的设计（2004年新浪新闻总量为千万左右），虽然已采取了128×256的两层目录HASH来预防单目录下文件过多隐患，但刚上线时还表现良好的系统，稍过几个月后就把文件系统彻底拖垮了。</p><p abp="233">既然Ext3无法应对大数量文件的频繁随机读写，当时我们还可以选择使用B*树数据结构专为海量文件优化的ReiserFS文件系统，在与系统部同事配合反复对比测试，解决了ReiserFS与特定Linux Kernel版本搭配时的kswapd进程大量消耗CPU资源的问题后，终于选定了可以正常工作的Kernel和ReiserFS对应版本，当然这也埋下了ReiserFS作者杀妻入狱后新装的CentOS服务器找不到可用的ReiserFS安装包这个大隐患。</p><h4 abp="234">第二阶段：全系统异步化，索引分页算法优化</h4><p abp="235">直到这个阶段，新浪评论系统的前端页面仍是传统的Apache+CGI模式，随着剩余频道的逐步切换，新浪评论系统升级为静态HTML页面使用XMLHTTP组件异步加载XML数据的AJAX模式，当时跨域限制更少的JSON还未流行。升级为当时刚刚开始流行的AJAX模式并不是盲目追新，而是为了实现一个非常重要的目标：缓存被动更新的异步化。</p><p abp="236">随着消息队列的普遍应用，4.0系统中所有的数据库写操作和缓存主动更新（即后台程序逻辑触发的更新）都异步化了，当时已在实践中证明，系统访问量大幅波动时，模块间异步化通信是解决系统伸缩性和保证系统响应性的唯一途径。但在CGI页面模式下，由用户动作触发的缓存被动更新，只能阻塞在等待状态，直到查询数据和更新缓存完成后才能返回，会导致前端服务器Apache CGI进程的堆积。</p><p abp="237">使用AJAX模式异步加载数据，可在几乎不影响用户体验的前提下完成等待和循环重试动作，接收缓存更新请求的支持优先级的消息队列还可合并对同一页面的重复请求，也隔离了用户行为对前端服务器的直接冲击，极大提高了前端服务器的伸缩性和适应能力，甚至连低硬件配置的客户端电脑在AJAX模式加载数据时都明显更顺畅了。前端页面静态化还可将全部数据组装和渲染逻辑，包括分页计算都转移到了客户端浏览器上，充分借用用户端资源，唯一的缺点是对SEO不友好。</p><p abp="238">通过以上各项措施，此时的4.0系统抗冲击能力已有明显改善，但是接下来出现了新的问题。在3.0系统时代，上万条评论的新闻已属少见，随着业务的增长，类似2005年超女专题或者体育频道NBA专题这样千万评论数级别的巨无霸留言板开始出现。</p><p abp="239">为了提高分页操作时定位和读取索引的效率，4.0系统的算法是先通过mmap操作把一个评论的索引文件加载到内存，然后按照评论状态（通过或者删除）和评论时间进行快速排序，筛选出通过状态的帖子并按时间降序排列，这样读取任意一页的索引数据，都是内存中一次常量时间成本的偏移量定位和读取操作。几百条或者几千条评论时，上述方案运作得很好，但在千万留言数量的索引文件上进行全量排序，占用大量内存和CPU资源，严重影响系统性能。我们曾尝试改用BerkeleyDB的Btree模式来存储评论索引，但性能不升反降。</p><p abp="240">为避免大数据量排序操作的成本，只能改为简单遍历方式，从头开始依次读取，直到获取所需的数据。虽可通过从索引文件的两端分别作为起点，来提升较新和较早页面的定位效率，但遍历读取本身就是一个随着请求页数增大越来越慢的线性算法，并且随着4.0系统滑动翻页功能的上线，原本用户无法轻易访问到的中间页面数据也开始被频繁请求，因此最终改为了两端精确分页，中间模糊分页的方式。模糊分页就是根据评论帖子的通过比例，假设可显示帖子均匀分布，一步跳到估算的索引偏移位置。毕竟在数十万甚至上百万页的评论里，精确计算分页偏移量没有太大实际意义。</p><p style="text-align: center;" abp="241"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911c7bd70fb.jpg" abp="242"><br abp="243"></p><p style="text-align: center;" abp="244">图6 &nbsp;异步缓存更新流程</p><p abp="245">2005年非常受关注的日本申请加入联合国常任理事国事件，引发了各家网站的民意沸腾，新浪推出了征集反日入常签名活动并在短短几天内征集到2000多万签名。因为没有预计到会有如此多的网民参与，最开始简单实现的PHP+MySQL系统在很短时间内就无法响应了，然后基于4.0评论系统紧急加班开发了一个签名请愿功能，系统表现稳定。</p><h4 abp="246">评论系统4.0第三阶段：简化缓存策略，进一步降低文件系统I/O</h4><p abp="247">到了这个阶段，硬件资源进一步扩容，评论系统的服务器数量终于达到了两位数，4.0系统已实现了当初的“不宕机”设计目标，随着网站的改版，所有新闻页面（包括网站首页）都开始实时加载和显示最新的评论数量和最新的帖子列表，此时4.0系统承受的Hits量级已接近新浪新闻静态池的水平。从这时起，新浪评论系统再没有因为流量压力宕机或者暂停服务过。</p><p abp="248">前面提到，新装的CentOS系统很难找到足够新版本的ReiserFS安装包，甚至不得不降级系统版本，一直困扰性能表现的文件系统也接近了优化的极限，这时候Memcached出现了。</p><p style="text-align: center;" abp="249"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/549119d7b5c96_middle.jpg" abp="250"><br abp="251"></p><p style="text-align: center;" abp="252">图7 &nbsp;系统架构</p><p abp="253">2006年左右Memcached取代了4.0系统中索引缓存模块的实体数据部分（主要是评论正文），索引缓存模块在文件系统上只存储索引数据，评论文本都改用Memcached存储，极大降低了文件系统的I/O压力。因为系统流量与热点事件的时间相关性，仅保存最近几周的评论就足以保证系统性能，极少量过期数据访问即使穿透到MySQL也问题不大，当然服务器宕机重启和新装服务器上线时要非常留意数据的加载预热。</p><p abp="254">之后4.0系统进入稳定状态，小修小补，又坚持服役了若干年，并逐步拓展到股票社区、签名活动、三方辩论、专家答疑、观点投票等产品线，直到2010年之后5.0系统的上线。</p><p abp="255">2008年5月12日，我发现很多网友在地震新闻评论中询问亲友信息，就立即开发了基于评论系统的地震寻亲功能并于当晚上线。大约一周后为了配合Google发起的寻亲数据汇总项目，还专门为Google爬虫提供了非异步加载模式的数据页面以方便其抓取。</p><p abp="256">2004年上线的4.0系统，2010~2011年后被5.0系统取代逐步下线，从上线到下线期间系统处理的用户提交数据量变化趋势如图8所示。</p><p style="text-align: center;" abp="257"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911a19ed83c_middle.jpg" abp="258"><br abp="259"></p><p style="text-align: center;" abp="260">图8 &nbsp;系统流量变化图</p><h3 abp="261"><strong abp="262"><span style="color: rgb(49, 133, 155);" abp="263">高访问量UGC系统设计总结</span></strong></h3><p abp="264">纵观整个4.0系统的设计和优化过程，在硬件资源有限的约束下，依靠过渡设计的多层缓冲，完成了流量剧烈波动时保障服务稳定的最基本目标，但也确实影响到了UGC系统最重要的数据更新实时性指标，数据更新的实时性也是之后5.0系统的重点改进方向。</p><p abp="265">总结下来，一般UGC系统的设计方针就是通过降低系统次要环节的实时一致性，在合理的成本范围内，尽量提高系统响应性能，而提高响应性能的手段归根结底就是三板斧：队列（Queue）、缓存（Cache）和分区（Sharding）。</p><p abp="266"></p><ul abp="267"><li abp="268"><span abp="269">队列：可以缓解并发写操作的压力，提高系统伸缩性，同时也是异步化系统的最常见实现手段。</span></li><li abp="270"><span abp="271">缓存：从文件系统到数据库再到内存的各级缓存模块，解决了数据就近读取的需求。</span></li><li abp="272"><span abp="273">分区：保证了系统规模扩张和长期数据积累时，频繁操作的数据集规模在合理范围。</span></li></ul><p abp="274"></p><p abp="275">关于数据库，区分冷热数据，按照读写操作规律合理拆分存储，一般UGC系统近期数据才是热点，历史数据是冷数据。</p><p abp="276"></p><ul abp="277"><li abp="278"><span abp="279">区分索引和实体数据，索引数据是Key，易变，一般用于筛选和定位，要保证充分的拆分存储，极端情况下要把关系数据库当NoSQL用；实体数据是Value，一般是正文文本，通常不变，一般业务下只按主键查询；两者要分开。</span></li><li abp="280"><span abp="281">区分核心业务和附加业务数据，每一项附加的新业务数据都单独存储，与核心业务数据表分开，既可降低核心业务数据库的变更成本，还可避免新业务频繁调整上下线时影响核心业务。</span></li></ul><p abp="282"></p><p abp="283">目前的互联网系统大都严重依赖MySQL的Replication主从同步来实现系统横向扩展，虽然MySQL在新版本中陆续加入RBR复制和半同步等机制，但从库的单线程写操作限制还是最大的制约因素，到现在还没有看到很理想的革新性解决方案。</p><p abp="284">关于缓存，从浏览器到文件系统很多环节都有涉及，这里主要说的是应用系统自己的部分。</p><p abp="285"></p><ul abp="286"><li abp="287"><span abp="288">最好的缓存方案是不用缓存，缓存带来的问题往往多于它解决的问题。</span></li><li abp="289"><span abp="290">只有一次更新多次读取的数据才有必要缓存，个性化的冷数据没必要缓存。</span></li><li abp="291"><span abp="292">缓存分为主动（Server推）和被动（Client拉）两种更新方式，各自适用于不用场景。主动更新方式一般适用于更新频率较高的热数据，可保证缓存未命中时，失控的用户行为不会引发系统连锁反应，导致雪崩。被动更新方式一般适用于更新频率相对较低的数据，也可以通过上文提到的异步更新模式，避免连锁反应和雪崩。</span></li><li abp="293"><span abp="294">缓存的更新操作尽量设计为覆盖方式，避免偶发数据错误的累积效应。</span></li></ul><p abp="295"></p><p abp="296">一个UGC系统流量刚开始上涨时，初期的表面性能瓶颈一般会表现在Web Server层面，而实际上大多是数据库的原因，但经充分优化后，最终会落在文件系统或网络通信的I/O瓶颈上。直接承载用户访问冲击的前端服务器最好尽量设计为无状态模式，降低宕机重启后的修复工作量。</p><p abp="297">顺带提及，我在新浪聊天和评论系统的开发过程中，逐步积累了一个Web应用开发组件库，在新浪全面转向PHP之前，曾用于新浪的内容管理（CMS）、用户注册和通行证、日志分析和论坛等使用C++的系统，目前发布于github.com/pi1ot/webapplib。</p><h3 abp="298"><strong abp="299"><span style="color: rgb(49, 133, 155);" abp="300">评论系统5.0方案</span></strong></h3><p abp="301">2010年后针对4.0系统的缺陷，启动了5.0系统工作。因为工作的交接，5.0系统我只负责了方案设计，具体开发是交给其他同事负责的，线上的具体实现与原始设计方案可能会有区别。5.0系统极大简化了系统层次，在保证抵抗突发流量波动性能的前提下，数据更新的及时性有了明显提高。</p><p style="text-align: center;" abp="302"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911ea14b083_middle.jpg" abp="303"><br abp="304"></p><p style="text-align: center;" abp="305">图9 &nbsp;4.5系统流程</p><p style="text-align: center;" abp="306"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/54911e931c470_middle.jpg" abp="307"><br abp="308"></p><p style="text-align: center;" abp="309">图10 &nbsp;5.0系统流程</p><p abp="310">设计方案上的主要变化有以下几点。</p><p abp="311"></p><ul abp="312"><li abp="313"><span abp="314">评论帖子ID从数据库自增整数改为UUID，提交时即可确定，消除了必须等待主库写入后才能确定评论ID的瓶颈，对各个层面的缓存逻辑优化有极大帮助。</span></li><li abp="315"><span abp="316">重新设计数据库结构，通过充分的数据切分，保证了所有高频业务操作都可在一个有限数据量的数据表中的一次简单读取操作完成，索引和文本数据隔离存储，在数据库中实现了原4.0系统中索引模块的功能，取消了4.0系统的索引缓存层。</span></li><li abp="317"><span abp="318">改用内存NoSQL缓存用户频繁读取的最新10~20页数据，取消了原4.0系统文件方式的页面缓存层。</span></li><li abp="319"><span abp="320">系统运行环境迁移到新浪云的内部版本：新浪动态平台，设备资源富裕度有了极大改善。</span></li><li abp="321"><span abp="322">改为Python语言开发，不用再像4.0系统那样每次更新时都要等待半个小时的编译过程，也不用再打包几百兆的执行文件同步到几十台服务器上，而语言层面的性能损失可以忽略不计。</span></li></ul><p abp="323"></p><h3 abp="324"><strong abp="325"><span style="color: rgb(49, 133, 155);" abp="326">新闻评论产品总结</span></strong></h3><p abp="327">新闻评论作为微博之前最能反映舆情民意的UGC平台，长期承载了国内互联网用户对时事新闻的匿名表达欲望，曾经一度成为上到政府下到网民的关注焦点。虽然面临了相对其他社区系统更为严厉的管控力度，也错过了实施实名制改造时迈向社区化的最佳时机，但无论如何，在21世纪的前十年，国内门户网站的新闻评论服务，都是中国互联网产品和技术发展历史上绝对不能错过的一笔。</p><p abp="328"><b abp="329"><font color="#7f7f7f" abp="330">作者刘立，<span abp="331">2000年毕业于哈尔滨工业大学计算机系，2000-2013年工作于新浪网研发中心和门户技术部门，目前在一家社交电商平台创业团队任技术负责人。</span></font></b></p><p abp="332"></p><p abp="333"></p>				
+				<p class="copyright">本文为《程序员》原创文章，未经允许不得转载，如需转载请联系market#csdn.net(#换成@)</p>
+				</div>
+									 
+		
+		 
+		 <div class="share"> 	 
+			  <div class="bdsharebuttonbox bdshare-button-style0-32" style="float:right;" data-bd-bind="1419002675929">
+			  <!-- a href="#" class="bds_more" data-cmd="more"></a -->
+			  <a href="http://www.csdn.net/article/2014-12-17/2823183#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+			  <a href="http://www.csdn.net/article/2014-12-17/2823183#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+			  <a href="http://www.csdn.net/article/2014-12-17/2823183#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+			  <a href="http://www.csdn.net/article/2014-12-17/2823183#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+			  </div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>  
+			
+ 		</div> 
+
+				<div class="detail">
+				<div class="digg">
+						<input type="hidden" id="digg_id" value="2823183">
+						<dl class="support disable">
+							<dt>顶</dt>
+							<dd>19</dd>
+						</dl>
+						<dl class="oppose disable">
+							<dt>踩</dt>
+							<dd>0</dd>
+						</dl>
+				</div>
+			</div>	
+ 	
+				<div class="ad_475_60"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner2&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+				<div class="related">推荐阅读相关主题：
+											<a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF/news" title="技术" target="_blank">技术</a>
+											<a href="http://www.csdn.net/tag/%E7%BB%8F%E9%AA%8C/news" title="经验" target="_blank">经验</a>
+											<a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" title="架构" target="_blank">架构</a>
+											<a href="http://www.csdn.net/tag/%E6%96%B0%E9%97%BB/news" title="新闻" target="_blank">新闻</a>
+											<a href="http://www.csdn.net/tag/web%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/news" title="web应用开发" target="_blank">web应用开发</a>
+											<a href="http://www.csdn.net/tag/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/news" title="解决方案" target="_blank">解决方案</a>
+									</div>
+				<!-- relational article and news -->
+				<div id="Tab3" class="relational">
+					<h2 class="tab_1 Menubox">
+						<ul>
+						<li id="three1" onclick="setTab(&#39;three&#39;,1,2)" class="hover">相关文章</li>
+						<li id="three2" onclick="setTab(&#39;three&#39;,2,2)">最新报道</li>
+						</ul>
+					</h2>
+					<div class="con Contentbox">
+						<div id="con_three_1" class="hover">
+							<ul class="list_1">								
+														<li><a href="http://www.csdn.net/article/1970-01-01/2823183" title="门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结" target="_blank">门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2823034" title="低能的“智能”" target="_blank">低能的“智能”</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2822577" title="海尔电商峰值系统架构设计最佳实践" target="_blank">海尔电商峰值系统架构设计最佳实践</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2822459" title="《程序员》2014年11月刊：电商峰值系统架构设计" target="_blank">《程序员》2014年11月刊：电商峰值系统架构设计</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2817980" title="网购狂欢节背后的技术阅兵" target="_blank">网购狂欢节背后的技术阅兵</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2822578" title="唯品会峰值系统架构演变" target="_blank">唯品会峰值系统架构演变</a></li>
+														</ul>
+						</div>
+						<div id="con_three_2" style="display:none">
+							<ul class="list_1 ">
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-18/2823200" title="刘振飞：做云计算比保障双十一要难得多" target="_blank">刘振飞：做云计算比保障双十一要难得多</a></li>
+							 
+							<li><a href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET.html" title="门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结" target="_blank">门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-17/2823173" title="云栖小镇—阿里特色的云计算生态系统" target="_blank">云栖小镇—阿里特色的云计算生态系统</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-10/2823046" title="乐视网CTO杨永强：要学会面对黎明前的黑暗" target="_blank">乐视网CTO杨永强：要学会面对黎明前的黑暗</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-03/2822930" title="《程序员》2014年12月刊：2014 TOP50 最具价值CTO" target="_blank">《程序员》2014年12月刊：2014 TOP50 最具价值CTO</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-02/2822905" title="如何开启初创公司的宗教模式" target="_blank">如何开启初创公司的宗教模式</a></li>
+													
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- //relational article and news 广告 -->	
+
+				<!-- comments -->
+                
+									<div id="comments" class="csdn_comments">    <h2 class="comments_tit">        <p>已有<span>25</span>条评论</p>    </h2>                <div class="reply topreply">            <h6>还可以再输入<span>500</span>个字</h6>            <dl>                <dt class="user_img"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/user_01.gif" alt=""></dt>                <dd><textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="4"></textarea>                    <div class="reply_submit note_grey clearfix">                    <div class="fr"><input id="user" value="发表评论" type="submit" class="reply_btn"></div>                    <span class="loginwrap"><span class="error">您还没有登录! </span> 请<a class="dologin" href="javascript:viod(0);"> 登录 </a> 或<a href="https://passport.csdn.net/account/register">  注册 </a></span>                   <!-- <span class="error">您还没有登录! </span> 请<a href="#"> 登录 </a> 或<a href="#">  注册 </a>-->                    </div>                </dd>            </dl>            </div>    <div id="csdnTab" class="comments_reply">        <h3 class="tit tab_1">            <ul>                <li class="hover">最新评论</li>                <li>最热评论</li>            </ul>        </h3>        <div class="con last"><div lang="365522" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/2158400813"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/2158400813" class="user_name" realname="魏小康Xiaokang">魏小康Xiaokang</a>   <span class="time">11小时前</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">赞@pi1ot ，全是干货阿。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="魏小康Xiaokang365522_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="魏小康Xiaokang365522_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="魏小康Xiaokang365522_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="魏小康Xiaokang365522_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365293" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/zhangye0807"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_zhangye0807.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/zhangye0807" class="user_name" realname="zhangye0807">zhangye0807</a>   <span class="time">2014-12-18 18:37</span>   <span class="from"></span></div>                                        <div class="reply_content">mark</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="zhangye0807365293_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="zhangye0807365293_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="zhangye0807365293_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="zhangye0807365293_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365283" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/srw11"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_srw11.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/srw11" class="user_name" realname="srw11">srw11</a>   <span class="time">2014-12-18 18:17</span>   <span class="from"></span></div>                                        <div class="reply_content">mark</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="srw11365283_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="srw11365283_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="srw11365283_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="srw11365283_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365275" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/showgood119"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_showgood119.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/showgood119" class="user_name" realname="showgood119">showgood119</a>   <span class="time">2014-12-18 17:55</span>   <span class="from"></span></div>                                        <div class="reply_content">mark</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="showgood119365275_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="showgood119365275_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="showgood119365275_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="showgood119365275_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365261" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/rishengcsdn"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_rishengcsdn.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/rishengcsdn" class="user_name" realname="rishengcsdn">阿星</a>   <span class="time">2014-12-18 17:23</span>   <span class="from"></span></div>                                        <div class="reply_content">这文章不错！有思路。。。。。。。。。。。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="rishengcsdn365261_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="rishengcsdn365261_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="rishengcsdn365261_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="rishengcsdn365261_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365235" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/jom1030"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_jom1030.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/jom1030" class="user_name" realname="jom1030">jom1030</a>   <span class="time">2014-12-18 16:54</span>   <span class="from"></span></div>                                        <div class="reply_content">支持工大校友</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="jom1030365235_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="jom1030365235_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="jom1030365235_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="jom1030365235_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365231" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/tigervc"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_tigervc.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/tigervc" class="user_name" realname="tigervc">tigervc</a>   <span class="time">2014-12-18 16:48</span>   <span class="from"></span></div>                                        <div class="reply_content">非常好，写的也很细</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="tigervc365231_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="tigervc365231_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="tigervc365231_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="tigervc365231_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365191" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/1847315447"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1(1)"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/1847315447" class="user_name" realname="SNS程飞">SNS程飞</a>   <span class="time">2014-12-18 15:25</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">评论系统的架构演进和经验总结//@算法组: //@52nlp://@tjamc: //@TimYang:这个起码有70%的篇幅在解决前几天说的《为什么长尾数据的翻页技术实现复杂》 http://t.cn/RzazXJm 那个问题吧 @icycrystal4 //@TimYang: 这么干的内容我会随便跟人介绍么</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="SNS程飞365191_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="SNS程飞365191_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="SNS程飞365191_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="SNS程飞365191_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365182" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/book_godhood"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_book_godhood.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/book_godhood" class="user_name" realname="book_godhood">快乐路人丙</a>   <span class="time">2014-12-18 15:11</span>   <span class="from"></span></div>                                        <div class="reply_content">mark</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="book_godhood365182_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="book_godhood365182_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="book_godhood365182_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="book_godhood365182_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365177" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/10503"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1(2)"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/10503" class="user_name" realname="TimYang">TimYang</a>   <span class="time">2014-12-18 14:37</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">回复@如此玄妙:@pi1ot 来回答吧</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="TimYang365177_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="TimYang365177_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="TimYang365177_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="TimYang365177_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365120" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/aobo516"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_aobo516.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/aobo516" class="user_name" realname="aobo516">aobo516</a>   <span class="time">2014-12-18 13:05</span>   <span class="from"></span></div>                                        <div class="reply_content">牛人，好文，长知识，赞！</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="aobo516365120_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="aobo516365120_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="aobo516365120_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="aobo516365120_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365118" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/1088413295"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1(3)"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/1088413295" class="user_name" realname="Easy">Easy</a>   <span class="time">2014-12-18 12:44</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">@pi1ot 大牛的雄文，细节很多，强烈推荐对高压力评论系统的同学阅读。话说做那个反日签名时我还写了几行js，哇咔咔。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="Easy365118_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="Easy365118_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="Easy365118_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="Easy365118_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365100" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/10503"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1(2)"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/10503" class="user_name" realname="TimYang">TimYang</a>   <span class="time">2014-12-18 12:30</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">回复@john_walking:有道理，性能大赛得奖的 @红浪枫林 @i陈飞 @icycrystal4 抓紧写长文章投稿。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="TimYang365100_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="TimYang365100_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="TimYang365100_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="TimYang365100_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365089" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/u011564172"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_u011564172.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/u011564172" class="user_name" realname="u011564172">技术的球笼</a>   <span class="time">2014-12-18 12:15</span>   <span class="from"></span></div>                                        <div class="reply_content">这些图着实不错，写的也很详细</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="u011564172365089_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="u011564172365089_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="u011564172365089_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="u011564172365089_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365066" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/zz_103"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_zz_103.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/zz_103" class="user_name" realname="zz_103">zz_103</a>   <span class="time">2014-12-18 11:29</span>   <span class="from"></span></div>                                        <div class="reply_content">哇~早点看到就好了。。
+现在在做的项目正在已“不宕机”为目的，利用异步处理+缓存。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="zz_103365066_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="zz_103365066_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="zz_103365066_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="zz_103365066_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365037" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/wangting627"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_wangting627.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/wangting627" class="user_name" realname="wangting627">不败的拿破仑</a>   <span class="time">2014-12-18 11:00</span>   <span class="from"></span></div>                                        <div class="reply_content">先不说技术，新浪评论遍地广告，还是群发的，新浪就是解决不了；垃圾评论获得几千赞；把点赞的包抓下来，重复发送几十次，那条评论就会不见几十分钟。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="wangting627365037_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="wangting627365037_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="wangting627365037_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="wangting627365037_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365007" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://weibo.com/u/1663418681"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/1(4)"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://weibo.com/u/1663418681" class="user_name" realname="程序员杂志">程序员杂志</a>   <span class="time">2014-12-18 10:18</span>   <span class="from"> 来自 新浪微博</span></div>                                        <div class="reply_content">@pi1ot</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="程序员杂志365007_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="程序员杂志365007_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="程序员杂志365007_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="程序员杂志365007_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="364971" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/dothegod"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_dothegod.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/dothegod" class="user_name" realname="dothegod">海凡</a>   <span class="time">2014-12-18 09:56</span>   <span class="from"></span></div>                                        <div class="reply_content">新浪的的产品是不号称万年不变么</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="dothegod364971_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="dothegod364971_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="dothegod364971_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="dothegod364971_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="364950" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/chaoyong918"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_chaoyong918.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/chaoyong918" class="user_name" realname="chaoyong918">chaoyong918</a>   <span class="time">2014-12-18 09:32</span>   <span class="from"></span></div>                                        <div class="reply_content">长篇大论。。。。。。。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="chaoyong918364950_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="chaoyong918364950_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="chaoyong918364950_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="chaoyong918364950_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="364946" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/linustd"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_linustd.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/linustd" class="user_name" realname="linustd">普世编程技术</a>   <span class="time">2014-12-18 09:27</span>   <span class="from"></span></div>                                        <div class="reply_content">评论帖子ID从数据库自增整数改为UUID，提交时即可确定，消除了必须等待主库写入后才能确定评论ID的瓶颈，对各个层面的缓存逻辑优化有极大帮助。
+==========
+哈哈哈，不得不说，Oracle数据库里没有自增列，只能使用 序列 来实现类似的自增列，是非常有道理的。
+MS Sql Server之类的垃圾数据库，根本没有这样的技术先进性，自增列最大的问题就是造成程序不能并发，事务不能并发，因为你前一个事务自增列的ID还没有确定，后一个事务就没法使用自增列啊。
+当然， MySql也使用了MS Sql Server类似的垃圾机制，所以被新浪抛弃。
+但是问题是，人家MySQL除了至一点不好之外，其它方面还有很多有点，它MS SQL Server全身都是缺点。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap"><span class="num">1</span>票，来自<span class="from"><a target="_blank" class="user_name" href="http://my.csdn.net/oneohaly">neohaly</a></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="linustd364946_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="linustd364946_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" title="被踩了3票">3票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="linustd364946_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="linustd364946_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                <div class="childReply"><div lang="365312" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/honesthenry"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_honesthenry.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/honesthenry" class="user_name" realname="honesthenry">honesthenry</a>   <span class="time">2014-12-18 19:57</span>   <span class="from"></span></div>                                        <div class="reply_content">果然点进来看评论是对的，见到大神了。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="honesthenry365312_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="honesthenry365312_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="honesthenry365312_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="honesthenry365312_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365335" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/binouyang"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_binouyang.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/binouyang" class="user_name" realname="binouyang">binouyang</a>   <span class="time">2014-12-18 22:57</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/honesthenry" target="_blank">honesthenry</a>:你也信他是大神</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="binouyang365335_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="binouyang365335_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="binouyang365335_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="binouyang365335_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365336" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/binouyang"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_binouyang.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/binouyang" class="user_name" realname="binouyang">binouyang</a>   <span class="time">2014-12-18 22:58</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/honesthenry" target="_blank">honesthenry</a>:这篇文章的作者是真正大神</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="binouyang365336_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="binouyang365336_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="binouyang365336_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="binouyang365336_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365405" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/u011114896"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_u011114896.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/u011114896" class="user_name" realname="u011114896">driverin</a>   <span class="time">13小时前</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/binouyang" target="_blank">binouyang</a>:这货一天到晚在CSDN吹牛逼</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="u011114896365405_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="u011114896365405_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="u011114896365405_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="u011114896365405_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div></div></dd>            </dl>        </div><div lang="364894" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/qiujuer"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_qiujuer.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/qiujuer" class="user_name" realname="qiujuer">Qiujuer</a>   <span class="time">2014-12-18 00:17</span>   <span class="from"></span></div>                                        <div class="reply_content">都是技术啊</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="qiujuer364894_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="qiujuer364894_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="qiujuer364894_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="qiujuer364894_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div id="page_nav" class="page_nav"><span style="display:none;">共<span class="num">21</span>个 </span>共<span class="total">1</span>页 <a class="homepage" href="javascript:void(0);">首页</a>&nbsp;&nbsp;<a class="prev" href="javascript:void(0);">上一页</a>&nbsp;<a class="pages on" href="javascript:void(0);" lang="1">1</a>&nbsp;<a class="next" href="javascript:void(0);">下一页</a>&nbsp;&nbsp;<a class="endpage" href="javascript:void(0);">末页</a></div></div>        <div class="con hot" style="display:none"><div lang="364946" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/linustd"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_linustd.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/linustd" class="user_name" realname="linustd">普世编程技术</a>   <span class="time">2014-12-18 09:27</span>   <span class="from"></span></div>                                        <div class="reply_content">评论帖子ID从数据库自增整数改为UUID，提交时即可确定，消除了必须等待主库写入后才能确定评论ID的瓶颈，对各个层面的缓存逻辑优化有极大帮助。
+==========
+哈哈哈，不得不说，Oracle数据库里没有自增列，只能使用 序列 来实现类似的自增列，是非常有道理的。
+MS Sql Server之类的垃圾数据库，根本没有这样的技术先进性，自增列最大的问题就是造成程序不能并发，事务不能并发，因为你前一个事务自增列的ID还没有确定，后一个事务就没法使用自增列啊。
+当然， MySql也使用了MS Sql Server类似的垃圾机制，所以被新浪抛弃。
+但是问题是，人家MySQL除了至一点不好之外，其它方面还有很多有点，它MS SQL Server全身都是缺点。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap"><span class="num">1</span>票，来自<span class="from"><a target="_blank" class="user_name" href="http://my.csdn.net/oneohaly">neohaly</a></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="linustd364946_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="linustd364946_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" title="被踩了3票">3票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="linustd364946_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="linustd364946_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                <div class="childReply"><div lang="365312" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/honesthenry"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_honesthenry.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/honesthenry" class="user_name" realname="honesthenry">honesthenry</a>   <span class="time">2014-12-18 19:57</span>   <span class="from"></span></div>                                        <div class="reply_content">果然点进来看评论是对的，见到大神了。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="honesthenry365312_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="honesthenry365312_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="honesthenry365312_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="honesthenry365312_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365335" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/binouyang"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_binouyang.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/binouyang" class="user_name" realname="binouyang">binouyang</a>   <span class="time">2014-12-18 22:57</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/honesthenry" target="_blank">honesthenry</a>:你也信他是大神</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="binouyang365335_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="binouyang365335_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="binouyang365335_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="binouyang365335_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365336" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/binouyang"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_binouyang.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/binouyang" class="user_name" realname="binouyang">binouyang</a>   <span class="time">2014-12-18 22:58</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/honesthenry" target="_blank">honesthenry</a>:这篇文章的作者是真正大神</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="binouyang365336_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="binouyang365336_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="binouyang365336_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="binouyang365336_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="365405" class="reply parentId_1">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/u011114896"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/3_u011114896.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/u011114896" class="user_name" realname="u011114896">driverin</a>   <span class="time">13小时前</span>   <span class="from"></span></div>                                        <div class="reply_content">回复@<a class="user_name" href="http://my.csdn.net/binouyang" target="_blank">binouyang</a>:这货一天到晚在CSDN吹牛逼</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="u011114896365405_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="u011114896365405_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="u011114896365405_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="u011114896365405_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div></div></dd>            </dl>        </div></div>        <div>请您注意        <ul class="note_grey">            <li>·自觉遵守：爱国、守法、自律、真实、文明的原则</li>            <li>·尊重网上道德，遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律法规</li>             <li>·严禁发表危害国家安全，破坏民族团结、国家宗教政策和社会稳定，含侮辱、诽谤、教唆、淫秽等内容的作品</li>             <li>·承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>             <li>·您在CSDN新闻评论发表的作品，CSDN有权在网站内保留、转载、引用或者删除</li>             <li>·参与本评论即表明您已经阅读并接受上述条款</li>        </ul>        </div>    </div></div>
+                    <script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/cnick.js"></script>
+					<script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/comments.js" type="text/javascript"></script>
+					<!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script-->
+					<script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2014-12-17/2823183",
+					        title:"%E9%97%A8%E6%88%B7%E7%BA%A7UGC%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%8C%96%E8%B7%AF%E7%BA%BF%E2%80%94%E2%80%94%E6%96%B0%E6%B5%AA%E6%96%B0%E9%97%BB%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E5%92%8C%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script>
+								<!-- //comments -->
+			</div>
+			
+			
+		</div>
+		
+		<div class="right">	
+						
+			  <div class="report">
+				<h2 class="tit_2"><p>近期活动</p><a style="float:right;font-size: 12px;color: #666666;font-weight: normal;" target="_blank" href="http://www.csdn.net/article/tag/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%8B%E6%B4%BB%E5%8A%A8">更多</a></h2>
+				 
+				<dl>
+				<dt><a href="http://bdtc2014.hadooper.cn/m/zone/bdtc_2014" target="_blank"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/QQ图片20141208160757.jpg" alt=""></a></dt>
+				<dd><span class="title"><a href="http://bdtc2014.hadooper.cn/m/zone/bdtc_2014" target="_blank">2014 中国大数据技术大会</a></span><p>2014年12月12-14日，由中国计算机学会（CCF）主办，CCF大数据专家委员会承办，中国科学院计算技术研究所与CSDN共同协办的2014中国大数据技术大会（Big Data Technology Conference 2014，BDTC 2014）将在北京新云南皇冠假日酒店隆重举办。中国大数据技术大会是目前国内最具影响、规模最大的大数据领域的技术盛会。</p></dd>
+				</dl>
+							</div>
+			
+			<div class="report">
+				<h2 class="tit_2"><p>微博关注</p></h2>
+				<iframe width="100%" height="75" style="margin-left:-11px;" class="share_self" frameborder="0" scrolling="no" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/index.html"></iframe>
+			</div>
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;"><img style="vertical-align:middle; margin-right:10px;" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/icon_ipad.png">程序员杂志for <a href="http://subject.csdn.net/programmer-android/" target="_blank">Android</a>/<a href="http://subject.csdn.net/programmer-ipad/" target="_blank">iPad</a> 免费下载 </div>
+			
+			<div class="hot_weekly">
+				<h2 class="tit_2"><p>关于《程序员》</p></h2><!-- 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+				<ul class="list_1">
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-04-28/2815094" title="《程序员》投稿指南" target="_blank">《程序员》投稿指南</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-05-08/2815177" title="《程序员》广告招商" target="_blank">《程序员》广告招商</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://dingyue.programmer.com.cn/" title="《程序员》杂志订阅" target="_blank">《程序员》杂志订阅</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-05-08/2815189" title="《程序员》订阅问答" target="_blank">《程序员》订阅问答</a></li>
+								</ul>
+			</div>
+
+			<!-- hot weekly -->
+			<div class="hot_weekly">
+				<h2 class="tit_2"><p>相关热门文章</p></h2><!--regionid=5 是程序员杂志  -->
+				<ul class="list_1">
+									<li><a href="http://www.csdn.net/article/2014-12-10/2823046" title="乐视网CTO杨永强：要学会面对黎明前的黑暗" target="_blank">乐视网CTO杨永强：要学会面对黎明前的黑暗</a></li>
+									<li><a href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET.html" title="门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结" target="_blank">门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结</a></li>
+									<li><a href="http://www.csdn.net/article/2014-12-03/2822930" title="《程序员》2014年12月刊：2014 TOP50 最具价值CTO" target="_blank">《程序员》2014年12月刊：2014 TOP50 最具价值CTO</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-24/2822777" title="云计算的5大应用场景" target="_blank">云计算的5大应用场景</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-21/2822754" title="《OpenGL编程指南（原书第8版）》——计算着色器" target="_blank">《OpenGL编程指南（原书第8版）》——计算着色器</a></li>
+									<li><a href="http://www.csdn.net/article/2014-12-02/2822905" title="如何开启初创公司的宗教模式" target="_blank">如何开启初创公司的宗教模式</a></li>
+									<li><a href="http://www.csdn.net/article/2014-12-17/2823173" title="云栖小镇—阿里特色的云计算生态系统" target="_blank">云栖小镇—阿里特色的云计算生态系统</a></li>
+									<li><a href="http://www.csdn.net/article/2014-12-18/2823200" title="刘振飞：做云计算比保障双十一要难得多" target="_blank">刘振飞：做云计算比保障双十一要难得多</a></li>
+								</ul>
+			</div>
+			
+		
+			<!-- hot tag -->
+			<div class="report hot_tag">
+				<h2 class="tit_2"><p>热门标签</p></h2><!--程序员杂志 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+				<ul class="list_1">
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" title="技术架构" target="_blank">技术架构</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%A8%8B%E5%BA%8F%E5%91%98/news" title="程序员" target="_blank">程序员</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" title="编程语言" target="_blank">编程语言</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" title="前端开发" target="_blank">前端开发</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/news" title="产品设计" target="_blank">产品设计</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" title="大数据" target="_blank">大数据</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" title="智能算法" target="_blank">智能算法</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8/news" title="移动" target="_blank">移动</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97/news" title="云计算" target="_blank">云计算</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%9B%BE%E4%B9%A6/news" title="图书" target="_blank">图书</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" title="开源" target="_blank">开源</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" title="管理实践" target="_blank">管理实践</a></li>
+								</ul>
+			</div>
+			<!-- //hot tag -->
+			
+			
+			 
+			
+					</div>
+	</div>
+		<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/like.js"></script>
+	<script>
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2014-12-17%2F2823183";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc5', tabobjlinks[4]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2823183&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+		function pongoad2(val){
+			$("#job_ul").html(val);
+		}
+		var callbackfun="pongoad2";
+		document.write(unescape('%3Cscript src="http://a.pongo.cn/Job/GetAdForCallBack%3Fid%3D2%26UrlAdParam%3D'+encodeURIComponent(location.href)+'%26&CallBack%3D'+callbackfun+'" type="text/javascript"%3E%3C/script%3E'));
+	</script><script src="http://a.pongo.cn/Job/GetAdForCallBack?id=2&UrlAdParam=http://www.csdn.net/article/2014-12-17/2823183&&CallBack=pongoad2" type="text/javascript"></script>
+
+
+	<script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script>
+
+	<script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script><script src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/highlighter.js"></script>
+	
+	<!-- 广告位：富媒体广告 -->
+	<script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script>
+  
+	<!-- public footer -->
+      <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script><script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/notify.js"></script>
+	<!-- //public footer -->
+</div><input type="hidden" id="aa_g_data_ids">
+<!-- tab js -->
+<script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script>
+<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script> 
+<!--<script id="noticeScript" type="text/javascript" charset="utf-8" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" src="http://static.csdn.net/public/common/toolbar/js/notify.js"></script>-->
+<script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/toolbar.js"></script>
+
+<!-- ask 全局悬浮按钮  -->
+<link href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/ask_float_block.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/wmd.js"></script>
+<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/showdown.js"></script>
+<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/prettify.js"></script>
+<script type="text/javascript" src="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/ask_float_block.js"></script>
+
+ 
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><link rel="stylesheet" type="text/css" media="screen" href="./门户级UGC系统的技术进化路线——新浪新闻评论系统的架构演进和经验总结-CSDN.NET_files/ask_float_fonts_css-6b30a53970eb5c3a2a045e3df585b475.css"><div data-mod="popu_64" class="tracking-ad" chg-blk="0"><a id="com-ask-float-block" title="提问按钮" style="top:404px"></a><a id="com-d-top-a" style="top: 445px; display: inline;" title="返回顶部" onclick=""></a></div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="http://www.csdn.net/article/2014-12-17/2823183#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" type="text" style="font-size:14px;" placeholder="问题标题"></div><div class="cm_box"><div class="cm_dialog"></div> <div class="pop_cm cm_add_link"><input type="text" placeholder="链接内容" id="af_cm_link_txt"><input type="text" placeholder="链接地址" id="af_cm_link_url"><input type="text" placeholder="链接提示" id="af_cm_link_tit"><div class="text-right"><span class="btn btn-default btn-sm" id="add_link_btn">插入链接</span> </div> </div><div class="pop_cm cm_add_img"><input type="text" placeholder="图片地址" id="af_cm_img_url"><input type="text" placeholder="图片说明" id="af_cm_img_alt"><div class="text-right"><span class="btn btn-default btn-sm" id="add_img_btn">插入图片</span> </div> </div></div> <textarea id="editor110" rows="8" style="display: none;"></textarea><div class="editor-toolbar"><i class="separator">|</i><a class="icon-headline" title="标题一（Ctrl+Alt+1）"></a><a class="icon-heading" title="标题二（Ctrl+Alt+2）"></a><a class="icon-bold" title="粗体（Ctrl+B）"></a><a class="icon-italic" title="斜体（Ctrl+I）"></a><i class="separator">|</i><a class="icon-quote-left" title="引用（Ctrl+’）"></a><a class="icon-code" title="插入代码片（Ctrl+,）"></a><a class="icon-list-ul" title="无序列表（Ctrl+L）"></a><a class="icon-list-ol" title="有序列表（Ctrl+Alt+L）"></a><i class="separator">|</i><a class="icon-link" title="添加链接（Ctrl+K）"></a><a class="icon-picture" title="添加图片（Ctrl+Alt+I）"></a><i class="separator">|</i><a class="icon-reply" title="撤退（Ctrl+Z）"></a><a class="icon-share-alt" title="前进（Ctrl+Shift+Z）"></a><i class="separator">|</i><a class="icon-info" href="http://ask.csdn.net/pages/markdown" target="_blank" title="markdown语法参考"></a><a class="icon-preview" title="预览"></a><i class="separator">|</i></div><div class="CodeMirror cm-s-paper CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="min-width: 33px;"><div style="position: relative;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>&nbsp;<span style="display: inline-block; width: 1px; margin-right: -1px;">&nbsp;</span></pre></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"></div><div class="CodeMirror-cursor">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px;"></div><div class="CodeMirror-gutters" style="display: none;"></div></div></div><div class="editor-statusbar"><span class="lines">0</span><span class="words">0</span><span class="cursor">0:0</span></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input type="hidden" name="txtSearchTags"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="http://www.csdn.net/article/2014-12-17/2823183#" nodetype="cancel" class="cancel">取消</a><a href="http://www.csdn.net/article/2014-12-17/2823183#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

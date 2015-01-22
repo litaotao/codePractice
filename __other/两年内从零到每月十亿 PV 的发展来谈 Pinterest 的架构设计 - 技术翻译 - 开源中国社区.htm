@@ -1,0 +1,2956 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0090)http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views -->
+<html lang="zh-CN" xml:lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <link rel="shortcut icon" type="image/x-icon" href="http://www.oschina.net/img/favicon.ico?t=1408501845000">
+  <title>两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区</title>
+        <link rel="stylesheet" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/channel.css" type="text/css" media="screen">
+  <link rel="stylesheet" type="text/css" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/jquery.fancybox-1.3.4.css" media="screen">
+  <link rel="alternate" type="application/rss+xml" title="最新开源项目" href="http://www.oschina.net/project/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新开源资讯" href="http://www.oschina.net/news/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新问题列表" href="http://www.oschina.net/question/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新翻译列表" href="http://www.oschina.net/translate/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新博客列表" href="http://www.oschina.net/blog/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新代码分享列表" href="http://www.oschina.net/code/rss">
+  <link rel="alternate" type="application/rss+xml" title="开源中国 - 源码列表" href="http://www.oschina.net/code/source_rss">
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/jquery-1.7.1.min.js"></script><style type="text/css"></style>
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/jquery.form.js"></script>
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/jquery.fancybox-fixed.js"></script>
+    <link rel="stylesheet" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/tip-yellowsimple.css" type="text/css">
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/jquery.poshytip.min.js"></script>
+  <script type="text/javascript">
+  	g_user = {
+	id:0,
+	name:'',
+	login:false};  </script>
+    <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/oschina.js"></script>
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/utils.js"></script>
+  <script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/channel.js"></script>
+    </head>
+<body>
+<div id="OSC_NavTop">
+	<div class="wp998">
+        <div id="OSC_Channels">
+        	<ul>
+        	<li class="item"><a href="http://www.oschina.net/" class="home">首页</a></li>        	<li class="item control_select"><a href="http://www.oschina.net/project" class="project">开源项目</a>
+				<ul class="cs_content">					
+                	                	<li><a href="http://www.oschina.net/project/lang/19/java">Java 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/194/csharp">C# 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/22/php">PHP 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/21/c">C/C++ 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/26/ruby">Ruby 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/25/python">Python 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/358/go">Go开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/28/javascript">JS开源软件</a></li>
+				</ul>
+			</li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/question" class="question">讨论区</a>				
+				<ul class="cs_content">					
+                	<li><a href="http://www.oschina.net/question?catalog=1"> 技术问答 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=2"> 技术分享 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=3"> IT大杂烩 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=100"> 职业生涯 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=4"> 站务/建议 » </a></li>
+                	<li><a href="http://www.oschina.net/alipay"> 支付宝专区 » </a></li>
+                	<li><a href="http://www.oschina.net/hardware"> 开源硬件专区 » </a></li>
+				</ul>
+			</li>
+        	<li class="item"><a href="http://www.oschina.net/code/list" class="code">代码</a></li>
+        	        	<li class="item"><a href="http://www.oschina.net/blog" class="blog">博客</a></li>
+        	<li class="item"><a href="http://www.oschina.net/translate" class="tran hl">翻译</a></li>
+            <li class="item"><a href="http://www.oschina.net/news" class="news">资讯</a></li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/android" class="mobile">移动开发</a>
+				<ul class="cs_content cs_mobile" style="display: none;">
+                	<li class="android_"><a href="http://www.oschina.net/android">Android开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/home">iOS开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/codingList">iOS代码库</a></li>
+                	<li class="wp7_"><a href="http://www.oschina.net/wp">Windows Phone</a></li>
+				</ul>
+			</li>
+        	<li class="item t_job"><a href="http://www.oschina.net/job" class="job">招聘</a></li>
+									            <li class="item control_select">
+                <a href="http://city.oschina.net/" id="MyCities" title="城市圈">城市圈</a>
+							</li>
+        	</ul>
+        </div>
+		<div id="OSC_Userbar">
+                		    		当前访客身份：游客 [ <a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fscaling-pinterest-from-0-to-10s-of-billions-of-page-views">登录</a> | <a href="http://www.oschina.net/home/reg">加入开源中国</a> ]
+    				</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="OSC_Banner"><div class="wp998"><a href="http://www.oschina.net/" class="Logo" title="OSChina 开源中国">开源中国</a>
+<h1><a href="http://www.oschina.net/translate">技术翻译</a></h1>
+<dl>
+    <dt>已有文章 <em>1849</em> 篇</dt>
+	<dt>
+		当前位置：
+            <a href="http://www.oschina.net/translate/list?type=2">译文列表</a>&nbsp;»&nbsp;<a href="http://www.oschina.net/translate/list/5?type=2">服务器端开发</a> , <a href="" class="deliver">投递原文</a>
+    		</dt>	
+</dl>
+<form action="http://www.oschina.net/search" class="search">
+	<input type="hidden" name="scope" value="translate">
+	<input id="channel_q" type="text" name="q" value="" placeholder="在 1849 篇翻译的文章中搜索" class="TXT">
+    <button type="submit" class="BTN">搜 索</button>
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        scrolltotop.offset(100,120);
+        scrolltotop.init();
+        $('.deliver').click(function(){
+            popup("/translate/deliver");
+            return false;
+        });
+    });
+</script>
+<div class="clear"></div></div></div>
+<div id="OSC_Screen">
+	<div id="OSC_Content" class="CenterDiv">
+<style type="text/css">
+.highlight {
+	color: #A00;
+	padding: 0 1px;
+	margin: 0 2px;
+}
+
+.NoData {
+	text-align: center;
+	padding: 20px 0;
+	color: #999;
+}
+
+.error_msg {
+	height: 16px;
+	color: #A00;
+	margin: 10px 0 10px 0;
+	background: url('/img/warning.gif') no-repeat left center;
+	padding-left: 24px;
+}
+
+.error_msg a {
+	padding: 0 5px 0 5px;
+	font-weight: bold;
+}
+
+.ajax_processing {
+	display: none;
+	background: url('/img/loading.gif') no-repeat left center;
+	padding-left: 20px;
+}
+
+label.SELECTED {
+	color: #C00;
+}
+
+input.TEXT,textarea.TEXT,input.SEARCH {
+	border: 1px solid #bbb;
+	font-size: 13px;
+	padding: 3px;
+}
+
+input.BUTTON {
+	height: 25px;
+	line-height: 25px;
+	padding: 0 3px;
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+a.rndbutton {
+	background: #d1c0a5;
+	color: #fff;
+	text-decoration: none;
+	height: 30px;
+	float: left;
+	margin: 0;
+	border: 0px solid #000;
+	font-weight: bold;
+	font-size: 12pt;
+	cursor: pointer;
+}
+
+a.rndbutton:hover {
+	background-color: #bfaa88;
+}
+
+a.rndbutton span {
+	color: #fff;
+	float: left;
+	margin: 0 0 0 10px;
+	padding: 0 10px 0 0;
+	height: 30px;
+	line-height: 30px;
+}
+
+input.rndbutton {
+	background: #4E867B;
+	color: #fff;
+	border: 0px solid #000;
+	cursor: pointer;
+}
+
+input.rndbutton:hover {
+	background-color: #4F978A;
+}
+
+.SmallPortrait {
+	filter: alpha(opacity = 90); /* IE */
+	-moz-opacity: 0.9; /* Moz + FF */
+	opacity: 0.9;
+	padding: 1px;
+	background: #fff;
+	border: 1px solid #ccc;
+}
+
+a:hover .SmallPortrait {
+	filter: alpha(opacity = 100); /* IE */
+	-moz-opacity: 1.0; /* Moz + FF */
+	opacity: 1.0;
+	border: 1px solid #40AA53;
+}
+
+.TextContent p {
+	margin-bottom: 5pt;
+}
+
+.TextContent h1,.TextContent h2,.TextContent h3 {
+	margin-bottom: 10pt;
+	border-bottom: 1px solid #CCC;
+	padding-bottom: 5px;
+}
+
+.translate {
+	float: left;
+	width: 678px;
+}
+
+.translate_right {
+	float: right;
+	width: 300px;
+	overflow: hidden;
+}
+
+.translate_right .PopularTags {
+	margin: 0 0 10px 0;
+	background: white;
+	border: 1px solid #eee;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.translate_right .PopularTags p {
+	padding: 10px;
+}
+
+#top_nav {
+	width: 100%;
+	font-size: 14px;
+	line-height: 24px;
+	padding: 2px;
+	border-bottom: 1px solid #40AA53;
+}
+
+#top_nav a {
+	color: #005075;
+	outline: 0;
+	text-decoration: none;
+}
+
+#top_nav .right {
+	float: right;
+	color: #666;
+}
+
+ul.tabnav {
+	text-align: left;
+	margin: 1em 0 0 0;
+	font-weight: bold;
+	font-size: 10pt;
+	border-bottom: medium double #E3E3E3;
+	list-style-type: none;
+	padding: 3px 10px 15px 10px;
+}
+
+ul.tabnav li {
+	display: inline;
+	margin-left: 10px;
+}
+
+ul.tabnav li.current {
+	border-bottom: 1px solid #fff;
+	background-color: #fff;
+}
+
+ul.tabnav li.current a {
+	background-color: #0D5178;
+	color: #FFF;
+	cursor: text;
+}
+
+ul.tabnav li a {
+	padding: 4px 8px 5px 8px;
+	color: #666;
+	margin-right: 0px;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+ul.tabnav a:hover {
+	background: #FFF;
+	text-decoration: none;
+}
+
+.header span {
+	margin-left: 10px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.header a.parent {
+	color: #40AA53;
+}
+
+.header em.child {
+	color: #46B;
+	font-style: normal;
+}
+
+.header .more .active {
+	color: #A00;
+}
+
+.remark {
+	margin-top: 8px;
+	font-size: 9pt;
+	color: #999999;
+}
+
+.sta_btn {
+	border: 1px solid #ccc;
+	padding: 2px 5px;
+	float: right;
+	margin-right: 10px;
+	-webkit-box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+	box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+}
+
+.remark a {
+	text-decoration: none;
+}
+
+.remark em {
+	margin-right: 8px;
+	font-style: normal;
+}
+
+.remark span {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.latest {
+	margin: 10px 10px 0px 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e3e3e3;
+	_height: 1%;
+}
+
+.latest dt a {
+	font-size: 18px;
+}
+
+.latest .content {
+	font-size: 14px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.recommendList {
+	margin-bottom: 10px;
+}
+
+.recommendList a {
+	text-decoration: none;
+}
+
+.recommendList a:hover {
+	text-decoration: underline;
+}
+
+.recommendList a.pic img {
+	float: right;
+	width: 140px;
+	height: 100px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.recommendList ul {
+	margin: 8px 0;
+}
+
+.recommendList li {
+	float: left;
+	width: 300px;
+	margin: 0 10px;
+	font-size: 12px;
+	line-height: 30px;
+	color: #3E62A6;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.recommendList li a {
+	font-size: 13px;
+}
+
+.latest span,.recommendList li span {
+	color: #999;
+	font-size: 12px;
+}
+
+.articleList {
+	background: #FFF;
+	padding-bottom: 10px;
+}
+
+.articleList .article {
+	margin: 10px;
+	padding-bottom: 10px;
+	border-bottom: medium double #e3e3e3;
+}
+
+.articleList .article a img {
+	float: right;
+	width: 80px;
+	height: 60px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.articleList .article dt a {
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.articleList .article dt a:hover {
+	text-decoration: underline;
+}
+
+.articleList .article dt a em {
+	font-style: normal;
+	color: #A00;
+}
+
+.articleList .article .status_0 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #F90;
+	background: url(/img/translate.gif) 0 -30px no-repeat;
+}
+
+.articleList .article .status_2 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #00BB4B;
+	background: url(/img/translate.gif) 0 0 no-repeat;
+}
+
+.articleList .article .status_0 em,.articleList .article .status_2 em {
+	font-style: normal;
+	color: #888;
+	margin-left: 10px;
+}
+
+.articleList .article .sub_title {
+	font-size: 12px;
+	color: #333;
+	margin-top: 5px;
+}
+
+.articleList .article .content {
+	font-size: 13px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.articleList .pager {
+	margin: 0 10px;
+}
+
+.articleList .TagDetail {
+	margin: 10px 2px;
+	color: #666;
+	border: 2px solid #ccc;
+	padding: 5px;
+	background: #ffd;
+	font-size: 9pt;
+}
+
+.articleList .TagDetail img.project {
+	float: left;
+	width: 48px;
+	height: 48px;
+	margin: 0 20px 10px 0;
+}
+
+#categoryMenu {
+	margin-bottom: 10px;
+	background: white;
+}
+
+#categoryMenu ul {
+	margin: 10px 0;
+}
+
+#categoryMenu li a {
+	display: block;
+	text-decoration: none;
+	height: 36px;
+	line-height: 36px;
+	font-size: 14px;
+	color: #3B3B3B;
+	padding: 0 15px;
+}
+
+#categoryMenu li a:hover {
+	background: #EEE;
+	color: #080;
+}
+
+#categoryMenu li a em {
+	float: right;
+	padding: 0 5px;
+	margin-top: 8px;
+	height: 20px;
+	line-height: 20px;
+	background: #EEE;
+	font-size: 12px;
+	font-style: normal;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+#categoryMenu li a:hover em {
+	background: #00BC00;
+	color: white;
+}
+
+#categoryMenu li.current,#categoryMenu li.current a:hover {
+	background: #3dae4f;
+	background: -moz-linear-gradient(#3dae4f, #0c701c);
+	background: -webkit-linear-gradient(#3dae4f, #0c701c);
+}
+
+#categoryMenu li.current a {
+	color: white;
+}
+
+#categoryMenu li.current a em {
+	color: white;
+	background: none;
+}
+
+.hotList,.TopUsers {
+	margin-bottom: 10px;
+	background: #FFF;
+}
+
+.hotList a {
+	text-decoration: none;
+}
+
+.hotList a:hover {
+	text-decoration: underline;
+}
+
+.hotList ul {
+	margin: 10px 0;
+}
+
+.hotList ul li {
+	height: 24px;
+	width: 278px;
+	padding: 0 10px;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.hotList ul li a {
+	height: 24px;
+	line-height: 24px;
+	font-size: 10pt;
+}
+
+.hotList .dot {
+	height: 10px;
+	width: 10px;
+	font-size: 0;
+	margin-right: 5px;
+	overflow: hidden;
+	zoom: 1;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+
+.hotList .dot1 {
+	background-color: #f00;
+}
+
+.hotList .dot2 {
+	background-color: #f90;
+}
+
+.hotList .dot3 {
+	background-color: #aed900;
+}
+
+.hotList .dot4 {
+	background-color: #2bd600;
+}
+
+.hotList .dot5 {
+	background-color: #00bb4b;
+}
+
+.hotList .dot6 {
+	background-color: #01bebe;
+}
+
+.hotList .dot7 {
+	background-color: #035bdf;
+}
+
+.hotList .dot8 {
+	background-color: #2200a8;
+}
+
+.hotList .dot9 {
+	background-color: #510066;
+}
+
+.hotList .dot10 {
+	background-color: #3f0030;
+}
+
+.TopUsers ul {
+	padding-left: 12px;
+}
+
+.TopUsers ul li {
+	text-align: center;
+	margin: 0 7px 10px 0;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.TopUsers ul {
+	margin-top: 10px;
+}
+
+.TopUsers ul li a {
+	text-decoration: none;
+}
+
+.TopUsers ul li img {
+	width: 64px;
+	height: 64px;
+	background: #fff;
+}
+
+.TopUsers ul li a:hover img {
+	
+}
+
+a.cmdbutton {
+	background: #5CC26F;
+	color: #fff;
+	text-decoration: none;
+	float: left;
+	margin: 0 10px;
+	border: 0px solid #000;
+	font-size: 16pt;
+	cursor: pointer;
+}
+
+a.cmdbutton:hover {
+	background-position: left -30px;
+}
+
+a.cmdbutton span {
+	color: #fff;
+	float: left;
+	margin: 6px;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+
+a.cmdbutton.paying-translation {
+	width: 240px;
+	margin-top: 20px;
+	padding: 6px;
+	text-align: center;
+}
+
+.Article {
+	margin-top: 10px;
+}
+
+.Article .Top {
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Article .Top h1 {
+	padding-bottom: 5px;
+	font-size: 28px;
+	line-height: 36px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Article .Top h1 em.none {
+	font-style: normal;
+	color: #F90;
+}
+
+.Article .Top h1 em.pending {
+	font-style: normal;
+	color: #00BB4B;
+}
+
+.Article .Top h3 {
+	margin: 2px 0;
+	font-size: 18px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Article .Top h3 a {
+	text-decoration: none;
+}
+
+.Article .Top .Tags a {
+	margin-left: 5px;
+	text-decoration: none;
+}
+
+.Article .Top .Tags a.tag {
+	background: #46A6D2;
+	color: white;
+	padding: 2px 5px;
+}
+
+.Article .Top .Tags a.tag:hover {
+	background-color: #3a7bd2;
+}
+
+.Article .Top .rec_user {
+	height: 22px;
+	line-height: 22px;
+}
+
+.Article .Top .rec_user a {
+	text-decoration: none;
+}
+
+.Article .Top .rec_user .share a {
+	width: 16px;
+	height: 16px;
+	text-decoration: none;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+.Article .Top .rec_user .share .sina {
+	background: url(/img/sina_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .share .tencent {
+	background: url(/img/tencent_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .options {
+	float: right;
+}
+
+.Article .Top .Vote {
+	float: right;
+	margin-right: 20px;
+	padding: 5px;
+	background: #005075;
+	color: #FFF;
+	width: 54px;
+	text-align: center;
+	display: block;
+}
+
+.Article .Top .Vote a {
+	font-size: 16pt;
+	color: #FFF;
+	display: block;
+	border-top: 1px solid #073f59;
+	text-decoration: none;
+}
+
+.Article .Top .Vote a:hover {
+	color: #ff0;
+}
+
+.Article .Top .Vote em {
+	font-size: 12pt;
+	font-style: normal;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #04608a;
+	display: block;
+}
+
+.Article .toolbar {
+	overflow: hidden;
+	padding: 5px 0 5px 5px;
+	color: #6A6A6A;
+	border-left: 1px solid #EDEDED;
+	border-right: 1px solid #EDEDED;
+}
+
+.Article .toolbar a {
+	text-decoration: none;
+}
+
+.Article .toolbar .label {
+	float: left;
+	width: 100px;
+}
+
+.Article .toolbar em {
+	color: #A3A3A3;
+	font-style: normal;
+	font-size: 12px;
+}
+
+.Article .toolbar a.t_user {
+	
+}
+
+.Article .toolbar .options {
+	float: right;
+	width: 260px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.Article .toolbar .options a.selected {
+	color: #b90000;
+	font-weight: bold;
+}
+
+.Article .toolbar .contributers {
+	width: 610px;
+	float: left;
+}
+
+.Article .Tags {
+	line-height: 22px;
+}
+
+.Article .copyright {
+	background: #efe;
+	text-align: left;
+	margin: 20px 10px;
+	padding: 3px 0 3px 10px;
+	color: #333;
+	font-size: 10pt;
+	line-height: 22px;
+	border-left: 10px solid #CFC;
+}
+
+.Article .Body {
+	border: 1px solid #EDEDED;
+}
+
+.Article .Body .paragraph_eng {
+	background: #FFF;
+	padding: 10px 0;
+	border: 1px solid #F9F9F9;
+}
+
+.Article .Body .paragraph_eng .TextContent {
+	width: 750px;
+	padding: 0 10px;
+	font-size: 10pt;
+	line-height: 180%;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_eng .TextContent span {
+	margin: 0 2px;
+}
+
+.Article .Body .paragraph_eng .translaters {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.Article .Body .translate_chs {
+	padding: 0;
+	border: 3px solid #F9F9F9;
+}
+
+.Article .Body .translate_chs .bdt10 {
+	border-top: medium double #E3E3E3;
+}
+
+.Article .Body .bd10 {
+	border: 1px solid #A00;
+}
+
+.Article .Body .paragraph_chs {
+	background: #FFF;
+	padding: 10px 0;
+}
+
+.Article .Body .paragraph_chs .TextContent {
+	width: 750px;
+	font-size: 10.5pt;
+	padding: 0 10px;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_chs .translater {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.translaters h3 {
+	color: #686868;
+	font-size: 14px;
+	font-weight: normal;
+	margin: 2px 0;
+}
+
+.translaters ul {
+	margin: 10px 0;
+}
+
+.translaters ul li {
+	text-align: center;
+	margin: 0 3px 5px 0px;
+	width: 45px;
+	height: 48px;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.translaters ul li a {
+	text-decoration: none;
+}
+
+.translaters ul li img {
+	width: 24px;
+	height: 24px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	background: #fff;
+}
+
+.translaters ul li a:hover img {
+	border: 1px solid #40AA53;
+}
+
+a.TBUTTON {
+	text-decoration: none;
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+}
+
+a.TBUTTON:hover {
+	background: #4f978a;
+}
+
+input.TBUTTON {
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+
+input.TBUTTON:hover {
+	background: #4f978a;
+}
+
+.translater a {
+	text-decoration: none;
+}
+
+.translater a img {
+	float: left;
+	width: 46px;
+	height: 46px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	margin-top: 5px;
+	background: #fff;
+}
+
+.translater .info {
+	float: left;
+	margin: 0 10px;
+	width: 126px;
+	height: 45px;
+}
+
+.translater .info h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.translater .info p {
+	color: #666;
+	margin: 5px 0;
+}
+
+.translater .info p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.translater .vote {
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+	color: #666;
+}
+
+.translater a.showOthers {
+	padding-left: 20px;
+	background: url(/img/translate.gif) 0 -218px no-repeat;
+	font-size: 10pt;
+	height: 30px;
+	line-height: 30px;
+}
+
+.translater a.closeOthers {
+	background: url(/img/translate.gif) 0 -250px no-repeat;
+}
+
+.EditTop {
+	width: 99%;
+	text-align: left;
+	margin: 0 auto;
+}
+
+.Edit .Top {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Edit .Top h1 {
+	font-size: 20px;
+	line-height: 26px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Edit .Top h3 {
+	margin: 2px 0;
+	font-size: 14px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Edit .Top h3 a {
+	text-decoration: none;
+}
+
+.Edit .Body {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+}
+
+.Edit .Body .p_content {
+	float: left;
+	width: 49%;
+	height: 650px;
+}
+
+.Edit .Body .p_content .title {
+	height: 28px;
+	line-height: 28px;
+	font-size: 12pt;
+	text-align: center;
+}
+
+.Edit .Body .p_content .title h3 {
+	color: #666;
+	font-weight: normal;
+}
+
+.Edit .Body .p_content .title a {
+	text-decoration: underline;
+}
+
+.Edit .Body .p_content .title .prev {
+	float: left;
+}
+
+.Edit .Body .p_content .title .next {
+	float: right;
+}
+
+.Edit .Body .p_content .TextContent {
+	height: 572px;
+	padding: 5px;
+	border: 1px solid #CCC;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: #F6F6F6;
+	font-size: 10pt;
+}
+
+.Edit .Body .p_editor {
+	float: right;
+	width: 49.5%;
+	height: 650px;
+}
+
+.Edit .Body .p_toolbar {
+	float: left;
+	height: 650px;
+	line-height: 650px;
+	text-align: center;
+	width: 1.3%;
+}
+
+.Edit .Body .p_toolbar a {
+	text-decoration: none;
+	width: 100%;
+	background: #4E867B;
+	color: white;
+	font-size: 8pt;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.Edit .action {
+	margin-top: 20px;
+	float: right;
+}
+
+.Bottom {
+	margin: 20px 0;
+}
+
+.Bottom .comments {
+	float: left;
+	width: 680px;
+}
+
+.comments h2 {
+	font-size: 12pt;
+	border-bottom: medium double #E3E3E3;
+	margin: 5px;
+	padding: 0 0 3px 5px;
+}
+
+.comments h2 span {
+	margin-left: 10px;
+	color: #444;
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+.comments h2 em.reply_count {
+	font-style: normal;
+	color: #A00;
+}
+
+.comments h2 .more {
+	float: right;
+	font-weight: normal;
+	font-size: 10pt;
+	color: #666;
+}
+
+.comments .comment {
+	margin: 5px 0 15px 0;
+	padding: 5px 0 5px 5px;
+	border-bottom: 1px dashed #ddd;
+}
+
+.comments .comment .user {
+	float: left;
+	width: 40px;
+	margin: 0 12px 0 0;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .user img {
+	width: 32px;
+	height: 32px;
+	margin: 3px 0 0 0;
+}
+
+.comments .comment .body {
+	float: left;
+	width: 620px;
+}
+
+.comments .comment .body .time {
+	float: left;
+	width: 380px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .body .time a {
+	color: #999;
+}
+
+.comments .comment .body .time a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .opts {
+	float: right;
+	width: 190px;
+	font-size: 9pt;
+	text-align: right;
+}
+
+.comments .comment .body .opts a {
+	color: #999;
+	padding: 0 2px;
+}
+
+.comments .comment .body .opts a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .detail {
+	margin: 10px 0;
+	font-size: 10.5pt;
+}
+
+.comments .comment .body .detail div.ref {
+	border: 1px solid #999;
+	margin: 0 0 10px 0;
+	padding: 3px;
+	font-size: 9pt;
+	color: #333;
+	background: #ffe;
+}
+
+.comments .comment .body .detail div.ref h4 {
+	margin: 0;
+	padding: 2px 0px 3px 0px;
+	color: #1E50A2;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+.comments .comment .body .detail div.ref .ref_body {
+	margin: 0;
+	padding: 2px;
+	line-height: 20px;
+	color: #666;
+	font-size: 9pt;
+	color: #333;
+}
+
+.comments .comment .body .detail div.ref .ref_body img {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.comments .pager {
+	margin-left: 60px;
+}
+
+.commentForm {
+	margin: 20px 0;
+}
+
+.commentForm .user {
+	float: left;
+	width: 60px;
+}
+
+.commentForm .user img {
+	width: 32px;
+	height: 32px;
+	margin: 0 0 0 5px;
+}
+
+.commentForm form {
+	float: left;
+}
+
+.commentForm form textarea {
+	border: 1px solid #999;
+}
+
+.commentForm form input.SUBMIT {
+	font-size: 18px;
+	padding: 4px 10px;
+	margin: 10px 0;
+	float: right;
+}
+
+.myList table {
+	margin: 10px;
+	font-size: 10pt;
+	table-layout: fixed;
+}
+
+.myList table td {
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.myList a {
+	text-decoration: none;
+}
+
+.myList .title {
+	
+}
+
+.myList .title a {
+	text-decoration: none;
+	color: #46B;
+}
+
+.myList .title span {
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .vote {
+	width: 50px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .date {
+	width: 70px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .opts {
+	width: 100px;
+	text-align: right;
+	color: #999;
+}
+
+.myList .pager {
+	margin: 0 10px 10px 10px;
+}
+
+.cmptable {
+	table-layout: fixed;
+	background: #EDEDED;
+}
+
+.cmptable td.eng {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10pt;
+	line-height: 1.5;
+}
+
+.cmptable td.chs {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10.5pt;
+	line-height: 1.5;
+}
+
+.cmptable td p {
+	margin: 10px 0;
+}
+
+.cmptable td .infoicon {
+	float: right;
+	background: #EBEBEB;
+	height: 20px;
+	padding: 0 6px;
+	line-height: 20px;
+	z-index: 999;
+	text-align: center;
+	font-size: 11px;
+	color: #060;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.cmptable td .infoicon img {
+	margin-left: 5px;
+	vertical-align: middle;
+	padding-top: 2px;
+}
+
+.cmptable td .infocard {
+	position: absolute;
+	top: 30px;
+	right: 0px;
+	padding: 5px 10px;
+	font-size: 10pt;
+	border-radius: 8px;
+	z-index: 100;
+	background: #EDEDED;
+	display: none;
+}
+
+.cmptable td .infocard h1 {
+	height: 20px;
+	line-height: 20px;
+	font-size: 15px;
+	color: #666;
+	margin-bottom: 5px;
+	border-bottom: 1px dotted #CCC;
+}
+
+.cmptable td .infocard h1 a.close {
+	float: right;
+	font-size: 6pt;
+}
+
+.cmptable td .infocard h1 a.close img {
+	width: 15px;
+	height: 15px;
+}
+
+.cmptable td .infocard a {
+	text-decoration: none;
+}
+
+.cmptable td .infocard a img {
+	float: left;
+	width: 50px;
+	height: 50px;
+}
+
+.cmptable td .infocard .text {
+	float: left;
+	margin-left: 10px;
+}
+
+.cmptable td .infocard h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.cmptable td .infocard p {
+	color: #666;
+	margin: 0;
+	padding: 0;
+}
+
+.cmptable td .infocard p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.cmptable td  ol {
+	list-style-type: decimal;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.cmptable td  ul {
+	list-style-type: disc;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.QuestionHeader {
+	height: 34px;
+	border-bottom: 1px solid #40AA53;
+	margin: 0 0 15px 0;
+}
+
+.QuestionHeader #portrait {
+	float: left;
+	width: 35px;
+}
+
+.QuestionHeader #portrait img {
+	width: 24px;
+	height: 24px;
+}
+
+.QuestionHeader #switcher {
+	float: left;
+	margin: 5px 0 0 2px;
+}
+
+.QuestionHeader #switcher h1 {
+	font-size: 12pt;
+	float: left;
+	color: #666;
+}
+
+.QuestionHeader #switcher h1 a {
+	text-decoration: none;
+}
+
+.QuestionHeader #switcher h1 em {
+	font-style: normal;
+	color: #40AA53;
+}
+
+.QATip {
+	margin: 40px 0 50px 100px;
+}
+
+.QATip h1 {
+	font-size: 13.5pt;
+}
+
+.QATip h1 em {
+	color: #A00;
+	font-style: normal;
+}
+
+.QATip .text {
+	margin: 20px 0 20px 20px;
+	font-size: 11pt;
+}
+
+.QATip .text p.hint {
+	color: #A00;
+	font-size: 10pt;
+	margin-top: 10px;
+}
+
+.QATip .text ul {
+	margin: 10px 0 0 0;
+	list-style-type: disc;
+	list-style-position: inside;
+	line-height: 24px;
+}
+
+.QATip .btn_view {
+	margin-left: 20px;
+}
+
+.AllTags {
+	padding-bottom: 10px;
+}
+
+.AllTags ul.tagList {
+	margin: 10px;
+}
+
+.AllTags ul.tagList li {
+	float: left;
+	width: 24%;
+}
+
+.AllTags ul.tagList li .stat {
+	color: #666;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+}
+
+.AllTags a.tag,.PopularTags a.tag {
+	background-color: #E0EAF1;
+	border-bottom: 1px solid #3E6D8E;
+	border-right: 1px solid #7F9FB6;
+	color: #3E6D8E;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+	line-height: 2.4;
+	margin: 2px 2px 2px 0;
+	padding: 2px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.AllTags a.tag em,.PopularTags a.tag em {
+	font-style: normal;
+	color: #666;
+	font-size: 7pt;
+	margin-left: 2px;
+}
+
+.AllTags a.tag:hover,.PopularTags a.tag:hover {
+	background-color: #3E6D8E;
+	color: #fff;
+}
+
+.AllTags a.tag:hover em,.PopularTags a.tag:hover em {
+	color: #fff;
+}
+
+.AllTags .pager {
+	margin: 0 10px;
+}</style>
+<div class="Article">
+	<div class="Top">
+		<div class="Vote"><em id="vote_count">38</em><a href="javascript:vote_article(817);">顶</a></div>
+		<h1>
+            两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计
+                    </h1>
+		<h3>英文原文：<a href="http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html" target="_blank">Scaling Pinterest - From 0 to 10s of Billions of Page Views a Month in Two Years</a></h3>
+        <div class="Tags">
+		<strong>标签：</strong>
+						&lt;无&gt;
+		        		</div>
+		<div class="rec_user">
+            <span class="options">
+                                <style>
+#TagsSwitcher{color:#A00;}
+#RecTags,#MyTags{margin:5px 0;}
+#RecTags a.tag{line-height:24px;}
+#favor_form p:first-child{margin:5px 0;}
+#favor_form{width:200px;}
+#favor_form p {color:#666;}
+#favor_form form{min-height: 85px;width:200px;}
+#favor_form form ._favor_input{display:block;margin:2px 0;width:199px;}
+#favor_form form ._favor_button{float:left;padding:2px 5px;}
+.favor_ok {text-align:center;font-size:10.5pt;width:199px;height:60px;margin-top:10px;}
+#TagsSwitcher{cursor:pointer;float:right;margin-top:10px;}
+#MyTags{display:none;width:199px;}
+#MyTags a.tag {float:left; background-color: #E0EAF1;border-bottom: 1px solid #3E6D8E;border-right: 1px solid #7F9FB6;color: #3E6D8E;font-size: 8pt;line-height: 16px;margin: 2px 2px 2px 0;padding: 2px 4px;text-decoration: none;white-space: nowrap;}
+#MyTags a.tag:hover{background-color: #3E6D8E;color: #FFF;}
+</style>
+<script type="text/javascript">
+var favor_add = "<a href='javascript:add_to_favor(817,7)' id='favor_trigger' title='添加到收藏夹'>我要收藏</a>";
+var favor_del = "<a href='javascript:delete_favor(817,7)' id='favor_trigger' style='color:#a00;'>取消收藏</a>";
+var favor_ok = "<p class='favor_ok'>已成功添加到收藏夹<br/><br/> <a href='null/favorites?type=7'>我的收藏夹</a> | <a href='javascript:close_favor()'>关闭</a></p>";
+function delete_favor(obi_id, obj_type){
+	$('#attention_it').html(favor_add);
+	$("#p_attention_count").load("/action/favorite/cancel?type="+obj_type+"&id="+obi_id, {user: ''});
+}
+function add_to_favor(obj_id, obj_type){
+	if(confirm('必须登录后才能收藏，是否现在登录？')){
+		location.href="http://www.oschina.net/home/login?goto_page="+encodeURIComponent(location.href);
+	}
+}
+function close_favor(elem_id){
+    $('#favor_trigger').poshytip('destroy');
+}
+function setTag(tv){
+	var t = $("._favor_input");
+	var value = t.val();
+	var tags = value.replace(/，/ig,',').split(',');
+	var exist = false;
+	value = $.map(tags,function(v,i){
+		if($.trim(tv) == $.trim(v)){
+			exist = true;
+			return undefined;
+		}
+		return v;
+	}).join(',');
+	if(exist){
+		t.val(value);
+		return;
+	}
+	if(value!="")
+		t.val(value+","+tv);
+	else
+		t.val(tv)
+}
+function ltrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(0)) != -1){
+        var j=0, i = s.length;
+        while (j < i && whitespace.indexOf(s.charAt(j)) != -1){
+            j++;
+        }
+        s = s.substring(j, i);
+    }
+    return s;
+}
+
+function rtrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(s.length-1)) != -1){
+        var i = s.length - 1;
+        while (i >= 0 && whitespace.indexOf(s.charAt(i)) != -1){
+            i--;
+        }
+        s = s.substring(0, i+1);
+    }
+    return s;
+}
+ 
+function trim(str){
+    return rtrim(ltrim(str));
+}
+</script>
+<em id="p_attention_count">375</em>人收藏此文章,
+<span id="attention_it">
+	<script type="text/javascript">document.write(favor_add);</script><a href="javascript:add_to_favor(817,7)" id="favor_trigger" title="添加到收藏夹">我要收藏</a>
+</span>
+<script type="text/javascript">
+	$(document).ready(function(){
+    	$.ajax({
+    		url:"/action/favorite/attentionUsersCount",
+    		type:"get",
+    		data:"id="+817+"&type="+7,
+    		success:function(msg){
+				$("#p_attention_count").html(msg);
+    		}
+    	});
+	});
+</script>            </span>
+			<a href="http://my.oschina.net/osadmin" target="_blank">oschina</a> 推荐于 2年前 (共 17 段, 翻译完成于 04-19) (<a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views#comments">37评</a>)
+            <span class="share">
+                                <a class="sina" title="分享到新浪微博" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=858381728',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译: Pinterest正经历了指数级曲线般的增长，每隔一个半月翻翻。在这两年里，Pinterest，从 每月PV量0增长到10亿，从两名成立者和一个工程师成长为四十个工程师，从一台MyS...','','utf-8'));"></a><a class="tencent" title="分享到腾讯微博" href="javascript:(function(){window.open('http://v.t.qq.com/share/share.php?url='+encodeURIComponent(document.location)+'&appkey=96f54f97c4de46e393c4835a266207f4&site=&title='+encodeURIComponent(document.title)+encodeURIComponent(': Pinterest正经历了指数级曲线般的增长，每隔一个半月翻翻。在这两年里，Pinterest，从 每月PV量0增长到10亿，从两名成立者和一个工程师成长为四十个工程师，从一台MyS...'),'', 'width=450, height=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no');}())"></a>
+            </span>
+		</div>
+		<div class="clear"></div>
+	</div>
+		<div class="toolbar">
+				<span class="label">参与翻译<em>(8人)</em>：</span>
+        <div class="contributers"><a href="http://my.oschina.net/cfanlds" target="_blank" class="t_user">lidashuang</a>, <a href="http://my.oschina.net/ajavaloser" target="_blank" class="t_user">ajavaloser</a>, <a href="http://my.oschina.net/coolma" target="_blank" class="t_user">rosegun38</a>, <a href="http://my.oschina.net/javayou" target="_blank" class="t_user">红薯</a>, <a href="http://my.oschina.net/hbdhj" target="_blank" class="t_user">hbdhj</a>, <a href="http://my.oschina.net/yiyou99storm" target="_blank" class="t_user">尹春红</a>, <a href="http://my.oschina.net/u/259001" target="_blank" class="t_user">葱油拌面</a>, <a href="http://my.oschina.net/u/698379" target="_blank" class="t_user">AlfredCheung</a></div>		
+				<div class="options">
+                    <a href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区.htm" class="selected">仅中文</a> | <a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?cmp" target="_blank">中英文对照</a> | <a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?lang=eng">仅英文</a> | <a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?print" target="_blank">打印此文章</a>
+                </div>
+	</div>
+			<div class="Body" style="position:relative;">
+								                    <div id="translate_13426" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;" rowspan="2"><div class="TextContent"><p> Pinterest正经历了指数级曲线般的增长，每隔一个半月翻翻。在这两年里，Pinterest，从&nbsp;<span>每月PV量</span>0增长到10亿，从两名成立者和一个工程师成长为四十个工程师，从一台MySQL 服务器增长到180台Web 服务器(<strong>Web Engine</strong>)，240台接口服务器(<strong>API Engine</strong>), 88台<strong>MySQL </strong>数据库 (<strong>cc2.8xlarge</strong>) ，并且每台DB有一个备份服务器，110台<strong>Redis </strong>实例服务（Redis Instance），200台&nbsp;<strong>Memcache&nbsp;</strong>实例服务（Memcache&nbsp; Instance）。 </p> 
+<p> 令人叹为观止的增长。想一探<span>Pinterest的传奇吗？</span>我们请来了Pinterest的两位创立者<a href="http://www.linkedin.com/in/yashh" rel="nofollow"><span>Yashwanth Nelapati</span></a>&nbsp;和&nbsp;<a href="http://pinterest.com/martaaay/" rel="nofollow"><span>Marty Weiner</span></a>，他们将以&nbsp;<span><a href="http://www.infoq.com/presentations/Pinterest" rel="nofollow">Scaling Pinterest</a>为题讲述关于</span>Pinterest架构的充满戏剧化的传奇故事。他们说如果能在一年半前飞速发展时能看到有人做类似题材的演讲的话，他们就会有更多的选择，以避免自己在这一年半里做出的很多错误的决定。 </p> 
+<p> 这是一个很不错的演讲，充满了令人惊讶的细节。同时这个演讲也是很务实的，归根结底，它带来了可让大家选择的策略。<strong>极度推荐</strong>！ </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ajavaloser" title="ajavaloser" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/131224_50.jpg" align="absmiddle" alt="ajavaloser" title="ajavaloser" class="SmallPortrait" user="131224"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ajavaloser" target="_blank">ajavaloser</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13444">7</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13444);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+        <tr>
+        <td class="translater" valign="bottom">
+                        <a id="btn_show_other_13426" class="showOthers" href="javascript:show_other(13426,13444);">其它翻译版本(1)</a>
+        </td>
+    </tr>
+    </tbody></table>
+<div id="other_translate_13426" style="display:none;">
+	<div style="text-align:center;margin:10px 0;"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/loading.gif" alt="loading..."><strong>正在加载...</strong></div>
+</div>
+</div>
+        		                    <div id="translate_13427" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;" rowspan="2"><div class="TextContent"><p> 这篇演讲中有两个我最为看重的经验： </p> 
+<p> 1.强大的架构在处理增长时通过简单增加相同的东西(服务器)来应对，同时还能保证系统的正确性。当遇到某种（性能）问题时，你想通过砸钱来扩容指的是你可以简单增加服务器(boxes)。如果你的架构能够做到这一点，那它就如金子一般强大而珍贵！ </p> 
+<p> 2. 当某些（性能问题）快到极限时大多数技术都会以他们自己的方式失败。这导致他们在审核工具时要考虑以下一些特性：成熟，好且简单，有名气且用的人多，良好的支持，持续的优异性能，很少失败，开源。按照这样的标准，他们选择了：MySQL, Solr, Memcache, and Redis，放弃了Cassandra ，Mongo。 </p> 
+<p> 这两点经验是相互联系的。遵循（2）中提到的标准的工具可以在扩容时简单增加服务器(boxes).当负载增加了，成熟的产品更少会有问题。当你遇到问题时，你至少希望它的社区团队能够帮助解决。当你使用的工具过于技巧化和过于讲究时，你会发现你遇到一堵无法逾越的墙。 </p> 
+<p> 在这段演讲里，碎片化（sharding）优于集群(clusterting)的观点是我认为最好的一部分。为了应对增长，通过增加资源，更少失败的模式，成熟，简单，良好的支持，最终圆满完成。请注意他们选择的工具以sharding的方式增长，而不是clustering。关于他们为什么选择sharding和他们如何做sharding是很有趣的事，这很可能触及到你以前未考虑过的场景。 </p> 
+<p> 现在，让我们看看Pinterest如何扩容： </p> 
+<p> （本段有些术语黑话不是很明白，望纠错） </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ajavaloser" title="ajavaloser" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/131224_50.jpg" align="absmiddle" alt="ajavaloser" title="ajavaloser" class="SmallPortrait" user="131224"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ajavaloser" target="_blank">ajavaloser</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13446">3</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13446);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+        <tr>
+        <td class="translater" valign="bottom">
+                        <a id="btn_show_other_13427" class="showOthers" href="javascript:show_other(13427,13446);">其它翻译版本(1)</a>
+        </td>
+    </tr>
+    </tbody></table>
+<div id="other_translate_13427" style="display:none;">
+	<div style="text-align:center;margin:10px 0;"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/loading.gif" alt="loading..."><strong>正在加载...</strong></div>
+</div>
+</div>
+        		                    <div id="translate_13428" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_3_5"> <span><b>基本概念</b></span> </h3> 
+<ul> 
+ <li> Pins是一幅关于其他信息的集合的图片，描述了为什么它对于用户来说很重要，可以链回到他们发现它的地方。 </li> 
+ <li> Pinterest是一个社交网络。你可以追踪人或者板报(boards).<br> </li> 
+ <li> Database:它包含了拥有pins的板报（boards）和拥有板报（boards）的人&nbsp;，可以追踪或重新建立（repin）联系，还包含认证信息。<br> </li> 
+</ul> 
+<p> <strong>启动于2010年三月--自我发现时期</strong> </p> 
+<p> 此时此刻，你甚至不知道你在做的这个产品将要做什么。你有想法，迭代开发更新产品的频率很高。最终因遇到一些在现实生活中永远不会遇到的奇怪的简短的MySQL查询而结束。 </p> 
+<p> 早期的一些数字： </p> 
+<ul> 
+ <li> 两个创始人 </li> 
+ <li> 一个工程师 </li> 
+ <li> Rackspace托管服务器 </li> 
+ <li> 一个小型web引擎 </li> 
+ <li> 一个小型MySQL数据库 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ajavaloser" title="ajavaloser" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/131224_50.jpg" align="absmiddle" alt="ajavaloser" title="ajavaloser" class="SmallPortrait" user="131224"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ajavaloser" target="_blank">ajavaloser</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13448">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13448);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13429" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;" rowspan="2"><div class="TextContent"><p> <strong>2011年1月</strong> </p> 
+<p> 扔在潜伏前进中，产品得到了一些用户反馈。以下是数据： </p> 
+<ul> 
+ <li> Amazon EC2 + S3 + CloudFront云服务 </li> 
+ <li> 一台NGinX，4台Web 引擎（作冗余用，不是真正为了负载） </li> 
+ <li> 一台MySQL数据库+一台读备份服务器（防止主服务器宕机） </li> 
+ <li> 一个任务队列+两个任务处理 </li> 
+ <li> 一台MongoDB（为了计数） </li> 
+ <li> 两个工程师 </li> 
+</ul> 
+<strong></strong> 
+<strong>至2011年9月--试运行阶段</strong> 
+<p> <br> </p> 
+<p> 每一个半月翻翻的疯狂增长阶段。 </p> 
+<ul> 
+ <li> 当高速发展时每个晚上每个星期都会有技术失败的情况发生 </li> 
+ <li> 这时，你阅读大量白皮书，它会告诉你把这个增加进来就行了。当他们添加了大量技术时，毫无例外都失败了。 </li> 
+ <li> 最终你得到一个极为复杂的架构图： 
+  <ul> 
+   <li> Amazon EC2 + S3 + CloudFront </li> 
+   <li> 2NGinX, 16 Web Engines + 2 API Engines </li> 
+   <li> 5 Functionally Sharged MySQL DB + 9 读备份 </li> 
+   <li> 4 Cassandra 节点 </li> 
+   <li> 15 Membase 节点(分成三个单独的集群) </li> 
+   <li> 8 Memcache 节点 </li> 
+   <li> 10 Redis 节点 </li> 
+   <li> 3 任务路由（Task Routers）+ 4 Task Processors </li> 
+   <li> 4 ElasticSearch 节点<br> </li> 
+   <li> 3 Mongo集群 </li> 
+   <li> 3名工程师 </li> 
+  </ul> </li> 
+ <li> 5种主要的数据库技术只为了应付他们自己的数据 </li> 
+ <li> 增长极快以至MySQL负载很高，而其他一些技术都快到达极限 </li> 
+ <li> 当你把某些技术的应用推至极限时，他们又以自己的方式宣告失败。 </li> 
+ <li> 放弃一些技术并问它们到底能做什么。对每一件事情重新构架，海量工作量。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ajavaloser" title="ajavaloser" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/131224_50.jpg" align="absmiddle" alt="ajavaloser" title="ajavaloser" class="SmallPortrait" user="131224"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ajavaloser" target="_blank">ajavaloser</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13454">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13454);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+        <tr>
+        <td class="translater" valign="bottom">
+                        <a id="btn_show_other_13429" class="showOthers" href="javascript:show_other(13429,13454);">其它翻译版本(1)</a>
+        </td>
+    </tr>
+    </tbody></table>
+<div id="other_translate_13429" style="display:none;">
+	<div style="text-align:center;margin:10px 0;"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/loading.gif" alt="loading..."><strong>正在加载...</strong></div>
+</div>
+</div>
+        		                    <div id="translate_13430" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_5_5"> 架构成熟 2012 1月 </h3> 重新设计的系统架构如下： 
+<ul> 
+ <li> Amazon EC2 + S3 + Akamai, ELB </li> 
+ <li> <span>90 Web Engines + 50 API Engines</span> </li> 
+ <li> <span>66 MySQL DBs (m1.xlarge) + 1 slave each</span> </li> 
+ <li> <span>59 Redis Instances</span> </li> 
+ <li> <span>51 Memcache Instances</span> </li> 
+ <li> <span>1 Redis Task Manager + 25 Task Processors</span> </li> 
+ <li> <span>Sharded Solr</span> </li> 
+ <li> <span>6 Engineers</span> <span style="line-height:1.5;font-size:10pt;">.使用Mysql，Redis，Memcache Solr，他们的优势是简单高效并且是成熟的技术。</span> <span style="line-height:1.5;font-size:10pt;">随着Web流量增加，Iphone的流量也随之开始越来越大。</span> <br> 稳定期 2012 10月 12 仅仅在一月份以后，大概就有4倍的流量增长。 系统架构数据如下： <span style="font-family:微软雅黑, Verdana, sans-serif, 宋体;line-height:23px;background-color:#FFFFFF;">The numbers now looks like:</span> 
+  <ul> 
+   <li> Amazon EC2 + S3 + Edge Cast,Akamai, Level 3 </li> 
+   <li> 180 Web Engines + 240 API Engines </li> 
+   <li> 88 MySQL DBs (cc2.8xlarge) + 1 slave each </li> 
+   <li> 110 Redis Instances </li> 
+   <li> 200 Memcache Instances </li> 
+   <li> 4 Redis Task Manager + 80 Task Processors </li> 
+   <li> Sharded Solr </li> 
+   <li> 40 Engineers (and growing) </li> 
+  </ul> 注意到，此时的架构应该是合理的，只是通过增加更多的服务器。你认为此时通过更多的投入来应对这么大的规模的流量，投入更多的硬件来解决这个问题， 下一步 迁移到SSDs </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/259001" title="葱油拌面" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/259001_50.jpg" align="absmiddle" alt="葱油拌面" title="葱油拌面" class="SmallPortrait" user="259001"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/259001" target="_blank">葱油拌面</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13461">2</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13461);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13431" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_6_5"> <strong>为什么是</strong><strong>Amazon EC2/S3</strong> </h3> 
+<ul> 
+ <li> 相当的可靠。数据中心也会宕机，&nbsp;Multitenancy 加入了不少风险，但不是坏处。 </li> 
+ <li> 良好的汇报和支持。他们确实有很不错的架构师而且他们知道问题在哪里。 </li> 
+ <li> 良好的额外服务支持（peripherals），特别是当你的应用处于增长时期。你可能在App Engine中转晕，你不用亲自去实现，只需要简单和他们的服务打交道，例如maged cache，负载均衡，映射和化简，数据库和其他所有方面。Amazon的服务特别适合起步阶段，之后你可以招聘工程师来优化程序。 </li> 
+ <li> 分秒钟获得新的服务实例。这是云服务的威力。特别是当你只有两名工程师，你不用担心容量规划或者为了10台memcache服务器等上两周。10台memcache服务器几分钟内就能加完。 </li> 
+ <li> 反对的理由：有限的选择。直到最近你才能用SSD而且还没高内存配置的方案。 </li> 
+ <li> 赞成的理由：还是有限的选择。你不需要面对一大堆配置迥异的服务器。 </li> 
+</ul> 
+<h3 id="content_h3_6_15"> <strong>为什么是 MySQL？</strong> <strong></strong> </h3> 
+<ul> 
+ <li> 非常成熟 </li> 
+ <li> 非常耐用。从不宕机且不会丢失数据。 </li> 
+ <li> 招聘方便，一大堆工程师懂MySQL. </li> 
+ <li> 反应时间和请求数量（requies rate，我认为是request rate参考下面）是线性增长的。有些数据库技术的反应时间在请求飙升时不是很好。 </li> 
+ <li> 很好的软件支持--&nbsp;XtraBackup, Innotop, Maatkit </li> 
+ <li> 很好的社区，问的问题总能轻易获取到答案 </li> 
+ <li> 很好的厂商支持，譬如Percona </li> 
+ <li> 开源--这一点很重要，特别是你刚开始没有很多资金支持时。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ajavaloser" title="ajavaloser" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/131224_50.jpg" align="absmiddle" alt="ajavaloser" title="ajavaloser" class="SmallPortrait" user="131224"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ajavaloser" target="_blank">ajavaloser</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13459">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13459);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13432" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_7_5"> 为什么选择Memcache? </h3> 
+<ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">非常成熟</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">非常简单。它就是一个socket的哈希表。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">性能一直很好</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">很多人知道并喜欢</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">从不崩溃</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">免费</span> </li> 
+</ul> 
+<h3 id="content_h3_7_19"> 为什么选择Redis? </h3> 
+<ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">还不成熟，但它是非常好并且相当简单。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">提供了各种的数据结构。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">可以持久化和复制，并且可以选择如何实现它们。你可以用MySQL风格持久化，或者你可以不要持久化，或者你只要3小时的持久化。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">Redis上的数据只保存3个小时，没有3小时以上的复本。他们只保留3个小时的备份。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">如果存储数据的设备发生故障，而它们只是备份了几个小时。这不是完全可靠的，但它很简单。你并不需要复杂的持久化和复制。这是一个更简单，更便宜的架构。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">很多人知道并喜欢</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">性能一直很好</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">很少的一些故障。<span>你需要了解</span>一些小故障，学习并解决它们，使它越来越成熟。</span> </li> 
+ <li> <span style="font-size:10pt;line-height:1.5;">免费</span> </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/hbdhj" title="hbdhj" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/934349_50.jpg" align="absmiddle" alt="hbdhj" title="hbdhj" class="SmallPortrait" user="934349"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/hbdhj" target="_blank">hbdhj</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13457">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13457);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13433" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_8_5"> <span>Solr</span> </h2> 
+<ul> 
+ <li> 只需要几分钟的安装时间，就可以投入使用 </li> 
+ <li> 不能扩展到多于一台的机器上（最新版本并非如此） </li> 
+ <li> 尝试弹性搜索，但是以Pinterest的规模来说，可能会因为零碎文件和查询太多而产生问题。 </li> 
+ <li> 选择使用Websolr，但是Pinterest拥有搜索团队，将来可能会开发自己的版本。 <span><br> </span> </li> 
+</ul> 
+<h2 id="content_h2_8_14"> <span><b>集群vs.分片</b></span> </h2> 
+<ul> 
+ <li> 在迅速扩展的过程中，Pinterest认识到每次负载的增加，都需要均匀的传播他们的数据。 </li> 
+ <li> 针对问题先确定解决方案的范围，他们选择的范围是集群和分片之间的一系列解决方案。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13561">2</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13561);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13434" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_9_5"> 集群 —— 所有事情都是自动化的 </h3> 
+<ul> 
+ <li> 示例: Cassandra, MemBase, HBase </li> 
+ <li> 结论: 太可怕了，不是在现在，可能在将来，但现在太复杂了，有非常多的故障点 </li> 
+ <li> 属性: 
+  <ul> 
+   <li> 自动化数据分布 </li> 
+   <li> 可移动数据 </li> 
+   <li> 可重新进行分布均衡 </li> 
+   <li> 节点间可通讯，大量的握手、对话 </li> 
+  </ul> </li> 
+ <li> 有点: 
+  <ul> 
+   <li> 自动伸缩数据存储，至少白皮书上是这么说的 </li> 
+   <li> 安装简单 </li> 
+   <li> 在空间中分布存储你的数据，可在不同区域有数据中心 </li> 
+   <li> 高可用性 </li> 
+   <li> 负载均衡 </li> 
+   <li> 没有单点故障 </li> 
+  </ul> </li> 
+ <li> 缺点 (来自用户一手的体验): 
+  <ul> 
+   <li> 还是相当年轻不成熟 </li> 
+   <li> 还是太复杂，一大堆节点必须对称的协议,这是一个在生产环境中难以解决的问题。 </li> 
+   <li> 很少的社区支持，有一个沿着不同产品线的分裂社区会减少每个阵营的支持。 </li> 
+   <li> 很少工程师有相关的知识，可能是很多工程师都没用过 Cassandra. </li> 
+   <li> 复杂和和可怕的升级机制 </li> 
+   <li> 集群管理算法是一个 SPOF 单点故障，如果有个 bug 影响每个节点，这可能会宕机 4 次。 </li> 
+   <li> 集群管理器编码复杂，有如下一些失败的模式： 
+    <ul> 
+     <li> <strong>数据重新均衡中断</strong>：当一个新机器加入然后数据开始复制,它被卡住了。你做什么工作?没有工具来找出到底发生了什么。没有社会的帮助,所以他们被困。他们又回到了MySQL。 </li> 
+     <li> <strong>所有节点的数据损坏</strong>. What if there’s a bug that sprays badness into the write log across all of them and compaction or some other mechanism stops? Your read latencies increase. All your data is screwed and the data is gone. </li> 
+     <li> <strong>均衡不当而且很难修复</strong>. 非常常见，如果你有10个节点，你会注意到所有节点都在一个节点上，有一个手工处理方式，但会将所有负载分布到一个单节点上 </li> 
+     <li> <strong>权威数据失效</strong>. 集群方案是很智能的。In one case they bring in a new secondary. At about 80% the secondary says it’s primary and the primary goes to secondary and you’ve lost 20% of the data. Losing 20% of the data is worse than losing all of it because you don’t know what you’ve lost. </li> 
+    </ul> </li> 
+  </ul> </li> 
+</ul> 
+<h3> </h3></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/javayou" title="红薯" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/12_50.jpg" align="absmiddle" alt="红薯" title="红薯" class="SmallPortrait" user="12"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/javayou" target="_blank">红薯</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13580">4</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13580);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13435" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_10_5"> 分片(sharding) - 全凭人手 </h3> 
+<ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">裁决: 分片是赢家。我觉得他们分片的方案与</span><a href="http://highscalability.com/blog/2007/11/13/flickr-architecture.html" target="_blank" rel="nofollow">Flicker</a><span style="line-height:1.5;font-size:10pt;">非常相似。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">特点:</span> </li> 
+ <ul> 
+  <li> <span style="line-height:1.5;font-size:10pt;">如果去掉集群方式下所有不好的特点，就得到了分片。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">人工对数据进行分布。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">不移动数据。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">通过切分数据来分担负荷。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">节点不知道其它节点的存在。某些主节点控制一切。</span> </li> 
+ </ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">优点:</span> </li> 
+ <ul> 
+  <li> <span style="line-height:1.5;font-size:10pt;">可以通过切分数据库来扩大容量。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">在空间上分布数据。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">高可用。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">负载均衡。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">放置数据的算法十分简单。这是最主要的原因。虽然存在单点(SPOF)，但只是很小的一段代码，而不是复杂到爆的集群管理器。过了第一天就知道有没有问题。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">ID的生成很简单。</span> </li> 
+ </ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">缺点:</span> </li> 
+ <ul> 
+  <li> <span style="line-height:1.5;font-size:10pt;">无法执行大多数连接。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">没有事务功能。可能会出现写入某个数据库失败、而写入其它库成功</span><span style="line-height:1.5;font-size:10pt;">的情况。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">许多约束只能转移到应用层实现。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">schema的修改需要更多的规划。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">如果要出报表，必须在所有分片上分别执行查询，然后自己把结果合起来。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">连接只能转移到应用层实现。</span> </li> 
+  <li> <span style="line-height:1.5;font-size:10pt;">应用必须应付以上所有的问题。</span> </li> 
+ </ul> 
+</ul> 
+<h3 id="content_h3_10_57"> 何时选择分片？ </h3> 
+<ul> 
+ <li> <span style="line-height:1.5;font-size:10pt;">当有几TB的数据时，应该尽快分片。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">当Pin表行数达到几十亿，索引超出内存容量，被交换到磁盘时。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">他们选出一个最大的表，放入单独的数据库。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">单个数据库耗尽了空间。</span> </li> 
+ <li> <span style="line-height:1.5;font-size:10pt;">然后，只能分片。</span> </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/698379" title="AlfredCheung" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/698379_50.jpg" align="absmiddle" alt="AlfredCheung" title="AlfredCheung" class="SmallPortrait" user="698379"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/698379" target="_blank">AlfredCheung</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13548">3</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13548);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13436" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> <b>分片的过渡</b> </p> 
+<ul> 
+ <li> 过渡从一个特性的冻结开始。 </li> 
+</ul> 
+<ul> 
+ <li> 确认分片该达到什么样的效果——希望尽少的执行查询以及最少数量的数据库去呈现一个页面。 </li> 
+</ul> 
+<ul> 
+ <li> 剔除所有的MySQL join，将要做join的表格加载到一个单独的分片去做查询。 </li> 
+</ul> 
+<ul> 
+ <li> 添加大量的缓存，基本上每个查询都需要被缓存。 </li> 
+</ul> 
+<ul> 
+ <li> 这个步骤看起来像： </li> 
+</ul> 
+<ul> 
+ <li> 1 DB + Foreign Keys + Joins </li> 
+ <li> 1 DB + Denormalized + Cache </li> 
+ <li> 1 DB + Read Slaves + Cache </li> 
+ <li> Several functionally sharded DBs+Read Slaves+Cache </li> 
+ <li> ID sharded DBs + Backup slaves + cache </li> 
+</ul> 
+<ul> 
+ <li> 早期的只读奴节点一直都存在问题，因为存在slave lag。读任务分配给了奴节点，然而主节点并没有做任何的备份记录，这样就像一条记录丢失。之后Pinterest使用缓存解决了这个问题。 </li> 
+</ul> 
+<ul> 
+ <li> Pinterest拥有后台脚本，数据库使用它来做备份。检查完整性约束、引用。 </li> 
+</ul> 
+<ul> 
+ <li> 用户表并不进行分片。Pinterest只是使用了一个大型的数据库，并在电子邮件和用户名上做了相关的一致性约束。如果插入重复用户，会返回失败。然后他们对分片的数据库做大量的写操作。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13567">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13567);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13437" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> <b>如何进行分片?</b> </p> 
+<ul> 
+ <li> 可以参考Cassandra的ring模型、Membase以及Twitter的Gizzard。 </li> 
+ <li> 坚信：节点间数据传输的越少，你的架构越稳定。 </li> 
+ <li> Cassandra存在数据平衡和所有权问题，因为节点们不知道哪个节点保存了另一部分数据。Pinterest认为应用程序需要决定数据该分配到哪个节点，那么将永远不会存在问题。 </li> 
+ <li> 预计5年内的增长，并且对其进行预分片思考。 </li> 
+ <li> 初期可以建立一些虚拟分片。8个物理服务器，每个512DB。所有的数据库都装满表格。 </li> 
+ <li> 为了高有效性，他们一直都运行着多主节点冗余模式。每个主节点都会分配给一个不同的可用性区域。在故障时，该主节点上的任务会分配给其它的主节点，并且重新部署一个主节点用以代替。 </li> 
+ <li> 当数据库上的负载加重时： </li> 
+</ul> 
+<ul> 
+ <li> 先着眼节点的任务交付速度，可以清楚是否有问题发生，比如：新特性，缓存等带来的问题。 </li> 
+ <li> 如果属于单纯的负载增加，Pinterest会分割数据库，并告诉应用程序该在何处寻找新的节点。 </li> 
+ <li> 在分割数据库之前，Pinterest会给这些主节点加入一些奴节点。然后置换应用程序代码以匹配新的数据库，在过渡的几分钟之内，数据会同时写入到新旧节点，过渡结束后将切断节点之间的通道。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13563">2</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13563);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13438" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_13_5"> <b>ID结构</b> </h3> 
+<ul> 
+ <li> 一共64位 </li> 
+</ul> 
+<ul> 
+ <li> 分片ID：16位 </li> 
+ <li> Type：10位—— Board、User或者其它对象类型 </li> 
+ <li> 本地ID——余下的位数用于表中ID，使用MySQL自动递增。 </li> 
+</ul> 
+<ul> 
+ <li> Twitter使用一个映射表来为物理主机映射ID，这将需要备份；鉴于Pinterest使用AWS和MySQL查询，这个过程大约需要3毫秒。Pinterest并没有让这个额外的中间层参与工作，而是将位置信息构建在ID里。 </li> 
+ <li> 用户被随机分配在分片中间。 </li> 
+ <li> 每个用户的所有数据（pin、board等）都存放在同一个分片中，这将带来巨大的好处，避免了跨分片的查询可以显著的增加查询速度。 </li> 
+ <li> 每个board都与用户并列，这样board可以通过一个数据库处理。 </li> 
+ <li> 分片ID足够65536个分片使用，但是开始Pinterest只使用了4096个，这允许他们轻易的进行横向扩展。一旦用户数据库被填满，他们只需要增加额外的分片，然后让新用户写入新的分片就可以了。 </li> 
+</ul> 
+<h3 id="content_h3_13_19"> <b>查找</b> </h3> 
+<ul> 
+ <li> 如果存在50个查找，举个例子，他们将ID分割且并行的运行查询，那么延时将达到最高。 </li> 
+ <li> 每个应用程序都有一个配置文件，它将给物理主机映射一个分片范围。 </li> 
+</ul> 
+<ul> 
+ <li> “sharddb001a”: : (1, 512) </li> 
+ <li> “sharddb001b”: : (513, 1024)——主要备份主节点 </li> 
+</ul> 
+<ul> 
+ <li> 如果你想查找一个ID坐落在sharddb003a上的用户： </li> 
+</ul> 
+<ul> 
+ <li> 将ID进行分解 </li> 
+ <li> 在分片映射中执行查找 </li> 
+ <li> 连接分片，在数据库中搜寻类型。并使用本地ID去寻找这个用户，然后返回序列化数据。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13564">3</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13564);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13439" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_14_5"> <b>对象和映射</b> </h3> 
+<ul> 
+ <li> 所有数据都是对象（pin、board、user、comment）或者映射（用户由baord，pin有like）。 </li> 
+</ul> 
+<ul> 
+ <li> 针对对象，每个本地ID都映射成MySQL Blob。开始时Blob使用的是JSON格式，之后会给转换成序列化的Thrift。 </li> 
+</ul> 
+<ul> 
+ <li> 对于映射来说，这里有一个映射表。你可以为用户读取board，ID包含了是时间戳，这样就可以体现事件的顺序。 </li> 
+</ul> 
+<ul> 
+ <li> 同样还存在反向映射，多表对多表，<span style="line-height:1.45em;">用于查询有哪些用户喜欢某个pin这样的操作</span>。 </li> 
+ <li> 模式的命名方案是：noun_verb_noun: user_likes_pins, pins_like_user。 </li> 
+</ul> 
+<ul> 
+ <li> 只能使用主键或者是索引查找（没有join）。 </li> 
+</ul> 
+<ul> 
+ <li> 数据不会向集群中那样跨数据的移动，举个例子：如果某个用户坐落在20分片上，所有他数据都会并列存储，永远不会移动。64位ID包含了分片ID，所以它不可能被移动。你可以移动物理数据到另一个数据库，但是它仍然与相同分片关联。 </li> 
+</ul> 
+<ul> 
+ <li> 所有的表都存放在分片上，没有特殊的分片，当然用于检测用户名冲突的巨型表除外。 </li> 
+</ul> 
+<ul> 
+ <li> 不需要改变模式，一个新的索引需要一个新的表。 </li> 
+</ul> 
+<ul> 
+ <li> 因为键对应的值是blob，所以你不需要破坏模式就可以添加字段。因为blob有不同的版本，所以应用程序将检测它的版本号并且将新记录转换成相应的格式，然后写入。所有的数据不需要立刻的做格式改变，可以在读的时候进行更新。 </li> 
+ <li> 巨大的胜利，因为改变表格需要在上面加几个小时甚至是几天的锁。如果你需要一个新的索引，你只需要建立一张新的表格，并填入内容；在不需要的时候，丢弃就好。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13566">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13566);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13440" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_15_5"> <b>呈现一个用户文件界面</b> </h3> 
+<ul> 
+ <li> 从URL中取得用户名，然后到单独的巨型数据库中查询用户的ID。 </li> 
+</ul> 
+<ul> 
+ <li> 获取用户ID，并进行拆分 </li> 
+</ul> 
+<ul> 
+ <li> 选择分片，并进入 </li> 
+</ul> 
+<ul> 
+ <li> SELECT body from users WHERE id = &lt;local_user_id&gt; </li> 
+</ul> 
+<ul> 
+ <li> SELECT board_id FROM user_has_boards WHERE user_id=&lt;user_id&gt; </li> 
+</ul> 
+<ul> 
+ <li> SELECT body FROM boards WHERE id IN (&lt;boards_ids&gt;) </li> 
+</ul> 
+<ul> 
+ <li> SELECT pin_id FROM board_has_pins WHERE board_id=&lt;board_id&gt; </li> 
+</ul> 
+<ul> 
+ <li> SELECT body FROM pins WHERE id IN (pin_ids) </li> 
+</ul> 
+<ul> 
+ <li> 所有调用都在缓存中进行（Memcache或者Redis），所以在实践中并没有太多连接数据库的后端操作。 </li> 
+</ul> 
+<h3 id="content_h3_15_25"> <b>脚本相关</b> </h3> 
+<ul> 
+ <li> 当你过渡到一个分片架构，你拥有两个不同的基础设施——没有进行分片的旧系统和进行分片的新系统。脚本成为了新旧系统之间数据传输的桥梁。 </li> 
+</ul> 
+<ul> 
+ <li> 移动5亿的pin、16亿的follower行等。 </li> 
+</ul> 
+<ul> 
+ <li> 不要轻视项目中的这一部分，Pinterest原认为只需要2个月就可以完成数据的安置，然而他们足足花了4至5个月时间，别忘了期间他们还冻结了一项特性。 </li> 
+</ul> 
+<ul> 
+ <li> 应用程序必须同时对两个系统插入数据。 </li> 
+</ul> 
+<ul> 
+ <li> 一旦确认所有的数据都在新系统中就位，就可以适当的增加负载来测试新后端。 </li> 
+</ul> 
+<ul> 
+ <li> 建立一个脚本农场，雇佣更多的工程师去加速任务的完成。让他们做这些表格的转移工作。 </li> 
+</ul> 
+<ul> 
+ <li> 设计一个Pyres副本，一个到GitHub Resque队列的Python的接口，这个队列建立在Redis之上。支持优先级和重试，使用Pyres取代Celery和RabbitMQ更是让他们受益良多。 </li> 
+</ul> 
+<ul> 
+ <li> 处理中会产生大量的错误，用户可能会发现类似丢失board的错误；必须重复的运行任务，以保证在数据的处理过程中不会出现暂时性的错误。 </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13565">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13565);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13441" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_16_5"> <strong><span style="font-size:24px;">动态</span></strong> </h3> 
+<ul> 
+ <li> <p> <span><span><span>最初试图给开发者一个分片系统。</span><span>每个开发者都能拥有自己的MySQL服务器，但事情发生了快速的变化，导致不能工作。变</span></span></span> </p> </li> 
+ <li> <p> <span><span><span>去了Facebook的模式：每个人可以获得一切。</span><span>所以，你不得不非常谨慎</span></span></span> </p> </li> 
+</ul> 
+<h3 id="content_h3_16_21"> <span><span><span>未来发展方向</span></span></span> </h3> 
+<ul> 
+ <li> <p> <span><span><span>基于服务的架构。</span></span></span> </p> 
+  <ul> 
+   <li> <p> <span><span><span>当他们开始看到了很多的数据库负载，便像产卵一样，导致了很多的应用服务器和其他服务器堆在一起。</span><span>所有这些服务器连接到MySQL和Memcache。</span><span>这意味着有30K上的memcache连接了一对夫妇演出的RAM引起的memcache守护进程交换。</span></span></span> </p> </li> 
+   <li> <p> <span><span><span>作为一个修补程序，这些都是移动的服务架构。</span><span>有一个跟随服务，例如，将只回答跟随查询。</span><span>此隔离的机器数目至30访问数据库和高速缓存，从而减少了连接。</span></span></span> </p> </li> 
+   <li> <p> <span><span><span>帮助隔离功能。</span><span>帮助组织，解决和支持这些服务的团队。</span><span>帮助开发人员，为了安全开发人员不能访问其他服务。</span></span></span> </p> </li> 
+  </ul> </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/yiyou99storm" title="尹春红" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/857695_50.jpg" align="absmiddle" alt="尹春红" title="尹春红" class="SmallPortrait" user="857695"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/yiyou99storm" target="_blank">尹春红</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13460">3</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13460);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_13442" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_17_5"> <b>学到的知识</b> </h3> 
+<ul> 
+ <li> 为了应对未来的问题，让其保持简单。 </li> 
+</ul> 
+<ul> 
+ <li> 让其变的有趣。只要应用程序还在使用，就会有很多的工程师加入，过于复杂的系统将会让工作失去乐趣。让架构保持简单就是大的胜利，新的工程师从入职的第一周起就可以对项目有所贡献。 </li> 
+</ul> 
+<ul> 
+ <li> 当你把事物用至极限时，这些技术都会以各自不同的方式发生故障。 </li> 
+</ul> 
+<ul> 
+ <li> 如果你的架构应对增长所带来的问题时，只需要简单的投入更多的主机，那么你的架构含金量十足。 </li> 
+</ul> 
+<ul> 
+ <li> 集群管理算法本身就用于处理SPOF，如果存在漏洞的话可能就会影响到每个节点。 </li> 
+</ul> 
+<ul> 
+ <li> 为了快速的增长，你需要为每次负载增加的数据进行均匀分配。 </li> 
+</ul> 
+<ul> 
+ <li> 在节点间传输的数据越少，你的架构越稳定。这也是他们弃集群而选择分片的原因 </li> 
+</ul> 
+<ul> 
+ <li> 一个面向服务的架构规则。拆分功能，可以帮助减少连接、组织团队、组织支持以及提升安全性。 </li> 
+</ul> 
+<ul> 
+ <li> 搞明白自己究竟需要什么。为了匹配愿景，不要怕丢弃某些技术，甚至是整个系统的重构。 </li> 
+</ul> 
+<ul> 
+ <li> 不要害怕丢失一点数据。将用户数据放入内存，定期的进行持久化。失去的只是几个小时的数据，但是换来的却是更简单、更强健的系统！ </li> 
+</ul> 
+<h2 id="content_h2_17_27"> 相关文章 </h2> 
+<ul> 
+ <li> <a href="https://news.ycombinator.com/item?id=5552504" rel="nofollow">Discuss on Hacker News</a> </li> 
+ <li> <a href="http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html" rel="nofollow">Pinterest Architecture Update - 18 Million Visitors, 10x Growth,12 Employees, 410 TB Of Data</a> </li> 
+ <li> <a href="http://highscalability.com/blog/2012/2/16/a-short-on-the-pinterest-stack-for-handling-3-million-users.html" rel="nofollow"><span>A Short On The Pinterest Stack For Handling 3+ Million Users</span></a> </li> 
+ <li> <a href="http://highscalability.com/blog/2012/12/12/pinterest-cut-costs-from-54-to-20-per-hour-by-automatically.html" rel="nofollow"><span>Pinterest Cut Costs From $54 To $20 Per Hour By Automatically Shutting Down Systems</span></a> </li> 
+ <li> <a href="http://highscalability.com/blog/2012/4/16/instagram-architecture-update-whats-new-with-instagram.html" rel="nofollow">Instagram Architecture Update: What’s New With Instagram?</a> </li> 
+</ul> 
+<br></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cfanlds" title="lidashuang" target="_blank"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/103022_50.jpg" align="absmiddle" alt="lidashuang" title="lidashuang" class="SmallPortrait" user="103022"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cfanlds" target="_blank">lidashuang</a><br>翻译于 2年前</h6>
+                <p><em id="vote_count_13562">2</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(13562);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        				<div class="copyright">
+			本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接<br>
+			我们的翻译工作遵照 <a href="http://zh.wikipedia.org/wiki/Wikipedia:CC" target="_blank">CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们
+		</div>
+	</div>
+	<div style="margin:10px 0;">
+	    </div>
+		<div class="Bottom">
+		<div class="google_ads" style="float:right;width:300px;">
+			<script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7090564139599510";
+            /* translate-comments */
+            google_ad_slot = "8977750911";
+            google_ad_width = 300;
+            google_ad_height = 250;
+            //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+		</div>
+        <script>
+			$(function(){
+				$(window).scroll(function() {
+					var $offset = $('.google_ads').last().offset();
+            		if($(window).scrollTop()>($offset.top)) {
+            			$('.google_ads iframe').first().css({'position':'fixed','top':'0px','left':$offset.left+'px','margin-top':'10px','z-index':'999'});
+            		}
+            		else {
+            			$('.google_ads iframe').first().css({'position':'relative','top':'','left':'','margin-top':'0','z-index':'0'});
+            		}
+				});
+			});
+		</script>
+				<div class="comments">
+			<a name="comments"></a>
+			<h2>
+                <a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views#top" class="more">回页面顶部</a><a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views#commentForm" class="more" style="margin-right:10px;color:#080;">发表评论</a>
+                网友评论<span>共<em class="reply_count">37</em>条</span>
+            </h2>
+						<ul class="list"><li class="comment" id="cmt_817_121013_3588">
+	<div class="user"><a href="http://my.oschina.net/sharkbobo" name="rpl_3588"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/121013_50.jpg" align="absmiddle" alt="sharkbobo" title="sharkbobo" class="SmallPortrait" user="121013"></a></div>
+	<div class="body">
+		<div class="time"><b>sharkbobo</b>   发表于 2013-04-16 21:06</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">静待完整翻译</div>
+		<div id="inline_reply_of_817_121013_3588" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_156822_3645">
+	<div class="user"><a href="http://my.oschina.net/calvin1978" name="rpl_3645"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/156822_50.jpg" align="absmiddle" alt="江南白衣" title="江南白衣" class="SmallPortrait" user="156822"></a></div>
+	<div class="body">
+		<div class="time"><b>江南白衣</b>   发表于 2013-04-18 23:14</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">挑骨头： 4 Elastic 查找节点，"ElasticSearch" 是和Solr一样的搜索引擎封装，不应该翻译。</div>
+		<div id="inline_reply_of_817_156822_3645" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_8716_3648">
+	<div class="user"><a href="http://my.oschina.net/xiaog" name="rpl_3648"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/8716_50.jpg" align="absmiddle" alt="xiebiao80" title="xiebiao80" class="SmallPortrait" user="8716"></a></div>
+	<div class="body">
+		<div class="time"><b>xiebiao80</b>   发表于 2013-04-19 09:42</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">好文，信息量太大了，大脑接收延迟了。</div>
+		<div id="inline_reply_of_817_8716_3648" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_87626_3649">
+	<div class="user"><a href="http://my.oschina.net/main" name="rpl_3649"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/87626_50.jpg" align="absmiddle" alt="杨子江" title="杨子江" class="SmallPortrait" user="87626"></a></div>
+	<div class="body">
+		<div class="time"><b>杨子江</b>   发表于 2013-04-19 09:49</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">Pinterest 的架构成长路线很有参考意义，尤其对于创业团队和中小团队来说 。 <br><br>只是国内还没有amazon aws级别的云计算服务商，模仿的那几个都是渣渣啊 。</div>
+		<div id="inline_reply_of_817_87626_3649" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_922543_3661">
+	<div class="user"><a href="http://my.oschina.net/nonmore" name="rpl_3661"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/922543_50.jpg" align="absmiddle" alt="小猫王" title="小猫王" class="SmallPortrait" user="922543"></a></div>
+	<div class="body">
+		<div class="time"><b>小猫王</b>   发表于 2013-04-19 14:35</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">据国外媒体报道，Pinterest周三宣布，他们已经收购了创业公司Livestar。Livestar由前微软员工Fritz Lanman创立，是一家主要提供餐厅、电影、音乐等推荐服务的移动应用开发商。<br><br>双方的交易细节并未公布，但Livestar的服务将被即刻关闭，这说明本次收购是一次技术加人才的吞并。Livestar开发团队将于本周末全部搬至Pinterest总部办公。不过Livestar CEO兼创始人Fritz Lanman将不会迁至新东家就职。Lanman还是一位天使投资人，他在Pinterest也持有股份。<br><br>“我们认为Livestar团队对Pinterest是一个完美的补充。”Pinterest发言人表示。<br><br>发展好快。。。</div>
+		<div id="inline_reply_of_817_922543_3661" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_922543_3663">
+	<div class="user"><a href="http://my.oschina.net/nonmore" name="rpl_3663"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/922543_50.jpg" align="absmiddle" alt="小猫王" title="小猫王" class="SmallPortrait" user="922543"></a></div>
+	<div class="body">
+		<div class="time"><b>小猫王</b>   发表于 2013-04-19 14:40</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><br>Pinterest 可能还有哪些商业模式？<br><br>http://www.leiphone.com/pinterest-business-model-else.html</div>
+		<div id="inline_reply_of_817_922543_3663" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_913941_3673">
+	<div class="user"><a href="http://my.oschina.net/chape" name="rpl_3673"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/913941_50.jpg" align="absmiddle" alt="chape" title="chape" class="SmallPortrait" user="913941"></a></div>
+	<div class="body">
+		<div class="time"><b>chape</b>   发表于 2013-04-19 18:43</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">pinterest网站copy别人的东西，没有创造。但是它的架构确实牛逼</div>
+		<div id="inline_reply_of_817_913941_3673" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_257088_3689">
+	<div class="user"><a href="http://my.oschina.net/u/257088" name="rpl_3689"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/257088_50.jpg" align="absmiddle" alt="94127276" title="94127276" class="SmallPortrait" user="257088"></a></div>
+	<div class="body">
+		<div class="time"><b>94127276</b>   发表于 2013-04-21 10:49</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">牛逼的架构</div>
+		<div id="inline_reply_of_817_257088_3689" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_62530_3690">
+	<div class="user"><a href="http://my.oschina.net/gtd" name="rpl_3690"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/62530_50.jpg" align="absmiddle" alt="gtd" title="gtd" class="SmallPortrait" user="62530"></a></div>
+	<div class="body">
+		<div class="time"><b>gtd</b>   发表于 2013-04-21 10:54</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">牛逼~</div>
+		<div id="inline_reply_of_817_62530_3690" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_264841_3691">
+	<div class="user"><a href="http://my.oschina.net/erichsbc" name="rpl_3691"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/264841_50.jpg" align="absmiddle" alt="Eric_HSBC" title="Eric_HSBC" class="SmallPortrait" user="264841"></a></div>
+	<div class="body">
+		<div class="time"><b>Eric_HSBC</b>   发表于 2013-04-21 11:02</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">收藏了！</div>
+		<div id="inline_reply_of_817_264841_3691" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_114016_3692">
+	<div class="user"><a href="http://my.oschina.net/gccr" name="rpl_3692"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/114016_50.jpg" align="absmiddle" alt="古城痴人" title="古城痴人" class="SmallPortrait" user="114016"></a></div>
+	<div class="body">
+		<div class="time"><b>古城痴人</b> 来自 <a href="http://www.oschina.net/mobile" target="_blank">Android</a>  发表于 2013-04-21 12:48</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">月PV十亿，平均每天三千多万PV，UV有300多万？这种访问量国内也不算大站吧。是不是编辑写错了？</div>
+		<div id="inline_reply_of_817_114016_3692" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_154456_3693">
+	<div class="user"><a href="http://my.oschina.net/ljtnine" name="rpl_3693"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/154456_50.jpg" align="absmiddle" alt="铂金小虎" title="铂金小虎" class="SmallPortrait" user="154456"></a></div>
+	<div class="body">
+		<div class="time"><b>铂金小虎</b>   发表于 2013-04-21 13:01</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">我以为介绍的12306呢</div>
+		<div id="inline_reply_of_817_154456_3693" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_658536_3694">
+	<div class="user"><a href="http://my.oschina.net/u/658536" name="rpl_3694"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/658536_50.jpg" align="absmiddle" alt="john_sh" title="john_sh" class="SmallPortrait" user="658536"></a></div>
+	<div class="body">
+		<div class="time"><b>john_sh</b>   发表于 2013-04-21 13:03</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">收藏了！</div>
+		<div id="inline_reply_of_817_658536_3694" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_245971_3695">
+	<div class="user"><a href="http://my.oschina.net/scoder" name="rpl_3695"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/245971_50.jpg" align="absmiddle" alt="车开源" title="车开源" class="SmallPortrait" user="245971"></a></div>
+	<div class="body">
+		<div class="time"><b>车开源</b> 来自 <a href="http://www.oschina.net/mobile" target="_blank">Android</a>  发表于 2013-04-21 13:37</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">看不懂，但感觉很厉害</div>
+		<div id="inline_reply_of_817_245971_3695" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_561214_3696">
+	<div class="user"><a href="http://my.oschina.net/eechen" name="rpl_3696"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/561214_50.jpg" align="absmiddle" alt="eechen" title="eechen" class="SmallPortrait" user="561214"></a></div>
+	<div class="body">
+		<div class="time"><b>eechen</b>   发表于 2013-04-21 13:52</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">Pinterest现在规模(参考):<br>Alexa Rank: 38<br>Daily visitors: 9 937 212<br>Daily pageviews: 74 032 228<br>日PV达7千多万图片分享社交站还不算大站?<br>新浪微博日PV是Pinterest的2倍,这种规模的大站在国内屈指可数吧.</div>
+		<div id="inline_reply_of_817_561214_3696" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_126236_3697">
+	<div class="user"><a href="http://my.oschina.net/yeyuan" name="rpl_3697"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/126236_50.jpg" align="absmiddle" alt="吕秀才" title="吕秀才" class="SmallPortrait" user="126236"></a></div>
+	<div class="body">
+		<div class="time"><b>吕秀才</b>   发表于 2013-04-21 17:16</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“铂金小虎”的评论</h4><p>我以为介绍的12306呢</p></div>同感！</div>
+		<div id="inline_reply_of_817_126236_3697" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_935488_3698">
+	<div class="user"><a href="http://my.oschina.net/supercoder123" name="rpl_3698"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/935488_50.jpg" align="absmiddle" alt="陈浩然_北京" title="陈浩然_北京" class="SmallPortrait" user="935488"></a></div>
+	<div class="body">
+		<div class="time"><b>陈浩然_北京</b>   发表于 2013-04-21 17:29</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">从节点</div>
+		<div id="inline_reply_of_817_935488_3698" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_918881_3699">
+	<div class="user"><a href="http://my.oschina.net/yourOnlyJack" name="rpl_3699"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/918881_50.jpg" align="absmiddle" alt="yourOnlyJack" title="yourOnlyJack" class="SmallPortrait" user="918881"></a></div>
+	<div class="body">
+		<div class="time"><b>yourOnlyJack</b>   发表于 2013-04-21 19:06</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“吕秀才”的评论</h4><p></p><div class="ref"><h4>引用来自“铂金小虎”的评论</h4><p>我以为介绍的12306呢</p></div>同感！<p></p></div>12306也不容易啊。在一片声讨中成长起来了。有没有12306的出来share一下。</div>
+		<div id="inline_reply_of_817_918881_3699" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_241474_3700">
+	<div class="user"><a href="http://my.oschina.net/sofire" name="rpl_3700"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/241474_50.jpg" align="absmiddle" alt="刘德洪Sofire" title="刘德洪Sofire" class="SmallPortrait" user="241474"></a></div>
+	<div class="body">
+		<div class="time"><b>刘德洪Sofire</b>   发表于 2013-04-21 20:33</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“杨子江”的评论</h4><p>Pinterest 的架构成长路线很有参考意义，尤其对于创业团队和中小团队来说 。 <br><br>只是国内还没有amazon aws级别的云计算服务商，模仿的那几个都是渣渣啊 。</p></div>个人觉得没啥参考意义，国内每年也就可数的几个团队会遇到这种问题，创业团队更少。</div>
+		<div id="inline_reply_of_817_241474_3700" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_817_50514_3702">
+	<div class="user"><a href="http://my.oschina.net/quickbird" name="rpl_3702"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/50514_50.jpg" align="absmiddle" alt="quickbird" title="quickbird" class="SmallPortrait" user="50514"></a></div>
+	<div class="body">
+		<div class="time"><b>quickbird</b>   发表于 2013-04-21 22:12</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">没看懂</div>
+		<div id="inline_reply_of_817_50514_3702" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li></ul>
+            	        				        <ul class="pager">
+        <li class="page current"><a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?p=1">1</a></li><li class="page"><a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?p=2#comments">2</a></li><li class="page next"><a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views?p=2#comments">&gt;</a></li>    </ul>
+				<div class="clear"></div>
+			<div class="commentForm">
+				<div class="user"><a href="" name="commentForm"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="非会员用户" title="非会员用户" class="SmallPortrait" user=""></a></div>
+    			<form id="form_comment" action="http://www.oschina.net/action/translate/comment?" method="post">
+					<input type="hidden" value="817" name="article">
+    				<textarea id="txt_comment" name="content" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_comment&#39;).submit();}" style="width:600px;height:100px;"></textarea><br>
+    				<input type="submit" value=" 发表评论 " id="FormSubmitButton" class="SUBMIT rndbutton">
+    				<span id="form_msg" style="display:none;"></span>
+					<p style="margin-top:36px;"><a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views#comments">回评论顶部</a> | <a href="http://www.oschina.net/translate/scaling-pinterest-from-0-to-10s-of-billions-of-page-views#top">回页面顶部</a></p>
+    			</form>
+			</div>
+		</div>
+        <div class="clear"></div>
+	</div>
+	</div>
+<div class="clear"></div>
+<div id="inline_reply_editor" style="display:none;">
+    <div class="CommentForm">
+        <form id="form_inline_comment" method="POST" action="http://www.oschina.net/action/translate/comment">
+            <input id="inline_reply_id" type="hidden" value="" name="reply_id">
+			<input type="hidden" value="817" name="article">
+            <textarea id="txt_focus" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_inline_comment&#39;).submit();}" style="width:400px;height:80px;" name="content"></textarea>
+            <br>
+            <input class="SUBMIT" type="submit" value="回复">
+            <input id="btn_close_inline_reply" class="SUBMIT" type="button" value="关闭">
+            文明上网，理性发言
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/xregexp-min.js"></script>
+<script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/shCore.min.js"></script>
+<script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/shThemeDefault.css">
+
+<script type="text/javascript">
+SyntaxHighlighter.autoloader(
+	'applescript			/js/sh309/scripts/shBrushAppleScript.js?t=1406837068000',
+	'actionscript3 as3		/js/sh309/scripts/shBrushAS3.js?t=1406837068000',
+	'bash shell				/js/sh309/scripts/shBrushBash.js?t=1406837068000',
+	'coldfusion cf			/js/sh309/scripts/shBrushColdFusion.js?t=1406837068000',
+	'cpp c					/js/sh309/scripts/shBrushCpp.js?t=1406837068000',
+	'obj-c objc				/js/sh309/scripts/shBrushObjC.js?t=1406837068000',
+	'c# c-sharp csharp		/js/sh309/scripts/shBrushCSharp.js?t=1406837068000',
+	'css					/js/sh309/scripts/shBrushCss.js?t=1406837068000',
+	'delphi pascal			/js/sh309/scripts/shBrushDelphi.js?t=1406837068000',
+	'diff patch pas			/js/sh309/scripts/shBrushDiff.js?t=1406837068000',
+	'erl erlang				/js/sh309/scripts/shBrushErlang.js?t=1406837068000',
+	'groovy					/js/sh309/scripts/shBrushGroovy.js?t=1406837068000',
+	'haxe hx				/js/sh309/scripts/shBrushHaxe.js?t=1406837068000',
+	'java					/js/sh309/scripts/shBrushJava.js?t=1406837068000',
+	'jfx javafx				/js/sh309/scripts/shBrushJavaFX.js?t=1406837068000',
+	'js jscript javascript	/js/sh309/scripts/shBrushJScript.js?t=1406837068000',
+	'perl pl				/js/sh309/scripts/shBrushPerl.js?t=1406837068000',
+	'php					/js/sh309/scripts/shBrushPhp.js?t=1406837068000',
+	'text plain				/js/sh309/scripts/shBrushPlain.js?t=1406837068000',
+	'py python				/js/sh309/scripts/shBrushPython.js?t=1406837068000',
+	'ruby rails ror rb		/js/sh309/scripts/shBrushRuby.js?t=1406837068000',
+	'scala					/js/sh309/scripts/shBrushScala.js?t=1406837068000',
+	'sql					/js/sh309/scripts/shBrushSql.js?t=1406837068000',
+	'vb vbnet				/js/sh309/scripts/shBrushVb.js?t=1406837068000',
+	'xml xhtml xslt html	/js/sh309/scripts/shBrushXml.js?t=1406837068000'
+);
+SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/translate"></script>
+<link type="text/css" rel="stylesheet" href="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/shThemeDefault(1).css">
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#form_comment').ajaxForm({
+    	dataType: 'json',
+		beforeSubmit: function(){
+			$('#FormSubmitButton').attr('disabled','disabled');
+			$('#form_msg').html("<span class='ajax_processing'>正在提交评论，请稍候...</span>");	
+			$('#form_msg').show();	
+		},
+        success: function(json) {
+			$('#FormSubmitButton').removeAttr('disabled');
+			    		if(json.msg){
+				$('#form_msg').html("<span class='error_msg'>"+json.msg+"</span>");
+				$('#form_msg').show();
+			}
+    		else if(json.id){
+    			ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('#txt_comment').val('');
+					$('.reply_count').html(json.reply_count);
+    			});
+				$('#form_msg').hide();
+    		}
+        }
+    });
+});
+function delete_c(aid,uid,cid) {
+	if(confirm("您确认要删除此评论？")){
+        ajax_post("/action/translate/delete_comments",{cmt:cid},function(html){
+			if(html.length>0)
+				alert(html);
+			else {
+				$("#cmt_"+aid+"_"+uid+"_"+cid).fadeOut();
+				$('.reply_count').html(parseInt($('.reply_count').html())-1);
+			}
+		});
+	}
+}
+function reply_c(aid,uid,cid) {
+	$('.inline_reply').empty();
+	var div_id = '#inline_reply_of_'+aid+'_'+uid+'_'+cid;
+	$('#inline_reply_id').val(uid+'_'+cid);
+	$(div_id).html($('#inline_reply_editor').html());
+	$('#txt_focus').focus();
+	$('#btn_close_inline_reply').click(function(){
+		$(div_id).empty();
+	});
+	$('#form_inline_comment').ajaxForm({
+    	dataType: 'json',
+    	success: function(json) {
+        	if(json.msg){
+        		alert(json.msg);
+        	}
+			else if(json.id){
+				ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('.reply_count').html(json.reply_count);
+					$(div_id).empty();
+    			});
+			}
+    	}
+	});
+}
+function vote_article(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function vote_block(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function show_other(pid,ppid) {
+	if($('#other_translate_'+pid+' .paragraph_chs').length==0) {
+    	$('#other_translate_'+pid).show();
+    	ajax_post("/translate/show_other_translate","pid="+pid+"&ppid="+ppid,function(html){
+    		$('#other_translate_'+pid).hide().html(html);
+			// 代码着色
+			$('#other_translate_'+pid+' pre').each(function(){
+				SyntaxHighlighter.highlight(null,this);
+			});
+			$('#other_translate_'+pid).slideDown();
+    	});
+    	}
+	else {
+		$('#other_translate_'+pid).slideToggle();
+	}
+	$('#btn_show_other_'+pid).toggleClass('closeOthers');
+	$('#translate_'+pid).toggleClass('bd10');
+}
+function edit_tags(id) {
+    popup("/translate/edit_tags?article="+id);
+}
+</script><div class="clear"></div></div>
+	<div id="OSC_Footer" class="CenterDiv"><style>
+.oscapp {text-align:left; width:220px;}
+.oscapp span {float:left;width:140px;}
+.oscapp a {float:left;text-indent:-9999em;width:16px;margin-left:8px;}
+.oscapp a.android {background:url('/img/android.gif') no-repeat left center;}
+.oscapp a.iphone {background:url('/img/iphone.gif') no-repeat left center;}
+.oscapp a.wp7 {background:url('/img/wp7.gif') no-repeat left center;}
+</style>
+<table width="100%"><tbody><tr>
+<td align="left">© 开源中国(OSChina.NET) | <a href="http://www.oschina.net/home/aboutosc">关于我们</a> | <a href="mailto:oschina.net@gmail.com">广告联系</a> | <a href="http://weibo.com/oschina2010" target="_blank">@新浪微博</a> | <a href="http://m.oschina.net/">开源中国手机版</a> | <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#737573;text-decoration:none;">粤ICP备12009483号-3</a></td>
+<td class="oscapp">
+	<span>开源中国手机客户端：</span>
+	<a href="http://www.oschina.net/app" class="android" title="Android客户端">Android</a>
+	<a href="http://www.oschina.net/app" class="iphone" title="iPhone 客户端">iPhone</a>
+	<a href="http://www.oschina.net/app" class="wp7" title="Windows Phone 客户端">WP7</a>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="left">开源中国社区(OSChina.net)是工信部 <a href="http://www.copu.org.cn/" target="_blank">开源软件推进联盟</a> 指定的官方社区</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">
+<!--
+if (top.location != self.location)top.location=self.location;
+//-->
+</script></div>
+</div>
+
+
+<!-- Generated by OsChina.NET (init:0[ms],page:45[ms],ip:180.169.59.253) --><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="topcontrol" title="回到顶部" style="position: fixed; bottom: 120px; right: 100px; cursor: pointer; display: block;"><img src="./两年内从零到每月十亿 PV 的发展来谈 Pinterest 的架构设计 - 技术翻译 - 开源中国社区_files/gotop.gif" style="width:31px; height:31px;"></div></body></html>

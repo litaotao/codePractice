@@ -1,0 +1,557 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0048)http://developer.51cto.com/art/201412/458789.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK"><script src="http://v1.ujian.cc/code/ujian.js?uid=1609262" charset="utf-8" id="uyan_script"></script><script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/style5.js" charset="utf-8" id="uyan_script"></script><script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/saved_resource" charset="utf-8" id="uyan_script"></script>
+
+<meta http-equiv="x-ua-compatible" content="ie=7">
+<title>专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM</title>
+<meta name="description" content="众所周知，目前大数据时代数据分析处理最常提到的是两个框架，一是Hadoop，另一个无疑便是Spark，Spark基于map reduce算法实现的分布式计算，虽然拥有着Hadoop的优点，但是关于这个架构网上的解释并不全面，此次我们邀请到了Spark亚太研究院王家林老师，来为我们从技术的角度去探索一下Spark。">
+<meta name="keywords" content="Spark">
+<!--<base target="_blank">--><base href="." target="_blank">
+<link href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/grid.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/art_master_top.css">
+<link href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/css3.css" rel="stylesheet" type="text/css">
+<script language="javaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/base_art.js"></script><style type="text/css"></style>
+<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/index_1_down.js"></script>
+<style type="text/css">
+.bds_tools a{ padding:0; margin:0;}
+</style>
+<style type="text/css"></style><script charset="utf-8" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/sm.min.js" async=""></script><script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/logger.js"></script><link href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/bdsstyle.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="http://api.share.baidu.com/getnum?url=http%3A%2F%2Fdeveloper.51cto.com%2Fart%2F201412%2F458789.htm&callback=bdShare.fn._getShare&type=load&t=1418280332706"></script><style type="text/css">#uyan_cmt_box{width: 100% !important;}#uyan_star{display: none !important;}#uyan_cmty_btn{display: block !important;}#uyan_login_btn{display: block !important;}#uyan_usp{display: none !important;}.uyan_st_slog{right: 162px !important;}#uyan_ddword{display: none !important;}#uyan_info_sync{display: none !important;}</style></head>
+<body><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_renren rrw">人人网</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_douban db">豆瓣网</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_thx thx">和讯微博</a></li><li><a href="http://developer.51cto.com/art/201412/458789.htm#" class="bds_more">更多...</a></li></ul><p><a href="http://developer.51cto.com/art/201412/458789.htm#" class="goWebsite">百度分享</a></p></div></div></div>
+<!-- 导航 开始-->
+<script id="allmobilize" charset="utf-8" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://developer.51cto.com/art/201412/458789.htm#">
+<div id="home_top">    <div class="top_nav">        <div class="left" style="width:400px"><div class="logo_51cto" title="51CTO.COM - 技术成就梦想 -  中国领先的IT技术网站"></div><a href="http://www.51cto.com/">首页</a><img width="16" height="25" align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/top_bg_xian.gif" style="padding-top: 2px;"><a onmouseover="show(1,this);" onmouseout="popupClose();" href="http://www.51cto.com/col/35/" target="_blank">技术频道<img align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a><img width="16" height="25" align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/top_bg_xian.gif"><a onmouseover="show(2,this);" onmouseout="popupClose();" href="http://www.51cto.com/" target="_blank">51CTO旗下网站<img align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a><img width="16" height="25" align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/top_bg_xian.gif"><a href="http://www.51cto.com/about/map.htm" target="_blank">地图</a> <a href="http://www.51cto.com/about/rss.html" target="_blank"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/143749870.gif" style="vertical-align:middle; margin-bottom: 5px; margin-left:5px;"></a>       </div>        <div class="right">            <div class="more"><img width="27" height="16" align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/top_shequ.gif">社区：<a href="http://edu.51cto.com/" target="_blank" style="color:#CC0000">学院</a><a href="http://down.51cto.com/" target="_blank">下载</a><a href="http://bbs.51cto.com/" target="_blank">论坛</a><a href="http://blog.51cto.com/" target="_blank">博客</a><a onmouseover="show(3,this)" onmouseout="popupClose()" href="javascript:viod(0);">更多<img align="absmiddle" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a>            </div>            <span id="login_status"><div class="login" style="padding-top:8px; text-align:right;"><a href="http://edu.51cto.com/top" style="background:none"><img style="margin-top:-3px" id="dia" align="absmiddle" width="20" title="今天你领学分了吗？" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/dia.gif"></a><a href="http://home.51cto.com/?reback=http%253A%252F%252Fdeveloper.51cto.com%252Fart%252F201412%252F458789.htm" target="_self">登录</a><a href="http://ucenter.51cto.com/reg_01.php?reback=http%253A%252F%252Fdeveloper.51cto.com%252Fart%252F201412%252F458789.htm" target="_self">注册</a></div></span>                </div>    </div></div>
+<div class="subMenu1" id="s1" onmouseover="popupNoClose();" onmouseout="popupClose();">
+<ul>
+<li><a href="http://network.51cto.com/" target="_blank">网络</a></li>
+<li><a href="http://netsecurity.51cto.com/" target="_blank">安全</a></li>
+<li><a href="http://developer.51cto.com/" target="_blank">开发</a></li>
+<li><a href="http://database.51cto.com/" target="_blank">数据库</a></li>
+<li><a href="http://server.51cto.com/" target="_blank">服务器</a></li>
+<li><a href="http://os.51cto.com/" target="_blank">系统</a></li>
+<li><a href="http://virtual.51cto.com/" target="_blank">虚拟化</a></li>
+<li><a href="http://cloud.51cto.com/" target="_blank">云计算</a></li>
+<li><a href="http://developer.51cto.com/embed/" target="_blank">嵌入式</a></li>
+<li><a href="http://mobile.51cto.com/" target="_blank">移动开发</a></li>
+</ul>
+</div> 
+<div class="subMenu2" id="s2" onmouseover="popupNoClose()" onmouseout="popupClose()">
+<ul>
+<li><a href="http://www.51cto.com/" target="_blank" title="中国领先的IT技术网站">51CTO.COM</a></li>
+<li><a href="http://www.cioage.com/" target="_blank" title="中国首个专门服务于CIO的专业网站">CIOage.com</a></li>
+<li><a href="http://www.watchstor.com/" target="_blank" title="领先的中文存储网络媒体">WatchStor.com</a></li>
+<li><a href="http://www.hc3i.cn/" target="_blank" title="中国首家专注于数字医疗及医疗信息化的专业网站">HC3i.cn</a></li>
+</ul>
+</div>
+<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+	$(".bann").height(265);	 
+	$(".bann").css("background-color","white");
+});
+var edunum=2;
+$(function(){
+	$("#change").click(function(){
+		$("#edu > ul").css("display","none");
+		var eduid='edu'+edunum;
+		$("#" + eduid).css("display","block");	
+		if(edunum<4){
+			edunum++;	
+		}else{
+			edunum=1;	
+		}							
+	});  
+});
+</script>
+
+<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/head_art_more1.js"></script><div class="subMenu3" id="s3" onmouseover="popupNoClose()" onmouseout="popupClose()" style="z-index:9999;position: absolute;">
+<ul>
+<li><a href="http://home.51cto.com/" target="_blank">家园</a></li>
+<li><a href="http://edu.51cto.com/" target="_blank">学院</a></li>
+<li><a href="http://blog.51cto.com/" target="_blank">博客</a></li>
+<li><a href="http://bbs.51cto.com/" target="_blank">论坛</a></li>
+<li><a href="http://down.51cto.com/" target="_blank">下载</a></li>
+<li><a href="http://selftest.51cto.com/" target="_blank">自测</a></li>
+<li><a href="http://doctor.51cto.com/" target="_blank">门诊</a></li>
+<li><a href="http://blog.51cto.com/newsletter/" target="_blank">周刊</a></li>
+<li><a href="http://book.51cto.com/" target="_blank">读书</a></li>
+<li><a href="http://g.51cto.com/" target="_blank">技术圈</a></li>
+</ul>
+</div>
+
+<!-- 登陆信息 -->
+<!-- 导航 结束--> 
+ <div class="g_39 mb10">
+	<div id="tonglanad" class="fl"><script language="JavaScript" src="http://www.51cto.com/ad/art/tonglan/ad.js"></script></div>
+	<div id="list4" class="fr">
+		<ul>
+			<li id="wordlinkad1"></li>
+			<li id="wordlinkad2"></li>
+			<li id="wordlinkad3"></li>
+			<li id="wordlinkad4"></li>
+		</ul>
+	</div>
+<br class="dle">
+</div>
+
+<div class="g_39 menu">
+<div class="subNav_logo"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/kaifa_logo.gif"></div>
+<div class="subNav_l"><a href="http://developer.51cto.com/">首页</a> | <a href="http://developer.51cto.com/java/">Java</a> | <a href="http://developer.51cto.com/net/">.NET</a> | <a href="http://developer.51cto.com/web/">Web</a> | <a href="http://developer.51cto.com/col/1315/">XML</a> | <a href="http://developer.51cto.com/col/585/">语言工具</a> | <a href="http://developer.51cto.com/col/1312/">测试</a> | <a href="http://developer.51cto.com/col/1314/" target="_blank">游戏</a> | <a href="http://developer.51cto.com/col/583/" target="_blank">移动</a> | <a href="http://developer.51cto.com/col/1308/">架构</a> | <a href="http://developer.51cto.com/col/586/">项目管理</a> | <a href="http://publish.51cto.com/list/460/">全部文章</a></div>
+  
+<div class="search fr">
+<dl>
+<form name="searchform" action="http://www.51cto.com/php/search.php" target="_blank" method="post" style="margin:0px; padding:0px;">
+<dt class="fl"><input name="keyword" type="text" class="searchInput f14 input" value="请输入关键字" onfocus="doempty(this, &#39;请输入关键字&#39;);" onblur="doempty(this, &#39;请输入关键字&#39;);"></dt>
+<dd class="fl"><input type="image" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/search.gif"></dd></form>
+</dl>
+</div>
+<br class="dle">
+</div>
+<div class="g_39 b3-s-4273B3 rel">
+<!--width : 26*25 - 15 = 635px-->
+<div class="g_26 fl m_l">
+<div class="brief bgF8F8F8">
+<p class="crumb ">您所在的位置：<a href="http://developer.51cto.com/">开发</a> &gt; <a href="http://developer.51cto.com/col/585/">语言&amp;工具</a> &gt;  <b>专访Spark亚太研究院王家林：从技术的角度探索Spark</b> </p>
+<h1>专访Spark亚太研究院王家林：从技术的角度探索Spark</h1>
+<div class="msg">
+<div>2014-12-04 10:20  记者：林师授 整理：张伟  51CTO  字号：<span class="f14-b"><a href="javascript:setfont(12);" target="_self">T</a></span> | <span class="f16-b"><a href="javascript:setfont(16);" target="_self">T</a></span></div>
+<div class="artHd" id="books" style="padding:5px 25px;display:none;"><script language="JavaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/getBookData.php"></script></div>
+<div class="fav"><a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！" target="_self"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/Fav.gif" alt="一键收藏，随时查看，分享好友！" border="0"></a></div>
+</div>
+<div class="brieftext">
+<p class="f14 green">众所周知，目前大数据时代数据分析处理最常提到的是两个框架，一是Hadoop，另一个无疑便是Spark，Spark基于map reduce算法实现的分布式计算，虽然拥有着Hadoop的优点，但是关于这个架构网上的解释并不全面，此次我们邀请到了Spark亚太研究院王家林老师，来为我们从技术的角度去探索一下Spark。</p>
+<p class="ad">AD：<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/keywords_ad_new.js"></script><a href="http://edu.51cto.com/course/course_id-1189.html" target="_blank" style="text-decoration: none;color:red">2014WOT全球软件技术峰会北京站 课程视频发布</a>
+</p>
+</div>
+<!--<div style="border-left:5px solid #4065aa;height:25px; line-height:25px;margin-top:10px;background:#eef7ff;padding-left:10px;">
+<a style="text-decoration: none;color:red" target="_blank" href="http://wot.51cto.com/2014shenzhen/">11月21日-22日 与WOT技术大会相约深圳 现在抢票</a>
+</div>--> 
+
+
+
+</div>
+<div class="tag bgF8F8F8" id="indexlist" style="display:none;">
+<ul id="indexliststr">
+</ul>
+<br class="dle">
+</div>
+<div class="content bgF8F8F8 f14">
+<div id="content">
+<p></p><p>众所周知，目前大数据时代数据分析处理最常提到的是两个框架，一是Hadoop，另一个无疑便是Spark，Spark基于map&nbsp;reduce算法实现的分布式计算，虽然拥有着Hadoop的优点，但是关于这个架构网上的解释并不全面，此次我们邀请到了Spark亚太研究院王家林老师，来为我们从技术的角度去探索一下Spark。</p>
+<p style="text-align: center"><a target="_blank" href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1R_zpew8L1LAADAXAIzToY433.jpg"><img class="fit-image" onload="javascript:if(this.width&gt;498)this.width=498;" onmousewheel="javascript:return big(this)" style="height: 362px; width: 262px" border="0" alt="" width="400" height="600" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1R_zpew8L1LAADAXAIzToY433.jpg"></a></p>
+<p><strong>第二代大数据技术Spark</strong><o:p></o:p><strong>&nbsp;</strong></p>
+<p>首先先来抛开这两种技术，谈一下大数据。大数据是数据的一种，数据处理到达一定复杂程度，或者数据规模到达一定程度的时候便会称之为大数据。在采访中王家林讲到：“其实关于大数据的处理本身包含两部分，一部分是数据的存储，另外一部分就是数据计算本身。目前而言谈大数据大家最常知道的技术是Hadoop，做得比较资深会再使用Spark。那么这两项技术到底各自有什么样的历史地位或者说各自有什么价值呢？”</p>
+<p>Hadoop准确地说是称为第一代大数据技术，而Spark可以把它称之为第二代大数据技术。Hadoop开启了人们大规模使用大数据的这样一个时代，但由于Hadoop本身架构的一些自己已有的机制，例如说它每次操作都要经过读写磁盘，这极大地限制了它的速度和计算模型。</p>
+<p>而Spark由于具有了Hadoop这样第一代技术的参考和借鉴，以及它自己充满了学术基因。了解Spark的朋友都知道，它是来自于APM实验室的，它一开始就专注于数据的计算，而且是专注于任意规模、任意类型的数据计算，用它自己的口号就是一站式一体化多元化的大数据处理。所以说Spark的时候，主要是聚焦在大数据处理，而这种处理主要有三方面。</p>
+<p>第一个方面是实时流处理，第二个方面就是批处理，第三个方面就是交互式的处理。如果说以前用Hadoop的话，大家都知道实时处理的话，大家选的比较多的会选择Storme。批处理，例如说Hive，或者用比较复杂的Mahout进行这种数据深度挖掘，如果是交互式的话，其实大家现在用的比较多的也是Hive，当然现在一个比较流行的是impala，但如果说我们基于Hadoop就需要部署多套系统，需要多个团队去维护。其实这个不是最重要的，最重要的是它带来的效果是非常慢的，而且投入成本也非常大。</p>
+<p>而若是使用Spark，只需要一个技术队就会解决这所有的问题，解决实时流处理、批处理、交互式，还是QL，或者交互式查询。所以从这个角度来看，Spark天生就是为计算而生的，而大家都知道在这个大数据领域计算肯定是最有价值的。计算可以提供商业支持，可以提供业务支持。</p>
+<p>在51CTO学院里面，也有关于Spark内核解析绝密视频《瞬间成功提升Scala功力》。在采访中王家林指出：“原先设计这个视频的时候，是从Scala学习者的角度去讲，很多使用Scala的朋友，他学了各种语法，学了Scala的各种特性之后，需要向Spark这样一个目前Scala运用最成功的框架的综合性的一种演练，要通过这样一个框架和平台去看到底最好的使用Scala的一种状态是什么样，以及如何把这些知识综合起来。”</p>
+<p><strong>该用Scala开发，还是JAVA？</strong></p>
+<p>在Spark上不同语言的开发存在着很多疑问，如到底该用Scala开发，还是该用JAVA开发？在采访中王家林分享道：“从技术本质的角度来谈，毫无疑问我们要选择Scala，为什么呢？第一点，Spark本身框架就是用Scala编写的。第二点，既然框架是Scala编写的，可以得出一个直接的结论就是在开发时候的API的支持，Scala语言的支持肯定是最强的，也是最丰富的。第三点，因为我们要进行大数据处理，这些处理往往需要复杂的算法，这就直接数量到一个非常重要的问题，就是语言的表现力的问题，当然这个问题要牵扯到JAVA和Scala这两门语言的不同。”</p>
+<p><o:p></o:p>Scala是一门非常富有表现力的语言的很重要的原因就是它全面支持函数式变成，Scala把面向对象和函数式变成这两种语言完美地整合在一个语言体系中。而JAVA是为了组织大型项目和组织不同的人分工协作完成一个项目而生的，它本身并不擅长数据计算，这也直接导致了它不擅长大数据计算。</p>
+<p><o:p></o:p>所以说Scala和JAVA确实是两门紧密相关的语言，因为它们两个都基于VM虚拟机，而且Scala可以直接调动JAVA，JAVA也可以直接调动Scala，但是如果进行数据计算的这个角度来看的话，毫无疑问的首选肯定是Scala。Spark之所以很强大的另外一点就是Spark非常好地支持Hadoop，而Hadoop是用JAVA写的，所以它可以直接调动Hadoop的几乎所有功能，包括它的NoSQL，底层的HDFS文件系统，以及自己的一些功能。</p>
+<p><strong>Spark的缺点在哪里？</strong><o:p></o:p><strong><br>
+</strong></p>
+<p>众所周知Spark确实擅长内存计算，不仅如此，它也擅长基于磁盘的计算，也就是Hadoop所擅长的领域。Spark的官方团队和亚马逊进行了一个业界排序的几种测试，测试不同软件或者框架的性能的。在Spark没有基于内存计算优势的情况下，它只用了Hadoop十分之一的硬件，速度却是Hadoop的三倍。也就是说大家一直对Spark都有一个误解，就是认为Spark所有数据的计算都必须在内存中，但事实上不是这样的，Spark可以在任意规模数据大小，这种任意规模数据大小当然包括当数据远远大于内存容量的时候，这个测试显然是证明了Spark在这种情况下不适用自己内存计算迭代优势的情况下，也是目前的最佳选择。那么我们来看一下Spark的缺点在哪？相信是很多用户所关心的地方。<o:p></o:p></p>
+<p>在采访中得知：“Spark的第一个弱点是不擅长细粒度的异步更新的计算模式，就是比较细的粒度的异步更新。第二点，其实很多人认为Spark耗内存这是一个缺点，实际上我们从整个计算模型的角度去考虑，整个计算模型使用的要么是CPU，要么是内存，要么是网络IO或者磁盘IO，计算本身很多时候一般都主要发生在内存中。所以如果说计算能够耗内存这是一件好事情，因为把数据放在内存中，它是计算的主战场，它可以更好地发挥CPU或者说磁盘或者说网络提供的一种机制。另一方面，现在随着硬件不断地推进，其实耗内存这件事情不是一个问题，就相当于以前说某某软件很大，或者某某数据库比较耗磁盘一样，磁盘它不是问题，相信在未来两三年的时间内，随着大数据的演进以及一些厂商的支持，内存也不是问题。”<o:p></o:p></p>
+<p><strong>Spark在实际生产环境下的应用</strong><o:p></o:p></p>
+<p>正如上面所说的优点，Spark能处理任意数据规模大小的数据等，那么在实际生产环境下的应用又是如何呢？这也是所有要使用大数据的人们共同关注的一个问题。在采访中得知：“Spark会是一个大数据通用的计算平台，Spark能做什么，其实也基本上标志着大数据能做什么，当然这个可能不是完全地科学。大家最常见的是通过SQL对大规模的数据，例如产生的用户行为数据，如用户访问我们的产品，假设我们是做电子商务的，用户在我们网站上操作行为记录，都可以以日志的方式放进我们的Spark大数据系统，然后通过SQL对这个数据进行多维度的分析。像现在很多电商这个用得非常广泛，这是第一方面。”<o:p></o:p></p>
+<p>第二方面就是流处理。例如用户点击流进来，是否可以根据这个点击流进一步进行分析？举个简单的例子，假设说在进行一笔银行交易，肯定会有用户的操作终端，例如转账之类的业务。需要实时地判断这个转账是否合法，或者说更好地判断这个是否合法，用户的操作直接流进Spark集群的内存中，此时可以基于这个内存流进来的数据，跟Spark&nbsp;SQL或者说机器学习，或者图计算进行一种深度的结合，这就会极大地降低操作的风险，例如这个操作是否合法等等。<o:p></o:p></p>
+<p>第三个方面就是我们所说的深度的图计算，就像现在社交网络Facebook、Twitter、当然也包括新浪微博等等，这是社交网络。还有电子商务，像京东、淘宝等等。它们背后其实都在大规模地使用图计算或者类似图计算，而Spark就提供了这样一种技术。当然这个肯定是一项至关重要的技术，也是大数据中技术的一个可信点。<o:p></o:p></p>
+<p>最后一点就是机器学习，这是一个永恒的主题。比较好的消息就是Spark从1.0开始持续在机器学习库方面投入了巨大的精力。第二个便是Spark官方团队在结合业界机器学习的一些比较知名的专家或者教授学者，把已有的机器学习的一些算法都融入Spark平台中，在Spark平台中就可以直接使用这些机器学习算法。现在协同过滤算法、聚类、线性迭代等等这些大家都可以去使用的，就是它现在已经相对比较成熟了，但是它又在高速发展。<o:p></o:p></p>
+<p>最后必须额外提出来一点Spark不可取代的优势的极为重要的核心就是这些功能可以相互协作，例如SQL提取出的数据可以直接交给图计算或者机器学习，实时流流进来的数据可以边流进去数据边进行机器学习的算法的模型训练，这是任何其他平台都不具有的优势。如果说你使用其他平台要完成这个功能的话，你就需要部署多套技术框架。这个也是Scala必成大器的一个非常重要的核心点。<o:p></o:p></p>
+<p><strong>Spark在国内仍属起步阶段</strong><o:p></o:p><strong><br>
+</strong></p>
+<p>目前在国内现在已经有很多企业在使用Spark了，比较知名的大家就知道淘宝、腾讯、百度、京东、华为、优酷、土豆、大众点评等等这些公司都在用，大家从网络上应该可以搜寻到很多信息。当然还有其他一些公司处在技术选型的试验阶段，就是以前的一些技术现在在新的Spark平台上在逐步地过渡的阶段。<o:p></o:p></p>
+<p>在国内总体情况来看，Spark现在基本还是处于起步阶段，很多人都是处于学习摸索阶段，首先会考虑这个技术的独特价值是什么，第二点就是怎么去学习，第三点就是在生产环境中怎么去使用。<o:p></o:p><o:p></o:p></p>
+<div align="right">【责任编辑：<a class="ln" href="mailto:zhangwei@51cto.com">张伟</a> TEL：（010）68476606】</div><br> 
+<p class="blank10"></p> 
+ 
+ 
+
+
+<div class="f12"> <span class="fl">原文：<a href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM.htm" class="blue"><b>专访Spark亚太研究院王家林：从技术的角度探索Spark</b></a></span> <span class="fr"><a href="http://developer.51cto.com/">返回开发首页</a></span> </div>
+<p class="blank1"></p>
+</div>
+<hr style="border-top: #555555 1px solid; height: 1px; border-right: medium none; border-bottom: medium none; border-left: medium none">
+<div style="width: 600px; background: #ffffff"><img border="0" alt="" width="350" height="140" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1R8Lnyw8xIAAABdLowZTVg940.jpg"></div>
+<hr style="border-top: #555555 1px solid; height: 1px; border-right: medium none; border-bottom: medium none; border-left: medium none">
+<iframe height="239" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/bulkfollow.htm" frameborder="0" width="600" scrolling="no"></iframe>
+<div class="tips">
+<div style="float:left;">
+<span style="float:left; margin-top:4px;">分享到：</span>
+<!-- Baidu Button BEGIN -->
+    <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare" style="margin-right:5px; float:left;">
+        <a class="bds_qzone" title="分享到QQ空间" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+        <a class="bds_tsina" title="分享到新浪微博" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+        <a class="bds_tqq" title="分享到腾讯微博" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+        <a class="bds_renren" title="分享到人人网" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+        <a class="bds_t163" title="分享到网易微博" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+        <span class="bds_more"></span>
+		<a class="shareCount" href="http://developer.51cto.com/art/201412/458789.htm#"></a>
+
+</div>
+<!--<div class="fl"> 
+    </div>
+--><script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=585532" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+	var bds_config = {'snsKey':{'tsina':'2378297317'}};
+	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+</script>
+<!-- Baidu Button END -->
+
+
+
+</div><div class="fr blue"><a href="javascript:AddFavorite(document.location.href,document.title);" target="_self">收藏</a>|<a href="javascript:window.print();" target="_self">打印</a>|<a id="msnqqcopy" title="分享本资源给好友" target="_self">复制</a></div>
+</div>
+</div>
+<!--内容 end-->
+
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg pl15">关于<a href="http://www.51cto.com/php/search.php?keyword=Spark" target="_blank" class="underline">Spark</a>的更多文章</div>
+<div class="reltag">
+<ul class="fl list02">
+  <li><a href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM.htm" title="专访Spark亚太研究院王家林：从技术的角度探索Spark">专访Spark亚太研究院王家林：从技术的角度</a></li><li><a href="http://developer.51cto.com/art/200509/3896.htm" title="Python 编写的Spark解析器">Python 编写的Spark解析器</a></li>
+</ul>
+<div class="fr">
+<div class="h5 f12"><a href="http://database.51cto.com/art/201404/435698.htm" title="Spark部署与实践"><b>Spark部署与实践</b></a></div>
+<a href="http://database.51cto.com/art/201404/435698.htm" title="Spark部署与实践"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1NOMU3ScB6hAAAbDwuGUTY713.jpg" alt="Spark部署与实践" width="100" height="80" border="0"></a>
+<p class="c666">Apache Spark是立足于内存计算的一种快速数据分析方案。其性能已<a class="blue" href="http://database.51cto.com/art/201404/435698.htm" title="Spark部署与实践">[详细]</a></p>
+</div>
+</div>
+<!--reltag end-->
+</div>
+<p class="blank10"></p>
+<div class="uyan">
+<div id="uyan_frame"><div id="uyan_cmt_box" style="width: 100%; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; position: relative; float: left;"><div id="uyan_top" style="height: 30px; font-size: 12px; font-weight: bold;"><div id="uyan_like" style="float: left; padding-right: 13px; padding-top: 2px; width: 88px;"><a id="uyan_vu" onclick="UYAN.voteUD(&#39;uu&#39;);" style="background: url(&#39;http://v2.uyan.cc/code/images/like.png&#39;) no-repeat scroll 19px 5px #999; border-radius: 3px 3px 3px 3px; color: #F2F2F2; cursor: pointer; float: left; font-weight: normal; height: 16px; padding: 3px; width: 48px;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/upDig.png" style="float: left; padding: 2px 5px 0 2px; border: 0 none;"></a><a id="uyan_vd" onclick="UYAN.voteUD(&#39;du&#39;);" style="background-color: #999; border-radius: 3px 3px 3px 3px; color: #F2F2F2; cursor: pointer; float: left; font-weight: normal; height: 16px; margin-left: 5px; padding: 3px; width: 16px;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/downDig.png" style="float: left; padding: 3px 0 0 2px;"></a><div style="clear: both;"></div></div><div id="uyan_count" style="font-size: 12px; color: #888888; float: left; font-weight: normal; padding: 5px 5px 0 0;">共有<span id="uyan_vun">0</span>人喜欢&nbsp;&nbsp;共<span id="uyan_acn">0</span>条评论</div><a id="uyan_login_btn" onclick="UYAN.login();" style="background-color: #999; border-radius: 3px 3px 3px 3px; color: #EEEEEE; cursor: pointer; float: right; font-size: 13px; font-weight: bold; height: 20px; margin-left: 5px; margin-top: 2px; height: 16px; line-height: 17px; padding: 3px 15px; text-shadow: 0 1px 0 #646464;">登录</a><a id="uyan_cmty_btn" onclick="UYAN.cmty();" style="background-color: #999; border-radius: 3px 3px 3px 3px; color: #EEEEEE; cursor: pointer; float: right; font-size: 13px; font-weight: bold; height: 20px; margin-left: 5px; margin-top: 2px; height: 16px; line-height: 17px; padding: 3px 15px; text-shadow: 0 1px 0 #646464;">社区</a><div style="clear: both;"></div></div><div id="uyan_usp" style="margin-bottom: 10px;"><div style="font-size: 13px; height: 26px; overflow: hidden;"><a id="uyan_uname_txt_t" style="color: #5874af; cursor: pointer; display: block; float: left; font-weight: bold; margin: 6px 0 0 0; text-decoration: none; font-size: 16px; line-height: 17px;" href="javascript:;"></a><div style="background: url(&#39;http://v2.uyan.cc/code/images/medalIcon.png&#39;) no-repeat scroll 0 2px transparent; float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 15px; line-height: 18px;"><div id="uyan_utname_edit" style="display: none;"><div style="color: #333333; float: left; padding-right: 4px;">头衔:</div><input id="uyan_utname" type="text" value="" style="color: #777777; float: left; height: 12px; padding: 1px 3px; width: 100px;"><a onclick="UYAN.setUtname();" style="background-color: #8BAD50; border: 1px solid #799E3C; border-radius: 3px 3px 3px 3px; color: #FFFFFF; cursor: pointer; float: left; margin-left: 3px; padding: 0 10px; text-align: center; text-decoration: none;">确定</a><a onclick="UYAN.changeUtname();" style="color: #AAAAAA; cursor: pointer; float: left; margin-left: 6px;">取消</a></div><div id="uyan_utname_txt"><div id="uyan_utname_show" style="color: #444444; float: left; padding-right: 5px;"></div><a onclick="UYAN.changeUtname();" style="color: #5874af; cursor: pointer; float: left; text-decoration: none;">编辑头衔</a></div></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/emailIcon.png&#39;) no-repeat scroll 0 0 transparent; float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 19px; line-height: 18px;"><div id="uyan_femail_edit" style="display: none;"><div style="color: #333333; float: left; padding-right: 4px;">邮箱:</div><input id="uyan_femail" type="text" value="" style="color: #777777; float: left; height: 12px; padding: 1px 3px; width: 100px;"><a onclick="UYAN.setFemail();" style="background-color: #8BAD50; border: 1px solid #799E3C; border-radius: 3px 3px 3px 3px; color: #FFFFFF; cursor: pointer; float: left; margin-left: 3px; padding: 0 10px; text-align: center; text-decoration: none;">确定</a><a onclick="UYAN.changeFemail();" style="color: #AAAAAA; cursor: pointer; float: left; margin-left: 6px;">取消</a></div><div id="uyan_femail_txt"><div id="uyan_femail_show" style="color: #444444; float: left; padding-right: 5px;"></div><a onclick="UYAN.changeFemail();" style="color: #5874af; cursor: pointer; float: left; text-decoration: none;">跟踪回复</a></div></div><div style="clear: both;"></div></div><div style="padding: 4px 0;"><div id="uyan_uacn" style="font-size: 12px; float: left; padding: 0 10px 0 0;">0条评论</div><div id="uyan_uvon" style="font-size: 12px; float: left; padding: 0 10px 0 0;">0次被喜欢</div><div style="clear: both;"></div></div><div style="clear: both;"></div></div><div id="uyan_star" style="height: 22px; padding: 0 0 0 60px; overflow: hidden;"><div style="float: left;"><a id="uyan_vs_1" onclick="UYAN.voteStar(1);" onmouseover="UYAN.cagStar(1);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_2" onclick="UYAN.voteStar(2);" onmouseover="UYAN.cagStar(2);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_3" onclick="UYAN.voteStar(3);" onmouseover="UYAN.cagStar(3);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_4" onclick="UYAN.voteStar(4);" onmouseover="UYAN.cagStar(4);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_5" onclick="UYAN.voteStar(5);" onmouseover="UYAN.cagStar(5);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><div style="clear: both;"></div></div></div><div id="uyan_loginot" style="padding: 0 0 3px 60px;"><div style="clear: both;"></div></div><div style="height: 78px; overflow: hidden; padding: 0 0 20px 0; _padding: 0;"><div style="float: left; border-radius: 6px 6px 6px 6px; width: 50px; height: 50px; overflow: hidden; margin-right: 10px;"><img id="uyan_uface" style="width: 50px; height: 50px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/duface.png"></div><div style="padding: 0 0 0 60px; overflow: visible;"><div onclick="UYAN.hidIntro(this.firstChild);" style="height: 60px; background: url(&#39;http://v2.uyan.cc/code/images/textareabg.png&#39;) repeat-x scroll 0 0 #FFFFFF; border: 1px solid #d7d7d7; border-radius: 4px 4px 4px 4px; padding: 7px; position: relative; overflow: hidden; cursor: text;"><textarea id="uyan_comment" onkeyup="UYAN.checkTxt(this, 140);" onkeydown="UYAN.checkTxt(this, 140);" onfocus="UYAN.hidIntro(this);" onblur="UYAN.shoIntro(this);" style="background: none repeat scroll 0 0 #FFFFFF; padding: 0; box-shadow: 0 0; color: #BDBBBB; border: 0; z-index: 90; overflow: hidden; float: left; font-size: 13px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; resize: none; height: 60px; display: block; outline: none; word-wrap: break-word; margin: 0;">请输入你的评论</textarea><pre style="width: 100%; font-size: 13px; left: 0; line-height: 18px; position: absolute; top: 0; visibility: hidden; word-wrap: break-word; white-space: pre-wrap;" id="uyan_cmt_cnt"></pre></div><div style="clear: both;"></div></div><div id="uyan_smile" onclick="UYAN.shoSmile(this);" style="display: none; background: url(&#39;http://v2.uyan.cc/code/images/emotion.png&#39;) no-repeat scroll 6px 2px #FFFFFF; color: #3A82FF; cursor: pointer; font-size: 11px; height: 17px; left: 70px; position: relative; top: -2px; width: 60px; z-index: 5500; border: 1px solid #d7d7d7; border-top: none; border-radius: 2px; margin: 0; line-height: 20px; padding-bottom: 2px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表情</div></div><div id="uyan_ssmile" style="margin-left: 60px; margin-top: -20px; _margin-top: 0; position: absolute; z-index: 9999; display: none;"><div style="border: 1px solid #989999; border-radius: 5px; width: 322px; height: 160px; background: #fff; font-size: 12px; padding: 6px;"><ul style="margin: 5px 0 0 0; padding: 0; height: 24px;"><li id="uyan_ssmile_df" onclick="UYAN.shoSmile(this, &#39;df&#39;);" style="float: left; list-style: none; line-height: 22px; background: url(&#39;http://v2.uyan.cc/code/images/smileb.gif&#39;) no-repeat scroll 0 center transparent; color: #fff; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">默认表情</li><li id="uyan_ssmile_al" onclick="UYAN.shoSmile(this, &#39;al&#39;);" style="float: left; list-style: none; line-height: 22px; background: none repeat scroll 0 center transparent; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">阿狸</li></ul><ul id="uyan_ssmile_list" style="margin: 0; padding: 0; width: 310px; border-top: 1px solid #d3e4f0; border-left: 1px solid #d3e4f0; margin: 5px 0 0 5px;"></ul></div></div><div style="color: #D2D2D2; height: 20px; font-size: 13px; position: absolute; z-index: 100; margin-right: 10px; margin-top: -42px; right: 0;"><span id="uyan_tts">140</span></div><div id="uyan_stat_btn" style="position: relative; height: 40px; overflow: hidden; margin-top: -20px; _margin-top: 0;"><a id="uyan_cmt_btn" onmouseover="UYAN.cagBtn(&#39;on&#39;, this);" onmouseout="UYAN.cagBtn(&#39;out&#39;, this);" style="background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x scroll 0 0 transparent; border: 1px solid #d0cfcf; border-radius: 5px 5px 5px 5px; color: #666; cursor: pointer; float: right; font-size: 13px; font-weight: bold; height: 24px; line-height: 21px; margin: 4px 0 0; padding: 3px 25px 1px; text-align: center; text-shadow: 0 1px 0 #FFFFFF;" onclick="UYAN.addCmt(this);">发&nbsp;&nbsp;布</a><div id="uyan_ottype" style="float: right; padding: 11px 15px 0 3px;"><div style="color: #AAAAAA; float: right; font-size: 12px; padding-left: 5px;"><span id="uyan_vis" style="float: right; line-height: 18px;">&nbsp;&nbsp;或<span style="text-decoration: underline; cursor: pointer;" onclick="UYAN.login();">游客留言</span></span><span onmouseover="UYAN.show(&#39;uyan_slog&#39;);" onmouseout="UYAN.hide(&#39;uyan_slog&#39;);" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/arrow.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginRenren();" title="使用人人账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/renren.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginTQq();" title="使用腾讯微博账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tqq.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginQq();" title="使用QQ账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/qq.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginTSina();" title="使用新浪微博账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsina.png" style="margin: 1px 2px 0;"></span></div><div style="clear: both;"></div></div><div style="clear: both;"></div></div><div id="uyan_slog" class="uyan_st_slog" onmouseover="UYAN.show(this);" onmouseout="UYAN.hide(this);" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; position: absolute; z-index: 90000; padding: 1px 3px; display: none; width: 20px;"><div onclick="UYAN.loginKaixin001();" title="kaixin001" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/kaixin001.png"></div><div onclick="UYAN.loginTSohu();" title="sohu" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsohu.png"></div><div onclick="UYAN.loginT163();" title="163" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/t163.png"></div></div><div id="uyan_sort" style="color: #424242; font-size: 12px;"><div style="height: 28px; overflow: hidden; float: left;"><a id="uyan_sort_name" onclick="UYAN.cmtSort();" style="background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat scroll right 7px transparent; color: #424242; cursor: pointer; display: block; float: left; font-size: 12px; padding-right: 15px;">按时间排序</a></div><div style="clear: both;"></div></div><div id="uyan_sort_box" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; left: 15px; position: absolute; width: 115px; z-index: 90000; display: none;"><div style="color: #9797C4; font-size: 12px; font-weight: normal; padding-bottom: 2px; padding-left: 21px; padding-top: 4px; height: 16px;">排序方式:</div><a id="uyan_sort_time" onclick="UYAN.cmtSort(0);" style="color: rgb(28, 28, 28); cursor: pointer; display: block; font-size: 12px; padding-bottom: 2px; padding-left: 21px; padding-top: 2px; height: 16px; font-weight: bold; background: url(http://v2.uyan.cc/code/images/currentSort.png) 8px 8px no-repeat scroll transparent;">按时间排序</a><a id="uyan_sort_hot" onclick="UYAN.cmtSort(1);" style="color: #1C1C1C; cursor: pointer; display: block; font-size: 12px; padding-bottom: 2px; padding-left: 21px; padding-top: 2px; height: 16px;">按热度排序</a></div><div id="uyan_cmt_list"><div id="uyan_cmt_list_warn" style="margin-top: 10px; padding-top: 10px; font-size: 12px; color: #303030; text-align: center;">还没有评论内容</div></div><div class="ujian-uyan"></div><div style="float: right; font-size: 12px; padding: 20px 8px 10px 0;">    <a style="color: #aaaaaa; text-decoration: none;" target="_blank" title="社会化评论是什么？" href="http://www.uyan.cc/">友言[?]</a>    </div>    <div style="clear: both;"></div></div><div id="uyan_rpy" style="display: none; padding-left: 60px; padding-top: 10px;"><div style="height: 78px; overflow: hidden; padding: 0 0 20px 0; _padding: 0;"><div style="float: left; border-radius: 6px 6px 6px 6px; width: 38px; height: 38px; overflow: hidden; margin-right: 10px;"><img id="uyan_uface_r" style="width: 38px; height: 38px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/duface.png"></div><div style="padding: 0 0 0 48px; overflow: visible;"><div onclick="UYAN.hidIntro(this.firstChild, uyan_smile_region);" style="height: 60px; background: url(&#39;http://v2.uyan.cc/code/images/textareabg.png&#39;) repeat-x scroll 0 0 #FFFFFF; border: 1px solid #d7d7d7; border-radius: 4px 4px 4px 4px; padding: 7px; position: relative; overflow: hidden; cursor: text;"><textarea id="uyan_comment" onkeyup="UYAN.checkTxt(this, 140, uyan_tts_region);" onkeydown="UYAN.checkTxt(this, 140, uyan_tts_region);" onfocus="UYAN.hidIntro(this, uyan_smile_region);" onblur="UYAN.shoIntro(this, uyan_smile_region);" style="background: none repeat scroll 0 0 #FFFFFF; padding: 0; box-shadow: 0 0; color: #BDBBBB; border: 0; z-index: 90; overflow: hidden; float: left; font-size: 13px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; resize: none; height: 60px; display: block; outline: none; word-wrap: break-word; margin: 0;">请输入你的评论</textarea><pre style="width: 100%; font-size: 13px; left: 0; line-height: 18px; position: absolute; top: 0; visibility: hidden; word-wrap: break-word; white-space: pre-wrap;" id="uyan_cmt_cnt"></pre></div><div style="clear: both;"></div></div><div id="uyan_smile" onclick="UYAN.shoSmile(this, &#39;&#39;, uyan_smile_region);" style="display: none; background: url(&#39;http://v2.uyan.cc/code/images/emotion.png&#39;) no-repeat scroll 6px 2px #FFFFFF; color: #3A82FF; cursor: pointer; font-size: 11px; height: 17px; left: 58px; position: relative; top: -2px; width: 60px; z-index: 5500; border: 1px solid #d7d7d7; border-top: none; border-radius: 2px; margin: 0; line-height: 20px; padding-bottom: 2px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;表情</div></div><div id="uyan_ssmile" style="margin-left: 48px; margin-top: -20px; _margin-top: 0; position: absolute; z-index: 9999; display: none;"><div style="border: 1px solid #989999; border-radius: 5px; width: 322px; height: 160px; background: #fff; font-size: 12px; padding: 6px;"><ul style="margin: 5px 0 0 0; padding: 0; height: 24px;"><li id="uyan_ssmile_df" onclick="UYAN.shoSmile(this, &#39;df&#39;, uyan_smile_region);" style="float: left; list-style: none; line-height: 22px; background: url(&#39;http://v2.uyan.cc/code/images/smileb.gif&#39;) no-repeat scroll 0 center transparent; color: #fff; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">默认表情</li><li id="uyan_ssmile_al" onclick="UYAN.shoSmile(this, &#39;al&#39;, uyan_smile_region);" style="float: left; list-style: none; line-height: 22px; background: none repeat scroll 0 center transparent; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">阿狸</li></ul><ul id="uyan_ssmile_list" style="margin: 0; padding: 0; width: 310px; border-top: 1px solid #d3e4f0; border-left: 1px solid #d3e4f0; margin: 5px 0 0 5px;"></ul></div></div><div style="color: #D2D2D2; height: 20px; font-size: 13px; position: absolute; z-index: 100; margin-right: 10px; margin-top: -42px; right: 0;"><span id="uyan_tts">140</span></div><div id="uyan_stat_btn_r" style="position: relative; height: 40px; overflow: hidden; margin-top: -20px; _margin-top: 0;"><a id="uyan_cmt_btn" onmouseover="UYAN.cagBtn(&#39;on&#39;, this);" onmouseout="UYAN.cagBtn(&#39;out&#39;, this);" style="background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x scroll 0 0 transparent; border: 1px solid #d0cfcf; border-radius: 5px 5px 5px 5px; color: #666; cursor: pointer; float: right; font-size: 13px; font-weight: bold; height: 24px; line-height: 21px; margin: 4px 0 0; padding: 3px 25px 1px; text-align: center; text-shadow: 0 1px 0 #FFFFFF;" onclick="UYAN.addCmt(this, uyan_comment_region);">回&nbsp;&nbsp;复</a><div style="float: right; padding: 11px 15px 0 3px;"><div style="color: #AAAAAA; float: right; font-size: 12px; padding-left: 5px;"><span id="uyan_vis" style="float: right; line-height: 18px;">&nbsp;&nbsp;或<span style="text-decoration: underline; cursor: pointer;" onclick="UYAN.login();">游客留言</span></span><span onmouseover="UYAN.show(&#39;uyan_slog&#39;);" onmouseout="UYAN.hide(&#39;uyan_slog&#39;);" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/arrow.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginRenren();" title="使用人人账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/renren.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginTQq();" title="使用腾讯微博账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tqq.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginQq();" title="使用QQ账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/qq.png" style="margin: 1px 2px 0;"></span><span onclick="UYAN.loginTSina();" title="使用新浪微博账号登陆" style="float: right; cursor: pointer;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsina.png" style="margin: 1px 2px 0;"></span></div><div style="clear: both;"></div></div><div style="clear: both;"></div></div><div id="uyan_slog" class="uyan_st_slog" onmouseover="UYAN.show(this);" onmouseout="UYAN.hide(this);" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; position: absolute; z-index: 90000; padding: 1px 3px; display: none; width: 20px;"><div onclick="UYAN.loginKaixin001();" title="kaixin001" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/kaixin001.png"></div><div onclick="UYAN.loginTSohu();" title="sohu" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsohu.png"></div><div onclick="UYAN.loginT163();" title="163" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/t163.png"></div></div></div><div style="clear: both;"></div><div id="uyan_box" style="font-family: &#39;Microsoft YaHei&#39;; display: none; top: 0px; left: 0px; z-index: 9999999; opacity: 1; empty-cells: show; position: absolute; background: none repeat scroll 0 0 #FFFFFF; text-align: left;"><table cellspacing="0" cellpadding="0" border="0" style="border: none; width: auto; line-height: normal;"><tbody><tr><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxnw.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td><td style="background-color: black; height: 10px; opacity: 0.3; padding: 0; filter: alpha(opacity=60);"></td><td onclick="UYAN.hideBox();" style="background: url(&#39;http://v2.uyan.cc/code/images/boxclose.png&#39;) no-repeat scroll 0 0 transparent; _background: url(&#39;http://v2.uyan.cc/code/images/boxclose.gif&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; display: block; height: 23px; position: absolute; right: -8px; top: -8px; width: 23px; z-index: 100000; padding: 0;"></td></tr><tr><td style="background-color: black; opacity: 0.6; padding: 0; width: 10px; opacity: 0.3; filter: alpha(opacity=60);"></td><td style="background-color: white; padding: 0;"><div id="uyan_box_cnt"></div></td><td style="background-color: black; opacity: 0.6; padding: 0; width: 10px; opacity: 0.3; filter: alpha(opacity=60);"></td></tr><tr><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxsw.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td><td style="background-color: black; height: 10px; opacity: 0.3; padding: 0; filter: alpha(opacity=60);"></td><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxse.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td></tr></tbody></table></div><div id="uyan_cmty" style="display: none;"><div style="width: 520px;"><div style="border-bottom: 1px solid #b6b5b5; background: #eeeeee; color: #666; font-size: 16px; height: 22px; padding: 10px 0;"><span id="uyan_sdm_name" style="float: left; padding-left: 25px; text-shadow: 0 1px 0 #fff;">developer.51cto.com</span></div><div style="color: #666;"><div style="background: url(&#39;http://v2.uyan.cc/code/images/commentWeb.png&#39;) no-repeat 20px 13px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_dacn" style="font-size: 18px;">15608</span><br><span style="font-size: 12px;">评论数</span></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/likeWeb.png&#39;) no-repeat 24px 10px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_dvun" style="font-size: 18px;">3427</span><br><span style="font-size: 12px;">喜欢数</span></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/humanWeb.png&#39;) no-repeat 27px 13px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_daun" style="font-size: 18px;">947</span><br><span style="font-size: 12px;">用户数</span></div><div style="clear: both;"></div></div><div id="uyan_cmty_info_tmp" style="border-top: 1px solid #CCCCCC; padding: 10px 20px; font-size: 15px; color: #555555;">数据正在加载中...</div><div style="background-color: #F0F0F0; border-top: 1px solid #CCCCCC; height: 20px; padding-top: 6px;"><a target="_blank" href="http://www.uyan.cc/" style="color: #6B6B6B; cursor: pointer; display: block; float: right; font-family: Arial, Helvetica, sans-serif; font-size: 11px; margin-right: 15px; text-decoration: none;">友言</a><div style="clear: both;"></div></div></div></div><div id="uyan_login" style="display: none;"><div style="border-bottom: 1px solid #b6b5b5; background: #eeeeee; color: #666; font-size: 16px; height: 22px; padding: 10px 0;"><span style="padding-left: 25px; text-shadow: 0 1px 0 #fff; font-weight: 600;">社会化帐号登录</span></div><div style="width: 429px; padding: 22px;"><h2 style="margin: 0; font-size: 14px; font-weight: normal; color: #666; padding-left: 25px; padding-bottom: 5px; background: none repeat scroll 0 center transparent;">点击按钮，使用社交帐号评论</h2><div id="uyan_loginom" style="padding-bottom: 20px;"><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用新浪微博账号登陆" onclick="UYAN.loginTSina();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用新浪微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsina.png">&nbsp;&nbsp;新浪微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用QQ账号登陆" onclick="UYAN.loginQq();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用QQ账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/qq.png">&nbsp;&nbsp;QQ</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用腾讯微博账号登陆" onclick="UYAN.loginTQq();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用腾讯微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tqq.png">&nbsp;&nbsp;腾讯微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用人人网账号登陆" onclick="UYAN.loginRenren();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用人人网账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/renren.png">&nbsp;&nbsp;人人网</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用网易微博账号登陆" onclick="UYAN.loginT163();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用网易微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/t163.png">&nbsp;&nbsp;网易微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用搜狐微博账号登陆" onclick="UYAN.loginTSohu();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用搜狐微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/tsohu.png">&nbsp;&nbsp;搜狐微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用开心网账号登陆" onclick="UYAN.loginKaixin001();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用开心网账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/kaixin001.png">&nbsp;&nbsp;开心网</a></span><div style="clear: both;"></div></div><div id="uyan_vis_login"><h2 style="padding-top: 10px; border-top: 1px solid #ccc; margin: 0; font-size: 14px; font-weight: normal; color: #666; padding-left: 25px; margin-top: 15px; background: none repeat scroll 0 center transparent;">作为游客留言</h2><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 15px;"><p style="text-indent: 0; display: block; float: left; width: 58px; line-height: 30px; text-align: left; margin: 0; font-size: 14px; color: #666;">Email <span style="color: #ff0000;">*</span></p><input onkeyup="UYAN.syncEN();" onkeydown="UYAN.syncEN();" id="uyan_email_tmp" type="text" style="margin: auto; border: 1px solid #c1c1c1; color: #687793; float: left; height: 24px; line-height: 24px; padding: 2px 8px; width: 230px; border-radius: 5px;"></span><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 18px;"><p style="text-indent: 0; display: block; float: left; width: 58px; line-height: 30px; text-align: left; margin: 0; font-size: 14px; color: #666;">昵&nbsp;&nbsp;称</p><input onfocus="UYAN.nnbg(&#39;h&#39;);" onblur="UYAN.nnbg(&#39;s&#39;);" id="uyan_uname_tmp" type="text" style="margin: auto; background: #f2f2f2; border: 1px solid #c1c1c1; color: #687793; float: left; height: 24px; line-height: 24px; padding: 2px 8px; width: 230px; border-radius: 5px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;"></span><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 15px; width: 306px;"><div id="uyan_login_warn_tmp" style="color: #ff0000; float: left; font-family: Arial, Helvetica, sans-serif; font-size: 13px; padding-right: 15px; padding-top: 8px; text-align: right; width: 150px;"></div><input onclick="UYAN.loginEmail();" type="submit" style="margin: auto; background: url(&#39;http://v2.uyan.cc/code/images/btn.jpg&#39;) no-repeat; width: 86px; height: 26px; border: none; font-size: 14px; font-weight: bold; color: #666; float: right; cursor: pointer;" value="登录"></span></div></div></div><div style="background-color: #FFFFFF; border-color: #D3D2D2; border-style: solid; border-width: 1px 1px 2px; height: 130px; position: absolute; top: 23px; width: 135px; z-index: 99999; display: none;"><div style="color: #9797C4; font-size: 12px; font-weight: normal; padding: 4px 0 4px 10px; line-height: 18px;">顶并分享到:</div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 5px 0 0 10px;"><a style="border: 1px solid #D0CFCF; background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x; border-radius: 3px 3px 3px 3px; color: #666; font-weight: bold; cursor: pointer; font-weight: normal; float: left; font-size: 12px; height: 20px; line-height: 22px; overflow: hidden; padding: 0 18px;">顶</a><a style="background-color: #FFFFFF; border: 1px solid #FFFFFF; color: #737373; height: 20px; line-height: 22px; overflow: hidden; cursor: pointer; display: block; float: left; font-size: 12px; font-weight: normal; padding: 0 18px;">取消</a><div style="clear: both; height: 1px; overflow: hidden;"></div></div></div></div>
+<script type="text/javascript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/uyan.js"></script>
+</div>
+<!--box end-->
+<p class="blank10"></p>
+<div class="relart fl bor">
+<div class="titbg">
+<h3 class="fl t1">栏目热门</h3>
+<a href="http://developer.51cto.com/click/585" class="tmore">更多&gt;&gt;</a></div>
+<ul>
+  
+	  <li><a href="http://developer.51cto.com/art/201308/406435.htm" title="推荐16个免费的jQuery日期和时间插件">推荐16个免费的jQuery日期和时间插件</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201311/416554.htm" title="2013年11月编程语言排行榜：日益蓬勃的微软编程语言">2013年11月编程语言排行榜：日益蓬勃的微软</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201403/433682.htm" title="编程学习好去处：35 个快速学习的编程网站">编程学习好去处：35 个快速学习的编程网站</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201403/431174.htm" title="2014年四大热门语言的最佳实践">2014年四大热门语言的最佳实践</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201312/422379.htm" title="30分钟了解C++11新特性">30分钟了解C++11新特性</a></li>
+	  
+</ul>
+</div>
+<div class="cathot fr bor">
+<div class="titbg">
+<h3 class="fl t1">同期最新</h3>
+<a href="http://developer.51cto.com/col/585" class="tmore">更多&gt;&gt;</a></div>
+<ul>
+	
+	  <li><a href="http://developer.51cto.com/art/201412/458786.htm" title="效率工具：强大的批量删除文件的脚本">效率工具：强大的批量删除文件的脚本</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201412/458721.htm" title="给Eclipse提速的7个技巧">给Eclipse提速的7个技巧</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201412/458719.htm" title="“慢速编程”让你摆脱不思考戳手指状态">“慢速编程”让你摆脱不思考戳手指状态</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201411/458406.htm" title="专题：工具插件与技巧，开发如何更高效">专题：工具插件与技巧，开发如何更高效</a></li>
+	  
+	  <li><a href="http://developer.51cto.com/art/201411/458389.htm" title="工具插件与技巧，开发如何更高效">工具插件与技巧，开发如何更高效</a></li>
+	  
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="fl t1"><a href="http://developer.51cto.com/">开发</a></h3>
+<span class="pl10">频道导航</span></div>
+ <ul class="xtlist">
+<li><span class="tit">Java</span>
+<div><a href="http://developer.51cto.com/java/">Java开发</a>|<a href="http://developer.51cto.com/col/1005/">Java基础</a>|<a href="http://developer.51cto.com/col/1014/">Java EE开发</a>|<a href="http://developer.51cto.com/col/1004/">Java框架</a>|<a href="http://developer.51cto.com/col/1007/">设计模式</a></div>
+</li>
+<li><span class="tit">WEB开发</span>
+<div><a href="http://developer.51cto.com/col/1441/">PHP开发</a>|<a href="http://developer.51cto.com/col/1455/">Python</a>|<a href="http://developer.51cto.com/col/1552/">Ruby</a>|<a href="http://developer.51cto.com/col/1552/">JSP</a>|<a href="http://developer.51cto.com/art/200907/133407.htm">HTML 5</a>|<a href="http://developer.51cto.com/col/1450/">DIV+CSS</a></div>
+</li>
+<li class="last"><span class="tit">综合</span>
+<div><a href="http://developer.51cto.com/net/">.NET开发</a>|<a href="http://developer.51cto.com/embed/">嵌入式开发</a>|<a href="http://developer.51cto.com/col/586/">项目管理</a>|<a href="http://developer.51cto.com/col/1308/">架构设计</a></div>
+</li>
+</ul> 
+</div> 
+<p class="blank10"></p>
+<div class="leftbotcon">
+<div class="bor jdlist">
+<div class="titbg">
+<h3 class="t2">热点推荐</h3></div>
+<ul>
+<li><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://mobile.51cto.com/mobile-182392.htm"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/153546162.jpg"></a> 
+<div class="name"><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://mobile.51cto.com/mobile-182392.htm">Android开发应用详解</a></div></li>
+<li><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://developer.51cto.com/art/201106/266369.htm"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/133620622.jpg"></a> 
+<div class="name"><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://developer.51cto.com/art/201106/266369.htm">那些性感的让人尖叫的程序员</a></div></li>
+<li><a href="http://developer.51cto.com/art/200907/133407.htm"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/134217922.jpg"></a> 
+<div class="name"><a href="http://developer.51cto.com/art/200907/133407.htm">HTML5 下一代Web开发标准详解</a></div></li>
+<li><a href="http://developer.51cto.com/art/201104/257581.htm"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/123123954.jpg"></a> 
+<div class="name"><a href="http://developer.51cto.com/art/201104/257581.htm">高性能WEB开发应用指南</a></div></li>
+<li><a href="http://os.51cto.com/art/200706/49181.htm"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/195816929.jpg"></a> 
+<div class="name"><a href="http://os.51cto.com/art/200706/49181.htm">Ubuntu开源技术交流频道</a></div></li></ul></div>
+<p class="blank10"></p>
+<div class="bor hotTag"><strong>热门标签：</strong> <a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-2]);" href="http://os.51cto.com/windows/">windows频道</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://mobile.51cto.com/">移动开发</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://cloud.51cto.com/">云计算</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://mobile.51cto.com/mobile/objc/">objective-c</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://network.51cto.com/art/200909/151122.htm">tp-link路由器设置图解</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://developer.51cto.com/art/200907/133407.htm">html5</a> </div></div>
+<div class="leftbotbox"> </div>
+</div>
+<!--left end-->
+<div class="g_13 fr">
+<div class="focus fixfloat"> 
+ <img width="298" style="border: 1px solid #CCCCCC; margin:5px 0px 5px;" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/weixin.png"><div class="hot">
+<ul>
+<li class="tit"><em>头条</em> <a href="http://developer.51cto.com/art/201405/438832.htm">《开发专刊》2014年4月刊发布</a> </li>
+<li class="con"><dl><dt><a href="http://developer.51cto.com/art/201405/438832.htm"><img border="0" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1NvvUaxFIvQAAAX2THaVGw231.jpg"></a></dt>
+<dd>本次的专刊为大家提供了Oracle最新推出的Java SE 8详细的开发教程，从解读到探究Java 8最新</dd>
+</dl></li></ul><ol class="hotlist"><li><a href="http://developer.51cto.com/art/201403/434342.htm">《开发专刊》2014年3月刊发布</a></li><li><a href="http://developer.51cto.com/art/201312/423275.htm">《开发月刊》2013年11月刊发布</a></li></ol></div>
+<p>
+<script language="JavaScript" src="http://www.51cto.com/ad/art/hzh/ad.js" type="text/javascript"></script>
+</p>
+</div>
+<div class="bor vlist" id="edu">
+	<div class="titbg">
+    <h3 class="fl t1"><a href="http://edu.51cto.com/" target="_blank">视频课程</a></h3>
+    <a class="tmore" id="change" style="cursor:pointer">换一换</a>
+    </div>
+    
+    	<ul class="plist01" id="edu1"><li><a class="ico" href="http://edu.51cto.com/course/course_id-2567.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2567.html" target="_blank"><img title="决策爱上大数据(01)_像巴菲特一样思考大数据" alt="决策爱上大数据(01)_像巴菲特一样思考大数据" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1SDFR6zx-rwAAEpCF2poxg796.jpg" height="80" width="100"></a><h5><a title="决策爱上大数据(01)_像巴菲特一样思考大数据" href="http://edu.51cto.com/course/course_id-2567.html" target="_blank">决策爱上大数据(01)_像巴菲特一样思考大数据</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-8194129.html" target="_blank">高焕堂</a></p><p> 34人学习过</p></div></li><li><a class="ico" href="http://edu.51cto.com/course/course_id-2545.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2545.html" target="_blank"><img title="云桌面与桌面虚拟化" alt="云桌面与桌面虚拟化" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1SAJDXCJUg8AADvU5rLMOg286.jpg" height="80" width="100"></a><h5><a title="云桌面与桌面虚拟化" href="http://edu.51cto.com/course/course_id-2545.html" target="_blank">云桌面与桌面虚拟化</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-8355508.html" target="_blank">黄波</a></p><p> 160人学习过</p></div></li><li><a class="ico" href="http://edu.51cto.com/course/course_id-2544.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2544.html" target="_blank"><img title="51CTO RHCE 7红帽认证保过班直播培训课程 仅限30人【不含考试费】" alt="51CTO RHCE 7红帽认证保过班直播培训课程 仅限30人【不含考试费】" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1SAByaQvStCAAMmy9B4xfA058.jpg" height="80" width="100"></a><h5><a title="51CTO RHCE 7红帽认证保过班直播培训课程 仅限30人【不含考试费】" href="http://edu.51cto.com/course/course_id-2544.html" target="_blank">51CTO RHCE 7红帽认证保过班直播培训课程 仅</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-5428084.html" target="_blank">老段</a></p><p> 0人学习过</p></div></li></ul><ul class="plist01" id="edu2" style="display:none"><li><a class="ico" href="http://edu.51cto.com/course/course_id-2543.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2543.html" target="_blank"><img title="2014 WOT软件技术峰会" alt="2014 WOT软件技术峰会" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1SAGSDA2sJFAAFoXuq5klg887.jpg" height="80" width="100"></a><h5><a title="2014 WOT软件技术峰会" href="http://edu.51cto.com/course/course_id-2543.html" target="_blank">2014 WOT软件技术峰会</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-7380037.html" target="_blank">WOT峰会</a></p><p> 18人学习过</p></div></li><li><a class="ico" href="http://edu.51cto.com/course/course_id-2542.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2542.html" target="_blank"><img title="2014 WOT软件技术峰会" alt="2014 WOT软件技术峰会" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1SAGNvhQA5WAAFAKGkm5F8047.jpg" height="80" width="100"></a><h5><a title="2014 WOT软件技术峰会" href="http://edu.51cto.com/course/course_id-2542.html" target="_blank">2014 WOT软件技术峰会</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-7380037.html" target="_blank">WOT峰会</a></p><p> 24人学习过</p></div></li><li><a class="ico" href="http://edu.51cto.com/course/course_id-2540.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2540.html" target="_blank"><img title="2014 WOT软件技术峰会" alt="2014 WOT软件技术峰会" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1SAGLjR6bYmAAGEEBZA5wk535.jpg" height="80" width="100"></a><h5><a title="2014 WOT软件技术峰会" href="http://edu.51cto.com/course/course_id-2540.html" target="_blank">2014 WOT软件技术峰会</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-7380037.html" target="_blank">WOT峰会</a></p><p> 25人学习过</p></div></li></ul><ul class="plist01" id="edu3" style="display:none"><li><a class="ico" href="http://edu.51cto.com/course/course_id-2539.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2539.html" target="_blank"><img title="Exchange 2013 与 SharePoint 2013 集成" alt="Exchange 2013 与 SharePoint 2013 集成" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1SFAR7jTZ6ZAAJxXZ8ODGc773.jpg" height="80" width="100"></a><h5><a title="Exchange 2013 与 SharePoint 2013 集成" href="http://edu.51cto.com/course/course_id-2539.html" target="_blank">Exchange 2013 与 SharePoint 2013 集成</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-932950.html" target="_blank">李海园</a></p><p> 0人学习过</p></div></li><li><a class="ico" href="http://edu.51cto.com/course/course_id-2537.html" target="_blank"></a><a href="http://edu.51cto.com/course/course_id-2537.html" target="_blank"><img title="O1 OFDM原理" alt="O1 OFDM原理" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1R_tMbBUD23AAKWE5eFMeY064.jpg" height="80" width="100"></a><h5><a title="O1 OFDM原理" href="http://edu.51cto.com/course/course_id-2537.html" target="_blank">O1 OFDM原理</a></h5><div class="c666"><p>讲师：<a href="http://edu.51cto.com/lecturer/user_id-4157106.html" target="_blank">孙宇彤</a></p><p> 87人学习过</p></div></li></ul>
+	
+</div>
+<div class="rank">
+<div class="tlt">
+      <h3>文章排行</h3>
+      <a onmouseover="change_top10(3);" id="top_3">本月</a><a onmouseover="change_top10(2);" id="top_2">本周</a><a onmouseover="change_top10(1);" class="myon" id="top_1">24小时</a> </div>
+ <div id="top10_1" style="display: block;" class="list"><ul>
+<li><a href="http://developer.51cto.com/art/201412/459408.htm" target="_blank" title="Web性能优化：图片优化">Web性能优化：图片优化</a>
+</li><li><a href="http://developer.51cto.com/art/201007/214478.htm" target="_blank" title="Eclipse插件大全 挑选最牛的TOP30">Eclipse插件大全 挑选最牛的TOP30</a>
+</li><li><a href="http://developer.51cto.com/art/201409/451413.htm" target="_blank" title="当大数据遇到安全分析：思科OpenSOC即">当大数据遇到安全分析：思科OpenSOC即</a>
+</li><li><a href="http://developer.51cto.com/art/200906/128274.htm" target="_blank" title="Java数组声明、创建、初始化">Java数组声明、创建、初始化</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458877.htm" target="_blank" title="20个最热门的IT技术职位及薪资">20个最热门的IT技术职位及薪资</a>
+</li><li><a href="http://developer.51cto.com/art/201412/459377.htm" target="_blank" title="Java 9特性  三个新的API已经公布">Java 9特性  三个新的API已经公布</a>
+</li><li><a href="http://developer.51cto.com/art/201412/459385.htm" target="_blank" title="揭秘PHP深受Web开发者喜爱的原因">揭秘PHP深受Web开发者喜爱的原因</a>
+</li><li><a href="http://developer.51cto.com/art/201302/380661.htm" target="_blank" title="现在就开始使用AngularJS的三个重要原">现在就开始使用AngularJS的三个重要原</a>
+</li><li><a href="http://developer.51cto.com/art/200908/146071.htm" target="_blank" title="五个免费UML建模工具推荐">五个免费UML建模工具推荐</a>
+</li><li><a href="http://developer.51cto.com/art/200903/117512.htm" target="_blank" title="详解Java解析XML的四种方法">详解Java解析XML的四种方法</a>
+</li></ul></div>
+<div id="top10_2" style="display: none;" class="list"><ul>
+<li><a href="http://developer.51cto.com/art/201412/458877.htm" target="_blank" title="20个最热门的IT技术职位及薪资">20个最热门的IT技术职位及薪资</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458778.htm" target="_blank" title="程序员福利各大平台免费接口，非常适用">程序员福利各大平台免费接口，非常适用</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458781.htm" target="_blank" title="你是码农 还是优秀程序员？">你是码农 还是优秀程序员？</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458572.htm" target="_blank" title="提供给开发者 10 款最好的 Python IDE">提供给开发者 10 款最好的 Python IDE</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458592.htm" target="_blank" title="从把三千行代码重构成15行代码谈起">从把三千行代码重构成15行代码谈起</a>
+</li><li><a href="http://developer.51cto.com/art/201412/459213.htm" target="_blank" title="前淘宝工程师谈12306：做它比做淘宝难">前淘宝工程师谈12306：做它比做淘宝难</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458669.htm" target="_blank" title="一张图看懂硅谷科技公司的男女比例">一张图看懂硅谷科技公司的男女比例</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458886.htm" target="_blank" title="请不要再责怪你的程序员“太慢”">请不要再责怪你的程序员“太慢”</a>
+</li><li><a href="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM.htm" target="_blank" title="专访Spark亚太研究院王家林：从技术的">专访Spark亚太研究院王家林：从技术的</a>
+</li><li><a href="http://developer.51cto.com/art/201412/458797.htm" target="_blank" title="Oracle宣布更多的Java 9 新特性">Oracle宣布更多的Java 9 新特性</a>
+</li></ul></div>
+<div id="top10_3" style="display: none;" class="list"><ul>
+<li><a href="http://developer.51cto.com/art/201411/456676.htm" target="_blank" title="为了双十一，你知道京东都做了什么吗？">为了双十一，你知道京东都做了什么吗？</a>
+</li><li><a href="http://developer.51cto.com/art/201411/457317.htm" target="_blank" title="专访京东搜索部总监：双十一能够从容应">专访京东搜索部总监：双十一能够从容应</a>
+</li><li><a href="http://developer.51cto.com/art/201411/458085.htm" target="_blank" title="2014年11月“我最喜爱的编程语言”排行">2014年11月“我最喜爱的编程语言”排行</a>
+</li><li><a href="http://developer.51cto.com/art/201411/457796.htm" target="_blank" title="程序员玩的几款电脑游戏，你玩过吗？">程序员玩的几款电脑游戏，你玩过吗？</a>
+</li><li><a href="http://developer.51cto.com/art/201411/456795.htm" target="_blank" title="以Windows服务方式运行Java程序">以Windows服务方式运行Java程序</a>
+</li><li><a href="http://developer.51cto.com/art/201411/456838.htm" target="_blank" title="微软宣布.NET开发环境将开源 支持Mac O">微软宣布.NET开发环境将开源 支持Mac O</a>
+</li><li><a href="http://developer.51cto.com/art/201411/456698.htm" target="_blank" title=".NET 编译器（”Roslyn“）介绍">.NET 编译器（”Roslyn“）介绍</a>
+</li><li><a href="http://developer.51cto.com/art/201411/457368.htm" target="_blank" title="为什么.NET一开源一跨平台，一些人就在">为什么.NET一开源一跨平台，一些人就在</a>
+</li><li><a href="http://developer.51cto.com/art/201411/457375.htm" target="_blank" title="分析程序员在代码编程中的“末行效应”">分析程序员在代码编程中的“末行效应”</a>
+</li><li><a href="http://developer.51cto.com/art/201411/456810.htm" target="_blank" title="25 个响应式的 jQuery 导航菜单插件">25 个响应式的 jQuery 导航菜单插件</a>
+</li></ul></div>
+ 
+ </div>
+<p class="blank1"></p>
+
+<div class="bor">
+<div class="titbg">
+<h3 class="fl t1">热点专题</h3>
+<a href="http://developer.51cto.com/speclist/585" class="tmore">更多&gt;&gt;</a></div>
+<ul class="plist01">
+<li><a href="http://developer.51cto.com/art/201311/416334.htm" title="七步走：AngularJS从菜鸟到专家"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioOVJ8pg_DtufcAAATqU2XPRQ764.jpg" alt="七步走：AngularJS从菜鸟到专家" width="100" height="80"></a>
+<h5><a href="http://developer.51cto.com/art/201311/416334.htm" title="七步走：AngularJS从菜鸟到专家">七步走：AngularJS从</a></h5>
+<div class="c666">Angular.js 是一个MV*（Model-View-Whatever，不管是M</div>
+</li><li><a href="http://developer.51cto.com/art/201311/416301.htm" title="开发频道2013年11月第1周重点内容推荐：Hadoop生态系统全面盘点"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioJlJ8iS7xnqUIAAAU3zkLspM124.jpg" alt="开发频道2013年11月第1周重点内容推荐：Hadoop生态系统全面盘点" width="100" height="80"></a>
+<h5><a href="http://developer.51cto.com/art/201311/416301.htm" title="开发频道2013年11月第1周重点内容推荐：Hadoop生态系统全面盘点">开发频道2013年11月第</a></h5>
+<div class="c666">本周，搜狗浏览器被爆存在重大漏洞的消息被炒得沸沸扬</div>
+</li><li><a href="http://developer.51cto.com/art/201311/415495.htm" title="IE CSS Bug 解决实例"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioOVJ28l3R6a_7AAAS-hNLd4Q005.jpg" alt="IE CSS Bug 解决实例" width="100" height="80"></a>
+<h5><a href="http://developer.51cto.com/art/201311/415495.htm" title="IE CSS Bug 解决实例">IE CSS Bug 解决实例</a></h5>
+<div class="c666">IE浏览器不支持很多CSS属性是出了名的，即便在支持的</div>
+</li> 
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="tagCloud">
+<div class="tlt">
+<h3>热点标签</h3>
+</div>
+<div class="taglist"><a title="编程语言排行榜" href="http://developer.51cto.com/art/200911/165281.htm">编程语言排行榜</a> <a title="敏捷开发" href="http://developer.51cto.com/art/200803/68222.htm">敏捷开发</a> <a title="Eclipse" href="http://developer.51cto.com/art/201006/207407.htm">Eclipse 3.6</a> <a title="PHP设计模式" href="http://developer.51cto.com/art/201004/195765.htm">PHP设计模式</a> <a title="NetBeans7" href="http://developer.51cto.com/art/201105/259431.htm">NetBeans 7</a> <a title="Java7" href="http://developer.51cto.com/art/201001/175830.htm">Java7</a> <a title="Scala编程语言" href="http://developer.51cto.com/art/200906/127830.htm">Scala编程语言</a> <a title="Python编程世界" href="http://developer.51cto.com/art/201011/234347.htm">Python编程世界</a> <a title="Ruby" on="" rails开发="" href="http://developer.51cto.com/art/201007/215101.htm">Ruby On Rails开发</a> <a class="imp" title="LINQ" href="http://developer.51cto.com/art/200911/165090.htm">LINQ</a> <a title="ASP.NET视频教程" href="http://developer.51cto.com/art/200904/120314.htm">ASP.NET视频教程</a> <a title="Visual Studio" href="http://developer.51cto.com/art/201004/194262.htm">Visual Studio</a> <a title="智能手机" href="http://p.linkphone.cn/">智能手机</a> <a title="软件下载" href="http://download.linkphone.cn/">软件下载</a></div>
+</div>
+<div class="rss">
+<ul>
+<li class="lin f12-c"><a href="http://news.51cto.com/col/1323/"><strong>点击这里查看样刊</strong></a></li>
+<li>
+<dl>
+<dt> </dt>
+<dd><a href="http://home.51cto.com/index.php?s=/Subscribe"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/dingy.gif"></a></dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1">全站热点</h3>
+</div>
+<div class="webhot fixfloat">
+<ul>
+
+<li>
+  <a href="http://netsecurity.51cto.com/secu/trendmicro/cloudsecurity2014/" title="2014趋势科技高端CIO峰会现场报道"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKioL1PsVDHDyOA5AAAQ-S3VrRI882.jpg"></a>
+  <div><a href="http://netsecurity.51cto.com/secu/trendmicro/cloudsecurity2014/" title="2014趋势科技高端CIO峰会现场报道">2014趋势科技高端CIO峰会现场报道</a></div>
+</li>
+
+<li>
+  <a href="http://netsecurity.51cto.com/art/201408/447612.htm" title="2014黑帽大会:黑客齐聚拉斯维加斯"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/wKiom1PkLOzjd6a1AAAWL6U3TeY557.jpg"></a>
+  <div><a href="http://netsecurity.51cto.com/art/201408/447612.htm" title="2014黑帽大会:黑客齐聚拉斯维加斯">2014黑帽大会:黑客齐聚拉斯维加斯</a></div>
+</li>
+
+</ul>
+</div>
+<p class="blank1"></p>
+<ul class="list03">
+
+<li><a href="http://cloud.51cto.com/art/201411/458311.htm" title="“玩具”将成为互联网企业下一个风口？">“玩具”将成为互联网企业下一个风口</a></li>
+
+<li><a href="http://cloud.51cto.com/art/201411/458307.htm" title="不要让您的云应用程序数据被破坏">不要让您的云应用程序数据被破坏</a></li>
+
+<li><a href="http://mobile.51cto.com/iphone-458302.htm" title="5C你好，5C再见。">5C你好，5C再见。</a></li>
+
+<li><a href="http://book.51cto.com/art/201411/458299.htm" title="代码本色: 用编程模拟自然系统">代码本色: 用编程模拟自然系统</a></li>
+
+<li><a href="http://netsecurity.51cto.com/art/201411/458298.htm" title="乌云曝淘宝用户账号信息泄露漏洞">乌云曝淘宝用户账号信息泄露漏洞</a></li>
+
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1">读书</h3>
+</div>
+  
+<div class="catbook"><a href="http://book.51cto.com/art/200710/58179.htm" title="Microsoft SQL Server 2005技术内幕:T-SQL程序设计"><img src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/142809180.gif" width="66" height="98" border="0"></a>
+<h5><a href="http://book.51cto.com/art/200710/58179.htm">Microsoft SQL Server 2005技术内幕:T-SQL程序设</a></h5>
+<div class="c666 text">SQL Server 2005微软官方权威参考手册。
+是Inside Microsoft SQL Server 2005系列书中的第一本，SQL Server类的顶尖之作。
+全</div>
+</div>
+
+
+<ul class="list03">
+
+<li><a href="http://book.51cto.com/art/200710/57701.htm" title="PHP程序开发范例宝典">PHP程序开发范例宝典</a></li>
+
+<li><a href="http://book.51cto.com/art/200710/57877.htm" title="SQL Server 2005中文版精粹">SQL Server 2005中文版精粹</a></li>
+
+<li><a href="http://book.51cto.com/art/200710/58068.htm" title="精通JavaScript动态网页编程(实例版)">精通JavaScript动态网页编程(实例版)</a></li>
+
+<li><a href="http://book.51cto.com/art/200710/58100.htm" title="征服Python—语言基础与典型应用">征服Python—语言基础与典型应用</a></li>
+
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1 fl">博文推荐</h3>
+<a class="tmore" href="http://blog.51cto.com/">更多&gt;&gt;</a></div>
+
+<ul class="list03">
+ <li><a href="http://yangsir.blog.51cto.com/1549/25082/" target="_blank" title="新网再次被黑  大规模域名遭遇故障">新网再次被黑  大规模域名遭遇故障</a></li><li><a href="http://wfyang.blog.51cto.com/65117/25078/" target="_blank" title="如何用正则删除不包含某个字符串的行">如何用正则删除不包含某个字符串的行</a></li><li><a href="http://45188.blog.51cto.com/35188/25073/" target="_blank" title="做网线(双绞线接头)超简单了!">做网线(双绞线接头)超简单了!</a></li><li><a href="http://matthewyin.blog.51cto.com/49294/25020/" target="_blank" title="实验指南：BGP基本配置">实验指南：BGP基本配置</a></li>
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="tj">
+<div class="tlt">
+<h3>最新热帖</h3>
+<a class="more" href="http://bbs.51cto.com/hotthreads.php">更多&gt;&gt;</a></div>
+<ul>
+<li><a href="http://bbs.51cto.com/thread-1048529-1.html" target="_blank" title="cisco 2950故障求解 。。。。。。">cisco 2950故障求解 。。。。。。</a></li><li><a href="http://bbs.51cto.com/thread-1048516-1.html" target="_blank" title="去面试，结果企业打着实习的招牌，却变相的开班培训">去面试，结果企业打着实习的招牌，却</a></li><li><a href="http://bbs.51cto.com/thread-1048514-1.html" target="_blank" title="服务器群集">服务器群集</a></li><li><a href="http://bbs.51cto.com/thread-1048510-1.html" target="_blank" title="跳槽前的纠结，是选择Android还是Java">跳槽前的纠结，是选择Android还是Jav</a></li><li><a href="http://bbs.51cto.com/thread-1048494-1.html" target="_blank" title="nagios报警">nagios报警</a></li>
+</ul>
+</div>
+<div class="picAD">
+<iframe class="bann" frameborder="0" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/baidu.htm" scrolling="No" style="height: 265px; width: 300px; padding: 0px; margin: 0px; overflow: hidden; background-color: white;"></iframe>
+</div>
+</div>
+<p class="blank1"></p> 
+<!--leftbotcon end-->
+</div> 
+<div class="subweb">
+<h4>51CTO旗下网站</h4>
+<div>
+<a target="_blank" href="http://www.51cto.com/">领先的IT技术网站 51CTO</a>
+<a target="_blank" href="http://www.watchstor.com/">领先的中文存储媒体 WatchStor</a>
+<a target="_blank" href="http://www.cioage.com/">中国首个CIO网站 CIOage</a>
+<a target="_blank" href="http://www.hc3i.cn/">中国首家数字医疗网站 HC3i</a>
+</div>
+</div>
+<div id="ft"><div id="foot" align="center"><script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/copy_right.js"></script>Copyright&#169;2005-2014 <a href="http://www.51cto.com/">51CTO.COM</a> 版权所有 未经许可 请勿转载</div></div>
+<script src="http://logs.51cto.com/rizhi/count/count.js"></script>
+<script type="text/javascript">
+
+	$("#uyan_cmt_list").next().remove();	
+	$("#uyan_cmt_list").next().css("display","none");	
+</script>
+<style>
+.Nfloat {
+    position: fixed;
+    right: 2%;
+    top: 35%;
+    z-index: 801;
+}
+</style>
+
+
+<!-- 新监测代码 -->
+<!-- 新监测代码 -->
+<div id="MyMoveAd" style="display: none; height: 2px;">
+<span id="wordlink_1"><script src="http://www.51cto.com/ad/art/wordlink/wordlink1.js"></script></span>
+<span id="wordlink_2"><script src="http://www.51cto.com/ad/art/wordlink/wordlink2.js"></script></span>
+<span id="wordlink_3"><script src="http://www.51cto.com/ad/art/wordlink/wordlink3.js"></script></span>
+<span id="wordlink_4"><script src="http://www.51cto.com/ad/art/wordlink/wordlink4.js"></script></span>
+<span id="pinglun"><script language="JavaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/getArtCount.php"></script>0</span>
+<span id="tonglan"></span>
+<span id="wordlink"><script language="JavaScript" src="http://www.51cto.com/ad/art/wordlink/ad.js"></script></span>
+<script src="http://www.51cto.com/ad/art/wordlink/ad.js"></script>
+<span id="bookss"><script language="JavaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/getBookData.php"></script></span>
+</div>   
+<script language="javascript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/favorite.js"></script>
+
+<script language="javaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/dialog_utf8.js"></script>
+<script language="javaScript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/mail.js"></script>  
+<script type="text/javascript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/favorbox.js"></script>
+<script language="javascript" src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/clipboard.js"></script>
+<script language="javaScript"> 
+	var thistid=458789; 
+	
+	//收藏按钮
+	var favor_url = 'http://developer.51cto.com/art/201412/458789.htm';  // 如：http://bbs.51cto.com/thread-789649-1.html
+	var favor_title = '专访Spark亚太研究院王家林：从技术的角度探索Spark';       //  
+	
+	//绑定复制按钮
+	copy('msnqqcopy', 'http://developer.51cto.com/art/201412/458789.htm', '分享到MSN/QQ的链接复制成功!');
+//	copy('bbscopy', '[url=http://developer.51cto.com/art/201412/458789.htm][u]专访Spark亚太研究院王家林：从技术的角度探索Spark[/u][/url]', '分享到论坛的UBB代码复制成功!');
+
+</script><div style="position: absolute; left: 821px; top: 4311px; width: 34px; height: 12px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="http://images.51cto.com/images/art/newart1012/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="34" height="12" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=34&amp;height=12" wmode="transparent"></div> 
+<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/index.php" charset="utf-8"></script>
+<script src="./专访Spark亚太研究院王家林：从技术的角度探索Spark - 51CTO.COM_files/count.php" language="javascript"></script>
+<script language="javascript">
+document.getElementById('books').innerHTML = document.getElementById("bookss").innerHTML; 
+</script>
+
+
+
+</body></html>

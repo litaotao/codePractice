@@ -1,0 +1,742 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0040)http://f.dataguru.cn/article-6303-1.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<title>大数据工程师飞林沙的年终总结&amp;算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区</title>
+   
+<meta name="description" content="从前东家离职已经一个多月的时间了，在这一个月，前前后后也和几家公司做了技术交流，自己也第一次静下来这么久来思考总结。今年是我毕业的第五年，也正巧赶上年底，就把这些凑到一起写个小总结吧，也没有什么主题， ... ">
+    <meta name="viewport" content="width=1100px">
+<meta name="generator" content="Discuz! X3.2">
+<meta name="author" content="Discuz! Team and Comsenz UI Team">
+<meta name="copyright" content="2001-2013 Comsenz Inc.">
+<meta name="MSSmartTagsPreventParsing" content="True">
+<meta http-equiv="MSThemeCompatible" content="Yes">
+<!--<base href="http://f.dataguru.cn/">--><base href="."><link rel="stylesheet" type="text/css" href="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/style_4_common.css"><link rel="stylesheet" type="text/css" href="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/style_4_portal_view.css"><script charset="utf-8" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/v.js"></script><script type="text/javascript">var STYLEID = '4', STATICURL = 'static/', IMGDIR = 'static/image/common', VERHASH = 'FA0', charset = 'gbk', discuz_uid = '0', cookiepre = 'HgVf_9281_', cookiedomain = '.dataguru.cn', cookiepath = '/', showusercard = '1', attackevasive = '0', disallowfloat = 'login|newthread', creditnotice = '2|金子|,7|钱包|,8|提现金额|', defaultstyle = '', REPORTURL = 'aHR0cDovL2YuZGF0YWd1cnUuY24vYXJ0aWNsZS02MzAzLTEuaHRtbA==', SITEURL = 'http://f.dataguru.cn/', JSPATH = 'static/js/', CSSPATH = 'data/cache/style_', DYNAMICURL = '';</script><style type="text/css"></style>
+    <script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/common.js" type="text/javascript"></script>
+<meta name="application-name" content="炼数成金">
+<meta name="msapplication-tooltip" content="炼数成金">
+<meta name="msapplication-task" content="name=门户;action-uri=http://www.dataguru.cn;icon-uri=http://f.dataguru.cn/static/image/common/portal.ico"><meta name="msapplication-task" content="name=论坛;action-uri=http://f.dataguru.cn;icon-uri=http://f.dataguru.cn/static/image/common/bbs.ico">
+<meta name="msapplication-task" content="name=竞赛;action-uri=http://f.dataguru.cn/group.php;icon-uri=http://f.dataguru.cn/static/image/common/group.ico"><meta name="msapplication-task" content="name=社交;action-uri=http://f.dataguru.cn/home.php;icon-uri=http://f.dataguru.cn/static/image/common/home.ico"><script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/portal.js" type="text/javascript"></script>
+
+<!--<script src="http://apps.bdimg.com/cloudaapi/lightapp.js#813752623370ac8fb2085fdb4586b8e2" type="text/javascript"></script><script type="text/javascript">window.bd && bd._qdc && bd._qdc.init({app_id: 'ab402754d9550bc37bdf7cd1'});</script>-->
+<script type="text/javascript">  
+  function myerror(_message,_url,_line){   
+     return true; 
+  }  
+  //绑定错误事件  
+  window.onerror = myerror;  
+</script></head>
+
+ 
+<body id="nv_portal" class="pg_view" onkeydown="if(event.keyCode==27) return false;">
+<div style="height:24px;"></div>
+<div class="header">
+<div class="dg_logo">
+<a href="http://www.dataguru.cn/">
+<img width="200" height="63" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/logo.png">
+</a>
+</div>
+<div class="dg_search">
+
+<div id="hd">
+              <div class="wp" style="width:810px">
+                <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
+                  <tbody><tr>
+                    <td style=" margin-bottom:5px; float:right;">                      <table cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
+                        <tbody>
+                          <tr>
+                            <td height="18" align="right"><input type="submit" value="" style="width: 56px; height: 17px; border: 0pt none; background: url(&quot;http://f.dataguru.cn/static/image/common/login.gif&quot;) repeat scroll 0% 0% transparent; line-height: 22px; color: rgb(21, 66, 139);" onclick="location.href=&#39;/member.php?mod=logging&amp;action=login&#39;">
+                              <a onclick="showWindow(&#39;login&#39;, &#39;member.php?mod=logging&amp;action=login&amp;viewlostpw=1&#39;)" href="javascript:;">忘记密码</a> <a target="_blank" href="http://f.dataguru.cn/member.php?mod=register"><font color="red">免费注册</font></a></td>
+                            <td nowrap="" align="center" class="smalltxt"></td>
+                            <td nowrap="" align="right" class="smalltxt"></td>
+                          </tr>
+                         
+                        </tbody>
+                      </table>
+                      </td>
+                  </tr>
+                  
+                </tbody></table> 
+                              </div>
+            </div>
+
+<div>
+  <form name="scbar_form" id="scbar_form" action="http://f.dataguru.cn/search.php?searchsubmit=yes" method="get" autocomplete="off">
+<input name="mod" id="mod" type="hidden" value="forum">
+<input name="searchsubmit" type="hidden" value="yes">
+<div class="form">
+<div class="select_list" onmouseover="showYcssnr()" onmouseout="hideYcssnr()">
+<p>
+<a id="select_mod" href="javascript:;" target="_self">全部</a>
+</p>
+<div id="ycssnr" style="display: none;">
+<p>
+<a onclick="select_menu(&#39;forum&#39;, &#39;帖子&#39;)" href="javascript:;" target="_self">帖子</a>
+</p>
+<p>
+<a onclick="select_menu(&#39;blog&#39;, &#39;日志&#39;)" href="javascript:;" target="_self">日志</a>
+</p>
+<p>
+<a onclick="select_menu(&#39;album&#39;, &#39;相册&#39;)" href="javascript:;" target="_self">相册</a>
+</p>
+<p>
+<a onclick="select_menu(&#39;group&#39;, &#39;竞赛&#39;)" href="javascript:;" target="_self">竞赛</a>
+</p>
+<p>
+<a onclick="select_menu(&#39;user&#39;, &#39;用户&#39;)" href="javascript:;" target="_self">用户</a>
+</p>
+</div>
+</div>
+<div class="input_box">
+<input name="srchtxt" id="scbar_txt" onclick="javascript:if(this.value.substring(0,3)==&#39;输入关键词&#39;) this.value=&#39;&#39;;" onfocus="if (value ==&#39;输入关键词&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;输入关键词&#39;}" type="text" value="输入关键词" style=" width: 308px; border: 1px solid rgb(199, 199, 199); border-image: none; ">
+<img width="65" height="27" onclick="scbar_form.submit();" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/button_search.jpg">
+</div>
+<a class="kjnav" id="kjnav">&nbsp;&nbsp;&nbsp;&nbsp;快捷导航</a>
+<div class="kjnav_box" id="kjnav_box" style="display: none;">
+<ul class="dl">
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=plugin&id=itpub_medal:medal_manage_personal">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_hz.jpg">
+<br>徽章</a>
+</li>
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=space&do=friend">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_hy.jpg">
+<br>好友</a>
+</li>
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=space&do=thread&view=me">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_tz.jpg">
+<br>帖子</a>
+</li>
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=space&do=favorite&view=me">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_sc.jpg">
+<br>收藏</a>
+</li>
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=magic">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_dj.jpg">
+<br>道具</a>
+</li>
+<li>
+<a href="http://f.dataguru.cn/home.php?mod=task">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_task.jpg">
+<br>任务</a>
+</li>
+                        <li>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=credit&op=buy">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_chongzhi.jpg">
+<br>充值</a>
+</li>
+                        <li>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=credit&op=back">
+<img width="40" height="40" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_tixian.jpg">
+<br>提现</a>
+</li>
+</ul>
+</div>
+</div>
+</form>
+        </div>
+</div>
+</div>
+<div class="nav">
+<div class="dg_nav">
+        <a href="http://www.dataguru.cn/" target="_self">门户</a><span>|</span><a href="http://edu.dataguru.cn/" target="_self">培训</a><span>|</span><a href="http://www.dataguru.cn/myclassnew.php" target="_self">课程</a><span>|</span><a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=plugin&id=award_plan:award_plan" target="_self">奖学金</a><span>|</span><a href="http://f.dataguru.cn/" target="_self">论坛</a><span>|</span><a href="http://bi.dataguru.cn/" target="_self">商业智能</a><span>|</span><a href="http://it.dataguru.cn/" target="_self">大数据</a><span>|</span><a href="http://quant.dataguru.cn/" target="_self">量化投资</a><span>|</span><a href="http://byod.dataguru.cn/" target="_self">移动化</a><span>|</span><a href="http://science.dataguru.cn/" target="_self">科学探索</a><span>|</span><a href="http://vc.dataguru.cn/" target="_self">创业</a><span>|</span><a href="http://f.dataguru.cn/topic-specialist.html" target="_self">专家团</a></div>
+</div>
+<div class="wrap_top">
+</div>
+<div class="wrap_main">
+<div class="wrap">
+<style>
+#an dt {
+display: none;
+}
+
+.fl_tb {
+background: rgb(255, 255, 255); width: 100%; border-collapse: separate;
+}
+.fl_tb td {
+background: rgb(255, 255, 255); padding: 5px;
+}
+.fl_tb td h2 {
+font-size:20px;
+}
+.fl_tb td .xg2 {
+font-size:12px;
+color:#999;
+}
+
+.fl_i {
+background: #EEE; width: 75px; text-align: center;
+}
+.fl_tb td.fl_i {
+background: #EEE;
+}
+.fl_tb td.fl_by {
+background: #EEE;
+}
+
+.hdc, .xu_bg1108,#ft,#nv{
+display:none;
+}
+</style>
+<script>
+jQuery(document).ready(function(){
+jQuery("#kjnav").hover(function(){
+jQuery("#kjnav_box").show();			   
+},function(){
+jQuery("#kjnav_box").hide();		
+}
+);
+
+jQuery("#kjnav_box").hover(function(){
+jQuery("#kjnav_box").show();			   
+},function(){
+jQuery("#kjnav_box").hide();		
+}
+);
+});
+
+var ycssnr=document.getElementById("ycssnr");
+var mod = document.getElementById("mod");
+var select_mod = document.getElementById("select_mod");
+function hideYcssnr(){
+ycssnr.style.display = "none";
+}
+function showYcssnr(){
+ycssnr.style.display = "";
+}
+
+function select_menu(value, txt){
+mod.value = value;
+select_mod.innerHTML = txt;
+}
+</script>
+
+<div id="append_parent"></div><div id="ajaxwaitid"></div>
+      
+
+<div id="qmenu_menu" class="p_pop blk" style="display: none;">
+<div class="ptm pbw hm">
+请 <a href="javascript:;" class="xi2" onclick="lsSubmit()"><strong>登录</strong></a> 后使用快捷导航<br>没有帐号？<a href="http://f.dataguru.cn/member.php?mod=register" class="xi2 xw1">立即注册</a>
+</div>
+</div>
+        
+        <div class="xu_w960">
+        <!--// 原登录bar-->
+        
+    	</div>        
+        
+   
+        <div style="padding:0px 5px 5px;background:#fff;width:960px;margin:0px auto;">
+    
+<div id="wp" class="wp">
+<script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/forum_viewthread.js" type="text/javascript"></script>
+<script type="text/javascript">zoomstatus = parseInt(1), imagemaxwidth = '600', aimgcount = new Array();</script>
+<div id="pt" class="bm cl">
+<div class="z">
+<a href="http://f.dataguru.cn/" class="nvhm" title="首页">炼数成金</a> <em>&#8250;</em>
+<a href="http://www.dataguru.cn/portal.php">门户</a> <em>&#8250;</em><a href="http://bi.dataguru.cn/">商业智能</a> <em>&#8250;</em>
+查看内容
+</div>
+</div>
+
+<style id="diy_style" type="text/css">#portal_block_53 .dxb_bc {  margin:10px !important;}#portal_block_54 .dxb_bc {  margin:10px !important;}#portal_block_55 .dxb_bc {  margin:10px !important;}#portal_block_56 .dxb_bc {  margin:10px !important;}#portal_block_53 {  border:#cccccc 1px solid !important;margin:0px !important;}#portal_block_54 {  border:#CCCCCC 1px solid !important;margin-top:5px !important;margin-right:0px !important;margin-bottom:0px !important;margin-left:0px !important;}#portal_block_55 {  border:#CCCCCC 1px solid !important;margin-top:5px !important;margin-right:0px !important;margin-bottom:0px !important;margin-left:0px !important;}#portal_block_56 {  border:#CCCCCC 1px solid !important;margin-top:5px !important;margin-right:0px !important;margin-bottom:0px !important;margin-left:0px !important;}</style>
+<div class="wp">
+<!--[diy=diy1]--><div id="diy1" class="area"></div><!--[/diy]-->
+</div>
+<div id="ct" class="ct2 wp cl">
+<div class="mn" style="width:640px">
+<div class="bm vw">
+<div class="h hm">
+<h1 class="ph">大数据工程师飞林沙的年终总结&amp;算法数据的思考 </h1>
+<p class="xg1">
+2014-12-23 17:06<span class="pipe">|</span>
+发布者: <a href="http://f.dataguru.cn/space-uid-66234.html">炼数成金_小数</a><span class="pipe">|</span>
+查看: <em id="_viewnum">3638</em><span class="pipe">|</span>
+评论: 0<span class="pipe">|</span>来自: 软件定义世界（SDX）</p>
+</div>
+            
+<!--[diy=diysummarytop]--><div id="diysummarytop" class="area"></div><!--[/diy]-->
+
+<div class="s"><div><strong>摘要</strong>: 从前东家离职已经一个多月的时间了，在这一个月，前前后后也和几家公司做了技术交流，自己也第一次静下来这么久来思考总结。今年是我毕业的第五年，也正巧赶上年底，就把这些凑到一起写个小总结吧，也没有什么主题， ...</div></div>
+<!--[diy=diysummarybottom]--><div id="diysummarybottom" class="area"></div><!--[/diy]-->
+
+<div class="d">
+
+<!--[diy=diycontenttop]--><div id="diycontenttop" class="area"></div><!--[/diy]-->
+<table cellpadding="0" cellspacing="0" class="vwtb"><tbody><tr><td id="article_content">                    <div>从前东家离职已经一个多月的时间了，在这一个月，前前后后也和几家公司做了技术交流，自己也第一次静下来这么久来思考总结。今年是我毕业的第五年，也正巧赶上年底，就把这些凑到一起写个小总结吧，也没有什么主题，没有主次，纯粹记录，想到哪儿写到哪儿。</div><div><br></div><div>1. 推荐系统</div><div>在最近的三四年时间里，我的主要工作就是搭建推荐系统，这几年来不说看了上千篇论文也有数百篇了，这种专注让我自认为在推荐系统领域至少处在一个业界相对领先的水准，但是也恰恰是这段经历让我被打上了深深的标签：他是一个“推荐系统专家”。既然这样，那我就先来说说推荐系统吧。</div><div><br></div><div>推荐系统是一个太庞大的词，我们不妨先退一步说推荐算法本身，其实推荐算法本身是一个综合性的问题，他说浅他可以做的很浅，说深也可以把他做到很深。你可以简单地用最基本的Content-based，再复杂点可以Collaborative Filtering，如果你想做的深入一些，基于SVD/LDA等的降维算法，基于SVD++等的评分预测算法，基于Learning To Rank的排序算法，甚至你再转换问题，把推荐问题再转换成分类问题，或者采用以上算法前先用各种聚类算法做数据的预处理，你可以折腾出很多很多的花样。所</div><div><br></div><div>以做推荐领域的工程师是个很“痛苦”的事儿，因为只要机器学习领域有任何的突破性进展，你都需要去做跟踪，NLP领域出了Word2Vec，出了GloVe，其他领域的算法工程师可以说我对NLP不感兴趣，但是你必须跟踪，因为他可以辅助你去做文本内容类的推荐算法；Deep Learning可以让图像识别领域做更棒的特征工程，你也马上要去跟踪学习，因为在做图片推荐时终于有一种方式也许能解决元信息问题；RecSys2013的best paper通过调整节点顺序从而优化矩阵分块策略，极大改善了矩阵分解算法的效率，你就要去跟踪来更新自己的旧有离线算法；微软亚研搞出了一个Light LDA允许在低网络流量下去做LDA的多机并行，你就要兴冲冲地跑过去读他们啰啰嗦嗦的几十页的paper，因为终于不用忍受LDA低劣的性能了，而这些追踪往往是无穷无尽的。但是如果你一旦停止了更新知识库，就会学术界远远甩在身后，做一个“协同过滤”工程师。</div><div><br></div><div>但是算法的一切调整只有寄托于产品才能发挥出其最大的威力，但是如何根据产品去选择和调整算法是我认识大多数的算法工程师所非常薄弱的一点。举个实际的例子，我们都知道在所有的比赛中，多种算法的混合是最重要的环节，经常就会有人问我，说哪种混合策略是最好的，但是其实这是严重依赖于产品本身的。例如Tinder，他们的产品形态是每次只出现一个人，让你点击喜欢还是不喜欢，那么这种情况你必须需要一个算法的分类器来为每个用户选择一个合适的推荐算法，并且根据用户的反馈来实时调整分类器，因为如果用户连续Unlike了几个用户，他可能就流失掉了。但是对于LinkedIn的用户推荐列表中，你很适合用若干算法混合的算法，因为这样可以保证至少让整个列表中至少有X个所感兴趣的用户，而往往同一个推荐算法的Items是趋同的。再对于展示在首页的推荐入口区域，可以优先选择若干推荐算法的交集策略，这样可以用少量的高质量Item最大化的满足用户的心理底线，从而吸引用户点击。所以认清产品的形态和交互形式，依据产品去订制算法是成为优秀算法工程师，而非算法研究员的重要一点。</div><div><br></div><div>一个优秀的推荐算法，一个优秀的推荐系统的确可以为企业创造很多价值，曾经和某知名电商网站的数据总监交流，他们的推荐系统实实在在地把销售额增加了15%，但是过于神话迷恋推荐算法和过于看扁推荐算法都是一种偏激的行为。作为推荐算法工程师更应该清楚推荐算法本身的瓶颈，或者可以估计到该算法为企业带来的实际价值，从而来决定是否应该继续优化该推荐算法。何时始，何时止，是任何一个推荐算法工程师都必须要面对和决定的问题，但是聊这个话题必须要牵扯到推荐系统的两个重要部分：产品和数据。</div><div><br></div><div>一时想不起更好的例子来了，就说淘宝吧，以淘宝的搜索推荐为例。首先，我相信淘宝从整体来讲是不需要推荐算法的，因为淘宝是以爆款商品为主打的，构成了淘宝盈利的大部分，而我相信以淘宝的KPI和运营文化，必然会以CTR为主要的KPI，所以在这个程度上，淘宝的运营必然不停地推荐爆款商品而不可能冒着风险让这部分来做个性化。这就是产品不适合做推荐的典型例子。 另一方面，由于爆款商品的推荐所以让长尾的产品没办法积累到足够的点击数据，这使得数据的缺失和偏移变得异常严重，推荐算法更是无从发挥威力。（没在淘宝工作过，所以纯属局外人猜测，另外我相信电商网站大多如此）</div><div><br></div><div>那么你从这一个例子就否定掉推荐系统的作用？这个我觉得有一个例子非常容易反应情况：现在地上每隔1米就有100块钱，在遥远的10000米外可能会有500W，你到底是选择一直低头捡100块钱，还是跑向遥远的10000米去找那500W的问题。</div><div><br></div><div>2. 深度学习</div><div>深度学习近两年可谓是机器学习领域最热的词了，大有飞入寻常百姓家的意思，现在你去参加一个数据的活动，你要是说你不会深度学习，估计会被当做神经病一样看待。但是实际上，深度学习到底有多大的价值呢？这是需要理性看待的问题。</div><div><br></div><div>我们先说什么是深度学习。其实从整体上来讲，Deep Learning就是曾经的多层神经网络，整体的思想认为每一个层次都可以被作为一个独立的特征抽象存在，所以最广泛地被用作特征工程上，而GPU的存在更是解决了几十年前的ANN的训练效率问题。那么简单来说，Deep Learning可以对抽取出的特征进行非线性组合形成更有效的特征表示。确实，从这一点来说，Deep Learning确实从理论上很好的解决了机器学习领域很麻烦的“特征抽取”问题，但是在实际的工业界，“特征工程”到底有多复杂？我们看看Deep Learning表现最好的IR领域吧，曾经是怎么做的呢？据了解微软有个小Team专门做的事儿就是从图片上找各种各样的特征，因为算法本身其实已经被锁死在Random Forest上了，往往特征的微调就能带来算法效果的极大提升，那么Deep Learning的出现当然可以很好地取代这项工作(实际效果确实无法得知)，那么总结下Deep Learning的好处：从海量的特征中通过特征工程抽取出有效的特征组合。</div><div><br></div><div>但是刨除掉语音和图像领域，转向离我们更近的工作，无论是推荐系统还是数据挖掘，特征是怎么出来的呢？对于一个电影，对于一个用户，满打满算一共就那么多特征，这个时候Deep Learning根本无从发挥。那么再退一步说，就算把User对于Item的标定作为Item的特征，由于在实际中大部分的缺失值存在，那么如果你希望用Deep Learning来对该矩阵做特征重组，第一件事情就是如何填充缺失值，而这恰恰是比特征工程更困难的事情。</div><div><br></div><div>至少从我目前的眼界来看，我还没有找出几家真正需要用Deep Learning来为企业创造价值的公司。</div><div><br></div><div>3. 大数据的反思</div><div>每一家公司都在说自己是大数据，要利用大数据，更是出现了“大数据工程师”这个职位，但是在我看来，对于算法工程师而言，该做的不是迷信大数据，而是把大数据给提取成小数据，利用小数据为企业创造价值。大数据标志着需要更大规模的集群，更大规模的计算能力，更长的生产周期，而这些都是企业的“成本”，对于大部分公司，基本面临的都是两个问题，如何拿到数据和如何利用数据，而不是如何“最好”地利用数据。</div><div><br></div><div>大数据其实意味着大样本量，那么大样本量带来的是高置信度以及广覆盖度。例如从FM来说，大数据量意味着更全面地了解一个用户的听歌品位，从金融互联网的信用风险评估来说，大数据量意味着不仅仅从消费记录而包含了社交网络信息去对用户做更全面的评价，从用户画像来说意味着建立全面的兴趣图谱和知识图谱，这些都是大数据带给我们的实际意义。说得学术一些，我们不妨认为大数据是频率学派对于贝叶斯学派一次强有力的逆袭。那么既然说到这个份上了，我们不妨思考一下，我们是不是有希望在回归贝叶斯学派，利用先验信息+小数据完成对大数据的反击呢？</div><div><br></div><div>另外，既然我们已经说到了大数据的广覆盖度，就针对这个再额外说一下吧。诚然，大数据能够全面地覆盖到所有信息，但是从实际的工业界来看，考虑到实际的计算能力以及效果，大多数公司都会对大数据做“去噪”，那么在去噪的过程中去除的不仅仅是噪音，也包括“异常点”，而这些“异常点”，恰恰把大数据的广覆盖度给降低了，于是利用大数据反而比小数据更容易产生趋同的现象。尤其对于推荐系统来说，这些“异常点”的观察其实才是“个性化”的极致。</div><div><br></div><div>4. 技术选型</div><div>既然都说到这里了，就顺着说到技术选型。之前和某公司聊过，他们说，你对技术选型怎么看，这里我就把当时说过的话重新整理一下吧。我认为初创公司技术选型分做两个层面看：</div><div><br></div><div>A. 对于大部分互联网初创公司，一般是根据初创成员擅长的领域去选择语言，选择无外乎两种，要么选择开发效率高并且入门简单的语言框架，例如Python , 例如Rails。要么选择市场覆盖量大，容易招人，并且有着非常成熟解决方案的语言，例如Java。</div><div><br></div><div>B. 对于小部分用Clojure的初创公司(我真心不愿意去黑)，必须满足一点，公司就是小团队作战，不需要扩张，用这种语言的好处就是连这种语言都会或者都愿意去学，会省掉很多面试的成本，但是招人的成本也增加了不少。(我真的是勉强为这种公司找个理由)</div><div><br></div><div>对于成熟公司的技术转型，也是分成几点来看：</div><div>A. 性能问题：说实话我极少遇到一个公司语言成为了性能瓶颈，我目前好像知道的也就是Twitter把一些核心架构从Rails变成了Java，实际原因是不是因为性能我也不知道。但是其实一定避免说上来性能问题先怪语言，据说腾讯某些工程师就特别愿意干这样的事儿，把C++当圣经，鄙视一切其他语言……但是如果真的是撑不住了，那么就换吧。</div><div><br></div><div>B. 社区问题 &amp; 开发效率问题 &amp; 招人成本问题：在10年左右的时候，大批的公司把.NET平台换成Java平台，最核心的原因除了Windows的价格问题外，还包括遇到了问题解决不了，因为大公司都是用Java/C++的，所以至少出了性能问题我还能去定点挖人，用.NET出了问题都不知道去哪儿找人。 另外就是比如C++开发起来确实慢，而且非常容易系统崩溃，这个时候逐渐地去做技术转型到其他语言也是有道理的，只是要掌握节奏的问题。最后就是那些刚开始作死用一些小众语言(比如Clojure)的公司，随着大规模招人就需要做技术转型了。在这一点上，最主要的就是避免为了转型，为了秀技术，为了跟风而转型，我相信新技术也一定有新技术的好，一定解决了某一方面的问题，但是转型有着转型的代价，人力成本，系统稳定性，量产招人的困难程度，这些都可以换算成“成本”，那么在做这种转型时一定要把这笔账算清，再决定转还是不转。</div><div><br></div><div>C. 管理问题。一个网站，一个服务，我们不分MVC，纯粹去用PHP往模板里面写代码，其实也能做出来，开发成本稍微高点呗，但是代码容易看懂啊。这个例子有些极端，我想表达的是，用再烂的技术都能做出一个可用的东西。但是问题是，在现在的时代，程序员真他妈难找啊！当薪资几乎相同的情况下，也只能靠技术来吸引人和留人。也就是说至少要让员工觉得他们能学到新东西，外人来面试的时候我也要有能吹牛逼的资本，这时怎么办？我一般会选择在一些边缘系统上去做技术尝试，例如我会倾向于用其他语言(例如Go, Swift)搭建外围系统或实验室项目。这也是我对某些流失情况严重的团队最大的建议。</div><div><br></div><div>5. 算法，产品和企业价值</div><div>这一点又回到了曾经老生常谈的问题，算法工程师对于企业的价值是什么，为了讨论的方便，我们还是把算法工程师换成数据工程师吧。</div><div><br></div><div>A. 任何系统不要脱离产品而存在。先吐个槽，之前在某个公司面试，某个公司上来就问我，你觉得我们的用户画像应该怎么做？这个问题是非常业余的(这个问题就像是有人问我我们网站有性能问题，你说咋办；好吧，这个问题也是这个公司问我的)，任何数据系统都是强产品关联的，这也是太多公司去做数据系统的误区，在这里我还是用户画像为例。 用户画像到底是什么，其实说简单了他就是一个用户宽表，如果偏要我说需要注意的，就是在选择数据库的时候一定要选择列容易扩充的数据库。如果要说具体需要哪些字段，我还真的没法说，我只能把他归类成用户元属性数据，行为统计数据，潜在挖掘数据，至此而已。因为数据系统从来不是一个事先规划好的系统，而是需要随着业务增长来逐渐填充的系统，这也是数据平台难做的原因。 所以我真心无法理解有一些不太大的公司成立了一个部门，这个部门专门做用户画像(例如PPTV)。</div><div><br></div><div>B. 数据工程师不仅仅是处理数据而是理解数据。我遇到的数据工程师大抵分成两类，一类是数据开发工程师，例如Hadoop工程师，数据仓库工程师；一类是学术化的工程师，深钻模型，这种工程师其实还是更适合研究院；当然，这两种工程师都各有优缺点，但是我更觉得对于大部分企业来说更需要一个理解数据而非处理数据的工程师，核心价值更应该在于深入去理解产品业务，数据处理，数据建模，做数据分析和挖掘，接下来对于产品的发展做数据化的驱动，并且知道何时应该继续对模型进行优化，何时应该适可而止。</div><div><br></div><div>C. 沿着上一点继续说，Growth Hacker &amp; Data Scientist。一个优秀的算法/数据工程师应该具备Growth Hacker 和 Data Scientist的能力，其实这两点也恰恰标志着不仅仅是数据，而是一个产品的最重要两点：增长和留存。作为Growth Hacker，你应该为企业找到潜在的机会点，帮助产品增长；另一方面，你也应该作为Data Scientist，发现现有数据的问题，帮助产品优化体验，提升留存，而推荐系统往往是属于这一部分的子集。</div><div><br></div><div>D. 避免成为成本部门。这是我后期去带一个事业部的时候才有着的最深体会。对于任何一个部门来讲，最痛苦的莫过于自己成为了公司的成本部门，所以为什么小公司的实验室部门根本搞不下去，所以为什么数据部门都希望自己有个数据产品，所以为什么技术部门都不希望自己仅仅是一个支撑部门。那么无论是对于技术团队，还是数据团队，作为部门的负责人，永远需要想的都应该是，我们为企业到底创造了什么实际的价值，而这个价值是不是当前公司所最紧缺的。例如公司现在最缺的是增长，你整个部门偏偏要拼死命做留存；公司最需要的是产品快速迭代，你偏偏要去搞底层性能优化。这些很势利，却是决定着部门荣辱兴衰的最重要一点，无论是什么部门，去帮忙解决公司最痛的那个点才是最重要的。</div><div><br></div><div>6. 数据和直觉</div><div>有一次我和别人聊了很多，他说所以做产品经理必须要数据决策对不对？我觉得这个事儿也对也不对。</div><div><br></div><div>数据驱动是什么？数据驱动是从已有的数据中去发现规律对产品进行优化，但是数据做不到的是从未知中挖掘机会点，而这往往是一个优秀产品经理的直觉。我经常和人举的一个例子是，要是数据驱动，也许今天应该也出现不了微信。很多时候优秀的创意就是来源于一个直觉，而不是循规蹈矩的分析推导，因为这样往往会陷入我在上文提到的大数据的窘境。所以不要无视数据，更不要神化数据，该相信直觉的时候还是相信直觉。其实有时候做算法也是一样，你不可能把上千种算法都A-B Test一次，有时候别人问我为什么，我能说的也就是直觉，作为算法工程师的直觉，“用另外一种算法效果不会更好的”。</div><div><br></div><div>更何况产品经理的沟通，协调，跟踪能力同样是不可或缺的一部分，也是大部分工程师所缺乏的自身特质。</div><div><br></div><div>7. 数据工程师的窘境</div><div>这一点我不知道该从何写起，其实算是数据工程师职业生涯上面临的最大尴尬吧。</div><div><br></div><div>现在所有公司都在谈数据驱动，可是说实话我目前还真的没看到有真正数据驱动的公司，为什么呢？很关键的就是，说驱动你得驱动得起来才行啊。对于大部分公司，数据部门只是作为一个独立的支撑部门存在，我让你干嘛你就干嘛就行了，今天帮我跑个数据，明天帮我上个模型，产品是我的，你别和我指手画脚。再一些公司呢，数据部门，不对，不能叫做部门，“数据组”只是产品的一个附属部门，部门的老大都是产品总监，你就更没资本去驱动你的Boss了。 其实归根结底，还是中国人不相信这些东西，老板自己都不相信或者不重视，各位想一下大部分中小公司对于CTO和技术总监的要求就知道了：帮我把性能问题给解决了，而这些却恰恰应该是一个系统架构师的定位。这里必须要再丢一下caoz的文章：《CTO这点事 - caoz的梦呓》</div><div><br></div><div>那么数据工程师发展到最后职业生涯到底进展到哪儿呢？我也不知道，也许我们都只能期望国内数据行业的进一步成熟和被认可了。而这些就是我以前老大讲的，在数据的工程领域，我们都是先行者，没有人可以告诉我们怎么走，这些都是需要我们自己去探索和闯荡的路。</div><div><br></div><div>8. 企业价值 &amp; 市值</div><div>我一直有个理论，一个大的市场，一定能够容纳下两家上市公司。例如我们认为分类信息是个大领域，那么58上市了，我相信赶集一定能上，而且如果“58” 30亿的市值，我相信赶集应该会在20亿上下浮动。这个其实极大地关系到了如何选择一个公司。</div><div><br></div><div>其实现在就这么多行业了，社交网络已经日渐没落，腾讯和陌陌已经切去了聊天IM的大部分市场，所以现在一家再做细分领域的聊天社交，包括匿名社交我相信都只是骗骗投资人的钱罢了。视频行业大势已定，几乎没什么太大空间了。唯一一个老牌并且有想象空间的就是音乐，问题还是在于版权和付费意识决定了音乐行业的变现一直是大问题，所以倒是仍然值得再去拼一次。</div><div><br></div><div>那么剩下的就是大家都热炒无数次的。</div><div>电商: 电商一定还会有市场，只是新应用的用户获取成本太高，如何选择品类，如何实现用户的自传播从而实现盈利成为了最关键的问题。</div><div><br></div><div>O2O: 一个又一个细分市场，因为线下太大，没有任何一家有资本和能力全部囊括。但是稍微熟悉O2O行业的都知道，O2O的最大关键还是在于Offline的服务品质，线上只是线下的一个宣传手段罢了，就像曾经在QQ上也能订餐，现在只是发展出一个APP然后服务规模扩大化精细化了而已，既然只是一个渠道，那么Online的部分在O2O行业所能得到的重视程度自然也就有限(个人意见，不喜可喷)。</div><div><br></div><div>互联网金融：金融互联网是个千万亿的市场，一旦成功注定是秒杀互联网行业的，可是正是因为这种高市值也伴随着高风险，一个不小心现金流就如同那些P2P公司一样卷铺盖跑路了。另外问题一样，互联网金融，核心还是金融，互联网只是渠道，那么核心竞争力还是取决于如何利用数据来推动金融业务的发展，例如现在P2P里的信用风险评估，其实就是金融业的最基本概念罢了，现在拿出来用互联网再炒一遍。</div><div><br></div><div>在线教育：不懂.....只是直觉觉得不看好，因为觉得反人性的，太严肃的东西在互联网上都玩不转</div><div><br></div><div>硬件：离我太远，我只是觉得现在的智能硬件还处于太初级的阶段，大多是传统硬件加个Wifi而已，有待继续发展。</div><div><br></div><div>其实对于大多数人来讲，技术永远都不是瓶颈，难的都是如何选择一个公司和行业，从短期来讲选公司，在过去我们都可以靠融资多少，风投机构是否靠谱来判断一个公司，但是在资本大热的今天变得越来越不可行了，那么这个时候只能依靠自己的判断。例如拉勾，B轮2500万美元，那么也就是说预计B轮估值3亿左右，那么就看看吧，51job和智联都在10个亿左右的市值，而拉勾做的太深领域无法自拔，只能是他们的一个金字塔顶，于是你可以去推算一下他的想象空间。</div><div><br></div><div>长期来讲选行业，那么未来几年内大热的行业也就这么多，选行业看看前车之鉴例如旅游，看看途牛的估值也知道这个行业的互联网发展了；再接下来我觉得重要的还是在于在这个行业中到底能扮演什么样的角色，是否能解决核心问题，例如硬件的核心问题从眼前来看是供应链和生产工艺，那么做数据去盲目进入只会沦为边缘角色，如此类推。</div>                    </td></tr></tbody></table>
+
+<!--[diy=diycontentbottom]--><div id="diycontentbottom" class="area"></div><!--[/diy]-->
+
+<script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/home.js" type="text/javascript"></script>
+<div id="click_div"><table cellpadding="0" cellspacing="0" class="atd">
+<tbody><tr><td>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=click&op=add&clickid=1&idtype=aid&id=6303&hash=d73517ce3d5a29d6842a2e927766612b&handlekey=clickhandle" id="click_aid_6303_1" onclick="showWindow(this.id, this.href);doane(event);">
+<div class="atdc">
+<div class="ac2" style="height:50px;">
+<em>6</em>
+</div>
+</div>
+<img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/xianhua.gif" alt=""><br>鲜花</a>
+</td>
+<td>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=click&op=add&clickid=2&idtype=aid&id=6303&hash=d73517ce3d5a29d6842a2e927766612b&handlekey=clickhandle" id="click_aid_6303_2" onclick="showWindow(this.id, this.href);doane(event);">
+<img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/woshou.gif" alt=""><br>握手</a>
+</td>
+<td>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=click&op=add&clickid=3&idtype=aid&id=6303&hash=d73517ce3d5a29d6842a2e927766612b&handlekey=clickhandle" id="click_aid_6303_3" onclick="showWindow(this.id, this.href);doane(event);">
+<img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/leiren.gif" alt=""><br>雷人</a>
+</td>
+<td>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=click&op=add&clickid=4&idtype=aid&id=6303&hash=d73517ce3d5a29d6842a2e927766612b&handlekey=clickhandle" id="click_aid_6303_4" onclick="showWindow(this.id, this.href);doane(event);">
+<img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/luguo.gif" alt=""><br>路过</a>
+</td>
+<td>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=click&op=add&clickid=5&idtype=aid&id=6303&hash=d73517ce3d5a29d6842a2e927766612b&handlekey=clickhandle" id="click_aid_6303_5" onclick="showWindow(this.id, this.href);doane(event);">
+<img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/jidan.gif" alt=""><br>鸡蛋</a>
+</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">
+function errorhandle_clickhandle(message, values) {
+if(values['id']) {
+showCreditPrompt();
+show_click(values['idtype'], values['id'], values['clickid']);
+}
+}
+</script>
+
+<h3 class="mbm xs1">
+刚表态过的朋友 (<a href="javascript:;" onclick="show_click(&#39;aid&#39;, &#39;6303&#39;, &#39;5&#39;)">6 人</a>)
+</h3>
+<div id="trace_div" class="xs1">
+<ul id="trace_ul" class="ml mls cl"><li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-51472.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar.php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-51472.html" title="dhjabc_1" target="_blank">dhjabc_1</a></p>
+</li>
+<li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-251079.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar(1).php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-251079.html" title="xiaogang" target="_blank">xiaogang</a></p>
+</li>
+<li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-87877.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar(2).php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-87877.html" title="mrzhong" target="_blank">mrzhong</a></p>
+</li>
+<li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-64141.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar(3).php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-64141.html" title="lengyoufang" target="_blank">lengyoufang</a></p>
+</li>
+<li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-150932.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar(4).php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-150932.html" title="nekie" target="_blank">nekie</a></p>
+</li>
+<li>
+<div class="avt"><a href="http://f.dataguru.cn/space-uid-78928.html" target="_blank" title="鲜花"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/avatar(5).php"></a></div>
+<p><a href="http://f.dataguru.cn/space-uid-78928.html" title="lypop123" target="_blank">lypop123</a></p>
+</li>
+</ul>
+</div>
+</div>
+
+
+<!--[diy=diycontentclickbottom]--><div id="diycontentclickbottom" class="area"></div><!--[/diy]-->
+
+</div>
+
+<div class="o cl ptm pbm">
+
+
+<a class="oshr" style="background:white url(source/plugin/sina_login/img/icon_logo.png) no-repeat 5px 50%;" href="javascript:void((function(s,d,e,r,l,p,t,z,c,o) {var f='http://service.weibo.com/share/share.php?appkey=2459371622',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&ralateUid=',o||'','&sourceUrl=',e(l),'&content=',c||'gbk','&pic=',e(p||'')].join('');function a(){if(!window.open([f,p].join(''),'mb', ['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width- 440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0);}else{a();}}) (screen,document,encodeURIComponent,'','','','','','gbk', ''));">分享到新浪微博</a>
+
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=favorite&type=article&id=6303&handlekey=favoritearticlehk_6303" id="a_favorite" onclick="showWindow(this.id, this.href, &#39;get&#39;, 0);" class="oshr ofav">收藏</a>
+<a href="http://f.dataguru.cn/home.php?mod=spacecp&ac=share&type=article&id=6303&handlekey=sharearticlehk_6303" id="a_share" onclick="showWindow(this.id, this.href, &#39;get&#39;, 0);" class="oshr">分享</a>
+<a href="http://f.dataguru.cn/misc.php?mod=invite&action=article&id=6303" id="a_invite" onclick="showWindow(&#39;invite&#39;, this.href, &#39;get&#39;, 0);" class="oshr oivt">邀请</a>
+</div>
+<div class="pren pbm cl">
+<em>上一篇：<a href="http://f.dataguru.cn/article-6302-1.html">大数据分析买房定律——那些年你错过的买房好时机</a></em><em>下一篇：<a href="http://f.dataguru.cn/article-6306-1.html">人才争夺：2015年求职招聘趋势</a></em></div>
+</div>
+
+<!--[diy=diycontentrelatetop]--><div id="diycontentrelatetop" class="area"></div><!--[/diy]-->
+<!--[diy=diycontentrelate]--><div id="diycontentrelate" class="area"></div><!--[/diy]-->
+
+<div id="comment" class="bm">
+<div class="bm_h cl">
+<h3>最新评论</h3>
+</div>
+<div id="comment_ul" class="bm_c"><form id="cform" name="cform" action="http://f.dataguru.cn/portal.php?mod=portalcp&ac=comment" method="post" autocomplete="off">
+<div class="tedt">
+<div class="area">
+<textarea name="message" rows="3" class="pt" id="message" onkeydown="ctrlEnter(event, &#39;commentsubmit_btn&#39;);"></textarea>
+</div>
+</div>
+
+<input type="hidden" name="portal_referer" value="portal.php?mod=view&amp;aid=6303#comment">
+<input type="hidden" name="referer" value="portal.php?mod=view&amp;aid=6303#comment">
+<input type="hidden" name="id" value="0">
+<input type="hidden" name="idtype" value="">
+<input type="hidden" name="aid" value="6303">
+<input type="hidden" name="formhash" value="aecc36a2">
+<input type="hidden" name="replysubmit" value="true">
+<input type="hidden" name="commentsubmit" value="true">
+<p class="ptn"><button type="submit" name="commentsubmit_btn" id="commentsubmit_btn" value="true" class="pn"><strong>评论</strong></button></p>
+</form>
+</div>
+</div>
+<div id="comment" class="bm">
+<script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = "638" , _h = 350;
+  var param = {
+url:location.href,
+width:'638',
+height:'350',
+appkey:'2533203525', /**您申请的应用appkey,显示分享来源(可选)*/
+border:'0',/**是否显示边框*/
+skin:'1',
+titlebar:'1',/**是否显示标题栏*/
+colordiy:'0',/**是否自定义样式*/
+color:'',
+rnd:new Date().valueOf(),
+dpc:1
+  }
+  var temp = [];
+  for( var p in param ){
+temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://widget.weibo.com/distribution/comments.php?' + temp.join('&amp;') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/comments.html" width="638" height="350"></iframe>
+</div>
+<!--[diy=diycontentcomment]--><div id="diycontentcomment" class="area"></div><!--[/diy]-->
+
+
+</div>
+<div class="sd pph" style=" width:308px">
+
+
+<div class="drag">
+<!--[diy=diyrighttop]--><div id="diyrighttop" class="area"></div><!--[/diy]-->
+</div>
+        
+        
+        <div class="bm" style="width:306px;">
+<div class="bm_h cl">
+<h2>即将开课</h2>
+</div>
+<div class="bm_c">
+<ul class="xl xl2 cl"><li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-5420-1.html" target="_blank">金融时间序列分析（第二期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-5757-1.html" target="_blank">数据库系统实现技术内幕（第二期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4058-1.html" target="_blank">DOE技术及应用（第二期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4063-1.html" target="_blank">机器学习（第五期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4187-1.html" target="_blank">大数据的Java基础（第四期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-3574-1.html" target="_blank">基于案例学习SQL优化（第六期） </a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-6187-1.html" target="_blank">深度玩转Excel</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4878-1.html" target="_blank">Spark大数据快速计算平台（第四期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-3108-1.html" target="_blank">详解SQL与PL/SQL（第三期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4696-1.html" target="_blank">大数据的Linux基础（第四期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-3573-1.html" target="_blank">Hadoop应用开发实战案例（第六期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4958-1.html" target="_blank">R七种武器之交互化展示包shiny（第四期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-6108-1.html" target="_blank">【预售】软件自动化测试Selenium2</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4834-1.html" target="_blank">MySQL数据库运维（第五期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-4614-1.html" target="_blank">R七种武器之数据加工厂plyr（第五期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-5747-1.html" target="_blank">大数据算法导论（第二期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-5492-1.html" target="_blank">Storm实时数据分析平台（第三期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-3154-1.html" target="_blank">Oracle 高可用（第六期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-1574-1.html" target="_blank">Hadoop数据分析平台（第21期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-6233-1.html" target="_blank">【预售】数据治理及数据仓库模型设计</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-6188-1.html" target="_blank">基于案例学抽样技术</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-2538-1.html" target="_blank">NoSQL与NewSQL数据库引航（第九期）</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-6327-1.html" target="_blank">基于案例学Java服务器端程序设计</a></li>
+<li style="width:100%">&#8226; <a href="http://www.dataguru.cn/article-1417-1.html" target="_blank">数据分析与SAS（第十期）</a></li>
+</ul>
+</div>
+</div>
+        
+        <div class="bm" style="width:302px; padding:2px">
+        	<a target="_blank" href="http://edu.dataguru.cn/"><img border="0" width="0" height="0" src="http://f.dataguru.cn/ads/peixun1.jpg" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 302px 227px;"></a>
+        </div>
+        
+        <div class="bm" style="width:306px;">
+<div class="bm_h cl">
+<h2>热门文章</h2>
+</div>
+<div class="bm_c">
+<ul class="xl xl2 cl"><li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6318-1.html" target="_blank">从数据看“豆瓣”兴衰</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6316-1.html" target="_blank">百度天眼：将大数据应用于场景让你看见真实</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6312-1.html" target="_blank">小明说，我是数据分析师 ——-浅谈数据分析师的前世今生</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6306-1.html" target="_blank">人才争夺：2015年求职招聘趋势</a></li>
+<li style="width:100%">&#8226; <a href="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区.html" target="_blank">大数据工程师飞林沙的年终总结&amp;算法数据的思考</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6302-1.html" target="_blank">大数据分析买房定律——那些年你错过的买房好时机</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6300-1.html" target="_blank">世界地图原来还可以这样画</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6290-1.html" target="_blank">牛逼大数据分析：美国黑得意味深长</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6286-1.html" target="_blank">大数据与基因技术结合 拯救可怕的“帕金森”</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/article-6282-1.html" target="_blank">微博数据的可视分析</a></li>
+</ul>
+</div>
+</div>
+        
+        <div class="bm" style="width:306px;">
+<div class="bm_h cl">
+<h2>社区热帖</h2>
+</div>
+<div class="bm_c">
+<ul class="xl xl2 cl"><li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-456097-1-1.html" target="_blank">炼数成金主办2015年中国数据价值链盛会，有奖征集意见！</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-461281-1-1.html" target="_blank">【上海/济南/沈阳福利活动】家庭影院体验邀请，提升逼格的体验-还可领300元礼品.</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-450176-1-1.html" target="_blank">就业/择业很轻松，炼数成金人才服务启动，邀请同学们关注</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-439881-1-1.html" target="_blank">《大型电商分布式系统实践》新课上线！构建低成本、高可用、高可扩展系统不再是梦想</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-449441-1-1.html" target="_blank">原来毕业率才11%，看来坚持下来不容易啊</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-439631-1-1.html" target="_blank">【抢票参会】2014Oracle技术嘉年华，限时免费中，速来抢占名额吧！</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-441243-1-1.html" target="_blank">《LaTeX公式排版系统》课程，助你快速生成格式漂亮的数据分析文稿</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-447005-1-1.html" target="_blank">机器学习第十周作业 美国植物数据库 按州 聚类及可视化</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-463329-1-1.html" target="_blank">Dataguru社区三周年站庆拍卖计划火热上线，欢迎大家备好金子，踊跃参与！</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-456190-1-1.html" target="_blank">2014年重磅新课《软件自动化测试Selenium2》上线，支持者速进！</a></li>
+</ul>
+</div>
+</div>
+        
+        <div class="bm" style="width:302px; padding:2px">
+        	<a target="_blank" href="http://f.dataguru.cn/thread-463329-1-1.html"><img border="0" width="0" height="0" src="http://f.dataguru.cn/ads/paimai1.jpg" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 302px 227px;"></a>
+        </div>
+        
+        <div class="bm" style="width:306px;">
+<div class="bm_h cl">
+<h2>社区精华</h2>
+</div>
+<div class="bm_c">
+<ul class="xl xl2 cl"><li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-447005-1-1.html" target="_blank">机器学习第十周作业 美国植物数据库 按州 聚类及可视化</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-458870-1-1.html" target="_blank">机器学习11周作业_手机上网用户画像</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-459236-1-1.html" target="_blank">十一周大作业---新闻推荐</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-449211-1-1.html" target="_blank">画图解释p74页关于LAR算法所定义的一系列向量的几何意义 ,理解LAR和Lasso的轨迹图为</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-460316-1-1.html" target="_blank">机器学习11周作业--文本聚类</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-459448-1-1.html" target="_blank">机器学习第11周大作业 - 基于支持向量机（SVM）的书本自动分类及大数据下的实施</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-459247-1-1.html" target="_blank">机器学习11周作业----低密度和高密度下人群估计</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-454086-1-1.html" target="_blank">第十一周大作业</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-460481-1-1.html" target="_blank">使用SVM对英文字母进行识别</a></li>
+<li style="width:100%">&#8226; <a href="http://f.dataguru.cn/thread-459146-1-1.html" target="_blank">机器学习案例</a></li>
+</ul>
+</div>
+</div>
+
+        
+
+</div>
+</div>
+
+
+<div class="wp mtn">
+<!--[diy=diy3]--><div id="diy3" class="area"></div><!--[/diy]-->
+</div>
+<input type="hidden" id="portalview" value="1">	<div style="clear:both"></div></div>    </div>
+
+
+
+
+<script type="text/javascript">
+_attachEvent(window, 'load', getForbiddenFormula, document);
+function getForbiddenFormula() {
+var toGetForbiddenFormulaFIds = function () {
+ajaxget('plugin.php?id=cloudsearch&formhash=aecc36a2');
+};
+var a = document.body.getElementsByTagName('a');
+for(var i = 0;i < a.length;i++){
+if(a[i].getAttribute('sc')) {
+a[i].setAttribute('mid', hash(a[i].href));
+a[i].onmousedown = function() {toGetForbiddenFormulaFIds();};
+}
+}
+var btn = document.body.getElementsByTagName('button');
+for(var i = 0;i < btn.length;i++){
+if(btn[i].getAttribute('sc')) {
+btn[i].setAttribute('mid', hash(btn[i].id));
+btn[i].onmousedown = function() {toGetForbiddenFormulaFIds();};
+}
+}
+}
+</script>
+
+<div id="ft" class="wp cl">
+<div id="flk" class="y">
+<p>
+&nbsp;<a href="http://discuz.qq.com/service/security" target="_blank" title="防水墙保卫网站远离侵害"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/security.png"></a>&nbsp;&nbsp;<span id="tcss"></span><script type="text/javascript" src="http://tcss.qq.com/ping.js?v=1FA0" charset="utf-8"></script><script type="text/javascript" reload="1">pgvMain({"discuzParams":{"r2":"8655826","ui":0,"rt":"portal","pn":1,"qq":"000"},"extraParams":""});</script><script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F422bdfc7165816719df174ae819d76e1' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/h.js" type="text/javascript"></script>
+</p>
+<p class="xs0">
+GMT+8, 2014-12-27 20:41<span id="debuginfo">
+, Processed in 0.420264 second(s), 25 queries
+.
+</span>
+</p>
+</div></div>
+<script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/home.php" type="text/javascript"></script>
+
+<!--//删除桌面短消息提醒--><div id="scrolltop" style="left: -40px; visibility: visible;">
+<span hidefocus="true"><a title="返回顶部" onclick="window.scrollTo(&#39;0&#39;,&#39;0&#39;)" class="scrolltopa"><b>返回顶部</b></a></span>
+</div>
+<script type="text/javascript">_attachEvent(window, 'scroll', function () { showTopLink(); });checkBlind();</script>
+			<div id="discuz_tips" style="display:none;"></div>
+			<script type="text/javascript">
+				var tipsinfo = '8655826|X3.2|0.6||0||0|7|1419684064|05830fb2a3c46ca021d59b1be0193a89|2';
+			</script>
+			<script src="http://discuz.gtimg.cn/cloud/scripts/discuz_tips.js?v=1" type="text/javascript" charset="UTF-8"></script></div>
+  </div>
+
+<div class="blank10 wrap_end"></div>
+<div class="blank10"></div>
+
+<!--footer copyright S-->
+<div class="friendlink" id="friendlink">
+<a href="http://m.dataguru.cn/misc.php?mod=mobile" rel="nofollow">手机版</a><a href="http://f.dataguru.cn/topic-partners.html" rel="nofollow">友情链接</a><a href="http://cran.dataguru.cn/" rel="nofollow">CRAN镜像</a><a href="http://apache.dataguru.cn/" rel="nofollow">Apache镜像</a><a href="http://www.dataguru.cn/plugin.php?id=modpay_dzx:modpay" rel="nofollow">版主中心</a><a href="http://www.dataguru.cn/misc.php?mod=stat" rel="nofollow">站点统计</a><a href="http://www.dataguru.cn/plugin.php?id=itpub_medal:medal_list" rel="nofollow">徽章</a><a href="http://www.dataguru.cn/archiver/">文本模式</a>
+</div>
+<div class="footer">
+<div class="copyright">CopyRight 2011-2012 dataguru.cn All Right Reserved.<br>
+版权所有 皓岚信息技术有限公司 <a href="http://f.dataguru.cn/topic-contactus.html" rel="nofollow">联系我们</a><br>
+合作伙伴 中山大学海量数据与云计算研究中心<br>
+<a href="http://www.miibeian.gov.cn/">粤ICP备08028958号　 </a></div>
+</div>
+<!--左侧 开始-->
+    <div id="float_l" style="">
+      <div id="zk_b" style="display: none;">
+        <div id="float_l_b"><a href="http://www.dataguru.cn/article-1417-1.html?union_site=leftlayer" target="_blank" title="数据分析与SAS（第十期）">数据分析与SAS（第十期）</a><a href="http://www.dataguru.cn/article-5420-1.html?union_site=leftlayer" target="_blank" title="金融时间序列分析（第二期）">金融时间序列分析（第二期）</a><a href="http://www.dataguru.cn/article-5757-1.html?union_site=leftlayer" target="_blank" title="数据库系统实现技术内幕（第二期）">数据库系统实现技术内幕（第...</a><a href="http://www.dataguru.cn/article-4058-1.html?union_site=leftlayer" target="_blank" title="DOE技术及应用（第二期）">DOE技术及应用（第二期）</a><a href="http://www.dataguru.cn/article-4063-1.html?union_site=leftlayer" target="_blank" title="机器学习（第五期）">机器学习（第五期）</a><a href="http://www.dataguru.cn/article-6102-1.html?union_site=leftlayer" target="_blank" title="【预售】  Oracle 12c RAC集群管理">【预售】  Oracle 12c RAC集...</a><a href="http://www.dataguru.cn/article-4187-1.html?union_site=leftlayer" target="_blank" title="大数据的Java基础（第四期）">大数据的Java基础（第四期）</a></div> 
+        <div id="float_l_an" class="left_float"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/left_gb_an.gif" width="27" height="297"></div>
+      </div>
+      <div id="gb_b" class="left_float" style="display: block;"> <img id="left_bar" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/left_zk_zn.gif" width="27" height="297"> <img id="close_bar" width="27" height="27" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_close.png"></div>
+    </div>
+    <!--左侧 结束-->
+    <!--右侧 开始-->
+    <div id="float_r" style="">
+      <div id="zk_b_r" style="display: none;">
+        <div id="float_r_an"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/right_gb_an.gif" width="28" height="315"></div>
+        <div id="float_r_b"><a href="http://f.dataguru.cn/thread-271691-1-1.html" target="_blank" title="Dataguru［奖学金］制度">Dataguru［奖学金］制度</a><a href="http://f.dataguru.cn/thread-461281-1-1.html" target="_blank" title="济南/沈阳同学福利-点击领取免固定学费道具卡">济南/沈阳同学福利-点击领取...</a><a href="http://www.dataguru.cn/article-1543-1.html" target="_blank" title="逆向收费式网络培训 详解">逆向收费式网络培训 详解</a><a href="http://f.dataguru.cn/thread-208755-1-1.html" target="_blank" title="充值钱包送免固定学费道具卡">充值钱包送免固定学费道具卡</a><p> <span class="tel"><img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/tel.jpg" width="115" height="21"></span> <span class="tx"><a href="tencent://message/?uin=2222010006&Site=edu.dataguru.cn&Menu=yes" target="blank"><img border="0" alt="点击这里给我发消息" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/pa"></a><a href="tencent://message/?uin=2222010060&Site=edu.dataguru.cn&Menu=yes" target="blank"><img border="0" alt="点击这里给我发消息" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/pa(1)"></a></span> <span class="ewm"> <img src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/ewm.jpg" width="73" height="73"> <em>关注官方微信</em> </span> </p></div>
+      </div>
+      <div id="gb_b_r" style="display: block;"> <img id="right_bar" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/right_zk_zn.gif" width="28 " height="315"> <img id="close_bar_r" width="27" height="27" src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/icon_close.png"></div>
+    </div>
+    <!--右侧 结束-->
+    <script src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/jquery.cookie.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        var phpself = "/portal.php";
+    
+        var httphost = "f.dataguru.cn";
+        
+        //论坛
+        var gid = 0;
+        var fid = 0;
+        var tid = 0;
+        
+        //门户
+        var aid = 6303;
+    
+        //获得当前课程id
+        var lessonid = 0;
+    
+                                        
+        var myDate = new Date();
+        var y = myDate.getFullYear().toString();    //获取完整的年份(4位,1970-????)
+        var m = myDate.getMonth().toString();       //获取当前月份(0-11,0代表1月)
+        var d = myDate.getDate().toString();        //获取当前日(1-31)
+                                    
+        var today = y + m + d;
+                                    
+        var left_status = jQuery.cookie(today + '_left');
+        if(left_status == 'close'){
+            jQuery('#gb_b').css('display', 'block');
+            jQuery("#zk_b").css('display', 'none');		
+        } else if(left_status == 'closeall'){
+            jQuery('#gb_b').css('display', 'none');
+            jQuery("#zk_b").css('display', 'none');		
+        } else {
+            jQuery("#gb_b").css('display', 'none');
+            jQuery('#zk_b').css('display', 'block');	
+        }
+        
+        var right_status = jQuery.cookie(today + '_right');
+        if(right_status == 'close'){
+            jQuery('#gb_b_r').css('display', 'block');
+            jQuery("#zk_b_r").css('display', 'none');
+        } else if(right_status == 'closeall'){
+            jQuery('#gb_b_r').css('display', 'none');
+            jQuery("#zk_b_r").css('display', 'none');	
+        } else {
+            jQuery("#gb_b_r").css('display', 'none');
+            jQuery('#zk_b_r').css('display', 'block');
+        }
+        
+        //左侧展开
+        jQuery("#left_bar").click(function(){
+            jQuery.cookie(today + '_left', 'open', {expires: 1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery("#gb_b").css('display', 'none');
+            jQuery('#zk_b').css('display', 'block');
+        });
+        
+        //左侧闭合
+        jQuery('#float_l_an').click(function(){
+            jQuery.cookie(today + '_left', 'close', {expires: 1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery('#gb_b').css('display', 'block');
+            jQuery("#zk_b").css('display', 'none');								 
+        });
+        
+        //右侧展开
+        jQuery("#right_bar").click(function(){
+            jQuery.cookie(today + '_right', 'open', {expires: 1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery("#gb_b_r").css('display', 'none');
+            jQuery('#zk_b_r').css('display', 'block');
+        });
+        
+        //右侧闭合
+        jQuery('#float_r_an').click(function(){
+            jQuery.cookie(today + '_right', 'close', {expires: 1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery('#gb_b_r').css('display', 'block');
+            jQuery("#zk_b_r").css('display', 'none');								 
+        });
+    
+        //左侧关闭
+        jQuery('#close_bar').click(function(){
+            jQuery.cookie(today + '_left', 'closeall', {expires: 0.1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery('#gb_b').css('display', 'none');
+            jQuery("#zk_b").css('display', 'none');	
+        });
+    
+        //右侧关闭
+        jQuery('#close_bar_r').click(function(){
+            jQuery.cookie(today + '_right', 'closeall', {expires: 0.1, path: '/', domain: 'dataguru.cn', secure: false});
+            jQuery('#gb_b_r').css('display', 'none');
+            jQuery("#zk_b_r").css('display', 'none');	
+        });
+    
+    
+        //ajax 获得左侧推荐内容
+        jQuery.ajax({
+            type : "POST",
+            url : '/site_left.php',
+            data : {'httphost' : httphost, 'phpself' : phpself,'lessonid' : lessonid, 'gid' : gid, 'fid' :fid, 'tid' : tid, 'aid' : aid},
+            success : function(data){	
+                //var dataObj = eval("("+data+")");//转换为json对象 
+                jQuery('#float_l_b').html(data);	
+                jQuery('#float_l').show();
+            }
+        });
+    
+        // ajax 获得右侧推荐内容
+        jQuery.ajax({
+            type : "POST",
+            url : '/site_right.php',
+            success : function(data){	
+                //var dataObj = eval("("+data+")");//转换为json对象 
+                jQuery('#float_r_b').html(data);
+                jQuery('#float_r').show();
+            }
+        });	
+    });
+    
+    </script>
+<iframe src="./大数据工程师飞林沙的年终总结&算法数据的思考 - 商业智能-炼数成金-Dataguru专业数据分析社区_files/user_visited.html" width="0" height="0" frameborder="0" scrolling="0"></iframe>
+
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

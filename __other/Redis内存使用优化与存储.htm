@@ -1,0 +1,2613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0075)http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Redis内存使用优化与存储</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./Redis内存使用优化与存储_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./Redis内存使用优化与存储_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./Redis内存使用优化与存储_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn3.infoqstatic.com/favicon.ico?20141125-0117" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn4.infoqstatic.com/apple-touch-icon.png?20141125-0117">
+
+        <link rel="stylesheet" href="./Redis内存使用优化与存储_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./Redis内存使用优化与存储_files/ga.js"></script><script async="" type="text/javascript" src="./Redis内存使用优化与存储_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./Redis内存使用优化与存储_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+       
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+
+	
+    
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=u(e),f=c.length,s=i(a,o,r),p=0;f>p;p++)c[p].apply(s,n);return s}function a(t,e){f[t]=u(t).concat(e)}function u(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:u,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=l.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&c&&c.body){l.proto="https"===p.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=c.createElement("script");e.src=l.proto+t.agent,c.body.appendChild(e)}}function r(){"complete"===c.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),u=window,c=u.document,f="addEventListener",s="attachEvent",p=(""+location).split("?")[0],l=e.exports={offset:i(),origin:p,features:{}};c[f]?(c[f]("DOMContentLoaded",o,!1),u[f]("load",n,!1)):(c[s]("onreadystatechange",r),u[s]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}]},{},["G9z0Bl"]);</script><script type="text/javascript" src="./Redis内存使用优化与存储_files/forum.js"></script>
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+    <meta property="og:image" content="https://www.infoq.com/resource/articles/tq-redis-memory-usage-optimization-storage/zh/smallimage/redis.jpg">
+
+<meta property="og:title" content="Redis内存使用优化与存储 ">
+<meta property="og:description" content="上一篇Redis文章对其适用场景与特点进行了一个概括的分析，本文将对Redis的常见数据类型的使用场景以及在内存优化方面和性能优化方面做一些详细的分析。">
+<meta property="og:site_name" content="InfoQ">
+	<link rel="image_src" href="./Redis内存使用优化与存储_files/redis.jpg">
+	<meta name="keywords" content="tq redis memory usage optimization storage,运维 &amp; 基础架构,语言 &amp; 开发,Redis,Ruby,Java,.NET,动态语言,微软,NoSQL,架构 ,数据库,专栏,">
+	<meta name="description" content="上一篇Redis文章对其适用场景与特点进行了一个概括的分析，本文将对Redis的常见数据类型的使用场景以及在内存优化方面和性能优化方面做一些详细的分析。">
+	<meta name="tprox" content="1313470800000">
+
+    
+    
+    	
+	    
+    
+
+        
+        
+			<link rel="image_src" href="http://cdn3.infoqstatic.com/styles/i/logo-big.jpg?20141125-0117">
+			<meta property="og:image" content="http://cdn4.infoqstatic.com/styles/i/logo-big.jpg?20141125-0117">
+		
+    <script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><iframe src="./Redis内存使用优化与存储_files/container.htm" style="visibility: hidden; display: none;"></iframe><script src="./Redis内存使用优化与存储_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=f4b44e79.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./Redis内存使用优化与存储_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./Redis内存使用优化与存储_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=7Xehj09Q4Zy1ysFdyjdhkx1klJGeQua4" title="" target="_blank"><img src="./Redis内存使用优化与存储_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="ppBJW12asagTCaGo">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./Redis内存使用优化与存储_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success">开源软件与商业成功 互利共赢</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./Redis内存使用优化与存储_files/Vogt_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">开源软件被嘲笑，被认为比“公司”开发的专有软件低一等，这种时代一去不返了。
+现在，特别是在嵌入式世界中，开源软件已是大多数商业软件的基础。
+协同公司资源和公众资源，以分散方式贡献和审查代码，这种模式已被证明可以产生质量更好、可维护性更好和可移植性更好的软件。
+有些公司正受益于现有的开源项目，同时通过贡献补丁持续地增强这些项目。本次演讲将以Linux发行版和嵌入式软件开发平台OpenWrt为例...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success">开源软件与商业成功 互利共赢</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./Redis内存使用优化与存储_files/Vogt_100.jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">开源软件被嘲笑，被认为比“公司”开发的专有软件低一等，这种时代一去不返了。
+现在，特别是在嵌入式世界中，开源软件已是大多数商业软件的基础。
+协同公司资源和公众资源，以分散方式贡献和审查代码，这种模式已被证明可以产生质量更好、可维护性更好和可移植性更好的软件。
+有些公司正受益于现有的开源项目，同时通过贡献补丁持续地增强这些项目。本次演讲将以Linux发行版和嵌入式软件开发平台OpenWrt为例...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/select-right-people-outsourcing">外包团队如何选对人？</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./Redis内存使用优化与存储_files/logo-art2.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">你身处的团队，决定你的成败。很多人希望将外包作为解决技术问题的方法，同时希望能维持成本持平，甚至降低成本。但人们可不是螺丝钉，别指望放到某个地方，就能发挥效果。在这篇文章中，Zhenya Rozinskiy谈到了构建远程团队的相关步骤，同时分享了他自己的经验。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/azure-experts-interview">微软技术专家谈Windows Azure的关键方案和技术</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./Redis内存使用优化与存储_files/windows_logo (1).png" alt="" border="0">
+							<span id="operations-infrastructureHDSummary"></span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/banking-vs-gaming">银行业和游戏业的技术体系架构</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./Redis内存使用优化与存储_files/Orcs-1.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">在本文中，Ben Evans考量了金融系统企业体系架构的一些特性并将这些特性与他作为玩家所观察到的游戏系统环境的一些特性进行对比。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn3.infoqstatic.com/images/ads/banners/qcon/cn/2014/20141111_banner.jpg?20141125-0117" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://2015.qconbeijing.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/articles?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="文章">文章</a>
+                
+		
+		<span class="last">Redis内存使用优化与存储</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+        <h1 class="general with_pic">
+            Redis内存使用优化与存储
+            <span class="article_image_title">
+                <img border="0" alt="" src="./Redis内存使用优化与存储_files/redis.jpg">
+            </span>
+        </h1>
+	<span class="author_general">
+		作者
+		
+			
+		
+		<a href="http://www.infoq.com/cn/author/%E7%94%B0%E7%90%AA" class="editorlink f_taxonomyEditor">
+田琪</a>
+
+        
+        发布于
+        2011年8月16日
+        <em>|</em> 
+        
+	<a id="noOfComments" title="" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#theCommentsSection" class="comments_like">
+		
+	        <span class="comments_counts">
+	        	<span class="nr">
+	        		10
+	        	</span>
+	        </span>
+			讨论
+	    
+	    
+	</a></span>
+
+   	
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1417163154711">
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="Bookmarks.bookmarkContent(&#39;articles&#39;, &#39;tq-redis-memory-usage-optimization-storage&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+			
+	<div class="clear"></div>
+<div class="article_page_left text_content_container">
+	
+			
+	<div class="text_info text_info_article">
+		
+			
+	       	<p><a href="http://www.infoq.com/cn/articles/tq-why-choose-redis">上一篇Redis文章</a>对其适用场景与特点进行了一个概括的分析，本文将对Redis的常见数据类型的使用场景以及在内存优化方面和性能优化方面做一些详细的分析。</p>
+<h2>Redis常用数据类型</h2>
+<p>Redis最为常用的数据类型主要有以下五种：</p>
+<ul>
+    <li>String</li>
+    <li>Hash</li>
+    <li>List</li>
+    <li>Set</li>
+    <li>Sorted set</li>
+</ul>
+<p>在具体描述这几种数据类型之前，我们先通过一张图了解下Redis内部内存管理中是如何描述这些不同数据类型的：</p>
+			<div class="clear"></div>
+	        
+	        
+<p class="image-wide"><img border="0" src="./Redis内存使用优化与存储_files/image1.jpg" _href="img://image1.jpg" alt="" _p="true"></p>
+<p>首先Redis内部使用一个redisObject对象来表示所有的key和value,redisObject最主要的信息如上图所示：type代表一个value对象具体是何种数据类型，encoding是不同数据类型在redis内部的存储方式，比如：type=string代表value存储的是一个普通字符串，那么对应的encoding可以是raw或者是int,如果是int则代表实际redis内部是按数值型类存储和表示这个字符串的，当然前提是这个字符串本身可以用数值表示，比如:"123" "456"这样的字符串。</p>
+<p>这里需要特殊说明一下vm字段，只有打开了Redis的虚拟内存功能，此字段才会真正的分配内存，该功能默认是关闭状态的，该功能会在后面具体描述。通过上图我们可以发现Redis使用redisObject来表示所有的key/value数据是比较浪费内存的，当然这些内存管理成本的付出主要也是为了给Redis不同数据类型提供一个统一的管理接口，实际作者也提供了多种方法帮助我们尽量节省内存使用，我们随后会具体讨论。</p>
+	        
+	            
+
+
+
+
+
+
+
+
+
+    <div class="related_sponsors visible ">
+        
+        
+                       
+            <div class="gray_section_related only1 ">
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3068,&quot;title&quot;:&quot;Code Rally在线挑战赛，智力和编程能力的双重挑战，更有丰厚奖品等着你！马上加入&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3068&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                Code Rally在线挑战赛，智力和编程能力的双重挑战，更有丰厚奖品等着你！马上加入
+	                            </a>
+	                        </h3>
+	                    
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6193&t=f" target="_blank">
+	                                    “双11”背后淘宝、京东、一号店的技术支撑
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6236&t=f" target="_blank">
+	                                    Windows Azure从开发到部署的自动化进程 
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6237&t=f" target="_blank">
+	                                    微软Windows Azure开启机器学习之旅
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6238&t=f" target="_blank">
+	                                    基于开源软件的Azure平台大规模系统构建
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+            </div>
+        
+        
+        
+        
+            <div class="paid_section  only2">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6044&t=f" target="_blank">
+                        <img src="./Redis内存使用优化与存储_files/100x50.jpg" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">Windows Azure专区上线，全面了解云服务</font><a href="http://www.infoq.com/infoq/url.action?i=6001&t=f" target="_blank"><font face="Verdana">精彩呈现</font></a>！</p>
+
+                </div>
+            </div>
+        
+        <div class="clear"></div>
+    </div>
+
+	        
+	        
+	       	
+<p>下面我们先来逐一的分析下这五种数据类型的使用和内部实现方式：</p>
+<ul>
+    <li>String
+    <p><strong>常用命令：  </strong></p>
+    <p>set,get,decr,incr,mget 等。</p>
+    <p><strong>应用场景： </strong></p>
+    <p>String是最常用的一种数据类型，普通的key/value存储都可以归为此类，这里就不所做解释了。</p>
+    <p><strong>实现方式： </strong></p>
+    <p>String在redis内部存储默认就是一个字符串，被redisObject所引用，当遇到incr,decr等操作时会转成数值型进行计算，此时redisObject的encoding字段为int。</p>
+    </li>
+    <li>Hash
+    <p><strong>常用命令：</strong></p>
+    <p>hget,hset,hgetall 等。</p>
+    <p><strong>应用场景：</strong></p>
+    <p>我们简单举个实例来描述下Hash的应用场景，比如我们要存储一个用户信息对象数据，包含以下信息：</p>
+    <p>用户ID为查找的key，存储的value用户对象包含姓名，年龄，生日等信息，如果用普通的key/value结构来存储，主要有以下2种存储方式：</p>
+    <p class="image-wide"><img border="0" src="./Redis内存使用优化与存储_files/image2.jpg" _href="img://image1.jpg" alt="" _p="true"></p>
+    <p>第一种方式将用户ID作为查找key,把其他信息封装成一个对象以序列化的方式存储，这种方式的缺点是，增加了序列化/反序列化的开销，并且在需要修改其中一项信息时，需要把整个对象取回，并且修改操作需要对并发进行保护，引入CAS等复杂问题。</p>
+    <p class="image-wide"><img border="0" src="./Redis内存使用优化与存储_files/image3.jpg" _href="img://image1.jpg" alt="" _p="true"></p>
+    <p>第二种方法是这个用户信息对象有多少成员就存成多少个key-value对儿，用用户ID+对应属性的名称作为唯一标识来取得对应属性的值，虽然省去了序列化开销和并发问题，但是用户ID为重复存储，如果存在大量这样的数据，内存浪费还是非常可观的。</p>
+    <p>那么Redis提供的Hash很好的解决了这个问题，Redis的Hash实际是内部存储的Value为一个HashMap，并提供了直接存取这个Map成员的接口，如下图：</p>
+    <p class="image-wide"><img border="0" src="./Redis内存使用优化与存储_files/image4.jpg" _href="img://image1.jpg" alt="" _p="true"></p>
+    <p>也就是说，Key仍然是用户ID, value是一个Map，这个Map的key是成员的属性名，value是属性值，这样对数据的修改和存取都可以直接通过其内部Map的Key(Redis里称内部Map的key为field), 也就是通过 key(用户ID) + field(属性标签) 就可以操作对应属性数据了，既不需要重复存储数据，也不会带来序列化和并发修改控制的问题。很好的解决了问题。</p>
+    <p>这里同时需要注意，Redis提供了接口(hgetall)可以直接取到全部的属性数据,但是如果内部Map的成员很多，那么涉及到遍历整个内部Map的操作，由于Redis单线程模型的缘故，这个遍历操作可能会比较耗时，而另其它客户端的请求完全不响应，这点需要格外注意。</p>
+    <p><strong>实现方式：  </strong></p>
+    <p>上面已经说到Redis Hash对应Value内部实际就是一个HashMap，实际这里会有2种不同实现，这个Hash的成员比较少时Redis为了节省内存会采用类似一维数组的方式来紧凑存储，而不会采用真正的HashMap结构，对应的value redisObject的encoding为zipmap,当成员数量增大时会自动转成真正的HashMap,此时encoding为ht。</p>
+    </li>
+    <li>List
+    <p><strong>常用命令：</strong></p>
+    <p>lpush,rpush,lpop,rpop,lrange等。</p>
+    <p><strong>应用场景：  </strong></p>
+    <p>Redis list的应用场景非常多，也是Redis最重要的数据结构之一，比如twitter的关注列表，粉丝列表等都可以用Redis的list结构来实现，比较好理解，这里不再重复。</p>
+    <p><strong>实现方式：  </strong></p>
+    <p>Redis list的实现为一个双向链表，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，Redis内部的很多实现，包括发送缓冲队列等也都是用的这个数据结构。</p>
+    </li>
+    <li>Set
+    <p><strong>常用命令：  </strong></p>
+    <p>sadd,spop,smembers,sunion 等。</p>
+    <p><strong>应用场景：</strong></p>
+    <p>Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据时，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的重要接口，这个也是list所不能提供的。</p>
+    <p><strong>实现方式：</strong></p>
+    <p>set 的内部实现是一个 value永远为null的HashMap，实际就是通过计算hash的方式来快速排重的，这也是set能提供判断一个成员是否在集合内的原因。</p>
+    </li>
+    <li>Sorted set
+    <p><strong>常用命令：</strong></p>
+    <p>zadd,zrange,zrem,zcard等</p>
+    <p><strong>使用场景：</strong></p>
+    <p>Redis sorted set的使用场景与set类似，区别是set不是自动有序的，而sorted set可以通过用户额外提供一个优先级(score)的参数来为成员排序，并且是插入有序的，即自动排序。当你需要一个有序的并且不重复的集合列表，那么可以选择sorted set数据结构，比如twitter 的public timeline可以以发表时间作为score来存储，这样获取时就是自动按时间排好序的。</p>
+    <p><strong>实现方式：</strong></p>
+    <p>Redis sorted set的内部使用HashMap和跳跃表(SkipList)来保证数据的存储和有序，HashMap里放的是成员到score的映射，而跳跃表里存放的是所有的成员，排序依据是HashMap里存的score,使用跳跃表的结构可以获得比较高的查找效率，并且在实现上比较简单。</p>
+    </li>
+</ul>
+<h2>常用内存优化手段与参数</h2>
+<p>通过我们上面的一些实现上的分析可以看出redis实际上的内存管理成本非常高，即占用了过多的内存，作者对这点也非常清楚，所以提供了一系列的参数和手段来控制和节省内存，我们分别来讨论下。</p>
+<p>首先最重要的一点是不要开启Redis的VM选项，即虚拟内存功能，这个本来是作为Redis存储超出物理内存数据的一种数据在内存与磁盘换入换出的一个持久化策略，但是其内存管理成本也非常的高，并且我们后续会分析此种持久化策略并不成熟，所以要关闭VM功能，请检查你的redis.conf文件中 vm-enabled 为 no。</p>
+<p>其次最好设置下redis.conf中的maxmemory选项，该选项是告诉Redis当使用了多少物理内存后就开始拒绝后续的写入请求，该参数能很好的保护好你的Redis不会因为使用了过多的物理内存而导致swap,最终严重影响性能甚至崩溃。</p>
+<p>另外Redis为不同数据类型分别提供了一组参数来控制内存使用，我们在前面详细分析过Redis Hash是value内部为一个HashMap，如果该Map的成员数比较少，则会采用类似一维线性的紧凑格式来存储该Map, 即省去了大量指针的内存开销，这个参数控制对应在redis.conf配置文件中下面2项：</p>
+<pre>hash-max-zipmap-entries 64 
+hash-max-zipmap-value 512 
+hash-max-zipmap-entries
+</pre>
+<p>含义是当value这个Map内部不超过多少个成员时会采用线性紧凑格式存储，默认是64,即value内部有64个以下的成员就是使用线性紧凑存储，超过该值自动转成真正的HashMap。</p>
+<p>hash-max-zipmap-value 含义是当 value这个Map内部的每个成员值长度不超过多少字节就会采用线性紧凑存储来节省空间。</p>
+<p>以上2个条件任意一个条件超过设置值都会转换成真正的HashMap，也就不会再节省内存了，那么这个值是不是设置的越大越好呢，答案当然是否定的，HashMap的优势就是查找和操作的时间复杂度都是O(1)的，而放弃Hash采用一维存储则是O(n)的时间复杂度，如果</p>
+<p>成员数量很少，则影响不大，否则会严重影响性能，所以要权衡好这个值的设置，总体上还是最根本的时间成本和空间成本上的权衡。</p>
+<p>同样类似的参数还有：</p>
+<pre>list-max-ziplist-entries 512</pre>
+<p>说明：list数据类型多少节点以下会采用去指针的紧凑存储格式。</p>
+<pre>list-max-ziplist-value 64 </pre>
+<p>说明：list数据类型节点值大小小于多少字节会采用紧凑存储格式。</p>
+<pre>set-max-intset-entries 512 </pre>
+<p>说明：set数据类型内部数据如果全部是数值型，且包含多少节点以下会采用紧凑格式存储。</p>
+<p>最后想说的是Redis内部实现没有对内存分配方面做过多的优化，在一定程度上会存在内存碎片，不过大多数情况下这个不会成为Redis的性能瓶颈，不过如果在Redis内部存储的大部分数据是数值型的话，Redis内部采用了一个shared integer的方式来省去分配内存的开销，即在系统启动时先分配一个从1~n 那么多个数值对象放在一个池子中，如果存储的数据恰好是这个数值范围内的数据，则直接从池子里取出该对象，并且通过引用计数的方式来共享，这样在系统存储了大量数值下，也能一定程度上节省内存并且提高性能，这个参数值n的设置需要修改源代码中的一行宏定义REDIS_SHARED_INTEGERS，该值默认是10000，可以根据自己的需要进行修改，修改后重新编译就可以了。</p>
+<h2>Redis的持久化机制</h2>
+<p>Redis由于支持非常丰富的内存数据结构类型，如何把这些复杂的内存组织方式持久化到磁盘上是一个难题，所以Redis的持久化方式与传统数据库的方式有比较多的差别，Redis一共支持四种持久化方式，分别是：</p>
+<ul>
+    <li>定时快照方式(snapshot)</li>
+    <li>基于语句追加文件的方式(aof)</li>
+    <li>虚拟内存(vm)</li>
+    <li>Diskstore方式</li>
+</ul>
+<p>在设计思路上，前两种是基于全部数据都在内存中，即小数据量下提供磁盘落地功能，而后两种方式则是作者在尝试存储数据超过物理内存时，即大数据量的数据存储，截止到本文，后两种持久化方式仍然是在实验阶段，并且vm方式基本已经被作者放弃，所以实际能在生产环境用的只有前两种，换句话说Redis目前还只能作为小数据量存储（全部数据能够加载在内存中），海量数据存储方面并不是Redis所擅长的领域。下面分别介绍下这几种持久化方式：</p>
+<p><strong>定时快照方式(snapshot)：</strong></p>
+<p>该持久化方式实际是在Redis内部一个定时器事件，每隔固定时间去检查当前数据发生的改变次数与时间是否满足配置的持久化触发的条件，如果满足则通过操作系统fork调用来创建出一个子进程，这个子进程默认会与父进程共享相同的地址空间，这时就可以通过子进程来遍历整个内存来进行存储操作，而主进程则仍然可以提供服务，当有写入时由操作系统按照内存页(page)为单位来进行copy-on-write保证父子进程之间不会互相影响。</p>
+<p>该持久化的主要缺点是定时快照只是代表一段时间内的内存映像，所以系统重启会丢失上次快照与重启之间所有的数据。</p>
+<p><strong>基于语句追加方式(aof)： </strong></p>
+<p>aof方式实际类似mysql的基于语句的binlog方式，即每条会使Redis内存数据发生改变的命令都会追加到一个log文件中，也就是说这个log文件就是Redis的持久化数据。</p>
+<p>aof的方式的主要缺点是追加log文件可能导致体积过大，当系统重启恢复数据时如果是aof的方式则加载数据会非常慢，几十G的数据可能需要几小时才能加载完，当然这个耗时并不是因为磁盘文件读取速度慢，而是由于读取的所有命令都要在内存中执行一遍。另外由于每条命令都要写log,所以使用aof的方式，Redis的读写性能也会有所下降。</p>
+<p><strong>虚拟内存方式： </strong></p>
+<p>虚拟内存方式是Redis来进行用户空间的数据换入换出的一个策略，此种方式在实现的效果上比较差，主要问题是代码复杂，重启慢，复制慢等等，目前已经被作者放弃。</p>
+<p><strong>diskstore方式：</strong></p>
+<p>diskstore方式是作者放弃了虚拟内存方式后选择的一种新的实现方式，也就是传统的B-tree的方式，目前仍在实验阶段，后续是否可用我们可以拭目以待。</p>
+<h2>Redis持久化磁盘IO方式及其带来的问题</h2>
+<p>有Redis线上运维经验的人会发现Redis在物理内存使用比较多，但还没有超过实际物理内存总容量时就会发生不稳定甚至崩溃的问题，有人认为是基于快照方式持久化的fork系统调用造成内存占用加倍而导致的，这种观点是不准确的，因为fork 调用的copy-on-write机制是基于操作系统页这个单位的，也就是只有有写入的脏页会被复制，但是一般你的系统不会在短时间内所有的页都发生了写入而导致复制，那么是什么原因导致Redis崩溃的呢？</p>
+<p>答案是Redis的持久化使用了Buffer IO造成的，所谓Buffer IO是指Redis对持久化文件的写入和读取操作都会使用物理内存的Page Cache,而大多数数据库系统会使用Direct IO来绕过这层Page Cache并自行维护一个数据的Cache，而当Redis的持久化文件过大(尤其是快照文件)，并对其进行读写时，磁盘文件中的数据都会被加载到物理内存中作为操作系统对该文件的一层Cache,而这层Cache的数据与Redis内存中管理的数据实际是重复存储的，虽然内核在物理内存紧张时会做Page Cache的剔除工作，但内核很可能认为某块Page Cache更重要，而让你的进程开始Swap ,这时你的系统就会开始出现不稳定或者崩溃了。我们的经验是当你的Redis物理内存使用超过内存总容量的3/5时就会开始比较危险了。</p>
+<p>下图是Redis在读取或者写入快照文件dump.rdb后的内存数据图：</p>
+<p class="image-wide"><img border="0" style="width: 541px; height: 200px;" src="./Redis内存使用优化与存储_files/image5.jpg" _href="img://image1.jpg" alt="" _p="true"></p>
+<h2>总结：</h2>
+<ol>
+    <li>根据业务需要选择合适的数据类型，并为不同的应用场景设置相应的紧凑存储参数。</li>
+    <li>当业务场景不需要数据持久化时，关闭所有的持久化方式可以获得最佳的性能以及最大的内存使用量。</li>
+    <li>如果需要使用持久化，根据是否可以容忍重启丢失部分数据在快照方式与语句追加方式之间选择其一，不要使用虚拟内存以及diskstore方式。</li>
+    <li>不要让你的Redis所在机器物理内存使用超过实际内存总量的3/5。</li>
+</ol>
+<p>下一篇Redis的文章会讨论下Redis的复制与可靠集群搭建与在线扩容的问题。</p>
+<hr>
+<p>感谢<a href="http://www.infoq.com/cn/bycategory.action?authorName=%E5%BC%A0%E5%87%AF%E5%B3%B0">张凯峰</a>对本文的审校。</p>
+<p>给InfoQ中文站投稿或者参与内容翻译工作，请邮件至<a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a>。也欢迎大家加入到<a href="http://groups.google.com/group/InfoQChina" target="_blank">InfoQ中文站用户讨论组</a>中与我们的编辑和其他读者朋友交流。</p>
+	       	
+       	
+		<div class="clear"></div>
+				
+		<div style="margin-bottom:5px">【<a href="http://bj2014.archsummit.com/" target="_blank">ArchSummit北京2014</a>】解读“双11”背后淘宝、京东、一号店的技术支撑。年末的技术盛宴，CTO与架构师的大Party。11月30日前报名享受9折优惠，<a href="http://bj2014.archsummit.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/operations-infrastructure" name="operations-infrastructure" id="6,823"><b>运维 &amp; 基础架构</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Database" name="Database" id="1,159">数据库</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/ruby" name="ruby" id="741">Ruby</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Redis" name="Redis" id="6,746">Redis</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Microsoft" name="Microsoft" id="1,062">微软</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/dotnet" name="dotnet" id="740">.NET</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture" name="architecture" id="1,390">架构 </a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/java" name="java" id="739">Java</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/dynamic_languages" name="dynamic_languages" id="832">动态语言</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/NoSQL" name="NoSQL" id="6,099">NoSQL</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/special-column" name="special-column" id="6,303">专栏</a></li>
+			</ul>							
+		</div>
+      
+		
+		
+		
+			
+			
+
+
+
+
+
+
+
+
+<div class="related_sponsors relEdRelRes" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended only1" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/08/flickr-sentinel-redis?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Flickr选择使用Sentinel来保证Redis的高可用性</a></h3><h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/jepsen?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Jepsen：测试PostgreSQL、Redis、MongoDB以及Riak的分区容忍性</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/11/open-source-redis-cache?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">高可用、开源的Redis缓存集群方案</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/10/redis-3.0.0-rc1-release?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Redis 3.0.0 RC1版本发布，首次支持Redis集群</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/09/twitter-redis?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Twitter如何使用Redis提高可伸缩性</a></h3></div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "4,876,1,5,1853,2112,1798", "title": "Redis内存使用优化与存储", "contentPath": "/articles/tq-redis-memory-usage-optimization-storage", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": 'tq-redis-memory-usage-optimization-storage',
+            "uriMapping": 'articles'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || researchExists) {
+                $('.related_sponsors.relEdRelRes').show(); // show the big related box
+            }
+
+            // in case all three available, leave now
+            if (recommendedExists) {
+            	$(grayBox).show(); // show the gray box for vcr and recommendations
+                return;
+            }
+        });
+</script>
+<div class="clear"></div>
+		
+		
+
+		<div class="clear"></div>
+				
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=20846;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./Redis内存使用优化与存储_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./Redis内存使用优化与存储_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./Redis内存使用优化与存储_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+            
+
+                <div class="comment_title lvl0" id="com73126">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch73126" title="">
+                        <strong>maxmemory</strong>
+                        <span>
+                            by
+                            Knight Errant
+                            Posted
+                            <span class="treeRelativeTime">2011年8月16日 03:59</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com73273">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch73273" title="">
+                        <strong>写的真不错</strong>
+                        <span>
+                            by
+                            柳 争
+                            Posted
+                            <span class="treeRelativeTime">2011年8月18日 12:51</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com73308">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch73308" title="">
+                        <strong>感谢分享</strong>
+                        <span>
+                            by
+                            yang xinqi
+                            Posted
+                            <span class="treeRelativeTime">2011年8月18日 07:59</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com73317">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch73317" title="">
+                        <strong>好文章</strong>
+                        <span>
+                            by
+                            yang wuming
+                            Posted
+                            <span class="treeRelativeTime">2011年8月19日 12:27</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com74654">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch74654" title="">
+                        <strong>请教</strong>
+                        <span>
+                            by
+                            许 进
+                            Posted
+                            <span class="treeRelativeTime">2011年9月9日 08:51</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com75475">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch75475" title="">
+                        <strong>nice post!!</strong>
+                        <span>
+                            by
+                            li ramon
+                            Posted
+                            <span class="treeRelativeTime">2011年9月22日 03:05</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com75681">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch75681" title="">
+                        <strong>学习了。</strong>
+                        <span>
+                            by
+                            peng wang
+                            Posted
+                            <span class="treeRelativeTime">2011年9月26日 05:13</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com85952">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch85952" title="">
+                        <strong>“并且修改操作需要对并发进行保护，引入CAS等复杂问题” redis 本身不能保证key-value修改时的线程安全吗？</strong>
+                        <span>
+                            by
+                            wang hailong
+                            Posted
+                            <span class="treeRelativeTime">2012年4月20日 10:57</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl1" id="com101995">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch101995" title="">
+                        <strong>Re: “并且修改操作需要对并发进行保护，引入CAS等复杂问题” redis 本身不能保证key-value修改时的线程安全吗？</strong>
+                        <span>
+                            by
+                            高禾 于
+                            Posted
+                            <span class="treeRelativeTime">2013年10月2日 09:35</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com104989">
+
+                    <a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#anch104989" title="">
+                        <strong>对infoq的建议</strong>
+                        <span>
+                            by
+                            genyuan xiao
+                            Posted
+                            <span class="treeRelativeTime">2013年12月12日 01:01</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+    </div>
+
+    <div class="all_comments">
+        
+            
+                <div class="answers" id="ans73126">
+                    <a name="anch73126"></a>
+                    
+                    <p>
+                        <b class="title">maxmemory</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年8月16日 03:59</span>
+                            by
+                            <q>Knight Errant</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        [quote]<br>其次最好设置下redis.conf中的maxmemory选项，该选项是告诉Redis当使用了多少物理内存后就开始拒绝后续的写入请求，该参数能很好的保护好你的Redis不会因为使用了过多的物理内存而导致swap,最终严重影响性能甚至崩溃。<br>[/quote]<br><br>本身写的有点早吧，后续版本都有maxmemory-policy参数来清除多余数据。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1313481540351">
+                    <input type="hidden" name="createdOn" value="2011年8月16日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans73273">
+                    <a name="anch73273"></a>
+                    
+                    <p>
+                        <b class="title">写的真不错</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年8月18日 12:51</span>
+                            by
+                            <q>柳 争</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        关键点都写上了，支持一下
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1313643111175">
+                    <input type="hidden" name="createdOn" value="2011年8月17日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans73308">
+                    <a name="anch73308"></a>
+                    
+                    <p>
+                        <b class="title">感谢分享</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年8月18日 07:59</span>
+                            by
+                            <q>yang xinqi</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        <a rel="nofollow" href="http://www.searchtb.com/2011/05/redis-storage.html" target="_blank">www.searchtb.com/2011/05/redis-storage.html</a><br>淘宝搜索博客上也有一篇写的很不错
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1313668744372">
+                    <input type="hidden" name="createdOn" value="2011年8月18日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans73317">
+                    <a name="anch73317"></a>
+                    
+                    <p>
+                        <b class="title">好文章</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年8月19日 12:27</span>
+                            by
+                            <q>yang wuming</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        好文章。顶顶顶
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1313684875720">
+                    <input type="hidden" name="createdOn" value="2011年8月18日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans74654">
+                    <a name="anch74654"></a>
+                    
+                    <p>
+                        <b class="title">请教</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年9月9日 08:51</span>
+                            by
+                            <q>许 进</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        适合小数据量，这个小数据量是指？
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1315529515623">
+                    <input type="hidden" name="createdOn" value="2011年9月8日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans75475">
+                    <a name="anch75475"></a>
+                    
+                    <p>
+                        <b class="title">nice post!!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年9月22日 03:05</span>
+                            by
+                            <q>li ramon</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        very nice post!
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1316675115338">
+                    <input type="hidden" name="createdOn" value="2011年9月22日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans75681">
+                    <a name="anch75681"></a>
+                    
+                    <p>
+                        <b class="title">学习了。</b>
+                        <span>
+                            <span class="bodyRelativeTime">2011年9月26日 05:13</span>
+                            by
+                            <q>peng wang</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        总结的很到位，通俗易懂。感谢
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1317028421694">
+                    <input type="hidden" name="createdOn" value="2011年9月26日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans85952">
+                    <a name="anch85952"></a>
+                    
+                    <p>
+                        <b class="title">“并且修改操作需要对并发进行保护，引入CAS等复杂问题” redis 本身不能保证key-value修改时的线程安全吗？</b>
+                        <span>
+                            <span class="bodyRelativeTime">2012年4月20日 10:57</span>
+                            by
+                            <q>wang hailong</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        <a rel="nofollow" href="http://hi.baidu.com/noirwinter/blog/item/1c3e8f444edf825c510ffe21.html" target="_blank">hi.baidu.com/noirwinter/blog/item/1c3e8f444edf8...</a><br>“String型是最简单的，你可以使用GET和SET命令来存取值。还可以使用INCR，DECR等命令进行加减操作，并且这些命令都是线程安全的” 不知道哪个对
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1334933836693">
+                    <input type="hidden" name="createdOn" value="2012年4月20日">
+                    <input type="hidden" name="isNotificationOn" value="true">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans101995">
+                    <a name="anch101995"></a>
+                    
+                    <p>
+                        <b class="title">Re: “并且修改操作需要对并发进行保护，引入CAS等复杂问题” redis 本身不能保证key-value修改时的线程安全吗？</b>
+                        <span>
+                            <span class="bodyRelativeTime">2013年10月2日 09:35</span>
+                            by
+                            <q>高禾 于</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        redis是单线程的，不涉及并发。所有的命令都可以认为是原子的。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1380720924758">
+                    <input type="hidden" name="createdOn" value="2013年10月2日">
+                    <input type="hidden" name="isNotificationOn" value="true">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans104989">
+                    <a name="anch104989"></a>
+                    
+                    <p>
+                        <b class="title">对infoq的建议</b>
+                        <span>
+                            <span class="bodyRelativeTime">2013年12月12日 01:01</span>
+                            by
+                            <q>genyuan xiao</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        下一遍 都没一个明显鱼链接可以点进去，哎。。。。。<br>上一遍，下一遍搞得明显点。。。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1386824467880">
+                    <input type="hidden" name="createdOn" value="2013年12月11日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+<div id="mostPopularSection" class="news_in_tabs" style="display: block;">
+	<!-- the tabs -->
+	<ul class="tabs">
+		
+			<li><div class="tab_title">热点内容</div></li>
+			<li><a href="javascript:;" class="current">10天</a></li>
+			<li><a href="javascript:;">40天</a></li>
+			<li><a href="javascript:;">近6个月</a></li>
+				
+	</ul>
+	<!-- tab "panes" -->
+	<div class="panes">
+	<div style="display: block;"><h3 class="h3articles" <!--pageviews:4116="" publication="" date:="" 2014-11-21--="">
+                        <a href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1?utm_source=infoq&utm_medium=popular_links_homepage">Java多线程编程模式实战指南：Active Object模式（上）</a><a href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">7</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2796="" publication="" date:="" 2014-11-24--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/interview-yunba-zhanghu?utm_source=infoq&utm_medium=popular_links_homepage">云巴创始人兼CEO张虎访谈：推送服务架构选型与程序员成长</a></h3><h3 class="h3news" <!--pageviews:2316="" publication="" date:="" 2014-11-26--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/open-source-is-chaging-world?utm_source=infoq&utm_medium=popular_links_homepage">褚霸：不要为了开源而开源</a><a href="http://www.infoq.com/cn/news/2014/11/open-source-is-chaging-world?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:2275="" publication="" date:="" 2014-11-19--="">
+                        <a href="http://www.infoq.com/cn/articles/banking-vs-gaming?utm_source=infoq&utm_medium=popular_links_homepage">银行业和游戏业的技术体系架构</a></h3><h3 class="h3articles" <!--pageviews:1852="" publication="" date:="" 2014-11-20--="">
+                        <a href="http://www.infoq.com/cn/articles/coreos-analyse-etcd?utm_source=infoq&utm_medium=popular_links_homepage">CoreOS 实战：剖析 etcd</a><a href="http://www.infoq.com/cn/articles/coreos-analyse-etcd?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:1791="" publication="" date:="" 2014-11-23--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/becoming-software-craftsmen?utm_source=infoq&utm_medium=popular_links_homepage">成为软件工匠</a></h3><h3 class="h3news" <!--pageviews:1632="" publication="" date:="" 2014-11-20--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/docker-client-windows?utm_source=infoq&utm_medium=popular_links_homepage">微软推出面向Windows的Docker客户端</a></h3><h3 class="h3news" <!--pageviews:1549="" publication="" date:="" 2014-11-21--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/csharp6-preview?utm_source=infoq&utm_medium=popular_links_homepage">C# 6预览</a><a href="http://www.infoq.com/cn/news/2014/11/csharp6-preview?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:1510="" publication="" date:="" 2014-11-19--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/aurora-performance-doubt?utm_source=infoq&utm_medium=popular_links_homepage">Aurora性能遭社区质疑，超MySQL 5倍但未公布详情</a><a href="http://www.infoq.com/cn/news/2014/11/aurora-performance-doubt?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:1417="" publication="" date:="" 2014-11-25--="">
+                        <a href="http://www.infoq.com/cn/articles/tencent-big-data?utm_source=infoq&utm_medium=popular_links_homepage">从业务驱动和技术实现角度谈腾讯大数据</a></h3></div><div style="display: none;"><h3 class="h3news" <!--pageviews:10178="" publication="" date:="" 2014-11-10--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：搜索引擎实时秒级更新</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:7504="" publication="" date:="" 2014-10-20--="">
+                        <a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage">万台规模下的SDN控制器集群部署实践</a><a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:6366="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice?utm_source=infoq&utm_medium=popular_links_homepage">小米11.11：海量数据压力下的推送服务</a></h3><h3 class="h3news" <!--pageviews:6322="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/fastsocket-github-opensource?utm_source=infoq&utm_medium=popular_links_homepage">两周内在Github上收获1800+个星：内核层网络栈优化项目Fastsocket背后的故事</a></h3><h3 class="h3news" <!--pageviews:5516="" publication="" date:="" 2014-10-22--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage">当当网开源Dubbox，扩展Dubbo服务框架支持REST风格远程调用</a><a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">30</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:5239="" publication="" date:="" 2014-10-28--="">
+                        <a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage">Java戏法</a><a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5143="" publication="" date:="" 2014-11-05--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage">蘑菇街回应TeamTalk版权：开源的底线是尊重</a><a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4585="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：移动端性能提升两倍</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4253="" publication="" date:="" 2014-11-15--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage">京东11.11：交易系统的关键技术</a><a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:4116="" publication="" date:="" 2014-11-21--="">
+                        <a href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1?utm_source=infoq&utm_medium=popular_links_homepage">Java多线程编程模式实战指南：Active Object模式（上）</a><a href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part1?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">7</span></span>                        </a></h3></div><div style="display: none;"><h3 class="h3articles" <!--pageviews:25576="" publication="" date:="" 2014-07-31--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage">深入浅出Docker（一）：Docker核心技术预览</a><a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:23616="" publication="" date:="" 2014-09-20--="">
+                        <a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a><a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:21378="" publication="" date:="" 2014-05-29--="">
+                        <a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage">Netty系列之Netty高性能之道</a><a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">29</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:18574="" publication="" date:="" 2014-07-22--="">
+                        <a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage">几种线程池的实现算法分析</a><a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:17613="" publication="" date:="" 2014-09-26--="">
+                        <a href="http://www.infoq.com/cn/minibooks/alibaba-techman?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a></h3><h3 class="h3minibooks" <!--pageviews:16326="" publication="" date:="" 2014-08-18--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-201408?utm_source=infoq&utm_medium=popular_links_homepage">架构师（2014年8月刊）</a></h3><h3 class="h3articles" <!--pageviews:15582="" publication="" date:="" 2014-09-25--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage">Docker源码分析（一）：Docker架构</a><a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:15384="" publication="" date:="" 2014-05-22--="">
+                        <a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage">支付宝的性能测试</a><a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:14020="" publication="" date:="" 2014-06-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-jun-10-2014?utm_source=infoq&utm_medium=popular_links_homepage">架构师（6月刊）</a></h3><h3 class="h3minibooks" <!--pageviews:13528="" publication="" date:="" 2014-07-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect--201407?utm_source=infoq&utm_medium=popular_links_homepage">架构师（7月刊）</a></h3></div></div>
+	<div class="clear"></div>
+</div>
+    <div class="banner_type3" id="id_300x250_banner_top">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+        </script>
+    </div>  
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="开源软件与商业成功 互利共赢" href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success">
+					开源软件与商业成功 互利共赢
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Mirko-Vogt" class="editorlink" title="Mirko Vogt">
+Mirko Vogt</a>
+
+				11月27日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="开源软件与商业成功 互利共赢" href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/Vogt_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="外包团队如何选对人？" href="http://www.infoq.com/cn/articles/select-right-people-outsourcing">
+					外包团队如何选对人？
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Zhenya-Rozinskiy" class="editorlink" title="Zhenya Rozinskiy">
+Zhenya Rozinskiy</a>
+
+				11月27日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="外包团队如何选对人？" href="http://www.infoq.com/cn/articles/select-right-people-outsourcing">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/logo-art2.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top" style="display: none;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="大数据时代的金融技术变革" href="http://www.infoq.com/cn/presentations/financial-technology-changes-in-big-data-age">
+					大数据时代的金融技术变革
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E7%A8%8B%E7%AB%8B%28%E9%B2%81%E8%82%83%29" class="editorlink" title="程立(鲁肃)">
+程立(鲁肃)</a>
+
+				11月26日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="大数据时代的金融技术变革" href="http://www.infoq.com/cn/presentations/financial-technology-changes-in-big-data-age">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/chengli_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="DukeScript：随处运行Java的新尝试" href="http://www.infoq.com/cn/articles/dukescript">
+					DukeScript：随处运行Java的新尝试
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Abel-Avram" class="editorlink" title="Abel Avram">
+Abel Avram</a>
+
+				11月26日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="DukeScript：随处运行Java的新尝试" href="http://www.infoq.com/cn/articles/dukescript">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/dukescript.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Java多线程编程模式实战指南：Active Object模式（下）" href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part2">
+					Java多线程编程模式实战指南：Active Object模式（下）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%BB%84%E6%96%87%E6%B5%B7" class="editorlink" title="黄文海">
+黄文海</a>
+
+				11月25日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Java多线程编程模式实战指南：Active Object模式（下）" href="http://www.infoq.com/cn/articles/Java-multithreaded-programming-mode-active-object-part2">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/java_logo.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="软件项目变更的管理和生存之道" href="http://www.infoq.com/cn/presentations/management-and-survival-method-of-software-project-change">
+					软件项目变更的管理和生存之道
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Ben-Evans" class="editorlink" title="Ben Evans">
+Ben Evans</a>
+
+				11月25日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="软件项目变更的管理和生存之道" href="http://www.infoq.com/cn/presentations/management-and-survival-method-of-software-project-change">
+				<img border="0" alt="" src="./Redis内存使用优化与存储_files/Evans_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3'); });
+		 		</script>
+		 	</div>
+ 		</div>
+
+    <script type="text/javascript">
+    	$($('.banner_type3').get(1)).css('display','none');
+    </script>
+</div>
+
+
+
+
+
+
+
+
+<div class="newsletter ">
+	<h3>InfoQ每周精要</h3>
+	<p>
+		通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。
+		<span id="floatingNewsletterEmailSuccess" style="color:green;"></span>
+		<span id="floatingNewsletterEmailError" style="color:red;"></span>
+	</p>
+	<div class="click2view">
+		<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+			<img src="./Redis内存使用优化与存储_files/click2view_zh.png" alt="" border="0">
+		</a>
+	</div>
+	<div class="clear"></div>
+	<form name="floatingNewsletterForm" id="floatingNewsletteForm" action="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onsubmit="floatingNewsletter.saveSubscription(); return false;">
+		<fieldset>
+			<input type="text" class="input_text" id="floatingNewsletterEmail" name="floatingNewsletterEmail" value="您的邮箱" onclick="floatingNewsletter.clearEmailText();" onblur="floatingNewsletter.resetEmailText();">
+			<input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return floatingNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+		</fieldset>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	var floatingNewsletter = new Newsletter('您的邮箱', 'floatingNewsletterEmail', 'floatingNewsletterForm', 'floatingNewsletterEmailError', 'floatingNewsletterEmailSuccess');
+</script>
+
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./Redis内存使用优化与存储_files/infoqcn.js"></script>
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"applicationID":"5528250","applicationTime":122,"beacon":"beacon-1.newrelic.com","queueTime":0,"licenseKey":"bfafe6a5f6","transactionName":"YAFWMEEAW0RUVk1cCllLfjdjTlRFQVxaWQBES0cMXBYbXUZF","agent":"js-agent.newrelic.com\/nr-476.min.js","errorBeacon":"bam.nr-data.net"}</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2014/11/lovefield" title="Lovefield：谷歌开发的类似SQL的查询引擎">Lovefield：谷歌开发的类似SQL的查询引擎</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/docker-1.3.2-release-safe" title="Docker 1.3.2发布：修复了重大安全问题">Docker 1.3.2发布：修复了重大安全问题</a></p><p><a href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success" title="开源软件与商业成功 互利共赢">开源软件与商业成功 互利共赢</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2014/11/docker-1.3.2-release-safe" title="Docker 1.3.2发布：修复了重大安全问题">Docker 1.3.2发布：修复了重大安全问题</a></p><p><a href="http://www.infoq.com/cn/presentations/open-source-software-and-commercial-success" title="开源软件与商业成功 互利共赢">开源软件与商业成功 互利共赢</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/appdynamics-real-user-management" title="AppDynamics推出Mobile Real User Management">AppDynamics推出Mobile Real User Management</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/articles/select-right-people-outsourcing" title="外包团队如何选对人？">外包团队如何选对人？</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/appdynamics-real-user-management" title="AppDynamics推出Mobile Real User Management">AppDynamics推出Mobile Real User Management</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/open-source-is-chaging-world" title="褚霸：不要为了开源而开源">褚霸：不要为了开源而开源</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/open-source-is-chaging-world" title="褚霸：不要为了开源而开源">褚霸：不要为了开源而开源</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/amazon-aurora-launched" title="AWS宣布推出亚马逊极光（Amazon Aurora），一种和MySQL兼容的RDBMS">AWS宣布推出亚马逊极光（Amazon Aurora），一种和MySQL兼容的RDBMS</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/as-bj-2014-eb" title="ArchSummit大会精彩专题：电商，不是搭个平台就能赢">ArchSummit大会精彩专题：电商，不是搭个平台就能赢</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/amazon-aurora-launched" title="AWS宣布推出亚马逊极光（Amazon Aurora），一种和MySQL兼容的RDBMS">AWS宣布推出亚马逊极光（Amazon Aurora），一种和MySQL兼容的RDBMS</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/as-bj-2014-eb" title="ArchSummit大会精彩专题：电商，不是搭个平台就能赢">ArchSummit大会精彩专题：电商，不是搭个平台就能赢</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/interview-yunba-zhanghu" title="云巴创始人兼CEO张虎访谈：推送服务架构选型与程序员成长">云巴创始人兼CEO张虎访谈：推送服务架构选型与程序员成长</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer">东京 2015年4月</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年9月21-25日">里约 2015年9月21-25日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./Redis内存使用优化与存储_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=7Xehj09Q4Zy1ysFdyjdhkx1klJGeQua4">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+    <li><a href="http://www.infoq.com/cn/aliyun/"><strong>阿里云专区</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./Redis内存使用优化与存储_files/engine.js" type="text/javascript"></script>
+            <script src="./Redis内存使用优化与存储_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./Redis内存使用优化与存储_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/tq-redis-memory-usage-optimization-storage#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+var callAction = [];
+  callAction.push(function (){
+	  $.getScript("/scripts/__hd.ifq?hdt=ppBJW12asagTCaGo");
+  });
+  $(this).one( "mousemove", function() {
+	  var f=callAction.pop();
+	  if(f!=undefined){
+		  f();
+	  }
+		  
+  });	
+  $( this ).one( "touchmove", function() {
+	  var f=callAction.pop();
+	  if(f!=undefined){
+		  f();
+	  }
+  });	
+</script>
+
+    <script src="./Redis内存使用优化与存储_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="http://hm.baidu.com/h.js?5101210b73a0e033d1509b3e487c929c" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('7Xehj09Q4Zy1ysFdyjdhkx1klJGeQua4');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "Redis内存使用优化与存储";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn3.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141125-0117");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S2 -->
+<script type="text/javascript" src="./Redis内存使用优化与存储_files/update.js"></script><script src="./Redis内存使用优化与存储_files/nr-476.min.js"></script><script type="text/javascript" src="./Redis内存使用优化与存储_files/bfafe6a5f6"></script></body></html>

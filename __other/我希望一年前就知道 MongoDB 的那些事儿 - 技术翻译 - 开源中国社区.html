@@ -1,0 +1,2425 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0078)http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago -->
+<html lang="zh-CN" xml:lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <link rel="shortcut icon" type="image/x-icon" href="http://www.oschina.net/img/favicon.ico?t=1408501845000">
+  <title>我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区</title>
+        <link rel="stylesheet" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/channel.css" type="text/css" media="screen">
+  <link rel="stylesheet" type="text/css" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/jquery.fancybox-1.3.4.css" media="screen">
+  <link rel="alternate" type="application/rss+xml" title="最新开源项目" href="http://www.oschina.net/project/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新开源资讯" href="http://www.oschina.net/news/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新问题列表" href="http://www.oschina.net/question/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新翻译列表" href="http://www.oschina.net/translate/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新博客列表" href="http://www.oschina.net/blog/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新代码分享列表" href="http://www.oschina.net/code/rss">
+  <link rel="alternate" type="application/rss+xml" title="开源中国 - 源码列表" href="http://www.oschina.net/code/source_rss">
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/jquery-1.7.1.min.js"></script><style type="text/css"></style>
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/jquery.form.js"></script>
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/jquery.fancybox-fixed.js"></script>
+    <link rel="stylesheet" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/tip-yellowsimple.css" type="text/css">
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/jquery.poshytip.min.js"></script>
+  <script type="text/javascript">
+  	g_user = {
+	id:0,
+	name:'',
+	login:false};  </script>
+    <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/oschina.js"></script>
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/utils.js"></script>
+  <script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/channel.js"></script>
+    </head>
+<body>
+<div id="OSC_NavTop">
+	<div class="wp998">
+        <div id="OSC_Channels">
+        	<ul>
+        	<li class="item"><a href="http://www.oschina.net/" class="home">首页</a></li>        	<li class="item control_select"><a href="http://www.oschina.net/project" class="project">开源项目</a>
+				<ul class="cs_content">					
+                	                	<li><a href="http://www.oschina.net/project/lang/19/java">Java 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/194/csharp">C# 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/22/php">PHP 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/21/c">C/C++ 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/26/ruby">Ruby 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/25/python">Python 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/358/go">Go开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/28/javascript">JS开源软件</a></li>
+				</ul>
+			</li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/question" class="question">讨论区</a>				
+				<ul class="cs_content">					
+                	<li><a href="http://www.oschina.net/question?catalog=1"> 技术问答 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=2"> 技术分享 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=3"> IT大杂烩 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=100"> 职业生涯 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=4"> 站务/建议 » </a></li>
+                	<li><a href="http://www.oschina.net/alipay"> 支付宝专区 » </a></li>
+                	<li><a href="http://www.oschina.net/hardware"> 开源硬件专区 » </a></li>
+				</ul>
+			</li>
+        	<li class="item"><a href="http://www.oschina.net/code/list" class="code">代码</a></li>
+        	        	<li class="item"><a href="http://www.oschina.net/blog" class="blog">博客</a></li>
+        	<li class="item"><a href="http://www.oschina.net/translate" class="tran hl">翻译</a></li>
+            <li class="item"><a href="http://www.oschina.net/news" class="news">资讯</a></li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/android" class="mobile">移动开发</a>
+				<ul class="cs_content cs_mobile">
+                	<li class="android_"><a href="http://www.oschina.net/android">Android开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/home">iOS开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/codingList">iOS代码库</a></li>
+                	<li class="wp7_"><a href="http://www.oschina.net/wp">Windows Phone</a></li>
+				</ul>
+			</li>
+        	<li class="item t_job"><a href="http://www.oschina.net/job" class="job">招聘</a></li>
+									            <li class="item control_select">
+                <a href="http://city.oschina.net/" id="MyCities" title="城市圈">城市圈</a>
+							</li>
+        	</ul>
+        </div>
+		<div id="OSC_Userbar">
+                		    		当前访客身份：游客 [ <a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fthings-i-wish-i-knew-about-mongodb-a-year-ago">登录</a> | <a href="http://www.oschina.net/home/reg">加入开源中国</a> ]
+    				</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="OSC_Banner"><div class="wp998"><a href="http://www.oschina.net/" class="Logo" title="OSChina 开源中国">开源中国</a>
+<h1><a href="http://www.oschina.net/translate">技术翻译</a></h1>
+<dl>
+    <dt>已有文章 <em>1844</em> 篇</dt>
+	<dt>
+		当前位置：
+            <a href="http://www.oschina.net/translate/list?type=2">译文列表</a>&nbsp;»&nbsp;<a href="http://www.oschina.net/translate/list/10?type=2">DBA/数据库</a> , <a href="" class="deliver">投递原文</a>
+    		</dt>	
+</dl>
+<form action="http://www.oschina.net/search" class="search">
+	<input type="hidden" name="scope" value="translate">
+	<input id="channel_q" type="text" name="q" value="" placeholder="在 1844 篇翻译的文章中搜索" class="TXT">
+    <button type="submit" class="BTN">搜 索</button>
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        scrolltotop.offset(100,120);
+        scrolltotop.init();
+        $('.deliver').click(function(){
+            popup("/translate/deliver");
+            return false;
+        });
+    });
+</script>
+<div class="clear"></div></div></div>
+<div id="OSC_Screen">
+	<div id="OSC_Content" class="CenterDiv">
+<style type="text/css">
+.highlight {
+	color: #A00;
+	padding: 0 1px;
+	margin: 0 2px;
+}
+
+.NoData {
+	text-align: center;
+	padding: 20px 0;
+	color: #999;
+}
+
+.error_msg {
+	height: 16px;
+	color: #A00;
+	margin: 10px 0 10px 0;
+	background: url('/img/warning.gif') no-repeat left center;
+	padding-left: 24px;
+}
+
+.error_msg a {
+	padding: 0 5px 0 5px;
+	font-weight: bold;
+}
+
+.ajax_processing {
+	display: none;
+	background: url('/img/loading.gif') no-repeat left center;
+	padding-left: 20px;
+}
+
+label.SELECTED {
+	color: #C00;
+}
+
+input.TEXT,textarea.TEXT,input.SEARCH {
+	border: 1px solid #bbb;
+	font-size: 13px;
+	padding: 3px;
+}
+
+input.BUTTON {
+	height: 25px;
+	line-height: 25px;
+	padding: 0 3px;
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+a.rndbutton {
+	background: #d1c0a5;
+	color: #fff;
+	text-decoration: none;
+	height: 30px;
+	float: left;
+	margin: 0;
+	border: 0px solid #000;
+	font-weight: bold;
+	font-size: 12pt;
+	cursor: pointer;
+}
+
+a.rndbutton:hover {
+	background-color: #bfaa88;
+}
+
+a.rndbutton span {
+	color: #fff;
+	float: left;
+	margin: 0 0 0 10px;
+	padding: 0 10px 0 0;
+	height: 30px;
+	line-height: 30px;
+}
+
+input.rndbutton {
+	background: #4E867B;
+	color: #fff;
+	border: 0px solid #000;
+	cursor: pointer;
+}
+
+input.rndbutton:hover {
+	background-color: #4F978A;
+}
+
+.SmallPortrait {
+	filter: alpha(opacity = 90); /* IE */
+	-moz-opacity: 0.9; /* Moz + FF */
+	opacity: 0.9;
+	padding: 1px;
+	background: #fff;
+	border: 1px solid #ccc;
+}
+
+a:hover .SmallPortrait {
+	filter: alpha(opacity = 100); /* IE */
+	-moz-opacity: 1.0; /* Moz + FF */
+	opacity: 1.0;
+	border: 1px solid #40AA53;
+}
+
+.TextContent p {
+	margin-bottom: 5pt;
+}
+
+.TextContent h1,.TextContent h2,.TextContent h3 {
+	margin-bottom: 10pt;
+	border-bottom: 1px solid #CCC;
+	padding-bottom: 5px;
+}
+
+.translate {
+	float: left;
+	width: 678px;
+}
+
+.translate_right {
+	float: right;
+	width: 300px;
+	overflow: hidden;
+}
+
+.translate_right .PopularTags {
+	margin: 0 0 10px 0;
+	background: white;
+	border: 1px solid #eee;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.translate_right .PopularTags p {
+	padding: 10px;
+}
+
+#top_nav {
+	width: 100%;
+	font-size: 14px;
+	line-height: 24px;
+	padding: 2px;
+	border-bottom: 1px solid #40AA53;
+}
+
+#top_nav a {
+	color: #005075;
+	outline: 0;
+	text-decoration: none;
+}
+
+#top_nav .right {
+	float: right;
+	color: #666;
+}
+
+ul.tabnav {
+	text-align: left;
+	margin: 1em 0 0 0;
+	font-weight: bold;
+	font-size: 10pt;
+	border-bottom: medium double #E3E3E3;
+	list-style-type: none;
+	padding: 3px 10px 15px 10px;
+}
+
+ul.tabnav li {
+	display: inline;
+	margin-left: 10px;
+}
+
+ul.tabnav li.current {
+	border-bottom: 1px solid #fff;
+	background-color: #fff;
+}
+
+ul.tabnav li.current a {
+	background-color: #0D5178;
+	color: #FFF;
+	cursor: text;
+}
+
+ul.tabnav li a {
+	padding: 4px 8px 5px 8px;
+	color: #666;
+	margin-right: 0px;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+ul.tabnav a:hover {
+	background: #FFF;
+	text-decoration: none;
+}
+
+.header span {
+	margin-left: 10px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.header a.parent {
+	color: #40AA53;
+}
+
+.header em.child {
+	color: #46B;
+	font-style: normal;
+}
+
+.header .more .active {
+	color: #A00;
+}
+
+.remark {
+	margin-top: 8px;
+	font-size: 9pt;
+	color: #999999;
+}
+
+.sta_btn {
+	border: 1px solid #ccc;
+	padding: 2px 5px;
+	float: right;
+	margin-right: 10px;
+	-webkit-box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+	box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+}
+
+.remark a {
+	text-decoration: none;
+}
+
+.remark em {
+	margin-right: 8px;
+	font-style: normal;
+}
+
+.remark span {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.latest {
+	margin: 10px 10px 0px 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e3e3e3;
+	_height: 1%;
+}
+
+.latest dt a {
+	font-size: 18px;
+}
+
+.latest .content {
+	font-size: 14px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.recommendList {
+	margin-bottom: 10px;
+}
+
+.recommendList a {
+	text-decoration: none;
+}
+
+.recommendList a:hover {
+	text-decoration: underline;
+}
+
+.recommendList a.pic img {
+	float: right;
+	width: 140px;
+	height: 100px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.recommendList ul {
+	margin: 8px 0;
+}
+
+.recommendList li {
+	float: left;
+	width: 300px;
+	margin: 0 10px;
+	font-size: 12px;
+	line-height: 30px;
+	color: #3E62A6;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.recommendList li a {
+	font-size: 13px;
+}
+
+.latest span,.recommendList li span {
+	color: #999;
+	font-size: 12px;
+}
+
+.articleList {
+	background: #FFF;
+	padding-bottom: 10px;
+}
+
+.articleList .article {
+	margin: 10px;
+	padding-bottom: 10px;
+	border-bottom: medium double #e3e3e3;
+}
+
+.articleList .article a img {
+	float: right;
+	width: 80px;
+	height: 60px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.articleList .article dt a {
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.articleList .article dt a:hover {
+	text-decoration: underline;
+}
+
+.articleList .article dt a em {
+	font-style: normal;
+	color: #A00;
+}
+
+.articleList .article .status_0 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #F90;
+	background: url(/img/translate.gif) 0 -30px no-repeat;
+}
+
+.articleList .article .status_2 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #00BB4B;
+	background: url(/img/translate.gif) 0 0 no-repeat;
+}
+
+.articleList .article .status_0 em,.articleList .article .status_2 em {
+	font-style: normal;
+	color: #888;
+	margin-left: 10px;
+}
+
+.articleList .article .sub_title {
+	font-size: 12px;
+	color: #333;
+	margin-top: 5px;
+}
+
+.articleList .article .content {
+	font-size: 13px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.articleList .pager {
+	margin: 0 10px;
+}
+
+.articleList .TagDetail {
+	margin: 10px 2px;
+	color: #666;
+	border: 2px solid #ccc;
+	padding: 5px;
+	background: #ffd;
+	font-size: 9pt;
+}
+
+.articleList .TagDetail img.project {
+	float: left;
+	width: 48px;
+	height: 48px;
+	margin: 0 20px 10px 0;
+}
+
+#categoryMenu {
+	margin-bottom: 10px;
+	background: white;
+}
+
+#categoryMenu ul {
+	margin: 10px 0;
+}
+
+#categoryMenu li a {
+	display: block;
+	text-decoration: none;
+	height: 36px;
+	line-height: 36px;
+	font-size: 14px;
+	color: #3B3B3B;
+	padding: 0 15px;
+}
+
+#categoryMenu li a:hover {
+	background: #EEE;
+	color: #080;
+}
+
+#categoryMenu li a em {
+	float: right;
+	padding: 0 5px;
+	margin-top: 8px;
+	height: 20px;
+	line-height: 20px;
+	background: #EEE;
+	font-size: 12px;
+	font-style: normal;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+#categoryMenu li a:hover em {
+	background: #00BC00;
+	color: white;
+}
+
+#categoryMenu li.current,#categoryMenu li.current a:hover {
+	background: #3dae4f;
+	background: -moz-linear-gradient(#3dae4f, #0c701c);
+	background: -webkit-linear-gradient(#3dae4f, #0c701c);
+}
+
+#categoryMenu li.current a {
+	color: white;
+}
+
+#categoryMenu li.current a em {
+	color: white;
+	background: none;
+}
+
+.hotList,.TopUsers {
+	margin-bottom: 10px;
+	background: #FFF;
+}
+
+.hotList a {
+	text-decoration: none;
+}
+
+.hotList a:hover {
+	text-decoration: underline;
+}
+
+.hotList ul {
+	margin: 10px 0;
+}
+
+.hotList ul li {
+	height: 24px;
+	width: 278px;
+	padding: 0 10px;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.hotList ul li a {
+	height: 24px;
+	line-height: 24px;
+	font-size: 10pt;
+}
+
+.hotList .dot {
+	height: 10px;
+	width: 10px;
+	font-size: 0;
+	margin-right: 5px;
+	overflow: hidden;
+	zoom: 1;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+
+.hotList .dot1 {
+	background-color: #f00;
+}
+
+.hotList .dot2 {
+	background-color: #f90;
+}
+
+.hotList .dot3 {
+	background-color: #aed900;
+}
+
+.hotList .dot4 {
+	background-color: #2bd600;
+}
+
+.hotList .dot5 {
+	background-color: #00bb4b;
+}
+
+.hotList .dot6 {
+	background-color: #01bebe;
+}
+
+.hotList .dot7 {
+	background-color: #035bdf;
+}
+
+.hotList .dot8 {
+	background-color: #2200a8;
+}
+
+.hotList .dot9 {
+	background-color: #510066;
+}
+
+.hotList .dot10 {
+	background-color: #3f0030;
+}
+
+.TopUsers ul {
+	padding-left: 12px;
+}
+
+.TopUsers ul li {
+	text-align: center;
+	margin: 0 7px 10px 0;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.TopUsers ul {
+	margin-top: 10px;
+}
+
+.TopUsers ul li a {
+	text-decoration: none;
+}
+
+.TopUsers ul li img {
+	width: 64px;
+	height: 64px;
+	background: #fff;
+}
+
+.TopUsers ul li a:hover img {
+	
+}
+
+a.cmdbutton {
+	background: #5CC26F;
+	color: #fff;
+	text-decoration: none;
+	float: left;
+	margin: 0 10px;
+	border: 0px solid #000;
+	font-size: 16pt;
+	cursor: pointer;
+}
+
+a.cmdbutton:hover {
+	background-position: left -30px;
+}
+
+a.cmdbutton span {
+	color: #fff;
+	float: left;
+	margin: 6px;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+
+a.cmdbutton.paying-translation {
+	width: 240px;
+	margin-top: 20px;
+	padding: 6px;
+	text-align: center;
+}
+
+.Article {
+	margin-top: 10px;
+}
+
+.Article .Top {
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Article .Top h1 {
+	padding-bottom: 5px;
+	font-size: 28px;
+	line-height: 36px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Article .Top h1 em.none {
+	font-style: normal;
+	color: #F90;
+}
+
+.Article .Top h1 em.pending {
+	font-style: normal;
+	color: #00BB4B;
+}
+
+.Article .Top h3 {
+	margin: 2px 0;
+	font-size: 18px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Article .Top h3 a {
+	text-decoration: none;
+}
+
+.Article .Top .Tags a {
+	margin-left: 5px;
+	text-decoration: none;
+}
+
+.Article .Top .Tags a.tag {
+	background: #46A6D2;
+	color: white;
+	padding: 2px 5px;
+}
+
+.Article .Top .Tags a.tag:hover {
+	background-color: #3a7bd2;
+}
+
+.Article .Top .rec_user {
+	height: 22px;
+	line-height: 22px;
+}
+
+.Article .Top .rec_user a {
+	text-decoration: none;
+}
+
+.Article .Top .rec_user .share a {
+	width: 16px;
+	height: 16px;
+	text-decoration: none;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+.Article .Top .rec_user .share .sina {
+	background: url(/img/sina_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .share .tencent {
+	background: url(/img/tencent_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .options {
+	float: right;
+}
+
+.Article .Top .Vote {
+	float: right;
+	margin-right: 20px;
+	padding: 5px;
+	background: #005075;
+	color: #FFF;
+	width: 54px;
+	text-align: center;
+	display: block;
+}
+
+.Article .Top .Vote a {
+	font-size: 16pt;
+	color: #FFF;
+	display: block;
+	border-top: 1px solid #073f59;
+	text-decoration: none;
+}
+
+.Article .Top .Vote a:hover {
+	color: #ff0;
+}
+
+.Article .Top .Vote em {
+	font-size: 12pt;
+	font-style: normal;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #04608a;
+	display: block;
+}
+
+.Article .toolbar {
+	overflow: hidden;
+	padding: 5px 0 5px 5px;
+	color: #6A6A6A;
+	border-left: 1px solid #EDEDED;
+	border-right: 1px solid #EDEDED;
+}
+
+.Article .toolbar a {
+	text-decoration: none;
+}
+
+.Article .toolbar .label {
+	float: left;
+	width: 100px;
+}
+
+.Article .toolbar em {
+	color: #A3A3A3;
+	font-style: normal;
+	font-size: 12px;
+}
+
+.Article .toolbar a.t_user {
+	
+}
+
+.Article .toolbar .options {
+	float: right;
+	width: 260px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.Article .toolbar .options a.selected {
+	color: #b90000;
+	font-weight: bold;
+}
+
+.Article .toolbar .contributers {
+	width: 610px;
+	float: left;
+}
+
+.Article .Tags {
+	line-height: 22px;
+}
+
+.Article .copyright {
+	background: #efe;
+	text-align: left;
+	margin: 20px 10px;
+	padding: 3px 0 3px 10px;
+	color: #333;
+	font-size: 10pt;
+	line-height: 22px;
+	border-left: 10px solid #CFC;
+}
+
+.Article .Body {
+	border: 1px solid #EDEDED;
+}
+
+.Article .Body .paragraph_eng {
+	background: #FFF;
+	padding: 10px 0;
+	border: 1px solid #F9F9F9;
+}
+
+.Article .Body .paragraph_eng .TextContent {
+	width: 750px;
+	padding: 0 10px;
+	font-size: 10pt;
+	line-height: 180%;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_eng .TextContent span {
+	margin: 0 2px;
+}
+
+.Article .Body .paragraph_eng .translaters {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.Article .Body .translate_chs {
+	padding: 0;
+	border: 3px solid #F9F9F9;
+}
+
+.Article .Body .translate_chs .bdt10 {
+	border-top: medium double #E3E3E3;
+}
+
+.Article .Body .bd10 {
+	border: 1px solid #A00;
+}
+
+.Article .Body .paragraph_chs {
+	background: #FFF;
+	padding: 10px 0;
+}
+
+.Article .Body .paragraph_chs .TextContent {
+	width: 750px;
+	font-size: 10.5pt;
+	padding: 0 10px;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_chs .translater {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.translaters h3 {
+	color: #686868;
+	font-size: 14px;
+	font-weight: normal;
+	margin: 2px 0;
+}
+
+.translaters ul {
+	margin: 10px 0;
+}
+
+.translaters ul li {
+	text-align: center;
+	margin: 0 3px 5px 0px;
+	width: 45px;
+	height: 48px;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.translaters ul li a {
+	text-decoration: none;
+}
+
+.translaters ul li img {
+	width: 24px;
+	height: 24px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	background: #fff;
+}
+
+.translaters ul li a:hover img {
+	border: 1px solid #40AA53;
+}
+
+a.TBUTTON {
+	text-decoration: none;
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+}
+
+a.TBUTTON:hover {
+	background: #4f978a;
+}
+
+input.TBUTTON {
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+
+input.TBUTTON:hover {
+	background: #4f978a;
+}
+
+.translater a {
+	text-decoration: none;
+}
+
+.translater a img {
+	float: left;
+	width: 46px;
+	height: 46px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	margin-top: 5px;
+	background: #fff;
+}
+
+.translater .info {
+	float: left;
+	margin: 0 10px;
+	width: 126px;
+	height: 45px;
+}
+
+.translater .info h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.translater .info p {
+	color: #666;
+	margin: 5px 0;
+}
+
+.translater .info p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.translater .vote {
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+	color: #666;
+}
+
+.translater a.showOthers {
+	padding-left: 20px;
+	background: url(/img/translate.gif) 0 -218px no-repeat;
+	font-size: 10pt;
+	height: 30px;
+	line-height: 30px;
+}
+
+.translater a.closeOthers {
+	background: url(/img/translate.gif) 0 -250px no-repeat;
+}
+
+.EditTop {
+	width: 99%;
+	text-align: left;
+	margin: 0 auto;
+}
+
+.Edit .Top {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Edit .Top h1 {
+	font-size: 20px;
+	line-height: 26px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Edit .Top h3 {
+	margin: 2px 0;
+	font-size: 14px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Edit .Top h3 a {
+	text-decoration: none;
+}
+
+.Edit .Body {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+}
+
+.Edit .Body .p_content {
+	float: left;
+	width: 49%;
+	height: 650px;
+}
+
+.Edit .Body .p_content .title {
+	height: 28px;
+	line-height: 28px;
+	font-size: 12pt;
+	text-align: center;
+}
+
+.Edit .Body .p_content .title h3 {
+	color: #666;
+	font-weight: normal;
+}
+
+.Edit .Body .p_content .title a {
+	text-decoration: underline;
+}
+
+.Edit .Body .p_content .title .prev {
+	float: left;
+}
+
+.Edit .Body .p_content .title .next {
+	float: right;
+}
+
+.Edit .Body .p_content .TextContent {
+	height: 572px;
+	padding: 5px;
+	border: 1px solid #CCC;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: #F6F6F6;
+	font-size: 10pt;
+}
+
+.Edit .Body .p_editor {
+	float: right;
+	width: 49.5%;
+	height: 650px;
+}
+
+.Edit .Body .p_toolbar {
+	float: left;
+	height: 650px;
+	line-height: 650px;
+	text-align: center;
+	width: 1.3%;
+}
+
+.Edit .Body .p_toolbar a {
+	text-decoration: none;
+	width: 100%;
+	background: #4E867B;
+	color: white;
+	font-size: 8pt;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.Edit .action {
+	margin-top: 20px;
+	float: right;
+}
+
+.Bottom {
+	margin: 20px 0;
+}
+
+.Bottom .comments {
+	float: left;
+	width: 680px;
+}
+
+.comments h2 {
+	font-size: 12pt;
+	border-bottom: medium double #E3E3E3;
+	margin: 5px;
+	padding: 0 0 3px 5px;
+}
+
+.comments h2 span {
+	margin-left: 10px;
+	color: #444;
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+.comments h2 em.reply_count {
+	font-style: normal;
+	color: #A00;
+}
+
+.comments h2 .more {
+	float: right;
+	font-weight: normal;
+	font-size: 10pt;
+	color: #666;
+}
+
+.comments .comment {
+	margin: 5px 0 15px 0;
+	padding: 5px 0 5px 5px;
+	border-bottom: 1px dashed #ddd;
+}
+
+.comments .comment .user {
+	float: left;
+	width: 40px;
+	margin: 0 12px 0 0;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .user img {
+	width: 32px;
+	height: 32px;
+	margin: 3px 0 0 0;
+}
+
+.comments .comment .body {
+	float: left;
+	width: 620px;
+}
+
+.comments .comment .body .time {
+	float: left;
+	width: 380px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .body .time a {
+	color: #999;
+}
+
+.comments .comment .body .time a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .opts {
+	float: right;
+	width: 190px;
+	font-size: 9pt;
+	text-align: right;
+}
+
+.comments .comment .body .opts a {
+	color: #999;
+	padding: 0 2px;
+}
+
+.comments .comment .body .opts a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .detail {
+	margin: 10px 0;
+	font-size: 10.5pt;
+}
+
+.comments .comment .body .detail div.ref {
+	border: 1px solid #999;
+	margin: 0 0 10px 0;
+	padding: 3px;
+	font-size: 9pt;
+	color: #333;
+	background: #ffe;
+}
+
+.comments .comment .body .detail div.ref h4 {
+	margin: 0;
+	padding: 2px 0px 3px 0px;
+	color: #1E50A2;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+.comments .comment .body .detail div.ref .ref_body {
+	margin: 0;
+	padding: 2px;
+	line-height: 20px;
+	color: #666;
+	font-size: 9pt;
+	color: #333;
+}
+
+.comments .comment .body .detail div.ref .ref_body img {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.comments .pager {
+	margin-left: 60px;
+}
+
+.commentForm {
+	margin: 20px 0;
+}
+
+.commentForm .user {
+	float: left;
+	width: 60px;
+}
+
+.commentForm .user img {
+	width: 32px;
+	height: 32px;
+	margin: 0 0 0 5px;
+}
+
+.commentForm form {
+	float: left;
+}
+
+.commentForm form textarea {
+	border: 1px solid #999;
+}
+
+.commentForm form input.SUBMIT {
+	font-size: 18px;
+	padding: 4px 10px;
+	margin: 10px 0;
+	float: right;
+}
+
+.myList table {
+	margin: 10px;
+	font-size: 10pt;
+	table-layout: fixed;
+}
+
+.myList table td {
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.myList a {
+	text-decoration: none;
+}
+
+.myList .title {
+	
+}
+
+.myList .title a {
+	text-decoration: none;
+	color: #46B;
+}
+
+.myList .title span {
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .vote {
+	width: 50px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .date {
+	width: 70px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .opts {
+	width: 100px;
+	text-align: right;
+	color: #999;
+}
+
+.myList .pager {
+	margin: 0 10px 10px 10px;
+}
+
+.cmptable {
+	table-layout: fixed;
+	background: #EDEDED;
+}
+
+.cmptable td.eng {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10pt;
+	line-height: 1.5;
+}
+
+.cmptable td.chs {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10.5pt;
+	line-height: 1.5;
+}
+
+.cmptable td p {
+	margin: 10px 0;
+}
+
+.cmptable td .infoicon {
+	float: right;
+	background: #EBEBEB;
+	height: 20px;
+	padding: 0 6px;
+	line-height: 20px;
+	z-index: 999;
+	text-align: center;
+	font-size: 11px;
+	color: #060;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.cmptable td .infoicon img {
+	margin-left: 5px;
+	vertical-align: middle;
+	padding-top: 2px;
+}
+
+.cmptable td .infocard {
+	position: absolute;
+	top: 30px;
+	right: 0px;
+	padding: 5px 10px;
+	font-size: 10pt;
+	border-radius: 8px;
+	z-index: 100;
+	background: #EDEDED;
+	display: none;
+}
+
+.cmptable td .infocard h1 {
+	height: 20px;
+	line-height: 20px;
+	font-size: 15px;
+	color: #666;
+	margin-bottom: 5px;
+	border-bottom: 1px dotted #CCC;
+}
+
+.cmptable td .infocard h1 a.close {
+	float: right;
+	font-size: 6pt;
+}
+
+.cmptable td .infocard h1 a.close img {
+	width: 15px;
+	height: 15px;
+}
+
+.cmptable td .infocard a {
+	text-decoration: none;
+}
+
+.cmptable td .infocard a img {
+	float: left;
+	width: 50px;
+	height: 50px;
+}
+
+.cmptable td .infocard .text {
+	float: left;
+	margin-left: 10px;
+}
+
+.cmptable td .infocard h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.cmptable td .infocard p {
+	color: #666;
+	margin: 0;
+	padding: 0;
+}
+
+.cmptable td .infocard p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.cmptable td  ol {
+	list-style-type: decimal;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.cmptable td  ul {
+	list-style-type: disc;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.QuestionHeader {
+	height: 34px;
+	border-bottom: 1px solid #40AA53;
+	margin: 0 0 15px 0;
+}
+
+.QuestionHeader #portrait {
+	float: left;
+	width: 35px;
+}
+
+.QuestionHeader #portrait img {
+	width: 24px;
+	height: 24px;
+}
+
+.QuestionHeader #switcher {
+	float: left;
+	margin: 5px 0 0 2px;
+}
+
+.QuestionHeader #switcher h1 {
+	font-size: 12pt;
+	float: left;
+	color: #666;
+}
+
+.QuestionHeader #switcher h1 a {
+	text-decoration: none;
+}
+
+.QuestionHeader #switcher h1 em {
+	font-style: normal;
+	color: #40AA53;
+}
+
+.QATip {
+	margin: 40px 0 50px 100px;
+}
+
+.QATip h1 {
+	font-size: 13.5pt;
+}
+
+.QATip h1 em {
+	color: #A00;
+	font-style: normal;
+}
+
+.QATip .text {
+	margin: 20px 0 20px 20px;
+	font-size: 11pt;
+}
+
+.QATip .text p.hint {
+	color: #A00;
+	font-size: 10pt;
+	margin-top: 10px;
+}
+
+.QATip .text ul {
+	margin: 10px 0 0 0;
+	list-style-type: disc;
+	list-style-position: inside;
+	line-height: 24px;
+}
+
+.QATip .btn_view {
+	margin-left: 20px;
+}
+
+.AllTags {
+	padding-bottom: 10px;
+}
+
+.AllTags ul.tagList {
+	margin: 10px;
+}
+
+.AllTags ul.tagList li {
+	float: left;
+	width: 24%;
+}
+
+.AllTags ul.tagList li .stat {
+	color: #666;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+}
+
+.AllTags a.tag,.PopularTags a.tag {
+	background-color: #E0EAF1;
+	border-bottom: 1px solid #3E6D8E;
+	border-right: 1px solid #7F9FB6;
+	color: #3E6D8E;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+	line-height: 2.4;
+	margin: 2px 2px 2px 0;
+	padding: 2px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.AllTags a.tag em,.PopularTags a.tag em {
+	font-style: normal;
+	color: #666;
+	font-size: 7pt;
+	margin-left: 2px;
+}
+
+.AllTags a.tag:hover,.PopularTags a.tag:hover {
+	background-color: #3E6D8E;
+	color: #fff;
+}
+
+.AllTags a.tag:hover em,.PopularTags a.tag:hover em {
+	color: #fff;
+}
+
+.AllTags .pager {
+	margin: 0 10px;
+}</style>
+<div class="Article">
+	<div class="Top">
+		<div class="Vote"><em id="vote_count">11</em><a href="javascript:vote_article(932);">顶</a></div>
+		<h1>
+            我希望一年前就知道 MongoDB 的那些事儿
+                    </h1>
+		<h3>英文原文：<a href="http://snmaynard.com/2012/10/17/things-i-wish-i-knew-about-mongodb-a-year-ago/" target="_blank">Things I wish I knew about MongoDB a year ago</a></h3>
+        <div class="Tags">
+		<strong>标签：</strong>
+						<a href="http://www.oschina.net/translate/tag/mongodb" class="tag project image" data-id="11827" title="分布式文档存储数据库 MongoDB">MongoDB</a> 		        		</div>
+		<div class="rec_user">
+            <span class="options">
+                                <style>
+#TagsSwitcher{color:#A00;}
+#RecTags,#MyTags{margin:5px 0;}
+#RecTags a.tag{line-height:24px;}
+#favor_form p:first-child{margin:5px 0;}
+#favor_form{width:200px;}
+#favor_form p {color:#666;}
+#favor_form form{min-height: 85px;width:200px;}
+#favor_form form ._favor_input{display:block;margin:2px 0;width:199px;}
+#favor_form form ._favor_button{float:left;padding:2px 5px;}
+.favor_ok {text-align:center;font-size:10.5pt;width:199px;height:60px;margin-top:10px;}
+#TagsSwitcher{cursor:pointer;float:right;margin-top:10px;}
+#MyTags{display:none;width:199px;}
+#MyTags a.tag {float:left; background-color: #E0EAF1;border-bottom: 1px solid #3E6D8E;border-right: 1px solid #7F9FB6;color: #3E6D8E;font-size: 8pt;line-height: 16px;margin: 2px 2px 2px 0;padding: 2px 4px;text-decoration: none;white-space: nowrap;}
+#MyTags a.tag:hover{background-color: #3E6D8E;color: #FFF;}
+</style>
+<script type="text/javascript">
+var favor_add = "<a href='javascript:add_to_favor(932,7)' id='favor_trigger' title='添加到收藏夹'>我要收藏</a>";
+var favor_del = "<a href='javascript:delete_favor(932,7)' id='favor_trigger' style='color:#a00;'>取消收藏</a>";
+var favor_ok = "<p class='favor_ok'>已成功添加到收藏夹<br/><br/> <a href='null/favorites?type=7'>我的收藏夹</a> | <a href='javascript:close_favor()'>关闭</a></p>";
+function delete_favor(obi_id, obj_type){
+	$('#attention_it').html(favor_add);
+	$("#p_attention_count").load("/action/favorite/cancel?type="+obj_type+"&id="+obi_id, {user: ''});
+}
+function add_to_favor(obj_id, obj_type){
+	if(confirm('必须登录后才能收藏，是否现在登录？')){
+		location.href="http://www.oschina.net/home/login?goto_page="+encodeURIComponent(location.href);
+	}
+}
+function close_favor(elem_id){
+    $('#favor_trigger').poshytip('destroy');
+}
+function setTag(tv){
+	var t = $("._favor_input");
+	var value = t.val();
+	var tags = value.replace(/，/ig,',').split(',');
+	var exist = false;
+	value = $.map(tags,function(v,i){
+		if($.trim(tv) == $.trim(v)){
+			exist = true;
+			return undefined;
+		}
+		return v;
+	}).join(',');
+	if(exist){
+		t.val(value);
+		return;
+	}
+	if(value!="")
+		t.val(value+","+tv);
+	else
+		t.val(tv)
+}
+function ltrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(0)) != -1){
+        var j=0, i = s.length;
+        while (j < i && whitespace.indexOf(s.charAt(j)) != -1){
+            j++;
+        }
+        s = s.substring(j, i);
+    }
+    return s;
+}
+
+function rtrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(s.length-1)) != -1){
+        var i = s.length - 1;
+        while (i >= 0 && whitespace.indexOf(s.charAt(i)) != -1){
+            i--;
+        }
+        s = s.substring(0, i+1);
+    }
+    return s;
+}
+ 
+function trim(str){
+    return rtrim(ltrim(str));
+}
+</script>
+<em id="p_attention_count">254</em>人收藏此文章,
+<span id="attention_it">
+	<script type="text/javascript">document.write(favor_add);</script><a href="javascript:add_to_favor(932,7)" id="favor_trigger" title="添加到收藏夹">我要收藏</a>
+</span>
+<script type="text/javascript">
+	$(document).ready(function(){
+    	$.ajax({
+    		url:"/action/favorite/attentionUsersCount",
+    		type:"get",
+    		data:"id="+932+"&type="+7,
+    		success:function(msg){
+				$("#p_attention_count").html(msg);
+    		}
+    	});
+	});
+</script>            </span>
+			<a href="http://my.oschina.net/u/914332" target="_blank">yfaming</a> 推荐于 2年前 (共 12 段, 翻译完成于 06-29) (<a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#comments">15评</a>)
+            <span class="share">
+                                <a class="sina" title="分享到新浪微博" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=858381728',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译: 在Heyzap 和 Bugsnag 我已经使用MongoDB超过一年了，我发现它是一个非常强大的数据库。和其他的数据库一样，它有一些缺陷，但是这里有一些东西我希望有人可以早一点告...','','utf-8'));"></a><a class="tencent" title="分享到腾讯微博" href="javascript:(function(){window.open('http://v.t.qq.com/share/share.php?url='+encodeURIComponent(document.location)+'&appkey=96f54f97c4de46e393c4835a266207f4&site=&title='+encodeURIComponent(document.title)+encodeURIComponent(': 在Heyzap 和 Bugsnag 我已经使用MongoDB超过一年了，我发现它是一个非常强大的数据库。和其他的数据库一样，它有一些缺陷，但是这里有一些东西我希望有人可以早一点告...'),'', 'width=450, height=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no');}())"></a>
+            </span>
+		</div>
+		<div class="clear"></div>
+	</div>
+		<div class="toolbar">
+				<span class="label">参与翻译<em>(4人)</em>：</span>
+        <div class="contributers"><a href="http://my.oschina.net/cshell" target="_blank" class="t_user">桔子</a>, <a href="http://my.oschina.net/super0555" target="_blank" class="t_user">super0555</a>, <a href="http://my.oschina.net/u/588964" target="_blank" class="t_user">Liam_Lee</a>, <a href="http://my.oschina.net/lxbzj" target="_blank" class="t_user">lxbzmy</a></div>		
+				<div class="options">
+                    <a href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区.html" class="selected">仅中文</a> | <a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago?cmp" target="_blank">中英文对照</a> | <a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago?lang=eng">仅英文</a> | <a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago?print" target="_blank">打印此文章</a>
+                </div>
+	</div>
+			<div class="Body" style="position:relative;">
+								                    <div id="translate_16834" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 在<a href="http://www.heyzap.com/" rel="nofollow">Heyzap</a>&nbsp;和&nbsp;<a href="https://bugsnag.com/" rel="nofollow">Bugsnag</a>&nbsp;我已经使用MongoDB超过一年了，我发现它是一个非常强大的数据库。和其他的数据库一样，它有一些缺陷，但是这里有一些东西我希望有人可以早一点告诉我的。 </p> 
+<h2 id="content_h2_1_8"> 即使建立索引选择性计数还是很缓慢 </h2> 
+<p> 举个例子，当对用户feed进行分页时，你可能会看到类似的东西， </p> 
+<div><div id="highlighter_816871" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">db.collection.count({username: </code><code class="js string">"my_username"</code><code class="js plain">});</code></div></div></td></tr></tbody></table></div></div> 
+<p> <span style="line-height:1.5;font-size:10pt;">在</span><span style="line-height:1.5;font-size:10pt;">MongoDB，这种计数采取的数量级的时间比你希望的要长。有一个<a href="https://jira.mongodb.org/browse/SERVER-1752" rel="nofollow">open ticke</a>，目前为2.4，在这里，我希望希望他们可以将它弄出来。在那之前，你可以留下自己的数据汇总。在插入一个新的文档的时候，你可以在mongo中用<a href="http://www.mongodb.org/display/DOCS/Updating#Updating-%24inc" rel="nofollow">$inccommand</a>存储数据汇总。</span> </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/588964" title="Liam_Lee" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/588964_50.jpg" align="absmiddle" alt="Liam_Lee" title="Liam_Lee" class="SmallPortrait" user="588964"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/588964" target="_blank">Liam_Lee</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17097">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17097);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16835" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_2_5"> 副本集读取不一致 </h2> 
+<p> 当你开始利用副本集跨集群分发读数结果，就会使自己卷入麻烦的漩涡。例如，如果你将数据写到主设备，随后的读操作可能会被指引到从设备，而从设备尚有待拷贝数据。可以用类似下面的例子来说明这一点， </p> 
+<div><div id="highlighter_808434" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js comments">// Writes the object to the primary</code></div><div class="line number2 index1 alt1"><code class="js plain">db.collection.insert({_id: ObjectId(</code><code class="js string">"505bd76785ebb509fc183733"</code><code class="js plain">), key: </code><code class="js string">"value"</code><code class="js plain">});</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number4 index3 alt1"><code class="js comments">// This find is routed to a read-only secondary, and finds no results</code></div><div class="line number5 index4 alt2"><code class="js plain">db.collection.find({_id: ObjectId(</code><code class="js string">"505bd76785ebb509fc183733"</code><code class="js plain">)});</code></div></div></td></tr></tbody></table></div></div> 
+<p> 如果还有性能问题的话这个问题会更复杂，因为这会导致主设备与从设备之间的复制滞后，使其增长到数分钟乃至某些情况下的数小时。 </p> 
+<p> 你既可以控制一次查询是否<a target="_blank" href="http://www.mongodb.org/display/DOCS/Querying#Querying-slaveOk%28QueryingSecondaries%29" rel="nofollow">运行于从设备</a>，也可以控制<a target="_blank" href="http://docs.mongodb.org/manual/applications/replication/#replica-set-write-concern" rel="nofollow">在插入操作中</a>有多少从设备执行复制操作，但是这将影响到性能，在某些情况甚至会引起永久阻塞！ </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/super0555" title="super0555" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/995742_50.jpg" align="absmiddle" alt="super0555" title="super0555" class="SmallPortrait" user="995742"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/super0555" target="_blank">super0555</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17557">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17557);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16836" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_3_5"> 范围查询被以不同顺序索引 </h2> 
+<p> 我发现范围查询使用的索引与其他的查询有些许不同。一般在一次复合查询中，你会用关键字作为索引操作的后一个参数。然而，在使用诸如$in之类的范围查询时，Mongo在应用该范围前就应用了索引。这会导致对文档的索引是在内存中完成，而这相当的慢！ </p> 
+<div><div id="highlighter_594291" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js comments">// This doesn't use the last element in a compound index to sort</code></div><div class="line number2 index1 alt1"><code class="js plain">db.collection.find({_id: {$</code><code class="js keyword">in</code> <code class="js plain">: [</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">ObjectId(</code><code class="js string">"505bd76785ebb509fc183733"</code><code class="js plain">), </code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">ObjectId(</code><code class="js string">"505bd76785ebb509fc183734"</code><code class="js plain">),</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">ObjectId(</code><code class="js string">"505bd76785ebb509fc183735"</code><code class="js plain">),</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;</code><code class="js plain">ObjectId(</code><code class="js string">"505bd76785ebb509fc183736"</code><code class="js plain">)</code></div><div class="line number7 index6 alt2"><code class="js plain">]}}).sort({last_name: 1});</code></div></div></td></tr></tbody></table></div></div> 
+<p> 在Heyzap，我们通过为这个查询在Redis中创建一个缓存层，从而绕过了这个问题。但如果在$in声明中你只有两个数值，你也可以执行同样的查询两次，或者如果你有可用的RAM，你也可以调整这个索引。 </p> 
+<p> 你可以读到更多关于这个<a target="_blank" href="http://blog.mongolab.com/2012/06/cardinal-ins/" rel="nofollow">问题</a>的内容，或者浏览此<a target="_blank" href="https://jira.mongodb.org/browse/SERVER-3310" rel="nofollow">标签</a>。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/super0555" title="super0555" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/995742_50.jpg" align="absmiddle" alt="super0555" title="super0555" class="SmallPortrait" user="995742"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/super0555" target="_blank">super0555</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17560">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17560);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16837" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_4_5"> Mongo的 BSON ID 很好用<br> </h2> 
+<p> Mongo的 BSON ID给你提供了大量有用的功能，但当我我第一次使用Mongo时，我都没有了解到可以用它所做事情的二分之一。例如，BSON ID的创建时间是被存储于ID的。你可以提取出这个时间，轻松的拥有一个created_at字段！ </p> 
+<div><div id="highlighter_577994" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js comments">// Will return the time the ObjectId was created</code></div><div class="line number2 index1 alt1"><code class="js plain">ObjectId(</code><code class="js string">"505bd76785ebb509fc183733"</code><code class="js plain">).getTimestamp();</code></div></div></td></tr></tbody></table></div></div> 
+<p> BSON ID会随时间递增，因此按id排序也就是按创建日期排序。这一列是自动索引的，所以查询起来会相当快。你可以在<a href="http://www.mongodb.org/display/DOCS/Optimizing+Object+IDs" rel="nofollow">10gen网站</a><span></span> 读到更多关于其内容。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/super0555" title="super0555" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/995742_50.jpg" align="absmiddle" alt="super0555" title="super0555" class="SmallPortrait" user="995742"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/super0555" target="_blank">super0555</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17558">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17558);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16838" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_5_5"> 索引所有的查询 </h2> 
+<p> 当我第一次使用Mongo时，我有时候会在特定的基础环境上或从一个定时任务中执行查询。最初那些查询并没有被索引，因为不需要面对用户也不需要经常运行。然而这给别的索引查询带来了性能问题，因为未索引的查询会做大量的磁盘读操作，这影响到对未缓存文档的检索。于是我下决心要保证那些查询至少是部分索引的，以免这样的事情再次发生。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/super0555" title="super0555" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/995742_50.jpg" align="absmiddle" alt="super0555" title="super0555" class="SmallPortrait" user="995742"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/super0555" target="_blank">super0555</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17559">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17559);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16839" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_6_5"> 始终对新建的查询执行explain操作 </h2> 
+<p> <span style="line-height:1.5;font-size:10pt;">显然，如果你有</span><span style="line-height:1.5;font-size:10pt;">关系数据库的使用背景，你一定熟悉 explain操作，这在Mongo里面同样重要。当你为一个应用新增一个查询时，你应该在生产数据上运行一下查询以检查其速度。你也可以要求Mongo执行</span><a href="http://www.mongodb.org/display/DOCS/Explain" rel="nofollow">explain</a><span style="line-height:1.5;font-size:10pt;">&nbsp;来</span><span style="line-height:1.5;font-size:10pt;">解释查询到底怎么执行的，以便于你可以检查索引之类的参数等等。</span> </p> 
+<div><div id="highlighter_734414" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div><div class="line number23 index22 alt2">23</div><div class="line number24 index23 alt1">24</div><div class="line number25 index24 alt2">25</div><div class="line number26 index25 alt1">26</div><div class="line number27 index26 alt2">27</div><div class="line number28 index27 alt1">28</div><div class="line number29 index28 alt2">29</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js plain">db.collection.find(query).explain()</code></div><div class="line number2 index1 alt1"><code class="js plain">{</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// BasicCursor means no index used, BtreeCursor would mean this is an indexed query</code></div><div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"cursor"</code> <code class="js plain">: </code><code class="js string">"BasicCursor"</code><code class="js plain">,</code></div><div class="line number5 index4 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// The bounds of the index that were used, see how much of the index is being scanned</code></div><div class="line number7 index6 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"indexBounds"</code> <code class="js plain">: [ ],</code></div><div class="line number8 index7 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number9 index8 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// Number of documents or indexes scanned</code></div><div class="line number10 index9 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"nscanned"</code> <code class="js plain">: 57594,</code></div><div class="line number11 index10 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number12 index11 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// Number of documents scanned</code></div><div class="line number13 index12 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"nscannedObjects"</code> <code class="js plain">: 57594,</code></div><div class="line number14 index13 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number15 index14 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// The number of times the read/write lock was yielded</code></div><div class="line number16 index15 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"nYields"</code> <code class="js plain">: 2 ,</code></div><div class="line number17 index16 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number18 index17 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// Number of documents matched</code></div><div class="line number19 index18 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"n"</code> <code class="js plain">: 3 ,</code></div><div class="line number20 index19 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number21 index20 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// Duration in milliseconds</code></div><div class="line number22 index21 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"millis"</code> <code class="js plain">: 108,</code></div><div class="line number23 index22 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number24 index23 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// True if the results can be returned using only the index</code></div><div class="line number25 index24 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"indexOnly"</code> <code class="js plain">: </code><code class="js keyword">false</code><code class="js plain">,</code></div><div class="line number26 index25 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number27 index26 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js comments">// If true, a multikey index was used</code></div><div class="line number28 index27 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="js string">"isMultiKey"</code> <code class="js plain">: </code><code class="js keyword">false</code></div><div class="line number29 index28 alt2"><code class="js plain">}</code></div></div></td></tr></tbody></table></div></div> 
+<p> 我曾见过新部署的应用程序就因为其中的查询语句没有在生产环境中做验证而导致的整个站点down掉。做个验证是相对快速和容易做到的，所以不要找拒绝！ </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/lxbzj" title="lxbzmy" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/138791_50.jpg" align="absmiddle" alt="lxbzmy" title="lxbzmy" class="SmallPortrait" user="138791"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/lxbzj" target="_blank">lxbzmy</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_17607">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(17607);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16840" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_7_5"> 分析器 </h2> 
+<p> MongoDB自带一个非常有用的<a target="_blank" href="http://www.mongodb.org/display/DOCS/Database+Profiler" rel="nofollow">分析器</a>。你可以根据你的需要，设定分析器只分析超过一定时间的查询。我设定是记录所有超过100微秒的查询。 </p> 
+<div><div id="highlighter_953177" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js comments">// 分析所有超过100微秒的查询</code></div><div class="line number2 index1 alt1"><code class="js plain">db.setProfilingLevel(1, 100);</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="js comments">// 分析所有的查询</code></div><div class="line number5 index4 alt2"><code class="js plain">db.setProfilingLevel(2);</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="js comments">// 关闭分析器</code></div><div class="line number8 index7 alt1"><code class="js plain">db.setProfilingLevel(0);</code></div></div></td></tr></tbody></table></div></div> 
+<p> 分析器保存所有的分析数据到加了前缀的system.profile集。这和其他的数据集很像，你可以对他执行查询，例如： </p> 
+<div><div id="highlighter_494356" class="syntaxhighlighter  js"><div class="toolbar"><span><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="js comments">// 知道最近的分析</code></div><div class="line number2 index1 alt1"><code class="js plain">db.system.profile.find().sort({$natural:-1});</code></div><div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number4 index3 alt1"><code class="js comments">//找到超过5毫秒的查询</code></div><div class="line number5 index4 alt2"><code class="js plain">db.system.profile.find( { millis : { $gt : 5 } } );</code></div><div class="line number6 index5 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div><div class="line number7 index6 alt2"><code class="js comments">// 找到最慢的查询</code></div><div class="line number8 index7 alt1"><code class="js plain">db.system.profile.find().sort({millis:-1});</code></div></div></td></tr></tbody></table></div></div> 
+<p> 你可以可以通过show profile&nbsp; helper显示最近分析输出。 </p> 
+<p> 分析器本身会给每一个查询增加一些开销，但是我认为这是值得的。没有他，你会是摸眼瞎。我宁可牺牲一点点的速度开销，来让我能看到是那些查询导致问题的。没有它你根本意识不到你的查询对用户来说到底有多慢。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18447">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18447);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16841" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_8_5"> 有用的 Mongo命令行<br> </h2> 
+<p> 这儿是一些有用的命令行，你可以在mongo shell中运行它们，在监视你服务器状态。这些都可以脚本化，所以你可以用它获得数据，用来监控或者绘制图表。 </p> 
+<ul> 
+ <li> <a href="http://www.mongodb.org/display/DOCS/Viewing+and+Terminating+Current+Operation" rel="nofollow">db.currentOp()</a> - 显示你所有当前正在运行操作<br> </li> 
+ <li> <a href="http://www.mongodb.org/display/DOCS/Viewing+and+Terminating+Current+Operation" rel="nofollow">db.killOp(opid)</a> - 可以用来杀掉长查询<br> </li> 
+ <li> <a href="http://docs.mongodb.org/manual/reference/server-status-index/#server-status-example-instance-information" rel="nofollow">db.serverStatus()</a> - 显示你整个服务器的状态，对监控非常有用<br> </li> 
+ <li> <a href="http://docs.mongodb.org/manual/reference/database-statistics/" rel="nofollow">db.stats()</a> - 显示你选中库的状态<br> </li> 
+ <li> <a href="http://docs.mongodb.org/manual/reference/collection-statistics/" rel="nofollow">db.collection.stats()</a> -&nbsp; 特定集的状态<br> </li> 
+</ul> 
+<p> <br> </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18448">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18448);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16842" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_9_5"> 监控<br> </h2> 
+<p> 经过过去一年对Mongo生产实例的监控，我列出了系列需要监控的关键阈值。 </p> 
+<h3 id="content_h3_9_8"> 索引大小 </h3> 
+<p> 根据你你的工作需要调整MongoD内存中合适的大小，这是必须的。以Heyzap为例，我们需要把所有的索引都放到内存里，当浏览老游戏或者用户配置时候，我们要很频繁地查询整个数据集。 </p> 
+<p> 通过图表化的索引大小，让Heyzap能准确的预知何时需要增加服务器，何时删除索引或者其他的方法处理来增加索引的大小。我们能够在大约一天内预知是否需要处理当前索引增长的问题。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18452">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18452);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16843" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_10_5"> 当前操作值<br> </h3> 
+<p> 图形化你mongo数据库的当前操作值，可以让你了解何时你数据库开始变慢了。如果你注意到你当前操作值的一个异常值，我就可以查找其他数据寻找导致问题的原因。是不是当时有一个慢查询？是不是访问增加了？我怎么减缓这个压力？当操作值出现异常时，对一个复制集来说常常会导致复制延迟，所以当务之急是赶紧解决由于复制集导致读到的数据不一致的问题。 </p> 
+<h3 id="content_h3_10_8"> 索引偏差数<br> </h3> 
+<p> 索引偏差产生是在MongoDB开始命中硬盘去载入一个索引，这通常意味着你的工作集不再能命中内存数据了。这个值理论上应该为0，取决于你的使用，它实际上达不到0。偶尔从硬盘载入一个索引对整体性能不会有很大的影响。你应该让你的索引偏差数尽可能的低。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18461">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18461);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16844" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_11_5"> 复制延迟<br> </h3> 
+<p> 如果你使用复制作为备份，或者你使用复制从库提供读访问，你就应该监控你复制延迟。如果你的备份滞后于主节点几个小时的话，那将非常危险。同时从从库读到延迟与主库几个小时也会让你的用户混乱的。 </p> 
+<h3 id="content_h3_11_8"> I/O 性能<br> </h3> 
+<p> 如果你的云端上运行MongoDB，比如使用亚马逊的EBS，查看你磁盘运行的怎么样，非常有用。你可以得到I/O性能的随机下降，而且你需要把它关联到性能指标中去，比如作为一个当前操作数据峰值的解释。一些监控工具，比如iostat可以告诉你所有你需要的信息，让你了解你硬盘行为。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18457">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18457);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_16845" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h3 id="content_h3_12_5"> 监控命令 </h3> 
+<p> 有很多非常酷的应用可以用来监控你的数据库实例 </p> 
+<ul> 
+ <li> <a href="http://docs.mongodb.org/manual/reference/mongotop/" rel="nofollow">mongotop</a> - 显示过去一秒内每一个数据集在读写上耗费的时间。<br> </li> 
+ <li> <a href="http://docs.mongodb.org/manual/reference/mongostat/" rel="nofollow">mongostat</a> -&nbsp; instances杰出的在线调试工具，可以浏览你数据实例中所有链接 </li> 
+</ul> 
+<h3 id="content_h3_12_13"> 监控前端<br> </h3> 
+<ul> 
+ <li> <a href="http://www.10gen.com/mongodb-monitoring-service" rel="nofollow">MMS</a> - 10gen的托管mongo监控服务. 很棒的起点。<br> </li> 
+ <li> <a href="http://kibana.org/" rel="nofollow">Kibana</a> - 日子存储前端。mongo日志趋势分析。非常漂亮的可视化工具<br> </li> 
+</ul></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/cshell" title="桔子" target="_blank"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/95248_50.jpg" align="absmiddle" alt="桔子" title="桔子" class="SmallPortrait" user="95248"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/cshell" target="_blank">桔子</a><br>翻译于 1年前</h6>
+                <p><em id="vote_count_18455">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(18455);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        				<div class="copyright">
+			本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接<br>
+			我们的翻译工作遵照 <a href="http://zh.wikipedia.org/wiki/Wikipedia:CC" target="_blank">CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们
+		</div>
+	</div>
+	<div style="margin:10px 0;">
+	    </div>
+		<div class="Bottom">
+		<div class="google_ads" style="float:right;width:300px;">
+			<script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7090564139599510";
+            /* translate-comments */
+            google_ad_slot = "8977750911";
+            google_ad_width = 300;
+            google_ad_height = 250;
+            //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+		</div>
+        <script>
+			$(function(){
+				$(window).scroll(function() {
+					var $offset = $('.google_ads').last().offset();
+            		if($(window).scrollTop()>($offset.top)) {
+            			$('.google_ads iframe').first().css({'position':'fixed','top':'0px','left':$offset.left+'px','margin-top':'10px','z-index':'999'});
+            		}
+            		else {
+            			$('.google_ads iframe').first().css({'position':'relative','top':'','left':'','margin-top':'0','z-index':'0'});
+            		}
+				});
+			});
+		</script>
+				<div class="comments">
+			<a name="comments"></a>
+			<h2>
+                <a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#top" class="more">回页面顶部</a><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#commentForm" class="more" style="margin-right:10px;color:#080;">发表评论</a>
+                网友评论<span>共<em class="reply_count">15</em>条</span>
+            </h2>
+						<ul class="list"><li class="comment" id="cmt_932_61077_6158">
+	<div class="user"><a href="http://my.oschina.net/wendal" name="rpl_6158"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/61077_50.jpg" align="absmiddle" alt="Wendal" title="Wendal" class="SmallPortrait" user="61077"></a></div>
+	<div class="body">
+		<div class="time"><b>Wendal</b>   发表于 2013-06-30 08:32</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">很好</div>
+		<div id="inline_reply_of_932_61077_6158" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_88547_6162">
+	<div class="user"><a href="http://my.oschina.net/libchina" name="rpl_6162"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/88547_50.jpg" align="absmiddle" alt="DISSECTOR" title="DISSECTOR" class="SmallPortrait" user="88547"></a></div>
+	<div class="body">
+		<div class="time"><b>DISSECTOR</b>   发表于 2013-06-30 10:30</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">从一开始就不看好MongoDB这个玩具<br>DocBase的概念模型， 从LotusNote多年的挣扎到死亡的过程，已经很清楚说明这种通过限制开发者需求而突起其他亮点的设计，即使引入内存库概念，也是无法统计库或计算库的实质需求。</div>
+		<div id="inline_reply_of_932_88547_6162" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_180342_6172">
+	<div class="user"><a href="http://my.oschina.net/hand" name="rpl_6172"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/180342_50.jpg" align="absmiddle" alt="Andy" title="Andy" class="SmallPortrait" user="180342"></a></div>
+	<div class="body">
+		<div class="time"><b>Andy</b>   发表于 2013-06-30 11:32</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">没有完美的数据库，你要适应它的特点是来使用<br>mongodb的性能和可靠性还是很高的，<br>我有一些商业的应用11年的时候就上线运行了，现在还不错</div>
+		<div id="inline_reply_of_932_180342_6172" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_97144_6176">
+	<div class="user"><a href="http://my.oschina.net/noned" name="rpl_6176"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/97144_50.jpg" align="absmiddle" alt="白文龙" title="白文龙" class="SmallPortrait" user="97144"></a></div>
+	<div class="body">
+		<div class="time"><b>白文龙</b>   发表于 2013-06-30 12:17</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">只在自己电脑里试过mongodb，生产环境不敢～</div>
+		<div id="inline_reply_of_932_97144_6176" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_2765_6177">
+	<div class="user"><a href="http://my.oschina.net/yangyan" name="rpl_6177"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/2765_50.jpg" align="absmiddle" alt="小杨阿哥哥" title="小杨阿哥哥" class="SmallPortrait" user="2765"></a></div>
+	<div class="body">
+		<div class="time"><b>小杨阿哥哥</b>   发表于 2013-06-30 12:23</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“DISSECTOR”的评论</h4><p>从一开始就不看好MongoDB这个玩具<br>DocBase的概念模型， 从LotusNote多年的挣扎到死亡的过程，已经很清楚说明这种通过限制开发者需求而突起其他亮点的设计，即使引入内存库概念，也是无法统计库或计算库的实质需求。</p></div>现在机器内存大了，全部数据在内存也是可能的</div>
+		<div id="inline_reply_of_932_2765_6177" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_254877_6201">
+	<div class="user"><a href="http://my.oschina.net/u/254877" name="rpl_6201"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="sunnyailon" title="sunnyailon" class="SmallPortrait" user="254877"></a></div>
+	<div class="body">
+		<div class="time"><b>sunnyailon</b>   发表于 2013-07-01 00:32</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">各位有点一叶障目吧，呵呵</div>
+		<div id="inline_reply_of_932_254877_6201" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_728556_6219">
+	<div class="user"><a href="http://my.oschina.net/hydrogen" name="rpl_6219"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="hydrogen" title="hydrogen" class="SmallPortrait" user="728556"></a></div>
+	<div class="body">
+		<div class="time"><b>hydrogen</b>   发表于 2013-07-01 09:17</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">Mongo的 BSON ID 很好用!<br>这个还真是第一次知道。</div>
+		<div id="inline_reply_of_932_728556_6219" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_781110_6243">
+	<div class="user"><a href="http://my.oschina.net/calvinchen" name="rpl_6243"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/781110_50.jpg" align="absmiddle" alt="陈纪年" title="陈纪年" class="SmallPortrait" user="781110"></a></div>
+	<div class="body">
+		<div class="time"><b>陈纪年</b>   发表于 2013-07-01 12:33</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">“所以不要找拒绝”，我可以说粗口么？</div>
+		<div id="inline_reply_of_932_781110_6243" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_250011_6457">
+	<div class="user"><a href="http://my.oschina.net/u/250011" name="rpl_6457"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/250011_50.png" align="absmiddle" alt="陈志银" title="陈志银" class="SmallPortrait" user="250011"></a></div>
+	<div class="body">
+		<div class="time"><b>陈志银</b>   发表于 2013-07-03 13:11</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“小杨阿哥哥”的评论</h4><p></p><div class="ref"><h4>引用来自“DISSECTOR”的评论</h4><p>从一开始就不看好MongoDB这个玩具<br>DocBase的概念模型， 从LotusNote多年的挣扎到死亡的过程，已经很清楚说明这种通过限制开发者需求而突起其他亮点的设计，即使引入内存库概念，也是无法统计库或计算库的实质需求。</p></div>现在机器内存大了，全部数据在内存也是可能的<p></p></div>如果要是百万级或以上的数据呢，都放到内存中是不合理的</div>
+		<div id="inline_reply_of_932_250011_6457" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_254877_6492">
+	<div class="user"><a href="http://my.oschina.net/u/254877" name="rpl_6492"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="sunnyailon" title="sunnyailon" class="SmallPortrait" user="254877"></a></div>
+	<div class="body">
+		<div class="time"><b>sunnyailon</b>   发表于 2013-07-03 21:37</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“陈志银”的评论</h4><p></p><div class="ref"><h4>引用来自“小杨阿哥哥”的评论</h4><p></p><div class="ref"><h4>引用来自“DISSECTOR”的评论</h4><p>从一开始就不看好MongoDB这个玩具<br>DocBase的概念模型， 从LotusNote多年的挣扎到死亡的过程，已经很清楚说明这种通过限制开发者需求而突起其他亮点的设计，即使引入内存库概念，也是无法统计库或计算库的实质需求。</p></div>现在机器内存大了，全部数据在内存也是可能的<p></p></div>如果要是百万级或以上的数据呢，都放到内存中是不合理的<p></p></div>可以参考下内存数据库集群嘛</div>
+		<div id="inline_reply_of_932_254877_6492" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_254877_6493">
+	<div class="user"><a href="http://my.oschina.net/u/254877" name="rpl_6493"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="sunnyailon" title="sunnyailon" class="SmallPortrait" user="254877"></a></div>
+	<div class="body">
+		<div class="time"><b>sunnyailon</b>   发表于 2013-07-03 21:38</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">任何数据库都有优缺点吧，我想只有合适与否的问题。</div>
+		<div id="inline_reply_of_932_254877_6493" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_162901_6499">
+	<div class="user"><a href="http://my.oschina.net/u/162901" name="rpl_6499"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/162901_50.jpg" align="absmiddle" alt="niedj" title="niedj" class="SmallPortrait" user="162901"></a></div>
+	<div class="body">
+		<div class="time"><b>niedj</b>   发表于 2013-07-04 08:50</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">如果需要将百万级数据放在内存数据库，那么这得是个多么厉害的应用啊。</div>
+		<div id="inline_reply_of_932_162901_6499" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_1033088_6654">
+	<div class="user"><a href="http://my.oschina.net/u/1033088" name="rpl_6654"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/1033088_50.jpg" align="absmiddle" alt="雪域刀客" title="雪域刀客" class="SmallPortrait" user="1033088"></a></div>
+	<div class="body">
+		<div class="time"><b>雪域刀客</b>   发表于 2013-07-09 10:13</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">真羡慕你已经有这么多丰富的经验</div>
+		<div id="inline_reply_of_932_1033088_6654" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_865222_7713">
+	<div class="user"><a href="http://my.oschina.net/zhupanxin" name="rpl_7713"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/865222_50.jpg" align="absmiddle" alt="Echo_me" title="Echo_me" class="SmallPortrait" user="865222"></a></div>
+	<div class="body">
+		<div class="time"><b>Echo_me</b>   发表于 2013-08-08 17:27</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">总不会是全完美没一丝缺点存在</div>
+		<div id="inline_reply_of_932_865222_7713" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_932_582346_7806">
+	<div class="user"><a href="http://my.oschina.net/TencentFly" name="rpl_7806"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/582346_50.jpg" align="absmiddle" alt="酷乐男孩" title="酷乐男孩" class="SmallPortrait" user="582346"></a></div>
+	<div class="body">
+		<div class="time"><b>酷乐男孩</b>   发表于 2013-08-09 14:50</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">不完美的完美@</div>
+		<div id="inline_reply_of_932_582346_7806" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li></ul>
+            				<div class="clear"></div>
+			<div class="commentForm">
+				<div class="user"><a href="" name="commentForm"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="非会员用户" title="非会员用户" class="SmallPortrait" user=""></a></div>
+    			<form id="form_comment" action="http://www.oschina.net/action/translate/comment?" method="post">
+					<input type="hidden" value="932" name="article">
+    				<textarea id="txt_comment" name="content" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_comment&#39;).submit();}" style="width:600px;height:100px;"></textarea><br>
+    				<input type="submit" value=" 发表评论 " id="FormSubmitButton" class="SUBMIT rndbutton">
+    				<span id="form_msg" style="display:none;"></span>
+					<p style="margin-top:36px;"><a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#comments">回评论顶部</a> | <a href="http://www.oschina.net/translate/things-i-wish-i-knew-about-mongodb-a-year-ago#top">回页面顶部</a></p>
+    			</form>
+			</div>
+		</div>
+        <div class="clear"></div>
+	</div>
+	</div>
+<div class="clear"></div>
+<div id="inline_reply_editor" style="display:none;">
+    <div class="CommentForm">
+        <form id="form_inline_comment" method="POST" action="http://www.oschina.net/action/translate/comment">
+            <input id="inline_reply_id" type="hidden" value="" name="reply_id">
+			<input type="hidden" value="932" name="article">
+            <textarea id="txt_focus" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_inline_comment&#39;).submit();}" style="width:400px;height:80px;" name="content"></textarea>
+            <br>
+            <input class="SUBMIT" type="submit" value="回复">
+            <input id="btn_close_inline_reply" class="SUBMIT" type="button" value="关闭">
+            文明上网，理性发言
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/xregexp-min.js"></script>
+<script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/shCore.min.js"></script>
+<script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/shThemeDefault.css">
+
+<script type="text/javascript">
+SyntaxHighlighter.autoloader(
+	'applescript			/js/sh309/scripts/shBrushAppleScript.js?t=1406837068000',
+	'actionscript3 as3		/js/sh309/scripts/shBrushAS3.js?t=1406837068000',
+	'bash shell				/js/sh309/scripts/shBrushBash.js?t=1406837068000',
+	'coldfusion cf			/js/sh309/scripts/shBrushColdFusion.js?t=1406837068000',
+	'cpp c					/js/sh309/scripts/shBrushCpp.js?t=1406837068000',
+	'obj-c objc				/js/sh309/scripts/shBrushObjC.js?t=1406837068000',
+	'c# c-sharp csharp		/js/sh309/scripts/shBrushCSharp.js?t=1406837068000',
+	'css					/js/sh309/scripts/shBrushCss.js?t=1406837068000',
+	'delphi pascal			/js/sh309/scripts/shBrushDelphi.js?t=1406837068000',
+	'diff patch pas			/js/sh309/scripts/shBrushDiff.js?t=1406837068000',
+	'erl erlang				/js/sh309/scripts/shBrushErlang.js?t=1406837068000',
+	'groovy					/js/sh309/scripts/shBrushGroovy.js?t=1406837068000',
+	'haxe hx				/js/sh309/scripts/shBrushHaxe.js?t=1406837068000',
+	'java					/js/sh309/scripts/shBrushJava.js?t=1406837068000',
+	'jfx javafx				/js/sh309/scripts/shBrushJavaFX.js?t=1406837068000',
+	'js jscript javascript	/js/sh309/scripts/shBrushJScript.js?t=1406837068000',
+	'perl pl				/js/sh309/scripts/shBrushPerl.js?t=1406837068000',
+	'php					/js/sh309/scripts/shBrushPhp.js?t=1406837068000',
+	'text plain				/js/sh309/scripts/shBrushPlain.js?t=1406837068000',
+	'py python				/js/sh309/scripts/shBrushPython.js?t=1406837068000',
+	'ruby rails ror rb		/js/sh309/scripts/shBrushRuby.js?t=1406837068000',
+	'scala					/js/sh309/scripts/shBrushScala.js?t=1406837068000',
+	'sql					/js/sh309/scripts/shBrushSql.js?t=1406837068000',
+	'vb vbnet				/js/sh309/scripts/shBrushVb.js?t=1406837068000',
+	'xml xhtml xslt html	/js/sh309/scripts/shBrushXml.js?t=1406837068000'
+);
+SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/translate"></script>
+<link type="text/css" rel="stylesheet" href="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/shThemeDefault(1).css">
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#form_comment').ajaxForm({
+    	dataType: 'json',
+		beforeSubmit: function(){
+			$('#FormSubmitButton').attr('disabled','disabled');
+			$('#form_msg').html("<span class='ajax_processing'>正在提交评论，请稍候...</span>");	
+			$('#form_msg').show();	
+		},
+        success: function(json) {
+			$('#FormSubmitButton').removeAttr('disabled');
+			    		if(json.msg){
+				$('#form_msg').html("<span class='error_msg'>"+json.msg+"</span>");
+				$('#form_msg').show();
+			}
+    		else if(json.id){
+    			ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('#txt_comment').val('');
+					$('.reply_count').html(json.reply_count);
+    			});
+				$('#form_msg').hide();
+    		}
+        }
+    });
+});
+function delete_c(aid,uid,cid) {
+	if(confirm("您确认要删除此评论？")){
+        ajax_post("/action/translate/delete_comments",{cmt:cid},function(html){
+			if(html.length>0)
+				alert(html);
+			else {
+				$("#cmt_"+aid+"_"+uid+"_"+cid).fadeOut();
+				$('.reply_count').html(parseInt($('.reply_count').html())-1);
+			}
+		});
+	}
+}
+function reply_c(aid,uid,cid) {
+	$('.inline_reply').empty();
+	var div_id = '#inline_reply_of_'+aid+'_'+uid+'_'+cid;
+	$('#inline_reply_id').val(uid+'_'+cid);
+	$(div_id).html($('#inline_reply_editor').html());
+	$('#txt_focus').focus();
+	$('#btn_close_inline_reply').click(function(){
+		$(div_id).empty();
+	});
+	$('#form_inline_comment').ajaxForm({
+    	dataType: 'json',
+    	success: function(json) {
+        	if(json.msg){
+        		alert(json.msg);
+        	}
+			else if(json.id){
+				ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('.reply_count').html(json.reply_count);
+					$(div_id).empty();
+    			});
+			}
+    	}
+	});
+}
+function vote_article(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function vote_block(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function show_other(pid,ppid) {
+	if($('#other_translate_'+pid+' .paragraph_chs').length==0) {
+    	$('#other_translate_'+pid).show();
+    	ajax_post("/translate/show_other_translate","pid="+pid+"&ppid="+ppid,function(html){
+    		$('#other_translate_'+pid).hide().html(html);
+			// 代码着色
+			$('#other_translate_'+pid+' pre').each(function(){
+				SyntaxHighlighter.highlight(null,this);
+			});
+			$('#other_translate_'+pid).slideDown();
+    	});
+    	}
+	else {
+		$('#other_translate_'+pid).slideToggle();
+	}
+	$('#btn_show_other_'+pid).toggleClass('closeOthers');
+	$('#translate_'+pid).toggleClass('bd10');
+}
+function edit_tags(id) {
+    popup("/translate/edit_tags?article="+id);
+}
+</script><div class="clear"></div></div>
+	<div id="OSC_Footer" class="CenterDiv"><style>
+.oscapp {text-align:left; width:220px;}
+.oscapp span {float:left;width:140px;}
+.oscapp a {float:left;text-indent:-9999em;width:16px;margin-left:8px;}
+.oscapp a.android {background:url('/img/android.gif') no-repeat left center;}
+.oscapp a.iphone {background:url('/img/iphone.gif') no-repeat left center;}
+.oscapp a.wp7 {background:url('/img/wp7.gif') no-repeat left center;}
+</style>
+<table width="100%"><tbody><tr>
+<td align="left">© 开源中国(OSChina.NET) | <a href="http://www.oschina.net/home/aboutosc">关于我们</a> | <a href="mailto:oschina.net@gmail.com">广告联系</a> | <a href="http://weibo.com/oschina2010" target="_blank">@新浪微博</a> | <a href="http://m.oschina.net/">开源中国手机版</a> | <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#737573;text-decoration:none;">粤ICP备12009483号-3</a></td>
+<td class="oscapp">
+	<span>开源中国手机客户端：</span>
+	<a href="http://www.oschina.net/app" class="android" title="Android客户端">Android</a>
+	<a href="http://www.oschina.net/app" class="iphone" title="iPhone 客户端">iPhone</a>
+	<a href="http://www.oschina.net/app" class="wp7" title="Windows Phone 客户端">WP7</a>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="left">开源中国社区(OSChina.net)是工信部 <a href="http://www.copu.org.cn/" target="_blank">开源软件推进联盟</a> 指定的官方社区</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">
+<!--
+if (top.location != self.location)top.location=self.location;
+//-->
+</script></div>
+</div>
+
+
+<!-- Generated by OsChina.NET (init:0[ms],page:38[ms],ip:117.184.87.130) --><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="topcontrol" title="回到顶部" style="position: fixed; bottom: 120px; right: 100px; cursor: pointer;"><img src="./我希望一年前就知道 MongoDB 的那些事儿 - 技术翻译 - 开源中国社区_files/gotop.gif" style="width:31px; height:31px;"></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

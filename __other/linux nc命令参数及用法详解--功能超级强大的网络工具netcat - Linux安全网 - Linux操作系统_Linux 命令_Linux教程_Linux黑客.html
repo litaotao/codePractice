@@ -1,0 +1,1517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0038)http://www.linuxso.com/command/nc.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+
+
+
+
+
+
+<title>linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客</title>
+
+
+
+<meta name="keywords" content="nc,netcat,linux nc,nc命令">
+
+
+
+<meta name="description" content="功能说明： 功能强大的网络工具 语 法： nc[-hlnruz][-g网关...][-G指向器数目][-i延迟秒数][-o输出文件][-p通信端口][-s来源位址][-v...][-w超时秒数][主机名称][通信端口...] 参 数： -g网关设置路由器跃程通信网关，最丢哦可设置8个。 -G指向器数目设置来">
+
+
+
+<link rel="stylesheet" href="http://www.linuxso.com/templets/default/style/style.css">
+
+
+
+<link rel="stylesheet" href="http://www.linuxso.com/templets/default/style/topbar.css">
+
+
+
+<link rel="shortcut icon" type="image/ico" href="http://www.linuxso.com/templets/default/images/favicon.ico">
+
+
+
+<script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/script.js"></script><style type="text/css"></style>
+
+
+
+<script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/jquery.js"></script>
+
+
+
+<script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/dedeajax2.js"></script>
+
+
+
+
+
+<link href="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/old_style.css" type="text/css" rel="stylesheet">
+
+
+<!-- 请置于所有广告位代码之前 -->
+<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>
+<script type="text/javascript">
+BAIDU_CLB_preloadSlots("231263");
+</script>
+
+
+</head>
+
+
+
+<body><script src="http://tajs.qq.com/jiathis.php?uid=1536270&dm=www.linuxso.com" charset="utf-8"></script><link href="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/jiathis_share.css" rel="stylesheet" type="text/css"><iframe frameborder="0" style="position: absolute; display: none; opacity: 0;"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;"></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto;"></div><iframe frameborder="0" src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/jiathis_utility.html" style="display: none;"></iframe>
+
+
+
+<div class="container">
+
+
+
+<div class="toolbar">
+
+
+
+    <div class="clearfix toolbar-inner">
+
+
+
+        <div class="quicklink">
+
+
+
+            <ul id="chinaz_website_links" class="accesslink">
+
+
+
+                <li>Linux安全网 --- 专注Linux操作系统安全运维。</li>
+
+                
+
+            </ul>
+
+       
+
+        </div>
+
+
+
+        <div class="userbar" id="chinaz_topbar">
+
+        	<div class="userbar">
+
+            	<a href="http://www.linuxso.com/bbs/">进入论坛</a>
+
+            <a href="mailto:admin@linuxso.com">我要投稿</a></div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+<script type="text/javascript">/*120*270，全站漂浮*/ var cpro_id = 'u652900';</script><script src="http://cpro.baidu.com/cpro/ui/f.js" type="text/javascript"></script>
+
+
+<div class="header">
+
+
+
+    <h1 class="logo"><a href="http://www.linuxso.com/" rel="home"><img src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/logo.png" alt="Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客"></a></h1>
+
+
+
+    <div class="ad ad-b-head">
+
+<!-- 广告位：全站最上方468*60 -->
+<script type="text/javascript">BAIDU_CLB_fillSlot("231227");</script>
+    </div>
+
+
+
+    <div class="ad ad-t-head">
+
+	
+
+           <ul>
+        	<li><a href="http://s.click.taobao.com/t_1?i=qXsp7p3KnSxLhSk%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="red">鸟哥的私房菜(第三版)</font></a></li>
+            <li><a href="http://s.click.taobao.com/t_1?i=qXsrzbPWLEOoakU%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="blue">爆!万网M3型linux主机5折起!</font></a></li>
+            <li><a href="http://s.click.taobao.com/t_1?i=of9bFcPywd2ZNQ%3D%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="blue">美国linux VPS 每月仅18元</font></a></li>
+            <li><a href="http://s.click.taobao.com/t_1?i=qXn%2F6s4Ls6wj5LM%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="red">加州T2机房 高速Linux VPS</font></a></li>
+            <li><a href="http://s.click.taobao.com/t_1?i=qXskfSkQlkMIY%2Fs%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="red">香港高速VPS 免备案</font></a></li>
+            <li><a href="http://s.click.taobao.com/t_1?i=qXskfSkQlkMIY%2Fs%3D&p=mm_11454432_0_0" class="f_red" target="_blank">·<font color="blue">韩国1G高速空间 稳定</font></a></li>
+        </ul>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<div class="nav">
+
+
+
+    <ul>
+
+
+
+        <li><a href="http://www.linuxso.com/"><span>首页</span></a></li>
+
+		
+
+        
+
+      	<li><a href="http://www.linuxso.com/linuxrumen/"><span>Linux入门</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/video/" rel="dropmenu48"><span>Linux教程</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/jiaobenruqin/"><span>Linux安全</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/command/" rel="dropmenu16"><span>Linux命令</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxxitongguanli/"><span>Linux系统</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxbiancheng/" rel="dropmenu31"><span>Linux编程</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxdownload/" rel="dropmenu51"><span>Linux下载</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxjiqun/" rel="dropmenu66"><span>Linux集群</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxpeixun/"><span>Linux培训</span></a></li>
+
+      	
+
+      	<li><a href="http://www.linuxso.com/linuxjiankong/" rel="dropmenu67"><span>Linux监控</span></a></li>
+
+      	
+
+
+
+    </ul>
+
+
+
+</div>
+
+
+
+<div class="note">
+
+
+
+    <span>
+
+
+
+        <a href="http://www.linuxso.com/command/nc.html#" target="_blank"><img src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/cust_icon.gif" align="absbottom"> 会员投稿</a>
+
+
+
+        <a href="http://www.linuxso.com/command/nc.html#"><img src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/tg_icon.gif" align="absbottom"> 投稿指南</a>
+
+
+
+    </span>
+
+
+
+    <b>本期推荐:</b>
+
+    
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="weizhi">
+
+
+
+	<form name="formsearch" action="http://www.linuxso.com/plus/search.php">
+
+
+
+<span>
+
+
+
+    <b>搜索:</b>
+
+
+
+    <input type="hidden" name="kwtype" value="0">
+
+            
+
+	<input type="hidden" name="searchtype" value="titlekeyword">
+
+
+
+    <input type="input" onfocus="this.value=(this.value==&#39;全文检索&#39;)?&#39;&#39;:this.value" onblur="this.value=(this.value==&#39;&#39;)?&#39;全文检索&#39;:this.value" name="q" value="全文检索" class="searchtxt">
+
+
+
+    <input type="image" src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/topsearch_submit.gif" value="检索">
+
+
+
+</span>
+
+
+
+</form>
+
+
+
+    <b>您的位置</b>: <a href="http://www.linuxso.com/">Linux安全网</a> &gt; <a href="http://www.linuxso.com/command/">Linux命令</a> &gt; <a href="http://www.linuxso.com/command/list_22_1.html">网络通讯</a> &gt;  &#187;  正文
+
+
+
+</div>
+
+
+
+
+<!--<div class="ad ad-b-leaderboard">
+
+
+
+<script type="text/javascript">/*960*60，首页大通栏*/ var cpro_id = 'u652896';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script>
+
+
+
+</div>-->
+
+
+
+
+
+
+
+<div class="clearfix wrap layout-cols2">
+
+
+
+    <div class="col1">
+
+
+
+<div id="news">
+
+
+
+        
+
+
+
+            <h1 class="article-heading">linux nc命令参数及用法详解--功能超级强大的网络工具netcat</h1>
+
+
+
+           <div class="times">
+
+
+
+                <span class="article-published">日期:2011-04-23</span>
+
+                <span class="article-published">点击:886</span>
+
+
+
+                <span class="article-source">来源: 未知</span>
+
+                <span class="jiathiswidget" id="ckepop">
+
+                <span class="label">分享至:</span>
+
+                <a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+
+                <a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+
+                <a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+
+                <a class="jiathis_button_baidu" title="分享到百度搜藏"><span class="jiathis_txt jtico jtico_baidu"></span></a>
+
+                <a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+
+                <a class="jiathis_button_kaixin001" title="分享到开心网"><span class="jiathis_txt jtico jtico_kaixin001"></span></a>
+
+                <a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+
+                <a class="jiathis_button_xiaoyou" title="分享到朋友网"><span class="jiathis_txt jtico jtico_xiaoyou"></span></a>
+
+                <a href="http://www.jiathis.com/share?uid=1536270" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+
+            </span>
+
+                
+
+            </div>
+
+
+
+
+
+
+
+            <div class="content cont-detail fs-small" id="ctrlfscont">
+
+  <span class="contentad" style=" width:650px; height:202px;text-align:center; padding-left:25px;"><script type="text/javascript">/*360*300，创建于2011-10-25*/ var cpro_id = 'u654355';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script> </span>
+
+
+				<p>
+	<strong>功能说明：</strong>功能强大的网络工具<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	<b style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">语　　法：</b><a href="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客.html" target="_blank"><u>nc</u></a>&nbsp;[-h<a href="http://www.linuxso.com/command/ln.html" target="_blank"><u>ln</u></a>ruz][-g&lt;网关...&gt;][-G&lt;指向器数目&gt;][-i&lt;延迟秒数&gt;][-o&lt;输出文件&gt;][-p&lt;通信端口&gt;][-s&lt;来源位址&gt;][-v...][-w&lt;超时秒数&gt;][主机名称][通信端口...]<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	<b style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">参　　数：</b><br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-g&lt;网关&gt;&nbsp;&nbsp;&nbsp;设置路由器跃程通信网关，最丢哦可设置8个。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-G&lt;指向器数目&gt;&nbsp;&nbsp;&nbsp;设置来源路由指向器，其数值为4的倍数。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-h&nbsp;&nbsp;&nbsp;在线帮助。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-i&lt;延迟秒数&gt;&nbsp;&nbsp;&nbsp;设置时间间隔，以便传送信息及扫描通信端口。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-l&nbsp;&nbsp;&nbsp;使用监听模式，管控传入的资料。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-n&nbsp;&nbsp;&nbsp;直接使用IP地址，而不通过域名服务器。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-o&lt;输出文件&gt;&nbsp;&nbsp;&nbsp;指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-p&lt;通信端口&gt;&nbsp;&nbsp;&nbsp;设置本地主机使用的通信端口。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-r&nbsp;&nbsp;&nbsp;乱数指定本地与远端主机的通信端口。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-s&lt;来源位址&gt;&nbsp;&nbsp;&nbsp;设置本地主机送出数据包的IP地址。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-u&nbsp;&nbsp;&nbsp;使用UDP传输协议。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-v&nbsp;&nbsp;&nbsp;显示指令执行过程。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-w&lt;超时秒数&gt;&nbsp;&nbsp;&nbsp;设置等待连线的时间。<br style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" word-wrap:="" break-word;="" padding-top:="" 0px\"="">
+	&nbsp;&nbsp;-z&nbsp;&nbsp;&nbsp;使用0输入/输出模式，只在扫描通信端口时使用。</p>
+<p>
+	&nbsp;linux nc (net<a href="http://www.linuxso.com/command/cat.html" target="_blank"><u>cat</u></a>)最新版源码下载及nc<a href="http://www.linuxso.com/command/" target="_blank"><u>命令</u></a>详解</p>
+<p>
+	<a href="http://www.linuxso.com/%22http://www.linuxso.com/a/linuxdownload/soft/230.html/%22">http://www.linuxso.com/a/linuxdownload/soft/230.html</a></p>
+<p>
+	<span style="\&quot;font-size:" 14px\"=""><strong><span style="\&quot;color:" #0000ff\"="">扩展资料一:nc简单使用示例</span></strong></span></p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	简单用法举例<br>
+	1）端口扫描<br>
+	# nc -v -w 2 192.168.2.34 -z 21-24<br>
+	nc: connect to 192.168.2.34 port 21 (t<a href="http://www.linuxso.com/command/cp.html" target="_blank"><u>cp</u></a>) fail<a href="http://www.linuxso.com/command/ed.html" target="_blank"><u>ed</u></a>: Connection refu<a href="http://www.linuxso.com/command/sed.html" target="_blank"><u>sed</u></a><br>
+	Connection to 192.168.2.34 22 port [tcp/ssh] <a href="http://www.linuxso.com/command/su.html" target="_blank"><u>su</u></a>cceeded!<br>
+	nc: connect to 192.168.2.34 port 23 (tcp) failed: Connection refused<br>
+	nc: connect to 192.168.2.34 port 24 (tcp) failed: Connection refused</p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	2)从192.168.2.33拷贝文件到192.168.2.34<br>
+	在192.168.2.34上： nc -l 1234 &gt; test.txt<br>
+	在192.168.2.33上： nc 192.168.2.34 &lt; test.txt</p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	3)简单聊天工具<br>
+	在192.168.2.34上： nc -l 1234<br>
+	在192.168.2.33上： nc 192.168.2.34 1234<br>
+	这样，双方就可以相互交流了。使用c<a href="http://www.linuxso.com/command/tr.html" target="_blank"><u>tr</u></a>l+C(或D）退出。</p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	3.用nc命令操作me<a href="http://www.linuxso.com/command/mc.html" target="_blank"><u>mc</u></a>ached<br>
+	1）存储数据：printf “<a href="http://www.linuxso.com/command/set.html" target="_blank"><u>set</u></a> key 0 10 6rnresultrn” |nc 192.168.2.34 11211<br>
+	2）获取数据：printf “get keyrn” |nc 192.168.2.34 11211<br>
+	3）删除数据：printf “delete keyrn” |nc 192.168.2.34 11211<br>
+	4）查看状态：printf “<a href="http://www.linuxso.com/command/stat.html" target="_blank"><u>stat</u></a>srn” |nc 192.168.2.34 11211<br>
+	5）模拟top命令查看状态：watch “echo stats” |nc 192.168.2.34 11211<br>
+	6）清空缓存：printf “flush_allrn” |nc 192.168.2.34 11211 (小心操作，清空了缓存就没了）</p>
+<p style="\&quot;text-indent:" 0px;="" margin:="" 5px="" auto\"="">
+	nc -l 1234</p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	nc 127.0.0.1 1234<br>
+	在端口1234建立连接，互相发送输入<br>
+	<br>
+	nc -p 1234 -w 5 host.<a href="http://www.linuxso.com/command/ex.html" target="_blank"><u>ex</u></a>ample.com 80<br>
+	建立从本地1234端口到host.example.com的80端口连接，5秒超时<br>
+	nc<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><span style="\&quot;color:" rgb(255,0,0)\"="">-u</span><span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span>host.example.com 53<br>
+	u为UDP连接<br>
+	<br>
+	echo -n "GET / HTTP/1.0"r"n"r"n" | nc host.example.com 80<br>
+	连接到主机并执行<br>
+	<br>
+	nc -v<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><span style="\&quot;color:" rgb(255,0,0)\"="">-z</span><span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span>host.example.com 70-80<br>
+	扫描端口(70到80)，可指定范围。-v输出详细信息。</p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	<strong><span style="\&quot;color:" #0000ff\"="">扩展资料二:命令linux nc 命令传输文件</span></strong></p>
+<p>
+	nc到底干嘛用的我不多描述，今天主要讲下用nc传输文件。由于公司的设备sudo后没有ssh，scp等远程接入命令，或host.deny里面设置了ssh的deny，不管怎样的原因。我今天跨过大家常用的scp,来说明下一个更有用的轻量级工具，nc的另一个强大的功---文件传输。<br>
+	<br>
+	<br>
+	范例如下：<br>
+	<br>
+	目的主机监听<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><br>
+	nc -l 监听端口&nbsp;&nbsp;&gt; 要接收的文件名<br>
+	nc -l 4444 &gt; cache.tar.gz<br>
+	<br>
+	源主机发起请求<br>
+	nc&nbsp;&nbsp;目的主机ip&nbsp; &nbsp; 目的端口<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><br>
+	nc&nbsp;&nbsp;192.168.0.85&nbsp;&nbsp;4444<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><br>
+	<br>
+	<a href="http://www.linuxso.com/command/netstat.html" target="_blank"><u>netstat</u></a>&nbsp;&nbsp;如下<br>
+	[root@localhost jiangbao]# netstat -tpln<br>
+	<br>
+	tcp&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;0&nbsp; &nbsp;&nbsp; &nbsp;0 0.0.0.0:4444&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 0.0.0.0:*&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; LISTEN&nbsp; &nbsp;&nbsp; &nbsp;18166/nc&nbsp;&nbsp;<br>
+	<br>
+	英文描述如下<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span><br>
+	<br>
+	DATA TRANSFER<br>
+	<br>
+	Start by using nc to listen on a specific port, with output captured into a <a href="http://www.linuxso.com/command/file.html" target="_blank"><u>file</u></a>:<br>
+	&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;$ nc -l 1234 &gt; filename.out<br>
+	Using a second machine, connect to the listening nc process, feeding it the file <a href="http://www.linuxso.com/command/which.html" target="_blank"><u>which</u></a> is to be transferred:<br>
+	&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;$ nc host.example.com 1234<span class="\&quot;Apple-converted-space\&quot;">&nbsp;</span></p>
+<p>
+	<span style="\&quot;color:" #0000ff\"=""><strong>扩展资料三:linux nc (NetCat) 命令详解,这篇文章对nc的介绍非常详细，和以上资料有部分重复.</strong></span></p>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	<strong>一、<u>版本</u></strong><br>
+	<span style="\&quot;color:" rgb(0,0,0)\"="">通常的Linux发行版中都带有NetCat（简称nc），甚至在拯救模式光盘中也由busybox提供了 简版的nc工具。但不同的版本，其参数的使用略有差异。<br>
+	NetCat 官方地址：</span><a href="http://www.linuxso.com/%22http://netcat.sourceforge.net//%22" style="\&quot;color:" rgb(116,164,160);="" text-decoration:="" none\"="" target="\&quot;_blank\&quot;"><span style="\&quot;color:" rgb(113,187,227)\"="">http://netcat.sourceforge.net/</span></a></p>
+<div style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	引用</div>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	[root@hatest1 ~]# cat /etc/asianux-release<br>
+	Asianux release 2.0 (Trinity SP2)<br>
+	[root@hatest1 ~]# cat /etc/re<a href="http://www.linuxso.com/command/df.html" target="_blank"><u>df</u></a>lag-release<br>
+	Red Flag DC Server release 5.0 (Trinity SP2)<br>
+	[root@hatest1 ~]# type -a nc<br>
+	nc is /usr/bin/nc<br>
+	[root@hatest1 ~]# rpm -q nc<br>
+	nc-1.10-22<br>
+	建议在使用前，先用man nc看看帮助。这里以红旗DC Server 5.0上的1.10版本进行简单说明。<br>
+	假设两服务器信息：</p>
+<div style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	引用</div>
+<p style="\&quot;padding-bottom:" 0px;="" margin:="" 0px="" 10px;="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	server1: 192.168.228.221<br>
+	server2: 192.168.228.222<br>
+	<strong>二、常见使用</strong><br>
+	<strong>1、远程拷贝文件</strong><br>
+	从server1拷贝文件到server2上。需要先在server2上，用nc激活监听，server2上运行：</p>
+<div style="\&quot;padding-bottom:" 0px;="" margin:="" padding-left:="" padding-right:="" padding-top:="" 0px\"="">
+	引用
+                
+               <span class="contenttop" style=" width:682px;float:left; text-align:center">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-4510523863108853";
+/* 300x250, 创建于 11-4-9 */
+google_ad_slot = "4993518163";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript">/*336*280，用于并排和google*/ var cpro_id = 'u658144';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script>
+  </span>             
+
+            </div>
+
+            
+
+            <div class="dede_pages">
+
+				<ul class="pagelist">
+
+          <li><a>共3页: </a></li><li><a href="http://www.linuxso.com/command/nc.html#">上一页</a></li><li class="thisclass"><a href="http://www.linuxso.com/command/nc.html#">1</a></li><li><a href="http://www.linuxso.com/command/nc_2.html">2</a></li><li><a href="http://www.linuxso.com/command/nc_3.html">3</a></li><li><a href="http://www.linuxso.com/command/nc_2.html">下一页</a></li>
+
+				</ul>
+            
+			</div> <br>
+
+
+
+            <div class="text_tag">
+
+
+
+                        <h5>Tags：
+
+                                        <a href="http://www.linuxso.com/tags.php?/nc/">nc</a>
+
+                                        
+
+                                        <a href="http://www.linuxso.com/tags.php?/netcat/">netcat</a>
+
+                                        
+
+                                        <a href="http://www.linuxso.com/tags.php?/linux+nc/">linux nc</a>
+
+                                        
+
+                                        <a href="http://www.linuxso.com/tags.php?/nc%C3%FC%C1%EE/"></a>
+
+                                         </h5>
+
+
+
+<span class="jiathiswidget" id="ckepop">
+
+                <span class="label">分享至:</span>
+
+                <a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+
+                <a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+
+                <a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+
+                <a class="jiathis_button_baidu" title="分享到百度搜藏"><span class="jiathis_txt jtico jtico_baidu"></span></a>
+
+                <a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+
+                <a class="jiathis_button_kaixin001" title="分享到开心网"><span class="jiathis_txt jtico jtico_kaixin001"></span></a>
+
+                <a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+
+                <a class="jiathis_button_xiaoyou" title="分享到朋友网"><span class="jiathis_txt jtico jtico_xiaoyou"></span></a>
+
+                <a href="http://www.jiathis.com/share?uid=1536270" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+
+            </span>
+
+
+
+            </div>
+
+
+
+            
+
+
+
+<div class="box_xgimg"> 
+
+
+
+<script type="text/javascript">
+
+
+
+    var t_u = null;
+
+
+
+    var t_u_old = null;
+
+
+
+    var maxPic = 6;
+
+
+
+    var showPic = 0;
+
+
+
+
+
+
+
+    function switchPic(curPic){ 
+
+
+
+        if(curPic == maxPic){ 
+
+
+
+            showPic = 1;
+
+
+
+        }else{ 
+
+
+
+            showPic = showPic + 1;
+
+
+
+        }
+
+
+
+        for(i=1; i <= maxPic; i++){ 
+
+
+
+            if(i == showPic){ 
+
+
+
+                document.getElementById("picA"+i).className = "currON";
+
+
+
+                document.getElementById("picUL"+i).style.display = "";
+
+
+
+            }else{ 
+
+
+
+                document.getElementById("picA"+i).className = "";
+
+
+
+                document.getElementById("picUL"+i).style.display = "none";
+
+
+
+            }
+
+
+
+        }
+
+
+
+    }
+
+
+
+    function reSwitchPic() { 
+
+
+
+        clearTimeout(t_u);
+
+
+
+        switchPic(showPic);
+
+
+
+        t_u = setTimeout('reSwitchPic();', 5000);
+
+
+
+    }
+
+
+
+    function pauseSwitch() { 
+
+
+
+        clearTimeout(t_u);
+
+
+
+        t_u_old = t_u;
+
+
+
+    }
+
+
+
+    function selectSwitch(num) { 
+
+
+
+        showPic = num;
+
+
+
+        for(i=1; i <= maxPic; i++){ 
+
+
+
+            if(i == num){ 
+
+
+
+                document.getElementById("picA"+i).className = "currON";
+
+
+
+                document.getElementById("picUL"+i).style.display = "";
+
+
+
+            }else{ 
+
+
+
+                document.getElementById("picA"+i).className = "";
+
+
+
+                document.getElementById("picUL"+i).style.display = "none";
+
+
+
+            }
+
+
+
+        }
+
+
+
+    }
+
+
+
+    function goonSwitch() {
+
+
+
+        clearTimeout(t_u);
+
+
+
+        t_u = setTimeout('reSwitchPic();', 5000);
+
+
+
+    }   
+
+
+
+</script>
+
+
+
+<div class="title_xg">
+
+
+
+    <div style="float:left;padding-left:-10px;text-align:left;"><b>最新图文资讯</b></div>
+
+
+
+    <span style="float:right;padding-right:10px;font-size:12px;font-weight:normal;">
+
+
+
+        <a href="javascript://" class="" id="picA1" onclick="selectSwitch(1)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()">1</a>
+
+
+
+        <a href="javascript://" id="picA2" onclick="selectSwitch(2)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" class="currON">2</a>
+
+
+
+        <a href="javascript://" id="picA3" onclick="selectSwitch(3)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" class="">3</a>
+
+
+
+        <a href="javascript://" id="picA4" onclick="selectSwitch(4)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" class="">4</a>
+
+
+
+        <a href="javascript://" id="picA5" onclick="selectSwitch(5)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" class="">5</a>
+
+
+
+        <a href="javascript://" id="picA6" onclick="selectSwitch(6)" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" class="">6</a>
+
+
+
+    </span>
+
+
+
+</div>
+
+
+
+<div class="roll" id="roll" style="margin-left:0px;padding-left:0px;">
+
+
+
+    <ul id="picUL1" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" style="display: none;">
+
+		
+
+	</ul>
+
+
+
+    <ul id="picUL2" onmouseover="pauseSwitch()" onmouseout="goonSwitch()">
+
+		
+
+    </ul>
+
+
+
+    <ul id="picUL3" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" style="display: none;">
+
+		
+
+    </ul>
+
+
+
+    <ul id="picUL4" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" style="display: none;">
+
+		
+
+    </ul>
+
+
+
+    <ul id="picUL5" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" style="display: none;">
+
+		
+
+    </ul>
+
+
+
+    <ul id="picUL6" onmouseover="pauseSwitch()" onmouseout="goonSwitch()" style="display: none;">
+
+		
+
+    </ul>
+
+
+
+    <script type="text/javascript">
+
+
+
+    reSwitchPic();
+
+
+
+    </script>
+
+
+
+</div>
+
+
+
+</div>   
+
+
+
+
+
+
+
+                        <div class="box_xg">
+
+
+
+                <div class="title_xg">相关文章列表:</div>
+
+
+
+                <ul>
+
+					<li><a href="http://www.linuxso.com/linuxbiancheng/13502.html">HDU 1029 Ignatius and the Princess IV</a></li>
+<li><a href="http://www.linuxso.com/linuxrumen/13417.html">FreeBSD的rsync文件同步设置</a></li>
+<li><a href="http://www.linuxso.com/linuxrumen/13362.html">vnc指定用户屏幕号登录（oracle安装时使用）</a></li>
+<li><a href="http://www.linuxso.com/linuxbiancheng/13329.html">编辑距离（edit distance）</a></li>
+<li><a href="http://www.linuxso.com/linuxrumen/13314.html">RHL配置VNC Server</a></li>
+<li><a href="http://www.linuxso.com/architecture/13286.html">UML用例图中包含(include)、扩展(extend)和泛化(gener</a></li>
+<li><a href="http://www.linuxso.com/linuxpeixun/13273.html">Lsyncd2实时文件同步系统在Gentoo Linux emerge安装+r</a></li>
+<li><a href="http://www.linuxso.com/linuxrumen/13044.html">利用rsync+crontab实现Linux服务器间的定时增量备份</a></li>
+
+
+				</ul>
+
+
+
+            </div>
+
+
+
+
+
+<!-- //评论内容区 -->
+
+
+
+
+
+
+
+<div id="pllshow">
+
+          <form action="http://www.linuxso.com/command/nc.html#" method="post" name="feedback">
+
+          <input type="hidden" name="dopost" value="send">
+
+          <input type="hidden" name="comtype" value="comments">
+
+          <input type="hidden" name="aid" value="3023">
+
+          <input type="hidden" name="fid" id="feedbackfid" value="0">
+
+
+
+验证码:<input type="text" name="validate" size="4"><img src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/vdimgck.php" alt="点击我更换图片" id="validateimg" style="height:15px;" title="点击我更换图片" onclick="this.src=this.src+&#39;?&#39;">
+
+
+
+
+
+<span class="float_right">理智评论文明上网，拒绝恶意谩骂</span>
+
+<span id="userinfo">
+
+用户名：<b id="nickname"></b>
+
+<span id="anonymous"><label><input type="checkbox" name="notuser" checked="checked"> 匿名发表</label></span>
+
+<input type="button" onclick="PostComment()" value="发表评论" class="btn">				
+
+</span> 
+
+<!--<span style="display:none;" id="fastLoginDiv" value="0">
+
+	<label class="cor-ccc">用户名：</label>
+
+	<input type="text" class="input-text bor-gray"  name="username" id="loginUsername" value="" />
+
+	<label>密码：</label>
+
+	<input type="password" class="input-text bor-gray" name="password" id="loginPassword" />
+
+	<input type="button" class="btn" onclick="login(); return false;" value="登录" />
+
+</span>	 -->
+
+<div class="bor">
+
+<textarea name="msg" rows="6" cols="94" class="rev_textarea"></textarea>    
+
+</div>			
+
+</form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+	<a name="commettop"></a>
+
+	<div class="mt1">
+
+			<dl class="tbox">
+
+
+				<!-- //这两个ID的区块必须存在，否则JS会出错 -->
+
+				<dd id="commetcontentNew"></dd>
+
+				<dd id="commetcontent"></dd>
+
+			</dl>
+
+	</div>
+
+<!--
+
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+
+-->
+
+<script language="javascript">
+
+function LoadCommets(page)
+
+{
+
+		var taget_obj = document.getElementById('commetcontent');
+
+		var waithtml = "<div style='line-height:50px'><img src='/images/loadinglit.gif' />评论加载中...</div>";
+
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+
+		myajax.SendGet2("/plus/feedback_ajax.php?dopost=getlist&aid=802&page="+page);
+
+		DedeXHTTP = null;
+
+}
+
+function PostComment()
+
+{
+
+		var f = document.feedback;
+
+		var nface = '6';
+
+		var nfeedbacktype = 'feedback';
+
+		var nvalidate = '';
+
+		var nnotuser = '';
+
+		var nusername = '';
+
+		var npwd = '';
+
+		var taget_obj = $DE('commetcontentNew');
+
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+
+		if(f.msg.value=='')
+
+		{
+
+			alert("评论内容不能为空！");
+
+			return;
+
+		}
+
+		if(f.validate)
+
+		{
+
+			if(f.validate.value=='') {
+
+				alert("请填写验证码！");
+
+				return;
+
+			}
+
+			else {
+
+				nvalidate = f.validate.value;
+
+			}
+
+		}
+
+		if(f.msg.value.length > 500)
+
+		{
+
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+
+			return;
+
+		}
+
+		if(f.feedbacktype) {
+
+			for(var i=0; i < f.feedbacktype.length; i++)
+
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+
+		}
+
+		if(f.face) {
+
+			for(var j=0; j < f.face.length; j++)
+
+				if(f.face[j].checked) nface = f.face[j].value;
+
+		}
+
+		if(f.notuser.checked) nnotuser = '1';
+
+		if(f.username) nusername = f.username.value;
+
+		if(f.pwd) npwd = f.pwd.value;
+
+		
+
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+
+		myajax.sendlang = 'gb2312';
+
+		myajax.AddKeyN('dopost', 'send');
+
+		myajax.AddKeyN('aid', '802');
+
+		myajax.AddKeyN('fid', f.fid.value);
+
+		myajax.AddKeyN('face', nface);
+
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+
+		myajax.AddKeyN('validate', nvalidate);
+
+		myajax.AddKeyN('notuser', nnotuser);
+
+		myajax.AddKeyN('username', nusername);
+
+		myajax.AddKeyN('pwd', npwd);
+
+		myajax.AddKeyN('msg', f.msg.value);
+
+		myajax.SendPost2('/plus/feedback_ajax.php');
+
+		f.msg.value = '';
+
+		f.fid.value = 0;
+
+		if(f.validate)
+
+		{
+
+			if($DE('validateimg')) $DE('validateimg').src = "/include/vdimgck.php?"+f.validate.value;
+
+			f.validate.value = '';
+
+		}
+
+}
+
+function quoteCommet(fid)
+
+{
+
+	document.feedback.fid.value = fid;
+
+}
+
+LoadCommets(1);
+
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	//document.write("feedback.php?action="+ftype+"&fid="+fid);
+	//return;
+  myajax = new DedeAjax(taget_obj,false,false,'','','');
+  myajax.SendGet2("feedback.php?aid=1&action="+ftype+"&fid="+fid);
+  DedeXHTTP = null;
+}
+
+</script><!-- //评论内容区结束 -->
+
+
+
+<style>
+
+.pl{
+
+	border:1px solid #DADCDD;
+
+	background:#fff;
+
+}
+
+.pl_title{
+
+	height:30px;
+
+	line-height:30px;
+
+	padding-left:15px;
+
+	padding-right:15px;
+
+	font-size:14px;
+
+	font-weight:bold;
+
+	background:url(/templets/default/images/pl_bg.gif) repeat-x;
+
+}
+
+.pl_title span{
+
+	float:right;
+
+	font-size:12px;
+
+	font-weight:normal;
+
+	color:#949494;
+
+}
+
+.pl_title b{
+
+	color:#E8581F;
+
+}
+
+.pl_rec_list{
+
+	line-height:25px;
+
+	text-align:center;
+
+	height:90px;
+
+	border-bottom: 1px dashed #E6E6E6;
+
+}
+
+.pl_rec_list li{
+
+	width:290px;
+
+	text-align:center;
+
+	float:left;
+
+	font-size:14px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+}
+
+.pl_rec_list li a:link,
+
+.pl_rec_list li a:visited{
+
+	text-decoration:none;
+
+}
+
+.pl_rec_list li a:hover{
+
+	color:#204E7D;
+
+	text-decoration:underline;
+
+}
+
+.pl_list{
+
+	margin:15px 20px;
+
+	line-height:25px;
+
+	border-bottom:1px solid #E6E6E6;
+
+	padding-left:5px;
+
+	padding-bottom:10px;
+
+}
+
+.pl_list em{font-style:normal;font-weight:bold;margin:0 2px;color:#c00;}
+
+.pl_list .pl_head{overflow:hidden;zoom:1;}
+
+.pl_list .pl_head .f-l{float:left;}
+
+.pl_list .pl_head .f-r{float:right;}
+
+.pl_title .comments{margin:0 2px;color:#c00;}
+
+</style>
+
+
+</div>
+
+
+
+    </div>
+
+
+
+    <div class="col2">
+
+
+
+        <div class="ad right_bot">
+
+			<div style="border: 1px solid #96bdde;height: 250px;width: 268px;background-color: #FFF;text-align: center;line-height: 250px;">
+<script type="text/javascript">/*300*250，右侧栏目顶部*/ var cpro_id = 'u440250';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script>
+            </div>
+
+		</div>
+
+
+
+<div class="right_box right_bot">
+
+
+
+    <div class="right_title">推荐内容</div>
+
+
+
+    <ul class="articlelist"> 
+
+    	
+
+    </ul>
+
+
+
+</div>
+
+
+
+<div class="ad" style="margin-bottom:10px;">
+
+
+
+
+
+</div>
+
+
+
+<div class="ad right_bot">
+
+
+
+<!--<div style="border: 1px solid #96bdde;height: 322px;width: 268px;background-color: #FFF;text-align: center;line-height: 322px;">
+</div>-->
+
+
+
+</div>
+
+
+
+<div class="right_box right_bot">
+
+
+
+    <div class="right_title">最新文章</div>
+
+
+
+    <ul class="forumrecomlist">
+
+    	<li><a href="http://www.linuxso.com/command/ifconfig.html" target="_blank">linux ifconfig命令参数及用法详解--linux查看配置网</a></li>
+<li><a href="http://www.linuxso.com/command/newaliases.html" target="_blank">linux newaliases命令参数及用法详解--linux初始化别</a></li>
+<li><a href="http://www.linuxso.com/command/smbclient.html" target="_blank">linux smbclient命令参数及用法详解--linux访问samba</a></li>
+<li><a href="http://www.linuxso.com/command/tcpdump.html" target="_blank">linux tcpdump命令参数及用法详解--linux下抓包网络分</a></li>
+<li><a href="http://www.linuxso.com/command/write.html" target="_blank">linux write命令参数及用法详解--linux发送信息(聊天)</a></li>
+<li><a href="http://www.linuxso.com/command/traceroute.html" target="_blank">linux traceroute命令参数及用法详解--linux跟踪路由</a></li>
+<li><a href="http://www.linuxso.com/command/setserial.html" target="_blank">linux setserial命令参数及用法详解--设置或显示串口</a></li>
+<li><a href="http://www.linuxso.com/command/ping.html" target="_blank">linux ping命令参数及用法详解--linux测试网络连通性</a></li>
+<li><a href="http://www.linuxso.com/command/netstat.html" target="_blank">linux netstat命令参数及用法详解--查看网络连接详细</a></li>
+<li><a href="http://www.linuxso.com/command/wall.html" target="_blank">linux wall命令参数及用法详解--向其它用户终端群发消</a></li>
+<li><a href="http://www.linuxso.com/command/dnsconf.html" target="_blank">linux dnsconf命令参数及用法详解--管理设置DNS服务器</a></li>
+<li><a href="http://www.linuxso.com/command/mesg.html" target="_blank">linux mesg命令参数及用法详解--设置终端是否允许别人</a></li>
+<li><a href="http://www.linuxso.com/command/minicom.html" target="_blank">linux minicom命令参数及用法详解--linux PPP拨号连接</a></li>
+<li><a href="http://www.linuxso.com/command/httpd.html" target="_blank">linux httpd命令参数及用法详解--apache服务主程序</a></li>
+<li><a href="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客.html" target="_blank">linux nc命令参数及用法详解--功能超级强大的网络工具</a></li>
+
+
+    </ul>
+
+
+
+</div>
+
+        <div class="ad right_bot">
+
+			<div style="border: 1px solid #96bdde;height: 600px;width: 268px;background-color: #FFF;text-align: center;line-height: 600px;">
+            <!-- 广告位：右侧摩天楼160*600 -->
+            <script type="text/javascript">BAIDU_CLB_fillSlot("231263");</script>
+            </div>
+
+		</div>
+
+
+
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<div id="sitemap" class="sitemap">
+
+
+
+
+
+关于我们 - 联系我们 - 广告服务 - 友情链接 - 网站地图 - 版权声明  -  发展历史
+
+
+
+</div>
+
+<div class="tongji" style="display:none">
+<script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/tongji.js"></script><script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=ffc5997f3dfcda47c8bf34a9cbf3d37a" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 20px 20px;"></a><script language="javascript" type="text/javascript" src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/3778695.js"></script><a href="http://www.51.la/?3778695" target="_blank" title="51.la 专业、免费、强健的访问统计">网站统计</a>
+
+</div>
+
+<div class="footer">
+
+<script type="\&quot;text/javascript\&quot;">/*120*270，全站漂浮*/ var cpro_id = \'u652900\';</script><script src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/-" type="\&quot;text/javascript\&quot;"></script>
+
+    <p>
+    感谢、尊重原创作者的付出,版权问题、技术咨询及广告合作请联系admin##linuxso.com<br>
+    Copyright &#169; 2005-2011  <a href="http://www.linuxso.com/">Linux安全网</a> LinuxSo.Com, All Rights Reserved. 豫ICP备12027123号-1.  推荐您关注<a href="http://t.qq.com/linuxs/" target="_blank" rel="
+nofollow"> Linux运维工程师</a> 的微博</p>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+<script type="text/javascript" src="./linux nc命令参数及用法详解--功能超级强大的网络工具netcat - Linux安全网 - Linux操作系统_Linux 命令_Linux教程_Linux黑客_files/jia.js" charset="utf-8"></script>
+
+<style>
+
+.jiathiswidget{margin-left:10px;}
+
+#ckepop .label{margin-right:5px;}
+
+.text_tag #ckepop .label{float:left;}
+
+#ckepop .jiathis_txt{float:none !important;}
+
+#ckepop .jtico{display:inline-block !important;}
+
+#ckepop .jiathis{vertical-align:middle; float:none;margin:0;}
+
+</style>
+
+
+
+
+
+</div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

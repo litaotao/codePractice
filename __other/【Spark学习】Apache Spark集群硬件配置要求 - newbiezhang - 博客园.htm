@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)http://www.cnblogs.com/zhangningbo/p/4135912.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery17016086333780549467_1417657645599&adModuleId=2&content=%E3%80%90Spark%E5%AD%A6%E4%B9%A0%E3%80%91Apache+Spark%E9%9B%86%E7%BE%A4%E7%A1%AC%E4%BB%B6%E9%85%8D%E7%BD%AE%E8%A6%81%E6%B1%82&_=1417657645687"></script>
+
+<title>【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/blog-common.css">
+<link type="text/css" rel="stylesheet" href="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/176127.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/zhangningbo/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/zhangningbo/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/zhangningbo/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/gpt.js"></script><script src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">var currentBlogApp = 'zhangningbo', cb_enable_mathjax=true;</script>
+<script src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/zhangningbo/"><img id="blogLogo" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/zhangningbo/">newbiezhang</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/zhangningbo/">首页</a></li>
+<li></li>
+<li><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/newbiezhang">联系</a></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/zhangningbo/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/zhangningbo/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+<!--done-->
+随笔- 27&nbsp;
+文章- 0&nbsp;
+评论- 2&nbsp;
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园.htm">【Spark学习】Apache Spark集群硬件配置要求</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p>Spark版本：1.1.1</p>
+<p>本文系从<a href="http://spark.apache.org/docs/latest/hardware-provisioning.html" target="_blank">官方文档</a>翻译而来，转载请尊重译者的工作，注明以下链接：</p>
+<p><a href="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园.htm" target="_blank">http://www.cnblogs.com/zhangningbo/p/4135912.html</a>&nbsp;</p>
+<p>&nbsp;</p>
+<h1>目录</h1>
+<hr>
+<p>&nbsp;</p>
+<ul>
+<li>存储系统</li>
+<li>本地磁盘</li>
+<li>内存</li>
+<li>网络</li>
+<li>CPU核数</li>
+</ul>
+<hr>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Spark开发人员收到的最常见的问题就是如何为Spark做硬件配置。然而恰当的硬件配置取决于你的应用环境，所以我们推荐考虑如下几个要素。</p>
+<p>&nbsp;</p>
+<h1>存储系统</h1>
+<hr>
+<p>&nbsp;</p>
+<p>　　因为大部分Spark作业很可能要从外部存储系统（如HDFS、HBase）读取数据，所以，把<span style="color: #0000ff;">Spark平台尽可能地部署在靠近这类存储系统的地方是很重要的</span>。我们推荐从以下几个方面考虑Spark的部署：</p>
+<ul>
+<li>如果有可能，那么就把Spark与HDFS运行在相同的节点上。最简单的方法就是在HDFS的节点上直接创建Spark Standalone集群，同时分别配置Spark和Hadoop对于内存和CPU的使用量以避免相互干扰（对于Hadoop，相关选项如：<code>mapred.child.java.opts用于设置每个任务需要分配的内存量，</code><code>mapred.tasktracker.map.tasks.maximum和</code><code>mapred.tasktracker.reduce.tasks.maximum<code>用于设置</code>任务总数</code>）。要不然，你还可以在通用集群管理器（比如Mesos或Hadoop YARN）上运行Hadoop和Spark。</li>
+<li>如果不可能，那么就在HDFS所在的局域网内的其他节点上运行Spark。</li>
+<li>对于HBase这样的低延迟数据库存储系统，最好是在存储系统以外的其他节点上运行计算作业，以避免干扰。</li>
+</ul>
+<p>&nbsp;</p>
+<h1>本地磁盘</h1>
+<hr>
+<p>&nbsp;</p>
+<p>　　当Spark在内存中执行大量的计算作业时，实际上它仍然会使用本地磁盘来存储那些不适合放入RAM中的数据，还有那些在各个stage之间保存的临时输出数据。我们推荐每个节点配备4-8个磁盘，且不要设置为RAID模式（仅仅是作为单独的装载点）。在Linux系统下，以noatime命令行选项装载磁盘可以减少不必要的读磁盘操作。在Spark中，把变量spark.local.dir配置为以逗号分隔的本地磁盘列表。如果你正在运行着HDFS，那么，最好和HDFS使用相同的磁盘。</p>
+<p>&nbsp;</p>
+<h1>内存</h1>
+<hr>
+<p>&nbsp;</p>
+<p>　　通常，在内存容量为8GB到数百GB的主机上，Spark都能很好地运行。在任何情况下，我们都推荐最多只把物理主机上75%的内存分配给Spark；剩下的留给操作系统和缓存。</p>
+<p>　　你需要多少内存取决于你的应用程序。要确定你的应用程序在某个数据集上执行时需要多少内存，可以在Spark RDD中加载一部分数据集，并借用Spark 监控UI（<code>http://&lt;driver-node&gt;:4040</code>）上的存储表格（Storage tab）来查看其内存用量。要注意的是内存用量受存储级别和序列化格式的影响极大——解决方法详见Spark调优一文。</p>
+<p>　　最后，请注意，配置了200GB以上内存的Java 虚拟机并不能总是正常工作。如果你购买的主机配备的内存超过了这个数值，那么可以在每个主机上启动多个worker JVM来解决这个问题。在Spark Standalone集群上，你可以使用配置文件conf/spark-env.sh中的变量<code>SPARK_WORKER_INSTANCES</code>来设置每个节点上的worker数量，用变量<code>SPARK_WORKER_CORES来设置每个worker上分配的CPU核数。</code></p>
+<p>&nbsp;</p>
+<h1>网络</h1>
+<hr>
+<p>&nbsp;</p>
+<p>　　我们的经验表明，当数据加载到内存时，大多数Spark应用程序都将受制于网络。最好的办法就是使用10Gbps或更高带宽的网络来加快应用的执行速度。这个办法对于那些分布式reduce应用程序（如group-bys，reduce-bys，及SQL joins）特别有用。在任何一个应用程序中，你都可以从其监控UI（<code>http://&lt;driver-node&gt;:4040</code>）上看到Spark通过网络传输了多少数据量。</p>
+<p>&nbsp;</p>
+<h1>CPU核数</h1>
+<hr>
+<p>&nbsp;</p>
+<p>　　Spark可以在每个主机上很好地缩放数十个CPU核，因为它在线程间极少共享信息。你很可能会在每台主机上最少配置8-16个CPU核。根据你的工作负载所需的CPU成本，你可能还需要更多的CPU核：因为一旦把数据都加载到内存，那么大多数应用程序的瓶颈要么在于CPU，要么在于网络。</p>
+<p>&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/zhangningbo/category/631548.html">Apache Spark</a></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/zhangningbo/tag/Spark/">Spark</a></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(4135912,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/newbiezhang" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/zhangningbo/" target="_blank"><img src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/zhangningbo/">newbiezhang</a><br>
+<a href="http://home.cnblogs.com/u/zhangningbo/followees">关注 - 3</a><br>
+<a href="http://home.cnblogs.com/u/zhangningbo/followers">粉丝 - 2</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(4135912,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+	<div class="buryit" onclick="votePost(4135912,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/zhangningbo/p/4135905.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/zhangningbo/p/4135905.html" title="发布于2014-12-01 20:28">【Spark学习】Apache Spark作业调度机制</a><br><a href="http://www.cnblogs.com/zhangningbo/p/4137952.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/zhangningbo/p/4137952.html" title="发布于2014-12-02 17:00">【Spark学习】Apache Spark监控与测量</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2014-12-01 20:29</span> <a href="http://www.cnblogs.com/zhangningbo/">newbiezhang</a> 阅读(<span id="post_view_count">2</span>) 评论(<span id="post_comment_count">0</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=4135912" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/zhangningbo/p/4135912.html#" onclick="AddToWz(4135912);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=true,cb_blogId=176127,cb_entryId=4135912,cb_blogApp=currentBlogApp,cb_blogUserGuid='628db451-7097-e311-8d02-90b11c0b17d6',cb_entryCreatedDate='2014/12/1 20:29:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/zhangningbo/p/4135912.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/zhangningbo/p/4135912.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div id="commentform_title">发表评论</div>
+<span id="tip_comment" style="color:Red"></span>
+<p>
+昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50" value="h4breeze">
+</p>
+<div class="commentbox_main">
+<div class="commentbox_title">
+<div class="commentbox_title_left">评论内容：</div>
+<div class="commentbox_title_right">
+<img id="ubb_quote" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/quote.gif" alt="引用" title="添加引用" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;quote&#39;)">
+<img id="ubb_bold" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/b.png" alt="粗体" title="添加粗体" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;b&#39;)">
+<img id="ubb_url" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/lk.png" alt="链接" title="添加链接" onclick="insertUbbUrl(&#39;tbCommentBody&#39;)">
+<img id="ubb_indent" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/indent.png" alt="缩进" title="添加首行缩进" onclick="insertIndent(&#39;tbCommentBody&#39;)">
+<img id="ubb_code" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/InsertCode.gif" alt="代码" title="添加代码" onclick="insertUbbCode()">
+<img id="ubb_img" class="comment_icon" src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/img.gif" alt="图片" title="上传图片" onclick="OpenImageUploadWindow();">
+</div>
+</div>
+<div class="clear"></div>
+<textarea id="tbCommentBody" class="comment_textarea" rows="20" cols="50"></textarea>
+</div>
+<p id="commentbox_opt">
+<input id="btn_comment_submit" type="button" class="comment_btn" value="提交评论">
+<span id="span_comment_canceledit" style="display:none"><a href="javascript:void(0);" onclick="return CancelCommentEdit()">不改了</a></span>
+<a href="javascript:void(0);" onclick="return logout();">注销</a>
+        <a id="commentbox_opt_sub" href="javascript:void(0);" title="订阅后有新评论时会邮件通知您" onclick="commentManager.Subscribe()">订阅评论</a>
+</p>
+<p>
+[使用Ctrl+Enter键快速提交]
+</p>
+<div style="display:none">
+<span id="comment_edit_id"></span><span id="span_parentcomment_id"></span>
+<span id="span_parent_id"></span>
+<span id="span_comment_replyto"></span>
+<span id="span_comment_posted"></span>
+</div>
+</div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/510101/" target="_blank">当中国统治游戏界 我们需要习惯的6件事？</a><br> ·  <a href="http://news.cnblogs.com/n/510100/" target="_blank">最新调查显示iPhone 5c在美销量高于6Plus</a><br> ·  <a href="http://news.cnblogs.com/n/510099/" target="_blank">App Store开发者称花钱买托评五星很常见</a><br> ·  <a href="http://news.cnblogs.com/n/510098/" target="_blank">微软新CEO薪酬8400万美元 已获董事会批准</a><br> ·  <a href="http://news.cnblogs.com/n/510097/" target="_blank">起底豆瓣，移动互联网已等不起你的迷茫</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/509578/" target="_blank">表单设计的思考</a><br> ·  <a href="http://kb.cnblogs.com/page/509624/" target="_blank">6种常见的数据加载模式设计</a><br> ·  <a href="http://kb.cnblogs.com/page/509630/" target="_blank">Couchbase：更好的Cache系统</a><br> ·  <a href="http://kb.cnblogs.com/page/509527/" target="_blank">缓存是新的内存</a><br> ·  <a href="http://kb.cnblogs.com/page/509402/" target="_blank">亿级Web系统搭建——单机到分布式集群</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/zhangningbo/">newbiezhang</a><br>园龄：<a href="http://home.cnblogs.com/u/zhangningbo/" title="入园时间：2014-02-17">9个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/zhangningbo/followers/">2</a><br>关注：<a href="http://home.cnblogs.com/u/zhangningbo/followees/">3</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;628db451-7097-e311-8d02-90b11c0b17d6&#39;)">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(29)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/zhangningbo/category/626483.html">Apache Flume</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/zhangningbo/category/626488.html">Apache Hadoop(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/zhangningbo/category/626480.html">Apache HBase(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/zhangningbo/category/631548.html">Apache Spark(14)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/zhangningbo/category/626487.html">Apache Zookeeper(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/zhangningbo/category/573371.html">cloud computing(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/zhangningbo/category/573343.html">cluster deployment automation</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/zhangningbo/category/572947.html">cluster monitoring</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/zhangningbo/category/573342.html">create local repository(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="http://www.cnblogs.com/zhangningbo/category/631555.html">Linux 命令(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="http://www.cnblogs.com/zhangningbo/category/553729.html">nova(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="http://www.cnblogs.com/zhangningbo/category/553727.html">openstack(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="http://www.cnblogs.com/zhangningbo/category/572946.html">virtualization(1)</a> </li>
+
+</ul>
+
+</div>
+
+
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	633
+	</li>
+	<li class="liRank">
+		排名 -	54228
+	</li>
+</ul>
+</div>
+
+
+<div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/zhangningbo/p/3566232.html">1. 【openstack报错】【metadata问题】‘http://169.254.169.254/2009-04-04/meta-data/instance-id’ failed : url error [[Errno 111] Connection refused](213)</a></li><li><a href="http://www.cnblogs.com/zhangningbo/p/3555518.html">2. 【openstack报错】【因更新包而致】IncompatibleObjectVersion: Version 1.9 of Instance is not supported(172)</a></li><li><a href="http://www.cnblogs.com/zhangningbo/p/4105707.html">3. 【Spark学习】Spark 1.1.0 with CDH5.2 安装部署(89)</a></li><li><a href="http://www.cnblogs.com/zhangningbo/p/3683135.html">4. 【VMware虚拟机】【克隆问题】在VMware 9.0下克隆CentOS6.5虚拟机无法识别eth网卡(28)</a></li><li><a href="http://www.cnblogs.com/zhangningbo/p/3685778.html">5. 【创建本地仓库】【for Centos】CentOS下创建本地repository(23)</a></li></ul></div>
+</div>
+</div></div><script type="text/javascript">loadBlogSideColumn();</script><iframe src="./【Spark学习】Apache Spark集群硬件配置要求 - newbiezhang - 博客园_files/container.htm" style="visibility: hidden; display: none;"></iframe>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2014 newbiezhang
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+</body></html>

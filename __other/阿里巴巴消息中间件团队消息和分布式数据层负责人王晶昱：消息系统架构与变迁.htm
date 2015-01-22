@@ -1,0 +1,2148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0065)http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn3.infoqstatic.com/favicon.ico?20150106-0126" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn3.infoqstatic.com/apple-touch-icon.png?20150106-0126">
+
+        <link rel="stylesheet" href="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/ga.js"></script><script async="" type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=true;
+        </script>
+        
+        	<script type="text/javascript">
+        		// set this if logged in if not this will be set when login (see loginAction.jsp)
+        		InfoQConstants.isUserBlocked=false;
+        		InfoQConstants.isUserOutdated=false;
+        		InfoQConstants.loggedUserEmail='taotao.li@datayes.com';
+        	</script>
+        
+       
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+
+	
+    
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=u(e),f=c.length,s=i(a,o,r),p=0;f>p;p++)c[p].apply(s,n);return s}function a(t,e){f[t]=u(t).concat(e)}function u(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:u,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=l.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&c&&c.body){l.proto="https"===p.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=c.createElement("script");e.src=l.proto+t.agent,c.body.appendChild(e)}}function r(){"complete"===c.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),u=window,c=u.document,f="addEventListener",s="attachEvent",p=(""+location).split("?")[0],l=e.exports={offset:i(),origin:p,features:{}};c[f]?(c[f]("DOMContentLoaded",o,!1),u[f]("load",n,!1)):(c[s]("onreadystatechange",r),u[s]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}]},{},["G9z0Bl"]);</script><script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/forum.js"></script><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_55.js"></script><iframe src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/container.htm" style="visibility: hidden; display: none;"></iframe>
+	<meta name="keywords" content="interview alibaba wangjingyu,架构 &amp; 设计,语言 &amp; 开发,中间件,系统架构,分布式团队,中国顶尖技术团队访谈录,阿里巴巴,">
+	<meta name="description" content="对于大型的互联网业务来说，消息系统是必不可少的基础服务。 子柳 在《淘宝技术这十年》中为大家展示了阿里消息系统架构的概貌，作为集团业务使用的核心基础服务，目前消息系统现在可以承受每秒几百亿规模的请求，并在历年的双十一、双十二大促中承受住抗住了更加严峻的考验，消息系统背后的中间件团队还陆续开源了诸如MetaQ、RocketMQ等项目。近期，InfoQ 采访了阿里消息中间件团队消息和分布式数据层负责人王晶昱（花名：沈询），话题涉及案例中间件系统的选型、系统扩容与数据一致性、团队文化等内容。">
+	<meta name="tprox" content="1393838580000">
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+<meta property="og:title" content="阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁 ">
+<meta property="og:description" content="对于大型的互联网业务来说，消息系统是必不可少的基础服务。 子柳 在《淘宝技术这十年》中为大家展示了阿里消息系统架构的概貌，作为集团业务使用的核心基础服务，目前消息系统现在可以承受每秒几百亿规模的请求，并在历年的双十一、双十二大促中承受住抗住了更加严峻的考验，消息系统背后的中间件团队还陆续开源了诸如MetaQ、RocketMQ等项目。近期，InfoQ 采访了阿里消息中间件团队消息和分布式数据层负责人王晶昱（花名：沈询），话题涉及案例中间件系统的选型、系统扩容与数据一致性、团队文化等内容。">
+<meta property="og:site_name" content="InfoQ">
+
+
+        
+        
+			<link rel="image_src" href="http://cdn4.infoqstatic.com/styles/i/logo-big.jpg?20150106-0126">
+			<meta property="og:image" content="http://cdn3.infoqstatic.com/styles/i/logo-big.jpg?20150106-0126">
+		
+    <script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=1c17c4fd.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6" title="" target="_blank"><img src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="qADV4KE4misQRVQb">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="logged_in" href="javascript:;" title="Login"><span>涛涛</span></a>
+		<div class="login_overlay">
+			<!--	html for login box	-->
+			<div id="popupLogin">
+				<div class="welcome_title">
+					欢迎，
+					涛涛
+					！
+				</div>
+				<ul class="logged_submenu">
+					<li><a href="http://www.infoq.com/cn/showbookmarks.action" title="My Bookmarks">我的阅读清单</a></li>
+					<li><a href="http://www.infoq.com/cn/edituser.action" title="Preferences">偏好设置</a></li>
+				</ul>
+				<div class="login-type-in">
+					定制您感兴趣的技术领域
+				</div>
+				
+											
+				
+
+
+
+
+
+
+<form>
+<fieldset>
+	<ul class="logged_submenu">
+		
+			<li>
+				<input type="checkbox" name="development" value="true" checked="checked" id="hpersona6820" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="development">
+					语言 &amp; 开发
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="architecture-design" value="true" checked="checked" id="hpersona6821" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="architecture-design">
+					架构 &amp; 设计
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="process-practices" value="true" checked="checked" id="hpersona6822" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="process-practices">
+					过程 &amp; 实践
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="hpersona6823" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="operations-infrastructure">
+					运维 &amp; 基础架构
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="hpersona6824" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="enterprise-architect">
+					企业架构
+				</label>
+			</li>
+		
+	</ul>
+</fieldset>
+</form>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+				<a id="logout" class="logout" href="http://www.infoq.com/cn/logout.action">
+					注销
+				</a>
+			</div>
+			
+		</div>	
+	</div>
+
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十二月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">清风谈豆瓣CODE、Git与工程师文化</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/qingfeng_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">一套工作流程，有一个良好的Review机制，这正是我们需要的。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">清风谈豆瓣CODE、Git与工程师文化</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/qingfeng_100(1).jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">一套工作流程，有一个良好的Review机制，这正是我们需要的。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/three-steps-success-ofshoring">成功交付离岸项目的三个步骤</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/logo.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">当你思考外包项目的一个或多个因素时，你最担心的是什么？错过截止日期？交付质量太差？项目范围不准确或是不完整？风险变高？每个人都在担心：地理位置的区隔会带来问题。在项目规划阶段一起工作，意识到大家担心同样的问题，这有助于提升项目成功几率。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/git-Cleaner">使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/l.jpg" alt="" border="0">
+							<span id="operations-infrastructureHDSummary">源码管理系统不是永远不出问题的黑盒子。如果你没有合理地维护好你的仓库，对于要使用它们的开发人员来说，这些仓库会变成一个重大的负担。有些工具能帮你维护它们，Roberto Tyley的BFG Repo-Cleaner for Git就是这样一个工具。这个工具可以用来删除那些你不小心提交到git分支上的二进制大文件。（译者注：本文中版本管理软件的术语，比如commit、diff、push等用原文表示）</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/gridgain-apache-ignite">GridGain公司的孵化器项目 Apache Ignite -尼基塔•伊万诺夫专访问答</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/logo(1).jpg" alt="" border="0">
+							<span id="enterprise-architectHDSummary">GridGain公司宣布，内存数据组织（In-Memory Data Fabric） 已经被接纳成为Apache孵化器项目Apache Ignite（燃烧）。InfoQ与尼基塔•伊万诺夫（Nikita Ivanov）就他们的产品成为Apache一部分进行了访谈。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn3.infoqstatic.com/images/ads/banners/qcon/cn/2015/20150104_banner.jpg?20150106-0126" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://2015.qconbeijing.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://www.archsummit.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>
+	<li><a href="http://www.infoq.com/cn/qcon/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="QCon">QCon</a></li>
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/news?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="新闻">新闻</a>
+                
+		
+		<span class="last">阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+<h1 class="general">阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁</h1>
+<span class="author_general">
+    作者
+    
+        
+    
+    <a href="http://www.infoq.com/cn/author/%E6%B0%B4%E7%BE%BD%E5%93%B2" class="editorlink f_taxonomyEditor">
+水羽哲</a>
+
+    
+    发布于
+    2014年3月3日
+    <em>|</em>
+    
+<a id="noOfComments" title="" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#theCommentsSection" class="comments_like">
+		
+	        <span class="comments_counts">
+	        	<span class="nr">
+	        		2
+	        	</span>
+	        </span>
+			讨论
+	    
+	    
+	</a></span>
+
+
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1421220873988">
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="Bookmarks.bookmarkContent(&#39;news&#39;, &#39;2014/03/interview-alibaba-wangjingyu&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+
+<div class="clear"></div>
+<div class="article_page_left news_container text_content_container">
+			
+	<div class="text_info">
+   		<p>对于大型的互联网业务来说，消息系统是必不可少的基础服务。 子柳 在《淘宝技术这十年》中为大家展示了阿里消息系统架构的概貌，作为集团业务使用的核心基础服务，目前消息系统现在可以承受每天几百亿规模的请求，并在历年的双十一、双十二大促中承受住抗住了更加严峻的考验，消息系统背后的中间件团队还陆续开源了诸如<a href="https://github.com/alibaba/metaq">MetaQ</a>、<a href="https://github.com/alibaba/RocketMQ">RocketMQ</a>等项目。近期，InfoQ 采访了阿里消息中间件团队消息和分布式数据层负责人王晶昱（花名：沈询），话题涉及案例中间件系统的选型、系统扩容与数据一致性、团队文化等内容。</p>
+<p><b>InfoQ</b><b>：对于阿里的消息中间件系统，大家所广泛了解的是</b><b>@</b><b>子柳</b><b> </b><b>在《淘宝技术这十年》中介绍的</b><b> Notify </b><b>，但是从最近的阿里的开源计划中，我们经常看到</b><b> </b><a href="https://github.com/alibaba/metaq"><b>MetaQ</b></a><b>/</b><a href="https://github.com/alibaba/RocketMQ"><b>RocketMQ</b></a><b> </b><b>，在阿里内部</b><b> Notify </b><b>和</b><b> MetaQ </b><b>是怎样的关系？我看到早期的</b><b>MetaQ</b><b>是采用的</b><b>Kafaka</b><b>的设计思路，那么可能大家就比较好奇</b><b>“</b><b>问什么要重复造轮子</b><b>”</b><b>，能不能介绍这个方面的考虑以及所做的工作？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>要讲明白这个问题，就需要从产品的实际需求角度入手开始做个介绍了。Notify作为一个已经存在了5年多的消息产品，被广泛的应用在整个阿里巴巴集团的大部分消息通信领域。它的核心特性是： 提供事务支持、不保证消息顺序、消息可能会重复、推模型。</p>
+<p>因为淘宝是个交易类网站，所以事务支持的特性能够非常方便的让用户可以快速的依托于Notify完成他们自己的业务逻辑。</p>
+<p>然而，一个产品不可能满足所有的场景，在当时我们就经常收到一些需要保证消息有序的发送和接收的需求，而这样的场景对于上来就定位于无序消息投递的 Notify 来说无异于釜底抽薪。</p>
+<p>而正在我们讨论这类需求应该如何被满足的时候，正好赶上 LinkedIn 的 <a href="https://kafka.apache.org/">KafKa</a> 队列开源，简单的文件队列，拉模型，保证顺序的特性一下就吸引了我们的目光，在对他的做了整体架构上的Review以后，我们认为这是个非常优雅的模型，因为他足够简单，简单就是最好的~！</p>
+<p>然而里面也有一些特性不是我们所需要的，比如我们主要是面向内部用户，因此定期轮询去拉的方式就不适合我们的实际场景需求，并且因为 KafKa 的开发语言是 Scala ，不大利于我们的后续的维护，因此我们借鉴了 Kafka 的核心思路，对其进行了重写并开源，当然我们还是向 LinkedIn 的 KafKa 做了致敬的，<a href="https://github.com/alibaba/metaq">MetaQ</a> 其实是 <a href="http://book.douban.com/subject/1424667/">Metamorphosis</a> 的意思，是Kafka的名作。</p>
+<p>从上面的发展历程其实也就能够比较清晰的找到两个消息队列产品的不同定位了：</p>
+<ul>
+    <li>RocketQ(MetaQ) 主要面向消息有序的场景，能够提供更大的消息堆积能力</li>
+    <li>Notify，主要面向需要更加安全可靠地交易类场景，无序，推模式。</li>
+</ul>
+</blockquote>
+<p><b>InfoQ</b><b>：您个人在分布式方面有比较多的经验，而消息系统中一个重要的考虑因素就是分布式的扩展能力，尤其是对于阿里、淘宝的业务，能不能介绍下目前中间件团队在分布式是如何做的？跨域、跨机房方面？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>其实所谓分布式运算，核心的思路就是系统架构无单点， 让整个系统可扩展。</p>
+<p>如果要介绍分布式场景的实际经验，那么我就需要先引入一个概念：“有状态存储节点和无状态运算节点”。</p>
+<p>无状态运算节点主要是部署 Web 应用、 HSF 服务，消息队列等的机器有状态的存储节点主要是指部署数据库、缓存、配置服务器、 NoSQL 等的机器。</p>
+<p>那么针对无状态节点，因为不存储数据，请求分发可以采取很简单的随机算法或者是轮询的算法就可以了，如果需要增加机器，那只需要把对应的运算代码部署到一些机器上，然后启动起来，引导流量到那些机器上就可以实现动态的扩展了，所以一般来说在无状态的节点的扩展是相对的容易的，唯一需要做的事情就是在某个机器承担了某种角色以后，能够快速的广播给需要这个角色提供服务的人说：“我目前可以做这个活儿啦，你们有需要我做事儿的人，可以来找我。”</p>
+<p>而针对有状态节点，扩容的难度就相对的大一些，因为每台 Server 中都有数据，所以请求分发的算法不能够用随机或者是轮询了，一般来说常见算法就是哈希或者是使用 Tree 来做一层映射，而如果需要增加机器，那么需要一个比较复杂的数据迁移的过程，而迁移数据本身所需要的成本是非常高的，这也就直接导致有状态节点的扩容难度比无状态节点更大。</p>
+<p>针对有状态节点的难题，我们提供了一套数据自动扩容和迁移的工具来满足用户的自动扩容缩容中所产生的数据迁移类的需求。 于是，无论是有状态的数据节点的扩容，还是无状态的数据节点的自动扩容，我们都可以使用自动化工具来完成了。</p>
+<p>在所有的节点都能够实现自动的扩容以后，整个体系就能够水平的进行扩展了。这种架构很好的支持了我们历年的双11大促，而且每年都有一些进步。然而，这套模式也不是万能药，在当下，杭州已经很难满足我们对机器的全部需求了。</p>
+<p>为此，我们也在尝试进行异地数据中心的尝试，以期能够将一部分运算和存储能力搬运到异地机房进行。</p>
+<p>提到异地数据中心，一般第一个会被想到的是 Google 的 <a href="http://research.google.com/archive/spanner.html">Spanner</a>，这套系统是一个跨数据中心的强一致数据库系统，然而我们在经过仔细的考量以后，认为在目前的情况下，使用这种方式并不能够解决一个大规模在线交易类网站对于高并发TPS的实际需求，因此我们选择了另外的方式来实现跨数据中心的事务模式。</p>
+<p>其核心思想也很简单，即是将数据放置在距离用户最近的机房里面，并尽可能减少应用层的跨机房调用，以充分提高性能，降低延迟。</p>
+</blockquote>
+<p><b>InfoQ</b><b>：消息系统在保证数据的一致性方面做了哪些工作？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>一致性这是个说复杂，挺复杂；说简单，也挺简单的领域。要理解一致性，其实关键在一个“看”字，一致性约束的是一个用户写入并提交数据之后，其他用户去读这条记录的时候，要么看到的是事务开始之前的状态，要么就是事务结束后的状态，而在这两个状态之间的事务状态则不会被其他人看到。</p>
+<p>我们以一个例子做说明：</p>
+<p>李雷要给韩梅梅100元，那么，要么结果是韩梅梅有100元，要么是李雷有100元，而李雷减少了100元，但韩梅梅还没加上这100块的这个中间状态则不能够被其他人看到。</p>
+<p>做到这个一致性的一般性做法就是把数据加锁，让某个数据只能被某个进程或线程访问就行了。但这样也有个代价就是锁住数据的时间越长，系统的并发程度越低，系统的tps也就越低了。尤其在分布式场景下，维持锁的延迟在加入了网络这个因素后，变得非常巨大，以至于很难接受。</p>
+<p>因此在互联网行业中，大家普遍使用的方式是“最终一致”，也就是，三种状态都有可能出现，但李雷减少了100元，韩梅梅却没加上100元这个状态，因为速度非常快，只有毫秒级，并且对用户没有太多的不良影响，所以就认为是允许了。</p>
+<p>用户可见的状态，从原来的两个状态，变成了三个状态。</p>
+<p>然而需要注意的是，最终一致并不意味着弱一致，也就是说，韩梅梅“最终”必须能够拿到这笔钱，能够拿到，就是“最终”一致，在异常状态下不能够拿到，那就是“弱”一致。</p>
+<p>消息系统的作用，就在于能够将“弱”一致变成“最终”一致，保证多方数据的状态的最终正确性。</p>
+</blockquote>
+<p><b>InfoQ</b><b>：</b><b> </b><b>目前消息中间件的使用规模是怎样的？目前的吞吐量、负载如何？在中间件博客中提到了双</b><b>12</b><b>期间中间件在彩票活动中所起的总用，是否能够详细介绍下在两次大促期间，中间件团队所做的工作？遇到的问题以及应对方案？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>基本上整个阿里集团都在使用我们的中间件所提供的服务，消息规模在几百亿每天，高峰期 load 在4~5左右。</p>
+<p>在大促过程中，消息中间件主要起到了蓄水池的作用，投递消息的往往都是核心应用，机器会优先保证，处理能力强劲，而接受消息的应用则可能存在处理不过来的情况，因此业务请求会在消息中间件中做一次削峰的操作，从而可以保证后端系统不会因为前端流量过载而导致系统不可用。</p>
+</blockquote>
+<p><b>InfoQ</b><b>：目前所在的团队具体负责哪些工作？团队组成是怎样的？如何分工？业务扩展方向是怎样的？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>阿里中间件团队，是国内为数不多的极具技术挑战性的团队之一，依托于全球规模最大的阿里巴巴电子商务平台所带来的巨大流量和海量数据，以及对于电子商务平台固有的稳定性要求，使得团队有机会去面对一个又一个技术难题，创造一个又一个技术奇迹。在刚刚过去的“2013双十一网购狂欢节”中，350亿元销售奇迹背后的每一笔交易订单都和阿里中间件团队的技术小二们息息相关。</p>
+<p>中间件团队致力于成为中国第一、世界一流的Java技术团队。自主研发的一系列产品始于07年底开始的淘宝架构 2.0 到 3.0 的变迁过程中，使淘宝网 从集中式的 Java 应用走向了分布式 Java 应用，涵盖了消息中间件、服务框架、数据层、应用服务器和大规模分布式稳定性平台等等。解决了淘宝网这个大型系统中的应用间以及应用到水平拆分后的数据库间的访问问题，通过消息中间件对应用进行了解耦并提供了最终一致性支持。目前广泛使用在大淘宝的各个Java应用中以及少部分的非Java应用中。而稳定性平台、性能优化平台是在淘宝系统分布式化后解决和稳定性、容量规划、降级管理、依赖告警以及性能丈量等方面的问题的利器。</p>
+<p>中间件团队的同学是一群不安于现状且喜欢折腾的人，未必很资深但是很执着，充满热情。大家来自五湖四海，到这里一起解决技术难题，提升系统性能，完成业务突破，构建新的应用，玩儿转技术、业务、数据、无线。</p>
+<p>如果你酷爱技术、喜欢钻研、愿意去帮助多个业务系统的发展，并且认为编程是别人不能剥夺的权利的话，欢迎加入我们，一起提升我们的技术产品，一起去支持业务更好的发展。</p>
+<p>如果你希望在淘宝的土壤上，用我们的技术去折腾一些新应用，新玩儿法出来，也欢迎通过<a href="mailto:xiaoxie@taobao.com">xiaoxie@taobao.com</a>或者<a href="mailto:shenxun@taobao.com">shenxun@taobao.com</a>和我们联系</p>
+</blockquote>
+<p><b>InfoQ</b><b>：您个人的经历也是比较有意思，我看到在</b><b> </b><a href="http://v.youku.com/v_show/id_XNDM0NTI0Mzg0.html"><b>ADC 2012</b></a><b> </b><b>的分享中，您提到自己做过</b><b>4</b><b>年淘宝小二、参与淘宝所有去</b><b> O </b><b>项目、负责分布式数据库中间件团队、到现在负责消息中间件团队，能不能详细介绍下自己成长的历程？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>我当年是被这团队的 Title “骗”来的，当时中间件这个团队的名字非常唬人： “淘宝平台架构组”，不能不说平台架构这个名字对于刚毕业的学生来说确实是高大上啊~</p>
+<p>其他的事情其实更多地还是在外部环境和自己的积累上。</p>
+<p>能够赶上这样快速发展并且需求多种多样的应用场景，不能不说是一个程序员最幸福的事情，尽管也会偶尔为了解决一个线上问题在高度紧张下在线上操作到深夜等这类问题，不过当你回头看看，会发现过程本身其实就是个积累的时刻，碰到并解决的坑越多，加上自己的一些思考与探索，自然就会有一定建树。</p>
+</blockquote>
+<p><b>InfoQ</b><b>：作为一个需要对阿里系的所有项目提供支撑服务的团队，在选择团队成员的时候一般都会从哪些方面考量？如何确保对的人作对的事？</b></p>
+<blockquote>
+<p><strong>沈询：</strong>首先，希望他是个技术人：毕竟这是个纯粹的技术团队，产品本身就是纯粹的技术产品，因此计算机体系内知识，编程技巧方面的要求是首要的要求。</p>
+<p>第二，希望他是个品行端正的正人君子，能够能够准确的把握自己的实际需要，拥有自我管理的能力，并能与其他人进行合作，能够体谅其他人的难处。</p>
+<p>第三，希望他是个能够独立解决未知问题的人、独立思考、不人云亦云、活用知识，能够解决实际问题。</p>
+<p>在用人上面，我们比较关注每个人自己的主观能动性，毕竟兴趣是最好的老师，所以个人的需求会优先被考虑。当然，团队本身客观上会有一些不得不去做的事情，不过这种情况下也会在充分尊重个人意愿的情况下做好沟通性工作的。</p>
+</blockquote>
+<h2>关于沈询</h2>
+<p><strong>沈询</strong>其实是个花名，原作里叫沈洵，是个40多岁的白衣大侠，真实的我就是个普通的程序员，平时喜欢看一些杂书，天文地理海洋气象历史政治经济都喜欢读读，在技术上主要还是关注数据库相关的业界最新进展。</p>
+        <div style="margin-bottom:5px">【QCon北京2015大会】把握趋势，邀请国内外顶级专家，设计涵盖大数据、云计算、移动开发、技术创业、前端和敏捷等热点领域的18个专题，IT领域的技术盛宴。<a href="http://qconbeijing.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture-design" name="architecture-design" id="6,821"><b>架构 &amp; 设计</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Distributed_Team" name="Distributed_Team" id="5,126">分布式团队</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/system-architecture" name="system-architecture" id="7,465">系统架构</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/java_middleware" name="java_middleware" id="7,692">中间件</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/alibaba" name="alibaba" id="4,486">阿里巴巴</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/china-top-tech-teams" name="china-top-tech-teams" id="15,086">中国顶尖技术团队访谈录</a></li>
+			</ul>							
+		</div>
+		<div class="clear"></div>
+		
+		
+		
+		
+		
+	   	
+
+
+
+
+
+
+
+
+<div class="related_sponsors wholething" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        </div>
+	    </div>
+	    
+	        
+	            <div class="related_editorial sponsored only1">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:2802,&quot;title&quot;:&quot;5月21日AWS在线课堂：基于AWS云平台的高可用应用设计&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=2802&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click">
+	                                5月21日AWS在线课堂：基于AWS云平台的高可用应用设计
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3124,&quot;title&quot;:&quot;CoreOS实战，etcd详解，不可错过的学习资料。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3124&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click" target="_blank">
+	                                CoreOS实战，etcd详解，不可错过的学习资料。
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3125,&quot;title&quot;:&quot;DevOps的概念与实践，InfoQ迷你书&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3125&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click" target="_blank">
+	                                DevOps的概念与实践，InfoQ迷你书
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3127,&quot;title&quot;:&quot;阿里合伙人程立：大数据时代的金融技术变革&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3127&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click" target="_blank">
+	                                阿里合伙人程立：大数据时代的金融技术变革
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3123,&quot;title&quot;:&quot;华为资深技术专家打造的Netty高端教程，干货来约！&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3123&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click" target="_blank">
+	                                华为资深技术专家打造的Netty高端教程，干货来约！
+	                            </a>
+	                        </h3>
+	                    
+	                    
+	                    
+	                        
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+	        
+        </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "3114,1404,2975,1278,3791,-1000,-1000", "title": "阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁", "contentPath": "/news/2014/03/interview-alibaba-wangjingyu", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": '2014/03/interview-alibaba-wangjingyu',
+            "uriMapping": 'news'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var vcrColumn = $('.gray_section_related > .related_editorial.sponsored');
+            var vcrExists = $(vcrColumn).length === 1;
+            var sponsorshipColumn = $('.related_sponsors > .paid_section')
+            var sponsorshipExists = $(sponsorshipColumn).length === 1;
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || vcrExists || sponsorshipExists || researchExists) {
+                $('.related_sponsors.wholething').show(); // show the big related box
+            }
+			
+            if(recommendedExists || vcrExists){
+            	$('.gray_section_related').show(); // show the gray box for vcr and recommendations
+            }
+            
+            // in case all three available, leave now
+            if (recommendedExists && vcrExists && sponsorshipExists) {
+                return;
+            }
+            // in case only two of them available
+            if (recommendedExists && vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only2');
+                $(vcrColumn).addClass('only2last');
+                $(grayBox).addClass('only2 fullWidth');                
+            } else if (recommendedExists && sponsorshipExists && !vcrExists) {
+                $(recommendedColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            } else if (vcrExists && sponsorshipExists && !recommendedExists) {
+                $(vcrColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            }
+            // in case only one is available
+            else if (recommendedExists && !vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (vcrExists && !recommendedExists && !sponsorshipExists) {
+                $(vcrColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (sponsorshipExists && !recommendedExists && !vcrExists) {
+                $(sponsorshipColumn).addClass('only1');
+            }
+            // in case none is available, do not display upper border for the research category if any
+            else if (researchExists) {
+                $(researchRow).addClass('only1');
+            }
+        });
+</script>
+<div class="clear"></div>
+
+		<div class="clear"></div>
+
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=35024;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=true;
+var threadWatched=false;
+
+var forumNotificationDefault=false;
+
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+            
+
+                <div class="comment_title lvl0" id="com114345">
+
+                    <a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#anch114345" title="">
+                        <strong>有收获，谢谢</strong>
+                        <span>
+                            by
+                            Yongxiang Tao
+                            Posted
+                            <span class="treeRelativeTime">2014年9月22日 10:56</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114376">
+
+                    <a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#anch114376" title="">
+                        <strong>有收获，谢谢</strong>
+                        <span>
+                            by
+                            Yongxiang Tao
+                            Posted
+                            <span class="treeRelativeTime">2014年9月22日 10:56</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+    </div>
+
+    <div class="all_comments">
+        
+            
+                <div class="answers" id="ans114345">
+                    <a name="anch114345"></a>
+                    
+                    <p>
+                        <b class="title">有收获，谢谢</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年9月22日 10:56</span>
+                            by
+                            <q>Yongxiang Tao</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        rt
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1411354582900">
+                    <input type="hidden" name="createdOn" value="2014年9月21日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114376">
+                    <a name="anch114376"></a>
+                    
+                    <p>
+                        <b class="title">有收获，谢谢</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年9月22日 10:56</span>
+                            by
+                            <q>Yongxiang Tao</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        rt
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1411354585531">
+                    <input type="hidden" name="createdOn" value="2014年9月21日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+			
+	<div class="clear"></div>
+</div>
+		
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件" href="http://www.infoq.com/cn/articles/git-Cleaner">
+					使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Jonathan-Allen" class="editorlink" title="Jonathan Allen">
+Jonathan Allen</a>
+
+				1月13日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件" href="http://www.infoq.com/cn/articles/git-Cleaner">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/l(1).jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="清风谈豆瓣CODE、Git与工程师文化" href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">
+					清风谈豆瓣CODE、Git与工程师文化
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%B8%85%E9%A3%8E" class="editorlink" title="清风">
+清风</a>
+
+				1月13日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="清风谈豆瓣CODE、Git与工程师文化" href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/qingfeng_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="互联网企业制胜利器——选对人、速度快" href="http://www.infoq.com/cn/presentations/Internet-companies-win-choosing-right-people-and-speed">
+					互联网企业制胜利器——选对人、速度快
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E8%B0%AD%E6%99%93%E7%94%9F" class="editorlink" title="谭晓生">
+谭晓生</a>
+
+				1月13日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="互联网企业制胜利器——选对人、速度快" href="http://www.infoq.com/cn/presentations/Internet-companies-win-choosing-right-people-and-speed">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/tanxiaosheng_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Web API设计方法论" href="http://www.infoq.com/cn/articles/web-api-design-methodology">
+					Web API设计方法论
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Mike-Amundsen" class="editorlink" title="Mike Amundsen">
+Mike Amundsen</a>
+
+				1月12日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Web API设计方法论" href="http://www.infoq.com/cn/articles/web-api-design-methodology">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/logo-webapi.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="大数据时代的feed流架构" href="http://www.infoq.com/cn/presentations/feed-stream-architecture-in-big-data-era">
+					大数据时代的feed流架构
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%9D%A8%E5%8D%AB%E5%8D%8E" class="editorlink" title="杨卫华">
+杨卫华</a>
+
+				1月12日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="大数据时代的feed流架构" href="http://www.infoq.com/cn/presentations/feed-stream-architecture-in-big-data-era">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/yangweihua_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="大数据的十个技术前沿" href="http://www.infoq.com/cn/presentations/ten-advanced-technology-for-big-data">
+					大数据的十个技术前沿
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%90%B4%E7%94%98%E6%B2%99" class="editorlink" title="吴甘沙">
+吴甘沙</a>
+
+				1月11日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="大数据的十个技术前沿" href="http://www.infoq.com/cn/presentations/ten-advanced-technology-for-big-data">
+				<img border="0" alt="" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/wugansha_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+	<script type="application/javascript">
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function (event) {
+//				console.log('Slot has been rendered:' + event);
+//				console.log(event);
+				// only treat textlinks
+				if (event.slot.j.indexOf('textlink') != -1) {
+					if (!event.isEmpty) {
+						$('.sponsored_links_section').css('display', 'block'); // International site
+						$('.sponsored_links_section_i18n').css('display', 'block'); // all but the international site
+					}
+				}
+			});
+		});
+	</script>
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2');  });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3');  });
+		 		</script>
+		 	</div>
+ 		</div>
+
+</div>
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/infoqcn.js"></script>
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"applicationID":"5528250","applicationTime":51,"beacon":"beacon-1.newrelic.com","queueTime":0,"licenseKey":"bfafe6a5f6","transactionName":"YAFWMEEAW0RUVk1cCllLfjdjTltSQkYWRg1YExoOQBE=","agent":"js-agent.newrelic.com\/nr-476.min.js","errorBeacon":"bam.nr-data.net"}</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2015/01/cocoapods-adds-swift-framework" title="CocoaPods增加对Swift与iOS 8框架的支持">CocoaPods增加对Swift与iOS 8框架的支持</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/microservices-current-state" title="微服务现状综述">微服务现状综述</a></p><p><a href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture" title="清风谈豆瓣CODE、Git与工程师文化">清风谈豆瓣CODE、Git与工程师文化</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2015/01/cocoapods-adds-swift-framework" title="CocoaPods增加对Swift与iOS 8框架的支持">CocoaPods增加对Swift与iOS 8框架的支持</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/microservices-current-state" title="微服务现状综述">微服务现状综述</a></p><p><a href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture" title="清风谈豆瓣CODE、Git与工程师文化">清风谈豆瓣CODE、Git与工程师文化</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2015/01/negative-emotions-teams" title="处理团队中的消极情绪">处理团队中的消极情绪</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/scaled-scaling-agile-brussels" title="Andreas Schliep问答：关于ScALeD——大规模敏捷和精益开发">Andreas Schliep问答：关于ScALeD——大规模敏捷和精益开发</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/modern-distributed-apps" title="Docker周报：现代化的分布式应用正成为主流">Docker周报：现代化的分布式应用正成为主流</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/articles/git-Cleaner" title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件">使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件</a></p><p><a href="http://www.infoq.com/cn/articles/gridgain-apache-ignite" title="GridGain公司的孵化器项目 Apache Ignite -尼基塔•伊万诺夫专访问答">GridGain公司的孵化器项目 Apache Ignite -尼基塔•伊万诺夫专访问答</a></p><p><a href="http://www.infoq.com/cn/news/2006/01/scaling-nosql-databases" title="Alex Bordei关于扩展NoSQL数据库的建议">Alex Bordei关于扩展NoSQL数据库的建议</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2015/01/microservices-current-state" title="微服务现状综述">微服务现状综述</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/SQL-Server-Round-up" title="SQL Server新一轮更新">SQL Server新一轮更新</a></p><p><a href="http://www.infoq.com/cn/articles/gridgain-apache-ignite" title="GridGain公司的孵化器项目 Apache Ignite -尼基塔•伊万诺夫专访问答">GridGain公司的孵化器项目 Apache Ignite -尼基塔•伊万诺夫专访问答</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+				<li class="l5"><a href="http://www.infoq.com/cn/logout.action" title="注销">注销</a></li>
+			
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" title="东京 2015年4月 21">东京 2015年4月 21</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年8月24-28日">里约 2015年8月24-28日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+	<li><a href="http://www.openiotcon.com/"><strong>物联网大会</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/news/2014/03/:http://www.infoq.com/cn/coderally/?utm_source=infoq"><strong>Code Rally 编程拉力赛</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/engine.js" type="text/javascript"></script>
+            <script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/03/interview-alibaba-wangjingyu#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  $.getScript("/scripts/__hd.ifq?hdt=qADV4KE4misQRVQb");
+  
+</script>
+
+    <script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/h.js" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn4.infoqstatic.com/scripts/lib/browser-update-org/update.js?20150106-0126");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S2 -->
+<script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/update.js"></script><script src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/nr-476.min.js"></script><script type="text/javascript" src="./阿里巴巴消息中间件团队消息和分布式数据层负责人王晶昱：消息系统架构与变迁_files/bfafe6a5f6"></script></body></html>

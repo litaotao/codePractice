@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://shiyanjun.cn/archives/744.html -->
+<html lang="zh-CN" style="overflow: hidden;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RDD：基于内存的集群计算容错抽象 | 简单之美</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://shiyanjun.cn/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="http://shiyanjun.cn/wp-content/themes/dk/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link rel="alternate" type="application/rss+xml" title="简单之美 » Feed" href="http://shiyanjun.cn/feed">
+<link rel="alternate" type="application/rss+xml" title="简单之美 » 评论Feed" href="http://shiyanjun.cn/comments/feed">
+<link rel="alternate" type="application/rss+xml" title="简单之美 » RDD：基于内存的集群计算容错抽象评论Feed" href="http://shiyanjun.cn/archives/744.html/feed">
+<link rel="stylesheet" id="style-css" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/gaya.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/font-awesome.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/pagenavi-css.css" type="text/css" media="all">
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/jquery.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/nicescroll.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://shiyanjun.cn/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://shiyanjun.cn/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="使用Java编写并运行Spark应用程序" href="http://shiyanjun.cn/archives/742.html">
+<link rel="next" title="Shark-0.9.0安装配置运行实践" href="http://shiyanjun.cn/archives/772.html">
+<meta name="generator" content="WordPress 3.9.2">
+<link rel="canonical" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/RDD：基于内存的集群计算容错抽象   简单之美.htm">
+<link rel="shortlink" href="http://shiyanjun.cn/?p=744">
+<link rel="stylesheet" type="text/css" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/shCore.css"><link rel="stylesheet" type="text/css" href="./RDD：基于内存的集群计算容错抽象   简单之美_files/shThemeDefault.css"><style type="text/css" id="syntaxhighlighteranchor"></style>
+</head>
+<body class="single single-post postid-744 single-format-standard">
+<div id="page" class="grid site">
+		<header id="masthead" class="clearfix site-header" role="banner">
+		<hgroup>
+			<h1 class="site-title"><a href="http://shiyanjun.cn/" title="简单之美" rel="home">简单之美</a></h1>
+			<h2 class="site-description">简单之美，难得简单，享受简单的唯美。</h2>
+		</hgroup>
+				<nav role="navigation" class="site-navigation main-navigation">
+			<h1 class="assistive-text">Menu</h1>
+			<div class="assistive-text skip-link"><a href="http://shiyanjun.cn/archives/744.html#content" title="Skip to content">Skip to content</a></div>
+			<div class="menu-%e6%88%91%e7%9a%84%e8%8f%9c%e5%8d%95-container"><ul id="menu-%e6%88%91%e7%9a%84%e8%8f%9c%e5%8d%95" class="menu"><li id="menu-item-167" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-167"><a href="http://shiyanjun.cn/">首页</a></li>
+<li id="menu-item-118" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-118"><a href="http://shiyanjun.cn/archives/category/programming">编程语言</a></li>
+<li id="menu-item-788" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-788"><a href="http://shiyanjun.cn/archives/category/algorithm">算法</a></li>
+<li id="menu-item-113" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-113"><a href="http://shiyanjun.cn/archives/category/opensource">开源技术</a></li>
+<li id="menu-item-126" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-126"><a href="http://shiyanjun.cn/archives/category/database">数据库</a></li>
+<li id="menu-item-121" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-121"><a href="http://shiyanjun.cn/archives/category/server">服务器</a></li>
+<li id="menu-item-226" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-226"><a href="http://shiyanjun.cn/archives/category/datamining">数据挖掘</a></li>
+<li id="menu-item-199" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-199"><a href="http://shiyanjun.cn/about">关于</a></li>
+</ul></div>		</nav><!-- .site-navigation .main-navigation -->
+	</header><!-- #masthead .site-header -->
+	<div id="main" class="row">		<div id="primary" class="c8">
+			<div id="content" class="site-content" role="main">
+							<article id="post-744" class="post-744 post type-post status-publish format-standard hentry category-spark tag-spark">
+	<header class="entry-header">
+		<div id="breadcrumbs"><div xmlns:v="http://rdf.data-vocabulary.org/#"> <span typeof="v:Breadcrumb">
+<a rel="v:url" property="v:title" href="http://shiyanjun.cn/">首页</a>
+</span> ››<span typeof="v:Breadcrumb">
+<a rel="v:url" property="v:title" href="http://shiyanjun.cn/archives/category/opensource/spark">Spark</a>
+</span>››</div></div>
+		<h1 class="entry-title">RDD：基于内存的集群计算容错抽象</h1>
+		<div class="entry-meta">
+			<i class="icon-calendar"> </i><time class="entry-date" datetime="2014-03-13T21:39:32+00:00">2014-03-13 21:39:32</time><span class="byline">  <i class="icon-user"> </i><span class="author vcard"><a class="url fn n" href="http://shiyanjun.cn/archives/author/yanjun" title="浏览作者 Yanjun 的全部文章" rel="author">Yanjun</a></span></span>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+	<div class="entry-content">
+		<p><em>该论文来自Berkeley实验室，英文标题为：<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2011/EECS-2011-82.pdf">Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing</a>。下面的翻译，我是基于<a href="http://blog.sciencenet.cn/blog-425672-520947.html">科学网</a>翻译基础上进行优化、修改、补充，这篇译文翻译得很不错。在此基础上，我增加了来自英文原文的图和表格数据，以及译文中缺少的未翻译的部分。如果翻译措辞或逻辑有误，欢迎批评指正。</em></p>
+<h2>摘要</h2>
+<p>本文提出了分布式内存抽象的概念——弹性分布式数据集（RDD，Resilient Distributed Datasets），它具备像MapReduce等数据流模型的容错特性，并且允许开发人员在大型集群上执行基于内存的计算。现有的数据流系统对两种应用的处理并不高效：一是迭代式算法，这在图应用和机器学习领域很常见；二是交互式数据挖掘工具。这两种情况下，将数据保存在内存中能够极大地提高性能。为了有效地实现容错，RDD提供了一种高度受限的共享内存，即RDD是只读的，并且只能通过其他RDD上的批量操作来创建。尽管如此，RDD仍然足以表示很多类型的计算，包括MapReduce和专用的迭代编程模型（如Pregel）等。我们实现的RDD在迭代计算方面比Hadoop快20多倍，同时还可以在5-7秒内交互式地查询1TB数据集。</p>
+<h2>1.引言</h2>
+<p>无论是工业界还是学术界，都已经广泛使用高级集群编程模型来处理日益增长的数据，如MapReduce和Dryad。这些系统将分布式编程简化为自动提供位置感知性调度、容错以及负载均衡，使得大量用户能够在商用集群上分析超大数据集。</p>
+<p>大多数现有的集群计算系统都是基于非循环的数据流模型。从稳定的物理存储（如分布式文件系统）中加载记录，记录被传入由一组确定性操作构成的DAG，然后写回稳定存储。DAG数据流图能够在运行时自动实现任务调度和故障恢复。</p>
+<p>尽管非循环数据流是一种很强大的抽象方法，但仍然有些应用无法使用这种方式描述。我们就是针对这些不太适合非循环模型的应用，它们的特点是在多个并行操作之间重用工作数据集。这类应用包括：（1）机器学习和图应用中常用的迭代算法（每一步对数据执行相似的函数）；（2）交互式数据挖掘工具（用户反复查询一个数据子集）。基于数据流的框架并不明确支持工作集，所以需要将数据输出到磁盘，然后在每次查询时重新加载，这带来较大的开销。</p>
+<p>我们提出了一种分布式的内存抽象，称为弹性分布式数据集（RDD，Resilient Distributed Datasets）。它支持基于工作集的应用，同时具有数据流模型的特点：自动容错、位置感知调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。</p>
+<p>RDD提供了一种高度受限的共享内存模型，即RDD是只读的记录分区的集合，只能通过在其他RDD执行确定的转换操作（如map、join和group by）而创建，然而这些限制使得实现容错的开销很低。与分布式共享内存系统需要付出高昂代价的检查点和回滚机制不同，RDD通过Lineage来重建丢失的分区：一个RDD中包含了如何从其他RDD衍生所必需的相关信息，从而不需要检查点操作就可以重构丢失的数据分区。尽管RDD不是一个通用的共享内存抽象，但却具备了良好的描述能力、可伸缩性和可靠性，但却能够广泛适用于数据并行类应用。</p>
+<p>第一个指出非循环数据流存在不足的并非是我们，例如，Google的Pregel[21]，是一种专门用于迭代式图算法的编程模型；Twister[13]和HaLoop[8]，是两种典型的迭代式MapReduce模型。但是，对于一些特定类型的应用，这些系统提供了一个受限的通信模型。相比之下，RDD则为基于工作集的应用提供了更为通用的抽象，用户可以对中间结果进行显式的命名和物化，控制其分区，还能执行用户选择的特定操作（而不是在运行时去循环执行一系列MapReduce步骤）。RDD可以用来描述Pregel、迭代式MapReduce，以及这两种模型无法描述的其他应用，如交互式数据挖掘工具（用户将数据集装入内存，然后执行ad-hoc查询）。</p>
+<p>Spark是我们实现的RDD系统，在我们内部能够被用于开发多种并行应用。Spark采用Scala语言[5]实现，提供类似于DryadLINQ的集成语言编程接口[34]，使用户可以非常容易地编写并行任务。此外，随着Scala新版本解释器的完善，Spark还能够用于交互式查询大数据集。我们相信Spark会是第一个能够使用有效、通用编程语言，并在集群上对大数据集进行交互式分析的系统。</p>
+<p>我们通过微基准和用户应用程序来评估RDD。实验表明，在处理迭代式应用上Spark比Hadoop快高达20多倍，计算数据分析类报表的性能提高了40多倍，同时能够在5-7秒的延时内交互式扫描1TB数据集。此外，我们还在Spark之上实现了Pregel和HaLoop编程模型（包括其位置优化策略），以库的形式实现（分别使用了100和200行Scala代码）。最后，利用RDD内在的确定性特性，我们还创建了一种Spark调试工具rddbg，允许用户在任务期间利用Lineage重建RDD，然后像传统调试器那样重新执行任务。</p>
+<p>本文首先在第2部分介绍了RDD的概念，然后第3部分描述Spark API，第4部分解释如何使用RDD表示几种并行应用（包括Pregel和HaLoop），第5部分讨论Spark中RDD的表示方法以及任务调度器，第6部分描述具体实现和rddbg，第7部分对RDD进行评估，第8部分给出了相关研究工作，最后第9部分总结。</p>
+<h2>2.弹性分布式数据集（RDD）</h2>
+<p>本部分描述RDD和编程模型。首先讨论设计目标（2.1），然后定义RDD（2.2），讨论Spark的编程模型（2.3），并给出一个示例（2.4），最后对比RDD与分布式共享内存（2.5）。</p>
+<h3>2.1 目标和概述</h3>
+<p>我们的目标是为基于工作集的应用（即多个并行操作重用中间结果的这类应用）提供抽象，同时保持MapReduce及其相关模型的优势特性：即自动容错、位置感知性调度和可伸缩性。RDD比数据流模型更易于编程，同时基于工作集的计算也具有良好的描述能力。</p>
+<p>在这些特性中，最难实现的是容错性。一般来说，分布式数据集的容错性有两种方式：即数据检查点和记录数据的更新。我们面向的是大规模数据分析，数据检查点操作成本很高：需要通过数据中心的网络连接在机器之间复制庞大的数据集，而网络带宽往往比内存带宽低得多，同时还需要消耗更多的存储资源（在内存中复制数据可以减少需要缓存的数据量，而存储到磁盘则会拖慢应用程序）。所以，我们选择记录更新的方式。但是，如果更新太多，那么记录更新成本也不低。因此，RDD只支持粗粒度转换，即在大量记录上执行的单个操作。将创建RDD的一系列转换记录下来（即Lineage），以便恢复丢失的分区。</p>
+<p>虽然只支持粗粒度转换限制了编程模型，但我们发现RDD仍然可以很好地适用于很多应用，特别是支持数据并行的批量分析应用，包括数据挖掘、机器学习、图算法等，因为这些程序通常都会在很多记录上执行相同的操作。RDD不太适合那些异步更新共享状态的应用，例如并行web爬行器。因此，我们的目标是为大多数分析型应用提供有效的编程模型，而其他类型的应用交给专门的系统。</p>
+<h3>2.2 RDD抽象</h3>
+<p>RDD是只读的、分区记录的集合。RDD只能基于在稳定物理存储中的数据集和其他已有的RDD上执行确定性操作来创建。这些确定性操作称之为转换，如map、filter、groupBy、join（转换不是程开发人员在RDD上执行的操作）。</p>
+<p>RDD不需要物化。RDD含有如何从其他RDD衍生（即计算）出本RDD的相关信息（即Lineage），据此可以从物理存储的数据计算出相应的RDD分区。</p>
+<h3>2.3 编程模型</h3>
+<p>在Spark中，RDD被表示为对象，通过这些对象上的方法（或函数）调用转换。</p>
+<p>定义RDD之后，程序员就可以在动作中使用RDD了。动作是向应用程序返回值，或向存储系统导出数据的那些操作，例如，count（返回RDD中的元素个数），collect（返回元素本身），save（将RDD输出到存储系统）。在Spark中，只有在动作第一次使用RDD时，才会计算RDD（即延迟计算）。这样在构建RDD的时候，运行时通过管道的方式传输多个转换。</p>
+<p>程序员还可以从两个方面控制RDD，即缓存和分区。用户可以请求将RDD缓存，这样运行时将已经计算好的RDD分区存储起来，以加速后期的重用。缓存的RDD一般存储在内存中，但如果内存不够，可以写到磁盘上。</p>
+<p>另一方面，RDD还允许用户根据关键字（key）指定分区顺序，这是一个可选的功能。目前支持哈希分区和范围分区。例如，应用程序请求将两个RDD按照同样的哈希分区方式进行分区（将同一机器上具有相同关键字的记录放在一个分区），以加速它们之间的join操作。在Pregel和HaLoop中，多次迭代之间采用一致性的分区置换策略进行优化，我们同样也允许用户指定这种优化。</p>
+<h3>2.4 示例：控制台日志挖掘</h3>
+<p>本部分我们通过一个具体示例来阐述RDD。假定有一个大型网站出错，操作员想要检查Hadoop文件系统（HDFS）中的日志文件（TB级大小）来找出原因。通过使用Spark，操作员只需将日志中的错误信息装载到一组节点的内存中，然后执行交互式查询。首先，需要在Spark解释器中输入如下Scala命令：</p>
+<div id="highlighter_830471" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_830471_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_830471" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">lines </code><code class="keyword">=</code> <code class="plain">spark.textFile(</code><code class="string">"<a href="hdfs://...">hdfs://...</a>"</code><code class="plain">)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">errors </code><code class="keyword">=</code> <code class="plain">lines.filter(</code><code class="keyword">_</code><code class="plain">.startsWith(</code><code class="string">"ERROR"</code><code class="plain">))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="plain">errors.cache()</code></td></tr></tbody></table></div></div></div>
+<p>第1行从HDFS文件定义了一个RDD（即一个文本行集合），第2行获得一个过滤后的RDD，第3行请求将errors缓存起来。注意在Scala语法中filter的参数是一个闭包。</p>
+<p>这时集群还没有开始执行任何任务。但是，用户已经可以在这个RDD上执行对应的动作，例如统计错误消息的数目：</p>
+<div id="highlighter_225563" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_225563_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_225563" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">errors.count()</code></td></tr></tbody></table></div></div></div>
+<p>用户还可以在RDD上执行更多的转换操作，并使用转换结果，如：</p>
+<div id="highlighter_805753" class="syntaxhighlighter  "><div class="bar    "><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_805753_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_805753" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="comments">// Count errors mentioning MySQL:</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">errors.filter(</code><code class="keyword">_</code><code class="plain">.contains(</code><code class="string">"MySQL"</code><code class="plain">)).count()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="comments">// Return the time fields of errors mentioning</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="comments">// HDFS as an array (assuming time is field</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="comments">// number 3 in a tab-separated format):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">errors.filter(</code><code class="keyword">_</code><code class="plain">.contains(</code><code class="string">"HDFS"</code><code class="plain">))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.map(</code><code class="keyword">_</code><code class="plain">.split(</code><code class="string">'\t'</code><code class="plain">)(</code><code class="value">3</code><code class="plain">))</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.collect()</code></td></tr></tbody></table></div></div></div>
+<p>使用errors的第一个action运行以后，Spark会把errors的分区缓存在内存中，极大地加快了后续计算速度。注意，最初的RDD lines不会被缓存。因为错误信息可能只占原数据集的很小一部分（小到足以放入内存）。<br>
+最后，为了说明模型的容错性，图1给出了第3个查询的Lineage图。在lines RDD上执行filter操作，得到errors，然后再filter、map后得到新的RDD，在这个RDD上执行collect操作。Spark调度器以流水线的方式执行后两个转换，向拥有errors分区缓存的节点发送一组任务。此外，如果某个errors分区丢失，Spark只在相应的lines分区上执行filter操作来重建该errors分区。<br>
+<img class="alignnone size-full wp-image-748" alt="f1-lineage" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f1-lineage.png" width="406" height="242"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图1</strong> 示例中第三个查询的Lineage图。（方框表示RDD，箭头表示转换）</span></p>
+<h3>2.5 RDD与分布式共享内存</h3>
+<p>为了进一步理解RDD是一种分布式的内存抽象，表1列出了RDD与分布式共享内存（DSM，Distributed Shared Memory）[24]的对比。在DSM系统中，应用可以向全局地址空间的任意位置进行读写操作。（注意这里的DSM，不仅指传统的共享内存系统，还包括那些通过分布式哈希表或分布式文件系统进行数据共享的系统，比如Piccolo[28]）DSM是一种通用的抽象，但这种通用性同时也使得在商用集群上实现有效的容错性更加困难。</p>
+<p>RDD与DSM主要区别在于，不仅可以通过批量转换创建（即“写”）RDD，还可以对任意内存位置读写。也就是说，RDD限制应用执行批量写操作，这样有利于实现有效的容错。特别地，RDD没有检查点开销，因为可以使用Lineage来恢复RDD。而且，失效时只需要重新计算丢失的那些RDD分区，可以在不同节点上并行执行，而不需要回滚整个程序。</p>
+<table style="border: solid thin #868686" width="100%" border="1" cellspacing="0" cellpadding="2">
+<caption style="text-align:center"><strong>表1</strong> RDD与DSM对比</caption>
+<tbody>
+<tr>
+<td style="width: 68.62px;text-align: center;border: solid thin #868686" valign="top"><b>对比项目</b></td>
+<td style="width: 60.21px;text-align: center;border: solid thin #868686" valign="top"><b>RDD</b></td>
+<td style="width: 60.21px;text-align: center;border: solid thin #868686" valign="top"><b>分布式共享内存（DSM）</b></td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">读</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">批量或细粒度操作</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">细粒度操作</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">写</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">批量转换操作</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">细粒度操作</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">一致性</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">不重要（RDD是不可更改的）</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">取决于应用程序或运行时</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">容错性</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">细粒度，低开销（使用Lineage）</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">需要检查点操作和程序回滚</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">落后任务的处理</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">任务备份</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">很难处理</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">任务安排</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">基于数据存放的位置自动实现</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">取决于应用程序（通过运行时实现透明性）</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">如果内存不够</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">与已有的数据流系统类似</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">性能较差（交换？）</td>
+</tr>
+</tbody>
+</table>
+<p>注意，通过备份任务的拷贝，RDD还可以处理落后任务（即运行很慢的节点），这点与MapReduce[12]类似。而DSM则难以实现备份任务，因为任务及其副本都需要读写同一个内存位置。</p>
+<p>与DSM相比，RDD模型有两个好处。第一，对于RDD中的批量操作，运行时将根据数据存放的位置来调度任务，从而提高性能。第二，对于基于扫描的操作，如果内存不足以缓存整个RDD，就进行部分缓存。把内存放不下的分区存储到磁盘上，此时性能与现有的数据流系统差不多。</p>
+<p>最后看一下读操作的粒度。RDD上的很多动作（如count和collect）都是批量读操作，即扫描整个数据集，可以将任务分配到距离数据最近的节点上。同时，RDD也支持细粒度操作，即在哈希或范围分区的RDD上执行关键字查找。</p>
+<h2>3. Spark编程接口</h2>
+<p>Spark用Scala[5]语言实现了RDD的API。Scala是一种基于JVM的静态类型、函数式、面向对象的语言。我们选择Scala是因为它简洁（特别适合交互式使用）、有效（因为是静态类型）。但是，RDD抽象并不局限于函数式语言，也可以使用其他语言来实现RDD，比如像Hadoop[2]那样用类表示用户函数。</p>
+<p>要使用Spark，开发者需要编写一个driver程序，连接到集群以运行Worker，如图2所示。Driver定义了一个或多个RDD，并调用RDD上的动作。Worker是长时间运行的进程，将RDD分区以Java对象的形式缓存在内存中。<br>
+<img class="alignnone size-full wp-image-749" alt="f2-spark-runtime" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f2-spark-runtime.png" width="440" height="267"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图2</strong> Spark的运行时。用户的driver程序启动多个worker，worker从分布式文件系统中读取数据块，并将计算后的RDD分区缓存在内存中。</span></p>
+<p>再看看2.4中的例子，用户执行RDD操作时会提供参数，比如map传递一个闭包（closure，函数式编程中的概念）。Scala将闭包表示为Java对象，如果传递的参数是闭包，则这些对象被序列化，通过网络传输到其他节点上进行装载。Scala将闭包内的变量保存为Java对象的字段。例如，var x = 5; rdd.map(_ + x) 这段代码将RDD中的每个元素加5。总的来说，Spark的语言集成类似于DryadLINQ。</p>
+<p>RDD本身是静态类型对象，由参数指定其元素类型。例如，RDD[int]是一个整型RDD。不过，我们举的例子几乎都省略了这个类型参数，因为Scala支持类型推断。</p>
+<p>虽然在概念上使用Scala实现RDD很简单，但还是要处理一些Scala闭包对象的反射问题。如何通过Scala解释器来使用Spark还需要更多工作，这点我们将在第6部分讨论。不管怎样，我们都不需要修改Scala编译器。</p>
+<h3>3.1 Spark中的RDD操作</h3>
+<p>表2列出了Spark中的RDD转换和动作。每个操作都给出了标识，其中方括号表示类型参数。前面说过转换是延迟操作，用于定义新的RDD；而动作启动计算操作，并向用户程序返回值或向外部存储写数据。</p>
+<table style="border: solid thin #868686" width="100%" border="1" cellspacing="0" cellpadding="2">
+<caption style="text-align:center"><strong>表3</strong> Spark中支持的RDD转换和动作</caption>
+<tbody>
+<tr>
+<td style="width: 20.62px;border: solid thin #868686" valign="top">转换</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">map(f : T ) U) : RDD[T] ) RDD[U]<br>
+filter(f : T ) Bool) : RDD[T] ) RDD[T]<br>
+flatMap(f : T ) Seq[U]) : RDD[T] ) RDD[U]<br>
+sample(fraction : Float) : RDD[T] ) RDD[T] (Deterministic sampling)<br>
+groupByKey() : RDD[(K, V)] ) RDD[(K, Seq[V])]<br>
+reduceByKey(f : (V; V) ) V) : RDD[(K, V)] ) RDD[(K, V)]<br>
+union() : (RDD[T]; RDD[T]) ) RDD[T]<br>
+join() : (RDD[(K, V)]; RDD[(K, W)]) ) RDD[(K, (V, W))]<br>
+cogroup() : (RDD[(K, V)]; RDD[(K, W)]) ) RDD[(K, (Seq[V], Seq[W]))]<br>
+crossProduct() : (RDD[T]; RDD[U]) ) RDD[(T, U)]<br>
+mapValues(f : V ) W) : RDD[(K, V)] ) RDD[(K, W)] (Preserves partitioning)<br>
+sort(c : Comparator[K]) : RDD[(K, V)] ) RDD[(K, V)]<br>
+partitionBy(p : Partitioner[K]) : RDD[(K, V)] ) RDD[(K, V)]</td>
+</tr>
+<tr>
+<td style="width: 20.62px;border: solid thin #868686" valign="top">动作</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">count() : RDD[T] ) Long<br>
+collect() : RDD[T] ) Seq[T]<br>
+reduce(f : (T; T) ) T) : RDD[T] ) T<br>
+lookup(k : K) : RDD[(K, V)] ) Seq[V] (On hash/range partitioned RDDs)<br>
+save(path : String) : Outputs RDD to a storage system, e.g., HDFS</td>
+</tr>
+</tbody>
+</table>
+<p>注意，有些操作只对键值对可用，比如join。另外，函数名与Scala及其他函数式语言中的API匹配，例如map是一对一的映射，而flatMap是将每个输入映射为一个或多个输出（与MapReduce中的map类似）。</p>
+<p>除了这些操作以外，用户还可以请求将RDD缓存起来。而且，用户还可以通过Partitioner类获取RDD的分区顺序，然后将另一个RDD按照同样的方式分区。有些操作会自动产生一个哈希或范围分区的RDD，像groupByKey，reduceByKey和sort等。</p>
+<h2>4. 应用程序示例</h2>
+<p>现在我们讲述如何使用RDD表示几种基于数据并行的应用。首先讨论一些迭代式机器学习应用（4.1），然后看看如何使用RDD描述几种已有的集群编程模型，即MapReduce（4.2），Pregel（4.3），和Hadoop（4.4）。最后讨论一下RDD不适合哪些应用（4.5）。</p>
+<h3>4.1 迭代式机器学习</h3>
+<p>很多机器学习算法都具有迭代特性，运行迭代优化方法来优化某个目标函数，例如梯度下降方法。如果这些算法的工作集能够放入内存，将极大地加速程序运行。而且，这些算法通常采用批量操作，例如映射和求和，这样更容易使用RDD来表示。</p>
+<p>例如下面的程序是逻辑回归[15]的实现。逻辑回归是一种常见的分类算法，即寻找一个最佳分割两组点（即垃圾邮件和非垃圾邮件）的超平面w。算法采用梯度下降的方法：开始时w为随机值，在每一次迭代的过程中，对w的函数求和，然后朝着优化的方向移动w。</p>
+<div id="highlighter_356424" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_356424_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_356424" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="keyword">val</code> <code class="plain">points </code><code class="keyword">=</code> <code class="plain">spark.textFile(...)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.map(parsePoint).persist()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="keyword">var</code> <code class="plain">w </code><code class="keyword">=</code> <code class="comments">// random initial vector</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="keyword">for</code> <code class="plain">(i &lt;- </code><code class="value">1</code> <code class="plain">to ITERATIONS) {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">val</code> <code class="plain">gradient </code><code class="keyword">=</code> <code class="plain">points.map{ p </code><code class="keyword">=</code><code class="plain">&gt;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">p.x * (</code><code class="value">1</code><code class="plain">/(</code><code class="value">1</code><code class="plain">+exp(-p.y*(w dot p.x)))-</code><code class="value">1</code><code class="plain">)*p.y</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}.reduce((a,b) </code><code class="keyword">=</code><code class="plain">&gt; a+b)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">w -</code><code class="keyword">=</code> <code class="plain">gradient</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>9</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>首先定义一个名为points的缓存RDD，这是在文本文件上执行map转换之后得到的，即将每个文本行解析为一个Point对象。然后在points上反复执行map和reduce操作，每次迭代时通过对当前w的函数进行求和来计算梯度。7.1小节我们将看到这种在内存中缓存points的方式，比每次迭代都从磁盘文件装载数据并进行解析要快得多。</p>
+<p>已经在Spark中实现的迭代式机器学习算法还有：kmeans（像逻辑回归一样每次迭代时执行一对map和reduce操作），期望最大化算法（EM，两个不同的map/reduce步骤交替执行），交替最小二乘矩阵分解和协同过滤算法。Chu等人提出迭代式MapReduce也可以用来实现常用的学习算法[11]。</p>
+<h3>4.2 使用RDD实现MapReduce</h3>
+<p>MapReduce模型[12]很容易使用RDD进行描述。假设有一个输入数据集（其元素类型为T），和两个函数myMap: T =&gt; List[(Ki, Vi)] 和 myReduce: (Ki; List[Vi]) ) List[R]，代码如下：</p>
+<div id="highlighter_992205" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_992205_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_992205" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">data.flatMap(myMap)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.groupByKey()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.map((k, vs) </code><code class="keyword">=</code><code class="plain">&gt; myReduce(k, vs))</code></td></tr></tbody></table></div></div></div>
+<p>如果任务包含combiner，则相应的代码为：</p>
+<div id="highlighter_620391" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_620391_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_620391" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">data.flatMap(myMap)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.reduceByKey(myCombiner)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">.map((k, v) </code><code class="keyword">=</code><code class="plain">&gt; myReduce(k, v))</code></td></tr></tbody></table></div></div></div>
+<p>ReduceByKey操作在mapper节点上执行部分聚集，与MapReduce的combiner类似。</p>
+<h3>4.3 使用RDD实现Pregel</h3>
+<p>Pregel[21]是面向图算法的基于BSP范式[32]的编程模型。程序由一系列超步（Superstep）协调迭代运行。在每个超步中，各个顶点执行用户函数，并更新相应的顶点状态，变异图拓扑，然后向下一个超步的顶点集发送消息。这种模型能够描述很多图算法，包括最短路径，双边匹配和PageRank等。</p>
+<p>以PageRank为例介绍一下Pregel的实现。当前PageRank[7]记为r，顶点表示状态。在每个超步中，各个顶点向其所有邻居发送贡献值r/n，这里n是邻居的数目。下一个超步开始时，每个顶点将其分值（rank）更新为 α/N + (1 - α) * Σci，这里的求和是各个顶点收到的所有贡献值的和，N是顶点的总数。</p>
+<p>Pregel将输入的图划分到各个worker上，并存储在其内存中。在每个超步中，各个worker通过一种类似MapReduce的Shuffle操作交换消息。</p>
+<p>Pregel的通信模式可以用RDD来描述，如图3。主要思想是：将每个超步中的顶点状态和要发送的消息存储为RDD，然后根据顶点ID分组，进行Shuffle通信（即cogroup操作）。然后对每个顶点ID上的状态和消息应用用户函数（即mapValues操作），产生一个新的RDD，即(VertexID, (NewState, OutgoingMessages))。然后执行map操作分离出下一次迭代的顶点状态和消息（即mapValues和flatMap操作）。代码如下：</p>
+<div id="highlighter_418025" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://shiyanjun.cn/archives/744.html#viewSource" title="查看源代码" class="item viewSource" style="width: 16px; height: 16px;">查看源代码</a><div class="item copyToClipboard"><embed width="16" height="16" id="highlighter_418025_clipboard" type="application/x-shockwave-flash" title="复制到剪贴板" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_418025" menu="false" src="http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf"></div><a href="http://shiyanjun.cn/archives/744.html#printSource" title="打印" class="item printSource" style="width: 16px; height: 16px;">打印</a><a href="http://shiyanjun.cn/archives/744.html#about" title="帮助" class="item about" style="width: 16px; height: 16px;">帮助</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="keyword">val</code> <code class="plain">vertices </code><code class="keyword">=</code> <code class="comments">// RDD of (ID, State) pairs</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="keyword">val</code> <code class="plain">messages </code><code class="keyword">=</code> <code class="comments">// RDD of (ID, Message) pairs</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="keyword">val</code> <code class="plain">grouped </code><code class="keyword">=</code> <code class="plain">vertices.cogroup(messages)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="keyword">val</code> <code class="plain">newData </code><code class="keyword">=</code> <code class="plain">grouped.mapValues {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">(vert, msgs) </code><code class="keyword">=</code><code class="plain">&gt; userFunc(vert, msgs)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// returns (newState, outgoingMsgs)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="plain">}.cache()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="keyword">val</code> <code class="plain">newVerts </code><code class="keyword">=</code> <code class="plain">newData.mapValues((v,ms) </code><code class="keyword">=</code><code class="plain">&gt; v)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>9</code></td><td class="content"><code class="keyword">val</code> <code class="plain">newMsgs </code><code class="keyword">=</code> <code class="plain">newData.flatMap((id,(v,ms)) </code><code class="keyword">=</code><code class="plain">&gt; ms)</code></td></tr></tbody></table></div></div></div>
+<p><img class="alignnone size-full wp-image-750" alt="f3-iteration-pregel-using_rdd" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f3-iteration-pregel-using_rdd.png" width="378" height="284"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图3</strong> 使用RDD实现Pregel时，一步迭代的数据流。（方框表示RDD，箭头表示转换）</span><br>
+需要注意的是，这种实现方法中，RDD grouped，newData和newVerts的分区方法与输入RDD vertices一样。所以，顶点状态一直存在于它们开始执行的机器上，这跟原Pregel一样，这样就减少了通信成本。因为cogroup和mapValues保持了与输入RDD相同的分区方法，所以分区是自动进行的。</p>
+<p>完整的Pregel编程模型还包括其他工具，比如combiner，附录A讨论了它们的实现。下面将讨论Pregel的容错性，以及如何在实现相同容错性的同时减少需要执行检查点操作的数据量。</p>
+<p>我们差不多用了100行Scala代码在Spark上实现了一个类Pregel的API。7.2小节将使用PageRank算法评估它的性能。</p>
+<h4>4.3.1 Pregel容错</h4>
+<p>当前，Pregel基于检查点机制来为顶点状态及其消息实现容错[21]。然而作者是这样描述的：通过在其它的节点上记录已发消息日志，然后单独重建丢失的分区，只需要恢复局部数据即可。上面提到这两种方式，RDD都能够很好地支持。</p>
+<p>通过4.3小节的实现，Spark总是能够基于Lineage实现顶点和消息RDD的重建，但是由于过长的Lineage链，恢复可能会付出高昂的代价。因为迭代RDD依赖于上一个RDD，对于部分分区来说，节点故障可能会导致这些分区状态的所有迭代版本丢失，这就要求使用一种“级联-重新执行”[20]的方式去依次重建每一个丢失的分区。为了避免这个问题，用户可以周期性地在顶点和消息RDD上执行save操作，将状态信息保存到持久存储中。然后，Spark能够在失败的时候自动地重新计算这些丢失的分区（而不是回滚整个程序）。</p>
+<p>最后，我们意识到，RDD也能够实现检查点数据的reduce操作，这要求通过一种高效的检查点方案来表达检查点数据。在很多Pregel作业中，顶点状态都包括可变与不可变的组件，例如，在PageRank中，与一个顶点相邻的顶点列表是不可变的，但是它们的排名是可变的，在这种情况下，我们可以使用一个来自可变数据的单独RDD来替换不可变RDD，基于这样一个较短的Lineage链，检查点仅仅是可变状态，图4解释了这种方式。<br>
+<img class="alignnone size-full wp-image-751" alt="f4-data-flow-of-pregel-using-rdd" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f4-data-flow-of-pregel-using-rdd.png" width="468" height="347"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图4</strong> 经过优化的Pregel使用RDD的数据流。可变状态RDD必须设置检查点，不可变状态才可被快速重建。</span><br>
+在PageRank中，不可变状态（相邻顶点列表）远大于可变状态（浮点值），所以这种方式能够极大地降低开销。</p>
+<h3>4.4 使用RDD实现HaLoop</h3>
+<p>HaLoop[8]是Hadoop的一个扩展版本，它能够改善具有迭代特性的MapReduce程序的性能。基于HaLoop编程模型的应用，使用reduce阶段的输出作为map阶段下一轮迭代的输入。它的循环感知任务调度器能够保证，在每一轮迭代中处理同一个分区数据的连续map和reduce任务，一定能够在同一台物理机上执行。确保迭代间locality特性，reduce数据在物理节点之间传输，并且允许数据缓存在本地磁盘而能够被后续迭代重用。</p>
+<p>使用RDD来优化HaLoop，我们在Spark上实现了一个类似HaLoop的API，这个库只使用了200行Scala代码。通过partitionBy能够保证跨迭代的分区的一致性，每一个阶段的输入和输出被缓存以用于后续迭代。</p>
+<h3>4.5 不适合使用RDD的应用</h3>
+<p>在2.1节我们讨论过，RDD适用于具有批量转换需求的应用，并且相同的操作作用于数据集的每一个元素上。在这种情况下，RDD能够记住每个转换操作，对应于Lineage图中的一个步骤，恢复丢失分区数据时不需要写日志记录大量数据。RDD不适合那些通过异步细粒度地更新来共享状态的应用，例如Web应用中的存储系统，或者增量抓取和索引Web数据的系统，这样的应用更适合使用一些传统的方法，例如数据库、RAMCloud[26]、Percolator[27]和Piccolo[28]。我们的目标是，面向批量分析应用的这类特定系统，提供一种高效的编程模型，而不是一些异步应用程序。</p>
+<h2>5. RDD的描述及作业调度</h2>
+<p>我们希望在不修改调度器的前提下，支持RDD上的各种转换操作，同时能够从这些转换获取Lineage信息。为此，我们为RDD设计了一组小型通用的内部接口。</p>
+<p>简单地说，每个RDD都包含：（1）一组RDD分区（partition，即数据集的原子组成部分）；（2）对父RDD的一组依赖，这些依赖描述了RDD的Lineage；（3）一个函数，即在父RDD上执行何种计算；（4）元数据，描述分区模式和数据存放的位置。例如，一个表示HDFS文件的RDD包含：各个数据块的一个分区，并知道各个数据块放在哪些节点上。而且这个RDD上的map操作结果也具有同样的分区，map函数是在父数据上执行的。表3总结了RDD的内部接口。</p>
+<table style="border: solid thin #868686" width="100%" border="1" cellspacing="0" cellpadding="2">
+<caption style="text-align:center"><strong>表3</strong> Spark中RDD的内部接口</caption>
+<tbody>
+<tr>
+<td style="width: 68.62px;text-align: center;border: solid thin #868686" valign="top"><b>操作</b></td>
+<td style="width: 117.21px;text-align: center;border: solid thin #868686" valign="top"><b>含义</b></td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">partitions()</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">返回一组Partition对象</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">preferredLocations(p)</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">根据数据存放的位置，返回分区p在哪些节点访问更快</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">dependencies()</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">返回一组依赖</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">iterator(p, parentIters)</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">按照父分区的迭代器，逐个计算分区p的元素</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">partitioner()</td>
+<td style="width: 117.21px;border: solid thin #868686" valign="top">返回RDD是否hash/range分区的元数据信息</td>
+</tr>
+</tbody>
+</table>
+<p>设计接口的一个关键问题就是，如何表示RDD之间的依赖。我们发现RDD之间的依赖关系可以分为两类，即：（1）窄依赖（narrow dependencies）：子RDD的每个分区依赖于常数个父分区（即与数据规模无关）；（2）宽依赖（wide dependencies）：子RDD的每个分区依赖于所有父RDD分区。例如，map产生窄依赖，而join则是宽依赖（除非父RDD被哈希分区）。另一个例子见图5。<br>
+<img class="alignnone size-full wp-image-752" alt="f5-rdd-narrow-and-wide-dependencies" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f5-rdd-narrow-and-wide-dependencies.png" width="465" height="306"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图5</strong> 窄依赖和宽依赖的例子。（方框表示RDD，实心矩形表示分区）</span><br>
+区分这两种依赖很有用。首先，窄依赖允许在一个集群节点上以流水线的方式（pipeline）计算所有父分区。例如，逐个元素地执行map、然后filter操作；而宽依赖则需要首先计算好所有父分区数据，然后在节点之间进行Shuffle，这与MapReduce类似。第二，窄依赖能够更有效地进行失效节点的恢复，即只需重新计算丢失RDD分区的父分区，而且不同节点之间可以并行计算；而对于一个宽依赖关系的Lineage图，单个节点失效可能导致这个RDD的所有祖先丢失部分分区，因而需要整体重新计算。</p>
+<p>通过RDD接口，Spark只需要不超过20行代码实现便可以实现大多数转换。5.1小节给出了例子，然后我们讨论了怎样使用RDD接口进行调度（5.2），最后讨论一下基于RDD的程序何时需要数据检查点操作（5.3）。</p>
+<h3>5.1 RDD实现举例</h3>
+<p><strong><i>HDFS文件</i></strong>：目前为止我们给的例子中输入RDD都是HDFS文件，对这些RDD可以执行：partitions操作返回各个数据块的一个分区（每个Partition对象中保存数据块的偏移），preferredLocations操作返回数据块所在的节点列表，iterator操作对数据块进行读取。</p>
+<p><strong><i>map</i></strong>：任何RDD上都可以执行map操作，返回一个MappedRDD对象。该操作传递一个函数参数给map，对父RDD上的记录按照iterator的方式执行这个函数，并返回一组符合条件的父RDD分区及其位置。</p>
+<p><strong><i>union</i></strong>：在两个RDD上执行union操作，返回两个父RDD分区的并集。通过相应父RDD上的窄依赖关系计算每个子RDD分区（注意union操作不会过滤重复值，相当于SQL中的UNION ALL）。</p>
+<p><strong><i>sample</i></strong>：抽样与映射类似，但是sample操作中，RDD需要存储一个随机数产生器的种子，这样每个分区能够确定哪些父RDD记录被抽样。</p>
+<p><strong>join</strong>：对两个RDD执行join操作可能产生窄依赖（如果这两个RDD拥有相同的哈希分区或范围分区），可能是宽依赖，也可能两种依赖都有（比如一个父RDD有分区，而另一父RDD没有）。</p>
+<h3>5.2 Spark任务调度器</h3>
+<p>调度器根据RDD的结构信息为每个动作确定有效的执行计划。调度器的接口是runJob函数，参数为RDD及其分区集，和一个RDD分区上的函数。该接口足以表示Spark中的所有动作（即count、collect、save等）。</p>
+<p>总的来说，我们的调度器跟Dryad类似，但我们还考虑了哪些RDD分区是缓存在内存中的。调度器根据目标RDD的Lineage图创建一个由stage构成的无回路有向图（DAG）。每个stage内部尽可能多地包含一组具有窄依赖关系的转换，并将它们流水线并行化（pipeline）。stage的边界有两种情况：一是宽依赖上的Shuffle操作；二是已缓存分区，它可以缩短父RDD的计算过程。例如图6。父RDD完成计算后，可以在stage内启动一组任务计算丢失的分区。<br>
+<img class="alignnone size-full wp-image-753" alt="f6-spark-compute-stage" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f6-spark-compute-stage.png" width="452" height="313"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图6</strong> Spark怎样划分任务阶段（stage）的例子。实线方框表示RDD，实心矩形表示分区（黑色表示该分区被缓存）。要在RDD G上执行一个动作，调度器根据宽依赖创建一组stage，并在每个stage内部将具有窄依赖的转换流水线化（pipeline）。 本例不用再执行stage 1，因为B已经存在于缓存中了，所以只需要运行2和3。</span></p>
+<p>调度器根据数据存放的位置分配任务，以最小化通信开销。如果某个任务需要处理一个已缓存分区，则直接将任务分配给拥有这个分区的节点。否则，如果需要处理的分区位于多个可能的位置（例如，由HDFS的数据存放位置决定），则将任务分配给这一组节点。</p>
+<p>对于宽依赖（例如需要Shuffle的依赖），目前的实现方式是，在拥有父分区的节点上将中间结果物化，简化容错处理，这跟MapReduce中物化map输出很像。</p>
+<p>如果某个任务失效，只要stage中的父RDD分区可用，则只需在另一个节点上重新运行这个任务即可。如果某些stage不可用（例如，Shuffle时某个map输出丢失），则需要重新提交这个stage中的所有任务来计算丢失的分区。</p>
+<p>最后，lookup动作允许用户从一个哈希或范围分区的RDD上，根据关键字读取一个数据元素。这里有一个设计问题。Driver程序调用lookup时，只需要使用当前调度器接口计算关键字所在的那个分区。当然任务也可以在集群上调用lookup，这时可以将RDD视为一个大的分布式哈希表。这种情况下，任务和被查询的RDD之间的并没有明确的依赖关系（因为worker执行的是lookup），如果所有节点上都没有相应的缓存分区，那么任务需要告诉调度器计算哪些RDD来完成查找操作。</p>
+<h3>5.3 检查点</h3>
+<p>尽管RDD中的Lineage信息可以用来故障恢复，但对于那些Lineage链较长的RDD来说，这种恢复可能很耗时。例如4.3小节中的Pregel任务，每次迭代的顶点状态和消息都跟前一次迭代有关，所以Lineage链很长。如果将Lineage链存到物理存储中，再定期对RDD执行检查点操作就很有效。</p>
+<p>一般来说，Lineage链较长、宽依赖的RDD需要采用检查点机制。这种情况下，集群的节点故障可能导致每个父RDD的数据块丢失，因此需要全部重新计算[20]。将窄依赖的RDD数据存到物理存储中可以实现优化，例如前面4.1小节逻辑回归的例子，将数据点和不变的顶点状态存储起来，就不再需要检查点操作。</p>
+<p>当前Spark版本提供检查点API，但由用户决定是否需要执行检查点操作。今后我们将实现自动检查点，根据成本效益分析确定RDD Lineage图中的最佳检查点位置。</p>
+<p>值得注意的是，因为RDD是只读的，所以不需要任何一致性维护（例如写复制策略，分布式快照或者程序暂停等）带来的开销，后台执行检查点操作。</p>
+<p>我们使用10000行Scala代码实现了Spark。系统可以使用任何Hadoop数据源（如HDFS，Hbase）作为输入，这样很容易与Hadoop环境集成。Spark以库的形式实现，不需要修改Scala编译器。</p>
+<p>这里讨论关于实现的三方面问题：（1）修改Scala解释器，允许交互模式使用Spark（6.1）；（2）缓存管理（6.2）；（3）调试工具rddbg（6.3）。</p>
+<h2>6. 实现</h2>
+<h3>6.1 解释器的集成</h3>
+<p>像Ruby和Python一样，Scala也有一个交互式shell。基于内存的数据可以实现低延时，我们希望允许用户从解释器交互式地运行Spark，从而在大数据集上实现大规模并行数据挖掘。</p>
+<p>Scala解释器通常根据将用户输入的代码行，来对类进行编译，接着装载到JVM中，然后调用类的函数。这个类是一个包含输入行变量或函数的单例对象，并在一个初始化函数中运行这行代码。例如，如果用户输入代码var x = 5，接着又输入println(x)，则解释器会定义一个包含x的Line1类，并将第2行编译为println(Line1.getInstance().x)。</p>
+<p>在Spark中我们对解释器做了两点改动：</p>
+<ol>
+<li>类传输：解释器能够支持基于HTTP传输类字节码，这样worker节点就能获取输入每行代码对应的类的字节码。</li>
+<li>改进的代码生成逻辑：通常每行上创建的单态对象通过对应类上的静态方法进行访问。也就是说，如果要序列化一个闭包，它引用了前面代码行中变量，比如上面的例子Line1.x，Java不会根据对象关系传输包含x的Line1实例。所以worker节点不会收到x。我们将这种代码生成逻辑改为直接引用各个行对象的实例。图7说明了解释器如何将用户输入的一组代码行解释为Java对象。</li>
+</ol>
+<p><img class="alignnone size-full wp-image-754" alt="f7-spark-interpreter-translation" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f7-spark-interpreter-translation.png" width="490" height="302"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图7</strong> Spark解释器如何将用户输入的两行代码解释为Java对象</span><br>
+Spark解释器便于跟踪处理大量对象关系引用，并且便利了HDFS数据集的研究。我们计划以Spark解释器为基础，开发提供高级数据分析语言支持的交互式工具，比如类似SQL和Matlab。</p>
+<h3>6.2 缓存管理</h3>
+<p>Worker节点将RDD分区以Java对象的形式缓存在内存中。由于大部分操作是基于扫描的，采取RDD级的LRU（最近最少使用）替换策略（即不会为了装载一个RDD分区而将同一RDD的其他分区替换出去）。目前这种简单的策略适合大多数用户应用。另外，使用带参数的cache操作可以设定RDD的缓存优先级。</p>
+<h3>6.3 rddbg：RDD程序的调试工具</h3>
+<p>RDD的初衷是为了实现容错以能够再计算（re-computation），这个特性使得调试更容易。我们创建了一个名为rddbg的调试工具，它是通过基于程序记录的Lineage信息来实现的，允许用户：（1）重建任何由程序创建的RDD，并执行交互式查询；（2）使用一个单进程Java调试器（如jdb）传入计算好的RDD分区，能够重新运行作业中的任何任务。</p>
+<p>我们强调一下，rddbg不是一个完全重放的调试器：特别是不对非确定性的代码或动作进行重放。但如果某个任务一直运行很慢（比如由于数据分布不均匀或者异常输入等原因），仍然可以用它来帮助找到其中的逻辑错误和性能问题。</p>
+<p>举个例子，我们使用rddbg去解决用户Spam分类作业中的一个bug，这个作业中的每次迭代都产生0值。在调试器中重新执行reduce任务，很快就能发现，输入的权重向量（存储在一个用户自定义的向量类中）竟然是空值。由于从一个未初始化的稀疏向量中读取总是返回0，运行时也不会抛出异常。在这个向量类中设置一个断点，然后运行这个任务，引导程序很快就运行到设置的断点处，我们发现向量类的一个数组字段的值为空，我们诊断出了这个bug：稀疏向量类中的数据字段被错误地使用transient来修饰，导致序列化时忽略了该字段的数据。</p>
+<p>rddbg给程序执行带来的开销很小。程序本来就需要将各个RDD中的所有闭包序列化并通过网络传送，只不过使用rddbg同时还要将这些闭集记录到磁盘。</p>
+<h2>7. 评估</h2>
+<p>我们在Amazon EC2[1]上进行了一系列实验来评估Spark及RDD的性能，并与Hadoop及其他应用程序的基准进行了对比。总的说来，结果如下：<br>
+（1）对于迭代式机器学习应用，Spark比Hadoop快20多倍。这种加速比是因为：数据存储在内存中，同时Java对象缓存避免了反序列化操作。<br>
+（2）用户编写的应用程序执行结果很好。例如，Spark分析报表比Hadoop快40多倍。<br>
+（3）如果节点发生失效，通过重建那些丢失的RDD分区，Spark能够实现快速恢复。<br>
+（4）Spark能够在5-7s延时范围内，交互式地查询1TB大小的数据集。<br>
+我们基准测试首先从一个运行在Hadoop上的具有迭代特征的机器学习应用（7.1）和PageRank（7.2）开始，然后评估在Spark中当工作集不能适应缓存（7.4）时系统容错恢复能力（7.3），最后讨论用户应用程序（7.5）和交互式数据挖掘（7.6）的结果。<br>
+除非特殊说明，我们的实验使用m1.xlarge EC2 节点，4核15GB内存，使用HDFS作为持久存储，块大小为256M。在每个作业运行执行时，为了保证磁盘读时间更加精确，我们清理了集群中每个节点的操作系统缓存。</p>
+<h3>7.1 可迭代的机器学习应用</h3>
+<p>我们实现了2个迭代式机器学习（ML）应用，Logistic回归和K-means算法，与如下系统进行性能对比：</p>
+<ul>
+<li><i>Hadoop</i>：Hadoop 0.20.0稳定版。</li>
+<li><i>HadoopBinMem</i>：在首轮迭代中执行预处理，通过将输入数据转换成为开销较低的二进制格式来减少后续迭代过程中文本解析的开销，在HDFS中加载到内存。</li>
+<li><i>Spark</i>：基于RDD的系统，在首轮迭代中缓存Java对象以减少后续迭代过程中解析、反序列化的开销。</li>
+</ul>
+<p>我们使用同一数据集在相同条件下运行Logistic回归和K-means算法：使用400个任务（每个任务处理的输入数据块大小为256M），在25-100台机器，执行10次迭代处理100G输入数据集（表4）。两个作业的关键区别在于每轮迭代单个字节的计算量不同。K-means的迭代时间取决于更新聚类坐标耗时，Logistic回归是非计算密集型的，但是在序列化和解析过程中非常耗时。<br>
+由于典型的机器学习算法需要数10轮迭代，然后再合并，我们分别统计了首轮迭代和后续迭代计算的耗时，并从中发现，在内存中缓存RDD极大地加快了后续迭代的速度。</p>
+<table style="border: solid thin #868686" width="100%" border="1" cellspacing="0" cellpadding="2">
+<caption style="text-align:center"><strong>表4</strong> 用于Spark基准程序的数据</caption>
+<tbody>
+<tr>
+<td style="width: 68.62px;text-align: center;border: solid thin #868686" valign="top"><b>应用</b></td>
+<td style="width: 60.21px;text-align: center;border: solid thin #868686" valign="top"><b>数据描述</b></td>
+<td style="width: 60.21px;text-align: center;border: solid thin #868686" valign="top"><b>大小</b></td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">Logistic回归</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">10亿9维点数据</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">100G</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">K-means</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">10亿10维点数据（k=10）</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">100G</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">PageRank</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">400万Wikipedia文章超链接图</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">49G</td>
+</tr>
+<tr>
+<td style="width: 68.62px;border: solid thin #868686" valign="top">交互式数据挖掘</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">Wikipedia浏览日志（2008-10~2009-4）</td>
+<td style="width: 60.21px;border: solid thin #868686" valign="top">1TB</td>
+</tr>
+</tbody>
+</table>
+<p><strong>首轮迭代</strong>。在首轮迭代过程中，三个系统都是从HDFS中读取文本数据作为输入。图9中“First Iteration”显示了首轮迭代的柱状图，实验中Spark快于Hadoop，主要是因为Hadoop中的各个分布式组件基于心跳协议来发送信号带来了开销。HadoopBinMem是最慢的，因为它通过一个额外的MapReduce作业将数据转换成二进制格式。<br>
+<img class="alignnone size-full wp-image-755" alt="f8-first-iteration-bars" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f8-first-iteration-bars.png" width="476" height="280"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图8</strong> 首轮迭代后Hadoop、HadoopBinMen、Spark运行时间对比</span></p>
+<p><strong>后续迭代</strong>。图9显示了后续迭代的平均耗时，图8对比了不同聚类大小条件下耗时情况，我们发现在100个节点上运行Logistic回归程序，Spark比Hadoop、HadoopBinMem分别快25.3、20.7倍。从图8（b）可以看到，Spark仅仅比Hadoop、HadoopBinMem分别快1.9、3.2倍，这是因为K-means程序的开销取决于计算（用更多的节点有助于提高计算速度的倍数）。</p>
+<p>后续迭代中，Hadoop仍然从HDFS读取文本数据作为输入，所以从首轮迭代开始Hadoop的迭代时间并没有明显的改善。使用预先转换的SequenceFile文件（Hadoop内建的二进制文件格式），HadoopBinMem在后续迭代中节省了解析的代价，但是仍然带来的其他的开销，如从HDFS读SequenceFile文件并转换成Java对象。因为Spark直接读取缓存于RDD中的Java对象，随着聚类尺寸的线性增长，迭代时间大幅下降。<br>
+<img class="alignnone size-full wp-image-756" alt="f9-length-of-first-and-later-iterations" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f9-length-of-first-and-later-iterations.png" width="453" height="197"><br>
+<span style="font-size: small;text-indent: 20px">图9：首轮及其后续迭代平均时间对比</span><br>
+<strong>理解速度提升</strong>。我们非常惊奇地发现，Spark甚至胜过了基于内存存储二进制数据的Hadoop（HadoopBinMem），幅度高达20倍之多，Hadoop运行慢是由于如下几个原因：</p>
+<ol>
+<li>Hadoop软件栈的最小开销</li>
+<li>读数据时HDFS栈的开销</li>
+<li>将二进制记录转换成内存Java对象的代价</li>
+</ol>
+<p>为了估测1，我们运行空的Hadoop作业，仅仅执行作业的初始化、启动任务、清理工作就至少耗时25秒。对于2，我们发现为了服务每一个HDFS数据块，HDFS进行了多次复制以及计算校验和操作。</p>
+<p>为了估测3，我们在单个节点上运行了微基准程序，在输入的256M数据上计算Logistic回归，结果如表5所示。首先，在内存中的HDFS文件和本地文件的不同导致通过HDFS接口读取耗时2秒，甚至数据就在本地内存中。其次，文本和二进制格式输入的不同造成了解析耗时7秒的开销。最后，预解析的二进制文件转换为内存中的Java对象，耗时3秒。每个节点处理多个块时这些开销都会累积起来，然而通过缓存RDD作为内存中的Java对象，Spark只需要耗时3秒。</p>
+<table style="border: solid thin #868686" border="1" cellpadding="2" cellspacing="0" width="100%">
+<caption style="text-align:center"><strong>表5</strong> Logistic回归迭代时间</caption>
+<tbody>
+<tr>
+<td style="width: 45.62px;text-align: center;border: solid thin #868686" valign="top">
+		<b> </b>
+	</td>
+<td style="width: 45.21px;text-align: center;border: solid thin #868686" valign="top">
+		<b>内存中的HDFS文件</b>
+	</td>
+<td style="width: 45.62px;text-align: center;border: solid thin #868686" valign="top">
+		<b>内存中的本地文件</b>
+	</td>
+<td style="width: 45.21px;text-align: center;border: solid thin #868686" valign="top">
+		<b>缓存的RDD</b>
+	</td>
+</tr>
+<tr>
+<td style="width: 45.62px;border: solid thin #868686" valign="top">
+		文本输入<br><br>
+		二进制输入
+	</td>
+<td style="width: 45.21px;border: solid thin #868686" valign="top">
+		15.38 (0.26)<br><br>
+		8.38 (0.10)
+	</td>
+<td style="width: 45.62px;border: solid thin #868686" valign="top">
+		13.13 (0.26)<br><br>
+		6.86 (0.02)
+	</td>
+<td style="width: 45.21px;border: solid thin #868686" valign="top">
+		2.93 (0.31)<br><br>
+		2.93 (0.31)
+	</td>
+</tr>
+</tbody>
+</table>
+<h3>7.2 PageRank</h3>
+<p>通过使用存储在HDFS上的49G Wikipedia导出数据，我们比较了使用RDD实现的Pregel与使用Hadoop计算PageRank的性能。PageRank算法通过10轮迭代处理了大约400万文章的链接图数据，图10显示了在30个节点上，Spark处理速度是Hadoop的2倍多，改进后对输入进行Hash分区速度提升到2.6倍，使用Combiner后提升到3.6倍，这些结果数据也随着节点扩展到60个时同步放大。<br>
+<img class="alignnone size-full wp-image-757" alt="f10-compare-spark-and-hadoop" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f10-compare-spark-and-hadoop.png" width="444" height="212"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图10</strong> 迭代时间对比</span></p>
+<h3>7.3 容错恢复</h3>
+<p>基于K-means算法应用程序，我们评估了在单点故障（SPOF）时使用Lneage信息创建RDD分区的开销。图11显示了，K-means应用程序运行在75个节点的集群中进行了10轮迭代，我们在正常操作和进行第6轮迭代开始时一个节点发生故障的情况下对耗时进行了对比。没有任何失败，每轮迭代启动了400个任务处理100G数据。<br>
+<img class="alignnone size-full wp-image-758" alt="f11-iteration-k-means-spof" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f11-iteration-k-means-spof.png" width="455" height="213"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图11</strong> SPOF时K-means应用程序迭代时间</span><br>
+第5轮迭代结束时大约耗时58秒，第6轮迭代时Kill掉一个节点，该节点上的任务都被终止（包括缓存的分区数据）。Spark调度器调度这些任务在其他节点上重新并行运行，并且重新读取基于Lineage信息重建的RDD输入数据并进行缓存，这使得迭代计算耗时增加到80秒。一旦丢失的RDD分区被重建，平均迭代时间又回落到58秒。</p>
+<h3>7.4 内存不足时表现</h3>
+<p>到现在为止，我们能保证集群中的每个节点都有足够的内存去缓存迭代过程中使用的RDD，如果没有足够的内存来缓存一个作业的工作集，Spark又是如何运行的呢？在实验中，我们通过在每个节点上限制缓存RDD所需要的内存资源来配置Spark，在不同的缓存配置条件下执行Logistic回归，结果如图12。我们可以看出，随着缓存的减小，性能平缓地下降。<br>
+<img class="alignnone size-full wp-image-759" alt="f12-spark-performance-limit-cache-size-of-rdd" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f12-spark-performance-limit-cache-size-of-rdd.png" width="395" height="199"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图12</strong> Spark上运行Logistic回归的性能表现</span></p>
+<h3>7.5 基于Spark构建的用户应用程序</h3>
+<p><strong>In-Memory分析</strong>。视频分发公司Conviva使用Spark极大地提升了为客户处理分析报告的速度，以前基于Hadoop使用大约20个Hive[3]查询来完成，这些查询作用在相同的数据子集上（满足用户提供的条件），但是在不同分组的字段上执行聚合操作（SUM、AVG、COUNT DISTINCT等）需要使用单独的MapReduce作业。该公司使用Spark只需要将相关数据加载到内存中一次，然后运行上述聚合操作，在Hadoop集群上处理200G压缩数据并生成报耗时20小时，而使用Spark基于96G内存的2个节点耗时30分钟即可完成，速度提升40倍，主要是因为不需要再对每个作业重复地执行解压缩和过滤操作。</p>
+<p><strong>城市交通建模</strong>。在Berkeley的Mobile Millennium项目[17]中，基于一系列分散的汽车GPS监测数据，研究人员使用并行化机器学习算法来推算公路交通拥堵状况。数据来自市区10000个互联的公路线路网，还有600000个由汽车GPS装置采集到的样本数据，这些数据记录了汽车在两个地点之间行驶的时间（每一条路线的行驶时间可能跨多个公路线路网）。使用一个交通模型，通过推算跨多个公路网行驶耗时预期，系统能够估算拥堵状况。研究人员使用Spark实现了一个可迭代的EM算法，其中包括向Worker节点广播路线网络信息，在E和M阶段之间执行reduceByKey操作，应用从20个节点扩展到80个节点（每个节点4核），如图13（a）所示：<br>
+<img class="alignnone size-full wp-image-760" alt="f13-run-time-of-per-iteration" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f13-run-time-of-per-iteration.png" width="526" height="251"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图13</strong> 每轮迭代运行时间（a）交通建模应用程序（b）基于Spark的社交网络的Spam分类</span><br>
+<strong>社交网络Spam分类</strong>。Berkeley的Monarch项目[31]使用Spark识别Twitter消息上的Spam链接。他们在Spark上实现了一个类似7.1小节中示例的Logistic回归分类器，不同的是使用分布式的reduceByKey操作并行对梯度向量求和。图13（b）显示了基于50G数据子集训练训练分类器的结果，整个数据集是250000的URL、至少10^7个与网络相关的特征/维度，内容、词性与访问一个URL的页面相关。随着节点的增加，这并不像交通应用程序那样近似线性，主要是因为每轮迭代的固定通信代价较高。</p>
+<h3>7.6 交互式数据挖掘</h3>
+<p>为了展示Spark交互式处理大数据集的能力，我们在100个m2.4xlarge EC2实例（8核68G内存）上使用Spark分析1TB从2008-10到2009-4这段时间的Wikipedia页面浏览日志数据，在整个输入数据集上简单地查询如下内容以获取页面浏览总数：（1）全部页面；（2）页面的标题能精确匹配给定的关键词；（3）页面的标题能部分匹配给定的关键词。<br>
+<img class="alignnone size-full wp-image-761" alt="f14-response-time-of-interactive-queries" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/f14-response-time-of-interactive-queries.png" width="369" height="218"><br>
+<span style="font-size: small;text-indent: 20px"><strong>图14</strong> 显示了分别在整个、1/2、1/10的数据上查询的响应时间，甚至1TB数据在Spark上查询仅耗时5-7秒，这比直接操作磁盘数据快几个数量级。例如，从磁盘上查询1TB数据耗时170秒，这表明了RDD缓存使得Spark成为一个交互式数据挖掘的强大工具。</span></p>
+<h2>8. 相关工作</h2>
+<p><strong>分布式共享内存（DSM）</strong>。RDD可以看成是一个基于DSM研究[24]得到的抽象。在2.5节我们讨论过，RDD提供了一个比DSM限制更严格的编程模型，并能在节点失效时高效地重建数据集。DSM通过检查点[19]实现容错，而Spark使用Lineage重建RDD分区，这些分区可以在不同的节点上重新并行处理，而不需要将整个程序回退到检查点再重新运行。RDD能够像MapReduce一样将计算推向数据[12]，并通过推测执行来解决某些任务计算进度落后的问题，推测执行在一般的DSM系统上是很难实现的。</p>
+<p><strong>In-Memory集群计算</strong>。Piccolo[28]是一个基于可变的、In-Memory的分布式表的集群编程模型。因为Piccolo允许读写表中的记录，它具有与DSM类似的恢复机制，需要检查点和回滚，但是不能推测执行，也没有提供类似groupBy、sort等更高级别的数据流算子，用户只能直接读取表单元数据来实现。可见，Piccolo是比Spark更低级别的编程模型，但是比DSM要高级。</p>
+<p>RAMClouds[26]适合作为Web应用的存储系统，它同样提供了细粒度读写操作，所以需要通过记录日志来实现容错。</p>
+<p><strong>数据流系统</strong>。RDD借鉴了DryadLINQ[34]、Pig[25]和FlumeJava[9]的“并行收集”编程模型，通过允许用户显式地将未序列化的对象保存在内存中，以此来控制分区和基于key随机查找，从而有效地支持基于工作集的应用。RDD保留了那些数据流系统更高级别的编程特性，这对那些开发人员来说也比较熟悉，而且，RDD也能够支持更多类型的应用。RDD新增的扩展，从概念上看很简单，其中Spark是第一个使用了这些特性的系统，类似DryadLINQ编程模型，能够有效地支持基于工作集的应用。</p>
+<p>面向基于工作集的应用，已经开发了一些专用系统，像Twister[13]、HaLoop[8]实现了一个支持迭代的MapReduce模型；Pregel[21]，支持图应用的BSP计算模型。RDD是一个更通用的抽象，它能够描述支持迭代的MapReduce、Pregel，还有现有一些系统未能处理的应用，如交互式数据挖掘。特别地，它能够让开发人员动态地选择操作来运行在RDD上（如查看查询的结果以决定下一步运行哪个查询），而不是提供一系列固定的步骤去执行迭代，RDD还支持更多类型的转换。</p>
+<p>最后，Dremel[22]是一个低延迟查询引擎，它面向基于磁盘存储的大数据集，这类数据集是把嵌套记录数据生成基于列的格式。这种格式的数据也能够保存为RDD并在Spark系统中使用，但Spark也具备将数据加载到内存来实现快速查询的能力。</p>
+<p><strong>Lineage</strong>。我们通过参考[6]到[10]做过调研，在科学计算和数据库领域，对于一些应用，如需要解释结果以及允许被重新生成、工作流中发现了bug或者数据集丢失需要重新处理数据，表示数据的Lineage和原始信息一直以来都是一个研究课题。RDD提供了一个受限的编程模型，在这个模型中使用细粒度的Lineage来表示是非常容易的，因此它可以被用于容错。</p>
+<p><strong>缓存系统</strong>。Nectar[14]能够通过识别带有程序分析的子表达式，跨DryadLINQ作业重用中间结果，如果将这种能力加入到基于RDD的系统会非常有趣。但是Nectar并没有提供In-Memory缓存，也不能够让用户显式地控制应该缓存那个数据集，以及如何对其进行分区。Ciel[23]同样能够记住任务结果，但不能提供In-Memory缓存并显式控制它。</p>
+<p><strong>语言迭代</strong>。DryadLINQ[34]能够使用LINQ获取到表达式树然后在集群上运行，Spark系统的语言集成与它很类似。不像DryadLINQ，Spark允许用户显式地跨查询将RDD存储到内存中，并通过控制分区来优化通信。Spark支持交互式处理，但DryadLINQ却不支持。</p>
+<p><strong>关系数据库</strong>。从概念上看，RDD类似于数据库中的视图，缓存RDD类似于物化视图[29]。然而，数据库像DSM系统一样，允许典型地读写所有记录，通过记录操作和数据的日志来实现容错，还需要花费额外的开销来维护一致性。RDD编程模型通过增加更多限制来避免这些开销。</p>
+<h2>9. 总结</h2>
+<p>我们提出的RDD是一个面向，运行在普通商用机集群之上并行数据处理应用的分布式内存抽象。RDD广泛支持基于工作集的应用，包括迭代式机器学习和图算法，还有交互式数据挖掘，然而它保留了数据流模型中引人注目的特点，如自动容错恢复，处理执行进度落后的任务，以及感知调度。它是通过限制编程模型，进而允许高效地重建RDD分区来实现的。RDD实现处理迭代式作业的速度超过Hadoop大约20倍，而且还能够交互式查询数百G数据。</p>
+<h2>致谢</h2>
+<p>首先感谢Spark用户，包括Timothy Hunter、Lester Mackey、Dilip Joseph、Jibin Zhan和Teodor Moldovan，他们在真实的应用中使用Spark，提出了宝贵的建议，同时也发现了一些新的研究挑战。这次研究离不开以下组织或团体的大力支持：Berkeley AMP Lab创立赞助者Google和SAP，AMP Lab赞助者Amazon Web Services、Cloudera、Huawei、IBM、Intel、Microsoft、NEC、NetApp和VMWare，国家配套资金加州MICRO项目（助学金 06-152，07-010），国家自然科学基金 （批准 CNS-0509559），加州大学工业/大学合作研究项目 （UC Discovery）授予的COM07-10240，以及自然科学和加拿大工程研究理事会。</p>
+<h2>参考</h2>
+<p>[1] Amazon EC2. http://aws.amazon.com/ec2.<br>
+[2] Apache Hadoop. http://hadoop.apache.org.<br>
+[3] Apache Hive. http://hadoop.apache.org/hive.<br>
+[4] Applications powered by Hadoop. http://wiki.apache.org/hadoop/PoweredBy.<br>
+[5] Scala. http://www.scala-lang.org.<br>
+[6] R. Bose and J. Frew. Lineage retrieval for scientific data processing: a survey. ACM Computing Surveys, 37:1–28,<br>
+2005.<br>
+[7] S. Brin and L. Page. The anatomy of a large-scale hypertextual web search engine. In WWW, 1998.<br>
+[8] Y. Bu, B. Howe, M. Balazinska, and M. D. Ernst. HaLoop: efficient iterative data processing on large clusters. Proc. VLDB Endow., 3:285–296, September 2010.<br>
+[9] C. Chambers, A. Raniwala, F. Perry, S. Adams, R. R. Henry, R. Bradshaw, and N. Weizenbaum. Flumejava: easy, efficient data-parallel pipelines. In Proceedings of the 2010 ACM SIGPLAN conference on Programming language design and implementation, PLDI ’10. ACM, 2010.<br>
+[10] J. Cheney, L. Chiticariu, and W.-C. Tan. Provenance in databases: Why, how, and where. Foundations and Trends in Databases, 1(4):379–474, 2009.<br>
+[11] C. T. Chu, S. K. Kim, Y. A. Lin, Y. Yu, G. R. Bradski, A. Y. Ng, and K. Olukotun. Map-reduce for machine learning on multicore. In NIPS ’06, pages 281–288. MIT Press, 2006.<br>
+[12] J. Dean and S. Ghemawat. MapReduce: Simplified data processing on large clusters. In OSDI, 2004.<br>
+[13] J. Ekanayake, H. Li, B. Zhang, T. Gunarathne, S.-H. Bae, J. Qiu, and G. Fox. Twister: a runtime for iterative mapreduce. In HPDC ’10, 2010.<br>
+[14] P. K. Gunda, L. Ravindranath, C. A. Thekkath, Y. Yu, and L. Zhuang. Nectar: automatic management of data and computation in datacenters. In OSDI ’10, 2010.<br>
+[15] T. Hastie, R. Tibshirani, and J. Friedman. The Elements of Statistical Learning: Data Mining, Inference, and Prediction. Springer Publishing Company, New York, NY, 2009.<br>
+[16] U. Hoelzle and L. A. Barroso. The Datacenter as a Computer: An Introduction to the Design of Warehouse-Scale Machines. Morgan and Claypool Publishers, 1st edition, 2009.<br>
+[17] Mobile Millennium Project. http://traffic.berkeley.edu.<br>
+[18] M. Isard, M. Budiu, Y. Yu, A. Birrell, and D. Fetterly. Dryad: distributed data-parallel programs from sequential building blocks. In EuroSys 07, 2007.<br>
+[19] A.-M. Kermarrec, G. Cabillic, A. Gefflaut, C. Morin, and I. Puaut. A recoverable distributed shared memory integrating coherence and recoverability. In FTCS ’95, 1995.<br>
+[20] S. Y. Ko, I. Hoque, B. Cho, and I. Gupta. On availability of intermediate data in cloud computations. In HotOS<br>
+’09, 2009.<br>
+[21] G. Malewicz, M. H. Austern, A. J. Bik, J. C. Dehnert, I. Horn, N. Leiser, and G. Czajkowski. Pregel: a system for large-scale graph processing. In SIGMOD, pages 135–146, 2010.<br>
+[22] S. Melnik, A. Gubarev, J. J. Long, G. Romer, S. Shivakumar, M. Tolton, and T. Vassilakis. Dremel: interactive analysis of web-scale datasets. Proc. VLDB Endow., 3:330–339, Sept 2010.<br>
+[23] D. G. Murray, M. Schwarzkopf, C. Smowton, S. Smith, A. Madhavapeddy, and S. Hand. Ciel: a universal execution engine for distributed data-flow computing. In NSDI, 2011.<br>
+[24] B. Nitzberg and V. Lo. Distributed shared memory: a survey of issues and algorithms. Computer, 24(8):52–60, aug 1991.<br>
+[25] C. Olston, B. Reed, U. Srivastava, R. Kumar, and A. Tomkins. Pig latin: a not-so-foreign language for data processing. In SIGMOD ’08, pages 1099–1110.<br>
+[26] J. Ousterhout, P. Agrawal, D. Erickson, C. Kozyrakis, J. Leverich, D. Mazi ` eres, S. Mitra, A. Narayanan, G. Parulkar, M. Rosenblum, S. M. Rumble, E. Stratmann, and R. Stutsman. The case for RAMClouds: scalable high-performance storage entirely in dram. SIGOPS Oper. Syst. Rev., 43:92–105, Jan 2010.<br>
+[27] D. Peng and F. Dabek. Large-scale incremental processing using distributed transactions and notifications. In OSDI 2010.<br>
+[28] R. Power and J. Li. Piccolo: Building fast, distributed programs with partitioned tables. In Proc. OSDI 2010,<br>
+2010.<br>
+[29] R. Ramakrishnan and J. Gehrke. Database Management Systems. McGraw-Hill, Inc., 3 edition, 2003.<br>
+[30] D. Spiewak and T. Zhao. ScalaQL: Language-integrated database queries for scala. In SLE, pages 154–163, 2009.<br>
+[31] K. Thomas, C. Grier, J. Ma, V. Paxson, and D. Song. Design and evaluation of a real-time URL spam filtering service. In IEEE Symposium on Security and Privacy, 2011.<br>
+[32] L. G. Valiant. A bridging model for parallel computation. Commun. ACM, 33:103–111, August 1990.<br>
+[33] J. W. Young. A first order approximation to the optimum checkpoint interval. Commun. ACM, 17:530–531, Sept 1974.<br>
+[34] Y. Yu, M. Isard, D. Fetterly, M. Budiu, U. Erlingsson, P. K. Gunda, and J. Currey. DryadLINQ: A system for general-purpose distributed data-parallel computing using a high-level language. In OSDI ’08, 2008.</p>
+			</div><!-- .entry-content -->
+	<footer class="entry-meta">
+		<i class="icon-folder-open"></i> <a href="http://shiyanjun.cn/archives/category/opensource/spark" title="查看Spark中的全部文章" rel="category tag">Spark</a> | <i class="icon-tag"></i> <a href="http://shiyanjun.cn/archives/tag/spark" rel="tag">Spark</a> | <i class="icon-bookmark"></i> 永久链接: <a href="./RDD：基于内存的集群计算容错抽象   简单之美_files/RDD：基于内存的集群计算容错抽象   简单之美.htm" title="永久链接&lt;=《RDD：基于内存的集群计算容错抽象》" rel="bookmark">http://shiyanjun.cn/archives/744.html</a>.					</footer><!-- .entry-meta -->
+</article><!-- #post-744 -->				<div class="entry-content post type-post status-publish format-standard hentry" style="text-decoration: none; border: 1px double #DDD">
+				<!-- 显示相关文章 -->
+				<div class="bawmrp"><h3>相关文章</h3><ul><li class="bawmrp_auto"><a href="http://shiyanjun.cn/archives/742.html">使用Java编写并运行Spark应用程序</a></li>
+<li class="bawmrp_auto"><a href="http://shiyanjun.cn/archives/696.html">CentOS 6.4下安装配置Spark-0.9集群</a></li></ul></div>				</div>
+					<nav role="navigation" id="nav-below" class="site-navigation post-navigation">
+		<h1 class="assistive-text">Post navigation</h1>
+
+	
+		<div class="nav-previous" title="上一篇"><a href="http://shiyanjun.cn/archives/742.html" rel="prev"><span class="meta-nav">←</span> 使用Java编写并运行Spark应用程序</a></div>		<div class="nav-next" title="下一篇"><a href="http://shiyanjun.cn/archives/772.html" rel="next">Shark-0.9.0安装配置运行实践 <span class="meta-nav">→</span></a></div>		
+	</nav><!-- #nav-below -->
+						<div id="comments" class="comments-area">
+				<h2 class="comments-title">
+			评论列表（3）		</h2>
+				<ol class="commentlist">
+				<li class="comment even thread-even depth-1" id="li-comment-18958">
+		<article id="comment-18958" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img src="./RDD：基于内存的集群计算容错抽象   简单之美_files/User.png" width="40" height="40" alt="" class="avatar avatar-40 wp-user-avatar wp-user-avatar-40 alignnone photo avatar-default">                               <a href="http://shiyanjun.cn/archives/744.html#comment-18958"></a>
+					<i class="icon-user"> </i><span class="says"><cite class="fn">heipark</cite></span>                                        <time datetime="2014-06-18T22:21:29+00:00">
+					        <i class="icon-calendar"> </i>2014-06-18 22:21:29					</time>
+									</div><!-- .comment-author .vcard -->
+							</footer>
+
+			<div class="comment-content"><p>非常好！感谢！</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://shiyanjun.cn/archives/744.html?replytocom=18958#respond" onclick="return addComment.moveForm(&quot;comment-18958&quot;, &quot;18958&quot;, &quot;respond&quot;, &quot;744&quot;)">回复</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-22479">
+		<article id="comment-22479" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img src="./RDD：基于内存的集群计算容错抽象   简单之美_files/User.png" width="40" height="40" alt="" class="avatar avatar-40 wp-user-avatar wp-user-avatar-40 alignnone photo avatar-default">                               <a href="http://shiyanjun.cn/archives/744.html#comment-22479"></a>
+					<i class="icon-user"> </i><span class="says"><cite class="fn">yzmyyff</cite></span>                                        <time datetime="2014-08-21T10:40:46+00:00">
+					        <i class="icon-calendar"> </i>2014-08-21 10:40:46					</time>
+									</div><!-- .comment-author .vcard -->
+							</footer>
+
+			<div class="comment-content"><p>对于懒得看原文的人简直就是福音, 非常感谢.</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://shiyanjun.cn/archives/744.html?replytocom=22479#respond" onclick="return addComment.moveForm(&quot;comment-22479&quot;, &quot;22479&quot;, &quot;respond&quot;, &quot;744&quot;)">回复</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-25621">
+		<article id="comment-25621" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img src="./RDD：基于内存的集群计算容错抽象   简单之美_files/User.png" width="40" height="40" alt="" class="avatar avatar-40 wp-user-avatar wp-user-avatar-40 alignnone photo avatar-default">                               <a href="http://shiyanjun.cn/archives/744.html#comment-25621"></a>
+					<i class="icon-user"> </i><span class="says"><cite class="fn">Jonh</cite></span>                                        <time datetime="2014-09-26T15:15:48+00:00">
+					        <i class="icon-calendar"> </i>2014-09-26 15:15:48					</time>
+									</div><!-- .comment-author .vcard -->
+							</footer>
+
+			<div class="comment-content"><p>最近在学Scala，很有用，好贴，顶啊。</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://shiyanjun.cn/archives/744.html?replytocom=25621#respond" onclick="return addComment.moveForm(&quot;comment-25621&quot;, &quot;25621&quot;, &quot;respond&quot;, &quot;744&quot;)">回复</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+		</ol><!-- .commentlist -->
+													<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://shiyanjun.cn/archives/744.html#respond" style="display:none;">取消回复</a></small></h3>
+									<form action="http://shiyanjun.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes">电子邮件地址不会被公开。 必填项已用<span class="required">*</span>标注</p>							<p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="litaotao" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="text" value="lllgyt@126.com" size="30" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="text" value="http://litaotao.github.io" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">您可以使用这些<abbr title="HyperText Markup Language">HTML</abbr>标签和属性： <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="发表评论">
+							<input type="hidden" name="comment_post_ID" value="744" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="4a1d89e555"></p><p style="display: none;"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1419564908121"></form>
+							</div><!-- #respond -->
+			</div><!-- #comments .comments-area -->						</div><!-- #content .site-content -->
+		</div><!-- #primary .content-area -->
+		<div id="secondary" class="c4 end" role="complementary">
+						<aside id="search-2" class="widget widget_search">	<form method="get" id="searchform" action="http://shiyanjun.cn/" role="search">
+		<label for="s" class="assistive-text">Search</label>
+		<input type="text" class="field" name="s" value="" id="s" placeholder="请输入搜索关键词 …" style="background:url(http://shiyanjun.cn/wp-content/uploads/2014/11/search.png) no-repeat;background-position:right;">
+		<input type="submit" class="submit" id="searchsubmit" value="Search">
+	</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">最新文章</h1>		<ul>
+					<li>
+				<a href="http://shiyanjun.cn/archives/1002.html">Hue安装配置实践</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/994.html">基于Hadoop SLA认证机制实现权限控制</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/977.html">Storm实时计算：流操作入门编程实践</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/962.html">HDFS读文件过程分析：读取文件的Block数据</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/942.html">HDFS写文件过程分析</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/934.html">Kafka+Storm+HDFS整合实践</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/915.html">Flume(NG)架构设计要点及配置实践</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/925.html">HDFS读文件过程分析：获取文件对应的Block列表</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/893.html">CentOS-5.9系统下Ganglia-3.6.0监控集群安装配置实践</a>
+						</li>
+					<li>
+				<a href="http://shiyanjun.cn/archives/885.html">Hive-0.12.0的Web接口HWI安装、配置、改造及使用</a>
+						</li>
+				</ul>
+		</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">文章分类</h1>		<ul>
+	<li class="cat-item cat-item-8"><a href="http://shiyanjun.cn/archives/category/opensource" title="查看开源技术下的所有文章">开源技术</a> (59)
+<ul class="children">
+	<li class="cat-item cat-item-36"><a href="http://shiyanjun.cn/archives/category/opensource/dubbo" title="查看Dubbo下的所有文章">Dubbo</a> (3)
+</li>
+	<li class="cat-item cat-item-79"><a href="http://shiyanjun.cn/archives/category/opensource/flume" title="查看Flume下的所有文章">Flume</a> (1)
+</li>
+	<li class="cat-item cat-item-9"><a href="http://shiyanjun.cn/archives/category/opensource/hadoop" title="查看Hadoop下的所有文章">Hadoop</a> (15)
+</li>
+	<li class="cat-item cat-item-62"><a href="http://shiyanjun.cn/archives/category/opensource/hive" title="查看Hive下的所有文章">Hive</a> (2)
+</li>
+	<li class="cat-item cat-item-82"><a href="http://shiyanjun.cn/archives/category/opensource/hue" title="查看Hue下的所有文章">Hue</a> (1)
+</li>
+	<li class="cat-item cat-item-61"><a href="http://shiyanjun.cn/archives/category/opensource/impala" title="查看Impala下的所有文章">Impala</a> (2)
+</li>
+	<li class="cat-item cat-item-29"><a href="http://shiyanjun.cn/archives/category/opensource/maven" title="查看Maven下的所有文章">Maven</a> (1)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://shiyanjun.cn/archives/category/opensource/mina" title="查看Mina下的所有文章">Mina</a> (6)
+</li>
+	<li class="cat-item cat-item-73"><a href="http://shiyanjun.cn/archives/category/opensource/mybatis" title="查看Mybatis下的所有文章">Mybatis</a> (1)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://shiyanjun.cn/archives/category/opensource/oozie" title="查看Oozie下的所有文章">Oozie</a> (4)
+</li>
+	<li class="cat-item cat-item-69"><a href="http://shiyanjun.cn/archives/category/opensource/shark" title="查看Shark下的所有文章">Shark</a> (1)
+</li>
+	<li class="cat-item cat-item-11"><a href="http://shiyanjun.cn/archives/category/opensource/solr" title="查看Solr下的所有文章">Solr</a> (5)
+</li>
+	<li class="cat-item cat-item-68"><a href="http://shiyanjun.cn/archives/category/opensource/spark" title="查看Spark下的所有文章">Spark</a> (3)
+</li>
+	<li class="cat-item cat-item-67"><a href="http://shiyanjun.cn/archives/category/opensource/sqoop" title="查看Sqoop下的所有文章">Sqoop</a> (3)
+</li>
+	<li class="cat-item cat-item-35"><a href="http://shiyanjun.cn/archives/category/opensource/storm" title="查看Storm下的所有文章">Storm</a> (3)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://shiyanjun.cn/archives/category/opensource/thrift" title="查看Thrift下的所有文章">Thrift</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="http://shiyanjun.cn/archives/category/opensource/webservices" title="查看Web Services下的所有文章">Web Services</a> (1)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://shiyanjun.cn/archives/category/opensource/zookeeper" title="查看ZooKeeper下的所有文章">ZooKeeper</a> (3)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-18"><a href="http://shiyanjun.cn/archives/category/database" title="查看数据库下的所有文章">数据库</a> (5)
+<ul class="children">
+	<li class="cat-item cat-item-20"><a href="http://shiyanjun.cn/archives/category/database/nosql" title="查看NoSQL数据库下的所有文章">NoSQL数据库</a> (4)
+	<ul class="children">
+	<li class="cat-item cat-item-10"><a href="http://shiyanjun.cn/archives/category/database/nosql/hbase" title="查看HBase下的所有文章">HBase</a> (3)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://shiyanjun.cn/archives/category/database/nosql/redis" title="查看Redis下的所有文章">Redis</a> (1)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-19"><a href="http://shiyanjun.cn/archives/category/database/rdb" title="查看关系数据库下的所有文章">关系数据库</a> (1)
+	<ul class="children">
+	<li class="cat-item cat-item-49"><a href="http://shiyanjun.cn/archives/category/database/rdb/mysql" title="查看MySQL下的所有文章">MySQL</a> (1)
+</li>
+	</ul>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://shiyanjun.cn/archives/category/datamining" title="查看数据挖掘下的所有文章">数据挖掘</a> (5)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://shiyanjun.cn/archives/category/server" title="查看服务器下的所有文章">服务器</a> (4)
+<ul class="children">
+	<li class="cat-item cat-item-78"><a href="http://shiyanjun.cn/archives/category/server/ganglia" title="查看Ganglia下的所有文章">Ganglia</a> (1)
+</li>
+	<li class="cat-item cat-item-37"><a href="http://shiyanjun.cn/archives/category/server/haproxy" title="查看HAProxy下的所有文章">HAProxy</a> (1)
+</li>
+	<li class="cat-item cat-item-76"><a href="http://shiyanjun.cn/archives/category/server/memcached" title="查看Memcached下的所有文章">Memcached</a> (1)
+</li>
+	<li class="cat-item cat-item-17"><a href="http://shiyanjun.cn/archives/category/server/nginx" title="查看Nginx下的所有文章">Nginx</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-70"><a href="http://shiyanjun.cn/archives/category/algorithm" title="查看算法下的所有文章">算法</a> (8)
+</li>
+	<li class="cat-item cat-item-2"><a href="http://shiyanjun.cn/archives/category/programming" title="查看编程语言下的所有文章">编程语言</a> (4)
+<ul class="children">
+	<li class="cat-item cat-item-3"><a href="http://shiyanjun.cn/archives/category/programming/java" title="查看Java下的所有文章">Java</a> (2)
+</li>
+	<li class="cat-item cat-item-74"><a href="http://shiyanjun.cn/archives/category/programming/nodejs" title="查看Node.js下的所有文章">Node.js</a> (1)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://shiyanjun.cn/archives/category/programming/php" title="查看PHP下的所有文章">PHP</a> (1)
+</li>
+</ul>
+</li>
+		</ul>
+</aside><aside id="archives-2" class="widget widget_archive"><h1 class="widget-title">文章存档</h1>		<ul>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/12">2014年十二月</a>&nbsp;(2)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/11">2014年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/10">2014年十月</a>&nbsp;(3)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/09">2014年九月</a>&nbsp;(1)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/08">2014年八月</a>&nbsp;(1)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/07">2014年七月</a>&nbsp;(2)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/06">2014年六月</a>&nbsp;(2)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/05">2014年五月</a>&nbsp;(2)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/04">2014年四月</a>&nbsp;(1)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/03">2014年三月</a>&nbsp;(14)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2014/02">2014年二月</a>&nbsp;(5)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2013/12">2013年十二月</a>&nbsp;(3)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2013/11">2013年十一月</a>&nbsp;(5)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2013/10">2013年十月</a>&nbsp;(6)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2013/09">2013年九月</a>&nbsp;(13)</li>
+	<li><a href="http://shiyanjun.cn/archives/date/2013/08">2013年八月</a>&nbsp;(21)</li>
+		</ul>
+</aside><aside id="tag_cloud-2" class="widget widget_tag_cloud"><h1 class="widget-title">全站标签</h1><div class="tagcloud"><a href="http://shiyanjun.cn/archives/tag/c4-5" class="tag-link-60" title="1个话题" style="font-size: 8pt;">C4.5</a>
+<a href="http://shiyanjun.cn/archives/tag/dubbo" class="tag-link-36" title="3个话题" style="font-size: 12.2pt;">Dubbo</a>
+<a href="http://shiyanjun.cn/archives/tag/hadoop" class="tag-link-9" title="19个话题" style="font-size: 22pt;">Hadoop</a>
+<a href="http://shiyanjun.cn/archives/tag/hadoop-1-2-1" class="tag-link-80" title="4个话题" style="font-size: 13.6pt;">Hadoop-1.2.1</a>
+<a href="http://shiyanjun.cn/archives/tag/hadoop2" class="tag-link-25" title="2个话题" style="font-size: 10.52pt;">Hadoop2</a>
+<a href="http://shiyanjun.cn/archives/tag/haproxy" class="tag-link-37" title="1个话题" style="font-size: 8pt;">HAProxy</a>
+<a href="http://shiyanjun.cn/archives/tag/hbase" class="tag-link-10" title="4个话题" style="font-size: 13.6pt;">HBase</a>
+<a href="http://shiyanjun.cn/archives/tag/hdfs" class="tag-link-72" title="5个话题" style="font-size: 14.72pt;">HDFS</a>
+<a href="http://shiyanjun.cn/archives/tag/hessian" class="tag-link-41" title="1个话题" style="font-size: 8pt;">Hessian</a>
+<a href="http://shiyanjun.cn/archives/tag/hive" class="tag-link-62" title="3个话题" style="font-size: 12.2pt;">Hive</a>
+<a href="http://shiyanjun.cn/archives/tag/ictclas" class="tag-link-63" title="1个话题" style="font-size: 8pt;">ICTCLAS</a>
+<a href="http://shiyanjun.cn/archives/tag/id3" class="tag-link-57" title="1个话题" style="font-size: 8pt;">ID3</a>
+<a href="http://shiyanjun.cn/archives/tag/impala" class="tag-link-61" title="2个话题" style="font-size: 10.52pt;">Impala</a>
+<a href="http://shiyanjun.cn/archives/tag/java" class="tag-link-3" title="2个话题" style="font-size: 10.52pt;">Java</a>
+<a href="http://shiyanjun.cn/archives/tag/jax-ws" class="tag-link-39" title="1个话题" style="font-size: 8pt;">JAX-WS</a>
+<a href="http://shiyanjun.cn/archives/tag/jregex" class="tag-link-26" title="1个话题" style="font-size: 8pt;">JRegex</a>
+<a href="http://shiyanjun.cn/archives/tag/jvm" class="tag-link-42" title="1个话题" style="font-size: 8pt;">JVM</a>
+<a href="http://shiyanjun.cn/archives/tag/k-means" class="tag-link-64" title="1个话题" style="font-size: 8pt;">K-means</a>
+<a href="http://shiyanjun.cn/archives/tag/libsvm" class="tag-link-32" title="2个话题" style="font-size: 10.52pt;">libsvm</a>
+<a href="http://shiyanjun.cn/archives/tag/mapreduce" class="tag-link-34" title="5个话题" style="font-size: 14.72pt;">MapReduce</a>
+<a href="http://shiyanjun.cn/archives/tag/maven" class="tag-link-29" title="1个话题" style="font-size: 8pt;">Maven</a>
+<a href="http://shiyanjun.cn/archives/tag/mina-2" class="tag-link-31" title="6个话题" style="font-size: 15.7pt;">Mina</a>
+<a href="http://shiyanjun.cn/archives/tag/mybatis" class="tag-link-73" title="1个话题" style="font-size: 8pt;">Mybatis</a>
+<a href="http://shiyanjun.cn/archives/tag/mysql" class="tag-link-49" title="1个话题" style="font-size: 8pt;">MySQL</a>
+<a href="http://shiyanjun.cn/archives/tag/nginx" class="tag-link-17" title="1个话题" style="font-size: 8pt;">Nginx</a>
+<a href="http://shiyanjun.cn/archives/tag/node-js" class="tag-link-75" title="1个话题" style="font-size: 8pt;">Node.js</a>
+<a href="http://shiyanjun.cn/archives/tag/oozie" class="tag-link-15" title="4个话题" style="font-size: 13.6pt;">Oozie</a>
+<a href="http://shiyanjun.cn/archives/tag/php" class="tag-link-5" title="1个话题" style="font-size: 8pt;">PHP</a>
+<a href="http://shiyanjun.cn/archives/tag/redis" class="tag-link-21" title="1个话题" style="font-size: 8pt;">Redis</a>
+<a href="http://shiyanjun.cn/archives/tag/shark" class="tag-link-69" title="1个话题" style="font-size: 8pt;">Shark</a>
+<a href="http://shiyanjun.cn/archives/tag/solr" class="tag-link-11" title="5个话题" style="font-size: 14.72pt;">Solr</a>
+<a href="http://shiyanjun.cn/archives/tag/solrcloud" class="tag-link-27" title="1个话题" style="font-size: 8pt;">SolrCloud</a>
+<a href="http://shiyanjun.cn/archives/tag/spark" class="tag-link-68" title="3个话题" style="font-size: 12.2pt;">Spark</a>
+<a href="http://shiyanjun.cn/archives/tag/spring" class="tag-link-46" title="1个话题" style="font-size: 8pt;">Spring</a>
+<a href="http://shiyanjun.cn/archives/tag/sql" class="tag-link-24" title="1个话题" style="font-size: 8pt;">SQL</a>
+<a href="http://shiyanjun.cn/archives/tag/sqoop" class="tag-link-67" title="3个话题" style="font-size: 12.2pt;">Sqoop</a>
+<a href="http://shiyanjun.cn/archives/tag/storm" class="tag-link-35" title="3个话题" style="font-size: 12.2pt;">Storm</a>
+<a href="http://shiyanjun.cn/archives/tag/svm" class="tag-link-33" title="1个话题" style="font-size: 8pt;">SVM</a>
+<a href="http://shiyanjun.cn/archives/tag/thrift" class="tag-link-22" title="4个话题" style="font-size: 13.6pt;">Thrift</a>
+<a href="http://shiyanjun.cn/archives/tag/tomcat" class="tag-link-28" title="1个话题" style="font-size: 8pt;">Tomcat</a>
+<a href="http://shiyanjun.cn/archives/tag/web-services" class="tag-link-40" title="1个话题" style="font-size: 8pt;">Web Services</a>
+<a href="http://shiyanjun.cn/archives/tag/yarn" class="tag-link-65" title="1个话题" style="font-size: 8pt;">YARN</a>
+<a href="http://shiyanjun.cn/archives/tag/zookeeper" class="tag-link-23" title="4个话题" style="font-size: 13.6pt;">ZooKeeper</a>
+<a href="http://shiyanjun.cn/archives/tag/%e5%86%b3%e7%ad%96%e6%a0%91" class="tag-link-58" title="2个话题" style="font-size: 10.52pt;">决策树</a>
+<a href="http://shiyanjun.cn/archives/tag/%e6%8e%92%e5%ba%8f" class="tag-link-71" title="8个话题" style="font-size: 17.1pt;">排序</a></div>
+</aside><aside id="get-recent-comments" class="widget widget_get_recent_comments"><h1 class="widget-title">最新评论</h1><div id="get_recent_comments_wrap"><ul>	<li><a href="http://shiyanjun.cn/archives/885.html#comment-45330" title="Hive-0.12.0的Web接口HWI安装、配置、改造及使用, 2014-07-06 00:03:21" style="color:#969696;"><strong>jiangzx</strong></a>： 写得不错，谢谢楼主分享！</li>
+	<li><a href="http://shiyanjun.cn/archives/548.html#comment-42627" title="使用libsvm实现文本分类, 2013-12-13 23:43:05" style="color:#969696;"><strong>dln</strong></a>： 我发现如果数据量太大的时候，按照楼主的代码计算出的CHI=N*temp*temp /...</li>
+	<li><a href="http://shiyanjun.cn/archives/548.html#comment-40717" title="使用libsvm实现文本分类, 2013-12-13 23:43:05" style="color:#969696;"><strong>dln</strong></a>： 楼主，你的计算CHI值有问题，“N*temp*temp / (A+C)*(A+B)*(B+D)*(C+D)”...</li>
+	<li><a href="http://shiyanjun.cn/archives/548.html#comment-40608" title="使用libsvm实现文本分类, 2013-12-13 23:43:05" style="color:#969696;"><strong>huangjiang</strong></a>： 我的邮箱是hjl890628@163.com</li>
+	<li><a href="http://shiyanjun.cn/archives/548.html#comment-40607" title="使用libsvm实现文本分类, 2013-12-13 23:43:05" style="color:#969696;"><strong>huangjiang</strong></a>： 您好，我是小白，刚接触文本分类，对JAVA也不是很熟悉，能不能提供源码给我下载，或者发到我邮箱？不胜感谢！</li>
+	<li><a href="http://shiyanjun.cn/archives/934.html#comment-39966" title="Kafka+Storm+HDFS整合实践, 2014-10-21 19:24:19" style="color:#969696;"><strong>东岸往事</strong></a>： 这个yunwei还是可以玩玩ELK的</li>
+	<li><a href="http://shiyanjun.cn/archives/220.html#comment-39920" title="使用libsvm进行分类预测, 2013-08-29 13:09:44" style="color:#969696;"><strong>理论</strong></a>： 楼主我最近在用libsvm实现多分类，可是最后只输出一个精确率，我想对每个类别输出精确率如何算呢？</li>
+	<li><a href="http://shiyanjun.cn/archives/621.html#comment-37348" title="使用Sqoop job工具同步数据, 2014-02-27 19:41:08" style="color:#969696;"><strong>慢慢罗</strong></a>： 您好，请问有试过使用Oozie来定时增量从MySQL导入到Hbase吗？使用Oozie来调度Sqoop...</li>
+	<li><a href="http://shiyanjun.cn/archives/934.html#comment-36009" title="Kafka+Storm+HDFS整合实践, 2014-10-21 19:24:19" style="color:#969696;"><strong>benny</strong></a>： 请问flume+hdfs 只能实现日志收集的功能吗，现在开发不做这块，如果单从运维层面出发，又要做日志收集，又要做日志分析请问那种架构比较合适</li>
+	<li><a href="http://shiyanjun.cn/archives/915.html#comment-34365" title="Flume(NG)架构设计要点及配置实践, 2014-09-17 22:29:49" style="color:#969696;"><strong>app</strong></a>： 生怕flume agent在实时收集时down掉 所以写了一个脚本来重启 请问,这个agent有原生的自愈功能吗?</li>
+</ul></div></aside><aside id="meta-2" class="widget widget_meta"><h1 class="widget-title">站点管理</h1>			<ul>
+						<li><a href="http://shiyanjun.cn/wp-login.php">登录</a></li>
+			<li><a href="http://shiyanjun.cn/feed" title="使用RSS 2.0订阅本站点内容">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://shiyanjun.cn/comments/feed" title="使用RSS订阅本站点的所有文章的近期评论">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>			</ul>
+</aside><aside id="text-4" class="widget widget_text"><h1 class="widget-title">  </h1>			<div class="textwidget"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000041007'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1000041007%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1000041007"><a href="http://www.cnzz.com/stat/website.php?web_id=1000041007" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/pic.gif"></a></span><script src="./RDD：基于内存的集群计算容错抽象   简单之美_files/z_stat.php" type="text/javascript"></script><script src="./RDD：基于内存的集群计算容错抽象   简单之美_files/core.php" charset="utf-8" type="text/javascript"></script></div>
+		</aside>		</div><!-- #secondary .widget-area -->	</div><!-- #main .site-main -->
+	<div id="sidebar-footer" class="row">
+<div class="c4"></div>
+<div class="c4"></div>
+<div class="c4 end"></div>
+</div>	<div style="border-top:solid 5px;margin-bottom: 5px;"></div><!-- Garis Pembatas -->
+	<div class="row">
+	<footer id="colophon" class="c12" role="contentinfo">
+		<div class="site-info">
+			                        COPYRIGHT © 2013-2018 <a href="http://www.shiyanjun.cn/" rel="designer"><b>简单之美</b></a>			<span class="sep"> | </span>
+			Powered by<a href="http://wordpress.org/" title="A Semantic Personal Publishing Platform" rel="generator"> <i>WORDPRESS</i></a>
+			<span class="sep"> | </span>
+			<a href="http://www.miitbeian.gov.cn/" title="京ICP备14038454号" rel="generator"> 京ICP备14038454号</a>
+		</div><!-- .site-info -->
+
+	</footer></div><!-- #colophon .site-footer -->
+</div><!-- #page .hfeed .site -->
+<script type="text/javascript">
+var $j = jQuery.noConflict();
+$j(document).ready(function() { 
+    $j("html").niceScroll();
+});
+</script>
+<script type="text/javascript">
+var $j = jQuery.noConflict();
+$j(function() {
+	$j(window).scroll(function() {
+		if($j(this).scrollTop() != 0) {
+			$j('#toTop').fadeIn();	
+		} else {
+			$j('#toTop').fadeOut();
+		}
+	});
+ 
+	$j('#toTop').click(function() {
+		$j('body,html').animate({scrollTop:0},800);
+	});	
+});
+</script>
+<div id="toTop" style="display: block;">^ 回到顶部</div>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/form.js"></script>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/shCore.js"></script>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/shBrushScala.js"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/styles/shCore.css?ver=2.1.364";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/styles/shThemeDefault.css?ver=2.1.364";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.clipboardSwf = 'http://shiyanjun.cn/wp-content/plugins/syntaxhighlighter/syntaxhighlighter2/scripts/clipboard.swf';
+	SyntaxHighlighter.config.strings.expandSource = 'show source';
+	SyntaxHighlighter.config.strings.viewSource = '查看源代码';
+	SyntaxHighlighter.config.strings.copyToClipboard = '复制到剪贴板';
+	SyntaxHighlighter.config.strings.copyToClipboardConfirmation = '代码现在在你的剪贴板';
+	SyntaxHighlighter.config.strings.print = '打印';
+	SyntaxHighlighter.config.strings.help = '帮助';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '无法找到Brush：';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush不能设置 html-script选项';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = 1;
+	SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/small-menu.js"></script>
+<script type="text/javascript" src="./RDD：基于内存的集群计算容错抽象   简单之美_files/comment-reply.min.js"></script>
+
+<div id="ascrail2000" class="nicescroll-rails" style="width: 7px; z-index: auto; position: fixed; top: 0px; height: 100%; right: 0px; cursor: default; opacity: 0;"><div style="position: relative; float: right; width: 5px; border: 1px solid rgb(255, 255, 255); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; height: 51px; top: 906px; background-color: rgb(66, 66, 66); background-clip: padding-box;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 7px; z-index: auto; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; opacity: 0; display: none;"><div style="position: relative; top: 0px; height: 5px; border: 1px solid rgb(255, 255, 255); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; width: 1920px; background-color: rgb(66, 66, 66); background-clip: padding-box;"></div></div></body></html>

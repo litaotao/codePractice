@@ -1,0 +1,1414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://yangrong.blog.51cto.com/6945369/1339593 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<script async="" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/analytics.js"></script><script async="" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/analytics.js"></script><script id="allmobilize" charset="utf-8" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/allmobilize.min.js"></script><style type="text/css"></style><style type="text/css"></style><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://yangrong.blog.51cto.com/#">
+
+
+<title>python socket编程详细介绍 - 楊雲 - 51CTO技术博客</title>
+<meta name="description" content="Python提供了两个基本的socket模块。&#160;&#160;第一个是Socket，它提供了标准的BSDSocketsAPI。&#160;&#160;第二个是SocketServer，它提供了服务器中心类，可以简化网络服务器的开发。下面讲的是Socket模块功能..">
+<meta name="keywords" content=" socket编程,python socket">
+<meta http-equiv="Cache-Control" content="private">
+<!--<base href="http://yangrong.blog.51cto.com/">--><base href=".">
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/def.js"></script>
+<script language="javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/message.js" type="text/javascript"></script>
+<script language="javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/user_comment.js" type="text/javascript"></script>
+<script language="javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/base2.js" type="text/javascript"></script>
+<script language="javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/dialog_utf8.js" type="text/javascript"></script>
+<link href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/30.css" rel="stylesheet" type="text/css">
+<link rel="alternate" href="http://yangrong.blog.51cto.com/rss.php?uid=6945369" type="application/rss+xml" title="RSS 2.0">
+<link rel="edituri" type="application/rsd+xml" title="rsd" href="http://yangrong.blog.51cto.com/xmlrpc.php?rsd=1">
+<link href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/header_master_top.css" rel="stylesheet" type="text/css">
+<link href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.mainNav li a{display:inline-block}
+</style>
+<script>
+var myid = "";
+function add_flink(){
+	if(myid==""){
+
+        var refurlk = "http://yangrong.blog.51cto.com/6945369/1339593";
+
+				//commentSubmit("",refurlk);
+				location.href="http://home.51cto.com/index.php?reback="+encodeURIComponent(encodeURIComponent(refurlk));
+				return false;
+	}else{
+      		var url='/mod/edit_flink.php?type=addflink&uid=6945369&flink=http://yangrong.blog.51cto.com';
+		var ajax = InitAjax1();
+		ajax.open("GET", url, true);
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				if(ajax.responseText==""){
+					alert("添加成功。");
+				}
+				if(ajax.responseText=="1"){
+				alert("链接指向自己。");
+				}
+				if(ajax.responseText=="2"){
+				alert("友情链接已存在。")
+				}
+			}
+		}
+		ajax.send(null);
+	}
+
+
+
+}
+function sendmessage(){
+
+	var refurlk = "http://yangrong.blog.51cto.com/6945369/1339593";
+
+	if(myid){
+		return true;
+	}else{
+		commentSubmit("",refurlk);
+		return false;
+	}
+}
+function copylink(ourl){
+	if(!ourl){
+		var clipBoardContent = "http://yangrong.blog.51cto.com";
+	}else{
+		var clipBoardContent = ourl;
+	}
+	window.clipboardData.setData("Text",clipBoardContent);
+	alert("复制成功!");
+	return false;
+}
+function correctPNG() {
+if (document.getElementById('blog_touxian'))
+{
+var img = document.getElementById('blog_touxian');
+      var imgName = img.src.toUpperCase()
+      var imgID = (img.id) ? "id='" + img.id + "' " : ""
+      var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+      var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+      var imgStyle = "display:inline-block;" + img.style.cssText
+      if (img.align == "left") imgStyle = "float:left;" + imgStyle
+      if (img.align == "right") imgStyle = "float:right;" + imgStyle
+      if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+      var strNewHTML = "<span " + imgID + imgClass + imgTitle
+         + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+         + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+         + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" ;
+      img.outerHTML = strNewHTML;
+}
+}
+//window.attachEvent("onload", correctPNG);
+window.onload=correctPNG;
+
+function copy(){
+var text=document.getElementById("txtUser").value;
+if(copy2Clipboard(text)!=false){ 
+alert("复制成功了！ "); 
+} 
+}
+function copy2Clipboard(txt){ 
+if(window.clipboardData){ 
+window.clipboardData.clearData(); 
+window.clipboardData.setData("Text",txt); 
+}else if(navigator.userAgent.indexOf("Opera")!=-1){ 
+window.location=txt; 
+}else if(window.netscape){ 
+try{ 
+netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+} 
+catch(e){ 
+alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。"); 
+return false; 
+} 
+var clip=Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard); 
+if(!clip)return; 
+var trans=Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable); 
+if(!trans)return; 
+trans.addDataFlavor('text/unicode'); 
+var str=new Object(); 
+var len=new Object(); 
+var str=Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString); 
+var copytext=txt;str.data=copytext; 
+trans.setTransferData("text/unicode",str,copytext.length*2); 
+var clipid=Components.interfaces.nsIClipboard; 
+if(!clip)return false; 
+clip.setData(trans,null,clipid.kGlobalClipboard); 
+return true;
+} 
+}
+
+function mod_close(){
+  document.getElementById('mod_tg').style.display="none";
+}
+
+function match_invite(uid) {
+    var url='/mod/match_invite.php';
+	var ajax = InitAjax();
+    var re = 'uid=' + uid;
+	ajax.open("POST", url, true);
+    ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send(re);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            if(ajax.responseText == 1){
+                alert("邀请信息已经发送成功。");
+            } else if(ajax.responseText=="-1"){
+                alert("邀请失败，请稍候再试。");
+            } else if(ajax.responseText=="2"){
+                alert("该用户已经报名了。")
+            }
+        }
+    }
+}
+
+</script>
+<style type="text/css">
+/*
+.artContent img {max-width:450px !important;}
+.showContent img{max-width:650px!important;}
+*/
+
+.artContent img{max-width: 450px; width:expression(this.width > 450 ? "450px" : this.width)}
+/*
+.showContent img{max-width: 450px; width:expression(this.width > 650 ? "650px" : this.width)}
+*/
+
+
+</style>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/share.js"></script><script charset="utf-8" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/sm.min.js" async=""></script><style id="table">
+.showContent table.noBorderTable td,.showContent table.noBorderTable th,.showContent table.noBorderTable caption{border:1px dashed #ddd !important}.showContent table{margin-bottom:10px;border-collapse:collapse;display:table;}.showContent td,.showContent th{ background:white; padding: 5px 10px;border: 1px solid #DDD;}.showContent caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}.showContent th{border-top:2px solid #BBB;background:#F7F7F7;}.showContent td p{margin:0;padding:0;}
+.showContent table.noBorderTable td,.showContent table.noBorderTable th,.showContent table.noBorderTable caption{border:1px dashed #ddd !important}.showContent table{margin-bottom:10px;border-collapse:collapse;display:table;}.showContent td,.showContent th{ background:white; padding: 5px 10px;border: 1px solid #DDD;}.showContent caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}.showContent th{border-top:2px solid #BBB;background:#F7F7F7;}.showContent td p{margin:0;padding:0;}</style><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style1_32.css"></head>
+
+<body>
+
+<div id="home_top">
+<div class="top_nav" style="width:990px;">
+<div class="left" style="margin-top:10px; width:440px;"><a href="http://blog.51cto.com/" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/head_blog_sibebar_logo.gif" align="absmiddle" style="margin-top:-4px;"></a><a target="_blank" href="http://www.51cto.com/">51CTO首页</a><img height="25" align="absmiddle" width="16" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://blog.51cto.com/" target="_blank">51CTO博客</a><img height="25" align="absmiddle" width="16" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://home.51cto.com/?reback=http%253A%252F%252Fyangrong.blog.51cto.com%252F6945369%252F1339593">我的博客</a><img height="25" align="absmiddle" width="16" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;">
+
+<a target="_blank" href="http://blog.51cto.com/search.php">搜索</a>
+<a href="javascript:void(0);" style="color:#FF0000; text-decoration:underline; display:none" id="showMessagerDim">每日博报</a>
+</div>
+
+<div class="right" style="width:550px;">
+<div class="more"><img height="16" align="absmiddle" width="27" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/top_shequ.gif">社区：<a target="_blank" href="http://edu.51cto.com/">学院</a><a target="_blank" href="http://bbs.51cto.com/">论坛</a><a target="_blank" href="http://blog.51cto.com/">博客</a><a target="_blank" href="http://down.51cto.com/">下载</a><a href="javascript:viod(0);" onmouseout="popupClose()" onmouseover="show(3,this)">更多<img align="absmiddle" style="padding-left: 4px;" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/nav_ico1.gif"></a>            </div>            <span id="login_status"><div class="login" style="padding-top:8px; text-align:right;"><a href="http://edu.51cto.com/top" style="background:none"><img style="margin-top:-3px" id="dia" align="absmiddle" width="20" title="今天你领学分了吗？" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/dia.gif"></a><a href="http://home.51cto.com/?reback=http%253A%252F%252Fyangrong.blog.51cto.com%252F6945369%252F1339593" target="_self">登录</a><a href="http://ucenter.51cto.com/reg_01.php?reback=http%253A%252F%252Fyangrong.blog.51cto.com%252F6945369%252F1339593" target="_self">注册</a></div></span>                </div>    </div></div>
+
+
+
+<div class="subMenu3" id="s3" onmouseover="popupNoClose()" onmouseout="popupClose()">
+<ul>
+<li><a href="http://home.51cto.com/" target="_blank">家园</a></li>
+<li><a href="http://edu.51cto.com/" target="_blank">学院</a></li>
+<li><a href="http://blog.51cto.com/" target="_blank">博客</a></li>
+<li><a href="http://bbs.51cto.com/" target="_blank">论坛</a></li>
+<li><a href="http://down.51cto.com/" target="_blank">下载</a></li>
+
+<li><a href="http://selftest.51cto.com/" target="_blank">自测</a></li>
+<li><a href="http://doctor.51cto.com/" target="_blank">门诊</a></li>
+<li><a href="http://blog.51cto.com/newsletter/" target="_blank">周刊</a></li>
+<li><a href="http://book.51cto.com/" target="_blank">读书</a></li>
+<li><a href="http://g.51cto.com/" target="_blank">技术圈</a></li>
+</ul>
+</div>
+<!--简导航end-->
+
+
+
+<div class="headerBox">
+<div class="header">
+<div class="header_l">
+<div class="logo_blogname">
+
+
+<div class="blogLogo">
+<a href="http://blog.51cto.com/blogcommend" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/blogLogo01.png" width="161px;" height="70px;"></a>
+</div>
+
+
+<div class="blogName">
+<a href="http://yangrong.blog.51cto.com/"><h1>楊雲</h1></a>
+</div>
+</div><!--logo_blogname end-->
+<div class="blogLink">
+
+<a href="http://yangrong.blog.51cto.com/">http://yangrong.blog.51cto.com</a> <input id="txtUser" type="hidden" size="32" value="http://yangrong.blog.51cto.com">   <a href="javascript:void(0);" onclick="copy();">【复制】</a> <a href="http://yangrong.blog.51cto.com/rss.php?uid=6945369" target="_blank"></a><a href="http://yangrong.blog.51cto.com/rss.php?uid=6945369" target="_blank">【订阅】</a>
+
+</div>
+
+
+
+</div><!--header_l end-->
+<div class="header_r">
+<div class="blogInfo"><span><a href="http://yangrong.blog.51cto.com/6945369/o" title="察看杨云1028所有原创文章">原创</a>:60</span><span><a href="http://yangrong.blog.51cto.com/6945369/t" title="察看杨云1028所有翻译文章">翻译</a>:0</span><span><a href="http://yangrong.blog.51cto.com/6945369/c" title="察看杨云1028所有转载文章">转载</a>:0</span></div>
+<div class="blogNav"><a href="http://yangrong.blog.51cto.com/">博 客</a>|<a href="http://home.51cto.com/apps/photo/index.php?s=/Index/photos/uid/6945369">图库</a>|<a href="http://yangrong.blog.51cto.com/addblog.php">写博文</a>|<a href="http://51ctoblog.blog.51cto.com/all/26414/4" target="_blank">帮 助</a></div>
+</div>
+</div>
+<!--header end-->
+</div><!--headerBox end-->
+<div class="mainNav">
+<span class="mainNavT"></span>
+<ul>
+<li><a href="http://yangrong.blog.51cto.com/">首页</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-1">network</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-2">linux运维</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-4">python</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-5">存储</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-6">虚拟化</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-3">生活杂谈</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-7">nagios|zabbix</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-8">自动化运维</a></li>|<li><a href="http://yangrong.blog.51cto.com/6945369/d-9">负载均衡</a></li>
+</ul>
+<span class="mainNavB"></span>
+</div>
+<!--mainNav end-->
+
+<script type="text/javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<!--[if IE 6]>
+  <script type="text/javascript" src="http://images.watchstor.com/newhomes/png.js"></script>
+  <script>
+    DD_belatedPNG.fix('img,input,ul,li, .get-box, div, .add, .sub, .ui-slider-handle, .footer-chopper');
+  </script>
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/fck_editorarea.css">
+<script type="text/javascript" charset="gbk" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/shCores.js"></script>
+<link rel="stylesheet" type="text/css" href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/shCoreDefault.css">
+<script type="text/javascript" charset="gbk" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/uparse.js"></script>
+<script type="text/javascript">
+	uParse('.showContent');
+	$(function(){
+		//SyntaxHighlighter.config.clipboardSwf = 'http://bbs.51cto.com/plugins/syntaxhighlighter/scripts/clipboard.swf'; 
+		//为了在编辑器之外能展示高亮代码
+		SyntaxHighlighter.highlight();
+	}); 
+</script>
+<script type="text/javascript">
+/**
+ * 回复评论需要用的js
+ * 2012-5-14
+ * by:chengtao
+ */
+ jQuery(function(){
+	blogpost.init();//初始化博客回复功能
+ })
+ /**
+  * 处理博文评论功能优化
+  */
+ blogpost={
+	abstruct_list:null,
+	init:function(){
+		blogpost.bind();//绑定一些时间
+		this.abstruct_list=new Array();//初始化保存评论信息的数组
+	},
+	/**
+	 * 博客回复需要绑定的一些事件
+	 */
+	bind:function(){
+		/**
+		 * 点击回复的事件
+		 */
+		jQuery('.repost').live('click',function(){
+			blogpost.repost(jQuery(this).attr('user_name'),jQuery(this).attr('parentid'));
+			return false;
+		});
+		/**
+		 * 点击楼层进行翻页且找到锚点
+		 */
+		jQuery('.anchor_page').live('click',function(){
+			var parentid = $(this).attr('parentid');
+			var tid=$(this).attr('tid');
+			$.get('/comments.php?tid='+tid+'&parentid='+parentid,function(data){
+				$('#artcomment').html(data);
+				window.location.hash=''+parentid;
+			})
+			return false;
+		}),
+		jQuery('.anchor_page').live('mouseover',function(){
+			var parentid = $(this).attr('parentid');
+			if(!blogpost.abstruct_list[parentid]){
+				var this_t = $(this);
+				$.get('/comments.php?cid='+parentid,function(data,textStatus){
+					blogpost.abstruct_list[parentid]=data;
+					this_t.attr('title',this_t.text()+':'+ blogpost.abstruct_list[parentid]);
+				});
+			}else{
+				$(this).attr('title',$(this).text()+':'+blogpost.abstruct_list[parentid]);
+			}
+		})
+	},
+	/**
+	 * @param user_name 用户名
+	 * @param parentid  父评论id
+	 */
+	repost:function(user_name,parentid){
+		window.location.hash='comment';
+		jQuery('#parentid').val(parentid);
+		jQuery('#commentcontent').val('回复 '+user_name+":\n").focus();
+		if(!$.browser.mozilla){
+			var elem = jQuery('#commentcontent')[0];		
+			var caretPos = elem.value.length;
+			if (elem.createTextRange) {
+				var range = elem.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			}else{
+				elem.setSelectionRange(caretPos, caretPos);	
+			}
+		}
+	},
+	/**
+	 * 发送完毕之后清理表单数据 不是ajax可能用不到
+	 */
+	clean:function(){
+		
+	}
+ }
+</script>
+<script type="text/javascript">
+jQuery(function(){
+	var anchor = document.location.hash;
+	var comment_id=anchor.split('#')[1];
+	if(!isNaN(parseInt(comment_id))){//是整形
+		jQuery.get('/comments.php?tid=1339593&parentid='+comment_id,function(data){
+			jQuery('#artcomment').html(data);
+			window.location.hash=''+comment_id;
+		})
+	}
+});
+</script>
+
+
+
+<script type="text/javascript">
+jQuery(function() {
+	jQuery('#favourdiv').mouseover(function(){
+		if(jQuery(this).attr('className') == 'support01')
+		{
+			jQuery(this).attr('className', "support02");
+			jQuery(this).html('+1人');
+			jQuery(this).attr('title', "赞一个，我支持TA");
+		}
+		else if(jQuery(this).attr('className') == 'support03')
+		{
+			jQuery(this).attr('title', "你已经赞了这篇博文！");
+		}
+		
+	});
+	jQuery('#favourdiv').mouseout(function(){
+		if(jQuery(this).attr('className') == 'support02')
+		{
+			jQuery(this).attr('className', "support01");
+			jQuery(this).html("6人");
+		}
+	});
+	jQuery('.blog_match_yq').click(function(){
+		var wind_uid = '';
+		if(!wind_uid){
+			alert("请先登录！");
+			return false;
+		}
+		jQuery.ajax({
+			   type: "POST",
+			   url:"/contest2012/index.php?mod=sendmsg",
+			   dataType: "html",
+			   data: "vuid=" + 6945369,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("查无此人！");
+						return false;
+					}else if(data == 1){
+						alert("请先登录！");
+						return false;
+					}else if(data == 2){
+						alert("不能邀请自己！");
+						return false;
+					}else if(data == 22){  
+						alert("邀请信息已发出！");
+						return false;
+					}
+			   }
+		  });
+	});
+	jQuery('#favourdiv').click(function(){
+			jQuery.ajax({
+			   type: "POST",
+			   url:"/mod/favour.php",
+			   dataType: "html",
+			   data: "tid=" + 1339593,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("您还未登录或者已过期，请重新登录");
+						location.href = "http://home.51cto.com/index.php?reback=http%253A%252F%252Fyangrong.blog.51cto.com%252F6945369%252F1339593";
+						return false;
+					}
+					else if(data == '-1')
+					{
+						alert("参数传递错误！");
+						return false;
+					}
+					else if(data == '-2')
+					{
+						alert("该博文已被删除或者不存在！");
+						return false;
+					}
+					else if(data == '-3')
+					{
+						alert("您已经赞过了！");
+						return false;
+					}
+					else if(data == '-4')
+					{
+						alert("赞操作失败！");
+						return false;
+					}
+					else
+					{  
+						//alert("操作成功，你已经赞了这篇博文！");
+						jQuery('#favourdiv').attr('className', "support03");
+
+						var num = 6 + 1 + "人";
+						jQuery('#favourdiv').html(num);
+						jQuery('#favourer').html(data);
+						return false;
+					}
+			   }
+		  });
+	});
+	//Jaydar http://blog.51cto.com/js/header.php?uid=blogdb[uid]&tid=tid
+	jQuery.post('/js/header.php',{uid:6945369,tid:1339593},function(data){
+		jQuery('#readNum').html(data[0]);
+		jQuery('#cmtNum').html(data[1]);
+	},'json');
+	
+
+})
+
+jQuery(function(){
+	jQuery('#darid').bind('click',function(){
+		if(confirm("你确定删除此篇文章？")){
+			jQuery.ajax({
+				'type':'post',
+				'url':'user_index.php?action=delarticle',
+				'data':{'job':'del', 'selid':'1339593', 'mhash':''},
+				'dataType':'html',
+				'success':function(res){
+					if('ok' == res){
+						location.href="http://.blog.51cto.com";
+					}
+				
+				}
+			});
+		}
+	});
+});
+</script>
+
+
+
+
+<style type="text/css">
+.m_sharelinks{ 
+	line-height:30px; 
+	text-align:left; 
+	padding-left:20px; 
+	//background:url(http://img1.51cto.com/images/share/ico_lb.gif) no-repeat left center;
+	float:left; 
+	width:600px; 
+	height:30px;
+}
+.m_sharelinks a{ margin-left:10px;}
+.m_sharebtn{ height:50px; width:726px; margin:0 auto;}
+.m_sharebtn01{width:520px; float:left;}
+.weibo_51cto{ background:url(http://img1.51cto.com/images/share/ico_mweibo.gif) no-repeat center center; display:block; width:33px; height:33px; float:left; margin:3px 3px 0 0;cursor:pointer;}
+.shareMored {
+    line-height: 30px;
+	float:right; 
+	text-align:right; 
+	width:100px; 
+	height:30px;
+}
+
+.showContent {
+	margin:20px 15px 8px;
+}
+.userImage img {
+    text-align: center;
+	border:0;
+	padding:0;
+}
+.photo_links{ line-height:30px; padding-top:5px; font-size:13px;width:170px; margin:0 auto;}
+.photo_links_blue{ text-align:center;}
+.photo_links_blue a:link,.photo_links_blue a:visited,.photo_links_blue a:hover,.photo_links_blue a:active{ color:#015F91; text-decoration: underline;}
+.photo_links_red{ text-align:left;}
+.photo_links_red a:link,.photo_links_red a:visited,.photo_links_red a:hover,.photo_links_red a:active{ color:#fc4343; text-decoration:underline;}
+.photo_links_red02{ text-align:center;}
+
+.vlist{ margin:10px 10px; height:65px;}
+.vlist img{ float:left; margin-right:10px;}
+.vlist dl{ text-align:left;}
+.vlist dl dt{ height:40px;line-height: 20px; overflow:hidden; padding-top:5px;}
+.vlist dl dt,.vlist dl dt a{ color:#262626;}
+.vlist dl dd,.vlist dl dd a{ color:#777;}
+
+.video-icon{
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left:31px;
+    position: absolute;
+    top:22px;
+    width: 25px;
+    z-index: 10;
+}
+
+.ipadFload{ position:fixed; width:136px; height:194px; background:url("http://bbs.51cto.com/images/IPad-bg.png") left top no-repeat #fff; font-family:"微软雅黑"; padding-left:18px;}
+.ipadClose{ text-align:right; font-size:14px; line-height:20px;}
+.ipadImg{ padding-top:38px;}
+.ipadImg img{ width:105px; height:105px;}
+.iPadair2{ font-size:12px;}
+.iPadair2 a{ color:#659b01; text-decoration:none; background:url("http://bbs.51cto.com/images/51CTO-IPAD-BOTTOM.png") right center no-repeat; display:block; line-height:30px;}
+
+</style>
+<script language="JavaScript" type="text/javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/group.js"></script>
+<div id="add_sys_type_div" style="width:600px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+<div id="add_sys_type_dvs" style="width:550px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+	
+<div id="ipadFload" class="ipadFload" style="right:20px; bottom:220px;">
+        <div class="ipadClose" onclick="document.getElementById(&#39;ipadFload&#39;).style.display=&#39;none&#39;;" style="cursor:pointer">×</div>
+        <div class="ipadImg"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/51cto-ipad-img.png" width="105" height="105"></div>
+        
+        <div class="iPadair2"><a href="http://bbs.51cto.com/thread-1135957-1.html" target="_blank">参与活动赢iPad air 2</a></div>
+    </div>
+	
+
+
+
+<div class="blogMain">
+<div class="blogLeft">
+
+
+<div class="box moduleUser">
+<div class="title">
+<h2><strong>杨云1028</strong> 的BLOG  </h2>
+</div>
+<div class="modCon">
+
+<div class="userImage" style="margin: 10px auto 5px;text-align: center;width: 130px;border: 1px solid #D4D4D4;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td valign="middle" align="center" height="130"><script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/userface.php"></script><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar.php" id="userface"></td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="photo_links">
+</div>
+
+
+
+
+
+
+
+
+
+<div class="crumbs">
+<a href="http://home.51cto.com/index.php?s=/space/6945369#message" class="writeMessage" target="_blank">写留言</a><a href="http://edu.51cto.com/" class="inCircle" target="_blank">去学院学习</a><a href="http://home.51cto.com/index.php?s=/Notify/write/uid/6945369" class="message" target="_blank">发消息</a> <a href="http://yangrong.blog.51cto.com/" onclick="add_flink(6945369);return false" class="joinLinks">加友情链接</a><a href="http://home.51cto.com/index.php?s=/space/6945369" class="joinFriends" target="_blank">进家园 加好友</a>
+</div>
+
+<div style="width:239px;height:64px;display:none;">
+
+
+<div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">2012年度IT博客大赛<br><a target="_blank" href="http://blog.51cto.com/contest2012/#top10000" style="color:#F00; text-decoration:underline;">十大杰出IT博客诞生</a></p></div>
+<div style="float:right;"><a target="_blank" href="http://blog.51cto.com/contest2012/"><img width="57" height="27" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/blog_match_endlook.jpg" style="margin:23px 20px 0 0;"></a></div>
+<!-- <div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">星光评委正在评选<br><a target="_blank" href="http://blog.51cto.com/contest2012/index.php?mod=userlist_sec" style="color:#F00; text-decoration:underline;">2012年度IT博客大赛50强</a></p></div>
+<div style="float:right;"><img class="blog_match_yq" width="57" height="27" src="http://img1.51cto.com/images/blog_match_invite.jpg" style="margin:23px 20px 0 0;"></div> -->
+
+
+
+<div class="clear"></div>
+</div>
+
+
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+<div class="title">
+<h2>博客统计信息</h2>
+</div>
+<div class="modCon">
+<p>
+<span class="infoListHead"><a href="http://blog.51cto.com/blogcommend" target="_blank" class="operlink"><b>51CTO推荐博客</b></a> <br></span>
+用户名：杨云1028<br>
+文章数：60<br>
+评论数：324<br>
+访问量：119520<br>
+<a href="http://home.51cto.com/index.php?s=/Account/credit" target="_blank">无忧币</a>：2642<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客积分</a>：2706<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客等级</a>：7<br>
+注册日期：2013-04-09<br>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/blogno1countdown.php"></script> 
+</p>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+	<div class="title">
+		<h2 class="fl">热门专题</h2>
+		<a target="_blank" class="fr" href="http://blog.51cto.com/zt">更多&gt;&gt;</a>
+	</div>
+	<div class="modCon" style="height: 88px;">
+
+		
+		
+	</div>
+	<span class="modBot"></span>
+</div>
+
+
+<div class="hotArt box">
+<div class="title">
+<h2>热门文章</h2>
+</div>
+<div class="modCon">
+<ul>
+<li><a href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/python socket编程详细介绍 - 楊雲 - 51CTO技术博客.html">python socket编程详细介绍</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1288072">linux目录结构详细介绍</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1576442">多种思路解决Keepalived..</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1440019">【职场酸甜苦辣咸】辞职总结</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1571082">运维工程师在干什么学些..</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1321074">回首北京这两年</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1321594">linux内核参数注释与优化</a></li>
+<li><a href="http://yangrong.blog.51cto.com/6945369/1551327">运维人员的解放----Docke..</a></li>
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+<div class="search box">
+<div class="title"><h2>搜索BLOG文章</h2></div>
+<div class="modCon">
+<form method="post" action="http://yangrong.blog.51cto.com/search.php?" tabindex="99">
+<input type="hidden" name="step" value="2">
+<input type="hidden" name="authorid" value="6945369">
+<input type="hidden" name="sch_area" value="S">
+<input type="text" value="" name="keyword" class="searchInput">
+<input type="submit" value="搜 索" class="searchBtn">
+</form>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="box recentGuests">
+<div class="title">
+<h2>最近访客</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://liuf927.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(1).php"></a>
+<p><a href="http://liuf927.blog.51cto.com/">liuf927</a></p>
+
+</li><li><a href="http://8121466.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(2).php"></a>
+<p><a href="http://8121466.blog.51cto.com/">犹豫..</a></p>
+
+</li><li><a href="http://guibin.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(3).php"></a>
+<p><a href="http://guibin.blog.51cto.com/">unefe..</a></p>
+
+</li><li><a href="http://3027681.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(4).php"></a>
+<p><a href="http://3027681.blog.51cto.com/">12596..</a></p>
+
+</li><li><a href="http://4796619.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(5).php"></a>
+<p><a href="http://4796619.blog.51cto.com/">zy198..</a></p>
+
+</li><li><a href="http://xiaoluoge.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(6).php"></a>
+<p><a href="http://xiaoluoge.blog.51cto.com/">小罗ge11</a></p>
+
+</li><li><a href="http://8375994.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(7).php"></a>
+<p><a href="http://8375994.blog.51cto.com/">duanx..</a></p>
+
+</li><li><a href="http://348134.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(8).php"></a>
+<p><a href="http://348134.blog.51cto.com/">wjx_716</a></p>
+
+</li><li><a href="http://xiaomaimai.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(9).php"></a>
+<p><a href="http://xiaomaimai.blog.51cto.com/">xiaom..</a></p>
+
+</li><li><a href="http://9699197.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(10).php"></a>
+<p><a href="http://9699197.blog.51cto.com/">minib..</a></p>
+
+</li><li><a href="http://9397252.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(11).php"></a>
+<p><a href="http://9397252.blog.51cto.com/">sandy..</a></p>
+
+</li><li><a href="http://johnnyr.blog.51cto.com/"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/avatar(12).php"></a>
+<p><a href="http://johnnyr.blog.51cto.com/">千岁千岁</a></p>
+
+</li></ul>
+<span class="clear"></span>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="newComments box">
+<div class="title">
+<h2>最新评论 
+
+</h2>
+
+
+
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://xiaoluoge.blog.51cto.com/" class="operlink" target="_blank"><b>小罗ge11</b></a>：<a href="http://yangrong.blog.51cto.com/6945369/1597966" target="_blank">我很认同楼主的这番话，因为这一年..</a></li>
+
+<li><a href="http://yangrong.blog.51cto.com/" class="operlink" target="_blank"><b>杨云1028</b></a>：<a href="http://yangrong.blog.51cto.com/6945369/1597966" target="_blank">回复 莎吧啦: 恭喜，恭喜，拿着一..</a></li>
+
+<li><a href="http://songlisha.blog.51cto.com/" class="operlink" target="_blank"><b>莎吧啦</b></a>：<a href="http://yangrong.blog.51cto.com/6945369/1597966" target="_blank">回复 杨云1028: 是啊。我已经脱离..</a></li>
+
+<li><a href="http://6437769.blog.51cto.com/" class="operlink" target="_blank"><b>周福金</b></a>：<a href="http://yangrong.blog.51cto.com/6945369/1597966" target="_blank">是啊，都是家里催的紧吧。我还是先..</a></li>
+
+<li><a href="http://yangrong.blog.51cto.com/" class="operlink" target="_blank"><b>杨云1028</b></a>：<a href="http://yangrong.blog.51cto.com/6945369/1597966" target="_blank">回复 hongyu201: 谢谢！！</a></li>
+
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="hotBlogArt box">
+<div class="title">
+  <h2 class="fl">51CTO推荐博文</h2>
+  <a href="http://blog.51cto.com/artcommend" class="fr">更多&gt;&gt;</a></div>
+<div class="modCon">
+<ul>
+<li><a href="http://ldj027.blog.51cto.com/401017/1600278" title="Cloned virtualized domain controller（克隆虚拟化部署的域控制器）" target="_blank">Cloned virtualized domain contr..</a></li>
+<li><a href="http://pangge.blog.51cto.com/6013757/1599048" title="Redis的编译安装" target="_blank">Redis的编译安装</a></li>
+<li><a href="http://cshang.blog.51cto.com/6143980/1600069" title="CentOS6.5上部署redmine程序" target="_blank">CentOS6.5上部署redmine程序</a></li>
+<li><a href="http://tanxw.blog.51cto.com/4309543/1599747" title="CentOS6.3下vsftpd通过pam认证实现虚拟用户文件共享" target="_blank">CentOS6.3下vsftpd通过pam认证实..</a></li>
+<li><a href="http://qicheng0211.blog.51cto.com/3958621/1599776" title="zabbix应用之Low-level discovery监控磁盘IO" target="_blank">zabbix应用之Low-level discovery..</a></li>
+<li><a href="http://ilanni.blog.51cto.com/526870/1600100" title="烂泥：使用snmpwalk采集设备的OID信息" target="_blank">烂泥：使用snmpwalk采集设备的OID..</a></li>
+<li><a href="http://xjsunjie.blog.51cto.com/999372/1599238" title="redhat linux6.5下修改网卡名称" target="_blank">redhat linux6.5下修改网卡名称</a></li>
+<li><a href="http://shayi1983.blog.51cto.com/4681835/1598656" title="使用 wireshark 高效,准确地鉴别出入站的恶意流量" target="_blank">使用 wireshark 高效,准确地鉴别..</a></li>
+<li><a href="http://pangge.blog.51cto.com/6013757/1599377" title="Redis利用持久化进行数据迁移" target="_blank">Redis利用持久化进行数据迁移</a></li>
+<li><a href="http://john88wang.blog.51cto.com/2165294/1598048" title="使用Zabbix监控DNS服务器" target="_blank">使用Zabbix监控DNS服务器</a></li>
+<li><a href="http://songlisha.blog.51cto.com/6269280/1598922" title="CentOS之Phabricator的安装配置必须成功版！" target="_blank">CentOS之Phabricator的安装配置必..</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="friendLink box">
+<div class="title">
+  <h2>友情链接</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://caoyameng.blog.51cto.com/" title="文采好" target="_blank">夕雾</a></li>
+
+<li><a href="http://www.shencan.net/" title="" target="_blank">沈灿</a></li>
+
+<li><a href="http://xiaorui.cc/" title="" target="_blank">峰云</a></li>
+
+<li><a href="http://wgkgood.blog.51cto.com/" title="专注于自动化运维" target="_blank">吴光科，专注自动..</a></li>
+
+<li><a href="http://huangbp.blog.51cto.com/" title="linux基础运维" target="_blank">linux基础运维</a></li>
+
+<li><a href="http://nolinux.blog.51cto.com/" title="Not Only Linux" target="_blank">Not Only Linux</a></li>
+
+<li><a href="http://3060674.blog.51cto.com/" title="alex3714" target="_blank">alex3714</a> <img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/tubiao1.gif" alt="本日内更新"></li>
+
+<li><a href="http://edu.51cto.com/" title="IT精品课程" target="_blank">IT精品课程</a></li>
+
+<li><a href="http://sery.blog.51cto.com/" title="sery" target="_blank">sery</a></li>
+
+<li><a href="http://cwtea.blog.51cto.com/" title="煮酒品茶" target="_blank">煮酒品茶</a></li>
+
+<li><a href="http://zhaisj.blog.51cto.com/" title="Jack zhai" target="_blank">Jack zhai</a></li>
+
+<li><a href="http://andrewyu.blog.51cto.com/" title="抚琴煮酒" target="_blank">抚琴煮酒</a></li>
+
+<li><a href="http://davidzhang33.blog.51cto.com/" title="大卫张33" target="_blank">大卫张33</a></li>
+
+<li><a href="http://sunjibin.blog.51cto.com/" title="孙继滨的博客" target="_blank">孙继滨的博客</a></li>
+
+<li><a href="http://chenguang.blog.51cto.com/" title="李晨光原创技术博客" target="_blank">李晨光原创技术博客</a> <img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/tubiao1.gif" alt="本日内更新"></li>
+
+<li><a href="http://ixdba.blog.51cto.com/" title="技术成就梦想" target="_blank">南非蚂蚁</a></li>
+
+<li><a href="http://sunsky.blog.51cto.com/" title="sunsky" target="_blank">sunsky</a> <img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/tubiao2.gif" alt="三日内更新"></li>
+
+<li><a href="http://taokey.blog.51cto.com/" title="very good" target="_blank">亚可</a></li>
+
+<li><a href="http://cfwlxf.blog.51cto.com/" title="人生有梦而精彩" target="_blank">罗峰</a></li>
+
+<li><a href="http://eilfei2000.blog.51cto.com/" title="柳记" target="_blank">柳记</a></li>
+
+<li><a href="http://linux008.blog.51cto.com/" title="linux运维" target="_blank">linux运维</a></li>
+
+<li><a href="http://jiechao2012.blog.51cto.com/" title="IMySQL" target="_blank">IMySQL</a></li>
+
+<li><a href="http://laoxu.blog.51cto.com/" title="老徐的私房菜" target="_blank">老徐的私房菜</a></li>
+
+<li><a href="http://oldboy.blog.51cto.com/" title="运维领域的专家" target="_blank">老男孩老师</a></li>
+
+<li><a href="http://tangfangxiao.blog.51cto.com/" title="网络文章写的很详细" target="_blank">唐方校</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+
+</div>
+<!--left end-->
+
+<script type="text/javascript">
+    var favor_url = "http://yangrong.blog.51cto.com/6945369/1339593";
+    var favor_title = "python socket编程详细介绍";
+    var favor_fuid = "6945369";
+</script>
+<script type="text/javascript" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/favorbox.js"></script>
+<div class="blogRight">
+
+
+	<div class="box edu-col-a" style="display:none;">
+		<div class="title">的视频课程
+
+        </div>
+		<div class="vbox" style="">
+
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+
+
+	<div class="box edu-col-b" style="width:100%;">
+		<div class="title"><a target="_blank" href="http://edu.51cto.com/?edu_recommend_adid=91">相关视频课程</a>
+
+            <a href="http://edu.51cto.com/?edu_recommend_adid=91" target="_blank" style="float:right;">更多</a>
+
+		</div>
+		<div class="vbox" style="">
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-2918.html?edu_recommend_adid=91" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/wKiom1StuWPyo-4SAAEQG7QsSrM805.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-2918.html?edu_recommend_adid=91" target="_blank" title="精解Android设计模式：第4课">精解Android设计模式：第4课(共3课时)</a></dt>
+					<dd>人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-2918.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-2915.html?edu_recommend_adid=91" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/wKiom1St3UTzn1JPAAGR0bCD1zM827.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-2915.html?edu_recommend_adid=91" target="_blank" title="MySQL字符集及中文乱码深度剖析解决-老男孩运维DBA实战第四部">MySQL字符集及中文乱码深度剖析解决-老男孩运维DBA实战第四部(共13课时)</a></dt>
+					<dd>人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-2915.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-2917.html?edu_recommend_adid=91" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/wKioL1StuOyQVnmTAAFYe2NVyOo420.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-2917.html?edu_recommend_adid=91" target="_blank" title="精解Android设计模式：第3课">精解Android设计模式：第3课(共4课时)</a></dt>
+					<dd>人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-2917.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+			
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+	<p style="clear:both;"></p>
+	<style type="text/css">
+.vlist {
+    float: left;
+    padding: 2px 0 0 10px;
+    width: 218px;
+	
+}
+.vlist img {
+    float: left;
+    margin-right: 10px;
+}
+.vlist dl {
+    float: left;
+    text-align: left;
+    width: 122px;
+}
+.vlist dl dt {
+    height: 44px;
+    overflow: hidden;
+    padding-top: 5px;
+}
+.vlist dl dt, .vlist dl dt a {
+    color: #262626;
+}
+.vlist dl dd, .vlist dl dd a {
+    color: #777777;
+}
+.vbox_tit {
+    border-bottom: 1px solid #B3D0E6;
+    color: #666666;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: left;
+}
+.video-icon {
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left: 41px;
+    position: absolute;
+    top: 22px;
+    width: 25px;
+    z-index: 10;
+}
+.vbox2 .vlist1{margin:0;}
+.edu-col-a{ float:left;margin-right:6px;}
+.edu-col-b{ float:left;}
+	</style><!--modCon end-->
+
+
+
+	<div class="artShow box" style="margin-top:5px;">
+   	  <div class="share" id="share">
+
+    <div class="shareItem">
+		<div class="m_sharelinks"><a target="_blank" href="" style="color:red;"></a><a target="_blank" href="" style="color:blue;"></a><a target="_blank" href="" style="color:blue;"></a></div>
+		<p class="shareMored"><a href="http://yangrong.blog.51cto.com/all/6945369">博主的更多文章&gt;&gt;</a></p>
+	</div>
+      </div>
+       <div class="modCon">
+   	  <div class="showBox" style="margin:0 0 10px;">
+      <div class="line_hd_r"></div>
+      <div class="art_tj">
+
+      </div>
+
+ 
+    		<div class="showHead">
+    		  <div class="showTitleBOx" style="text-align:center">
+              <div class="showTitle">
+
+             <img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/artType01.jpg">
+
+
+    		    python socket编程详细介绍
+                </div>
+  		    </div>
+   		    <span class="artTime">2013-12-12 00:04:14</span></div><!--showHead end-->
+    <div class="showTags">标签：<a href="http://blog.51cto.com/tag-%20socket%E7%BC%96%E7%A8%8B.html" target="_blank" class="operlink"> socket编程</a> <a href="http://blog.51cto.com/tag-python%20socket.html" target="_blank" class="operlink">python socket</a>
+
+	</div>
+
+			<div class="CopyrightStatement lh22">
+            原创作品，允许转载，转载时请务必以超链接形式标明文章 <a href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/python socket编程详细介绍 - 楊雲 - 51CTO技术博客.html" target="_blank" style="text-decoration:underline">原始出处</a> 、作者信息和本声明。否则将追究法律责任。<a href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/python socket编程详细介绍 - 楊雲 - 51CTO技术博客.html">http://yangrong.blog.51cto.com/6945369/1339593</a>
+            </div>
+
+
+            <!--正文 begin-->
+    		<div class="showContent">
+    		  <p>Python 提供了两个基本的 socket 模块。</p><p> &nbsp; &nbsp;第一个是 Socket，它提供了标准的 BSD Sockets API。</p><p> &nbsp; &nbsp;第二个是 SocketServer， 它提供了服务器中心类，可以简化网络服务器的开发。</p><p>下面讲的是Socket模块功能</p><h3>1、Socket <span style="font-family:&#39;宋体&#39;;">类型</span></h3><p><span style="font-family:&#39;宋体&#39;;">套接字格式：</span></p><p>socket(family,type[,protocal]) <span style="font-family:&#39;宋体&#39;;">使用给定的地址族、套接字类型、协议编号（默认为</span>0<span style="font-family:&#39;宋体&#39;;">）来创建套接字。</span></p><p><span style="font-family:&#39;宋体&#39;;"></span></p><table cellspacing="0" cellpadding="0"><tbody><tr><td width="226" valign="top" style="border-color:#000000;border-width:1px;background-color:#f2f2f2;padding:0px 7px;"><p><strong>socket<span style="font-family:&#39;宋体&#39;;">类型</span></strong></p></td><td width="482" valign="top" style="border-top-color:#000000;border-right-color:#000000;border-bottom-color:#000000;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-style:none;background-color:#f2f2f2;padding:0px 7px;"><p><strong><span style="font-family:&#39;宋体&#39;;">描述</span></strong></p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>socket.AF_UNIX</p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">只能够用于单一的</span>Unix<span style="font-family:&#39;宋体&#39;;">系统进程间通信</span></p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">socket.AF_INET</span></p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">服务器之间网络通信</span></p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>socket.AF_INET6</p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p>IPv6</p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">socket.SOCK_STREAM</span></p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">流式</span>socket , for TCP</p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">socket.SOCK_DGRAM</span></p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">数据报式</span>socket , for UDP</p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>socket.SOCK_RAW</p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">原始套接字，普通的套接字无法处理</span>ICMP<span style="font-family:&#39;宋体&#39;;">、</span>IGMP<span style="font-family:&#39;宋体&#39;;">等网络报文，而</span>SOCK_RAW<span style="font-family:&#39;宋体&#39;;">可以；其次，</span>SOCK_RAW<span style="font-family:&#39;宋体&#39;;">也可以处理特殊的</span>IPv4<span style="font-family:&#39;宋体&#39;;">报文；此外，利用原始套接字，可以通过</span>IP_HDRINCL<span style="font-family:&#39;宋体&#39;;">套接字选项由用户构造</span>IP<span style="font-family:&#39;宋体&#39;;">头。</span></p></td></tr><tr><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>socket.SOCK_SEQPACKET</p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">可靠的连续数据包服务</span></p></td></tr><tr style="height:28px;"><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;" height="28"><p><span style="font-family:&#39;宋体&#39;;color:#ff0000;">创建</span><span style="color:#ff0000;">TCP Socket</span><span style="font-family:&#39;宋体&#39;;color:#ff0000;">：</span></p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;" height="28"><p>s=<a></a><a>socket.socket(socket.AF_INET,socket.SOCK_STREAM)</a></p></td></tr><tr style="height:28px;"><td width="226" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;" height="28"><p><span style="font-family:&#39;宋体&#39;;color:#ff0000;">创建</span><span style="color:#ff0000;">UDP Socket</span><span style="font-family:&#39;宋体&#39;;color:#ff0000;">：</span></p></td><td width="482" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;" height="28"><p>s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</p></td></tr></tbody></table><p><span style="font-family:&#39;宋体&#39;;"></span><br></p><h3>2、Socket <span style="font-family:&#39;宋体&#39;;">函数 </span></h3><p><span style="font-family:&#39;宋体&#39;;">注意点:</span></p><p>1<span style="font-family:&#39;宋体&#39;;">）</span>TCP<span style="font-family:&#39;宋体&#39;;">发送数据时，已建立好</span>TCP<span style="font-family:&#39;宋体&#39;;">连接，所以不需要指定地址。</span>UDP<span style="font-family:&#39;宋体&#39;;">是面向无连接的，每次发送要指定是发给谁。</span></p><p>2<span style="font-family:&#39;宋体&#39;;">）服务端与客户端不能直接发送列表，元组，字典。需要字符串化</span>repr(data)<span style="font-family:&#39;宋体&#39;;">。</span></p><p><span style="font-family:&#39;宋体&#39;;"></span></p><table cellspacing="0" cellpadding="0"><tbody><tr><td width="367" colspan="2" valign="top" style="border-color:#000000;border-width:1px;background-color:#f2f2f2;padding:0px 7px;"><p><strong>socket<span style="font-family:&#39;宋体&#39;;">函数</span></strong></p></td><td width="405" valign="top" style="border-top-color:#000000;border-right-color:#000000;border-bottom-color:#000000;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-style:none;background-color:#f2f2f2;padding:0px 7px;"><p><strong><span style="font-family:&#39;宋体&#39;;">描述</span></strong></p></td></tr><tr><td width="734" colspan="3" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;background-color:#f2f2f2;padding:0px 7px;"><p><strong><span style="font-family:&#39;宋体&#39;;">服务端</span>socket</strong><strong><span style="font-family:&#39;宋体&#39;;">函数</span></strong></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.bind(address)</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">将套接字绑定到地址</span>, <span style="font-family:&#39;宋体&#39;;">在</span>AF_INET<span style="font-family:&#39;宋体&#39;;">下</span>,<span style="font-family:&#39;宋体&#39;;">以元组（</span>host,port<span style="font-family:&#39;宋体&#39;;">）的形式表示地址</span>.</p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.listen(backlog)</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">开始监听</span>TCP<span style="font-family:&#39;宋体&#39;;">传入连接。</span>backlog<span style="font-family:&#39;宋体&#39;;">指定在拒绝连接之前，操作系统可以挂起的最大连接数量。该值至少为</span>1<span style="font-family:&#39;宋体&#39;;">，大部分应用程序设为</span>5<span style="font-family:&#39;宋体&#39;;">就可以了。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.accept()</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">接受</span>TCP<span style="font-family:&#39;宋体&#39;;">连接并返回（</span>conn,address<span style="font-family:&#39;宋体&#39;;">）</span>,<span style="font-family:&#39;宋体&#39;;">其中</span>conn<span style="font-family:&#39;宋体&#39;;">是新的套接字对象，可以用来接收和发送数据。</span>address<span style="font-family:&#39;宋体&#39;;">是连接客户端的地址。</span></p></td></tr><tr><td width="734" colspan="3" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;background-color:#f2f2f2;padding:0px 7px;"><p><strong><span style="font-family:&#39;宋体&#39;;">客户端</span>socket</strong><strong><span style="font-family:&#39;宋体&#39;;">函数</span></strong></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.connect(address)</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">连接到</span>address<span style="font-family:&#39;宋体&#39;;">处的套接字。一般</span>address<span style="font-family:&#39;宋体&#39;;">的格式为元组（</span>hostname,port<span style="font-family:&#39;宋体&#39;;">），如果连接出错，返回</span>socket.error<span style="font-family:&#39;宋体&#39;;">错误。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.connect_ex(adddress)</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">功能与</span>connect(address)<span style="font-family:&#39;宋体&#39;;">相同，但是成功返回</span>0<span style="font-family:&#39;宋体&#39;;">，失败返回</span>errno<span style="font-family:&#39;宋体&#39;;">的值。</span></p></td></tr><tr><td width="734" colspan="3" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;background-color:#f2f2f2;padding:0px 7px;"><p><strong><span style="font-family:&#39;宋体&#39;;">公共</span>socket</strong><strong><span style="font-family:&#39;宋体&#39;;">函数</span></strong></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.recv(bufsize[,flag])</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">接受</span>TCP<span style="font-family:&#39;宋体&#39;;">套接字的数据。数据以字符串形式返回，</span>bufsize<span style="font-family:&#39;宋体&#39;;">指定要接收的最大数据量。</span>flag<span style="font-family:&#39;宋体&#39;;">提供有关消息的其他信息，通常可以忽略。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.send(string[,flag])</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">发送</span>TCP<span style="font-family:&#39;宋体&#39;;">数据。将</span>string<span style="font-family:&#39;宋体&#39;;">中的数据发送到连接的套接字。返回值是要发送的字节数量，该数量可能小于</span>string<span style="font-family:&#39;宋体&#39;;">的字节大小。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.sendall(string[,flag])</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">完整发送</span>TCP<span style="font-family:&#39;宋体&#39;;">数据。将</span>string<span style="font-family:&#39;宋体&#39;;">中的数据发送到连接的套接字，但在返回之前会尝试发送所有数据。成功返回</span>None<span style="font-family:&#39;宋体&#39;;">，失败则抛出异常。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.recvfrom(bufsize[.flag]) </p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">接受</span>UDP<span style="font-family:&#39;宋体&#39;;">套接字的数据。与</span>recv()<span style="font-family:&#39;宋体&#39;;">类似，但返回值是（</span>data,address<span style="font-family:&#39;宋体&#39;;">）。其中</span>data<span style="font-family:&#39;宋体&#39;;">是包含接收数据的字符串，</span>address<span style="font-family:&#39;宋体&#39;;">是发送数据的套接字地址。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.sendto(string[,flag],address)</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">发送</span>UDP<span style="font-family:&#39;宋体&#39;;">数据。将数据发送到套接字，</span>address<span style="font-family:&#39;宋体&#39;;">是形式为（</span>ipaddr<span style="font-family:&#39;宋体&#39;;">，</span>port<span style="font-family:&#39;宋体&#39;;">）的元组，指定远程地址。返回值是发送的字节数。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p><span style="color:#ff0000;">s.close()</span></p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">关闭套接字。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.getpeername()</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">返回连接套接字的远程地址。返回值通常是元组（</span>ipaddr,port<span style="font-family:&#39;宋体&#39;;">）。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.getsockname()</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">返回套接字自己的地址。通常是一个元组</span>(ipaddr,port)</p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.setsockopt(level,optname,value)</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">设置给定套接字选项的值。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.getsockopt(level,optname[.buflen])</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">返回套接字选项的值。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.settimeout(timeout)</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">设置套接字操作的超时期，</span>timeout<span style="font-family:&#39;宋体&#39;;">是一个浮点数，单位是秒。值为</span>None<span style="font-family:&#39;宋体&#39;;">表示没有超时期。一般，超时期应该在刚创建套接字时设置，因为它们可能用于连接的操作（如</span>connect()<span style="font-family:&#39;宋体&#39;;">）</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.gettimeout()</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">返回当前超时期的值，单位是秒，如果没有设置超时期，则返回</span>None<span style="font-family:&#39;宋体&#39;;">。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.fileno()</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">返回套接字的文件描述符。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.setblocking(flag)</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">如果</span>flag<span style="font-family:&#39;宋体&#39;;">为</span>0<span style="font-family:&#39;宋体&#39;;">，则将套接字设为非阻塞模式，否则将套接字设为阻塞模式（默认值）。非阻塞模式下，如果调用</span>recv()<span style="font-family:&#39;宋体&#39;;">没有发现任何数据，或</span>send()<span style="font-family:&#39;宋体&#39;;">调用无法立即发送数据，那么将引起</span>socket.error<span style="font-family:&#39;宋体&#39;;">异常。</span></p></td></tr><tr><td width="223" valign="top" style="border-right-color:#000000;border-bottom-color:#000000;border-left-color:#000000;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:none;padding:0px 7px;"><p>s.makefile()</p></td><td width="510" colspan="2" valign="top" style="border-top-style:none;border-left-style:none;border-bottom-color:#000000;border-bottom-width:1px;border-right-color:#000000;border-right-width:1px;padding:0px 7px;"><p><span style="font-family:&#39;宋体&#39;;">创建一个与该套接字相关连的文件</span></p></td></tr></tbody></table><h3>3、socket<span style="font-family:&#39;宋体&#39;;">编程思路</span></h3><p>TCP<span style="font-family:&#39;宋体&#39;;">服务端：</span></p><p style="text-indent:14px;">1 <span style="font-family:&#39;宋体&#39;;">创建套接字，绑定套接字到本地</span>IP<span style="font-family:&#39;宋体&#39;;">与端口</span></p><p style="text-indent:14px;"> &nbsp; &nbsp;# <span style="font-size:13px;">socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span> , s.bind()</p><p style="text-indent:14px;">2 <span style="font-family:&#39;宋体&#39;;">开始监听连接</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #s.listen()</p><p style="text-indent:14px;">3 <span style="font-family:&#39;宋体&#39;;">进入循环，不断接受客户端的连接请求</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#s.accept()</p><p style="text-indent:14px;">4 <span style="font-family:&#39;宋体&#39;;">然后接收传来的数据，并发送给对方数据</span> &nbsp; &nbsp; &nbsp; &nbsp; #s.recv() , s.sendall()</p><p style="text-indent:14px;">5 <span style="font-family:&#39;宋体&#39;;">传输完毕后，关闭套接字</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #s.close()</p><p><br></p><p>TCP<span style="font-family:&#39;宋体&#39;;">客户端</span>:</p><p style="text-indent:14px;">1 <span style="font-family:&#39;宋体&#39;;">创建套接字，连接远端地址</span></p><p style="text-indent:14px;"> &nbsp; &nbsp; &nbsp; &nbsp;# <span style="font-size:13px;">socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span> , s.connect()</p><p style="text-indent:14px;">2 <span style="font-family:&#39;宋体&#39;;">连接后发送数据和接收数据</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;# s.sendall(), s.recv() </p><p style="text-indent:14px;">3 <span style="font-family:&#39;宋体&#39;;">传输完毕后，关闭套接字</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#s.close()</p><h3>4、Socket<span style="font-family:&#39;宋体&#39;;">编程之服务端代码：</span></h3><div><div id="highlighter_13985" class="syntaxhighlighter  python"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python plain">root@yangrong:</code><code class="python keyword">/</code><code class="python plain">python</code><code class="python comments"># catday5-socket-server.py</code></div><div class="line number2 index1 alt1"><code class="python comments">#!/usr/bin/python</code></div><div class="line number3 index2 alt2"><code class="python keyword">import</code> <code class="python plain">socket&nbsp;&nbsp; </code><code class="python comments">#socket模块</code></div><div class="line number4 index3 alt1"><code class="python keyword">import</code> <code class="python plain">commands&nbsp;&nbsp; </code><code class="python comments">#执行系统命令模块</code></div><div class="line number5 index4 alt2"><code class="python plain">HOST</code><code class="python keyword">=</code><code class="python string">'10.0.0.245'</code></div><div class="line number6 index5 alt1"><code class="python plain">PORT</code><code class="python keyword">=</code><code class="python value">50007</code></div><div class="line number7 index6 alt2"><code class="python plain">s</code><code class="python keyword">=</code> <code class="python plain">socket.socket(socket.AF_INET,socket.SOCK_STREAM)&nbsp;&nbsp; </code><code class="python comments">#定义socket类型，网络通信，TCP</code></div><div class="line number8 index7 alt1"><code class="python plain">s.bind((HOST,PORT))&nbsp;&nbsp; </code><code class="python comments">#套接字绑定的IP与端口</code></div><div class="line number9 index8 alt2"><code class="python plain">s.listen(</code><code class="python value">1</code><code class="python plain">)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#开始TCP监听</code></div><div class="line number10 index9 alt1"><code class="python keyword">while</code> <code class="python value">1</code><code class="python plain">:</code></div><div class="line number11 index10 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">conn,addr</code><code class="python keyword">=</code><code class="python plain">s.accept()&nbsp;&nbsp; </code><code class="python comments">#接受TCP连接，并返回新的套接字与IP地址</code></div><div class="line number12 index11 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">print</code><code class="python string">'Connected by'</code><code class="python plain">,addr&nbsp;&nbsp;&nbsp; </code><code class="python comments">#输出客户端的IP地址</code></div><div class="line number13 index12 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">while</code> <code class="python value">1</code><code class="python plain">:</code></div><div class="line number14 index13 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">data</code><code class="python keyword">=</code><code class="python plain">conn.recv(</code><code class="python value">1024</code><code class="python plain">)&nbsp;&nbsp;&nbsp; </code><code class="python comments">#把接收的数据实例化</code></div><div class="line number15 index14 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">cmd_status,cmd_result</code><code class="python keyword">=</code><code class="python plain">commands.getstatusoutput(data)&nbsp;&nbsp; </code><code class="python comments">#commands.getstatusoutput执行系统命令（即shell命令），返回两个结果，第一个是状态，成功则为0，第二个是执行成功或失败的输出信息</code></div><div class="line number16 index15 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">if</code> <code class="python functions">len</code><code class="python plain">(cmd_result.strip()) </code><code class="python keyword">=</code><code class="python keyword">=</code><code class="python value">0</code><code class="python plain">:&nbsp;&nbsp; </code><code class="python comments">#如果输出结果长度为0，则告诉客户端完成。此用法针对于创建文件或目录，创建成功不会有输出信息</code></div><div class="line number17 index16 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">conn.sendall(</code><code class="python string">'Done.'</code><code class="python plain">)</code></div><div class="line number18 index17 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">else</code><code class="python plain">:</code></div><div class="line number19 index18 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">conn.sendall(cmd_result)&nbsp;&nbsp; </code><code class="python comments">#否则就把结果发给对端（即客户端）</code></div><div class="line number20 index19 alt1"><code class="python plain">conn.close()&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#关闭连接</code></div></div></td></tr></tbody></table></div></div><h3>5、Socket<span style="font-family:&#39;宋体&#39;;">编程之客户端代码：</span></h3><div><div id="highlighter_652710" class="syntaxhighlighter  python"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python plain">root@yangrong:</code><code class="python keyword">/</code><code class="python plain">python</code><code class="python comments"># catday5-socket-client.py</code></div><div class="line number2 index1 alt1"><code class="python comments">#!/usr/bin/python</code></div><div class="line number3 index2 alt2"><code class="python keyword">import</code> <code class="python plain">socket</code></div><div class="line number4 index3 alt1"><code class="python plain">HOST</code><code class="python keyword">=</code><code class="python string">'10.0.0.245'</code></div><div class="line number5 index4 alt2"><code class="python plain">PORT</code><code class="python keyword">=</code><code class="python value">50007</code></div><div class="line number6 index5 alt1"><code class="python plain">s</code><code class="python keyword">=</code><code class="python plain">socket.socket(socket.AF_INET,socket.SOCK_STREAM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#定义socket类型，网络通信，TCP</code></div><div class="line number7 index6 alt2"><code class="python plain">s.connect((HOST,PORT))&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#要连接的IP与端口</code></div><div class="line number8 index7 alt1"><code class="python keyword">while</code> <code class="python value">1</code><code class="python plain">:</code></div><div class="line number9 index8 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">cmd</code><code class="python keyword">=</code><code class="python functions">raw_input</code><code class="python plain">(</code><code class="python string">"Please input cmd:"</code><code class="python plain">)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#与人交互，输入命令</code></div><div class="line number10 index9 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">s.sendall(cmd)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#把命令发送给对端</code></div><div class="line number11 index10 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">data</code><code class="python keyword">=</code><code class="python plain">s.recv(</code><code class="python value">1024</code><code class="python plain">)&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#把接收的数据定义为变量</code></div><div class="line number12 index11 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python functions">print</code> <code class="python plain">data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="python comments">#输出变量</code></div><div class="line number13 index12 alt2"><code class="python plain">s.close()&nbsp;&nbsp; </code><code class="python comments">#关闭连接</code></div></div></td></tr></tbody></table></div></div><h3><span style="font-family:&#39;宋体&#39;;">6、执行效果：</span></h3><p><span style="font-family:&#39;宋体&#39;;">服务端执行效果：</span></p><p><img onload="if(this.width&gt;650) this.width=650;" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/000003975.jpg" style="float:none;" title="[5B9%_0%V[$XD(C~`K07AZO.jpg " alt="000003975.jpg" onabort="" onblur="" onchange="" onclick="" ondblclick="" onerror="" onfocus="" onkeydown="" onkeypress="" onkeyup="" onmousedown="" onmousemove="" onmouseout="" onmouseover="" onmouseup="" onreset="" onresize="" onselect="" onsubmit="" onunload="" width="650"><br></p><p><br></p><p><span style="font-family:&#39;宋体&#39;;">客户端执行效果：</span></p><p><a target="_blank" href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/000008836.jpg"><img onload="if(this.width&gt;650) this.width=650;" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/000008836.jpg" title="BU_A_OO1U~D]4P}921LUA)5.jpg" style="float:none;" alt="000008836.jpg" onabort="" onblur="" onchange="" onclick="" ondblclick="" onerror="" onfocus="" onkeydown="" onkeypress="" onkeyup="" onmousedown="" onmousemove="" onmouseout="" onmouseover="" onmouseup="" onreset="" onresize="" onselect="" onsubmit="" onunload="" width="650"></a></p><p><br></p><h3><span style="font-family:&#39;宋体&#39;;">7、程序缺限：</span></h3><p><span style="font-family:&#39;宋体&#39;;">这是一个简单的</span>socket<span style="font-family:&#39;宋体&#39;;">通信，里面存在一些</span>bug</p><p style="margin-left:48px;">1.<span style="font-family:&#39;宋体&#39;;">在客户端输入回车，会挂死。</span></p><p style="margin-left:48px;">2.<span style="font-family:&#39;宋体&#39;;">服务端返回的数据大于</span>1024<span style="font-family:&#39;宋体&#39;;">，客户端显示不全。</span></p><p style="margin-left:48px;">3.<span style="font-family:&#39;宋体&#39;;">单进程，如果多个客户端连接，要排队，前一个断开，后一个客户端才能通信。</span></p><p style="text-indent:0;margin-left:24px;"><br></p><p><span style="font-family:&#39;宋体&#39;;">不想把代码写的太复杂，简单的说下解决方案：</span></p><p style="margin-left:28px;"><span style="font-family:&#39;宋体&#39;;">问题</span>1.<span style="font-family:&#39;宋体&#39;;">在客户端上判断输入为空，要求重新输入。</span></p><p style="margin-left:28px;"><span style="font-family:&#39;宋体&#39;;">问题</span>2.<span style="font-family:&#39;宋体&#39;;">在客户端上循环接收，直到接收完。但有没有完客户端是不知道的，需要服务端发一个结束符。</span></p><p style="margin-left:28px;"><span style="font-family:&#39;宋体&#39;;">问题</span>3.<span style="font-family:&#39;宋体&#39;;">在服务端导入</span>SocketServer<span style="font-family:&#39;宋体&#39;;">模块，使得每建立一个连接，就新创建一个线程。实现多个客户端与服务端通信。多线程通信原理如下图：</span></p><p style="margin-left:28px;"><a target="_blank" href="http://img1.51cto.com/attachment/201312/000012160.jpg"></a><a target="_blank" href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/000109234.jpg"><img onload="if(this.width&gt;650) this.width=650;" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/000109234.jpg" title="KARLU1PJX}8B(AVNND5CX~8.jpg" alt="000109234.jpg" onabort="" onblur="" onchange="" onclick="" ondblclick="" onerror="" onfocus="" onkeydown="" onkeypress="" onkeyup="" onmousedown="" onmousemove="" onmouseout="" onmouseover="" onmouseup="" onreset="" onresize="" onselect="" onsubmit="" onunload=""></a></p><p><br></p><p><br></p><p><br></p><p><span style="font-family:&#39;宋体&#39;;">python socket参考地址：</span></p><p><a href="http://blog.163.com/yi_yixinyiyi/blog/static/136286889201152814341144/">http://blog.163.com/yi_yixinyiyi/blog/static/136286889201152814341144/</a></p><p><a href="http://blog.sina.com.cn/s/blog_4b5039210100ep72.html">http://blog.sina.com.cn/s/blog_4b5039210100ep72.html</a></p><p><a href="http://blog.sina.com.cn/s/blog_523491650100hikg.html">http://blog.sina.com.cn/s/blog_523491650100hikg.html</a></p><h3><br><a></a><br></h3><p>本文出自 “<a href="http://yangrong.blog.51cto.com/">楊雲</a>” 博客，请务必保留此出处<a href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/python socket编程详细介绍 - 楊雲 - 51CTO技术博客.html">http://yangrong.blog.51cto.com/6945369/1339593</a></p>
+    		</div><!--正文 end-->
+<script type="text/javascript">
+	var kevent = 'onabort|onblur|onchange|onclick|ondblclick|onerror|onfocus|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onreset|onresize|onselect|onsubmit|onunload';
+	var aevent = kevent.split('|');
+
+	jQuery('.showContent img').each(function(){
+		var nimg = this;
+		jQuery.each(aevent, function(i, n){
+			if (n!='onload') {
+				jQuery(nimg).attr(n, '');
+			} else {
+				if (jQuery(nimg).attr(n) != 'if(this.width>650) this.width=650;') {
+					jQuery(nimg).attr(n, '');
+				}
+			}
+		});
+	});
+</script>
+<script type="text/javascript" charset="utf-8">
+var encodetitle = encodeURI('一篇很棒的博文分享给大家：《python socket编程详细介绍》');
+
+function show51share(){
+
+	window.open('http://t.51cto.com/index.php?m=share&url=http://yangrong.blog.51cto.com/6945369/1339593&type=l&count=&relateUid=&appkey=3843950324&title=' + encodetitle);
+}
+</script>		
+<div class="m_sharebtn clear">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tbody><tr>
+		<td width="11%" height="43" align="center" valign="middle"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/ssk.png" alt="分享至"></td>
+		<td width="77%" align="left" valign="top">
+<!-- 			
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>
+var bds_config = {'wbUid':1706976420};
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false, 'bdPic':'http://blog.51cto.com/attachment/201305/173413310.jpg',"bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+ -->
+
+<div class="bdsharebuttonbox bdshare-button-style1-32" data-bd-bind="1420732734071"><a href="http://yangrong.blog.51cto.com/#" class="bds_more" data-cmd="more"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="http://yangrong.blog.51cto.com/#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"2065779340"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"http://blog.51cto.com/img/blog_down0731.jpg","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+	<!-- Baidu Button END --></td>
+		<td width="12%" align="right" valign="middle"><a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/favorite_add_small.gif" border="0" alt="一键收藏，随时查看，分享好友！"></a></td>
+	  </tr>
+	</tbody></table>
+
+</div>			
+    		<div class="showBottom">
+            <!--<div class="reviews"><span class="fl" style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer">xiangxiaobaog3、fantefei、wgkgood</a>
+
+            </span><div id="favourdiv" class="support01">6人</div>
+              <span class="fl">了这篇文章</span></div>-->
+              <table width="720" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td align="right"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/icon01.png" width="15" height="16"> <span style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer">xiangxiaobaog3、fantefei、wgkgood</a></span></td>
+    <td width="70" align="left"><div style="line-height:28px;" id="favourdiv" class="support01">6人</div></td>
+    <td width="60" align="left">了这篇文章</td>
+  </tr>
+</tbody></table>
+
+
+
+
+            <div class="showType">类别：<a href="http://yangrong.blog.51cto.com/6945369/d-4" class="operlink">python</a>┆阅读(<span id="readNum">9136</span>)┆评论(<span id="cmtNum">3</span>)
+
+┆
+<a href="http://yangrong.blog.51cto.com/">返回博主首页</a>┆<a href="http://blog.51cto.com/">返回博客首页</a></div>
+            <div class="prevNext">
+
+			上一篇 <a href="http://yangrong.blog.51cto.com/6945369/1330594" class="operlink" title="交换机链路聚合负载均衡算法原理">交换机链路聚合负载均衡算法原理</a>
+
+
+			下一篇 <a href="http://yangrong.blog.51cto.com/6945369/1350343" class="operlink" title="centos6.4挂载iscsi网络存储">centos6.4挂载iscsi网络存储</a>
+
+
+            </div>
+
+            </div>
+
+	  </div><!--showBottom end-->
+      </div><!--modCon-->
+    <span class="modBot"></span>
+    </div><!--artShow end-->
+    <span class="blank"></span>
+	
+	<div class="relatedArt box">
+<a href="http://wot.51cto.com/2015operation/tickets.html" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/wKioL1Ss_PbCFlwdAAC-wpUdC04529.jpg"></a>
+</div>
+	
+
+<div class="artComm box">
+    <div class="title"><a name="replay"></a><h2>文章评论</h2></div>
+    <div class="modCon" id="artcomment">
+		<div>  &nbsp;</div><a name="618454"></a><div class="itcomment" style="table-layout: fixed;word-wrap: break-word" id="itcommentid0"><div><div style="width:100%;border-bottom:1px solid #A0A0A0;height:20px"><label style="float:left">[1楼]&nbsp;&nbsp;&nbsp;&nbsp;<img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/reply.gif">&nbsp;&nbsp;<a target="_blank" href="http://wgkgood.blog.51cto.com/" class="operlink" ref="nofollow"><b>wgkgood</b></a></label><label style="float:right">&nbsp;<a href="http://yangrong.blog.51cto.com/#" class="repost operlink" user_name="wgkgood" parentid="618454">回复</a></label></div></div><div align="right">2014-07-21 10:00:10</div><div class="commentcontent">写的很好，学习了 感谢！</div></div><br><a name="630015"></a><div class="itcomment" style="table-layout: fixed;word-wrap: break-word" id="itcommentid1"><div><div style="width:100%;border-bottom:1px solid #A0A0A0;height:20px"><label style="float:left">[2楼]&nbsp;&nbsp;&nbsp;&nbsp;<img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/reply.gif">&nbsp;&nbsp;<a target="_blank" href="http://sex123.blog.51cto.com/" class="operlink" ref="nofollow"><b>1122nbanba</b></a></label><label style="float:right">&nbsp;<a href="http://yangrong.blog.51cto.com/#" class="repost operlink" user_name="1122nbanba" parentid="630015">回复</a></label></div></div><div align="right">2015-01-01 16:57:40</div><div class="commentcontent">day5? 哥们儿也是老男孩？</div></div><br><a name="630053"></a><div class="itcomment" style="table-layout: fixed;word-wrap: break-word" id="itcommentid2"><div><div style="width:100%;border-bottom:1px solid #A0A0A0;height:20px"><label style="float:left">[3楼]<a href="http://yangrong.blog.51cto.com/">楼主</a>&nbsp;&nbsp;&nbsp;&nbsp;<img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/reply.gif">&nbsp;&nbsp;<a target="_blank" href="http://yangrong.blog.51cto.com/" class="operlink" ref="nofollow"><b>杨云1028</b></a></label><label style="float:right">&nbsp;<a href="http://yangrong.blog.51cto.com/#" class="repost operlink" user_name="杨云1028" parentid="630053">回复</a></label></div></div><div align="right">2015-01-03 08:26:46</div><div class="commentcontent">回复 1122nbanba:<a href="http://yangrong.blog.51cto.com/#" class="anchor_page" title="加载中....." style="cursor:pointer" tid="1339593" parentid="630015">[2楼]</a><br><br>呵呵，是的，看来我们是同门。</div></div><br><div>  &nbsp;</div>
+    </div><!--modCon-->
+        <span class="modBot"></span>
+</div><!--commBox end-->
+<a href="" id="com_top_top"></a>
+<form action="http://yangrong.blog.51cto.com/comment.php?" method="post" name="form1" id="form1" onsubmit="return commentSubmit(this,&quot;&quot;);">
+<span class="blank1"></span>
+<div class="box writeComm" style="min-height:30px;">
+<a name="comment"></a>
+<input type="hidden" name="action" value="comment">
+<input id="commenttid" type="hidden" name="tid" value="1339593">
+<input type="hidden" name="com_count_ajax" id="com_count_ajax" value="1">
+
+ <div class="title">
+	<h2 class="fl">发表评论&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+	<span class="fl"><a class="mred" target="_blank" href="http://www.95px.com/courses/list236Index.shtml">计算机网络管理员（国家职业资格一级高级技师）认证培训</a></span>
+	<style type="text/css">
+		a.mred:link{ color:#ff0000; text-decoration:underline;}
+		a.mred:visited{color:#ff0000;}
+		a.mred:hover{color:#ff0000;}
+		a.mred:active{color:#ff0000;}
+	</style>
+</div>
+ <div class="modCon">
+
+ <div class="commForm">
+<dl>
+<dt>昵&nbsp;&nbsp;称：</dt>
+<dd>
+
+<input type="text" id="commentusername" name="username" value="" class="commInput fl"><span><a href="http://home.51cto.com/index.php?reback=http%253A%252F%252Fyangrong.blog.51cto.com%252F6945369%252F1339593" style="text-decoration:underline">登录</a>&nbsp;&nbsp;<a href="http://ucenter.51cto.com/reg_01.php?reback=http://blog.51cto.com" target="_blank" style="text-decoration: underline;">快速注册</a></span>
+
+
+
+</dd>
+</dl>
+
+
+
+<dl id="commentyanzheng">
+
+
+<dt>验证码：</dt>
+<dd><input class="code" type="text" value="" id="commentauthnum" name="authnum" onclick="displaysecunum();">
+
+  <img width="78" class="fl" height="29" id="secunum" onclick="refimg()" style="display:none;"><p class="fl"><span style="display:none;" id="spanfont">点击图片可刷新验证码</span><span style="display:inline;" id="clickfont">请点击后输入验证码</span><span class="pl5"><a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank" style="text-decoration: underline;">博客过2级，无需填写验证码</a></span></p></dd>
+</dl>
+<dl>
+<dt>内&nbsp;&nbsp;容：</dt>
+<dd>
+<textarea class="writeCommCon f12" id="commentcontent" name="content"></textarea>
+</dd>
+</dl>
+</div>
+<div class="writeCommBot">
+  <input type="hidden" name="parentid" value="" id="parentid">
+  <input class="commBtn fl" name="submit" type="button" id="commentsubmit" value="" onclick="commentSubmitend2()">
+
+ <p class="fl" style="display:none;"><input class="fl" type="checkbox" name="favour" id="favour" checked="" value="1"><span class="fl">同时赞一个</span></p>
+
+</div>
+<span class="blank"></span>
+
+</div><!--modCon-->
+<span class="modBot"></span>
+</div>
+</form>
+<script src="http://logs.51cto.com/rizhi/count/count.js"></script>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2283d46608159c3b39fc9f1178809c21' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=2283d46608159c3b39fc9f1178809c21" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 20px 20px;"></a>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57622524-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</div>
+<iframe id="iframe1" name="iframe1" width="0" height="0"></iframe>
+<!--发表评论 end-->
+</div>
+</div>
+<div id="f_close_box" style="width:150px; height:300px; position:fixed; top:42%;left:0; z-index:100; _position:absolute; _margin-top: 0; _top:expression(documentElement.scrollTop+(documentElement.clientHeight-this.offsetHeight)/2+50);">
+
+	<img src="http://img1.blog.51cto.com/image/ad/down-wx.jpg" border="0" usemap="#Map1" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;">
+    <map name="Map1" id="Map1">
+      <area shape="rect" coords="124,7,143,25" href="javascript:void(0);" onclick="document.getElementById(&#39;f_close_box&#39;).style.display=&#39;none&#39;;">
+    </map>
+    
+</div>
+<script language="javascript">
+	function refimg(){
+		var randval = Math.random();
+		document.getElementById("secunum").src="/seccode.php?rnum="+randval;
+	}
+	function displaysecunum()
+	{
+		var displaystr = document.getElementById("secunum").style.display;
+		if(displaystr == 'none')
+		{
+			refimg();
+			document.getElementById("clickfont").style.display = 'none';
+			document.getElementById("secunum").style.display = 'inline';
+			document.getElementById("spanfont").style.display = 'inline';
+		}
+	}
+
+	function showMsn(){
+		document.getElementById("c02").style.display = "none";
+		document.getElementById("c01").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+	function showBBS(){
+		document.getElementById("c01").style.display = "none";
+		document.getElementById("c02").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+
+	//资源页面，分享按钮
+	function copyShareUrl(title){
+
+		if (window.clipboardData){
+
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				copy = "推荐：" + title + "http://yangrong.blog.51cto.com/6945369/1339593";
+				var alertText = "复制成功，你可以粘贴到MSN或QQ中发给好友。";
+			}
+			else
+			{
+				copy = "[url=" + "http://yangrong.blog.51cto.com/6945369/1339593" + "][u]" + title + "[/u][/url]";
+				var alertText = "复制成功，你可以粘贴到论坛分享给坛友。";
+			}
+			window.clipboardData.clearData();
+			window.clipboardData.setData("Text", copy);
+			alert(alertText);
+		}
+		else if (window.netscape){
+			alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。");
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				document.getElementById("shareTextQM").value = "推荐：" + title + "http://yangrong.blog.51cto.com/6945369/1339593";
+				document.getElementById("shareTextQM").select();
+			}
+			else
+			{
+				document.getElementById("shareTextBBS").value = "[url=" + "http://yangrong.blog.51cto.com/6945369/1339593" + "][u]" + title + "[/u][/url]";
+                document.getElementById("shareTextBBS").select();
+			}
+		}
+		return false;
+	}
+	function select_login(){
+		document.getElementById('fixed').style.display='';
+	}
+	function commentcheck()
+	{
+		if(document.form1.content.value == "")
+		{
+			alert("评论内容为空!");
+			document.form1.content.focus();
+			return false;
+		}
+	}
+	function changename(){
+
+	var memberid=0;
+	memberid="";
+
+	if(document.getElementById('commentniming').checked){
+		document.getElementById('commentusername').disabled=false;
+		document.getElementById('commentusername').value='';
+		document.getElementById("indexhidden").style.display="none";
+		document.getElementById("commentindex").value='';
+		document.getElementById("commentyanzheng").style.display="";
+	}else{
+		document.getElementById('commentusername').disabled=true;
+		document.getElementById('commentusername').value="";
+		document.getElementById("indexhidden").style.display="";
+		document.getElementById("commentindex").value="http://.blog.51cto.com";
+		if(memberid>8)
+		{
+			document.getElementById("commentyanzheng").style.display="none";
+		}
+	}
+	}
+	function openFavoulist()
+	{
+		window.open ('http://blog.51cto.com/mod/favourlist.php?tid=1339593','newwindow','height=300,width=500,top=400,left=400,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no,z-look=yes');
+	}
+
+	var e_zti = document.getElementById('zti');//有专题锚点
+	var maodian = window.location.href;//锚点
+	if (e_zti) {
+		//e_zti.href= (/[#]+/.test(maodian)) ? maodian : maodian + "#zhuanti";
+	}
+</script>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/jquery.cookie.js"></script>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/jquery.messager.js"></script>
+<link href="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/blog_top.css" rel="stylesheet" type="text/css">
+<script src="http://blog.51cto.com/js/blog_top_list.php" type="text/javascript" language="javascript"></script>
+<style>
+.backToTop {
+    display: none;
+	WIDTH: 45px;
+	height:45px;
+	BOTTOM: 20px;
+     position: fixed;
+    _position: absolute;
+    right: 140px;
+    bottom: 10px;
+    _bottom: "auto";
+    cursor: pointer;
+    opacity: .6;
+    filter: Alpha(opacity=60);
+	text-indent:-9999px;
+}
+.tops { background:url(/images/tops.jpg) no-repeat center center; }
+</style>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "返回顶部", backToTopEle = $('<div class="backToTop tops"></div>').appendTo($("body"))
+        .text(backToTopTxt).attr("title", backToTopTxt).click(function() {
+            $("html, body").animate({ scrollTop: 0 }, 520);
+    }), backToTopFun = function() {
+        var st = $(document).scrollTop(), winh = $(window).height();
+        (st > 0)? backToTopEle.show(): backToTopEle.hide();    
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            backToTopEle.css("top", st + winh - 60);    
+        }
+    };
+    $(window).bind("scroll", backToTopFun);
+    $(function() { backToTopFun(); });
+})();
+</script><div class="backToTop tops" title="返回顶部" style="display: block;">返回顶部</div>
+
+
+
+
+
+
+<div class="clear"></div>
+<!-- <script>
+jQuery(function(){
+	var html= "<div id=\"sogou_se_tgbar\" style=\"text-align:center;margin:0px auto 2px auto;clear:both;background:url(http://home.51cto.com/public/images/notice/sogou_se_tgbar_bg_final1.gif) repeat-x;width:950px;color:#000;font-size:13px;height:36px;z-index:21474836471\"><div style=\"float:left;cursor:pointer;width:910px;text-align:center;border-left:solid #efbf00 1px;height:32px; line-height:32px;txt-align:center;\"><span style=\"\">	<a href=\"http://51ctoblog.blog.51cto.com/26414/1093282\">【新年祝福征集】51CTO社区年底嘉年华活动正在征集博主祝福语，祝福以红包的形式随机的赠送给访问51CTO的网友 点此送祝福>></a></span></div><div onclick=\"document.getElementById('sogou_se_tgbar').style.display = 'none';\" style=\"float:right;width:20px;cursor:pointer;height:28px;padding:4px 8px 0px 8px;border-right:solid #efbf00 1px\"><img style=\"border:none;margin:4px 0px 0px 0px;\" src=\"http://home.51cto.com/public/images/notice/sogou_se_tgbar_close_final1.gif\"></div></div>"
+	jQuery('body').prepend(html);
+})
+</script> -->
+
+<div id="footer">
+  <div id="innerFooter">
+	<center>
+		<small>
+			Copyright By 51CTO.COM 版权所有<br><br>
+			<a href="http://blog.51cto.com/" target="_blank"><img src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/copyright.jpg"></a>
+	  </small>
+	</center>
+  </div>
+</div>
+<script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/index.php" charset="utf-8"></script>
+<div style="display:none">
+<script src="http://logs.51cto.com/rizhi/count/count.js"></script>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2283d46608159c3b39fc9f1178809c21' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/h.js" type="text/javascript"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57622524-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</div>
+<iframe frameborder="0" scrolling="no" width="0" height="0" src="about:blank" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;"></iframe>
+</div>
+<div style="display:none;"><script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/stat.php" language="JavaScript"></script><script src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=4274540" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./python socket编程详细介绍 - 楊雲 - 51CTO技术博客_files/pic.gif"></a><div>
+<script src="http://blog.51cto.com/js/poptop.js"></script>
+
+
+
+</div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

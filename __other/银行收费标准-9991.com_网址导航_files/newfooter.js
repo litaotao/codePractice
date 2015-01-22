@@ -1,0 +1,10 @@
+document.write('<div style="height:28px;padding:20px 0 0;text-align: center;"><form action="http://www.baidu.com/s?" method="get" >');
+document.write('<a href="http://www.baidu.com/index.php?tn=site888_pg"><img src="http://www.2345.com/pic/common/logo_baidu.gif" alt="百度搜索" width="101" height="27" align="absmiddle" /></a> ');
+document.write('<input type="text" style="width:300px; height:24px; line-height:27px; border:1px solid #bdd1eb;padding-left:2px; margin:0 3px"  name="w" value="" >');
+document.write('<input type="hidden" value="site888_pg" name="tn"><input type="hidden" value="-1" name="lm">');
+document.write('<input type="submit" style="height:27px; width:75px; font-size:14px; text-align:center" value="搜 索" /></form></div>');
+document.write('<div class="footer"><table width="200" border="0" align="center" cellpadding="0" cellspacing="0"><tr><td align="center"><button title="返回本站首页" class="fhsy" onclick="location.href=\'\/index.htm?footer\'"></button></td><td align="center"><button title="关闭本页" class="gb" onclick="window.opener=null;window.close()"></button></td></tr></table></div>');
+document.writeln("<script src=http:\/\/union2.50bang.org\/js\/inner><\/script><br \/>");
+document.writeln("<script src=\"\/css\/localStorage.js\"><\/script>");
+document.writeln("<script src=\"\/css\/clickCounttj.js\"><\/script>");
+document.writeln("<script id=\"clickCount\"><\/script>");

@@ -1,0 +1,608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0031)http://www.iteye.com/news/29730 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯</title>
+    <meta name="description" content="摘要：随着数据暴增，单服务器开始疲于应对海量用户的访问。自本期《问底》，徐汉彬将带大家开启异地跨集群分布式系统打造，本次关注的重点则是架构从单机到分布式集群的转变。 Web系统的缓存机制的建立和优化 刚刚我们讲完了Web系统的外部网络环境，现在我们开始关注我们Web系统自身的性能问题。我们的Web站点随着访问量的上升，会遇到很多的挑战，解决这些问题不仅仅是扩容机器这么简单，建立和使用合适的缓存机制才 ...">
+    <meta name="keywords" content="web, 页面, 多线程, 互联网, 数据库,web,Web前端">
+    <link rel="shortcut icon" href="http://www.iteye.com/images/favicon.ico" type="image/x-icon">
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="http://www.iteye.com/open_search.xml" title="ITeye">
+    <link href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/news.css" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/ga.js"></script><script src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/application.js" type="text/javascript"></script><style type="text/css"></style>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/hotkey.js" type="text/javascript"></script>
+<script src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/weiboshare.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div class="clearfix"><div id="user_nav">
+      <a href="http://www.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://www.iteye.com/login">登录</a>
+    <a href="http://www.iteye.com/signup" class="nobg">注册</a>
+  </div>
+</div>
+        <div class="clearfix">
+          <div id="branding">
+            <a href="http://www.iteye.com/"><img alt="ITeye3.0" src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/logo.gif" title="ITeye-最棒的软件开发交流社区"></a>
+          </div>
+          <div id="gg"><iframe src="about:blank" scrolling="no" width="0" height="0" frameborder="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 728px 90px;"></iframe></div>
+        </div>
+      </div>
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="h-entry" style="display:none">
+  <a href="http://cao345657340.iteye.com/" class="p-author" target="_blank">cao345657340</a>
+</div>
+
+
+<div class="crumbs" style="margin:10px 0;">
+  <a href="http://www.iteye.com/news">资讯频道</a> <span class="arrow">→</span>
+  <a href="http://www.iteye.com/news/category/web">Web前端</a>
+</div>
+
+<div class="news_main">
+  <div class="news">
+    <div class="clearfix">
+      <div class="news_digg">
+        <div class="digg" id="d29730"><h3 class="digged"><span class="digg">12顶</span><br><span class="bury">4踩</span></h3></div>
+      </div>
+      <div id="news_icon"><a href="http://www.iteye.com/news/category/web" title="查看Web前端分类资讯" target="_blank"><img alt="Web前端" src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/web.gif"></a></div>
+      <div class="title">
+        <h3>
+          <img alt="原创新闻" src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/ori.gif">
+          <a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯.htm" title="徐汉彬：亿级Web系统搭建——单机到分布式集群">徐汉彬：亿级Web系统搭建——单机到分布式集群</a>
+          <span class="actions">
+            
+            
+          </span>
+        </h3>
+        <div class="news_info" style="background-color: transparent;">
+          <span class="date">2014-11-07 10:13</span> by 见习编辑 <a href="http://cao345657340.iteye.com/" target="_blank" title="cao345657340">cao345657340</a>
+          <span class="comment"><a href="http://www.iteye.com/news/29730#comments">评论(9)</a></span>
+          <span class="view">有3567人浏览</span>
+          
+        </div>
+        <div class="news_tag">
+                      <a href="http://www.iteye.com/news/tag/web"><span>web</span></a>
+                      <a href="http://www.iteye.com/news/tag/%E9%A1%B5%E9%9D%A2"><span>页面</span></a>
+                      <a href="http://www.iteye.com/news/tag/%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span>多线程</span></a>
+                      <a href="http://www.iteye.com/news/tag/%E4%BA%92%E8%81%94%E7%BD%91"><span>互联网</span></a>
+                      <a href="http://www.iteye.com/news/tag/%E6%95%B0%E6%8D%AE%E5%BA%93"><span>数据库</span></a>
+                  </div>
+      </div>
+    </div>
+        
+    <h4 class="copyright">声明：ITeye资讯文章的版权属于ITeye网站所有，严禁任何网站转载本文，否则必将追究法律责任！</h4>
+        <script type="text/javascript">
+      var hunters = ["\u003Ca href='/jobs/2509' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u4e0a\u6d77: \u003C/span\u003E Junior Product Manager\u003C/a\u003E","\u003Ca href='/jobs/2508' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u4e0a\u6d77: \u003C/span\u003E Senior Software Engineer\u003C/a\u003E"]
+      var hunter_id = Math.ceil(Math.random() * hunters.length) - 1;
+      if(hunter_id == -1) hunter_id = 0;
+    </script>
+    <div id="hunter_recommended" style="background:#fff;border: 1px solid #ccc; padding: 4px;margin-bottom: 10px;">
+      <span id="hunters_nav" style="margin-right:5px;">
+        <a href="http://www.iteye.com/news/29730#" onclick="hunter_id &lt;= 0 ? hunter_id = hunters.length - 1 : hunter_id--; $(&#39;hunters&#39;).update(hunters[hunter_id]);return false;" style="border:1px solid #ccc;padding: 0 3px;size: 13px;text-decoration: none;">&lt;</a>
+        <a href="http://www.iteye.com/news/29730#" onclick="hunter_id &gt;= hunters.length - 1 ? hunter_id = 0 : hunter_id++; $(&#39;hunters&#39;).update(hunters[hunter_id]);return false;" style="border:1px solid #ccc;padding: 0 3px;size :13px;text-decoration: none;">&gt;</a>
+      </span>
+      猎头职位: <span id="hunters"><a href="http://www.iteye.com/jobs/2509" target="_blank" style="color:#000;"><span style="font-weight:bold;">上海: </span> Junior Product Manager</a></span>
+      <script type="text/javascript">$('hunters').update(hunters[hunter_id]);</script>
+    </div>
+
+    <div id="news_content">
+      <strong>摘要</strong>：随着数据暴增，单服务器开始疲于应对海量用户的访问。自本期《问底》，徐汉彬将带大家开启异地跨集群分布式系统打造，本次关注的重点则是架构从单机到分布式集群的转变。
+<br><span style="font-size: large;"><span style="color: red;">Web系统的缓存机制的建立和优化</span></span>
+<br>
+<br>刚刚我们讲完了Web系统的外部网络环境，现在我们开始关注我们Web系统自身的性能问题。我们的Web站点随着访问量的上升，会遇到很多的挑战，解决这些问题不仅仅是扩容机器这么简单，建立和使用合适的缓存机制才是根本。
+<br>
+<br>最开始，我们的Web系统架构可能是这样的，每个环节，都可能只有1台机器。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/1dc6dee6-8c29-35f8-9e98-2e1b0b06bd55.jpg">
+<br></div>
+<br>我们从最根本的数据存储开始看哈。
+<br>
+<br><strong>一、 MySQL数据库内部缓存使用</strong>
+<br>
+<br>MySQL的缓存机制，就从先从MySQL内部开始，下面的内容将以最常见的InnoDB存储引擎为主。
+<br>
+<br><span style="color: red;">1. 建立恰当的索引</span>
+<br>
+<br>最简单的是建立索引，索引在表数据比较大的时候，起到快速检索数据的作用，但是成本也是有的。首先，占用了一定的磁盘空间，其中组合索引最突出，使用需要谨慎，它产生的索引甚至会比源数据更大。其次，建立索引之后的数据insert/update/delete等操作，因为需要更新原来的索引，耗时会增加。当然，实际上我们的系统从总体来说，是以select查询操作居多，因此，索引的使用仍然对系统性能有大幅提升的作用。
+<br>
+<br><span style="color: red;">2. 数据库连接线程池缓存</span>
+<br>
+<br>如果，每一个数据库操作请求都需要创建和销毁连接的话，对数据库来说，无疑也是一种巨大的开销。为了减少这类型的开销，可以在MySQL中配置thread_cache_size来表示保留多少线程用于复用。线程不够的时候，再创建，空闲过多的时候，则销毁。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f2591111-4b67-3469-8479-f06c385711c5.jpg">
+<br></div>
+<br>其实，还有更为激进一点的做法，使用pconnect（数据库长连接），线程一旦创建在很长时间内都保持着。但是，在访问量比较大，机器比较多的情况下，这种用法很可能会导致“数据库连接数耗尽”，因为建立连接并不回收，最终达到数据库的max_connections（最大连接数）。因此，长连接的用法通常需要在CGI和MySQL之间实现一个“连接池”服务，控制CGI机器“盲目”创建连接数。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/46939e97-4a8e-3471-82df-3ba5944eab68.jpg">
+<br></div>
+<br>建立数据库连接池服务，有很多实现的方式，PHP的话，我推荐使用swoole（PHP的一个网络通讯拓展）来实现。
+<br>
+<br><span style="color: red;">3. Innodb缓存设置（innodb_buffer_pool_size）</span>
+<br>
+<br>innodb_buffer_pool_size这是个用来保存索引和数据的内存缓存区，如果机器是MySQL独占的机器，一般推荐为机器物理内存的80%。在取表数据的场景中，它可以减少磁盘IO。一般来说，这个值设置越大，cache命中率会越高。
+<br>
+<br><span style="color: red;">4. 分库/分表/分区。</span>
+<br>
+<br>MySQL数据库表一般承受数据量在百万级别，再往上增长，各项性能将会出现大幅度下降，因此，当我们预见数据量会超过这个量级的时候，建议进行分库/分表/分区等操作。最好的做法，是服务在搭建之初就设计为分库分表的存储模式，从根本上杜绝中后期的风险。不过，会牺牲一些便利性，例如列表式的查询，同时，也增加了维护的复杂度。不过，到了数据量千万级别或者以上的时候，我们会发现，它们都是值得的。 
+<br>
+<br><strong>二、 MySQL数据库多台服务搭建</strong>
+<br>
+<br>1台MySQL机器，实际上是高风险的单点，因为如果它挂了，我们Web服务就不可用了。而且，随着Web系统访问量继续增加，终于有一天，我们发现1台MySQL服务器无法支撑下去，我们开始需要使用更多的MySQL机器。当引入多台MySQL机器的时候，很多新的问题又将产生。
+<br>
+<br><span style="color: red;">1. 建立MySQL主从，从库作为备份</span>
+<br>
+<br>这种做法纯粹为了解决“单点故障”的问题，在主库出故障的时候，切换到从库。不过，这种做法实际上有点浪费资源，因为从库实际上被闲着了。
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f32f5da1-7642-3715-9992-7ae0023ba693.jpg">
+<br></div>
+<br><span style="color: red;">2. MySQL读写分离，主库写，从库读。</span>
+<br>
+<br>两台数据库做读写分离，主库负责写入类的操作，从库负责读的操作。并且，如果主库发生故障，仍然不影响读的操作，同时也可以将全部读写都临时切换到从库中（需要注意流量，可能会因为流量过大，把从库也拖垮）。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/b6138749-5189-3605-bb79-942d01213803.jpg">
+<br></div>
+<br><span style="color: red;">3. 主主互备。</span>
+<br>
+<br>两台MySQL之间互为彼此的从库，同时又是主库。这种方案，既做到了访问量的压力分流，同时也解决了“单点故障”问题。任何一台故障，都还有另外一套可供使用的服务。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/17f56e92-c0d2-3c83-8771-7d30e48f7ba0.jpg">
+<br></div>
+<br>不过，这种方案，只能用在两台机器的场景。如果业务拓展还是很快的话，可以选择将业务分离，建立多个主主互备。
+<br>
+<br><strong>三、 MySQL数据库机器之间的数据同步</strong>
+<br>
+<br>每当我们解决一个问题，新的问题必然诞生在旧的解决方案上。当我们有多台MySQL，在业务高峰期，很可能出现两个库之间的数据有延迟的场景。并且，网络和机器负载等，也会影响数据同步的延迟。我们曾经遇到过，在日访问量接近1亿的特殊场景下，出现，从库数据需要很多天才能同步追上主库的数据。这种场景下，从库基本失去效用了。
+<br>
+<br>于是，解决同步问题，就是我们下一步需要关注的点。
+<br>
+<br><span style="color: red;">1. MySQL自带多线程同步</span>
+<br>
+<br>MySQL5.6开始支持主库和从库数据同步，走多线程。但是，限制也是比较明显的，只能以库为单位。MySQL数据同步是通过binlog日志，主库写入到binlog日志的操作，是具有顺序的，尤其当SQL操作中含有对于表结构的修改等操作，对于后续的SQL语句操作是有影响的。因此，从库同步数据，必须走单进程。
+<br>
+<br><span style="color: red;">2. 自己实现解析binlog，多线程写入。</span>
+<br>
+<br>以数据库的表为单位，解析binlog多张表同时做数据同步。这样做的话，的确能够加快数据同步的效率，但是，如果表和表之间存在结构关系或者数据依赖的话，则同样存在写入顺序的问题。这种方式，可用于一些比较稳定并且相对独立的数据表。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7f4896a9-a895-317b-a8f9-c523316c7de9.jpg">
+<br></div>
+<br>国内一线互联网公司，大部分都是通过这种方式，来加快数据同步效率。还有更为激进的做法，是直接解析binlog，忽略以表为单位，直接写入。但是这种做法，实现复杂，使用范围就更受到限制，只能用于一些场景特殊的数据库中（没有表结构变更，表和表之间没有数据依赖等特殊表）。 
+<br>
+<br><strong>四、 在Web服务器和数据库之间建立缓存</strong>
+<br>
+<br>实际上，解决大访问量的问题，不能仅仅着眼于数据库层面。根据“二八定律”，80%的请求只关注在20%的热点数据上。因此，我们应该建立Web服务器和数据库之间的缓存机制。这种机制，可以用磁盘作为缓存，也可以用内存缓存的方式。通过它们，将大部分的热点数据查询，阻挡在数据库之前。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/97d6f4f6-7f6b-3529-9aee-c2090102f99a.jpg">
+<br></div>
+<br><span style="color: red;">1. 页面静态化</span>
+<br>
+<br>用户访问网站的某个页面，页面上的大部分内容在很长一段时间内，可能都是没有变化的。例如一篇新闻报道，一旦发布几乎是不会修改内容的。这样的话，通过CGI生成的静态html页面缓存到Web服务器的磁盘本地。除了第一次，是通过动态CGI查询数据库获取之外，之后都直接将本地磁盘文件返回给用户。
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/df21f8fc-0eb6-3a52-a8e9-0c01f4eb4b3c.jpg">
+<br></div>
+<br>在Web系统规模比较小的时候，这种做法看似完美。但是，一旦Web系统规模变大，例如当我有100台的Web服务器的时候。那样这些磁盘文件，将会有100份，这个是资源浪费，也不好维护。这个时候有人会想，可以集中一台服务器存起来，呵呵，不如看看下面一种缓存方式吧，它就是这样做的。
+<br>
+<br><span style="color: red;">2. 单台内存缓存</span>
+<br>
+<br>通过页面静态化的例子中，我们可以知道将“缓存”搭建在Web机器本机是不好维护的，会带来更多问题（实际上，通过PHP的apc拓展，可通过Key/value操作Web服务器的本机内存）。因此，我们选择搭建的内存缓存服务，也必须是一个独立的服务。
+<br>
+<br>内存缓存的选择，主要有redis/memcache。从性能上说，两者差别不大，从功能丰富程度上说，Redis更胜一筹。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/c7360770-be84-39bb-903e-f5c7f128f67f.jpg">
+<br></div>
+<br><span style="color: red;">3. 内存缓存集群</span>
+<br>
+<br>当我们搭建单台内存缓存完毕，我们又会面临单点故障的问题，因此，我们必须将它变成一个集群。简单的做法，是给他增加一个slave作为备份机器。但是，如果请求量真的很多，我们发现cache命中率不高，需要更多的机器内存呢？因此，我们更建议将它配置成一个集群。例如，类似redis cluster。
+<br>
+<br>Redis cluster集群内的Redis互为多组主从，同时每个节点都可以接受请求，在拓展集群的时候比较方便。客户端可以向任意一个节点发送请求，如果是它的“负责”的内容，则直接返回内容。否则，查找实际负责Redis节点，然后将地址告知客户端，客户端重新请求。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/782a5c93-8955-379c-b35e-cf94f1eb2d25.jpg">
+<br></div>
+<br>对于使用缓存服务的客户端来说，这一切是透明的。
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/06fb58ff-b4d2-3ead-b2eb-a373b6f9f64e.jpg">
+<br></div>
+<br>内存缓存服务在切换的时候，是有一定风险的。从A集群切换到B集群的过程中，必须保证B集群提前做好“预热”（B集群的内存中的热点数据，应该尽量与A集群相同，否则，切换的一瞬间大量请求内容，在B集群的内存缓存中查找不到，流量直接冲击后端的数据库服务，很可能导致数据库宕机）。
+<br>
+<br><span style="color: red;">4. 减少数据库“写”</span>
+<br>
+<br>上面的机制，都实现减少数据库的“读”的操作，但是，写的操作也是一个大的压力。写的操作，虽然无法减少，但是可以通过合并请求，来起到减轻压力的效果。这个时候，我们就需要在内存缓存集群和数据库集群之间，建立一个修改同步机制。
+<br>
+<br>先将修改请求生效在cache中，让外界查询显示正常，然后将这些sql修改放入到一个队列中存储起来，队列满或者每隔一段时间，合并为一个请求到数据库中更新数据库。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7cd502dc-d9fb-3bcc-8955-809d52109e0a.jpg">
+<br></div>
+<br>除了上述通过改变系统架构的方式提升写的性能外，MySQL本身也可以通过配置参数innodb_flush_log_at_trx_commit来调整写入磁盘的策略。如果机器成本允许，从硬件层面解决问题，可以选择老一点的RAID（Redundant Arrays of independent Disks，磁盘列阵）或者比较新的SSD（Solid State Drives，固态硬盘）。
+<br>
+<br><span style="color: red;">5. NoSQL存储</span>
+<br>
+<br>不管数据库的读还是写，当流量再进一步上涨，终会达到“人力有穷时”的场景。继续加机器的成本比较高，并且不一定可以真正解决问题的时候。这个时候，部分核心数据，就可以考虑使用NoSQL的数据库。NoSQL存储，大部分都是采用key-value的方式，这里比较推荐使用上面介绍过Redis，Redis本身是一个内存cache，同时也可以当做一个存储来使用，让它直接将数据落地到磁盘。
+<br>
+<br>这样的话，我们就将数据库中某些被频繁读写的数据，分离出来，放在我们新搭建的Redis存储集群中，又进一步减轻原来MySQL数据库的压力，同时因为Redis本身是个内存级别的Cache，读写的性能都会大幅度提升。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/d8922646-5084-38bd-80da-d0e9985befa4.jpg">
+<br></div>
+<br>国内一线互联网公司，架构上采用的解决方案很多是类似于上述方案，不过，使用的cache服务却不一定是Redis，他们会有更丰富的其他选择，甚至根据自身业务特点开发出自己的NoSQL服务。
+<br>
+<br><span style="color: red;">6. 空节点查询问题</span>
+<br>
+<br>当我们搭建完前面所说的全部服务，认为Web系统已经很强的时候。我们还是那句话，新的问题还是会来的。空节点查询，是指那些数据库中根本不存在的数据请求。例如，我请求查询一个不存在人员信息，系统会从各级缓存逐级查找，最后查到到数据库本身，然后才得出查找不到的结论，返回给前端。因为各级cache对它无效，这个请求是非常消耗系统资源的，而如果大量的空节点查询，是可以冲击到系统服务的。
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f212e7a7-f739-3caa-a620-d1b0abfaf311.jpg">
+<br></div>
+<br>在我曾经的工作经历中，曾深受其害。因此，为了维护Web系统的稳定性，设计适当的空节点过滤机制，非常有必要。
+<br>
+<br>我们当时采用的方式，就是设计一张简单的记录映射表。将存在的记录存储起来，放入到一台内存cache中，这样的话，如果还有空节点查询，则在缓存这一层就被阻挡了。 
+<br><div style="text-align: center;">
+<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/712a075f-b0d2-32e7-baea-955bc1e8ef4f.jpg">
+<br></div>
+    </div>
+
+    <div id="news_recommended_n2"><!--AdForward Begin:-->
+<script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=iteye|news|banner3&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script>
+<!--AdForward End--></div>
+
+    
+  <div class="attachments">
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/1dc6dee6-8c29-35f8-9e98-2e1b0b06bd55.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/1dc6dee6-8c29-35f8-9e98-2e1b0b06bd55-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 4.6 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f2591111-4b67-3469-8479-f06c385711c5.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f2591111-4b67-3469-8479-f06c385711c5-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 6.3 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/46939e97-4a8e-3471-82df-3ba5944eab68.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/46939e97-4a8e-3471-82df-3ba5944eab68-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 5.9 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f32f5da1-7642-3715-9992-7ae0023ba693.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f32f5da1-7642-3715-9992-7ae0023ba693-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 10.6 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/b6138749-5189-3605-bb79-942d01213803.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/b6138749-5189-3605-bb79-942d01213803-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 9 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/17f56e92-c0d2-3c83-8771-7d30e48f7ba0.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/17f56e92-c0d2-3c83-8771-7d30e48f7ba0-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 8.2 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7f4896a9-a895-317b-a8f9-c523316c7de9.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7f4896a9-a895-317b-a8f9-c523316c7de9-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 6 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/97d6f4f6-7f6b-3529-9aee-c2090102f99a.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/97d6f4f6-7f6b-3529-9aee-c2090102f99a-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 2.7 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/df21f8fc-0eb6-3a52-a8e9-0c01f4eb4b3c.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/df21f8fc-0eb6-3a52-a8e9-0c01f4eb4b3c-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 59.4 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/c7360770-be84-39bb-903e-f5c7f128f67f.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/c7360770-be84-39bb-903e-f5c7f128f67f-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 11 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/782a5c93-8955-379c-b35e-cf94f1eb2d25.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/782a5c93-8955-379c-b35e-cf94f1eb2d25-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 10.6 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/06fb58ff-b4d2-3ead-b2eb-a373b6f9f64e.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/06fb58ff-b4d2-3ead-b2eb-a373b6f9f64e-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 14.1 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7cd502dc-d9fb-3bcc-8955-809d52109e0a.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/7cd502dc-d9fb-3bcc-8955-809d52109e0a-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 28.5 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/d8922646-5084-38bd-80da-d0e9985befa4.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/d8922646-5084-38bd-80da-d0e9985befa4-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 54.7 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f212e7a7-f739-3caa-a620-d1b0abfaf311.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/f212e7a7-f739-3caa-a620-d1b0abfaf311-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 6 KB</li>
+        </ul>
+      
+    
+      
+        <ul style="display:none;">
+          <li><a href="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/712a075f-b0d2-32e7-baea-955bc1e8ef4f.jpg" target="_blank"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/712a075f-b0d2-32e7-baea-955bc1e8ef4f-thumb.jpg" class="magplus" title="点击查看原始大小图片"></a></li>
+          
+          <li>大小: 7.4 KB</li>
+        </ul>
+      
+    
+    
+      <ul>
+        <li><a href="http://www.iteye.com/news/29730#" onclick="$$(&#39;div.attachments ul&#39;).invoke(&#39;show&#39;);$(this).up(1).hide();return false;">查看图片附件</a></li>
+      </ul>
+    
+  </div>
+
+
+
+    <div>
+              来自: <a href="http://www.csdn.net/">CSDN</a>
+          </div>
+  </div>
+
+        <div id="digg_bottom" class="clearfix">
+      <div class="share_weibo" id="">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/tec.jpg"></a>
+      </div>
+<div class="digged"><strong>12</strong> <br>顶</div><div class="digged"><strong>4</strong> <br>踩</div></div>
+
+  <div class="comments">
+    <span style="font-weight:bold; font-size:16px;margin-right:14px;">评论</span> 共 9 条  请<a href="http://www.iteye.com/login">登录</a>后发表评论 
+    <a id="comments" name="comments"></a>
+    <div id="nc137244">
+  <h5>9 楼 <a href="http://gavinhwa.iteye.com/" target="_blank" title="GavinHwa">GavinHwa</a> 2014-11-19 14:55  </h5>
+  <div>纯粹的月经贴....没含金量<br><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif"> <br>比如数据库的拆分这都没写！？？<br>消息队列的引入！？<br>云计算的介入！？<br>等等等等...貌似系统大了考虑的真不是上文的这些点吧<br><br></div>
+</div>
+<div id="nc137243">
+  <h5>8 楼 <a href="http://gavinhwa.iteye.com/" target="_blank" title="GavinHwa">GavinHwa</a> 2014-11-19 14:42  </h5>
+  <div><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif">&nbsp;<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif"> </div>
+</div>
+<div id="nc137123">
+  <h5>7 楼 <a href="http://wuxq726.iteye.com/" target="_blank" title="wuxq726">wuxq726</a> 2014-11-10 13:36  </h5>
+  <div>月经贴<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_question.gif"> </div>
+</div>
+<div id="nc137112">
+  <h5>6 楼 <a href="http://sydica.iteye.com/" target="_blank" title="小林信仁">小林信仁</a> 2014-11-09 00:57  </h5>
+  <div>支持一下！<img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/icon_biggrin.gif"> </div>
+</div>
+<div id="nc137110">
+  <h5>5 楼 <a href="http://houyujiangjun.iteye.com/" target="_blank" title="houyujiangjun">houyujiangjun</a> 2014-11-08 16:18  </h5>
+  <div>没写出什么东西吧...</div>
+</div>
+<div id="nc137104">
+  <h5>4 楼 <a href="http://lobert.iteye.com/" target="_blank" title="home198979">home198979</a> 2014-11-07 21:43  </h5>
+  <div>真心不咋地</div>
+</div>
+<div id="nc137101">
+  <h5>3 楼 <a href="http://happysoul.iteye.com/" target="_blank" title="happysoul">happysoul</a> 2014-11-07 16:07  </h5>
+  <div>原理的东西 不过 相当于前人走过的路 后人可以拿来参考</div>
+</div>
+<div id="nc137094">
+  <h5>2 楼 <a href="http://chen88358323.iteye.com/" target="_blank" title="chen88358323">chen88358323</a> 2014-11-07 15:01  </h5>
+  <div>缓存部分很重要，还可以扩展的更深些来讲...</div>
+</div>
+<div id="nc137093">
+  <h5>1 楼 <a href="http://daydayup0658.iteye.com/" target="_blank" title="daydayup0658">daydayup0658</a> 2014-11-07 14:22  </h5>
+  <div>高大上，学习了</div>
+</div>
+
+    
+    
+  </div>
+  <div class="comments"><h3>发表评论</h3></div>
+  
+  <p style="text-align:center; margin-top:10px; margin-bottom:30px;"><a href="http://www.iteye.com/login"> <img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"> 您还没有登录,请您登录后再发表评论 </a></p>
+
+</div>
+<script type="text/javascript">
+
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'NewsComment'},
+      onSuccess:function(response){
+        editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+  
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+  fix_image_size($$('div#news_content img'), 650);
+  fix_image_size($$('div.comments img'), 620);
+
+  new WeiboShare({share_buttons: $$('.share_weibo')[0], img_scope: $('news_content')});
+</script>
+
+
+
+        </div>
+        <div id="local">
+          <div class="notices_area">
+<a href="http://www.iteye.com/news/25338-iteye-csdn-recruitment"><b>2013 ITeye&amp;CSDN最新职位火热招聘中！</b>急聘ruby研发、编辑、运营！请将简历发送至hrzhaopin@csdn.net</a></div>            <div>
+  <form action="http://www.iteye.com/news/search" method="get">    <input class="text" id="query" name="query" size="15" style="width: 135px;" type="text">
+    <input class="submit" type="submit" value="搜索资讯" style="width: 68px;">
+  </form></div>
+
+
+
+    
+        <div>
+  <h3>相关资讯 </h3>
+        <ul>
+                    <li><a href="http://www.iteye.com/news/29173-CoolHash-Database-Engine" target="_blank">数据库引擎 CoolHash 性能测试报告</a></li>
+                    <li><a href="http://www.iteye.com/news/24675" target="_blank">Redis作者：深度剖析Redis持久化</a></li>
+                    <li><a href="http://www.iteye.com/news/22607-NoSQL-Redis-Cassandra-MongoDB" target="_blank">几个重量级的NoSQL数据库和管理工具</a></li>
+              </ul>
+  </div>
+        <div>
+  <h3>相关讨论 </h3>
+        <ul>
+                    <li><a href="http://www.iteye.com/topic/345693" target="_blank">论缓存之第一&lt;道&gt;</a></li>
+                    <li><a href="http://www.iteye.com/topic/1055508" target="_blank">千万级数据如何进行缓存</a></li>
+                    <li><a href="http://www.iteye.com/topic/249465" target="_blank">Hibernate缓存机制</a></li>
+                    <li><a href="http://www.iteye.com/topic/1117965" target="_blank">Tokyo Tyrant 与 Redis 的一些简单比较</a></li>
+                    <li><a href="http://www.iteye.com/topic/428941" target="_blank">帖子 博客等资源点击量缓存杀手级解决方案</a></li>
+              </ul>
+  </div>
+        <div>
+  <h3>相关博客 </h3>
+        <ul>
+                    <li><a href="http://akingde.iteye.com/blog/1915204" target="_blank">Redis复制与可扩展集群搭建</a></li>
+                    <li><a href="http://xinklabi.iteye.com/blog/2154076" target="_blank">高访问量高性能高可扩展性网站架构（概括性理论）（转）</a></li>
+                    <li><a href="http://xiaobenbenxiong.iteye.com/blog/2153501" target="_blank">【转】徐汉彬：亿级Web系统搭建——单机到分布式集群</a></li>
+                    <li><a href="http://zoroeye.iteye.com/blog/2152302" target="_blank">&lt;官网翻译V2.9.0-1&gt;About_Ehcache</a></li>
+                    <li><a href="http://ewf-momo.iteye.com/blog/1859747" target="_blank">Redis缓存介绍和使用</a></li>
+              </ul>
+  </div>
+    
+
+        </div>
+        <div id="nav">
+  <div class="wrapper">
+    <ul>
+            <li><a href="http://www.iteye.com/">首页</a></li>
+      <li><a href="http://www.iteye.com/news" class="selected">资讯</a></li>
+      <li><a href="http://www.iteye.com/magazines">精华</a></li>
+      <li><a href="http://www.iteye.com/forums">论坛</a></li>
+      <li><a href="http://www.iteye.com/ask">问答</a></li>
+      <li><a href="http://www.iteye.com/blogs">博客</a></li>
+      <li><a href="http://www.iteye.com/blogs/subjects">专栏</a></li>
+      <li><a href="http://www.iteye.com/groups">群组</a></li>
+      <li><a target="_blank" href="http://job.iteye.com/iteye">招聘</a></li>
+      <li class="last"><a href="http://www.iteye.com/search">搜索</a></li>
+    </ul>
+  </div>
+</div>
+      </div>
+      <div id="footer">
+  <div id="site_nav">
+    <ul>
+      <li><a href="http://www.iteye.com/index/service">广告服务</a></li>
+      <li><a href="http://webmaster.iteye.com/">ITeye黑板报</a></li>
+      <li><a href="http://www.iteye.com/index/contactus">联系我们</a></li>
+      <li class="last"><a href="http://www.iteye.com/index/friend_links">友情链接</a></li>
+    </ul>
+  </div>
+  <div id="copyright">
+    © 2003-2014 ITeye.com.    [ <a href="http://www.miibeian.gov.cn/">京ICP证110151号</a>  京公网安备110105010620 ]<br>
+    百联优力(北京)投资有限公司  版权所有<br>
+  </div>
+</div>
+
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/saved_resource" width="0" height="0">
+
+<script src="./徐汉彬：亿级Web系统搭建——单机到分布式集群 - Web前端 - ITeye资讯_files/tracking.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+      function json_digg(id) {
+        call_json_digg('digg', id)
+      };
+      function json_bury(id) {
+        call_json_digg('bury', id)
+      };
+      function disable_digg_link(id) {
+        $$('#digg_link_' + id + ' a.push_up').each(function(link) {
+            old_count = $('digg_count_' + id).textContent;
+            link.replace('<span class="push_up">顶 <b id="digg_count_' + id + '">' + old_count + '</b></span>')
+        });
+        $$('#digg_link_' + id + ' a.trample').each(function(link) {
+            old_count = $('bury_count_' + id).textContent;
+            link.replace('<span class="trample">踩 <b id="bury_count_' + id + '">' + old_count + '</b></span>')
+        });
+      };
+      function call_json_digg(type, id) {
+        if (type === 'bury' || type === 'digg') {
+          new Ajax.Request('/news/' + type,
+                           {
+                             method:'post',
+                             parameters: {"id": id, "format" : 'json' },
+                             onSuccess: function(transport) {
+                               disable_digg_link(id);
+                               var json = transport.responseText.evalJSON();
+                               $(type + "_count_" + id).update(json[type + '_count']);
+                             }
+                           });
+        }
+      };
+    </script>
+    
+  
+
+</body></html>

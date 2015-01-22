@@ -1,0 +1,1397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0097)http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="http://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+
+	
+<title>【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET </title>
+<meta name="description" content="本文，Verisign实验室大规模数据分析基础设施的技术主管Michael通过示例对Kafka整合到Spark Streaming进行了详细讲解，更分享了该领域的现状和一些注意点。">
+<meta name="keywords" content="大数据,Spark,Kafka,Storm,问底">
+<meta name="author" content="CSDN.NET">
+<meta name="Copyright" content="CSDN.NET">
+<!-- toolbar start --> 
+<link href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/index.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" async="" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/ga.js"></script><script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/hm.js"></script><script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/jquery-1.9.1.min.js" type="text/javascript"></script><style type="text/css"></style>
+<!-- toolbar end -->
+<link href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/content.css" rel="stylesheet" type="text/css">
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/share.js"></script><link rel="stylesheet" type="text/css" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/comments.css"><script type="text/javascript" charset="utf-8" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/tracking.js"></script><script type="text/javascript" charset="utf-8" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/main.js"></script><link rel="stylesheet" type="text/css" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/style.css"><link type="text/css" rel="stylesheet" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/style(1).css"><link rel="stylesheet" type="text/css" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/highlighter.css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_32.css?v=9ebeb48a.css"></head>
+<body>
+<script type="text/javascript">
+  var protocol = window.location.protocol;
+  document.write('<script type="text/javascript" src="' +protocol+ '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></'+'script>');
+</script><script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/repoAddr2.js"></script>
+<script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://cloud.csdn.net"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://cloud.csdn.net/?ref=toolbar_logo" target="_blank" class="img news-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-left" style="margin-left:132px; width:18px; height:27px; white-space:nowrap; overflow:hidden;"><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div id="chasnew123" class="hasnew"></div>                <div id="cappsarea123" class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                      <dd> <a href="http://mall.csdn.net/?ref=toolbar" target="_blank">C币兑换<img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/new.gif" style="margin-top: -26px;"></a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>
+<div class="wrap">
+	<!-- 间歇滚动 -->
+	<script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script>
+	<script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/jquery.autoscroll.js" type="text/javascript"></script><!--滚动js-->
+	<!-- //间歇滚动 -->
+	<script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script>
+	<!--<div class="ad_960">
+		<div class="ad_230"><script type="text/javascript">BAIDU_CLB_fillSlot("421712");</script></div>
+		<div class="ad_728"><script type="text/javascript">BAIDU_CLB_fillSlot("421709");</script></div>
+	</div>-->
+
+</div>
+	<!-- nav -->
+	<div id="xcx_tabmenu" class="nav">
+		<div id="cx_tabmenu" class="cx_tabmenu">
+			<!-- lev one -->
+			<div id="ddimagetabs" class="lev_1">
+				<ul>
+				<li><a href="http://news.csdn.net/" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);" class="">业界</a></li>
+				<li><a href="http://mobile.csdn.net/" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);" class="">移动开发</a></li>
+				<li><a href="http://cloud.csdn.net/" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);" class="current">云计算</a></li>
+				<li><a href="http://sd.csdn.net/" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);" class="">软件研发</a></li>
+				<li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank" class="">程序员杂志</a></li>
+				<li><a href="http://geek.csdn.net/" id="sclink7" target="_blank" class="">极客头条</a></li>
+				<li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank" class="">专题</a></li>
+				<!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>-->
+				</ul>
+			</div>
+			<!-- lev two -->
+			<div id="tabcontentcontainer" class="lev_2">
+				<div class="tabcontent" id="sc1">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc2">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/news" target="_blank">游戏引擎</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc3" style="display: block;">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc4">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc5">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li>
+										</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script>
+ 
+<div class="wrap">
+	
+	
+	
+		<div class="ad_960">
+		<div class="ad_190"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|button1&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+		<div class="ad_760"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner1&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+	</div>
+		
+	<div class="brea_nav">
+				<span class="fr">
+		<a href="http://news.csdn.net/rss_cloud.html" class="rss" target="_blank">订阅云计算RSS</a>					
+		</span><a href="http://www.csdn.net/">CSDN首页</a><em>&gt;</em>
+		<a href="http://cloud.csdn.net/" target="_blank">云计算</a>	</div>
+	
+	<div class="content">
+		<div class="left">
+			<div class="detail">
+				<h1 class="title">【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战</h1>
+				<h4>
+					<div class="tit_bar">
+						发表于<span class="ago">2015-01-01 08:05</span>|
+						<span class="view_time">2309次阅读</span>| 
+						来源<span class="ago">个人博客</span>|
+						<span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">4</font> 条评论</span>| 
+						作者<span class="ago">Michael G. Noll</span>
+					</div>
+				</h4>
+				<div class="tag"><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news">大数据</a><a href="http://www.csdn.net/tag/spark/news">Spark</a><a href="http://www.csdn.net/tag/kafka/news">Kafka</a><a href="http://www.csdn.net/tag/storm/news">Storm</a><a href="http://www.csdn.net/tag/%E9%97%AE%E5%BA%95/news">问底</a></div>
+				<div class="summary">
+					<input type="hidden" id="article_description" name="article_description" value="本文，Verisign实验室大规模数据分析基础设施的技术主管Michael通过示例对Kafka整合到Spark Streaming进行了详细讲解，更分享了该领域的现状和一些注意点。">
+				<script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/weiboshare.html" width="22" height="16"></iframe><strong>摘要：</strong>本文，Verisign实验室大规模数据分析基础设施的技术主管Michael通过示例对Kafka整合到Spark Streaming进行了详细讲解，更分享了该领域的现状和一些注意点。				</div>
+				<div class="con news_content">
+				<p>&nbsp;【编者按】作者Michael G. Noll是瑞士的一位工程师和研究员，效力于Verisign，是Verisign实验室的大规模数据分析基础设施（基础Hadoop）的技术主管。本文，Michael详细的演示了如何将Kafka整合到Spark
+    Streaming中。<span style="font-size: 14px; line-height: 24px;">期间，</span>
+    <span style="font-size: 14px; line-height: 24px;">Michael还提到了将Kafka整合到</span><span style="font-size: 14px; line-height: 24px;">Spark Streaming中的一些现状，非常值得阅读，虽然有一些信息在Spark 1.2版本中已发生了一些变化，比如HA策略：</span>
+        <span style="font-size: 14px; line-height: 24px;">
+            <a href="http://www.csdn.net/article/2014-12-22/2823239" target="_blank">通过Spark Contributor、Spark布道者陈超我们了解到</a>，在Spark 1.2版本中，Spark Streaming开始支持fully
+            HA模式（选择使用），通过添加一层WAL（Write Ahead Log），每次收到数据后都会存在HDFS上，从而避免了以前版本中的数据丢失情况，但是不可避免的造成了一定的开销，需要开发者自行衡量。</span>
+</p>
+<p><b>以下为译文</b>
+</p>
+<p>作为一个实时大数据处理工具，
+    <a href="https://spark.apache.org/streaming/" target="_blank">Spark Sreaming</a>近日一直被广泛关注，与
+    <a href="http://storm.apache.org/" target="_blank">Apache Storm</a>的对比也经常出现。但是依我说，缺少与Kafka整合，任何实时大数据处理工具都是不完整的，因此我将一个示例Spark
+    Streaming应用程序添加到
+    <a href="https://github.com/miguno/kafka-storm-starter" target="_blank">kafka-storm-starter</a>，并且示范如何从Kafka读取，以及如何写入到Kafka。在这个过程中，我还使用Avro作为数据格式，以及Twitter
+    Bijection进行数据序列化。</p>
+<p>在本篇文章，我将详细地讲解这个Spark Streaming示例；同时，我还会穿插当下Spark Streaming与Kafka整合的一些焦点话题。免责声明：这是我首次试验Spark
+    Streaming，仅作为参考。</p>
+<blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">当下，这个Spark Streaming示例被上传到GitHub，下载访问：
+    <a href="https://github.com/miguno/kafka-storm-starter" target="_blank">kafka-storm-starter</a>。项目的名称或许会让你产生某些误解，不过，不要在意这些细节：）</blockquote>
+
+<h3><b>什么是Spark Streaming</b></h3>
+
+<p>
+    <a href="http://spark.apache.org/streaming/" target="_blank">Spark Streaming</a>是Apache Spark的一个子项目。Spark是个类似于Apache Hadoop的开源批处理平台，而Spark
+    Streaming则是个实时处理工具，运行在Spark引擎之上。</p>
+
+<h3><b>Spark Streaming vs. Apache Storm</b></h3>
+
+<p>Spark Streaming与Apache Storm有一些相似之处，后者是当下最流行的大数据处理平台。前不久，雅虎的Bobby Evans
+    和Tom Graves曾发表过一个“
+    <a href="http://yahoohadoop.tumblr.com/post/98213421641/storm-and-spark-at-yahoo-why-chose-one-over-the#_=_" target="_blank">Spark and Storm at Yahoo!</a>”的演讲，在这个演讲中，他们对比了两个大平台，并提供了一些选择参考。类似的，Hortonworks的P.
+    Taylor Goetz也分享过名为
+    <a href="http://www.slideshare.net/ptgoetz/apache-storm-vs-spark-streaming" target="_blank">Apache Storm and Spark Streaming Compared</a>的讲义。</p>
+<p>这里，我也提供了一个非常简短的对比：对比Spark Streaming，Storm的产业采用更高，生产环境应用也更稳定。但是从另一方面来说，对比Storm，Spark拥有更清晰、等级更高的API，因此Spark使用起来也更加愉快，最起码是在使用Scala编写Spark应用程序的情况（毫无疑问，我更喜欢Spark中的API）。但是，请别这么直接的相信我的话，多看看上面的演讲和讲义。</p>
+<p>不管是Spark还是Storm，它们都是Apache的顶级项目，当下许多大数据平台提供商也已经开始整合这两个框架（或者其中一个）到其商业产品中，比如Hortonworks就同时整合了Spark和Storm，而Cloudera也整合了Spark。</p>
+
+<h3><b>附录：Spark中的Machines、cores、executors、tasks和receivers&nbsp;</b></h3>
+
+<p>本文的后续部分将讲述许多Spark和Kafka中的parallelism问题，因此，你需要掌握一些Spark中的术语以弄懂这些环节。</p>
+<p></p>
+<ul>
+    <li><span style="font-size: 14px; line-height: 24px;">一个Spark集群必然包含了1个以上的工者作节点，又称为从主机（为了简化架构，这里我们先抛弃开集群管理者不谈）。</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">一个工作者节点可以运行一个以上的executor</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">Executor是一个用于应用程序或者工作者节点的进程，它们负责处理tasks，并将数据保存到内存或者磁盘中。每个应用程序都有属于自己的executors，一个executor则包含了一定数量的cores（也被称为slots）来运行分配给它的任务。</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">Task是一个工作单元，它将被传送给executor。也就是说，task将是你应用程序的计算内容（或者是一部分）。SparkContext将把这些tasks发送到executors进行执行。每个task都会占用父executor中的一个core（slot）。</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">Receiver（<a href="http://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.streaming.receiver.Receiver" target="_blank">API </a></span>
+        <span style="font-size: 14px; line-height: 24px;">，
+            <a href="http://spark.apache.org/docs/latest/streaming-custom-receivers.html" target="_blank">文档</a>）将作为一个长期运行的task跑在一个executor上。每个receiver都会负责一个所谓的input DStream（比如从Kafka中读取的一个输入流），同时每个receiver（
+            input DStream）占用一个core/slot。</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">input DStream：input DStream是DStream的一个类型，它负责将Spark Streaming连接到外部的数据源，用于读取数据。对于每个外部数据源（比如Kafka）你都需要配置一个input
+    DStream。一个Spark Streaming会通过一个input DStream与一个外部数据源进行连接，任何后续的DStream都会建立标准的DStreams。</span>
+    </li>
+</ul>
+<p></p>
+<p>在Spark的执行模型，每个应用程序都会获得自己的executors，它们会支撑应用程序的整个流程，并以多线程的方式运行1个以上的tasks，这种隔离途径非常类似Storm的执行模型。一旦引入类似YARN或者Mesos这样的集群管理器，整个架构将会变得异常复杂，因此这里将不会引入。你可以通过Spark文档中的
+    <a href="http://spark.apache.org/docs/latest/cluster-overview.html" target="_blank">Cluster Overview</a>了解更多细节。</p>
+
+<h3>整合Kafka到Spark Streaming</h3>
+
+<p><b>概述</b>
+</p>
+<p>简而言之，Spark是支持Kafka的，但是这里存在许多不完善的地方。</p>
+<p>Spark代码库中的
+    <a href="https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/streaming/KafkaWordCount.scala" target="_blank">KafkaWordCount</a>对于我们来说是个非常好的起点，但是这里仍然存在一些开放式问题。</p>
+<p>特别是我想了解如何去做：</p>
+<p></p>
+<ul>
+    <li><span style="font-size: 14px; line-height: 24px;">从kafaka中并行读入。在Kafka，一个话题（topic）可以有N个分区。理想的情况下，我们希望在多个分区上并行读取。这也是<a href="https://github.com/apache/incubator-storm/tree/master/external/storm-kafka" target="_blank">Kafka spout in Storm</a>的工作。</span>
+    </li>
+    <li><span style="font-size: 14px; line-height: 24px;">从一个Spark Streaming应用程序向Kafka写入，同样，我们需要并行执行。</span>
+    </li>
+</ul>
+<p></p>
+<p>在完成这些操作时，我同样碰到了Spark Streaming和/或Kafka中一些已知的问题，这些问题大部分都已经在Spark mailing
+    list中列出。在下面，我将详细总结Kafka集成到Spark的现状以及一些常见问题。</p>
+<p><b>Kafka中的话题、分区（partitions）和parallelism</b>
+</p>
+<p>详情可以查看我之前的博文：
+    <a href="http://www.michael-noll.com/blog/2014/08/18/apache-kafka-training-deck-and-tutorial/" target="_blank">Apache Kafka 0.8 Training Deck and Tutorial</a>和
+    <a href="http://www.michael-noll.com/blog/2013/03/13/running-a-multi-broker-apache-kafka-cluster-on-a-single-node/" target="_blank">Running a Multi-Broker Apache Kafka 0.8 Cluster on a Single Node</a>。</p>
+<p>Kafka将数据存储在话题中，每个话题都包含了一些可配置数量的分区。话题的分区数量对于性能来说非常重要，而这个值一般是消费者parallelism的最大数量：如果一个话题拥有N个分区，那么你的应用程序最大程度上只能进行N个线程的并行，最起码在使用Kafka内置Scala/Java消费者API时是这样的。</p>
+<p>与其说应用程序，不如说Kafka术语中的消费者群（consumer group）。消费者群，通过你选择的字符串识别，它是逻辑消费者应用程序集群范围的识别符。同一个消费者群中的所有消费者将分担从一个指定Kafka话题中的读取任务，同时，同一个消费组中所有消费者从话题中读取的线程数最大值即是N（等同于分区的数量），多余的线程将会闲置。</p>
+<blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">多个不同的Kafka消费者群可以并行的运行：毫无疑问，对同一个Kafka话题，你可以运行多个独立的逻辑消费者应用程序。这里，每个逻辑应用程序都会运行自己的消费者线程，使用一个唯一的消费者群id。而每个应用程序通常可以使用不同的read
+    parallelisms（见下文）。当在下文我描述不同的方式配置read parallelisms时，我指的是如何完成这些逻辑消费者应用程序中的一个设置。</blockquote>
+    <p><b>这里有一些简单的例子</b>
+    </p>
+    <p></p>
+    <ul>
+        <li><span style="font-size: 14px; line-height: 24px;">你的应用程序使用“terran”消费者群id对一个名为“zerg.hydra”的kafka话题进行读取，这个话题拥有10个分区。如果你的消费者应用程序只配置一个线程对这个话题进行读取，那么这个线程将从10个分区中进行读取。</span>
+        </li>
+        <li><span style="font-size: 14px; line-height: 24px;">同上，但是这次你会配置5个线程，那么每个线程都会从2个分区中进行读取。</span>
+        </li>
+        <li><span style="font-size: 14px; line-height: 24px;">同上，这次你会配置10个线程，那么每个线程都会负责1个分区的读取。</span>
+        </li>
+        <li><span style="font-size: 14px; line-height: 24px;">同上，但是这次你会配置多达14个线程。那么这14个线程中的10个将平分10个分区的读取工作，剩下的4个将会被闲置。</span>
+        </li>
+    </ul>
+    <p></p>
+    <p>这里我们不妨看一下现实应用中的复杂性——Kafka中的再平衡事件。在Kafka中，再平衡是个生命周期事件（lifecycle event），在消费者加入或者离开消费者群时都会触发再平衡事件。这里我们不会进行详述，更多再平衡详情可参见我的
+        <a href="http://www.michael-noll.com/blog/2014/08/18/apache-kafka-training-deck-and-tutorial/" target="_blank">Kafka training deck</a>一文。</p>
+    <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">你的应用程序使用消费者群id“terran”，并且从1个线程开始，这个线程将从10个分区中进行读取。在运行时，你逐渐将线程从1个提升到14个。也就是说，在同一个消费者群中，parallelism突然发生了变化。毫无疑问，这将造成Kafka中的再平衡。一旦在平衡结束，你的14个线程中将有10个线程平分10个分区的读取工作，剩余的4个将会被闲置。因此如你想象的一样，初始线程以后只会读取一个分区中的内容，将不会再读取其他分区中的数据。</blockquote>
+    <p>现在，我们终于对话题、分区有了一定的理解，而分区的数量将作为从Kafka读取时parallelism的上限。但是对于一个应用程序来说，这种机制会产生一个什么样的影响，比如一个Spark
+        Streaming job或者 Storm topology从Kafka中读取数据作为输入。</p>
+    <p><b>1. Read parallelism：</b>通常情况下，你期望使用N个线程并行读取Kafka话题中的N个分区。同时，鉴于数据的体积，你期望这些线程跨不同的NIC，也就是跨不同的主机。在Storm中，这可以通过TopologyBuilder#setSpout()设置Kafka
+        spout的parallelism为N来实现。在Spark中，你则需要做更多的事情，在下文我将详述如何实现这一点。</p>
+    <p><b>2. Downstream processing parallelism：</b>一旦使用Kafka，你希望对数据进行并行处理。鉴于你的用例，这种等级的parallelism必然与read
+        parallelism有所区别。如果你的用例是计算密集型的，举个例子，对比读取线程，你期望拥有更多的处理线程；这可以通过从多个读取线程shuffling或者网路“fanning
+        out”数据到处理线程实现。因此，你通过增长网络通信、序列化开销等将访问交付给更多的cores。在Storm中，你通过
+        <a href="https://storm.apache.org/documentation/Concepts.html" target="_blank">shuffle grouping</a>将Kafka spout shuffling到下游的bolt中。在Spark中，你需要通过DStreams上的
+        <a href="https://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#transformations-on-dstreams" target="_blank">repartition</a>转换来实现。</p>
+    <p>通常情况下，大家都渴望去耦从Kafka的parallelisms读取，并立即处理读取来的数据。在下一节，我将详述使用 Spark Streaming从Kafka中的读取和写入。</p>
+    
+<h3>从Kafka中读取</h3>
+
+    <p><b>Spark Streaming中的Read parallelism</b>
+    </p>
+    <p>类似Kafka，Read parallelism中也有分区的概念。了解Kafka的per-topic话题与
+        <a href="http://spark.apache.org/docs/1.1.0/programming-guide.html" target="_blank">RDDs in Spark</a>中的分区没有关联非常重要。</p>
+    <p>Spark Streaming中的
+        <a href="https://github.com/apache/spark/blob/master/external/kafka/src/main/scala/org/apache/spark/streaming/kafka/KafkaInputDStream.scala" target="_blank">KafkaInputDStream</a>（又称为Kafka连接器）使用了Kafka的
+        <a href="http://kafka.apache.org/documentation.html#highlevelconsumerapi" target="_blank">高等级消费者API</a>，这意味着在Spark中为Kafka设置 read parallelism将拥有两个控制按钮。</p>
+    <p><b>1. Input DStreams的数量。</b>因为Spark在每个Input DStreams都会运行一个receiver（=task），这就意味着使用多个input
+        DStreams将跨多个节点并行进行读取操作，因此，这里寄希望于多主机和NICs。</p>
+    <p><b>2. Input DStreams上的消费者线程数量。</b>这里，相同的receiver（=task）将运行多个读取线程。这也就是说，读取操作在每个core/machine/NIC上将并行的进行。</p>
+    <p><b>在实际情况中，第一个选择显然更是大家期望的。</b>
+    </p>
+    <p>为什么会这样？首先以及最重要的，从Kafka中读取通常情况下会受到网络/NIC限制，也就是说，在同一个主机上你运行多个线程不会增加读的吞吐量。另一方面来讲，虽然不经常，但是有时候从Kafka中读取也会遭遇CPU瓶颈。其次，如果你选择第二个选项，多个读取线程在将数据推送到blocks时会出现锁竞争（在block生产者实例上，BlockGenerator的“+=”方法真正使用的是“synchronized”方式）。</p>
+    <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">input DStreams建立的RDDs分区数量：KafkaInputDStream将储存从Kafka中读取的每个信息到Blocks。从我的理解上，一个新的Block由
+        spark.streaming.blockInterval在毫秒级别建立，而每个block都会转换成RDD的一个分区，最终由DStream建立。如果我的这种假设成立，那么由KafkaInputDStream建立的RDDs分区数量由batchInterval
+        / spark.streaming.blockInterval决定，而batchInterval则是数据流拆分成batches的时间间隔，它可以通过StreamingContext的一个构造函数参数设置。举个例子，如果你的批时间价格是2秒（默认情况下），而block的时间间隔是200毫秒（默认情况），那么你的RDD将包含10个分区。如果有错误的话，可以提醒我。</blockquote>
+        <p><b>选项1：控制input DStreams的数量</b>
+        </p>
+        <p>下面这个例子可以从
+            <a href="https://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#reducing-the-processing-time-of-each-batch" target="_blank">Spark Streaming Programming Guide</a>中获得：</p>
+        <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_0." name="code">val ssc: StreamingContext = ??? // ignore for now
+val kafkaParams: Map[String, String] = Map("group.id" -&gt; "terran", /* ignore rest */)
+
+val numInputDStreams = 5
+val kafkaDStreams = (1 to numInputDStreams).map { _ =&gt; KafkaUtils.createStream(...) }</pre>
+        <p></p>
+        <p>在这个例子中，我们建立了5个input DStreams，因此从Kafka中读取的工作将分担到5个核心上，寄希望于5个主机/NICs（之所以说是寄希望于，因为我也不确定Spark
+            Streaming task布局策略是否会将receivers投放到多个主机上）。所有Input Streams都是“terran”消费者群的一部分，而Kafka将保证topic的所有数据可以同时对这5个input
+            DSreams可用。换句话说，这种“collaborating”input DStreams设置可以工作是基于消费者群的行为是由Kafka API提供，通过KafkaInputDStream完成。</p>
+        <p>在这个例子中，我没有提到每个input DSream会建立多少个线程。在这里，线程的数量可以通过KafkaUtils.createStream方法的参数设置（同时，input
+            topic的数量也可以通过这个方法的参数指定）。在下一节中，我们将通过实际操作展示。</p>
+        <p>但是在开始之前，在这个步骤我先解释几个Spark Streaming中常见的几个问题，其中有些因为当下Spark中存在的一些限制引起，另一方面则是由于当下Kafka
+            input DSreams的一些设置造成：</p>
+        <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">当你使用我上文介绍的多输入流途径，而这些消费者都是属于同一个消费者群，它们会给消费者指定负责的分区。这样一来则可能导致syncpartitionrebalance的失败，系统中真正工作的消费者可能只会有几个。为了解决这个问题，你可以把再均衡尝试设置的非常高，从而获得它的帮助。
+            <br>然后，你将会碰到另一个坑——如果你的receiver宕机（OOM，亦或是硬件故障），你将停止从Kafka接收消息。</blockquote>
+        <p>Spark用户讨论
+            <a href="http://markmail.org/message/257a5l3oqyftsjxj" target="_blank">markmail.org/message/…</a>
+        </p>
+        <p>这里，我们需要对“停止从Kafka中接收”问题
+            <a href="http://apache-spark-user-list.1001560.n3.nabble.com/spark-streaming-and-the-spark-shell-tp3347.html" target="_blank">做一些解释</a>。当下，当你通过ssc.start()开启你的streams应用程序后，处理会开始并一直进行，即使是输入数据源（比如Kafka）变得不可用。也就是说，流不能检测出是否与上游数据源失去链接，因此也不会对丢失做出任何反应，举个例子来说也就是重连或者结束执行。类似的，如果你丢失这个数据源的一个receiver，那么
+            <a href="http://apache-spark-user-list.1001560.n3.nabble.com/spark-streaming-and-the-spark-shell-td3347.html#a3375" target="_blank">你的流应用程序可能就会生成一些空的RDDs</a>。</p>
+        <p>这是一个非常糟糕的情况。最简单也是最粗糙的方法就是，在与上游数据源断开连接或者一个receiver失败时，重启你的流应用程序。但是，这种解决方案可能并不会产生实际效果，即使你的应用程序需要将Kafka配置选项auto.offset.reset设置到最小——因为Spark
+            Streaming中一些已知的bug，可能导致你的流应用程序发生一些你意想不到的问题，在下文Spark Streaming中常见问题一节我们将详细的进行介绍。</p>
+        <p><b>选择2：控制每个input DStream上小发着线程的数量</b>
+        </p>
+        <p>在这个例子中，我们将建立一个单一的input DStream，它将运行3个消费者线程——在同一个receiver/task，因此是在同一个core/machine/NIC上对Kafka
+            topic “zerg.hydra”进行读取。</p>
+        <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_1." name="code">val ssc: StreamingContext = ??? // ignore for now
+val kafkaParams: Map[String, String] = Map("group.id" -&gt; "terran", ...)
+
+val consumerThreadsPerInputDstream = 3
+val topics = Map("zerg.hydra" -&gt; consumerThreadsPerInputDstream)
+val stream = KafkaUtils.createStream(ssc, kafkaParams, topics, ...)</pre>
+        <p></p>
+        <p>KafkaUtils.createStream方法被重载，因此这里有一些不同方法的特征。在这里，我们会选择Scala派生以获得最佳的控制。</p>
+        <p><b>结合选项1和选项2</b>
+        </p>
+        <p>下面是一个更完整的示例，结合了上述两种技术：</p>
+        <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_2." name="code">val ssc: StreamingContext = ???
+val kafkaParams: Map[String, String] = Map("group.id" -&gt; "terran", ...)
+
+val numDStreams = 5
+val topics = Map("zerg.hydra" -&gt; 1)
+val kafkaDStreams = (1 to numDStreams).map { _ =&gt;
+    KafkaUtils.createStream(ssc, kafkaParams, topics, ...)
+  }</pre>
+        <p></p>
+        <p>我们建立了5个input DStreams，它们每个都会运行一个消费者线程。如果“zerg.hydra”topic拥有5个分区（或者更少），那么这将是进行并行读取的最佳途径，如果你在意系统最大吞吐量的话。</p>
+        <p><b>Spark Streaming中的并行Downstream处理</b>
+        </p>
+        <p>在之前的章节中，我们覆盖了从Kafka的并行化读取，那么我们就可以在Spark中进行并行化处理。那么这里，你必须弄清楚Spark本身是如何进行并行化处理的。类似Kafka，Spark将parallelism设置的与（RDD）分区数量有关，
+            <a href="http://spark.apache.org/docs/1.1.0/programming-guide.html#resilient-distributed-datasets-rdds" target="_blank">通过在每个RDD分区上运行task进行</a>。在有些文档中，分区仍然被称为“slices”。</p>
+        <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">在任何Spark应用程序中，一旦某个Spark Streaming应用程序接收到输入数据，其他处理都与非streaming应用程序相同。也就是说，与普通的Spark数据流应用程序一样，在Spark
+            Streaming应用程序中，你将使用相同的工具和模式。更多详情可见
+            <a href="https://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#level-of-parallelism-in-data-processing" target="_blank">Level of Parallelism in Data Processing</a>文档。</blockquote>
+        <p><b>因此，我们同样将获得两个控制手段：</b>
+        </p>
+        <p><b>1. input DStreams的数量</b>，也就是说，我们在之前章节中read parallelism的数量作为结果。这是我们的立足点，这样一来，我们在下一个步骤中既可以保持原样，也可以进行修改。</p>
+        <p><b>2. DStream转化的重分配</b>。这里将获得一个全新的DStream，其parallelism等级可能增加、减少，或者保持原样。在DStream中每个返回的RDD都有指定的N个分区。DStream由一系列的RDD组成，DStream.repartition则是通过RDD.repartition实现。接下来将对RDD中的所有数据做随机的reshuffles，然后建立或多或少的分区，并进行平衡。同时，数据会在所有网络中进行shuffles。换句话说，DStream.repartition非常类似Storm中的shuffle
+            grouping。</p>
+        <p>因此，repartition是从processing parallelism解耦read parallelism的主要途径。在这里，我们可以设置processing
+            tasks的数量，也就是说设置处理过程中所有core的数量。间接上，我们同样设置了投入machines/NICs的数量。</p>
+        <p>一个DStream转换相关是
+            <a href="https://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#transformations-on-dstreams" target="_blank">union</a>。这个方法同样在StreamingContext中，它将从多个DStream中返回一个统一的DStream，它将拥有相同的类型和滑动时间。通常情况下，你更愿意用StreamingContext的派生。一个union将返回一个由Union
+            RDD支撑的UnionDStream。Union RDD由RDDs统一后的所有分区组成，也就是说，如果10个分区都联合了3个RDDs，那么你的联合RDD实例将包含30个分区。换句话说，union会将多个
+            DStreams压缩到一个 DStreams或者RDD中，但是需要注意的是，这里的parallelism并不会发生改变。你是否使用union依赖于你的用例是否需要从所有Kafka分区进行“in
+            one place”信息获取决定，因此这里大部分都是基于语义需求决定。举个例子，当你需要执行一个不用元素上的（全局）计数。</p>
+        <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);"><b>注意：</b>RDDs是无序的。因此，当你union RDDs时，那么结果RDD同样不会拥有一个很好的序列。如果你需要在RDD中进行sort。</blockquote>
+            <p>你的用例将决定需要使用的方法，以及你需要使用哪个。如果你的用例是CPU密集型的，你希望对zerg.hydra topic进行5 read parallelism读取。也就是说，每个消费者进程使用5个receiver，但是却可以将processing
+                parallelism提升到20。</p>
+            <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_3." name="code">val ssc: StreamingContext = ???
+val kafkaParams: Map[String, String] = Map("group.id" -&gt; "terran", ...)
+val readParallelism = 5
+val topics = Map("zerg.hydra" -&gt; 1)
+
+val kafkaDStreams = (1 to readParallelism).map { _ =&gt;
+    KafkaUtils.createStream(ssc, kafkaParams, topics, ...)
+  }
+//&gt; collection of five *input* DStreams = handled by five receivers/tasks
+
+val unionDStream = ssc.union(kafkaDStreams) // often unnecessary, just showcasing how to do it
+//&gt; single DStream
+
+val processingParallelism = 20
+val processingDStream = unionDStream(processingParallelism)
+//&gt; single DStream but now with 20 partitions</pre>
+            <p></p>
+            <p>在下一节中，我将把所有部分结合到一起，并且联合实际数据处理进行讲解。</p>
+            
+<h3>写入到Kafka</h3>
+
+            <p>写入到Kafka需要从foreachRDD输出操作进行：</p>
+            <p>通用的输出操作者都包含了一个功能（函数），让每个RDD都由Stream生成。这个函数需要将每个RDD中的数据推送到一个外部系统，比如将RDD保存到文件，或者通过网络将它写入到一个数据库。需要注意的是，这里的功能函数将在驱动中执行，同时其中通常会伴随RDD行为，它将会促使流RDDs的计算。</p>
+            <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);"><b>注意：</b>重提“功能函数是在驱动中执行”，也就是Kafka生产者将从驱动中进行，也就是说“功能函数是在驱动中进行评估”。当你使用foreachRDD从驱动中读取Design
+                Patterns时，实际过程将变得更加清晰。</blockquote>
+                <p>在这里，建议大家去阅读Spark文档中的
+                    <a href="http://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#output-operations-on-dstreams" target="_blank">Design Patterns for using foreachRDD</a>一节，它将详细讲解使用foreachRDD读外部系统中的一些常用推荐模式，以及经常出现的一些陷阱。</p>
+                <p>在我们这个例子里，我们将按照推荐来重用Kafka生产者实例，通过生产者池跨多个RDDs/batches。 我通过
+                    <a href="http://commons.apache.org/proper/commons-pool/" target="_blank">Apache Commons Pool</a>实现了这样一个工具，已经上传到
+                    <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/main/scala/com/miguno/kafkastorm/kafka/PooledKafkaProducerAppFactory.scala" target="_blank">GitHub</a>。这个生产者池本身通过
+                    <a href="http://spark.apache.org/docs/latest/programming-guide.html#broadcast-variables" target="_blank">broadcast variable</a>提供给tasks。</p>
+                <p><b>最终结果看起来如下：</b>
+                </p>
+                <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_4." name="code">val producerPool = {
+  // See the full code on GitHub for details on how the pool is created
+  val pool = createKafkaProducerPool(kafkaZkCluster.kafka.brokerList, outputTopic.name)
+  ssc.sparkContext.broadcast(pool)
+}
+
+stream.map { ... }.foreachRDD(rdd =&gt; {
+  rdd.foreachPartition(partitionOfRecords =&gt; {
+    // Get a producer from the shared pool
+    val p = producerPool.value.borrowObject()
+    partitionOfRecords.foreach { case tweet: Tweet =&gt;
+      // Convert pojo back into Avro binary format
+      val bytes = converter.value.apply(tweet)
+      // Send the bytes to Kafka
+      p.send(bytes)
+    }
+    // Returning the producer to the pool also shuts it down
+    producerPool.value.returnObject(p)
+  })
+})</pre>
+                <p></p>
+                <p>需要注意的是， Spark Streaming每分钟都会建立多个RDDs，每个都会包含多个分区，因此你无需为Kafka生产者实例建立新的Kafka生产者，更不用说每个Kafka消息。上面的步骤将最小化Kafka生产者实例的建立数量，同时也会最小化TCP连接的数量（通常由Kafka集群确定）。你可以使用这个池设置来精确地控制对流应用程序可用的Kafka生产者实例数量。如果存在疑惑，尽量用更少的。</p>
+                
+<h3>完整示例</h3>
+
+                <p>下面的代码是示例Spark Streaming应用程序的要旨（所有代码参见
+                    <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/test/scala/com/miguno/kafkastorm/spark/KafkaSparkStreamingSpec.scala" target="_blank">这里</a>）。这里，我做一些解释：</p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">并行地从Kafka topic中读取Avro-encoded数据。我们使用了一个最佳的read parallelism，每个Kafka分区都配置了一个单线程
+    input DStream。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">并行化Avro-encoded数据到pojos中，然后将他们并行写到binary，序列化可以通过</span>
+                            <a href="https://github.com/twitter/bijection" target="_blank" style="font-size: 14px; line-height: 24px;">Twitter Bijection</a><span style="font-size: 14px; line-height: 24px;">执行。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">通过Kafka生产者池将结果写回一个不同的Kafka topic。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_5." name="code">// Set up the input DStream to read from Kafka (in parallel)
+val kafkaStream = {
+  val sparkStreamingConsumerGroup = "spark-streaming-consumer-group"
+  val kafkaParams = Map(
+    "zookeeper.connect" -&gt; "zookeeper1:2181",
+    "group.id" -&gt; "spark-streaming-test",
+    "zookeeper.connection.timeout.ms" -&gt; "1000")
+  val inputTopic = "input-topic"
+  val numPartitionsOfInputTopic = 5
+  val streams = (1 to numPartitionsOfInputTopic) map { _ =&gt;
+    KafkaUtils.createStream(ssc, kafkaParams, Map(inputTopic -&gt; 1), StorageLevel.MEMORY_ONLY_SER).map(_._2)
+  }
+  val unifiedStream = ssc.union(streams)
+  val sparkProcessingParallelism = 1 // You'd probably pick a higher value than 1 in production.
+  unifiedStream.repartition(sparkProcessingParallelism)
+}
+
+// We use accumulators to track global "counters" across the tasks of our streaming app
+val numInputMessages = ssc.sparkContext.accumulator(0L, "Kafka messages consumed")
+val numOutputMessages = ssc.sparkContext.accumulator(0L, "Kafka messages produced")
+// We use a broadcast variable to share a pool of Kafka producers, which we use to write data from Spark to Kafka.
+val producerPool = {
+  val pool = createKafkaProducerPool(kafkaZkCluster.kafka.brokerList, outputTopic.name)
+  ssc.sparkContext.broadcast(pool)
+}
+// We also use a broadcast variable for our Avro Injection (Twitter Bijection)
+val converter = ssc.sparkContext.broadcast(SpecificAvroCodecs.toBinary[Tweet])
+
+// Define the actual data flow of the streaming job
+kafkaStream.map { case bytes =&gt;
+  numInputMessages += 1
+  // Convert Avro binary data to pojo
+  converter.value.invert(bytes) match {
+    case Success(tweet) =&gt; tweet
+    case Failure(e) =&gt; // ignore if the conversion failed
+  }
+}.foreachRDD(rdd =&gt; {
+  rdd.foreachPartition(partitionOfRecords =&gt; {
+    val p = producerPool.value.borrowObject()
+    partitionOfRecords.foreach { case tweet: Tweet =&gt;
+      // Convert pojo back into Avro binary format
+      val bytes = converter.value.apply(tweet)
+      // Send the bytes to Kafka
+      p.send(bytes)
+      numOutputMessages += 1
+    }
+    producerPool.value.returnObject(p)
+  })
+})
+
+// Run the streaming job
+ssc.start()
+ssc.awaitTermination()</pre>
+                <p></p>
+                <p>
+                    <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/test/scala/com/miguno/kafkastorm/spark/KafkaSparkStreamingSpec.scala" target="_blank">更多的细节和解释可以在这里看所有源代码。</a>
+                </p>
+                <p>就我自己而言，我非常喜欢 Spark Streaming代码的简洁和表述。在Bobby Evans和 Tom Graves讲话中没有提到的是，Storm中这个功能的等价代码是非常繁琐和低等级的：
+                    <a href="https://github.com/miguno/kafka-storm-starter" target="_blank">kafka-storm-starter</a>中的
+                        <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/test/scala/com/miguno/kafkastorm/integration/KafkaStormSpec.scala" target="_blank">KafkaStormSpec</a>会运行一个Stormtopology来执行相同的计算。同时，规范文件本身只有非常少的代码，当然是除下说明语言，它们能更好的帮助理解；同时，需要注意的是，在Storm的Java
+                        API中，你不能使用上文Spark Streaming 示例中所使用的匿名函数，比如map和foreach步骤。取而代之的是，你必须编写完整的类来获得相同的功能，你可以查看
+                        <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/main/scala/com/miguno/kafkastorm/storm/bolts/AvroDecoderBolt.scala" target="_blank">AvroDecoderBolt</a>。这感觉是将Spark的API转换到Java，在这里使用匿名函数是非常痛苦的。</p>
+                <p>最后，我同样也非常喜欢
+                    <a href="http://spark.apache.org/documentation.html" target="_blank">Spark的说明文档</a>，它非常适合初学者查看，甚至还包含了一些
+                    <a href="http://spark.apache.org/docs/1.1.0/tuning.html" target="_blank">进阶使用</a>。关于Kafka整合到Spark，上文已经基本介绍完成，但是我们仍然需要浏览mailing list和深挖源代码。这里，我不得不说，维护帮助文档的同学做的实在是太棒了。</p>
+                
+<h3>知晓Spark Streaming中的一些已知问题</h3>
+
+                <p>你可能已经发现在Spark中仍然有一些尚未解决的问题，下面我描述一些我的发现：</p>
+                <p>一方面，在对Kafka进行读写上仍然存在一些含糊不清的问题，你可以在类似
+                    <a href="http://apache-spark-user-list.1001560.n3.nabble.com/Multiple-Kafka-Receivers-and-Union-td14901.html" target="_blank">Multiple Kafka Receivers and Union</a>和
+                    <a href="http://apache-spark-user-list.1001560.n3.nabble.com/How-to-scale-more-consumer-to-Kafka-stream-td13883.html" target="_blank">How to scale more consumer to Kafka stream</a>&nbsp;mailing list的讨论中发现。</p>
+                <p>另一方面，Spark Streaming中一些问题是因为Spark本身的固有问题导致，特别是故障发生时的数据丢失问题。换句话说，这些问题让你不想在生产环境中使用Spark。</p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">在Spark 1.1版本的驱动中，Spark并不会考虑那些已经接收却因为种种原因没有进行处理的元数据（</span>
+                            <a href="https://www.mail-archive.com/user@spark.apache.org/msg10572.html" target="_blank" style="font-size: 14px; line-height: 24px;">点击这里查看更多细节</a><span style="font-size: 14px; line-height: 24px;">）。因此，在某些情况下，你的Spark可能会丢失数据。Tathagata
+    Das指出驱动恢复问题会在Spark的1.2版本中解决，当下已经释放。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">1.1版本中的Kafka连接器是基于Kafka的高等级消费者API。这样就会造成一个问题，Spark Streaming不可以依赖其自身的KafkaInputDStream将数据从Kafka中重新发送，从而无法解决下游数据丢失问题（比如Spark服务器发生故障）。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">有些人甚至认为这个版本中的Kafka连接器不应该投入生产环境使用，因为它是基于Kafka的高等级消费者API。取而代之，Spark应该使用简单的消费者API（就像Storm中的Kafka
+    spout），它将允许你控制便宜和分区分配确定性。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">但是当下Spark社区已经在致力这些方面的改善，比如Dibyendu Bhattacharya的Kafka连接器。后者是Apache Storm
+    Kafka spout的一个端口，它基于Kafka所谓的简单消费者API，它包含了故障发生情景下一个更好的重放机制。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">即使拥有如此多志愿者的努力，Spark团队更愿意非特殊情况下的Kafka故障恢复策略，他们的目标是“在所有转换中提供强保证，通用的策略”，这一点非常难以理解。从另一个角度来说，这是浪费Kafka本身的故障恢复策略。这里确实难以抉择。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">这种情况同样也出现在写入情况中，很可能会造成数据丢失。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">Spark的Kafka消费者参数auto.offset.reset的使用同样与Kafka的策略不同。在Kafka中，将auto.offset.reset设置为最小是消费者将自动的将offset设置为最小offset，这通常会发生在两个情况：第一，在ZooKeeper中不存在已有offsets；第二，已存在offset，但是不在范围内。而在Spark中，它会始终删除所有的offsets，并从头开始。这样就代表着，当你使用auto.offset.reset
+    = "smallest"重启你的应用程序时，你的应用程序将完全重新处理你的Kafka应用程序。更多详情可以在下面的两个讨论中发现：<a href="http://apache-spark-user-list.1001560.n3.nabble.com/spark-streaming-and-the-spark-shell-td3347.html#a3387" target="_blank">1</a>和<a href="http://markmail.org/message/257a5l3oqyftsjxj" target="_blank">2</a>。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">Spark-1341：用于控制Spark Streaming中的数据传输速度。这个能力可以用于很多情况，当你已经受Kafka引起问题所烦恼时（比如auto.offset.reset所造成的），然后可能让你的应用程序重新处理一些旧数据。但是鉴于这里并没有内置的传输速率控制，这个功能可能会导致你的应用程序过载或者内存不足。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p>在这些故障处理策略和Kafka聚焦的问题之外之外，扩展性和稳定性上的关注同样不可忽视。再一次，仔细观看
+                    <a href="http://yahoohadoop.tumblr.com/post/98213421641/storm-and-spark-at-yahoo-why-chose-one-over-the-other" target="_blank">Bobby和Tom的视频</a>以获得更多细节。在Spark使用经验上，他们都永远比我更丰富。</p>
+                <p>当然，我也有我的
+                    <a href="https://www.mail-archive.com/user@spark.apache.org/msg11505.html" target="_blank">评论</a>，在 G1 garbage（在Java 1.7.0u4+中） 上可能也会存在问题。但是，我从来都没碰到这个问题。</p>
+                
+<h2>Spark使用技巧和敲门</h2>
+
+                <p>在我实现这个示例的代码时，我做了一些重要的笔记。虽然这不是一个全面的指南，但是在你开始Kafka整合时可能发挥一定的作用。它包含了
+                    <a href="http://spark.apache.org/docs/1.1.0/streaming-programming-guide.html" target="_blank">Spark Streaming programming guide</a>中的一些信息，也有一些是来自Spark用户的mailing list。</p>
+                
+<h3>通用</h3>
+
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">当你建立你的Spark环境时，对Spark使用的cores数量配置需要特别投入精力。你必须为Spark配置receiver足够使用的cores（见下文），当然实际数据处理所需要的cores的数量也要进行配置。在Spark中，每个receiver都负责一个input
+    DStream。同时，每个receiver（以及每个input DStream） occies一个core，这样做是服务于每个文件流中的读取（详见文档）。举个例子，你的作业需要从两个input
+    streams中读取数据，但是只访问两个cores，这样一来，所有数据都只会被读取而不会被处理。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p>
+                    </p><ul style="margin-left: 2em !important;">
+                        <li><span style="font-size: 14px; line-height: 24px;">注意，在一个流应用程序中，你可以建立多个input DStreams来并行接收多个数据流。在上文从Kafka并行读取一节中，我曾演示过这个示例作业。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">你可以使用 broadcast variables在不同主机上共享标准、只读参数，相关细节见下文的优化指导。在示例作业中，我使用了broadcast
+    variables共享了两个参数：第一，Kafka生产者池（作业通过它将输出写入Kafka）；第二，encoding/decoding Avro数据的注入（从Twitter
+    Bijection中）。<a href="http://spark.apache.org/docs/1.1.0/programming-guide.html#passing-functions-to-spark" target="_blank">Passing functions to Spark</a>。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">你可以使用累加器参数来跟踪流作业上的所有全局“计数器”，这里可以对照Hadoop作业计数器。在示例作业中，我使用累加器分别计数所有消费的Kafka消息，以及所有对Kafka的写入。如果你对累加器进行命名，它们同样可以在Spark
+    UI上展示。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">不要忘记import Spark和Spark Streaming环境：</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p></p><pre class="" code_snippet_id="569622" snippet_file_name="ptcms_1420124685_6." name="code">// Required to gain access to RDD transformations via implicits.
+import org.apache.spark.SparkContext._
+
+// Required when working on `PairDStreams` to gain access to e.g. `DStream.reduceByKey`
+// (versus `DStream.transform(rddBatch =&gt; rddBatch.reduceByKey()`) via implicits.
+//
+// See also &lt;a href="http://spark.apache.org/docs/1.1.0/programming-guide.html#working-with-key-value-pairs"&gt;http://spark.apache.org/docs/1.1.0/programming-guide.html#working-with-key-value-pairs&lt;/a&gt;
+import org.apache.spark.streaming.StreamingContext.toPairDStreamFunctions</pre>
+                <p></p>
+                <p>如果你是 Twitter Algebird的爱好者，你将会喜欢使用Count-Min Sketch和Spark中的一些特性，代表性的，你会使用reduce或者reduceByWindow这样的操作（比如，
+                    <a href="http://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#transformations-on-dstreams" target="_blank">DStreams上的转换</a>）。Spark项目包含了
+                        <a href="https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/streaming/TwitterAlgebirdCMS.scala" target="_blank">Count-Min Sketch</a>和
+                        <a href="https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/streaming/TwitterAlgebirdHLL.scala" target="_blank">HyperLogLog</a>的示例介绍。</p>
+                <p>如果你需要确定Algebird数据结构的内存介绍，比如Count-Min Sketch、HyperLogLog或者Bloom Filters，你可以使用SparkContext日志进行查看，更多细节参见
+                    <a href="http://spark.apache.org/docs/1.1.0/tuning.html#determining-memory-consumption" target="_blank">Determining Memory Consumption</a>。</p>
+                <p><b>Kafka整合</b>
+                </p>
+                <p>我前文所述的一些增补：</p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">你可能需要修改Spark Streaming中的一些Kafka消费者配置。举个例子，如果你需要从Kafka中读取大型消息，你必须添加fetch.message.max.bytes消费设置。你可以使用KafkaUtils.createStream(...)将这样定制的Kafka参数给Spark
+    Streaming传送。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p><b>测试</b>
+                </p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">首先，确定</span><span style="font-size: 14px; line-height: 24px;">已经</span>
+                            <span style="font-size: 14px; line-height: 24px;">在一个finally bloc或者测试框架的teardown method中使用stop()关闭了StreamingContext 和/或
+                                SparkContext，因为在同一个程序（或者JVM？）中Spark不支持并行运行两种环境。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">根据我的经验，在使用sbt时，你希望在测试中将你的建立配置到分支JVM中。最起码在kafka-storm-starter中，测试必须并行运行多个线程，比如ZooKeeper、Kafka和Spark的内存实例。开始时，你可以参考<a href="https://github.com/miguno/kafka-storm-starter/blob/develop/build.sbt" target="_blank"> build.sbt</a>。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">同样，如果你使用的是Mac OS X，你可能期望关闭JVM上的IPv6用以阻止DNS相关超时。这个问题与Spark无关，你可以查看<a href="https://github.com/miguno/kafka-storm-starter/blob/develop/.sbtopts" target="_blank">.sbtopts</a>来获得关闭IPv6的方法。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                
+<h3>性能调优</h3>
+
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">确定你理解作业中的运行时影响，如果你需要与外部系统通信，比如Kafka。在使用foreachRDD时，你应该阅读中</span>
+                            <a href="http://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#output-operations-on-dstreams" target="_blank" style="font-size: 14px; line-height: 24px;">Spark Streaming programming guide</a><span style="font-size: 14px; line-height: 24px;">中的Design
+    Patterns一节。举个例子，我的用例中使用Kafka产生者池来优化 Spark Streaming到Kafka的写入。在这里，优化意味着在多个task中共享同一个生产者，这个操作可以显著地减少由Kafka集群建立的新TCP连接数。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">使用Kryo做序列化，取代默认的Java serialization，详情可以访问</span>
+                            <a href="http://spark.apache.org/docs/1.1.0/tuning.html#serialized-rdd-storage" target="_blank" style="font-size: 14px; line-height: 24px;">Tuning Spark</a><span style="font-size: 14px; line-height: 24px;">。我的例子就使用了Kryo和注册器，举个例子，使用Kryo生成的Avro-generated
+    Java类（见</span>
+                                <a href="https://github.com/miguno/kafka-storm-starter/blob/develop/src/main/scala/com/miguno/kafkastorm/spark/serialization/KafkaSparkStreamingRegistrator.scala" target="_blank" style="font-size: 14px; line-height: 24px;">KafkaSparkStreamingRegistrator</a><span style="font-size: 14px; line-height: 24px;"> </span>
+                                <span style="font-size: 14px; line-height: 24px;">）。除此之外，在Storm中类似的问题也可以使用Kryo来解决。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">通过将spark.streaming.unpersist设置为true将Spark Streaming 作业设置到明确持续的RDDs。这可以显著地减少Spark在RDD上的内存使用，同时也可以改善GC行为。（点击访问</span>
+                            <a href="http://spark.apache.org/docs/1.1.0/streaming-programming-guide.html#memory-tuning" target="_blank" style="font-size: 14px; line-height: 24px;">来源</a><span style="font-size: 14px; line-height: 24px;">）</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">通过MEMORY_ONLY_SER开始你的储存级别P&amp;S测试（在这里，RDD被存储到序列化对象，每个分区一个字节）。取代反序列化，这样做更有空间效率，特别是使用Kryo这样的高速序列化工具时，但是会增加读取上的CPU密集操作。这个优化对
+    Spark Streaming作业也非常有效。对于本地测试来说，你可能并不想使用*_2派生（2=复制因子）。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                
+<h3>总结</h3>
+
+                <p>完整的Spark Streaming示例代码可以在
+                    <a href="https://github.com/miguno/kafka-storm-starter/" target="_blank">kafka-storm-starter</a>查看。这个应用包含了Kafka、Zookeeper、Spark，以及上文我讲述的示例。</p>
+                <p>总体来说，我对我的初次Spark Streaming体验非常满意。当然，在Spark/Spark Streaming也存在一些需要特别指明的问题，但是我肯定Spark社区终将解决这些问题。在这个过程中，得到了Spark社区积极和热情的帮助，同时我也非常期待Spark
+                    1.2版本的新特性。</p>
+                <p>在大型生产环境中，基于Spark还需要一些TLC才能达到Storm能力，这种情况我可能将它投入生产环境中么？大部分情况下应该不会，更准确的说应该是现在不会。那么在当下，我又会使用Spark
+                    Streaming做什么样的处理？这里有两个想法，我认为肯定存在更多：</p>
+                <p>
+                    </p><ul>
+                        <li><span style="font-size: 14px; line-height: 24px;">它可以非常快的原型数据流。如果你因为数据流太大而遭遇扩展性问题，你可以运行 Spark Streaming，在一些样本数据或者一部分数据中。</span>
+                        </li>
+                        <li><span style="font-size: 14px; line-height: 24px;">搭配使用Storm和Spark Streaming。举个例子，你可以使用Storm将原始、大规模输入数据处理到易管理等级，然后使用Spark
+    Streaming来做下一步的分析，因为后者可以开箱即用大量有趣的算法、计算指令和用例。</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p>感谢Spark社区对大数据领域所作出的贡献！</p>
+                
+<h3>推荐阅读</h3>
+
+                <p>
+                    </p><ul>
+                        <li>
+                            <a href="https://spark.apache.org/docs/latest/streaming-kafka-integration.html" target="_blank" style="font-size: 14px; line-height: 24px;">Spark Streaming + Kafka Integration Guide</a>
+                        </li>
+                        <li>
+                            <a href="http://www.slideshare.net/spark-project/deep-divewithsparkstreaming-tathagatadassparkmeetup20130617" target="_blank" style="font-size: 14px; line-height: 24px;">Deep Dive with Spark Streaming, by Tathagata Das, Jun 2013&nbsp;</a>
+                        </li>
+                    </ul>
+                <p></p>
+                <p><b>Mailing list discussions：</b>
+                </p>
+                <p>
+                    </p><ul>
+                        <li>
+                            <a href="https://www.mail-archive.com/dev@spark.incubator.apache.org/msg00531.html" target="_blank" style="font-size: 14px; line-height: 24px;">Spark Streaming threading model</a><span style="font-size: 14px; line-height: 24px;">&nbsp;——同样包含了一些关于</span>
+                            <span style="font-size: 14px; line-height: 24px;">Spark Streaming</span><span style="font-size: 14px; line-height: 24px;">如何将输入数据push到blocks中&nbsp;</span>
+                        </li>
+                        <li>
+                            <a href="http://apache-spark-user-list.1001560.n3.nabble.com/Low-Level-Kafka-Consumer-for-Spark-td11258.html" target="_blank" style="font-size: 14px; line-height: 24px;">Low Level Kafka Consumer for Spark</a><span style="font-size: 14px; line-height: 24px;">&nbsp;– ——大量关于Kafka集成到Spark Streaming的信息，其中包括已存在问题、相关处理措施等</span>
+                        </li>
+                        <li>
+                            <a href="http://apache-spark-user-list.1001560.n3.nabble.com/How-are-the-executors-used-in-Spark-Streaming-in-terms-of-receiver-and-driver-program-td9336.html" target="_blank" style="font-size: 14px; line-height: 24px;">How are the executors used in Spark Streaming in terms of receiver and
+                                driver program?</a><span style="font-size: 14px; line-height: 24px;">——
+    machines （）vs. cores vs. executors vs. receivers vs. DStreams in Spark&nbsp;</span>
+                        </li>
+                    </ul>
+                <p></p>
+                <p></p>
+                <p></p> <p><b>更多《问底》内容</b>
+
+            </p>
+            <ul>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-11/2821642-data-mining-by-Lanceyan">【问底】严澜：数据挖掘入门（一）——分词</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-10/2821615-how-twitter-uses-redis-to-scale-105tb-ram-39mm-qps-10000-ins">【问底】Yao Yu谈Twitter的百TB级Redis缓存实践</a>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-15/2821685-exploring-of-the-php">【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</a>&nbsp;</li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2">【问底】王帅：深入PHP内核（二）——SAPI探究</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-10-16/2822134">【问底】王帅：深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-25/2821866">【问底】静行：FastJSON实现详解</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-09-30/2821940">【问底】李平：大型网站的灵魂——性能</a>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline">【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-11-14/2822652-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline-2">【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-10-21/2822218">【问底】徐汉彬：大规模网站架构的缓存机制和几何分形学</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-11-06/2822529">【问底】徐汉彬：亿级Web系统搭建——单机到分布式集群</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-11-28/2822858">【问底】徐汉彬：Web系统大规模并发——电商秒杀与抢购</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-12-19/2823234">【问底】徐汉彬：PHP7和HHVM的性能之争</a>
+                    <br>
+                </li>
+                <li>
+                    <a href="http://www.csdn.net/article/2014-12-11/2823077">【问底】OpenStack在天河二号的大规模部署实践</a>&nbsp;</li><li><a href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET.html">【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战</a><br></li>
+            </ul><b>《问底》是<span style="color: #e36c09;">CSDN云计算频道</span>新建栏目，以实践为本，分享个人对于新时代软件架构与研发的深刻见解。在含有“【问底】”字样标题的文章中，你会看到某个国外IT巨头的架构分享，会看到国内资深工程师对某个技术的实践总结，更会看到一系列关于某个新技术的探索。</b><b><span style="color: #e36c09;">《问底》邀请对技术具有独特/深刻见解的你一起打造一片只属于技术的天空，详情可邮件至zhonghao@csdn.net。</span></b>
+
+            <br>
+            <p></p>
+                <p>原文链接：
+                    <a href="http://www.michael-noll.com/blog/2014/10/01/kafka-spark-streaming-integration-example-tutorial/" target="_blank">Integrating Kafka and Spark Streaming: Code Examples and State of the
+                        Game</a>（翻译/童阳 责编/仲浩）</p>				
+				<p class="copyright">本文为CSDN原创文章，未经允许不得转载，如需转载请联系market#csdn.net(#换成@)</p>
+				</div>
+									 
+		
+		 
+		 <div class="share"> 	 
+			  <div class="bdsharebuttonbox bdshare-button-style0-32" style="float:right;" data-bd-bind="1420358422266">
+			  <!-- a href="#" class="bds_more" data-cmd="more"></a -->
+			  <a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+			  <a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+			  <a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+			  <a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+			  </div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>  
+			
+ 		</div> 
+
+				<div class="detail">
+				<div class="digg">
+						<input type="hidden" id="digg_id" value="2823384">
+						<dl class="support disable">
+							<dt>顶</dt>
+							<dd>8</dd>
+						</dl>
+						<dl class="oppose disable">
+							<dt>踩</dt>
+							<dd>0</dd>
+						</dl>
+				</div>
+			</div>	
+ 	
+				<div class="ad_475_60"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner2&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+				<div class="related">推荐阅读相关主题：
+											<a href="http://www.csdn.net/tag/design%20patterns/news" title="design patterns" target="_blank">design patterns</a>
+											<a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/news" title="数据分析" target="_blank">数据分析</a>
+											<a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/news" title="数据挖掘" target="_blank">数据挖掘</a>
+											<a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/news" title="数据存储" target="_blank">数据存储</a>
+											<a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/news" title="数据结构" target="_blank">数据结构</a>
+											<a href="http://www.csdn.net/tag/%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/news" title="缓存机制" target="_blank">缓存机制</a>
+									</div>
+				<!-- relational article and news -->
+				<div id="Tab3" class="relational">
+					<h2 class="tab_1 Menubox">
+						<ul>
+						<li id="three1" onclick="setTab(&#39;three&#39;,1,2)" class="hover">相关文章</li>
+						<li id="three2" onclick="setTab(&#39;three&#39;,2,2)">最新报道</li>
+						</ul>
+					</h2>
+					<div class="con Contentbox">
+						<div id="con_three_1" class="hover">
+							<ul class="list_1">								
+														<li><a href="http://www.csdn.net/article/1970-01-01/2821940" title="【问底】李平：大型网站的灵魂——性能" target="_blank">【问底】李平：大型网站的灵魂——性能</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2823077" title="【问底】OpenStack在天河二号的大规模部署实践" target="_blank">【问底】OpenStack在天河二号的大规模部署实践</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2821685" title="【问底】王帅：深入PHP内核（一）——弱类型变量原理探究" target="_blank">【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2817966" title="首席数据官：一个属于你的时代已经来临" target="_blank">首席数据官：一个属于你的时代已经来临</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2821885" title="【问底】王帅：深入PHP内核（二）——SAPI探究" target="_blank">【问底】王帅：深入PHP内核（二）——SAPI探究</a></li>
+														<li><a href="http://www.csdn.net/article/1970-01-01/2818949" title="IBM 2014中国论坛：华丽转型，全面围绕云计算、大数据及互动参与体系展开" target="_blank">IBM 2014中国论坛：华丽转型，全面围绕云计算、大数据及互动参与体系展开</a></li>
+														</ul>
+						</div>
+						<div id="con_three_2" style="display:none">
+							<ul class="list_1 ">
+							 
+							<li><a href="http://www.csdn.net/article/2015-01-04/2823401" title="2015金山云战略解析：游戏之后，是视频+图片+智能家居" target="_blank">2015金山云战略解析：游戏之后，是视频+图片+智能家居</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2015-01-04/2823399" title="CoreOS实践指南（二）：架设CoreOS集群" target="_blank">CoreOS实践指南（二）：架设CoreOS集群</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2015-01-04/2823398" title="平安阿里数据库技术交流日总结" target="_blank">平安阿里数据库技术交流日总结</a></li>
+							 
+							<li><a href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET.html" title="【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战" target="_blank">【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-31/2823394" title="CSDN 2014博客之星 年度评选火爆开启" target="_blank">CSDN 2014博客之星 年度评选火爆开启</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-12-31/2823387" title="Google Kubernetes设计文档之Volumes" target="_blank">Google Kubernetes设计文档之Volumes</a></li>
+													
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- //relational article and news 广告 -->	
+
+				<!-- comments -->
+                
+									<div id="comments" class="csdn_comments">    <h2 class="comments_tit">        <p>已有<span>4</span>条评论</p>    </h2>                <div class="reply topreply">            <h6>还可以再输入<span>500</span>个字</h6>            <dl>                <dt class="user_img"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/user_01.gif" alt=""></dt>                <dd><textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="4"></textarea>                    <div class="reply_submit note_grey clearfix">                    <div class="fr"><input id="user" value="发表评论" type="submit" class="reply_btn"></div>                    <span class="loginwrap"><span class="error">您还没有登录! </span> 请<a class="dologin" href="javascript:viod(0);"> 登录 </a> 或<a href="https://passport.csdn.net/account/register">  注册 </a></span>                   <!-- <span class="error">您还没有登录! </span> 请<a href="#"> 登录 </a> 或<a href="#">  注册 </a>-->                    </div>                </dd>            </dl>            </div>    <div id="csdnTab" class="comments_reply">        <h3 class="tit tab_1">            <ul>                <li class="hover">最新评论</li>                <li>最热评论</li>            </ul>        </h3>        <div class="con last"><div lang="369635" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/qq_25023737"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/3_qq_25023737.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/qq_25023737" class="user_name" realname="qq_25023737">qq_25023737</a>   <span class="time">19小时前</span>   <span class="from"></span></div>                                        <div class="reply_content">您无权使用所提供的凭据查看此目录或页面
+
+那位朋友帮忙看看</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="qq_25023737369635_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="qq_25023737369635_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="qq_25023737369635_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="qq_25023737369635_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="369634" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/qq_25023737"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/3_qq_25023737.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/qq_25023737" class="user_name" realname="qq_25023737">qq_25023737</a>   <span class="time">19小时前</span>   <span class="from"></span></div>                                        <div class="reply_content">您无权使用所提供的凭据查看此目录或页面</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="qq_25023737369634_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="qq_25023737369634_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="qq_25023737369634_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="qq_25023737369634_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="369597" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/hkingboy"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/3_hkingboy.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/hkingboy" class="user_name" realname="hkingboy">hkingboy</a>   <span class="time">2015-01-03 14:30</span>   <span class="from"></span></div>                                        <div class="reply_content">hah</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="hkingboy369597_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="hkingboy369597_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="hkingboy369597_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="hkingboy369597_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="369553" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/hit_hlj_sgy"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/3_hit_hlj_sgy.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/hit_hlj_sgy" class="user_name" realname="hit_hlj_sgy">快乐程序员</a>   <span class="time">2015-01-02 23:10</span>   <span class="from"></span></div>                                        <div class="reply_content">赞！</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="hit_hlj_sgy369553_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="hit_hlj_sgy369553_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="hit_hlj_sgy369553_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="hit_hlj_sgy369553_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div id="page_nav" class="page_nav"><span style="display:none;">共<span class="num">4</span>个 </span>共<span class="total">1</span>页 <a class="homepage" href="javascript:void(0);">首页</a>&nbsp;&nbsp;<a class="prev" href="javascript:void(0);">上一页</a>&nbsp;<a class="pages on" href="javascript:void(0);" lang="1">1</a>&nbsp;<a class="next" href="javascript:void(0);">下一页</a>&nbsp;&nbsp;<a class="endpage" href="javascript:void(0);">末页</a></div></div>        <div class="con hot" style="display:none"><div class="empty-placeholder">                <div class="empty-tip">还没有评论，赶快来抢沙发吧。</div>            </div></div>        <div>请您注意        <ul class="note_grey">            <li>·自觉遵守：爱国、守法、自律、真实、文明的原则</li>            <li>·尊重网上道德，遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律法规</li>             <li>·严禁发表危害国家安全，破坏民族团结、国家宗教政策和社会稳定，含侮辱、诽谤、教唆、淫秽等内容的作品</li>             <li>·承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>             <li>·您在CSDN新闻评论发表的作品，CSDN有权在网站内保留、转载、引用或者删除</li>             <li>·参与本评论即表明您已经阅读并接受上述条款</li>        </ul>        </div>    </div></div>
+                    <script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/cnick.js"></script>
+					<script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/comments.js" type="text/javascript"></script>
+					<!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script-->
+					<script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial",
+					        title:"%E3%80%90%E9%97%AE%E5%BA%95%E3%80%91Michael%20G.%20Noll%EF%BC%9A%E6%95%B4%E5%90%88Kafka%E5%88%B0Spark%20Streaming%E2%80%94%E2%80%94%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%E5%92%8C%E6%8C%91%E6%88%98",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script>
+								<!-- //comments -->
+			</div>
+			
+			
+		</div>
+		
+		<div class="right">	
+						
+			<div class="ad_300_250"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|pip&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+			
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:10px; margin-bottom:20px;">
+            	 <ul style=" float:right; width: 160px; padding:5px;">
+                    <li style="font-size:16px; font-weight:bold;">CSDN官方微信</li>
+                    <li style="float:left;">扫描二维码,向CSDN吐槽</li>
+                    <li>微信号：CSDNnews</li>
+                </ul>
+                <img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/28_121116100507_1.jpg" width="100" height="100">
+            </div>
+			
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;"><img style="vertical-align:middle; margin-right:10px;" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/icon_ipad.png"><a href="http://subject.csdn.net/programmer-ipad/" target="_blank">程序员杂志for iPad 免费下载 </a></div>
+			
+			<div class="sitemap"><a href="http://www.csdn.net/article/lastnews" target="_blank">每日资讯快速浏览 </a></div>	
+						<!-- 订阅和关注 -->
+			<div class="report">
+				<h2 class="tit_2"><p>微博关注</p></h2>
+								<iframe width="100%" height="300" class="share_self" frameborder="0" scrolling="no" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/index.html"></iframe>
+								
+			</div>
+ 	
+			
+			<div class="rtbrill" id="digestComment"></div>		
+			<!-- recommend and hot weekly -->			
+			<div id="Tab2" class="hot_weekly">
+				<h2 class="tit_2"><p>相关热门文章</p></h2>
+				<div class="con Contentbox">
+					<div id="con_two_2">
+						<ul class="list_1 ">
+													<li><a href="http://www.csdn.net/article/2014-12-30/2823363-10-ways-data-center-industry-will-change-in-2015" title="展望2015：数据中心行业的十大预测" target="_blank">展望2015：数据中心行业的十大预测</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-29/2823356" title="漫步云端：CoreOS实践指南（一）" target="_blank">漫步云端：CoreOS实践指南（一）</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-30/2823373" title="分布式存储与数据库选型问答整理分享" target="_blank">分布式存储与数据库选型问答整理分享</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-31/2823387" title="Google Kubernetes设计文档之Volumes" target="_blank">Google Kubernetes设计文档之Volumes</a></li>
+													<li><a href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET.html" title="【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战" target="_blank">【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-25/2823320" title="Google Kubernetes设计文档之网络" target="_blank">Google Kubernetes设计文档之网络</a></li>
+													<li><a href="http://www.csdn.net/article/2015-01-04/2823398" title="平安阿里数据库技术交流日总结" target="_blank">平安阿里数据库技术交流日总结</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-30/2823367" title="深入了解数据库之LogMiner" target="_blank">深入了解数据库之LogMiner</a></li>
+													<li><a href="http://www.csdn.net/article/2014-12-31/2823394" title="CSDN 2014博客之星 年度评选火爆开启" target="_blank">CSDN 2014博客之星 年度评选火爆开启</a></li>
+													<li><a href="http://www.csdn.net/article/2015-01-04/2823399" title="CoreOS实践指南（二）：架设CoreOS集群" target="_blank">CoreOS实践指南（二）：架设CoreOS集群</a></li>
+												</ul>
+					</div>
+				</div>
+			</div>
+			  
+			  <!-- hot tag -->
+			<div class="hot_tag">
+				<h2 class="tit_2"><p><a href="http://www.csdn.net/tag">热门标签</a></p></h2>
+				<ul class="list_1">
+				 
+									 
+										<li><a href="http://www.csdn.net/tag/hadoop" title="Hadoop" target="_blank">Hadoop</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/aws" title="AWS" target="_blank">AWS</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F" title="移动游戏" target="_blank">移动游戏</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/java" title="Java" target="_blank">Java</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/android" title="Android" target="_blank">Android</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ios" title="iOS" target="_blank">iOS</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/swift" title="Swift" target="_blank">Swift</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6" title="智能硬件" target="_blank">智能硬件</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/docker" title="Docker" target="_blank">Docker</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/openstack" title="OpenStack" target="_blank">OpenStack</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/vpn" title="VPN" target="_blank">VPN</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/spark" title="Spark" target="_blank">Spark</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/erp" title="ERP" target="_blank">ERP</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ie10" title="IE10" target="_blank">IE10</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/eclipse" title="Eclipse" target="_blank">Eclipse</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/crm" title="CRM" target="_blank">CRM</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/javascript" title="JavaScript" target="_blank">JavaScript</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" title="数据库" target="_blank">数据库</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ubuntu" title="Ubuntu" target="_blank">Ubuntu</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/nfc" title="NFC" target="_blank">NFC</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/wap" title="WAP" target="_blank">WAP</a></li>
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+											
+				</ul>
+			</div>
+			<!-- //hot tag -->
+			
+			<!-- share -->
+			<div class="box share">
+    			<h2 class="tit_2"><p><a target="_blank" href="http://share.csdn.net/">CSDN Share PPT下载</a></p></h2>
+    							
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/11228" title="3.1 遗传算法入门"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/6b83924f464352758c44b95616676fe9_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/11228" title="3.1 遗传算法入门">3.1 遗传算法入门</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/11226" title="【软件度量沙龙】通用软件产品研发的成本管理"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/53db3ba8214e4fdb9f9a7b0b280e7bc2_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/11226" title="【软件度量沙龙】通用软件产品研发的成本管理">【软件度量沙龙】通用软件产品研发的成本管理</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/11183" title="虚拟内存管理 – 第2部分 os-lec6-cn-chy"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/8784d561d36934d24f521b59c6af3529_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/11183" title="虚拟内存管理 – 第2部分 os-lec6-cn-chy">虚拟内存管理 – 第2部分 os-lec6-cn-chy</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/11126" title="linux-tool"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/dfb49c5b960eace3f7bd4e306824051e_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/11126" title="linux-tool">linux-tool</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                	
+</div>
+			<!-- //share -->
+			
+					</div>
+	</div>
+			<div class="hot_topic">
+		<h1><span class="title">热门专区</span></h1>
+		<ul>
+						<li><a href="http://g.csdn.net/5272864" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/ronglian1.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5272864" target="_blank">容联云通讯开发者技术专区</a></span></li>
+					<li><a href="http://g.csdn.net/5272863" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/tengx.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5272863" target="_blank">腾讯云技术社区</a></span></li>
+					<li><a href="http://g.csdn.net/5253320" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/IBM PMI03.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5253320" target="_blank">IBM新兴技术大学</a></span></li>
+					<li><a href="http://g.csdn.net/5271687" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/Atlassian.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5271687" target="_blank">高效能团队解决方案</a></span></li>
+					<li><a href="http://g.csdn.net/5261231" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/160x120(1)01.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5261231" target="_blank">高通开发者专区 </a></span></li>
+					</ul>
+	</div>
+		<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/like.js"></script>
+	<script>
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2014-12-31%2F2823384-kafka-spark-streaming-integration-example-tutorial";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc3', tabobjlinks[2]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2823384&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+		function pongoad2(val){
+			$("#job_ul").html(val);
+		}
+		var callbackfun="pongoad2";
+		document.write(unescape('%3Cscript src="http://a.pongo.cn/Job/GetAdForCallBack%3Fid%3D2%26UrlAdParam%3D'+encodeURIComponent(location.href)+'%26&CallBack%3D'+callbackfun+'" type="text/javascript"%3E%3C/script%3E'));
+	</script><script src="http://a.pongo.cn/Job/GetAdForCallBack?id=2&UrlAdParam=http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial&&CallBack=pongoad2" type="text/javascript"></script>
+
+
+	<script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script>
+
+	<script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script><script src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/highlighter.js"></script>
+	
+	<!-- 广告位：富媒体广告 -->
+	<script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script>
+  
+	<!-- public footer -->
+      <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script><script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/notify.js"></script>
+	<!-- //public footer -->
+</div><input type="hidden" id="aa_g_data_ids">
+<!-- tab js -->
+<script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script>
+<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script> 
+<!--<script id="noticeScript" type="text/javascript" charset="utf-8" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" src="http://static.csdn.net/public/common/toolbar/js/notify.js"></script>-->
+<script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/toolbar.js"></script>
+
+<!-- ask 全局悬浮按钮  -->
+<link href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/ask_float_block.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/wmd.js"></script>
+<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/showdown.js"></script>
+<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/prettify.js"></script>
+<script type="text/javascript" src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/ask_float_block.js"></script>
+
+ 
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><link rel="stylesheet" type="text/css" media="screen" href="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/ask_float_fonts_css-6b30a53970eb5c3a2a045e3df585b475.css"><div data-mod="popu_64" class="tracking-ad" chg-blk="0"><a id="com-ask-float-block" title="提问按钮" style="top:406px"></a><a id="com-d-top-a" style="top: 447px; display: none;" title="返回顶部" onclick=""></a></div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" type="text" style="font-size:14px;" placeholder="问题标题"></div><div class="cm_box"><div class="cm_dialog"></div> <div class="pop_cm cm_add_link"><input type="text" placeholder="链接内容" id="af_cm_link_txt"><input type="text" placeholder="链接地址" id="af_cm_link_url"><input type="text" placeholder="链接提示" id="af_cm_link_tit"><div class="text-right"><span class="btn btn-default btn-sm" id="add_link_btn">插入链接</span> </div> </div><div class="pop_cm cm_add_img"><div class="nav-tabs"><a class="img_tab active" href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#tab_upload">本地上传</a><a class="img_tab" href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#tab_weburl">网络图片</a></div><div class="tab_panel active" id="tab_upload"><div class="set_img"><iframe src="./【问底】Michael G. Noll：整合Kafka到Spark Streaming——代码示例和挑战-CSDN.NET_files/upload.html"></iframe></div></div><div class="tab_panel" id="tab_weburl"><input type="text" placeholder="图片地址" id="af_cm_img_url"><input type="text" placeholder="图片说明" id="af_cm_img_alt"><div class="text-right"><span class="btn btn-default btn-sm" id="add_img_btn">插入图片</span> </div></div> </div></div> <textarea id="editor_all" rows="8" style="display: none;"></textarea><div class="editor-toolbar"><i class="separator">|</i><a class="icon-headline" title="标题一（Ctrl+Alt+1）"></a><a class="icon-heading" title="标题二（Ctrl+Alt+2）"></a><a class="icon-bold" title="粗体（Ctrl+B）"></a><a class="icon-italic" title="斜体（Ctrl+I）"></a><i class="separator">|</i><a class="icon-quote-left" title="引用（Ctrl+’）"></a><a class="icon-code" title="插入代码片（Ctrl+,）"></a><a class="icon-list-ul" title="无序列表（Ctrl+L）"></a><a class="icon-list-ol" title="有序列表（Ctrl+Alt+L）"></a><i class="separator">|</i><a class="icon-link" title="添加链接（Ctrl+K）"></a><a class="icon-picture" title="添加图片（Ctrl+Alt+I）"></a><i class="separator">|</i><a class="icon-reply" title="撤退（Ctrl+Z）"></a><a class="icon-share-alt" title="前进（Ctrl+Shift+Z）"></a><i class="separator">|</i><a class="icon-info" href="http://ask.csdn.net/pages/markdown" target="_blank" title="markdown语法参考"></a><a class="icon-preview" title="预览"></a><i class="separator">|</i></div><div class="CodeMirror cm-s-paper CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="min-width: 33px;"><div style="position: relative;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>&nbsp;<span style="display: inline-block; width: 1px; margin-right: -1px;">&nbsp;</span></pre></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"></div><div class="CodeMirror-cursor" style="visibility: hidden;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="visibility: hidden;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px;"></div><div class="CodeMirror-gutters" style="display: none;"></div></div></div><div class="editor-statusbar"><span class="lines">0</span><span class="words">0</span><span class="cursor">0:0</span></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input type="hidden" name="txtSearchTags"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" nodetype="cancel" class="cancel">取消</a><a href="http://www.csdn.net/article/2014-12-31/2823384-kafka-spark-streaming-integration-example-tutorial#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

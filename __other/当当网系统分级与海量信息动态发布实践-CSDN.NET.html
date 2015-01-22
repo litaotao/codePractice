@@ -1,0 +1,669 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://www.csdn.net/article/2014-11-07/2822541 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="http://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+
+	
+<title>当当网系统分级与海量信息动态发布实践-CSDN.NET </title>
+<meta name="description" content="当当网各种大中小型促销活动常年不断，且活动的业务模式不尽相同，因此要求系统具备很强的伸缩性。本文结合当当网多年实战经验，讲述如何制定的系统伸缩性的设计原则和硬件常备策略，来应对各场景下的流量暴涨。">
+<meta name="keywords" content="《程序员》杂志,2014年11月刊,当当网,电子商务,特别策划,互联网">
+<meta name="author" content="CSDN.NET">
+<meta name="Copyright" content="CSDN.NET">
+<!-- toolbar start --> 
+<link href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/index.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" async="" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/ga.js"></script><script src="http://hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374"></script><script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/jquery-1.9.1.min.js" type="text/javascript"></script><style type="text/css"></style>
+<!-- toolbar end -->
+<link href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/content.css" rel="stylesheet" type="text/css">
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/share.js"></script><link rel="stylesheet" type="text/css" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/comments.css"><script type="text/javascript" charset="utf-8" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/tracking.js"></script><script type="text/javascript" charset="utf-8" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/main.js"></script><link rel="stylesheet" type="text/css" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/style.css"><link rel="stylesheet" type="text/css" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/style(1).css"><link type="text/css" rel="stylesheet" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/style(2).css"><link rel="stylesheet" type="text/css" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/highlighter.css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_32.css?v=9ebeb48a.css"></head>
+<body>
+<script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://programmer.csdn.net"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://programmer.csdn.net/?ref=toolbar_logo" target="_blank" class="img news-icon"></a></div>          <div class="pull-right login-wrap ">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display: none;" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"><div class="icon-hasnotes" style="display: none;"></div></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note" style="display: none;">                      <div class="box"><div class="notifications notice_list_con curr">  <div class="menu_title">    <span class="title"><a href="http://msg.csdn.net/" target="_blank" class="read_all">全部设为已读</a><a href="http://msg.csdn.net/" target="_blank" class="go_all">查看所有通知</a></span>  </div>  <div class="loading"></div>  <div class="empty">暂没有新通知</div>  <div class="notice_content"></div></div><div class="notifications detail_con" style="display: none">  <div class="menu_title">    <span class="title">      <a class="go_back" href="javascript:void 0;">返回通知列表</a>      <a class="notifications_page_none nextnote" href="javascript:void 0;">下一条</a>      <a class="notifications_page prvnote" href="javascript:void 0;">上一条</a>    </span>  </div>  <div class="notice_content"></div></div><div class="error"></div></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/2_datayes.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/2_datayes.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname">datayes</a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-right "><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://share.csdn.net/?ref=toolbar" target="_blank">Share</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>
+<div class="wrap">
+	<!-- 间歇滚动 -->
+	<script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script>
+	<script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/jquery.autoscroll.js" type="text/javascript"></script><!--滚动js-->
+	<!-- //间歇滚动 -->
+	<script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script>
+	<!--<div class="ad_960">
+		<div class="ad_230"><script type="text/javascript">BAIDU_CLB_fillSlot("421712");</script></div>
+		<div class="ad_728"><script type="text/javascript">BAIDU_CLB_fillSlot("421709");</script></div>
+	</div>-->
+
+</div>
+	<!-- nav -->
+	<div id="xcx_tabmenu" class="nav">
+		<div id="cx_tabmenu" class="cx_tabmenu">
+			<!-- lev one -->
+			<div id="ddimagetabs" class="lev_1">
+				<ul>
+				<li><a href="http://news.csdn.net/" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);" class="">业界</a></li>
+				<li><a href="http://mobile.csdn.net/" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);" class="">移动开发</a></li>
+				<li><a href="http://cloud.csdn.net/" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);" class="">云计算</a></li>
+				<li><a href="http://sd.csdn.net/" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);" class="">软件研发</a></li>
+				<li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank" class="current">程序员杂志</a></li>
+				<li><a href="http://geek.csdn.net/" id="sclink7" target="_blank" class="">极客头条</a></li>
+				<li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank" class="">专题</a></li>
+				<!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>-->
+				</ul>
+			</div>
+			<!-- lev two -->
+			<div id="tabcontentcontainer" class="lev_2">
+				<div class="tabcontent" id="sc1">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc2">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/news" target="_blank">游戏引擎</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc3">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc4">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc5" style="display: block;">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li>
+										</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script>
+ 
+<div class="wrap">
+	
+	
+	
+		
+	<div class="brea_nav">
+				<span class="fr">
+		<a href="http://news.csdn.net/rss_programmer.html" class="rss" target="_blank">订阅程序员杂志RSS</a>					
+		</span><a href="http://www.csdn.net/">CSDN首页</a><em>&gt;</em>
+		<a href="http://programmer.csdn.net/" target="_blank">程序员杂志</a>	</div>
+	
+	<div class="content">
+		<div class="left">
+			<div class="detail">
+				<h1 class="title">当当网系统分级与海量信息动态发布实践</h1>
+				<h4>
+					<div class="tit_bar">
+						发表于<span class="ago">2014-11-07 11:34</span>|
+						<span class="view_time">2017次阅读</span>| 
+						来源<span class="ago">《程序员》</span>|
+						<span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">4</font> 条评论</span>| 
+						作者<span class="ago">李震平，史海峰</span>
+					</div>
+				</h4>
+				<div class="tag"><a href="http://www.csdn.net/tag/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%8B%E6%9D%82%E5%BF%97/news">《程序员》杂志</a><a href="http://www.csdn.net/tag/2014%E5%B9%B411%E6%9C%88%E5%88%8A/news">2014年11月刊</a><a href="http://www.csdn.net/tag/%E5%BD%93%E5%BD%93%E7%BD%91/news">当当网</a><a href="http://www.csdn.net/tag/%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1/news">电子商务</a><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news">特别策划</a><a href="http://www.csdn.net/tag/%E4%BA%92%E8%81%94%E7%BD%91/news">互联网</a></div>
+				<div class="summary">
+					<input type="hidden" id="article_description" name="article_description" value="当当网各种大中小型促销活动常年不断，且活动的业务模式不尽相同，因此要求系统具备很强的伸缩性。本文结合当当网多年实战经验，讲述如何制定的系统伸缩性的设计原则和硬件常备策略，来应对各场景下的流量暴涨。">
+				<script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/weiboshare.html" width="22" height="16"></iframe><strong>摘要：</strong>当当网各种大中小型促销活动常年不断，且活动的业务模式不尽相同，因此要求系统具备很强的伸缩性。本文结合当当网多年实战经验，讲述如何制定的系统伸缩性的设计原则和硬件常备策略，来应对各场景下的流量暴涨。				</div>
+				<div class="con news_content">
+				<p>当当网自成立以来，内部技术体系的发展已经有15年左右的历史了。系统架构也经历了从高度集成的软件向分布式、低耦合、SOA化系统的演进过程，形成全面支持网上零售业各种业态模式的系统架构，每天支撑着千万级的PV访问，承载了超过100亿元人民币的年营业额，2013年双11峰值流量达到日常的10倍。</p><p>作为一个典型的自营与开放平台相结合的网上零售电子商务平台，当当网网上购物流程由多达上百个大小系统共同实现。当当网最终服务于消费者，良好的用户体验、钱物准确是立足的根本，因此对系统稳定性、可靠性、准确性有非常严格的要求。任何时候都能保证线上系统的稳定运行，是我们工作的第一优先级。电商系统的运行峰值通常出现在各类促销、营销活动期间，以及大量集中收订的订单带来很大的生产和配送压力时。</p><p>除了参加每年的双11和双12大促、每年的10月店庆、业内重要的庆典、两次开学季图书大促、换季服装大促、常规的新品和尾品大促以外，当当网每个月至少会有一次公司级别大促，而各种中小型大促常年不断。各种促销活动均可以闪购、秒杀、大量SKU促销等模式实现。网站流量的来源除了新老用户的直接登录以外，还包括多种站外引流方式如网址导航、联盟、搜索引擎、各种线上线下媒介、短信、邮件、微信等通道。</p><p>因流量来源的不同，相应用户的浏览、购物模式也大有不同。如很多促销落地页是当当网的“馆”，或者专题页，那么我们可以在活动之前做非常有针对性的准备；有时用户已提前准备好了购物清单，如双11这样的促销中，订单转化率会比平时高，体现在订单收订和卖场流量不会成比例上涨——如订单收订上涨6倍，卖场流量可能只会涨3~4倍；而一些外部引流方式会带来大量无效、垃圾流量，所以订单转化率会比正常流量低。</p><p>有的活动流量会对首页有较大影响；有的活动会对购物车有较大影响，如闪购类的限时购买或复杂的促销逻辑；有的活动会对当当网的仓储、配送系统有较大影响，如当当网配送的订单；有的活动会对开放平台有较大影响，如商家订单。</p><p>因此，摸清业务模式和活动特点，是设计和运维高峰值电商系统，即高伸缩性系统的重中之重。但从另一个角度来说，在没有动态弹性部署的前提下，过度的设计和服务器部署是一种浪费，特别是硬件非常有限的寿命会带来每年巨大的成本摊销。</p><p>当当网根据业务发展速度和业务运营规律，结合多年的经验，制定的系统伸缩性的设计原则和硬件常备策略使各流程能够直接应对日常5倍业务量的上涨。通过增加服务器的方式，能够应对10倍业务量上涨。而如果要应对10倍以上的上涨，则需要提前做有针对性的系统优化。但无论当前承受的业务量是否超过了设计范围，都不能影响设计范围内业务量的正常处理。</p><p>设计和部署大流量、高并发系统的技术方案选择比较多，业内有很多成功经验和案例。但根据我们的经验，设计高峰值的网上零售业电商应用系统通常要面对以下几大难点。</p><p></p><ol><li>应用架构复杂，业务发展快，迭代速度快，各系统之间盘根错节，历史包袱重。不仅有牵一发而动全身的风险，更有边缘case出错影响主流程处理、耗尽过多资源的隐患。</li><li>从前台到后台的业务流程长，用例多。在能承受的最大峰值上，存在短板效应。设计实现时要面面俱到。</li><li>通常促销活动的持续时间短而集中，前期推广活动已经启动，在活动期间，短暂的系统不可用，也会带来惨重的销售损失与负面影响，没有亡羊补牢的机会。要确保系统的稳定性，平时的工作就要做足。</li></ol><p></p><p>针对这几大难点，有以下几大应对策略。</p><p></p><ol><li>基于SOA架构理念，降低系统耦合性，接口定义清晰明确，保证独立子系统的健壮性高，降低故障跨系统扩散风险，从而将伸缩性的困难逐步分解到各个系统。</li><li>对系统进行分级，集中力量，突出重点系统。当当网从卖场到交易流程均属于一级系统，这部分系统直接关乎用户体验和订单量。在系统稳定性和可靠性等指标上，设计标准高于后台系统。</li><li>优先考虑用异步处理代替同步处理，做好系统异常的降级方案，保证有限的合格服务。</li></ol><p></p><p>在描述电商平台峰值系统的设计之前，通过图1可简单了解当当网电商平台的几大组成系统：卖场系统，促销、会员系统，商品管理系统，交易系统，订单管理系统，仓储与调拨系统，物流与配送系统，客服与退换货系统等。</p><p style="text-align: center;"><a href="http://cms.csdnimg.cn/article/201411/07/545c39d14dcee.jpg" target="_blank"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/545c39d14dcee_middle.jpg" border="0" style=""></a><br></p><p style="text-align: center;">图1 &nbsp;当当网电商平台架构<br></p><h3><span style="color: #8064a2;">系统分级</span></h3><p>对于电商网站，用户体验是第一位的，系统稳定运行是保证用户良好体验的基础。在资源有限的条件下，采取对系统进行级别划分的方式，对高级别系统保持重点关注，在设计、部署、监控等方面确保高级别系统具备良好的伸缩性、健壮性和敏感度，能够应对电商业务中不确定的极限峰值冲击。</p><p>当当网基于可能对用户产生影响的程度与敏感度，将所有应用系统分为三级，简单描述如表1。</p><p style="text-align: center;"><a href="http://cms.csdnimg.cn/article/201411/07/545c3a0210f99.jpg" target="_blank"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/545c3a0210f99_middle.jpg" border="0" style=""></a><br></p><p style="text-align: center;">表1 &nbsp;应用系统等级划分标准<br></p><p>依此标准，当当网的一级系统主要包括卖场系统、商品详情、价格系统、库存系统、促销系统、购物车、交易系统、支付系统、会员系统等。</p><p>二级系统则包括商品信息系统、订单系统、ERP、仓储系统、物流与干线运输系统等。</p><p>三级系统主要是结算系统、报表系统，以及运营、活动管理类系统。</p><p>其中一级系统基本可分为两类，第一类为面向用户访问的前端页面，第二类为购买流程所涉及的系统。一级系统的关键指标是可用性，在设计和部署时都要高标准严要求，要求具备完善的容错降级机制，日常保持较低的系统运行负载，配置高级别的监控告警流程，出现问题在要求的SLA标准内修复与解决。这两类系统的核心业务功能定位不同，采用的技术也不同，前端页面系统主要使用PHP语言，购买流程则主要由Java语言实现。</p><p>前端页面系统是电商业务的流量入口，需解决的核心问题是保证大流量高并发情况下的快速展示可用，这方面业界已有较为成熟的解决方案，如CDN、缓存、静态化、异步加载、与依赖的数据源解耦、同机部署、数据库读写分离等。通过这样的设计使前端无状态页面应用可以水平扩展，增加Web服务器即可提升系统能力。</p><p>为充分发挥系统资源潜力、提高性能，我们引入HHVM对PHP代码进行优化加速，经过性能测试验证，取得了显著效果，性能提升超过100%。现在当当网前端页面系统具备支撑10倍流量冲击的能力，面对超出极限的流量峰值，我们也有预案，主要采取延长缓存时效、本地静态化方式，屏蔽峰值流量对后端系统的冲击，并具备容错机制，在后端非关键服务失效时优雅展示等。卖场系统作为生成各种活动专题页面的工厂，支持通过配置将页面组件静态化，以满足更高访问量的要求。</p><p>购买流程是电商业务流程中至关重要的环节，一旦出现问题，将使前面的引流、促销、搜索、推荐等营销成果付诸东流，因此购物车、交易系统和支付系统必须确保用户购买结算过程的高效稳定，并保证数据持久化的准确性和一致性。</p><p>购物车与交易系统逻辑复杂，依赖服务众多，其中交易流程的实现依赖超过100个服务。我们梳理出核心业务流程，再根据与核心业务流程的关系，区分出对服务的依赖性强弱。弱依赖服务如积分、礼券、收藏夹等，通过较好的容错和降级机制，在业务量达到峰值时，可通过服务降级维持核心业务流程的稳定运行。对于强依赖服务中数据变化较少的配置查询类服务，则通过缓存数据来降低服务依赖关系，牺牲部分数据的及时性换取系统的健壮性。</p><p>交易型系统的业务，成功率是关键指标，可能因为分布式服务集群中部分实例异常或网络问题导致调用强依赖的服务失败，需要发起重试，为兼顾用户体验和减少对系统资源的占用，采用设置较短超时时间及重试其他服务节点方式更为合理。经过优化，购买流程的系统可用性指标达到了99.99%。</p><p>二级系统多数为后台订单与履约系统。在流量漏斗模型下，在一级系统内形成订单后，订单流转到二级系统，二级系统面对的峰值压力要小得多。</p><p>二级系统多采用异步方式进行系统交互，对于超出处理能力的业务数据，异步机制削峰填谷，使系统得以在可控的压力下运行。系统资源占用维持在较高水位，既能充分利用系统资源，又可以保证较高的处理效能。当然，异步机制带来的延迟问题也必须控制在合理范围之内，在业务量骤增时可以容忍一定程度延迟。如果平时就经常出现延迟，则需要进行优化，或者重新进行容量规划，提高系统整体的吞吐能力。2014年为应对双11及未来业务发展，当当网对订单系统数据库进行了扩容，规模达到之前的5倍，其他部分系统也进一步分库分表，使之具备承载更高业务峰值的能力。</p><p>系统分级是根据不同系统的特点，结合公司业务战略关注点进行的差异化处理。电商业务链贯穿多个系统，每一个环节都不容忽视。一级系统固然是核心优化的重点，二三级别系统的技术指标要求也同样严格。</p><p>我们对每个系统的可用性都有严格要求，并将监控系统列为一级系统，时刻关注木桶理论中最短的那块板子，我们的目标是打造一套性能均衡，没有明显短板，日常能够应对5倍业务峰值压力的电商系统平台。</p><h3><strong><span style="color: #8064a2;">解耦与SOA实践</span></strong></h3><p>经过多年实践，当当网逐步完成系统架构的SOA化改造，并通过SOA化，实现了服务解耦与高内聚，简化了架构复杂度，这是主流零售型电商平台通常选择的道路。基于分布式的服务使系统具备更强的伸缩性和扩展性，系统瓶颈更易定位和优化，满足业务快速增长的需要。</p><p>SOA即面向服务的架构，在业界并没有统一的标准，但有一些公认的设计原则：标准合约、松散耦合、服务抽象、可复用性、服务自治、无状态性、可发现性、可组合性。</p><p>在实际应用过程中，根据系统情况以其中部分原则为侧重点，不求全责备，简单实用为上。</p><p>2012年起，当当网启动一系列重点项目，首先对开放平台进行重构，使开放平台成为搭建在PIM、库存、价格、促销、订单、TMS等主业务系统之上一套具备更灵活的扩展性的业务平台。</p><p>这次重构是当当网近年的重大架构调整之一，之后各主业务系统陆续实现业务平台化，支持多商家甚至是平台级跨商家的业务模式。开放平台将原有独立管理的商家商品信息、订单流程迁移至PIM系统和订单系统进行统一管理，充分发挥服务的可复用性，减少重复逻辑的多点实现带来的开发和维护成本。</p><p>商品信息是电商业务系统中的核心主数据，是促销、价格、库存、礼券、搜索等系统的基础数据来源。PIM系统作为商品主数据系统，承担着管理商品基础数据、关系、品牌、类目和状态等信息的职能，商品数据量在千万级别。</p><p>PIM系统的SOA建设经过了两个阶段。第一阶段主要是实现服务化，因服务设计粒度过细，发布的服务达到数百个，其他系统要完成一个业务功能可能需要调用多个PIM服务，增加了服务使用方的逻辑复杂度，也带来了更多的网络交互开销，不能称为SOA的最佳实践。</p><p>为此，又进行了第二阶段改造，将第一阶段实现的服务定义为基础服务，根据业务需要将其组合，提供粗粒度的对外服务，解决了之前的问题。粗粒度服务能够提供独立的业务功能，可能同时依赖于多个系统的基础服务，当服务使用方因业务需要调用多个粗粒度服务时，可能会对同一个基础服务发起多次访问，产生叠加的系统压力。我们经过分析认为，底层服务资源的消耗能够简化上层应用逻辑，对于系统架构层次的合理性更为有益，只要提高底层基础服务的性能，上层服务能力将更具弹性。</p><p>遵循SOA的系统解耦有时会增加系统资源开销，甚至降低部分服务性能指标，但可使系统架构更为清晰，增加服务复用性，具备更强的业务扩展性，提高开发测试效率，降低开发运维的人力成本，及时响应业务创新，使IT系统重现活力。</p><p>通过上述系统架构治理，当当网以很少的临时性系统准备顺利度过2013年双11大促。</p><h3><strong><font color="#8064a2">海量动态信息流的快速发布</font></strong></h3><p>当当网打造综合品类电商平台，开放商家入驻，随之而来的是商品数据量迅速突破千万。商品信息是电商业务流程前端的重要数据，是进行营销活动、生成订单的基础。商品信息在前台有多种展示页面，大规模营销活动期间运营人员需要进行大量操作设置，价格、库存等也会更为频繁地更新。目前库存日更新量峰值超过1500万SKU的变化；价格日更新数据量达500万以上SKU，极限峰值超过1000万，每秒可能超过1万。数据同步及时性、一致性指标关乎用户体验和营销活动执行效率，如此大量的数据，在各业务系统之间高效稳定传输，对系统架构提出了很大的挑战。</p><p>当当网的商品数据有多个来源，自营实物商品来源于ERP系统，电子书来源于数字业务系统，商家商品来源于开放平台，最终这些商品的数据都由主业务系统中的PIM、库存系统、价格系统集中统一管理，再发布到搜索系统、推荐系统、前端页面展示等系统。为了对商品信息中的关键数据同步时效进行监控，当当网建立了啄木鸟监控系统，覆盖了近20个信息流路径数百个节点，对超出同步时限的环节自动报警，以便及时处理，避免发生严重的延迟。</p><p>商品的关键数据包括商品基本信息、库存和价格，库存和价格都依赖于商品基本信息，对于不同类型的数据，根据应用场景区别对待。平台化之后，每个商品都归属于一个商家，以商家ID为维度进行散列，将商品基本信息保存在数据库中，支持水平扩展，可以满足商品数据不断增长的需要。对于历史版本的商品信息，则迁移至历史版本库，作为订单交易快照供用户查询。库存数据在前端展示只关注是否有货，并不需要将每一次库存变化同步，在库存变为0或从0变为正整数时触发状态同步，交易下单时实时查询当前库存即可，此种变数量为状态的方式极大地减少了同步数据量，提高了数据一致性。</p><p>价格属于高度敏感的数据，对于手机专享价等类型，业务运营有设置生效时间、失效时间的要求，为保证前端按照时间动态展示，我们将生效时间段数据也发布到前端系统，由使用方判断当前有效价格。图2中给出了主要信息流。</p><p style="text-align: center;"><a href="http://cms.csdnimg.cn/article/201411/07/545c3a576ab0f.jpg" target="_blank"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/545c3a576ab0f_middle.jpg" border="0" style=""></a><br></p><p style="text-align: center;">图2 &nbsp;主要信息流示例<br></p><p>即便已经对不同类型的商品信息数据流进行了差异化处理，仍然不能排除短时间内会发生大量数据造成系统同步阻塞，影响正常业务运营操作的及时发布。极端情况下，超出系统处理能力还可能导致系统崩溃。为解决此类问题，我们采用批量、异步、分流、限流等手段进行处理。</p><h4>批量、批次操作</h4><p>限制API调用频次的同时，我们提供批量API供商家对商品信息进行更新，批量更新方式减少了各环节交互次数，提高了系统吞吐量，更好地贴合营销活动中批量处理的需求。在系统内部，批量方式能够有效降低系统资源开销，并能对频繁更新的商品数据进行合并处理，提高处理速度，使数据更新及时准确。</p><h4>增加异步处理，减少同步处理</h4><p>信息流同步经过多个系统，每个系统处理逻辑和吞吐能力不同，采用同步机制可能导致上游系统将下游系统拖垮，因此采用异步机制最为稳妥。异步方式有两点好处：一方面起到缓冲的作用，下游系统依据自身能力控制处理数据量，避免遭受超负荷的冲击，保证系统稳定运行；另一方面实现系统隔离解耦，一旦下游系统出现异常，上游系统仍然能正常处理数据，不至于引发连锁反应。</p><h4>分流</h4><p>不同的信息对处理时效的要求也不同，库存、价格、商品上下架状态同步及时性要求很高，而商品基本信息，如名称、副标题、详情则相对较低。拆分不同的同步路径，对及时性要求高的数据配置更多的系统资源，既保障了敏感数据的及时性，又避免了数据积压相互干扰。同理，针对三种不同的数据来源渠道（ERP、数字业务系统、开放平台），也可通过分流方式保证自营实物、电子书和商家商品信息的及时同步。</p><h4>限流</h4><p>多数的商品数据来源于商家，商家会通过一些第三方系统与当当网开放平台对接，调用API进行数据同步。一些不合理的同步机制设置会频繁发起大量的数据同步请求，而多数请求属于无效数据，这类数据难以识别，会浪费大量的系统资源，干扰有效数据的处理。我们在开放平台对每个商家调用API的频次进行限制，根据商家商品数量合理分配，有效地抑制了无效数据的泛滥。</p><p>随着多年双11和集中促销模式的考验，电商系统的峰值设计理念和实践已经慢慢趋于成熟，但仍然是所有电商类公司技术团队的最重要任务之一。</p><p>当当网技术团队经过多年的沉淀，积累了大量处理电商业务峰值的经验。通过深入分析应用场景，对系统进行分级，SOA化完成系统解耦，并采用多种技术手段实现海量数据的高效处理发布，不断提升系统吞吐能力，确保为用户提供稳定友好的购物服务体验，充分体现技术力量在产业中的重要作用。</p><p><b><font color="#000000">作者李震平，当当网技术部副总裁，负责电子商务平台的研发与团队管理工作。从2006年起加入电商行业，有多年实际研发与架构设计经验。</font></b></p><p><b><span style="color: #7f7f7f;"></span></b></p><p style="display: inline !important;"><b>史海峰，当当网架构师，负责电商平台架构设计、技术规范制定和技术预研推广，参与重点项目的方案设计。</b></p><p></p><p><b><span style="color: #000000;">更多精彩详见<a href="http://www.csdn.net/article/2014-11-04/2822459" target="_blank">《程序员》11月刊</a>，欢迎</span></b><b style="background-color: initial;"><span style="color: #000000;"><a href="http://dingyue.programmer.com.cn/ipad.html" target="_blank">订阅《程序员》杂志iPad/Android版</a>。</span></b></p>				
+				<p class="copyright">本文为《程序员》原创文章，未经允许不得转载，如需转载请联系market#csdn.net(#换成@)</p>
+				</div>
+									 
+		
+		 
+		 <div class="share"> 	 
+			  <div class="bdsharebuttonbox bdshare-button-style0-32" style="float:right;" data-bd-bind="1416147464541">
+			  <!-- a href="#" class="bds_more" data-cmd="more"></a -->
+			  <a href="http://www.csdn.net/article/2014-11-07/2822541#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+			  <a href="http://www.csdn.net/article/2014-11-07/2822541#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+			  <a href="http://www.csdn.net/article/2014-11-07/2822541#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+			  <a href="http://www.csdn.net/article/2014-11-07/2822541#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+			  </div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>  
+			
+ 		</div> 
+
+				<div class="detail">
+				<div class="digg">
+						<input type="hidden" id="digg_id" value="2822541">
+						<dl class="support">
+							<dt>顶</dt>
+							<dd>2</dd>
+						</dl>
+						<dl class="oppose">
+							<dt>踩</dt>
+							<dd>0</dd>
+						</dl>
+				</div>
+			</div>	
+ 	
+				<div class="ad_475_60"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner2&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+				<div class="related">推荐阅读相关主题：
+											<a href="http://www.csdn.net/tag/%E5%8F%91%E5%B8%83/news" title="发布" target="_blank">发布</a>
+											<a href="http://www.csdn.net/tag/%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1%E5%B9%B3%E5%8F%B0/news" title="电子商务平台" target="_blank">电子商务平台</a>
+											<a href="http://www.csdn.net/tag/web%E6%9C%8D%E5%8A%A1%E5%99%A8/news" title="web服务器" target="_blank">web服务器</a>
+											<a href="http://www.csdn.net/tag/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%8B/news" title="《程序员》" target="_blank">《程序员》</a>
+											<a href="http://www.csdn.net/tag/%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B/news" title="业务流程" target="_blank">业务流程</a>
+											<a href="http://www.csdn.net/tag/%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C/news" title="用户体验" target="_blank">用户体验</a>
+									</div>
+				<!-- relational article and news -->
+				<div id="Tab3" class="relational">
+					<h2 class="tab_1 Menubox">
+						<ul>
+						<li id="three1" onclick="setTab(&#39;three&#39;,1,2)" class="hover">相关文章</li>
+						<li id="three2" onclick="setTab(&#39;three&#39;,2,2)">最新报道</li>
+						</ul>
+					</h2>
+					<div class="con Contentbox">
+						<div id="con_three_1" class="hover">
+							<ul class="list_1">								
+														</ul>
+						</div>
+						<div id="con_three_2" style="display:none">
+							<ul class="list_1 ">
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822597" title="蘑菇街如何在双11中创造99.99%的可用性" target="_blank">蘑菇街如何在双11中创造99.99%的可用性</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822592" title="技术负责人的三种角色" target="_blank">技术负责人的三种角色</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822582" title="电商峰值监控经验谈" target="_blank">电商峰值监控经验谈</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822581" title="履单流程的弹性架构——麦包包峰值架构实践" target="_blank">履单流程的弹性架构——麦包包峰值架构实践</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822579" title="1号店电商峰值与流式计算" target="_blank">1号店电商峰值与流式计算</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-11/2822578" title="唯品会峰值系统架构演变" target="_blank">唯品会峰值系统架构演变</a></li>
+													
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- //relational article and news 广告 -->	
+
+				<!-- comments -->
+                
+									<div id="comments" class="csdn_comments">    <h2 class="comments_tit">        <p>已有<span>4</span>条评论</p>    </h2>                <div class="reply topreply">            <h6>还可以再输入<span>500</span>个字</h6>            <dl>                <dt class="user_img"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/3_datayes.jpg" alt=""></dt>                <dd><textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="4"></textarea>                    <div class="reply_submit note_grey clearfix">                    <div class="fr"><input id="user" value="发表评论" type="submit" class="reply_btn"></div>                    <span class="loginwrap"><a href="javascript:;;" style="cursor: text; color: #000" class="user_name" realname="datayes">datayes</a>欢迎您！</span>                   <!-- <span class="error">您还没有登录! </span> 请<a href="#"> 登录 </a> 或<a href="#">  注册 </a>-->                    </div>                </dd>            </dl>            </div>    <div id="csdnTab" class="comments_reply">        <h3 class="tit tab_1">            <ul>                <li class="hover">最新评论</li>                <li>最热评论</li>            </ul>        </h3>        <div class="con last"><div lang="352647" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/yuhaibo6646737"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/3_yuhaibo6646737.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/yuhaibo6646737" class="user_name" realname="yuhaibo6646737">yuhaibo6646737</a>   <span class="time">2014-11-13 12:01</span>   <span class="from"></span></div>                                        <div class="reply_content">学习</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="yuhaibo6646737352647_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="yuhaibo6646737352647_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="yuhaibo6646737352647_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="yuhaibo6646737352647_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="351759" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/lis365"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/3_lis365.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/lis365" class="user_name" realname="lis365">lis365</a>   <span class="time">2014-11-11 16:28</span>   <span class="from"></span></div>                                        <div class="reply_content">经验之谈</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="lis365351759_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="lis365351759_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="lis365351759_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="lis365351759_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="351660" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/zhongxiaweimian"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/3_zhongxiaweimian.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/zhongxiaweimian" class="user_name" realname="zhongxiaweimian">仲夏未眠</a>   <span class="time">2014-11-11 14:26</span>   <span class="from"></span></div>                                        <div class="reply_content">不错，学习下</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="zhongxiaweimian351660_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="zhongxiaweimian351660_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="zhongxiaweimian351660_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="zhongxiaweimian351660_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="349848" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/boy10649"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/3_boy10649.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/boy10649" class="user_name" realname="boy10649">boy10649</a>   <span class="time">2014-11-07 18:20</span>   <span class="from"></span></div>                                        <div class="reply_content">赞一个</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="boy10649349848_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="boy10649349848_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="boy10649349848_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="boy10649349848_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div id="page_nav" class="page_nav"><span style="display:none;">共<span class="num">4</span>个 </span>共<span class="total">1</span>页 <a class="homepage" href="javascript:void(0);">首页</a>&nbsp;&nbsp;<a class="prev" href="javascript:void(0);">上一页</a>&nbsp;<a class="pages on" href="javascript:void(0);" lang="1">1</a>&nbsp;<a class="next" href="javascript:void(0);">下一页</a>&nbsp;&nbsp;<a class="endpage" href="javascript:void(0);">末页</a></div></div>        <div class="con hot" style="display:none"><div class="empty-placeholder">                <div class="empty-tip">还没有评论，赶快来抢沙发吧。</div>            </div></div>        <div>请您注意        <ul class="note_grey">            <li>·自觉遵守：爱国、守法、自律、真实、文明的原则</li>            <li>·尊重网上道德，遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律法规</li>             <li>·严禁发表危害国家安全，破坏民族团结、国家宗教政策和社会稳定，含侮辱、诽谤、教唆、淫秽等内容的作品</li>             <li>·承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>             <li>·您在CSDN新闻评论发表的作品，CSDN有权在网站内保留、转载、引用或者删除</li>             <li>·参与本评论即表明您已经阅读并接受上述条款</li>        </ul>        </div>    </div></div>
+                    <script type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/cnick.js"></script>
+					<script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/comments.js" type="text/javascript"></script>
+					<!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script-->
+					<script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2014-11-07/2822541",
+					        title:"%E5%BD%93%E5%BD%93%E7%BD%91%E7%B3%BB%E7%BB%9F%E5%88%86%E7%BA%A7%E4%B8%8E%E6%B5%B7%E9%87%8F%E4%BF%A1%E6%81%AF%E5%8A%A8%E6%80%81%E5%8F%91%E5%B8%83%E5%AE%9E%E8%B7%B5",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script>
+								<!-- //comments -->
+			</div>
+			
+			
+		</div>
+		
+		<div class="right">	
+						
+			  <div class="report">
+				<h2 class="tit_2"><p>近期活动</p><a style="float:right;font-size: 12px;color: #666666;font-weight: normal;" target="_blank" href="http://www.csdn.net/article/tag/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E3%80%8B%E6%B4%BB%E5%8A%A8">更多</a></h2>
+				 
+				<dl>
+				<dt><a href="http://topcto50.csdn.net/" target="_blank"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/1.jpg" alt=""></a></dt>
+				<dd><span class="title"><a href="http://topcto50.csdn.net/" target="_blank">2014年度最具价值CTO评选正式开始！</a></span><p>进入新一轮技术推动商业发展的时代，CSDN、ITValue共同发起第一届最具价值CTO评选，挖掘行业变革背后的技术价值。
+面向CTO人群——技术及研发团队的负责人，或是专注信息技术的产品设计或研发负责人；从互联网、零售电商、物流、金融、旅游、在线教育、游戏、智能家居、社交等行业评选出最具价值的50位优秀CTO，并对其战略力、领导力、产品力等综合能力进行评估，给予奖励。</p></dd>
+				</dl>
+							</div>
+			
+			<div class="report">
+				<h2 class="tit_2"><p>微博关注</p></h2>
+				<iframe width="100%" height="75" style="margin-left:-11px;" class="share_self" frameborder="0" scrolling="no" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/index.html"></iframe>
+			</div>
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;"><img style="vertical-align:middle; margin-right:10px;" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/icon_ipad.png">程序员杂志for <a href="http://subject.csdn.net/programmer-android/" target="_blank">Android</a>/<a href="http://subject.csdn.net/programmer-ipad/" target="_blank">iPad</a> 免费下载 </div>
+			
+			<div class="hot_weekly">
+				<h2 class="tit_2"><p>关于《程序员》</p></h2><!-- 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+				<ul class="list_1">
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-04-28/2815094" title="《程序员》投稿指南" target="_blank">《程序员》投稿指南</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-05-08/2815177" title="《程序员》广告招商" target="_blank">《程序员》广告招商</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://dingyue.programmer.com.cn/" title="《程序员》杂志订阅" target="_blank">《程序员》杂志订阅</a></li>
+				 <!--现在是news的数据，程序员数据是: 95bdd63f-e10b-447d-aefc-bc29f94ddb2f -->
+					<li><a href="http://www.csdn.net/article/2013-05-08/2815189" title="《程序员》订阅问答" target="_blank">《程序员》订阅问答</a></li>
+								</ul>
+			</div>
+
+			<!-- hot weekly -->
+			<div class="hot_weekly">
+				<h2 class="tit_2"><p>相关热门文章</p></h2><!--regionid=5 是程序员杂志  -->
+				<ul class="list_1">
+									<li><a href="http://www.csdn.net/article/2014-10-22/2822247" title="移动5年，Android生态系统的演进" target="_blank">移动5年，Android生态系统的演进</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-03/2822449" title="快稳炫：电商峰值系统架构三字诀" target="_blank">快稳炫：电商峰值系统架构三字诀</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-07/2822545" title="“米粉节”背后的故事——小米网抢购系统开发实践" target="_blank">“米粉节”背后的故事——小米网抢购系统开发实践</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-11/2822592" title="技术负责人的三种角色" target="_blank">技术负责人的三种角色</a></li>
+									<li><a href="http://www.csdn.net/article/2014-10-29/2822360" title="神州租车张益军：做管理——己所不欲，勿施于人" target="_blank">神州租车张益军：做管理——己所不欲，勿施于人</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-04/2822459" title="《程序员》2014年11月刊：电商峰值系统架构设计" target="_blank">《程序员》2014年11月刊：电商峰值系统架构设计</a></li>
+									<li><a href="http://www.csdn.net/article/2014-10-21/2822201" title="优化无极限：盘古Master优化实践" target="_blank">优化无极限：盘古Master优化实践</a></li>
+									<li><a href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/当当网系统分级与海量信息动态发布实践-CSDN.NET.html" title="当当网系统分级与海量信息动态发布实践" target="_blank">当当网系统分级与海量信息动态发布实践</a></li>
+									<li><a href="http://www.csdn.net/article/2014-11-11/2822576" title="京东峰值系统设计" target="_blank">京东峰值系统设计</a></li>
+									<li><a href="http://www.csdn.net/article/2014-10-28/2822319" title="百度实时计算平台的实现和应用" target="_blank">百度实时计算平台的实现和应用</a></li>
+								</ul>
+			</div>
+			
+		
+			<!-- hot tag -->
+			<div class="report hot_tag">
+				<h2 class="tit_2"><p>热门标签</p></h2><!--程序员杂志 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+				<ul class="list_1">
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" title="技术架构" target="_blank">技术架构</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%A8%8B%E5%BA%8F%E5%91%98/news" title="程序员" target="_blank">程序员</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" title="编程语言" target="_blank">编程语言</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" title="前端开发" target="_blank">前端开发</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/news" title="产品设计" target="_blank">产品设计</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" title="大数据" target="_blank">大数据</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" title="智能算法" target="_blank">智能算法</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" title="开源" target="_blank">开源</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E5%9B%BE%E4%B9%A6/news" title="图书" target="_blank">图书</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8/news" title="移动" target="_blank">移动</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97/news" title="云计算" target="_blank">云计算</a></li>
+				 <!-- 9844a56a-0304-47d8-b0ff-0a9c840e1b0b -->
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" title="管理实践" target="_blank">管理实践</a></li>
+								</ul>
+			</div>
+			<!-- //hot tag -->
+			
+			
+			 
+			
+					</div>
+	</div>
+		<script type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/like.js"></script>
+	<script>
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2014-11-07%2F2822541";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc5', tabobjlinks[4]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2822541&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+		function pongoad2(val){
+			$("#job_ul").html(val);
+		}
+		var callbackfun="pongoad2";
+		document.write(unescape('%3Cscript src="http://a.pongo.cn/Job/GetAdForCallBack%3Fid%3D2%26UrlAdParam%3D'+encodeURIComponent(location.href)+'%26&CallBack%3D'+callbackfun+'" type="text/javascript"%3E%3C/script%3E'));
+	</script><script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/GetAdForCallBack" type="text/javascript"></script>
+
+
+	<script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script>
+
+	<script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script><script src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/highlighter.js"></script>
+	
+	<!-- 广告位：富媒体广告 -->
+	<script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script>
+  <img alt="Top_arrow" id="top_arrow" class="top_arrow" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/top_arrow.png" style="display: none; cursor: pointer;">
+	<script type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/top_arrow.js"></script>
+  
+	<!-- public footer -->
+      <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script><script type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a>|<a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a>|<a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a> <a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a> <span class="phone" title="服务热线">400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/notify.js"></script>
+	<!-- //public footer -->
+</div>
+<!-- tab js -->
+<script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script>
+<script type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script> 
+<!--<script id="noticeScript" type="text/javascript" charset="utf-8" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" src="http://static.csdn.net/public/common/toolbar/js/notify.js"></script>-->
+<script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./当当网系统分级与海量信息动态发布实践-CSDN.NET_files/toolbar.js"></script>
+
+
+ 
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

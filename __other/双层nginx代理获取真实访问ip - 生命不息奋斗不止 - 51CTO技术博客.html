@@ -1,0 +1,1402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0045)http://luyadong.blog.51cto.com/2876653/851964 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK"><script async="" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/analytics.js"></script><script id="allmobilize" type="text/javascript" charset="utf-8" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/allmobilize.min.js" data-entry="1" data-preview="0" data-view="original"></script><style type="text/css"></style><script type="text/javascript" charset="utf-8" defer="" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/m.min.js"></script>
+
+<style type="text/css"></style><style type="text/css"></style><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://luyadong.blog.51cto.com/#">
+
+
+<title>双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客</title>
+<meta name="description" content="&#160;环境介绍：&#160;两台nginx代理服务器，第一台接收真实客户端的请求，然后调度到第二台nginx代理服务器上，最后调度到web后端。&#160;需求：&#160;&#160;因为第二台nginx是接收第一台nginx的请求，所以默认..">
+<meta name="keywords" content="nginx,真实ip">
+<meta http-equiv="Cache-Control" content="private">
+<!--<base href="http://luyadong.blog.51cto.com/">--><base href=".">
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/def.js"></script>
+<script language="javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/message.js"></script>
+<script language="javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/user_comment.js"></script>
+<script language="javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/base2.js"></script>
+<script language="javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/dialog_utf8.js"></script>
+<link href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/42.css" rel="stylesheet" type="text/css">
+<link rel="alternate" href="http://luyadong.blog.51cto.com/rss.php?uid=2876653" type="application/rss+xml" title="RSS 2.0">
+<link rel="edituri" type="application/rsd+xml" title="rsd" href="http://luyadong.blog.51cto.com/xmlrpc.php?rsd=1">
+<link href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/header_master_top.css" rel="stylesheet" type="text/css">
+<link href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.mainNav li a{display:inline-block}
+</style>
+<script>
+var myid = "";
+function add_flink(){
+	if(myid==""){
+
+        var refurlk = "http://luyadong.blog.51cto.com/2876653/851964";
+
+				//commentSubmit("",refurlk);
+				location.href="http://home.51cto.com/index.php?reback="+encodeURIComponent(encodeURIComponent(refurlk));
+				return false;
+	}else{
+      		var url='/mod/edit_flink.php?type=addflink&uid=2876653&flink=http://luyadong.blog.51cto.com';
+		var ajax = InitAjax1();
+		ajax.open("GET", url, true);
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				if(ajax.responseText==""){
+					alert("添加成功。");
+				}
+				if(ajax.responseText=="1"){
+				alert("链接指向自己。");
+				}
+				if(ajax.responseText=="2"){
+				alert("友情链接已存在。")
+				}
+			}
+		}
+		ajax.send(null);
+	}
+
+
+
+}
+function sendmessage(){
+
+	var refurlk = "http://luyadong.blog.51cto.com/2876653/851964";
+
+	if(myid){
+		return true;
+	}else{
+		commentSubmit("",refurlk);
+		return false;
+	}
+}
+function copylink(ourl){
+	if(!ourl){
+		var clipBoardContent = "http://luyadong.blog.51cto.com";
+	}else{
+		var clipBoardContent = ourl;
+	}
+	window.clipboardData.setData("Text",clipBoardContent);
+	alert("复制成功!");
+	return false;
+}
+function correctPNG() {
+if (document.getElementById('blog_touxian'))
+{
+var img = document.getElementById('blog_touxian');
+      var imgName = img.src.toUpperCase()
+      var imgID = (img.id) ? "id='" + img.id + "' " : ""
+      var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+      var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+      var imgStyle = "display:inline-block;" + img.style.cssText
+      if (img.align == "left") imgStyle = "float:left;" + imgStyle
+      if (img.align == "right") imgStyle = "float:right;" + imgStyle
+      if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+      var strNewHTML = "<span " + imgID + imgClass + imgTitle
+         + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+         + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+         + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" ;
+      img.outerHTML = strNewHTML;
+}
+}
+//window.attachEvent("onload", correctPNG);
+window.onload=correctPNG;
+
+function copy(){
+var text=document.getElementById("txtUser").value;
+if(copy2Clipboard(text)!=false){ 
+alert("复制成功了！ "); 
+} 
+}
+function copy2Clipboard(txt){ 
+if(window.clipboardData){ 
+window.clipboardData.clearData(); 
+window.clipboardData.setData("Text",txt); 
+}else if(navigator.userAgent.indexOf("Opera")!=-1){ 
+window.location=txt; 
+}else if(window.netscape){ 
+try{ 
+netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+} 
+catch(e){ 
+alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。"); 
+return false; 
+} 
+var clip=Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard); 
+if(!clip)return; 
+var trans=Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable); 
+if(!trans)return; 
+trans.addDataFlavor('text/unicode'); 
+var str=new Object(); 
+var len=new Object(); 
+var str=Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString); 
+var copytext=txt;str.data=copytext; 
+trans.setTransferData("text/unicode",str,copytext.length*2); 
+var clipid=Components.interfaces.nsIClipboard; 
+if(!clip)return false; 
+clip.setData(trans,null,clipid.kGlobalClipboard); 
+return true;
+} 
+}
+
+function mod_close(){
+  document.getElementById('mod_tg').style.display="none";
+}
+
+function match_invite(uid) {
+    var url='/mod/match_invite.php';
+	var ajax = InitAjax();
+    var re = 'uid=' + uid;
+	ajax.open("POST", url, true);
+    ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send(re);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            if(ajax.responseText == 1){
+                alert("邀请信息已经发送成功。");
+            } else if(ajax.responseText=="-1"){
+                alert("邀请失败，请稍候再试。");
+            } else if(ajax.responseText=="2"){
+                alert("该用户已经报名了。")
+            }
+        }
+    }
+}
+
+</script>
+<style type="text/css">
+/*
+.artContent img {max-width:450px !important;}
+.showContent img{max-width:650px!important;}
+*/
+
+.artContent img{max-width: 450px; width:expression(this.width > 450 ? "450px" : this.width)}
+/*
+.showContent img{max-width: 450px; width:expression(this.width > 650 ? "650px" : this.width)}
+*/
+
+
+</style>
+
+
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/share.js"></script><script charset="utf-8" async="" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/sm.min.js"></script><style id="list">
+.showContent ol,.showContent ul{margin:0;pading:0;}.showContent .list-paddingleft-1{padding-left:0}
+.showContent .list-paddingleft-2{padding-left:20px}
+.showContent .list-paddingleft-3{padding-left:40px}
+.showContent ol,.showContent ul{margin:0;pading:0;}.showContent .list-paddingleft-1{padding-left:0}
+.showContent .list-paddingleft-2{padding-left:20px}
+.showContent .list-paddingleft-3{padding-left:40px}</style><link id="syntaxhighlighter_css" rel="stylesheet" type="text/css" href=""><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style1_32.css"></head><body>
+
+<div id="home_top">
+<div class="top_nav" style="width:990px;">
+<div class="left" style="margin-top:10px; width:440px;"><a href="http://blog.51cto.com/" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/head_blog_sibebar_logo.gif" align="absmiddle" style="margin-top:-4px;"></a><a target="_blank" href="http://www.51cto.com/">51CTO首页</a><img height="25" align="absmiddle" width="16" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://blog.51cto.com/" target="_blank">51CTO博客</a><img height="25" align="absmiddle" width="16" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://home.51cto.com/?reback=http%253A%252F%252Fluyadong.blog.51cto.com%252F2876653%252F851964">我的博客</a><img height="25" align="absmiddle" width="16" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;">
+
+<a target="_blank" href="http://blog.51cto.com/search.php">搜索</a>
+<a href="javascript:void(0);" style="color:#FF0000; text-decoration:underline; display:none" id="showMessagerDim">每日博报</a>
+</div>
+
+<div class="right" style="width:550px;">
+<div class="more"><img height="16" align="absmiddle" width="27" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/top_shequ.gif">社区：<a target="_blank" href="http://edu.51cto.com/">学院</a><a target="_blank" href="http://bbs.51cto.com/">论坛</a><a target="_blank" href="http://blog.51cto.com/">博客</a><a target="_blank" href="http://down.51cto.com/">下载</a><a href="javascript:viod(0);" onmouseout="popupClose()" onmouseover="show(3,this)">更多<img align="absmiddle" style="padding-left: 4px;" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/nav_ico1.gif"></a>            </div>            <span id="login_status"><div class="login" style="padding-top:8px; text-align:right;"><a href="http://edu.51cto.com/top" style="background:none"><img style="margin-top:-3px" id="dia" align="absmiddle" width="20" title="今天你领学分了吗？" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/dia.gif"></a><a href="http://home.51cto.com/?reback=http%253A%252F%252Fluyadong.blog.51cto.com%252F2876653%252F851964" target="_self">登录</a><a href="http://ucenter.51cto.com/reg_01.php?reback=http%253A%252F%252Fluyadong.blog.51cto.com%252F2876653%252F851964" target="_self">注册</a></div></span>                </div>    </div></div>
+
+
+
+<div class="subMenu3" id="s3" onmouseover="popupNoClose()" onmouseout="popupClose()">
+<ul>
+<li><a href="http://home.51cto.com/" target="_blank">家园</a></li>
+<li><a href="http://edu.51cto.com/" target="_blank">学院</a></li>
+<li><a href="http://blog.51cto.com/" target="_blank">博客</a></li>
+<li><a href="http://bbs.51cto.com/" target="_blank">论坛</a></li>
+<li><a href="http://down.51cto.com/" target="_blank">下载</a></li>
+
+<li><a href="http://selftest.51cto.com/" target="_blank">自测</a></li>
+<li><a href="http://doctor.51cto.com/" target="_blank">门诊</a></li>
+<li><a href="http://blog.51cto.com/newsletter/" target="_blank">周刊</a></li>
+<li><a href="http://book.51cto.com/" target="_blank">读书</a></li>
+<li><a href="http://g.51cto.com/" target="_blank">技术圈</a></li>
+</ul>
+</div>
+<!--简导航end-->
+
+
+
+<div class="headerBox">
+<div class="header">
+<div class="header_l">
+<div class="logo_blogname">
+
+
+
+<div class="blogName">
+<a href="http://luyadong.blog.51cto.com/"><h1>生命不息奋斗不止</h1></a>
+</div>
+</div><!--logo_blogname end-->
+<div class="blogLink">
+
+<a href="http://luyadong.blog.51cto.com/">http://luyadong.blog.51cto.com</a> <input id="txtUser" type="hidden" size="32" value="http://luyadong.blog.51cto.com">   <a href="javascript:void(0);" onclick="copy();">【复制】</a> <a href="http://luyadong.blog.51cto.com/rss.php?uid=2876653" target="_blank"></a><a href="http://luyadong.blog.51cto.com/rss.php?uid=2876653" target="_blank">【订阅】</a>
+
+</div>
+
+
+
+</div><!--header_l end-->
+<div class="header_r">
+<div class="blogInfo"><span><a href="http://luyadong.blog.51cto.com/2876653/o" title="察看dong113所有原创文章">原创</a>:41</span><span><a href="http://luyadong.blog.51cto.com/2876653/t" title="察看dong113所有翻译文章">翻译</a>:0</span><span><a href="http://luyadong.blog.51cto.com/2876653/c" title="察看dong113所有转载文章">转载</a>:3</span></div>
+<div class="blogNav"><a href="http://luyadong.blog.51cto.com/">博 客</a>|<a href="http://home.51cto.com/apps/photo/index.php?s=/Index/photos/uid/2876653">图库</a>|<a href="http://luyadong.blog.51cto.com/addblog.php">写博文</a>|<a href="http://51ctoblog.blog.51cto.com/all/26414/4" target="_blank">帮 助</a></div>
+</div>
+</div>
+<!--header end-->
+</div><!--headerBox end-->
+<div class="mainNav">
+<span class="mainNavT"></span>
+<ul>
+<li><a href="http://luyadong.blog.51cto.com/">首页</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-2">系统管理</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-3">Mysql</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-4">nginx</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-5">squid</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-16">PHP</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-7">shell</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-9">LVS</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-8">cobbler</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-13">puppet</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-12">capistrano</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-11">SVN</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-14">syslog</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-15">nagios</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-1">cacti</a></li>|<li><a href="http://luyadong.blog.51cto.com/2876653/d-10">邮件服务</a></li>
+</ul>
+<span class="mainNavB"></span>
+</div>
+<!--mainNav end-->
+
+<script type="text/javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<!--[if IE 6]>
+  <script type="text/javascript" src="http://images.watchstor.com/newhomes/png.js"></script>
+  <script>
+    DD_belatedPNG.fix('img,input,ul,li, .get-box, div, .add, .sub, .ui-slider-handle, .footer-chopper');
+  </script>
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/fck_editorarea.css">
+<script type="text/javascript" charset="gbk" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/shCores.js"></script>
+<link rel="stylesheet" type="text/css" href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/shCoreDefault.css">
+<script type="text/javascript" charset="gbk" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/uparse.js"></script>
+<script type="text/javascript">
+	uParse('.showContent');
+	$(function(){
+		//SyntaxHighlighter.config.clipboardSwf = 'http://bbs.51cto.com/plugins/syntaxhighlighter/scripts/clipboard.swf'; 
+		//为了在编辑器之外能展示高亮代码
+		SyntaxHighlighter.highlight();
+	}); 
+</script>
+<script type="text/javascript">
+/**
+ * 回复评论需要用的js
+ * 2012-5-14
+ * by:chengtao
+ */
+ jQuery(function(){
+	blogpost.init();//初始化博客回复功能
+ })
+ /**
+  * 处理博文评论功能优化
+  */
+ blogpost={
+	abstruct_list:null,
+	init:function(){
+		blogpost.bind();//绑定一些时间
+		this.abstruct_list=new Array();//初始化保存评论信息的数组
+	},
+	/**
+	 * 博客回复需要绑定的一些事件
+	 */
+	bind:function(){
+		/**
+		 * 点击回复的事件
+		 */
+		jQuery('.repost').live('click',function(){
+			blogpost.repost(jQuery(this).attr('user_name'),jQuery(this).attr('parentid'));
+			return false;
+		});
+		/**
+		 * 点击楼层进行翻页且找到锚点
+		 */
+		jQuery('.anchor_page').live('click',function(){
+			var parentid = $(this).attr('parentid');
+			var tid=$(this).attr('tid');
+			$.get('/comments.php?tid='+tid+'&parentid='+parentid,function(data){
+				$('#artcomment').html(data);
+				window.location.hash=''+parentid;
+			})
+			return false;
+		}),
+		jQuery('.anchor_page').live('mouseover',function(){
+			var parentid = $(this).attr('parentid');
+			if(!blogpost.abstruct_list[parentid]){
+				var this_t = $(this);
+				$.get('/comments.php?cid='+parentid,function(data,textStatus){
+					blogpost.abstruct_list[parentid]=data;
+					this_t.attr('title',this_t.text()+':'+ blogpost.abstruct_list[parentid]);
+				});
+			}else{
+				$(this).attr('title',$(this).text()+':'+blogpost.abstruct_list[parentid]);
+			}
+		})
+	},
+	/**
+	 * @param user_name 用户名
+	 * @param parentid  父评论id
+	 */
+	repost:function(user_name,parentid){
+		window.location.hash='comment';
+		jQuery('#parentid').val(parentid);
+		jQuery('#commentcontent').val('回复 '+user_name+":\n").focus();
+		if(!$.browser.mozilla){
+			var elem = jQuery('#commentcontent')[0];		
+			var caretPos = elem.value.length;
+			if (elem.createTextRange) {
+				var range = elem.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			}else{
+				elem.setSelectionRange(caretPos, caretPos);	
+			}
+		}
+	},
+	/**
+	 * 发送完毕之后清理表单数据 不是ajax可能用不到
+	 */
+	clean:function(){
+		
+	}
+ }
+</script>
+<script type="text/javascript">
+jQuery(function(){
+	var anchor = document.location.hash;
+	var comment_id=anchor.split('#')[1];
+	if(!isNaN(parseInt(comment_id))){//是整形
+		jQuery.get('/comments.php?tid=851964&parentid='+comment_id,function(data){
+			jQuery('#artcomment').html(data);
+			window.location.hash=''+comment_id;
+		})
+	}
+});
+</script>
+
+
+
+<script type="text/javascript">
+jQuery(function() {
+	jQuery('#favourdiv').mouseover(function(){
+		if(jQuery(this).attr('className') == 'support01')
+		{
+			jQuery(this).attr('className', "support02");
+			jQuery(this).html('+1人');
+			jQuery(this).attr('title', "赞一个，我支持TA");
+		}
+		else if(jQuery(this).attr('className') == 'support03')
+		{
+			jQuery(this).attr('title', "你已经赞了这篇博文！");
+		}
+		
+	});
+	jQuery('#favourdiv').mouseout(function(){
+		if(jQuery(this).attr('className') == 'support02')
+		{
+			jQuery(this).attr('className', "support01");
+			jQuery(this).html("1人");
+		}
+	});
+	jQuery('.blog_match_yq').click(function(){
+		var wind_uid = '';
+		if(!wind_uid){
+			alert("请先登录！");
+			return false;
+		}
+		jQuery.ajax({
+			   type: "POST",
+			   url:"/contest2012/index.php?mod=sendmsg",
+			   dataType: "html",
+			   data: "vuid=" + 2876653,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("查无此人！");
+						return false;
+					}else if(data == 1){
+						alert("请先登录！");
+						return false;
+					}else if(data == 2){
+						alert("不能邀请自己！");
+						return false;
+					}else if(data == 22){  
+						alert("邀请信息已发出！");
+						return false;
+					}
+			   }
+		  });
+	});
+	jQuery('#favourdiv').click(function(){
+			jQuery.ajax({
+			   type: "POST",
+			   url:"/mod/favour.php",
+			   dataType: "html",
+			   data: "tid=" + 851964,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("您还未登录或者已过期，请重新登录");
+						location.href = "http://home.51cto.com/index.php?reback=http%253A%252F%252Fluyadong.blog.51cto.com%252F2876653%252F851964";
+						return false;
+					}
+					else if(data == '-1')
+					{
+						alert("参数传递错误！");
+						return false;
+					}
+					else if(data == '-2')
+					{
+						alert("该博文已被删除或者不存在！");
+						return false;
+					}
+					else if(data == '-3')
+					{
+						alert("您已经赞过了！");
+						return false;
+					}
+					else if(data == '-4')
+					{
+						alert("赞操作失败！");
+						return false;
+					}
+					else
+					{  
+						//alert("操作成功，你已经赞了这篇博文！");
+						jQuery('#favourdiv').attr('className', "support03");
+
+						var num = 1 + 1 + "人";
+						jQuery('#favourdiv').html(num);
+						jQuery('#favourer').html(data);
+						return false;
+					}
+			   }
+		  });
+	});
+	//Jaydar http://blog.51cto.com/js/header.php?uid=blogdb[uid]&tid=tid
+	jQuery.post('/js/header.php',{uid:2876653,tid:851964},function(data){
+		jQuery('#readNum').html(data[0]);
+		jQuery('#cmtNum').html(data[1]);
+	},'json');
+	
+
+})
+
+jQuery(function(){
+	jQuery('#darid').bind('click',function(){
+		if(confirm("你确定删除此篇文章？")){
+			jQuery.ajax({
+				'type':'post',
+				'url':'user_index.php?action=delarticle',
+				'data':{'job':'del', 'selid':'851964', 'mhash':''},
+				'dataType':'html',
+				'success':function(res){
+					if('ok' == res){
+						location.href="http://.blog.51cto.com";
+					}
+				
+				}
+			});
+		}
+	});
+});
+</script>
+
+
+
+
+<style type="text/css">
+.m_sharelinks{ 
+	line-height:30px; 
+	text-align:left; 
+	padding-left:20px; 
+	//background:url(http://img1.51cto.com/images/share/ico_lb.gif) no-repeat left center;
+	float:left; 
+	width:600px; 
+	height:30px;
+}
+.m_sharelinks a{ margin-left:10px;}
+.m_sharebtn{ height:50px; width:726px; margin:0 auto;}
+.m_sharebtn01{width:520px; float:left;}
+.weibo_51cto{ background:url(http://img1.51cto.com/images/share/ico_mweibo.gif) no-repeat center center; display:block; width:33px; height:33px; float:left; margin:3px 3px 0 0;cursor:pointer;}
+.shareMored {
+    line-height: 30px;
+	float:right; 
+	text-align:right; 
+	width:100px; 
+	height:30px;
+}
+
+.showContent {
+	margin:20px 15px 8px;
+}
+.userImage img {
+    text-align: center;
+	border:0;
+	padding:0;
+}
+.photo_links{ line-height:30px; padding-top:5px; font-size:13px;width:170px; margin:0 auto;}
+.photo_links_blue{ text-align:center;}
+.photo_links_blue a:link,.photo_links_blue a:visited,.photo_links_blue a:hover,.photo_links_blue a:active{ color:#015F91; text-decoration: underline;}
+.photo_links_red{ text-align:left;}
+.photo_links_red a:link,.photo_links_red a:visited,.photo_links_red a:hover,.photo_links_red a:active{ color:#fc4343; text-decoration:underline;}
+.photo_links_red02{ text-align:center;}
+
+.vlist{ margin:10px 10px; height:65px;}
+.vlist img{ float:left; margin-right:10px;}
+.vlist dl{ text-align:left;}
+.vlist dl dt{ height:40px;line-height: 20px; overflow:hidden; padding-top:5px;}
+.vlist dl dt,.vlist dl dt a{ color:#262626;}
+.vlist dl dd,.vlist dl dd a{ color:#777;}
+
+.video-icon{
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left:31px;
+    position: absolute;
+    top:22px;
+    width: 25px;
+    z-index: 10;
+}
+</style>
+<script language="JavaScript" type="text/javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/group.js"></script>
+<div id="add_sys_type_div" style="width:600px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+<div id="add_sys_type_divs" style="width:550px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+
+
+
+<div class="blogMain">
+<div class="blogLeft">
+
+
+<div class="box moduleUser">
+<div class="title">
+<h2><strong>dong113</strong> 的BLOG  </h2>
+</div>
+<div class="modCon">
+
+<div class="userImage" style="margin: 10px auto 5px;text-align: center;width: 130px;border: 1px solid #D4D4D4;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td valign="middle" align="center" height="130"><script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/userface.php"></script><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar.php" id="userface"></td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="photo_links">
+</div>
+
+
+
+
+
+
+
+
+
+<div class="crumbs">
+<a href="http://home.51cto.com/index.php?s=/space/2876653#message" class="writeMessage" target="_blank">写留言</a><a href="http://edu.51cto.com/" class="inCircle" target="_blank">去学院学习</a><a href="http://home.51cto.com/index.php?s=/Notify/write/uid/2876653" class="message" target="_blank">发消息</a> <a href="http://luyadong.blog.51cto.com/" onclick="add_flink(2876653);return false" class="joinLinks">加友情链接</a><a href="http://home.51cto.com/index.php?s=/space/2876653" class="joinFriends" target="_blank">进家园 加好友</a>
+</div>
+
+<div style="width:239px;height:64px;display:none;">
+
+
+<div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">2012年度IT博客大赛<br><a target="_blank" href="http://blog.51cto.com/contest2012/#top10000" style="color:#F00; text-decoration:underline;">十大杰出IT博客诞生</a></p></div>
+<div style="float:right;"><a target="_blank" href="http://blog.51cto.com/contest2012/"><img width="57" height="27" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/blog_match_endlook.jpg" style="margin:23px 20px 0 0;"></a></div>
+<!-- <div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">星光评委正在评选<br><a target="_blank" href="http://blog.51cto.com/contest2012/index.php?mod=userlist_sec" style="color:#F00; text-decoration:underline;">2012年度IT博客大赛50强</a></p></div>
+<div style="float:right;"><img class="blog_match_yq" width="57" height="27" src="http://img1.51cto.com/images/blog_match_invite.jpg" style="margin:23px 20px 0 0;"></div> -->
+
+
+
+<div class="clear"></div>
+</div>
+
+
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+<div class="title">
+<h2>博客统计信息</h2>
+</div>
+<div class="modCon">
+<p>
+<span class="infoListHead"></span>
+用户名：dong113<br>
+文章数：46<br>
+评论数：9<br>
+访问量：35730<br>
+<a href="http://home.51cto.com/index.php?s=/Account/credit" target="_blank">无忧币</a>：20<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客积分</a>：444<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客等级</a>：3<br>
+注册日期：2011-03-21<br>
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/blogno1countdown.php"></script> 
+</p>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+	<div class="title">
+		<h2 class="fl">热门专题</h2>
+		<a target="_blank" class="fr" href="http://blog.51cto.com/zt">更多&gt;&gt;</a>
+	</div>
+	<div class="modCon" style="height: 88px;">
+
+	
+		<div class="vlist">
+		  <a href="http://blog.51cto.com/zt/648" target="_blank"><img width="63" height="63" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/wKioL1RyzATz-hxgAAAz1Er6VxM075.jpg"></a>
+		<dl>
+		<dt>
+		  <a href="http://blog.51cto.com/zt/648" target="_blank" title="从零开始学Hibernate">从零开始学Hibernate</a></dt>
+		<dd>阅读量：6312</dd>
+		</dl>
+		</div>
+		
+		
+	</div>
+	<span class="modBot"></span>
+</div>
+
+
+<div class="hotArt box">
+<div class="title">
+<h2>热门文章</h2>
+</div>
+<div class="modCon">
+<ul>
+<li><a href="http://luyadong.blog.51cto.com/2876653/801056">capistrano安装和配置</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/801408">cacti监控nginx</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/801082">LVM镜像</a></li>
+<li><a href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客.html">双层nginx代理获取真实访..</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/801471">cobbler安装配置</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/801365">cacti监控磁盘io</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/635145">关于dovecot启动失败的解决</a></li>
+<li><a href="http://luyadong.blog.51cto.com/2876653/657888">cacti监控mysql不显示图形</a></li>
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+<div class="search box">
+<div class="title"><h2>搜索BLOG文章</h2></div>
+<div class="modCon">
+<form method="post" action="http://luyadong.blog.51cto.com/search.php?" tabindex="99">
+<input type="hidden" name="step" value="2">
+<input type="hidden" name="authorid" value="2876653">
+<input type="hidden" name="sch_area" value="S">
+<input type="text" value="" name="keyword" class="searchInput">
+<input type="submit" value="搜 索" class="searchBtn">
+</form>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="box recentGuests">
+<div class="title">
+<h2>最近访客</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://woxizishen.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(1).php"></a>
+<p><a href="http://woxizishen.blog.51cto.com/">woxiz..</a></p>
+
+</li><li><a href="http://6403592.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(2).php"></a>
+<p><a href="http://6403592.blog.51cto.com/">hellb..</a></p>
+
+</li><li><a href="http://1440825.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(3).php"></a>
+<p><a href="http://1440825.blog.51cto.com/">shanl..</a></p>
+
+</li><li><a href="http://3017969.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(4).php"></a>
+<p><a href="http://3017969.blog.51cto.com/">lxp7124</a></p>
+
+</li><li><a href="http://panzhengming.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(5).php"></a>
+<p><a href="http://panzhengming.blog.51cto.com/">w6811645</a></p>
+
+</li><li><a href="http://wtcxswnet.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(6).php"></a>
+<p><a href="http://wtcxswnet.blog.51cto.com/">wtcxs..</a></p>
+
+</li><li><a href="http://blue234python55.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(7).php"></a>
+<p><a href="http://blue234python55.blog.51cto.com/">blue2..</a></p>
+
+</li><li><a href="http://netspace.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(8).php"></a>
+<p><a href="http://netspace.blog.51cto.com/">amwuqd</a></p>
+
+</li><li><a href="http://lvjianfei668.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(9).php"></a>
+<p><a href="http://lvjianfei668.blog.51cto.com/">LINUX..</a></p>
+
+</li><li><a href="http://435102.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(10).php"></a>
+<p><a href="http://435102.blog.51cto.com/">henry..</a></p>
+
+</li><li><a href="http://467754239.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(11).php"></a>
+<p><a href="http://467754239.blog.51cto.com/">zys46..</a></p>
+
+</li><li><a href="http://1539356.blog.51cto.com/"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/avatar(12).php"></a>
+<p><a href="http://1539356.blog.51cto.com/">l5413..</a></p>
+
+</li></ul>
+<span class="clear"></span>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="newComments box">
+<div class="title">
+<h2>最新评论 
+
+</h2>
+
+
+
+</div>
+<div class="modCon">
+<ul>
+
+<li>[匿名]aaa：<a href="http://luyadong.blog.51cto.com/2876653/801056" target="_blank">aaaaa</a></li>
+
+<li><a href="http://5200252.blog.51cto.com/" class="operlink" target="_blank"><b>谢冰棍</b></a>：<a href="http://luyadong.blog.51cto.com/2876653/657888" target="_blank">回复 谢冰棍: 楼主有解决办法吗？</a></li>
+
+<li><a href="http://5200252.blog.51cto.com/" class="operlink" target="_blank"><b>谢冰棍</b></a>：<a href="http://luyadong.blog.51cto.com/2876653/657888" target="_blank">我的开始的时候好好的，然后我不知..</a></li>
+
+<li><a href="http://qiankun.blog.51cto.com/" class="operlink" target="_blank"><b>w8875cto</b></a>：<a href="http://luyadong.blog.51cto.com/2876653/801082" target="_blank">lvm mirror 日志分区的大小该如何定..</a></li>
+
+<li>[匿名]51cto游客：<a href="http://luyadong.blog.51cto.com/2876653/801365" target="_blank">这个好像不行，可能是cacti版本支持..</a></li>
+
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="hotBlogArt box">
+<div class="title">
+  <h2 class="fl">51CTO推荐博文</h2>
+  <a href="http://blog.51cto.com/artcommend" class="fr">更多&gt;&gt;</a></div>
+<div class="modCon">
+<ul>
+<li><a href="http://dynamic.blog.51cto.com/711418/1586130" title="Lync 小技巧-43-通过反向代理服务器日志查看你的所有连接" target="_blank">Lync 小技巧-43-通过反向代理服务..</a></li>
+<li><a href="http://lilinji.blog.51cto.com/5441000/1586055" title="学习Samba加域之大话西游02" target="_blank">学习Samba加域之大话西游02</a></li>
+<li><a href="http://smileyouth.blog.51cto.com/7273768/1586237" title="PHP 出现 502 解决方案" target="_blank">PHP 出现 502 解决方案</a></li>
+<li><a href="http://wgkgood.blog.51cto.com/1192594/1586259" title="Linux主流架构运维工作简单剖析" target="_blank">Linux主流架构运维工作简单剖析</a></li>
+<li><a href="http://qicheng0211.blog.51cto.com/3958621/1585398" title="Dockerfile:制作可ssh登录的镜像" target="_blank">Dockerfile:制作可ssh登录的镜像</a></li>
+<li><a href="http://maomaostyle.blog.51cto.com/2220531/1585696" title="Microsoft Azure地缘组是什么" target="_blank">Microsoft Azure地缘组是什么</a></li>
+<li><a href="http://swht1278.blog.51cto.com/7138082/1585684" title="基于云端虚拟机的LVS/DR+Keepalived+nginx的高可用集群架构配置" target="_blank">基于云端虚拟机的LVS/DR+Keepaliv..</a></li>
+<li><a href="http://crazy123.blog.51cto.com/1029610/1585013" title="RHEL6.4双网卡绑定配置诀窍" target="_blank">RHEL6.4双网卡绑定配置诀窍</a></li>
+<li><a href="http://caiguangguang.blog.51cto.com/1652935/1585278" title="yarn local dirs的管理实现" target="_blank">yarn local dirs的管理实现</a></li>
+<li><a href="http://zhangyu.blog.51cto.com/197148/1585274" title="某省云数据中心数据恢复报告" target="_blank">某省云数据中心数据恢复报告</a></li>
+<li><a href="http://wzde2012.blog.51cto.com/6474289/1585047" title="浅谈微软云中的对接器——SCAC" target="_blank">浅谈微软云中的对接器——SCAC</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="friendLink box">
+<div class="title">
+  <h2>友情链接</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://fancy0042425.blog.51cto.com/" title="但行好事莫问前程" target="_blank">但行好事莫问前程</a></li>
+
+<li><a href="http://51ctoblog.blog.51cto.com/" title="51CTO博客开发" target="_blank">51CTO博客开发</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+
+</div>
+<!--left end-->
+
+<script type="text/javascript">
+    var favor_url = "http://luyadong.blog.51cto.com/2876653/851964";
+    var favor_title = "双层nginx代理获取真实访问ip";
+    var favor_fuid = "2876653";
+</script>
+<script type="text/javascript" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/favorbox.js"></script>
+<div class="blogRight">
+
+
+	<div class="box edu-col-a" style="display:none;">
+		<div class="title">的视频课程
+
+        </div>
+		<div class="vbox" style="">
+
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+
+
+	<div class="box edu-col-b" style="width:100%;">
+		<div class="title"><a target="_blank" href="http://edu.51cto.com/index.php?do=search&m=index&q=nginx">相关视频课程</a>
+
+            <a href="http://edu.51cto.com/index.php?do=search&m=index&q=nginx" target="_blank" style="float:right;">更多</a>
+
+		</div>
+		<div class="vbox" style="">
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-2396.html" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/wKiom1R1SlzSjA4uAADUa8zJoBI893.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-2396.html" target="_blank" title="Nginx Web服务深度优化实战(老男孩全新运维进阶系列L058-059)">Nginx Web服务深度优化实战(老男孩全新运维进阶系列L058-059)(共26课时)</a></dt>
+					<dd>115人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-2396.html" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-1295.html" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/wKiom1N1o9zhJN9lAAEDbRXEFj8091.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-1295.html" target="_blank" title="Nginx负载均衡实战视频教程-老男孩Linux高薪课程">Nginx负载均衡实战视频教程-老男孩Linux高薪课程(共27课时)</a></dt>
+					<dd>4010人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-1295.html" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-704.html" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/wKiom1NUhRjj5rRCAADELy83twA644.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-704.html" target="_blank" title="门户网站nginx高并发性能调优精要[老男孩实战课程]">门户网站nginx高并发性能调优精要[老男孩实战课程](共4课时)</a></dt>
+					<dd>8348人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-704.html" target="_blank"></a>
+			</div>
+			
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+	<p style="clear:both;"></p>
+	<style type="text/css">
+.vlist {
+    float: left;
+    padding: 2px 0 0 10px;
+    width: 218px;
+	
+}
+.vlist img {
+    float: left;
+    margin-right: 10px;
+}
+.vlist dl {
+    float: left;
+    text-align: left;
+    width: 122px;
+}
+.vlist dl dt {
+    height: 44px;
+    overflow: hidden;
+    padding-top: 5px;
+}
+.vlist dl dt, .vlist dl dt a {
+    color: #262626;
+}
+.vlist dl dd, .vlist dl dd a {
+    color: #777777;
+}
+.vbox_tit {
+    border-bottom: 1px solid #B3D0E6;
+    color: #666666;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: left;
+}
+.video-icon {
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left: 41px;
+    position: absolute;
+    top: 22px;
+    width: 25px;
+    z-index: 10;
+}
+.vbox2 .vlist1{margin:0;}
+.edu-col-a{ float:left;margin-right:6px;}
+.edu-col-b{ float:left;}
+	</style><!--modCon end-->
+
+
+
+	<div class="artShow box" style="margin-top:5px;">
+   	  <div class="share" id="share">
+
+    <div class="shareItem">
+		<div class="m_sharelinks"><a target="_blank" href="" style="color:red;"></a><a target="_blank" href="" style="color:blue;"></a><a target="_blank" href="" style="color:blue;"></a></div>
+		<p class="shareMored"><a href="http://luyadong.blog.51cto.com/all/2876653">博主的更多文章&gt;&gt;</a></p>
+	</div>
+      </div>
+       <div class="modCon">
+   	  <div class="showBox" style="margin:0 0 10px;">
+      <div class="line_hd_r"></div>
+      <div class="art_tj">
+
+      </div>
+
+ 
+    		<div class="showHead">
+    		  <div class="showTitleBOx" style="text-align:center">
+              <div class="showTitle">
+
+             <img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/artType01.jpg">
+
+
+    		    双层nginx代理获取真实访问ip
+                </div>
+  		    </div>
+   		    <span class="artTime">2012-05-04 11:28:27</span></div><!--showHead end-->
+    <div class="showTags">标签：<a href="http://blog.51cto.com/tag-nginx.html" target="_blank" class="operlink">nginx</a> <a href="http://blog.51cto.com/tag-%E7%9C%9F%E5%AE%9Eip.html" target="_blank" class="operlink">真实ip</a>
+
+	</div>
+
+			<div class="CopyrightStatement lh22">
+			版权声明：原创作品，谢绝转载！否则将追究法律责任。
+            </div>
+
+
+            <!--正文 begin-->
+    		<div class="showContent">
+    		  <p><strong>&nbsp;环境介绍：</strong></p>
+<p>&nbsp; 两台nginx代理服务器，第一台接收真实客户端的请求，然后调度到第二台nginx代理服务器上，最后调度到web后端。</p>
+<p>&nbsp; 需求：</p>
+<p>&nbsp; &nbsp;因为第二台nginx是接收第一台nginx的请求，所以默认情况下日志记录的全部是第一台nginx的ip访问，现在在要求第二台nginx的访问日志能够记录真实客户端的ip。</p>
+<p>第一台nginx配置：</p>
+<pre><ol class="dp-xml"><li class="alt"><span><span>worker_processes&nbsp;&nbsp;1;&nbsp;</span></span></li><li><span>error_log&nbsp;&nbsp;logs/error.log&nbsp;&nbsp;notice;&nbsp;</span></li><li class="alt"><span>pid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logs/nginx.pid;&nbsp;</span></li><li><span>worker_rlimit_nofile&nbsp;65535;&nbsp;</span></li><li class="alt"><span>events&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;epoll;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;worker_connections&nbsp;&nbsp;65535;&nbsp;</span></li><li><span>}&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>http&nbsp;{&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mime.types;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;default_type&nbsp;&nbsp;application/octet-stream;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;keepalive_timeout&nbsp;&nbsp;65;&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;proxy_temp_path&nbsp;&nbsp;&nbsp;/data0/proxy_temp_path;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;proxy_cache_path&nbsp;&nbsp;/data0/proxy_cache_path&nbsp;&nbsp;<span class="attribute">levels</span><span>=</span><span class="attribute-value">1</span><span>:2&nbsp;&nbsp;&nbsp;</span><span class="attribute">keys_zone</span><span>=</span><span class="attribute-value">cache</span><span>:128m&nbsp;</span><span class="attribute">inactive</span><span>=</span><span class="attribute-value">1d</span><span>&nbsp;</span><span class="attribute">max_size</span><span>=</span><span class="attribute-value">1g</span><span>;&nbsp;</span></span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;upstream&nbsp;hdwiki&nbsp;{&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;192.168.253.105;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_name&nbsp;&nbsp;www.hdwiki.com;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index&nbsp;index.html&nbsp;index.htm;&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location&nbsp;/&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header&nbsp;Host&nbsp;&nbsp;$host;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header&nbsp;<strong>X-Forwarded-For</strong>&nbsp;&nbsp;$remote_addr;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass&nbsp;http://hdwiki;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_log&nbsp;&nbsp;&nbsp;logs/access_hdwiki.log;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li class="alt"><span>}&nbsp;</span></li></ol></pre>
+<p><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">proxy_set_header&nbsp;Host&nbsp;&nbsp;$host;  把访问的域名加到请求包的头部信息中，能够找到后端web的虚拟主机。</span></p>
+<p><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">proxy_set_header&nbsp;</span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; "><strong>X-Forwarded-For</strong></span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">&nbsp;&nbsp;$remote_addr;  把客户端真是ip地址加到请求包的头部信息中，以</span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">X-Forwarded-For做标示。</span></p>
+<p>&nbsp;</p>
+<p>第二台nginx配置：</p>
+<p>首先在编译的时候加上<span class="Apple-style-span" style="color: rgb(85, 85, 85); font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 17px; white-space: pre; ">--with-http_realip_module这个模块。</span></p>
+<p>参考：<a href="http://wiki.nginx.org/HttpRealIpModule">http://wiki.nginx.org/HttpRealIpModule</a></p>
+<pre><ol class="dp-xml"><li class="alt"><span><span>worker_processes&nbsp;&nbsp;1;&nbsp;</span></span></li><li><span>#error_log&nbsp;&nbsp;logs/error.log&nbsp;&nbsp;notice;&nbsp;</span></li><li class="alt"><span>pid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logs/nginx.pid;&nbsp;</span></li><li><span>worker_rlimit_nofile&nbsp;65535;&nbsp;</span></li><li class="alt"><span>events&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;epoll;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;worker_connections&nbsp;&nbsp;65535;&nbsp;</span></li><li><span>}&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>http&nbsp;{&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mime.types;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;default_type&nbsp;&nbsp;application/octet-stream;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;keepalive_timeout&nbsp;&nbsp;65;&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;proxy_temp_path&nbsp;&nbsp;&nbsp;/data0/proxy_temp_path;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;proxy_cache_path&nbsp;&nbsp;/data0/proxy_cache_path&nbsp;&nbsp;<span class="attribute">levels</span><span>=</span><span class="attribute-value">1</span><span>:2&nbsp;&nbsp;&nbsp;</span><span class="attribute">keys_zone</span><span>=</span><span class="attribute-value">cache</span><span>:128m&nbsp;</span><span class="attribute">inactive</span><span>=</span><span class="attribute-value">1d</span><span>&nbsp;</span><span class="attribute">max_size</span><span>=</span><span class="attribute-value">1g</span><span>;&nbsp;</span></span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;upstream&nbsp;hdwiki&nbsp;{&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;192.168.253.105:8090;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;server&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_name&nbsp;&nbsp;www.hdwiki.com;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index&nbsp;index.html&nbsp;index.htm;&nbsp;</span></li><li class="alt"><span>&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location&nbsp;/&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header&nbsp;Host&nbsp;&nbsp;$host;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header&nbsp;X-Forwarded-For&nbsp;&nbsp;$remote_addr;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>set_real_ip_from</strong>&nbsp;&nbsp;&nbsp;192.168.253.103;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>real_ip_header</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X-Forwarded-For;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass&nbsp;http://hdwiki;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li><span>&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_log&nbsp;&nbsp;&nbsp;logs/access_hdwiki.log;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></li><li class="alt"><span>}&nbsp;</span></li></ol></pre>
+<p><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; "><strong>set_real_ip_from</strong></span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">&nbsp;&nbsp;&nbsp;192.168.253.103; 第一台nginx的ip的地址，指定真实ip来自哪儿。</span></p>
+<p><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; "><strong>real_ip_header</strong></span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X-Forwarded-For; 从第一台nginx上获取客户端的ip，因为真实客户端的ip已经在第一台nginx设置中被</span><span class="Apple-style-span" style="font-family: &#39;Courier New&#39;, monospace; font-size: 12px; line-height: 15px; white-space: pre; ">X-Forwarded-For标示，所以冲header头中提取它。</span></p>
+<p>这样就能在第二台nginx代理服务器的访问日志中看到真实客户端访问ip。</p><p>本文出自 “<a href="http://luyadong.blog.51cto.com/">生命不息奋斗不止</a>” 博客，谢绝转载！</p>
+    		</div><!--正文 end-->
+<script type="text/javascript">
+	var kevent = 'onabort|onblur|onchange|onclick|ondblclick|onerror|onfocus|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onreset|onresize|onselect|onsubmit|onunload';
+	var aevent = kevent.split('|');
+
+	jQuery('.showContent img').each(function(){
+		var nimg = this;
+		jQuery.each(aevent, function(i, n){
+			if (n!='onload') {
+				jQuery(nimg).attr(n, '');
+			} else {
+				if (jQuery(nimg).attr(n) != 'if(this.width>650) this.width=650;') {
+					jQuery(nimg).attr(n, '');
+				}
+			}
+		});
+	});
+</script>
+<script type="text/javascript" charset="utf-8">
+var encodetitle = encodeURI('一篇很棒的博文分享给大家：《双层nginx代理获取真实访问ip》');
+
+function show51share(){
+
+	window.open('http://t.51cto.com/index.php?m=share&url=http://luyadong.blog.51cto.com/2876653/851964&type=l&count=&relateUid=&appkey=3843950324&title=' + encodetitle);
+}
+</script>		
+<div class="m_sharebtn clear">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tbody><tr>
+		<td width="11%" height="43" align="center" valign="middle"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/ssk.png" alt="分享至"></td>
+		<td width="77%" align="left" valign="top">
+<!-- 			
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>
+var bds_config = {'wbUid':1706976420};
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false, 'bdPic':'http://blog.51cto.com/attachment/201305/173413310.jpg',"bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+ -->
+
+<div class="bdsharebuttonbox bdshare-button-style1-32" data-bd-bind="1417704824038"><a href="http://luyadong.blog.51cto.com/#" class="bds_more" data-cmd="more"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="http://luyadong.blog.51cto.com/#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"2065779340"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"http://blog.51cto.com/img/blog_down0731.jpg","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+	<!-- Baidu Button END --></td>
+		<td width="12%" align="right" valign="middle"><a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/favorite_add_small.gif" border="0" alt="一键收藏，随时查看，分享好友！"></a></td>
+	  </tr>
+	</tbody></table>
+
+</div>			
+    		<div class="showBottom">
+            <!--<div class="reviews"><span class="fl" style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer">dong113</a>
+
+            </span><div id="favourdiv" class="support01">1人</div>
+              <span class="fl">了这篇文章</span></div>-->
+              <table width="720" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td align="right"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/icon01.png" width="15" height="16"> <span style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer">dong113</a></span></td>
+    <td width="70" align="left"><div style="line-height:28px;" id="favourdiv" class="support01">1人</div></td>
+    <td width="60" align="left">了这篇文章</td>
+  </tr>
+</tbody></table>
+
+
+
+
+            <div class="showType">类别：<a href="http://luyadong.blog.51cto.com/2876653/d-4" class="operlink">nginx</a>┆阅读(<span id="readNum">850</span>)┆评论(<span id="cmtNum">0</span>)
+
+┆
+<a href="http://luyadong.blog.51cto.com/">返回博主首页</a>┆<a href="http://blog.51cto.com/">返回博客首页</a></div>
+            <div class="prevNext">
+
+			上一篇 <a href="http://luyadong.blog.51cto.com/2876653/844899" class="operlink" title="sendmail问题">sendmail问题</a>
+
+
+			下一篇 <a href="http://luyadong.blog.51cto.com/2876653/927305" class="operlink" title="postfix+sasl+dovecot">postfix+sasl+dovecot</a>
+
+
+            </div>
+
+            </div>
+
+	  </div><!--showBottom end-->
+      </div><!--modCon-->
+    <span class="modBot"></span>
+    </div><!--artShow end-->
+    <span class="blank"></span>
+	
+	<div class="relatedArt box">
+<a href="http://down.51cto.com/tj.php?type=1295&id=1644" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/wKioL1PNvcuCm_pIAADO8xoie5E911.jpg"></a>
+</div>
+	
+
+
+    <div class="relatedArt box">
+    <div class="title" name="zhuanti" id="zhuanti"><h2>相关文章</h2></div>
+    <div class="modCon">
+<ul>
+
+<li><a href="http://liuyu.blog.51cto.com/183345/83146" title="netcraft 统计08年6月应用服务排行榜 nginx排到第5喽" target="_blank">netcraft 统计08年6月应用服务排行榜 nginx..</a></li>
+
+
+<li><a href="http://lin128.blog.51cto.com/407924/278712" title="Nginx做前端时,后端Apache获得真实IP的做法" target="_blank">Nginx做前端时,后端Apache获得真实IP的做法</a></li>
+
+
+<li><a href="http://songknight.blog.51cto.com/2599480/817190" title="nginx的负载均衡及后端tomcat应用实例获取客户源IP" target="_blank">nginx的负载均衡及后端tomcat应用实例获取客..</a></li>
+
+
+<li><a href="http://blackanger.blog.51cto.com/140924/40089" title="配置nginx+mongrel的rails部署环境" target="_blank">配置nginx+mongrel的rails部署环境</a></li>
+
+
+<li><a href="http://crazyming.blog.51cto.com/1048571/733232" title="nginx转发apache，apache获取真实ip地址" target="_blank">nginx转发apache，apache获取真实ip地址</a></li>
+
+
+<li><a href="http://jasonzhoa.blog.51cto.com/2159317/542584" title="nginx ssl 双向认证" target="_blank">nginx ssl 双向认证</a></li>
+
+
+<li><a href="http://johnsteven.blog.51cto.com/2523007/839280" title="Nginx的Rewrite规则" target="_blank">Nginx的Rewrite规则</a></li>
+
+
+<li><a href="http://linux008.blog.51cto.com/2837805/546489" title="nginx配置path_info" target="_blank">nginx配置path_info</a></li>
+
+
+<li><a href="http://liuyu.blog.51cto.com/183345/265796" title="nginx 无缝升级步骤" target="_blank">nginx 无缝升级步骤</a></li>
+
+
+
+</ul>
+
+
+
+<span class="blank6"></span>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div><!--相关文章 end-->
+
+
+<div class="artComm box">
+    <div class="title"><a name="replay"></a><h2>文章评论</h2></div>
+    <div class="modCon" id="artcomment">
+		<div>  &nbsp;</div><div>  &nbsp;</div>
+    </div><!--modCon-->
+        <span class="modBot"></span>
+</div><!--commBox end-->
+<a href="" id="com_top_top"></a>
+<form action="http://luyadong.blog.51cto.com/comment.php?" method="post" name="form1" id="form1" onsubmit="return commentSubmit(this,&quot;&quot;);">
+<span class="blank1"></span>
+<div class="box writeComm" style="min-height:30px;">
+<a name="comment"></a>
+<input type="hidden" name="action" value="comment">
+<input id="commenttid" type="hidden" name="tid" value="851964">
+<input type="hidden" name="com_count_ajax" id="com_count_ajax" value="1">
+
+ <div class="title">
+	<h2 class="fl">发表评论&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+	<span class="fl"><a class="mred" target="_blank" href="http://51ctoblog.blog.51cto.com/26414/1564035">抢鲜体验！用Word在51CTO写博客</a></span>
+	<style type="text/css">
+		a.mred:link{ color:#ff0000; text-decoration:underline;}
+		a.mred:visited{color:#ff0000;}
+		a.mred:hover{color:#ff0000;}
+		a.mred:active{color:#ff0000;}
+	</style>
+</div>
+ <div class="modCon">
+
+ <div class="commForm">
+<dl>
+<dt>昵&nbsp;&nbsp;称：</dt>
+<dd>
+
+<input type="text" id="commentusername" name="username" value="" class="commInput fl"><span><a href="http://home.51cto.com/index.php?reback=http%253A%252F%252Fluyadong.blog.51cto.com%252F2876653%252F851964" style="text-decoration:underline">登录</a>&nbsp;&nbsp;<a href="http://ucenter.51cto.com/reg_01.php?reback=http://blog.51cto.com" target="_blank" style="text-decoration: underline;">快速注册</a></span>
+
+
+
+</dd>
+</dl>
+
+
+
+<dl id="commentyanzheng">
+
+
+<dt>验证码：</dt>
+<dd><input class="code" type="text" value="" id="commentauthnum" name="authnum" onclick="displaysecunum();">
+
+  <img width="78" class="fl" height="29" id="secunum" onclick="refimg()" style="display:none;"><p class="fl"><span style="display:none;" id="spanfont">点击图片可刷新验证码</span><span style="display:inline;" id="clickfont">请点击后输入验证码</span><span class="pl5"><a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank" style="text-decoration: underline;">博客过2级，无需填写验证码</a></span></p></dd>
+</dl>
+<dl>
+<dt>内&nbsp;&nbsp;容：</dt>
+<dd>
+<textarea class="writeCommCon f12" id="commentcontent" name="content"></textarea>
+</dd>
+</dl>
+</div>
+<div class="writeCommBot">
+  <input type="hidden" name="parentid" value="" id="parentid">
+  <input class="commBtn fl" name="submit" type="button" id="commentsubmit" value="" onclick="commentSubmitend2()">
+
+ <p class="fl" style="display:none;"><input class="fl" type="checkbox" name="favour" id="favour" checked="" value="1"><span class="fl">同时赞一个</span></p>
+
+</div>
+<span class="blank"></span>
+
+</div><!--modCon-->
+<span class="modBot"></span>
+</div>
+</form>
+
+<iframe id="iframe1" name="iframe1" width="0" height="0"></iframe>
+<!--发表评论 end-->
+</div>
+</div>
+<div id="f_close_box" style="width:150px; height:300px; position:fixed; top:42%;left:0; z-index:100; _position:absolute; _margin-top: 0; _top:expression(documentElement.scrollTop+(documentElement.clientHeight-this.offsetHeight)/2+50);">
+
+	<img src="http://img1.blog.51cto.com/image/ad/down-wx.jpg" border="0" usemap="#Map1" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;">
+    <map name="Map1" id="Map1">
+      <area shape="rect" coords="124,7,143,25" href="javascript:void(0);" onclick="document.getElementById(&#39;f_close_box&#39;).style.display=&#39;none&#39;;">
+    </map>
+    
+</div>
+<script language="javascript">
+	function refimg(){
+		var randval = Math.random();
+		document.getElementById("secunum").src="/seccode.php?rnum="+randval;
+	}
+	function displaysecunum()
+	{
+		var displaystr = document.getElementById("secunum").style.display;
+		if(displaystr == 'none')
+		{
+			refimg();
+			document.getElementById("clickfont").style.display = 'none';
+			document.getElementById("secunum").style.display = 'inline';
+			document.getElementById("spanfont").style.display = 'inline';
+		}
+	}
+
+	function showMsn(){
+		document.getElementById("c02").style.display = "none";
+		document.getElementById("c01").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+	function showBBS(){
+		document.getElementById("c01").style.display = "none";
+		document.getElementById("c02").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+
+	//资源页面，分享按钮
+	function copyShareUrl(title){
+
+		if (window.clipboardData){
+
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				copy = "推荐：" + title + "http://luyadong.blog.51cto.com/2876653/851964";
+				var alertText = "复制成功，你可以粘贴到MSN或QQ中发给好友。";
+			}
+			else
+			{
+				copy = "[url=" + "http://luyadong.blog.51cto.com/2876653/851964" + "][u]" + title + "[/u][/url]";
+				var alertText = "复制成功，你可以粘贴到论坛分享给坛友。";
+			}
+			window.clipboardData.clearData();
+			window.clipboardData.setData("Text", copy);
+			alert(alertText);
+		}
+		else if (window.netscape){
+			alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。");
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				document.getElementById("shareTextQM").value = "推荐：" + title + "http://luyadong.blog.51cto.com/2876653/851964";
+				document.getElementById("shareTextQM").select();
+			}
+			else
+			{
+				document.getElementById("shareTextBBS").value = "[url=" + "http://luyadong.blog.51cto.com/2876653/851964" + "][u]" + title + "[/u][/url]";
+                document.getElementById("shareTextBBS").select();
+			}
+		}
+		return false;
+	}
+	function select_login(){
+		document.getElementById('fixed').style.display='';
+	}
+	function commentcheck()
+	{
+		if(document.form1.content.value == "")
+		{
+			alert("评论内容为空!");
+			document.form1.content.focus();
+			return false;
+		}
+	}
+	function changename(){
+
+	var memberid=0;
+	memberid="";
+
+	if(document.getElementById('commentniming').checked){
+		document.getElementById('commentusername').disabled=false;
+		document.getElementById('commentusername').value='';
+		document.getElementById("indexhidden").style.display="none";
+		document.getElementById("commentindex").value='';
+		document.getElementById("commentyanzheng").style.display="";
+	}else{
+		document.getElementById('commentusername').disabled=true;
+		document.getElementById('commentusername').value="";
+		document.getElementById("indexhidden").style.display="";
+		document.getElementById("commentindex").value="http://.blog.51cto.com";
+		if(memberid>8)
+		{
+			document.getElementById("commentyanzheng").style.display="none";
+		}
+	}
+	}
+	function openFavoulist()
+	{
+		window.open ('http://blog.51cto.com/mod/favourlist.php?tid=851964','newwindow','height=300,width=500,top=400,left=400,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no,z-look=yes');
+	}
+
+	var e_zti = document.getElementById('zti');//有专题锚点
+	var maodian = window.location.href;//锚点
+	if (e_zti) {
+		//e_zti.href= (/[#]+/.test(maodian)) ? maodian : maodian + "#zhuanti";
+	}
+</script>
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/jquery.cookie.js"></script>
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/jquery.messager.js"></script>
+<link href="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/blog_top.css" rel="stylesheet" type="text/css">
+<script src="http://blog.51cto.com/js/blog_top_list.php" type="text/javascript" language="javascript"></script>
+<style>
+.backToTop {
+    display: none;
+	WIDTH: 45px;
+	height:45px;
+	BOTTOM: 20px;
+     position: fixed;
+    _position: absolute;
+    right: 140px;
+    bottom: 10px;
+    _bottom: "auto";
+    cursor: pointer;
+    opacity: .6;
+    filter: Alpha(opacity=60);
+	text-indent:-9999px;
+}
+.tops { background:url(/images/topq.jpg) no-repeat center center; }
+</style>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "返回顶部", backToTopEle = $('<div class="backToTop tops"></div>').appendTo($("body"))
+        .text(backToTopTxt).attr("title", backToTopTxt).click(function() {
+            $("html, body").animate({ scrollTop: 0 }, 520);
+    }), backToTopFun = function() {
+        var st = $(document).scrollTop(), winh = $(window).height();
+        (st > 0)? backToTopEle.show(): backToTopEle.hide();    
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            backToTopEle.css("top", st + winh - 60);    
+        }
+    };
+    $(window).bind("scroll", backToTopFun);
+    $(function() { backToTopFun(); });
+})();
+</script><div class="backToTop tops" title="返回顶部" style="display: block;">返回顶部</div>
+
+
+
+
+
+
+<div class="clear"></div>
+<!-- <script>
+jQuery(function(){
+	var html= "<div id=\"sogou_se_tgbar\" style=\"text-align:center;margin:0px auto 2px auto;clear:both;background:url(http://home.51cto.com/public/images/notice/sogou_se_tgbar_bg_final1.gif) repeat-x;width:950px;color:#000;font-size:13px;height:36px;z-index:21474836471\"><div style=\"float:left;cursor:pointer;width:910px;text-align:center;border-left:solid #efbf00 1px;height:32px; line-height:32px;txt-align:center;\"><span style=\"\">	<a href=\"http://51ctoblog.blog.51cto.com/26414/1093282\">【新年祝福征集】51CTO社区年底嘉年华活动正在征集博主祝福语，祝福以红包的形式随机的赠送给访问51CTO的网友 点此送祝福>></a></span></div><div onclick=\"document.getElementById('sogou_se_tgbar').style.display = 'none';\" style=\"float:right;width:20px;cursor:pointer;height:28px;padding:4px 8px 0px 8px;border-right:solid #efbf00 1px\"><img style=\"border:none;margin:4px 0px 0px 0px;\" src=\"http://home.51cto.com/public/images/notice/sogou_se_tgbar_close_final1.gif\"></div></div>"
+	jQuery('body').prepend(html);
+})
+</script> -->
+
+<div id="footer">
+  <div id="innerFooter">
+	<center>
+		<small>
+			Copyright By 51CTO.COM 版权所有<br><br>
+			<a href="http://blog.51cto.com/" target="_blank"><img src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/copyright.jpg"></a>
+	  </small>
+	</center>
+  </div>
+</div>
+<script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/index.php" charset="utf-8"></script>
+<div style="display:none">
+<script src="http://logs.51cto.com/rizhi/count/count.js"></script>
+<div style="display:none">
+<script> 
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ 
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) 
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga'); 
+
+ga('create', 'UA-56422726-1', 'auto'); 
+ga('send', 'pageview'); 
+
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3fe9272bf48a68ad34ff7d08e600bc4b' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://hm.baidu.com/h.js?3fe9272bf48a68ad34ff7d08e600bc4b" type="text/javascript"></script>
+</div>
+<iframe frameborder="0" scrolling="no" width="0" height="0" src="about:blank" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;"></iframe>
+</div>
+<div style="display:none;"><script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/stat.php" language="JavaScript"></script><script src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=4274540" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./双层nginx代理获取真实访问ip - 生命不息奋斗不止 - 51CTO技术博客_files/pic.gif"></a><div>
+<script src="http://blog.51cto.com/js/poptop.js"></script>
+
+
+
+</div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

@@ -1,0 +1,1016 @@
+
+<!-- saved from url=(0041)http://www.uml.org.cn/sjjm/2014122511.asp -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<title>技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程</title>
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/style.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+
+.abd {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #BED6E0;
+	border-top-style: none;
+	border-left-style: none;
+	border-bottom-width: 1px;
+	border-bottom-style: none;
+	border-bottom-color: #BED6E0;
+}
+.acc {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #BED6E0;
+	border-bottom-color: #BED6E0;
+	border-left-color: #BED6E0;
+}
+.kuang {
+	border: 1px solid BED6E0;
+}
+.ltrig {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #C0C0C0;
+	border-top-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-left-style: solid;
+	border-top-color: #C0C0C0;
+	border-left-color: #C0C0C0;
+}
+-->
+</style>
+<style type="text/css">
+<!--
+.left {
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-left-color: D9D9D9;
+}
+-->
+</style>
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/artstyle.css" rel="stylesheet" type="text/css">
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/style.css" rel="stylesheet" type="text/css"><style type="text/css"></style><link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/bdsstyle.css" rel="stylesheet" type="text/css"></head>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#F5F5F5"><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="bds_more">更多...</a></li></ul><p><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" class="goWebsite">百度分享</a></p></div></div></div><script src="http://tajs.qq.com/jiathis.php?uid=1&dm=www.uml.org.cn" charset="utf-8"></script><link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jiathis_share.css" rel="stylesheet" type="text/css"><iframe frameborder="0" style="position: absolute; display: none; opacity: 0;"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;"></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto;"></div><iframe frameborder="0" src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jiathis_utility.html" style="display: none;"></iframe><noscript>
+&lt;iframe src="保密的网页名.htm"&gt;&lt;/iframe&gt;
+</noscript>
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/style.css" rel="stylesheet" type="text/css">
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/pxgk.css" rel="stylesheet" type="text/css">
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/vedio.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.artsect{color:#242424; font-family:"微软雅黑";font-size:14px; line-height: 18px}
+
+.hdtop_a
+{      color:#ffffff;
+        font-family:"微软雅黑";
+        font-size:13px; 
+		font-weight:bold;
+		line-height:30px;
+		height: 30px; 
+		text-decoration:none; 
+}
+.hdtop_a:link
+{	color: #ffffff;
+	font-family:"微软雅黑";
+	font-size:13px;
+	font-weight:bold;
+	
+	
+}
+.hdtop_a:visited
+{       color:#ffffff;
+        font-family:"微软雅黑";
+        font-size:13px;
+		font-weight:bold;
+} 
+.hdtop_a:hover
+{
+	color:#ffffff;
+	font-family:"微软雅黑";
+	font-size:13px;
+	font-weight:bold;
+} 
+-->
+</style>
+<script type="text/javascript">
+ 
+<!--
+ 
+    function txtFocus() {
+ 
+       var e = window.event;
+ 
+       var obj = e.srcElement;   //当前对象
+ 
+       obj.style.background = "#FFFFFF";
+ 
+    }
+ 
+    
+
+    function txtBlur() {
+ 
+       var e = window.event;
+ 
+       var obj = e.srcElement;
+ 
+       obj.style.background = "#404040";
+ 
+    }
+ 
+-->
+ 
+</script>
+
+
+
+<noscript>&lt;iframe src=*&gt;&lt;/iframe&gt;</noscript>
+<style>
+body {
+margin: 0px;padding:0
+
+}
+#div1 {
+display: none;
+position: absolute;
+z-index: 1000;
+height: 100%;
+width: 100%;
+background: #000000;
+filter:Alpha(opacity=30);
+opacity: .3;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; 
+}
+
+#div3 {
+display: none;
+position: absolute;
+height: 100%;
+width: 100%;
+padding-top: 15%;
+z-index: 1000;
+left: 0px;
+top: 0px;
+}
+
+#contentday_a
+{     
+        font-family:"微软雅黑";
+        font-size:16px; 
+}
+
+#contentday1_a
+{     
+        font-family:"微软雅黑";
+        font-size:13px; 
+}
+</style>
+
+
+
+<script>
+
+function openjz(){
+document.getElementById('div1').style.display='block';
+document.getElementById('div3').style.display='block';
+}
+function closejz(){
+document.getElementById('div1').style.display='none';
+document.getElementById('div3').style.display='none';
+}
+</script>
+
+<div id="div1"></div>
+<div id="div3">
+  <table width="30%" border="0" cellpadding="3" cellspacing="1" style="background: #01A3E8; position:static;filter:progid:DXImageTransform.Microsoft.DropShadow(color=#666666,offX=4,offY=4,positives=true)" align="center">
+    <tbody><tr> 
+     
+        <td colspan="2" width="100%" bgcolor="#FFFFFF" height="150"><div align="right">
+            <input name="button2" type="image" style="cursor: hand;" onclick="closejz()" value="ｘ" src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jzx.png" width="30" height="28">
+          </div>
+           <form name="form2" method="post" action="http://www.uml.org.cn/docjzh-art.asp?s=a"> <div align="center"><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;您可以捐助，支持我们的公益事业。<br>
+           
+            
+            <br>
+            金额:
+<input name="jzed" type="radio" value="1" checked="">
+                    1元 
+                    <input type="radio" name="jzed" value="10">
+                    10元
+                    <input type="radio" name="jzed" value="50">
+                    50元<br>
+             <br>姓名: <input name="name" type="text" size="25" style="height:25px;"> <br> 
+			 <br>邮件: <input name="mail" type="text" size="25" style="height:25px;"> <br> 
+			 <br>电话: <input name="phone" type="text" size="25" style="height:25px;"> <br> 
+			 <br>公司: <input name="company" type="text" size="25" style="height:25px;"> <br> <br>
+            说明:
+            <textarea name="remark" cols="23" rows="3"></textarea>
+            <br>
+            <br>
+            认证码：<input name="txt_check" type="text" size="10" maxlength="4" class="input" style="height:25px;">&nbsp;<img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/checkcode.asp" alt="验证码,看不清楚?请点击刷新验证码" width="57" height="18" style="cursor : pointer;" onclick="this.src=&#39;checkcode.asp?t=&#39;+(new Date().getTime());"> 
+                                        必填 <br>
+<br>
+            <input name="image" type="image" value="登录" src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/qud.png" width="102" height="35">
+            <br>
+
+ <br>
+			
+          </div></form>
+</td>
+      
+    </tr>
+  </tbody></table>
+</div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="content">
+<tbody><tr> 
+<td width="842">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0" class="content" id="hdtopcon_a">
+								<tbody><tr>
+								<td width="25" height="30" style="background:#f5f5f5;">&nbsp;</td>
+								 <td width="22" height="30" align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/headh_01.gif"></td>
+								 <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://www.uml.org.cn/index.asp" class="hdtop_a">首页</a></td>
+                                  <td width="70" height="30" align="center" class="hdtoptd_a" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;" style="background:#f5f5f5;border-left: 1px solid #000000;"><a href="http://www.uml.org.cn/wenzhang/artindex.asp" class="hdtop_a"><font color="#000">文章</font></a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://wenku.uml.com.cn/index.asp" class="hdtop_a">文库</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://video.uml.com.cn/index.asp" class="hdtop_a">视频</a></td>
+								  <td width="90" height="30" align="center" bgcolor="#404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://www.uml.org.cn/iProcess/MyProcess.asp" class="hdtop_a">iprocess</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://www.uml.org.cn/course/index.asp" class="hdtop_a">课程</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://certificate.uml.com.cn/index.asp" class="hdtop_a">认证</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://job.uml.com.cn/index.asp" class="hdtop_a">招聘</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"> <a href="http://consult.uml.com.cn/index.asp" class="hdtop_a">咨询</a></td>
+								  <td width="70" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://tool.uml.com.cn/ToolsEA/introduce.asp" class="hdtop_a">工具</a></td>
+								  <td width="80" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;" onmouseover="this.bgColor=&#39;#606268&#39;;" onmouseout="this.bgColor=&#39;#404040&#39;"><a href="http://www.uml.com.cn/communicate/index.asp" class="hdtop_a">讲座吧</a></td>
+								  <td width="20" height="30" align="center" bgcolor="404040" style="border-left: 1px solid #000000;">&nbsp;</td>
+								  </tr>
+                                <!--DWLayoutTable-->
+                              </tbody></table>
+							  </td>
+							  <td>
+							   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="content" bgcolor="#404040">
+							  <tbody><tr>
+							  <td height="30" align="right"><a href="http://user.uml.com.cn/index.asp" class="hdtop_a">会员&nbsp;&nbsp;&nbsp;</a></td>
+							  </tr>
+							  </tbody></table> 
+							  </td>
+							  </tr>
+							  </tbody></table>
+							  
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="content">
+  <tbody><tr> 
+    <td width="24" height="110">&nbsp; </td>
+    <td width="177" height="110" valign="bottom"><a href="http://www.uml.org.cn/"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/arthd1.jpg" width="177" height="80" border="0"></a></td>
+    <td valign="middle"> <div align="right"></div>
+      <div align="right">&nbsp;&nbsp;</div></td>
+    <td width="100" height="110" valign="middle"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/erweima.jpg" width="91" height="91"></td>
+    <td width="120" height="110"> <div align="right">
+        <div align="left"><font id="contentday1_a" color="#c0c0c0">每天15篇文章</font></div>
+        <div align="left"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/wenzhang_dan.png" width="119" height="10"></div>
+        <div align="left"><font id="contentday1_a" color="#c0c0c0">不仅获得谋生技能</font></div>
+        <div align="left"><font id="contentday1_a" color="#c0c0c0">更可以追随信仰</font></div>
+      </div>
+      </td>
+    <td width="20">&nbsp;</td>
+  </tr>
+</tbody></table>
+							  <table width="100%" height="1" border="0" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5">	   
+							  <tbody><tr> 
+							  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+							  <tbody><tr> 
+							  <td width="19" bgcolor="#F5F5F5"></td>
+							  <td bgcolor="#dcdcdc"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/spacern.gif" width="1" height="1"></td>
+							  <td width="19" bgcolor="#F5F5F5"></td>
+							  </tr>
+							  </tbody></table>		  
+	</td>
+	</tr>
+</tbody></table>
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" class="content">
+  <tbody><tr valign="top"> 
+    <td width="900"> 
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" class="content">
+        <tbody><tr valign="top"> 
+          <td width="20" background="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/wzhleft22012.jpg" bgcolor="F5F5F5" class="content"> 
+            <table width="20" height="8" border="0" align="center" cellpadding="0" cellspacing="0" class="content">
+              <!--DWLayoutTable-->
+              <tbody><tr> 
+                
+      <td width="20" height="8" valign="top">&nbsp;</td>
+              </tr>
+            </tbody></table>
+</td>
+          <td width="864" class="left"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tbody><tr> 
+                <td height="19" bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="content">
+                    <tbody><tr> 
+                      <td height="17" valign="top">&nbsp;</td>
+                      <td valign="top">&nbsp;</td>
+                      <td valign="top">&nbsp;</td>
+                    </tr>
+                    <tr> 
+                      <td width="34%" height="38" valign="top"> 
+                        &nbsp;
+                      </td>
+                      <td valign="top"> 
+                        &nbsp;                       </td>
+                      <td width="34%" valign="top"> <div align="center"> 
+                          <style type="text/css">
+.jz_a:link {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration:none
+}
+
+.jz_a:visited {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration: none;
+	font-style: normal;
+	line-height: normal
+}
+
+.jz_a:hover {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration: none
+}
+</style>
+<table width="300" align="center">
+  <tbody><tr> 
+    <td>&nbsp;</td>
+    <td width="65"> <div align="right" id="bdshare" class="bdshare_t bds_tools get-codes-bdshare"> 
+        <span class="bds_more" style="line-height: 12px; font-family: 微软雅黑; font-size: 14px; height: 17px;">分享到</span> 
+      </div></td>
+    <td width="25" style="padding-bottom:4px"> <div align="right"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jzh.png"></div></td>
+    <td width="45" style="padding-bottom:4px"><font style="line-height: 12px; font-family:&#39;微软雅黑&#39;; font-size:14px;"><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" onclick="openjz()" class="jz_a">捐助</a></font></td>
+</tr></tbody></table>
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jia.js" charset="utf-8"></script>
+</div> <!-- JiaThis Button END -->
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6586105" src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+                        </td>
+                    </tr>
+                  </tbody></table></td>
+              </tr>
+              <tr> 
+                <td bgcolor="#FFFFFF"> <div align="center" class="arttitle">技术篇：微博推荐引擎体系结构简述</div></td>
+              </tr>
+              <tr> 
+                <td height="19" bgcolor="#FFFFFF">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td bgcolor="#FFFFFF"><div align="center" class="artformtitle" style=" color:999999"> 
+              作者&nbsp; 比特币&nbsp;来源：36大数据&nbsp; 火龙果软件&nbsp; 发布于&nbsp;2014-12-25</div></td>
+              </tr>
+              <tr>
+                <td height="72" bgcolor="#FFFFFF" class="content"> 
+                  <style type="text/css">
+.wkpf {	font-family: "微软雅黑";
+	font-size: 13px;
+	line-height: 25px;
+	text-decoration: none;
+	color: #818183;
+ }
+ 
+wkpf1{	font-family: "微软雅黑";
+	font-size: 13px;
+
+	text-decoration: none;
+	color: #000000;
+ }
+
+
+</style>
+<div align="right"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/2star.png"> <span class="wkpf">49 次浏览 </span>
+  <span class="wkpf">&nbsp;&nbsp;&nbsp;&nbsp;评价：</span> <a href="http://www.uml.org.cn/inc/pf.asp?Rating=3&act=show&id=15717" style=" font-size:13px; font-family:微软雅黑;text-decoration: none;"><font color="#0000FF">好</font></a>
+  <a href="http://www.uml.org.cn/inc/pf.asp?Rating=2&act=show&id=15717" style=" font-size:13px; font-family:微软雅黑;text-decoration: none; ;"><font color="#0000FF">中</font></a> 
+ <a href="http://www.uml.org.cn/inc/pf.asp?Rating=1&act=show&id=15717" style=" font-size:13px; font-family:微软雅黑;text-decoration: none; "><font color="#0000FF">差</font></a> 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+              </tr>
+              <tr>
+              <td bgcolor="#FFFFFF">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td bgcolor="#FFFFFF"> <table width="95%" border="0" align="center" cellpadding="3" cellspacing="1">
+                    <tbody><tr> 
+                      <td bgcolor="#FFFFFF" class="content">
+          
+                        <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251101.jpg" width="455" height="310"></p>
+                        <p class="artcon">任何不拿出干货的技术文档都是耍流氓，首先上体系结构图，如图所示，在整体体系结构上，微博推荐可以被划分为4层：前端展现层、应用层、计算层以及数据层，其中我们把数据日志、统计、监控以及评估也都分在数据层。接下来我会逐一介绍他们的目的，作用、技术与发展。更为细致的描述应该会在以后的博客中体现。</p>
+                      <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251102.jpg"></p>
+                        <p class="artcon"><strong>1、推荐前端RFront</strong></p>
+                        <p class="artcon">RFront主要目的是展现以及渲染微博内容，由于当前微博推荐在web以及客户端都有相对应的产品，展现差异较大，但数据和方法却是通用的。那么，需要有这么易于维护、拥抱变化的一层高效地响应产品需求。当然在微博推荐实际业务中，由于产品形态的多样以及策略的负责性，RFront做了不少工作以及相关的应用技术很多，在接下来的文章中会有相关的同学着重介绍这一块工作。</p>
+                        <p class="artcon"><strong>2、推荐应用RApp</strong></p>
+                        <p class="artcon">RApp主要目的是为前端提供候选以及起到部分排序功能。该层利用通用框架【nginx + lua 以及apache + python两个版本】提供应用接口服务。这些应用包括：内容、用户、服务、feed推荐频次以及辅助功能。</p>
+                        <p class="artcon">在这里有一个工具叫做通用推荐框架（CRF, common recommon framework），它主要的作用是：融合推荐资源、规范推荐应用接口以及统一工作流。早期版本使用的是apache+mod_python的形式，后来在RApp的定位上，认为它是一个数据通路，同时需要获取各种协议的数据内容，因而将其扩展到nginx + lua的版本。</p>
+                        <p class="artcon">CRF是一个二次开发框架，无论是早期的apache+mod_python版本还是nginx+lua版本，其核心思想是相似的，它们的目标都是为了较为快速进行推荐策略开发，快速的使用既有推荐存储数据。主要的体现在：</p>
+                        <ol>
+                          <li><strong>通过透明化不同协议的存储数据获取方法，方面获取推荐资源。</strong>比如，获取mc、redis以及openapi的数据方式是一致的，get以及mget是一个标准的获取方法。</li>
+                          <li><strong>通过建立project的概念，以继承的方式让二次开发者建立自己的项目，同时将project中work_core暴露出来，完成主体业务。</strong>当然其中也有一个小的技巧，比如global_data以及并行化获取数据等等。</li>
+                          <li><strong>通过暴露出来的common_recom的核心接口来定义推荐的统一接口</strong>，我们整理和抽象了所有推荐的接口数据形式，在一定程度上进行了规范和定义，这样方面了进行接口管理以及对应。比如obj【多用来表示访问者】，tobj【多用来表示访问对象】，from【来源】，appkey【分配key】，num【数量】，type【类型，用来区分同一个项目中不同接口】，pid【区分项目】等等。</li>
+                        </ol>
+                        <p class="artcon">以下图是其三层目录结构【apache+mod_python】：</p>
+                        <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251103.jpg"></p>
+                        <p class="artcon">其中我们通过data_interface来实现数据透明化，通过work_interface来管理项目，my_interface二次开发者开发属于自己的project。同时需要配置文件【data以及project】进行数据和项目的对应。这样会带来一个好处，通过这个框架将所有的资源整合起来了，在推荐早期项目中起到了比较明显的作用：快速响应算法和产品策略、项目迭代比较迅速同时让业务人员在一定程度上关注业务，后来也推动了后来推荐存储架构的诞生。通过不断的优化，这个逐渐被lua以及c/c++版本的通用框架取代。</p>
+                        <p class="artcon"><strong>3、推荐计算层RCompute</strong></p>
+                        <p class="artcon">推荐计算层的职责是做高效运算，比如二度关系运算、用户之间桥梁关系运算、CTR预估等等CPU密集型的功能模块。同时在RApp以及RFront有一些离线数据采用远程访问以前比较低效的，因此我们需要一个更加高效的通用框架来满足上述要求，lab_common_so孕育而生。</p>
+                        <p class="artcon">Lab_common_so是基于woo框架的【感谢曾经的同事支持，这是一个轻型的通讯框架，通讯协议以及日志系统比较完善】一个业务流框架，同时兼有了CRF的特点——整合融入数据资源、规范业务流程、统一接口形态，还具有了数据本地化功能。其实在在线demo c/c++开发框架中有很多，在这里主要介绍一些自身特点：</p>
+                        <ul>
+                          <li>通过c++的一些特性，让二次开发者在工作流上尽可能减少关注其他架构以及通讯包括存储客户端的事情，下图是主要的类结构图【UML的一套傻傻的不会，大家凑合看吧。】</li>
+                        </ul>
+                        <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251104.jpg"></p>
+                        <ul>
+                          <li>通过global_data以及data的类实现获取数据的透明化</li>
+                          <li>在后期的改造中，将work独立出来，有开发方自己进行编写具体实现和具体类，进行so化支持线上更新</li>
+                        </ul>
+                        <p class="artcon">在计算层中有一个模块是RTaining，主要用来进行模型更新以及线上学习的，前期主要用在点击反馈或者实时模型上。</p>
+                        <p class="artcon"><strong>4、数据RStore</strong></p>
+                        <p class="artcon">推荐数据对于推荐而言是基础，决定了性能也决定了效果。因此在数据存储上花的精力较多。微博推荐存储的数据拥有以下特点：</p>
+                        <ol>
+                          <li>种类繁杂，比如需要存储挖掘的静态数据，还有用户实时行为的动态数据，有为提升性能而存储的属性缓存也有离线运算的直接结果数据</li>
+                          <li>存储选型上也不能一概而论，动态数据以及静态数据的要求是不一样，统一都用高效的内存存储浪费资源，不宜扩展，都用离线的静态存储又达不到性能要求</li>
+                          <li>多个外部门的数据，沟通和写作方式各式各样</li>
+                          <li>某些数据量较大，同时在某些数据的实时性要求上较高。</li>
+                        </ol>
+                        <p class="artcon">针对上述特点，推荐抽象解决IN/OUT/STORE三部分。下图详细的描述了推荐数据的结构图：</p>
+                       <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251105.jpg"></p>
+                        <p class="artcon">IN：输入的关键是解决统一和，因此通过建立基于ckestral的统一入口来解决数据规范的事情，同时在日志以及实时数据上也有相应的解决方案，统一入口为RIN。</p>
+                        <p class="artcon">OUT：输出的关键是需要透明化，对于业务方而言不需要关系如何进行的服务器分配以及存储类型，而能够方面快速稳定地获取到数据就好。</p>
+                          <p class="artcon">STORE：这一块主要解决数据类型繁杂的工作，推荐的经验是离线使用lushan以及mapdb，在线使用redis/mc，如果有特殊需求，比如批量高效压缩存储特征数据，也会使用一些自己定制的数据存储形式。</p>
+                          <p class="artcon">在这里面，需要特别强调的是离线静态数据存储，在性能以及成本上找到一定的平衡点是推荐比较有特色的地方，lushan以及mapdb会在之后做专题介绍。同时在推荐发展的过程中,hadoop的引入在一定程度上解决了很多候选以及排序的问题，因此一些map-reduce的结果数据如何放置于线上，推荐系统的r9项目很好的解决了这个问题。</p>
+                        <p class="artcon"><strong>5、数据值辅助工具：日志、监控、评估以及报警</strong></p>
+                        <p class="artcon">推荐日志系统主要为了解决离线数据分析以及在线监控使用。当前推荐系统针对离线的分析来自于两块，一个是来源于自己的日志系统，另外一个是来自于公司的hadoop集群【几乎涵盖了非业务方的全局数据】，也在考虑将这两部分进行整合归并。</p>
+                        <p class="artcon">推荐监控系统是去年建设起来的，主要分为三部分：</p>
+                        <p class="artcon">性能监控，主要查看应用、计算以及存储的性能服务指标，同时与报警体系联动，及早发现问题、解决问题。目标是实时以及准实时，现在是分钟级别的。</p>
+                          <p class="artcon">效果监控，主要跟踪效果的优化和改进，当前重点业务线的效果均在监控系统中</p>
+                          <p class="artcon">对比测试监控，主要针对线上的A/B测试，进行分维度数据展示和对比</p>
+                         <p class="artcon"> 以下是我们监控的一些信息：</p>
+                        <p class="artcon">曝光以及性能监控：</p>
+                        <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251106.jpg"></p>
+                        <p class="artcon">效果监控：</p>
+                        <p align="center"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/201412251107.jpg"></p>
+                        <p class="artcon">推荐评估系统，当前主要以demo实验、下线评估以及线上评估三个体系构成，其中线上评估体系主要跟着监控体系来的。而下线以及demo主要是一套前端的展示框架，几乎涵盖了推荐所有的接口以及对比测试数据。</p>
+                        <p class="artcon">推荐报警体系，微博本身是有的，不过由于性能指标以及效果指标存在一定上的定制化需求，这一块正在花精力解决。</p>
+                        <p class="artcon">好了，这一篇就到这里，推荐体系结构的介绍基本上告一段落了，其中涉及到的比较细节的工作将会在专题中进行介绍。也请大家多多捧场。</p>
+                        <p class="artcon">还是老规矩：</p>
+                        <p class="artcon">Simple is Beautiful! 设计复杂的系统不是难事，难的是用简单的东西满足复杂业务，大家共勉！</p>
+                   
+                    
+                    
+                      
+
+
+                    </td></tr>
+                  </tbody></table>
+              
+  <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="content">
+                    <tbody><tr> 
+                      <td width="34%" height="17" valign="top"> 
+                        &nbsp;                      </td>
+                      <td valign="top"> 
+                        &nbsp;                       </td>
+                      <td width="34%" valign="top"> <div align="center"> 
+                          <style type="text/css">
+.jz_a:link {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration:none
+}
+
+.jz_a:visited {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration: none;
+	font-style: normal;
+	line-height: normal
+}
+
+.jz_a:hover {
+	color: #0000ff;
+	font-family:"微软雅黑";
+	font-size:14px;
+	text-decoration: none
+}
+</style>
+<table width="300" align="center">
+  <tbody><tr> 
+    <td>&nbsp;</td>
+    <td width="65">
+<div align="right" id="bdshare" class="bdshare_t bds_tools get-codes-bdshare"> 
+        <span class="bds_more" style="line-height: 12px; font-family: 微软雅黑; font-size: 14px; height: 17px;">分享到</span> 
+      </div></td>
+    <td width="25" style="padding-bottom:4px"> 
+      <div align="right"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jzh.png"></div></td>
+    <td width="45" style="padding-bottom:4px"><font style="line-height: 12px; font-family:&#39;微软雅黑&#39;; font-size:14px;"><a href="http://www.uml.org.cn/sjjm/2014122511.asp#" onclick="openjz()" class="jz_a">捐助</a></font></td>
+</tr></tbody></table>
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6586105"></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+                        </div></td>
+                    </tr>
+                  </tbody></table> 
+                    
+<style type="text/css">
+.lettit
+{      color:#000000;
+        font-family:"微软雅黑";
+        font-size:13px; 
+		
+}
+</style>
+<table width="95%" border="0" align="center" cellpadding="1" cellspacing="1">
+  <tbody><tr class="lettit"> 
+    <td width="34%" height="30" valign="top"></td>
+    <td height="30" valign="top"></td>
+    <td width="34%" height="30" valign="top"></td>
+  </tr>
+  <tr valign="bottom"> 
+    <td width="34%" height="30" class="lettit">相关文章</td>
+    <td height="30" class="lettit">相关文档</td>
+    <td width="34%" height="30" class="lettit">相关视频</td>
+  </tr>
+  <tr> 
+    <td width="34%" height="25" valign="top">
+<hr width="80%" size="1" color="#999999" align="left"></td>
+    <td width="34%" height="25" valign="top">
+<hr width="80%" size="1" color="#999999" align="left"></td>
+    <td width="34%" height="25" valign="top">
+<hr width="80%" size="1" color="#999999" align="left"></td>
+  </tr>
+  <tr> 
+    <td width="34%" height="129" valign="top"> 
+      <table width="100%">
+        <tbody><tr> 
+          <td width="386" height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/sjjm/201210265.asp">我们该如何设计数据库</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/sjjm/201007233.asp">数据库设计经验谈</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/sjjm/200903311.asp">数据库设计过程</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/sjjm/201005131.asp">数据库编程总结</a></td>
+        </tr>
+      </tbody></table></td>
+    <td height="129" valign="top"> 
+      <table width="100%">
+        <tbody><tr> 
+          <td width="386" height="25"><a class="artrighttext_a" href="http://wenku.uml.com.cn/document.asp?fileid=4002&partname=%CA%FD%BE%DD%BF%E2">数据库性能调优技巧</a></td>
+        </tr>
+        <tr> 
+          <td height="25"> <a class="artrighttext_a" href="http://wenku.uml.com.cn/document.asp?fileid=1050&partname=%CA%FD%BE%DD%BF%E2">数据库性能调整</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://wenku.uml.com.cn/document.asp?fileid=1390&partname=%CA%FD%BE%DD%BF%E2">数据库性能优化讲座</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://wenku.uml.com.cn/document.asp?fileid=1049&partname=%CA%FD%BE%DD%BF%E2">数据库系统性能调优系列</a></td>
+        </tr>
+      </tbody></table></td>
+    <td width="34%" height="129" valign="top"> 
+      <table width="100%">
+        <tbody><tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/course-db/xnsjksj.asp">高性能数据库设计与优化</a></td>
+        </tr>
+        <tr> 
+          <td width="386" height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/course-db/shujk.asp">高级数据库架构师</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/course-db/dbdesign15.asp">数据仓库和数据挖掘技术</a></td>
+        </tr>
+        <tr> 
+          <td height="25"><a class="artrighttext_a" href="http://www.uml.org.cn/course-db/Hadoop-xnty.asp">Hadoop原理、部署与性能调优</a></td>
+        </tr>
+      </tbody></table> </td>
+  </tr>
+</tbody></table>
+
+                </td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+      </tbody></table></td>
+    <td>
+      <table width="240" border="0" align="right" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" class="content">
+        <tbody><tr> 
+          <td height="20" valign="top" class="left_right"><table width="200" height="8" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF" class="content" id="__01">
+              <!--DWLayoutTable-->
+               <tbody><tr> 
+                      <td height="17" valign="top"><div align="left">
+                          &nbsp;                      </div></td>
+                    </tr>
+              <tr> 
+                <td width="200" valign="top" bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="1" cellspacing="0" class="content">
+                    <tbody><tr> 
+                      <td height="17" valign="top"><div align="left"><font color="000080"><a href="http://www.uml.org.cn/sjjm/sjjm.asp" target="_blank"><font color="000080"><b><u>相关文章</u></b></font></a></font> 
+                        </div>
+                        <hr width="100%" size="1"> </td>
+                    </tr>
+                    <tr> 
+                      <td valign="top"> 
+                        <style>
+.artrighttext
+{      
+	color: #0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+		 line-height: 12px;
+		 text-decoration:underline
+		
+}
+.artrighttext_a:link
+{	color: #0000FF;
+	font-family:"微软雅黑";
+	font-size:13px;
+	text-decoration:underline
+}
+.artrighttext_a:visited
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+       text-decoration:underline
+} 
+.artrighttext_a:hover
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+        text-decoration:underline
+} 
+
+</style>
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/style1.css" rel="stylesheet" type="text/css">
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="0" class="content">
+  <tbody><tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/201107145.asp" target="_blank" class="artrighttext_a">MySQL索引背后的数据结构</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/20114062.asp" target="_blank" class="artrighttext_a">MySQL性能调优与架构设计</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/201106221.asp" target="_blank" class="artrighttext_a">SQL 
+      Server数据库备份与恢复</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/20113161.asp" target="_blank" class="artrighttext_a">让数据库飞起来 
+      10大DB2优化</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/201105124.asp" target="_blank" class="artrighttext_a">oracle的临时表空间写满磁盘</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/sjjm/201106223.asp" target="_blank" class="artrighttext_a">数据库的跨平台设计</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><div align="right"><a href="http://www.uml.org.cn/sjjm/sjjm.asp" target="_blank" class="artrighttext_a">更多...</a>&nbsp;&nbsp;&nbsp;</div></td>
+  </tr>
+</tbody></table>
+                      </td>
+                    </tr>
+                  </tbody></table></td>
+              </tr>
+            </tbody></table>
+            <br> <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="content">
+              <tbody><tr> 
+                <td height="17" valign="top"><div align="left"><font color="000080"><a href="http://www.uml.org.cn/course/database.asp" target="_blank"><font color="000080"><b><u>相关培训课程</u></b></font></a></font></div>
+                  <hr width="100%" size="1"> </td>
+              </tr>
+              <tr> 
+                <td valign="top"> 
+                  <style>
+.artrighttext
+{      
+	color: #0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+		 line-height: 12px;
+		 text-decoration:underline
+		
+}
+.artrighttext_a:link
+{	color: #0000FF;
+	font-family:"微软雅黑";
+	font-size:13px;
+	text-decoration:underline
+}
+.artrighttext_a:visited
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+       text-decoration:underline
+} 
+.artrighttext_a:hover
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+        text-decoration:underline
+} 
+
+</style>
+<link href="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/style1.css" rel="stylesheet" type="text/css">
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="0" class="content">
+  <tbody><tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/xnsjksj.asp" target="_blank" class="artrighttext_a">并发、大容量、高性能数据库</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/shujk.asp" target="_blank" class="artrighttext_a">高级数据库架构设计师</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/Hadoop-peisun.asp" target="_blank" class="artrighttext_a">Hadoop原理与实践 
+      </a> </td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/Oracleshujucangku.asp" target="_blank" class="artrighttext_a">Oracle 
+      数据仓库</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/dbdesign15.asp" target="_blank" class="artrighttext_a">数据仓库和数据挖掘 
+      </a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/course-db/oracelkf.asp" target="_blank" class="artrighttext_a">Oracle数据库开发与管理</a></td>
+  </tr>
+  <tr> 
+    <td> <div align="right"><a href="http://www.uml.org.cn/course/database.asp" target="_blank" class="artrighttext_a">更多课程...</a>&nbsp;&nbsp;&nbsp;</div></td>
+  </tr>
+</tbody></table>
+                </td>
+              </tr>
+            </tbody></table>
+            <br> <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="content">
+              <tbody><tr> 
+                <td height="17" valign="top"><div align="left"><a href="http://www.uml.org.cn/newumltrain/pxanli.asp" target="_blank"><font color="000080"><b><u>成功案例</u></b></font> 
+                    </a></div>
+                  <hr width="100%" size="1"> </td>
+              </tr>
+              <tr> 
+                <td valign="top"> 
+                  <style>
+.artrighttext
+{      
+	color: #0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+		 line-height: 12px;
+		 text-decoration:underline
+		
+}
+.artrighttext_a:link
+{	color: #0000FF;
+	font-family:"微软雅黑";
+	font-size:13px;
+	text-decoration:underline
+}
+.artrighttext_a:visited
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+       text-decoration:underline
+} 
+.artrighttext_a:hover
+{       color:#0000FF;
+        font-family:"微软雅黑";
+        font-size:13px;
+        text-decoration:underline
+} 
+
+</style>
+<style>
+
+.contnew
+{      color:#000000;
+        font-family:"微软雅黑";
+        font-size:13px; 
+		
+}
+.contnew_a:link
+{	color: #000000;
+	font-family:"微软雅黑";
+	font-size:13px;
+	
+}
+.contnew_a:visited
+{       color:#000000;
+        font-family:"微软雅黑";
+        font-size:13px;
+		
+} 
+.contnew_a:hover
+{
+	color:#000000;
+	font-family:"微软雅黑";
+	font-size:13px;
+	
+} 
+
+</style> 
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="0" class="content">
+  <tbody><tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20140929shujufenxiyuwaj.asp" target="_blank" class="artrighttext_a">新华文轩 
+      数据分析与数据挖掘</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20140808hadoop.asp" target="_blank" class="artrighttext_a">上海 
+      普华永道 Hadoop与高级实践</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20140723shzhshjwj.asp" target="_blank" class="artrighttext_a">深圳 
+      数据挖掘与分析（互联网行业） </a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20140703bingfa-haihang.asp" target="_blank" class="artrighttext_a">海航股份 
+      高性能数据库设计</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20140627gxnsjk.asp" target="_blank" class="artrighttext_a">北京 
+      并发、高性能数据库设计</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><a href="http://www.uml.org.cn/news/20131227shujuwajue.asp" target="_blank" class="artrighttext_a">航天技术 
+      数据分析与商业智能</a></td>
+  </tr>
+  <tr> 
+    <td height="18"><div align="right"><a href="http://www.uml.org.cn/MyProcess/GuideView/kchanli.asp#8" target="_blank" class="artrighttext_a">更多...</a>&nbsp;&nbsp;&nbsp;</div></td>
+  </tr>
+  <tr> 
+    <td height="30">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"> 
+        <table width="100%" border="0" align="center" valign="middle" cellpadding="0" cellspacing="0" class="content">
+          <tbody><tr> 
+            <td width="6%" rowspan="4" align="center" valign="top"> <div align="left"><a href="http://www.uml.com.cn/communicate/2014-12-27.asp" target="_blank"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/teacher-ZT.JPG" width="89" height="110" border="0"></a></div></td>
+            <td width="94%" height="32" align="left" valign="top" class="contnew_a" style="font-size:18px;"><a href="http://www.uml.com.cn/communicate/2014-12-27.asp" target="_blank" class="contnew_a"><font color="880015">&nbsp;讲座</font>&nbsp;如何选择适合的建模工具</a></td>
+          </tr>
+          <tr> 
+            <td height="32" valign="top" align="left"><a href="http://www.uml.com.cn/communicate/2014-12-27.asp" target="_blank" class="contnew_a">&nbsp;主讲：俎涛 
+              </a></td>
+          </tr>
+          <tr> 
+            <td height="32" valign="top" align="left"><a href="http://www.uml.com.cn/communicate/2014-12-27.asp" target="_blank" class="contnew_a">&nbsp;时间：2014-12-27</a></td>
+          </tr>
+          <tr> 
+            <td height="14">&nbsp;</td>
+          </tr>
+        </tbody></table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td height="10">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"> 
+        <table width="100%" border="0" align="center" valign="middle" cellpadding="0" cellspacing="0" class="content">
+          <tbody><tr> 
+            <td width="6%" rowspan="4" align="center" valign="top"> <div align="left"><a href="http://www.uml.com.cn/communicate/2015-1-10.asp" target="_blank"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/teacherQLM.JPG" width="89" height="110" border="0"></a></div></td>
+            <td width="94%" height="32" align="left" valign="top" class="contnew_a" style="font-size:18px;"><a href="http://www.uml.com.cn/communicate/2015-1-10.asp" target="_blank" class="contnew_a"><font color="880015">&nbsp;讲座</font>&nbsp;德国的研发文化</a></td>
+          </tr>
+          <tr> 
+            <td height="33" valign="top" align="left"><a href="http://www.uml.com.cn/communicate/2015-1-10.asp" target="_blank" class="contnew_a">&nbsp;主讲：秦雷鸣 
+              </a></td>
+          </tr>
+          <tr> 
+            <td height="32" valign="top" align="left"><a href="http://www.uml.com.cn/communicate/2015-1-10.asp" target="_blank" class="contnew_a">&nbsp;时间：2015-1-10</a></td>
+          </tr>
+          <tr> 
+            <td height="14">&nbsp;</td>
+          </tr>
+        </tbody></table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td height="10">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"><a href="http://certificate.uml.com.cn/index2015.asp" target="_blank" class="artsec_a"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/sheepyear.png" width="195" height="85" border="0"></a></div></td>
+  </tr>
+  <tr> 
+    <td height="18">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"><a href="http://www.uml.org.cn/news/20140701SysML+EA.asp" target="_blank" class="artsec_a"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/huaweiEA.png" width="195" height="85" border="0"></a></div></td>
+  </tr>
+  <tr> 
+    <td height="18">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"><a href="http://www.uml.org.cn/course/student.asp" target="_blank"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/dxpy1.png" width="195" height="85" border="0"></a></div></td>
+  </tr>
+  <tr> 
+    <td height="18">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td> <div align="left"><a href="http://www.uml.org.cn/course-arch/rjjgqyj.asp" target="_blank" class="artsec_a"><img src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/jiagou.png" width="195" height="85" border="0"></a></div></td>
+  </tr>
+  <tr> 
+    <td height="18">&nbsp;</td>
+  </tr>
+</tbody></table>
+                </td>
+              </tr>
+            </tbody></table></td>
+          <td width="40">&nbsp;</td>
+        </tr>
+      </tbody></table> </td>
+    <td width="20" background="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/wzhrig22012.jpg" bgcolor="F5F5F5" class="content"> 
+      <table width="20" height="8" border="0" align="center" cellpadding="0" cellspacing="0" class="content">
+        <!--DWLayoutTable-->
+        <tbody><tr> 
+          
+      <td width="20" height="8" valign="top">&nbsp;</td>
+        </tr>
+      </tbody></table>
+    </td>
+
+  </tr>
+</tbody></table>
+<style type="text/css">
+<!--
+.STYLE0 {font-family:"微软雅黑";
+font-size: 16px;
+color: #000000;
+}
+.STYLE3 {font-size: 12px}
+.STYLE4_a:link
+{	color: #000000;
+	font-family:"宋体";
+	font-size:14px;
+	line-height: 2;
+	text-decoration:underline
+}
+.STYLE4_a:visited
+{       color:#000000;
+        font-family:"宋体";
+        font-size:14px;
+		line-height: 2;
+       text-decoration:underline
+} 
+.STYLE4_a:hover
+{       color:#FF0000;
+        font-family:"宋体";
+        font-size:14px;
+		line-height: 2;
+        text-decoration:underline
+} 
+.STYLE5 {font-size: 18px; }
+-->
+</style>
+ 
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <!--DWLayoutTable-->
+  <tbody><tr> 
+    <td width="20" height="90" align="center" valign="middle" bgcolor="f5f5f5" class="content"> 
+      <div align="center"></div></td>
+    <td height="90" align="center" valign="middle" bgcolor="f5f5f5" class="content" style="border-top:1px solid #dcdcdc;"> 
+      <div align="left"> 
+        <table width="50%" height="94" border="0" cellspacing="20" style="border-width: 0px; margin-left: 0px;">
+          <tbody><tr> 
+            <td class="STYLE0" style="border-style: none; border-width: medium; line-height: 1.5;">希望我们的资料可以帮助你学习，也欢迎投稿&amp;提建议给我<br>
+              频道编辑：winner<br>
+              邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件：winner@uml.net.cn</td>
+          </tr>
+        </tbody></table>
+      </div>
+      <blockquote> 
+        <p align="right"><a class="content_a" href="http://www.uml.org.cn/index2.htm" target="_blank">关于我们</a> | <span class="content_a"><a class="content_a" href="http://www.uml.org.cn/index3.htm" target="_blank">联系我们</a></span> | <span><font color="#000000"> &nbsp;&nbsp;京ICP备10020922号&nbsp;&nbsp;京公海网安备110108001071号 
+          </font></span></p>
+      </blockquote>
+      <p align="right">&nbsp;</p></td>
+	  <td width="20" height="90" align="center" valign="middle" bgcolor="f5f5f5" class="content"> 
+      <div align="center"></div></td>
+  </tr>
+</tbody></table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-5476741-1");
+pageTracker._trackPageview();
+</script>
+
+
+<script src="./技术篇：微博推荐引擎体系结构简述-数据库-火龙果软件工程_files/logger.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

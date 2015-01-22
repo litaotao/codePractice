@@ -1,0 +1,994 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0117)http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="http://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+
+	
+<title>【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET </title>
+<meta name="description" content="Spark，强大的迭代计算框架，在内存数据计算上无可匹敌。Cassandra，优异的列式存储NoSQL，在写入操作上难逢敌手。自本期《问底》，许鹏将结合实际实践，带大家打造一个由Spark和Cassandra组成的大数据分析平台。">
+<meta name="keywords" content="问底,大数据,NoSQL,Spark,Cassandra">
+<meta name="author" content="CSDN.NET">
+<meta name="Copyright" content="CSDN.NET">
+<!-- toolbar start --> 
+<link href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/index.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" async="" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/ga.js"></script><script src="http://hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374"></script><script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/jquery-1.9.1.min.js" type="text/javascript"></script><style type="text/css"></style>
+<!-- toolbar end -->
+<link href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/content.css" rel="stylesheet" type="text/css">
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/share.js"></script><link rel="stylesheet" type="text/css" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/comments.css"><script type="text/javascript" charset="utf-8" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/tracking.js"></script><script type="text/javascript" charset="utf-8" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/main.js"></script><link rel="stylesheet" type="text/css" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/style.css"><link rel="stylesheet" type="text/css" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/style(1).css"><link type="text/css" rel="stylesheet" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/style(2).css"><link rel="stylesheet" type="text/css" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/highlighter.css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_32.css?v=9ebeb48a.css"></head>
+<body>
+<script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://cloud.csdn.net"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://cloud.csdn.net/?ref=toolbar_logo" target="_blank" class="img news-icon"></a></div>          <div class="pull-right login-wrap ">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display: none;" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"><div class="icon-hasnotes" style="display: none;"></div></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note" style="left: -212px; top: 2049px; display: none;">                      <div class="box"><div class="notifications notice_list_con curr">  <div class="menu_title">    <span class="title"><a href="http://msg.csdn.net/" target="_blank" class="read_all">全部设为已读</a><a href="http://msg.csdn.net/" target="_blank" class="go_all">查看所有通知</a></span>  </div>  <div class="loading" style="display: none;"></div>  <div class="empty" style="display: block;">暂没有新通知</div>  <div class="notice_content"></div></div><div class="notifications detail_con" style="display: none;">  <div class="menu_title">    <span class="title">      <a class="go_back" href="javascript:void 0;">返回通知列表</a>      <a class="notifications_page_none nextnote" href="javascript:void 0;">下一条</a>      <a class="notifications_page prvnote" href="javascript:void 0;">上一条</a>    </span>  </div>  <div class="notice_content"></div></div><div class="error"></div></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/2_datayes.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/2_datayes.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname">datayes</a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-right "><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://share.csdn.net/?ref=toolbar" target="_blank">Share</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>
+<div class="wrap">
+	<!-- 间歇滚动 -->
+	<script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script>
+	<script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/jquery.autoscroll.js" type="text/javascript"></script><!--滚动js-->
+	<!-- //间歇滚动 -->
+	<script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script>
+	<!--<div class="ad_960">
+		<div class="ad_230"><script type="text/javascript">BAIDU_CLB_fillSlot("421712");</script></div>
+		<div class="ad_728"><script type="text/javascript">BAIDU_CLB_fillSlot("421709");</script></div>
+	</div>-->
+
+</div>
+	<!-- nav -->
+	<div id="xcx_tabmenu" class="nav">
+		<div id="cx_tabmenu" class="cx_tabmenu">
+			<!-- lev one -->
+			<div id="ddimagetabs" class="lev_1">
+				<ul>
+				<li><a href="http://news.csdn.net/" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);" class="">业界</a></li>
+				<li><a href="http://mobile.csdn.net/" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);" class="">移动开发</a></li>
+				<li><a href="http://cloud.csdn.net/" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);" class="current">云计算</a></li>
+				<li><a href="http://sd.csdn.net/" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);" class="">软件研发</a></li>
+				<li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank" class="">程序员杂志</a></li>
+				<li><a href="http://geek.csdn.net/" id="sclink7" target="_blank" class="">极客头条</a></li>
+				<li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank" class="">专题</a></li>
+				<!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>-->
+				</ul>
+			</div>
+			<!-- lev two -->
+			<div id="tabcontentcontainer" class="lev_2">
+				<div class="tabcontent" id="sc1">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc2">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/news" target="_blank">游戏引擎</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc3" style="display: block;">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc4">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li>
+										</ul>
+				</div>
+				<div class="tabcontent" id="sc5">
+					<ul>
+					 
+					<li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li>
+					 
+					<li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li>
+										</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script>
+ 
+<div class="wrap">
+	
+	
+	
+		<div class="ad_960">
+		<div class="ad_190"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|button1&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+		<div class="ad_760"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner1&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+	</div>
+		
+	<div class="brea_nav">
+				<span class="fr">
+		<a href="http://news.csdn.net/rss_cloud.html" class="rss" target="_blank">订阅云计算RSS</a>					
+		</span><a href="http://www.csdn.net/">CSDN首页</a><em>&gt;</em>
+		<a href="http://cloud.csdn.net/" target="_blank">云计算</a>	</div>
+	
+	<div class="content">
+		<div class="left">
+			<div class="detail">
+				<h1 class="title">【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）</h1>
+				<h4>
+					<div class="tit_bar">
+						发表于<span class="ago">2014-10-24 16:52</span>|
+						<span class="view_time">6924次阅读</span>| 
+						来源<span class="ago">CSDN</span>|
+						<span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">6</font> 条评论</span>| 
+						作者<span class="ago">许鹏</span>
+					</div>
+				</h4>
+				<div class="tag"><a href="http://www.csdn.net/tag/%E9%97%AE%E5%BA%95/news">问底</a><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news">大数据</a><a href="http://www.csdn.net/tag/nosql/news">NoSQL</a><a href="http://www.csdn.net/tag/spark/news">Spark</a><a href="http://www.csdn.net/tag/cassandra/news">Cassandra</a></div>
+				<div class="summary">
+					<input type="hidden" id="article_description" name="article_description" value="Spark，强大的迭代计算框架，在内存数据计算上无可匹敌。Cassandra，优异的列式存储NoSQL，在写入操作上难逢敌手。自本期《问底》，许鹏将结合实际实践，带大家打造一个由Spark和Cassandra组成的大数据分析平台。">
+				<script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/weiboshare.html" width="22" height="16"></iframe><strong>摘要：</strong>Spark，强大的迭代计算框架，在内存数据计算上无可匹敌。Cassandra，优异的列式存储NoSQL，在写入操作上难逢敌手。自本期《问底》，许鹏将结合实际实践，带大家打造一个由Spark和Cassandra组成的大数据分析平台。				</div>
+				<div class="con news_content">
+				<p>【导读】笔者（
+    <a href="http://weibo.com/eagleonline" target="_blank">许鹏</a>）看Spark源码的时间不长，记笔记的初衷只是为了不至于日后遗忘。在源码阅读的过程中秉持着一种非常简单的思维模式，就是努力去寻找一条贯穿全局的主线索。在笔者看来，Spark中的线索就是如果让数据的处理在分布式计算环境下是高效，并且可靠的。</p>
+<p>在对Spark内部实现有了一定了解之后，当然希望将其应用到实际的工程实践中，这时候会面临许多新的挑战，比如选取哪个作为数据仓库，是HBase、MongoDB还是Cassandra。即便一旦选定之后，在实践过程还会遇到许多意想不到的问题。</p>
+<p>要想快速的解决开发及上线过程中遇到的系列问题，还需要具备相当深度的Linux知识，恰巧之前工作中使用Linux的经验在大数据领域中还可以充分使用。</p>
+<p>笔者不才，就遇到的一些问题，整理出来与诸君共同分享。</p>
+
+<h2>1. Cassandra</h2>
+
+<p>NoSQL数据库的选择之痛，目前市面上有近150多种NoSQL数据库，如何在这么庞杂的队伍中选中适合业务场景的佼佼者，实非易事。</p>
+<p>好的是经过大量的筛选，大家比较肯定的几款NoSQL数据库分别是HBase、MongoDB和Cassandra。</p>
+<p>Cassandra在哪些方面吸引住了大量的开发人员呢？下面仅做一个粗略的分析。</p>
+<p><b>1.1 高可靠性</b>
+
+</p>
+<p>Cassandra采用gossip作为集群中结点的通信协议，该协议整个集群中的节点都处于同等地位，没有主从之分，这就使得任一节点的退出都不会导致整个集群失效。</p>
+<p>Cassandra和HBase都是借鉴了Google BigTable的思想来构建自己的系统，但Cassandra另一重要的创新就是将原本存在于文件共享架构的p2p(peer
+    to peer)引入了NoSQL。</p>
+<p>P2P的一大特点就是去中心化，集群中的所有节点享有同等地位，这极大避免了单个节点退出而使整个集群不能工作的可能。</p>
+<p>与之形成对比的是HBase采用了Master/Slave的方式，这就存在单点失效的可能。</p>
+<p><b>1.2 高可扩性</b>
+
+</p>
+<p>随着时间的推移，集群中原有的规模不足以存储新增加的数据，此时进行系统扩容。Cassandra级联可扩，非常容易实现添加新的节点到已有集群，操作简单。</p>
+<p><b>1.3 最终一致性</b>
+
+</p>
+<p>分布式存储系统都要面临CAP定律问题，任何一个分布式存储系统不可能同时满足一致性(consistency)，可用性(availability)和分区容错性(partition
+    tolerance)。</p>
+<p>Cassandra是优先保证AP，即可用性和分区容错性。</p>
+<p style="text-align: center;">
+    <a href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/5449f527d8dab.jpg" target="_blank">
+        <img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/5449f527d8dab.jpg" border="0" style="">
+    </a>
+    <br>
+</p>
+<p>Cassandra为写操作和读操作提供了不同级别的一致性选择，用户可以根据具体的应用场景来选择不同的一致性级别。</p>
+<p><b>1.4 高效写操作</b>
+
+</p>
+<p>写入操作非常高效，这对于实时数据非常大的应用场景，Cassandra的这一特性无疑极具优势。</p>
+<p>数据读取方面则要视情况而定：</p>
+<p></p>
+<ul>
+    <li>如果是单个读取即指定了键值，会很快的返回查询结果。</li>
+    <li>如果是范围查询，由于查询的目标可能存储在多个节点上，这就需要对多个节点进行查询，所以返回速度会很慢</li>
+    <li>读取全表数据，非常低效。</li>
+</ul>
+<p></p>
+<p><b>1.5 结构化存储</b>
+
+</p>
+<p>Cassandra是一个面向列的数据库，对那些从RDBMS方面转过来的开发人员来说，其学习曲线相对平缓。</p>
+<p>Cassandra同时提供了较为友好CQL语言，与SQL语句相似度很高。</p>
+<p><b>1.6 维护简单</b>
+
+</p>
+<p>从系统维护的角度来说，由于Cassandra的对等系统架构，使其维护操作简单易行。如添加节点，删除节点，甚至于添加新的数据中心，操作步骤都非常的简单明了。</p>
+<p>参考资料</p>
+<p></p>
+<ul>
+    <li>1.http://cassandra.apache.org</li>
+    <li>2.http://www.datastax.com/doc</li>
+    <li>3.http://planetcassandra.org/documentation/</li>
+</ul>
+<p></p>
+
+<h2>2. Cassandra数据模型</h2>
+
+<p><b>2.1 单表查询</b>
+
+</p>
+<p><b><span style="color: #7f6000;">2.1.1 单表主键查询</span></b>
+
+</p>
+<p>在建立个人信息数据库的时候，以个人身份证id为主键，查询的时候也只以身份证为关键字进行查询，则表可以设计成为：</p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414133541_0." name="code">create table person (
+	userid text primary key,
+	fname text,
+	lname text,
+	age	int,
+	gender int);</pre>
+
+<p>Primary key中的第一个列名是作为Partition key。也就是说根据针对partition key的hash结果决定将记录存储在哪一个partition中，如果不湊巧的情况下单一主键导致所有的hash结果全部落在同一分区，则会导致该分区数据被撑满。</p>
+<p>解决这一问题的办法是通过组合分区键(compsoite key)来使得数据尽可能的均匀分布到各个节点上。</p>
+<p>举例来说，可能将(userid,fname)设置为复合主键。那么相应的表创建语句可以写成</p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414133541_1." name="code">create table person (
+userid text,
+fname text,
+lname text,
+gender int,
+age int,
+primary key((userid,fname),lname);
+) with clustering order by (lname desc);</pre>
+
+<p></p>
+<p>稍微解释一下primary key((userid, fname),lname)的含义：</p>
+<p></p>
+<ul>
+    <li>其中(userid,fname)称为组合分区键(composite partition key)</li>
+    <li>lname是聚集列(clustering column)</li>
+    <li>((userid,fname),lname)一起称为复合主键(composite primary key)</li>
+</ul>
+<p></p>
+<p><b><span style="color: #7f6000;">2.1.2 单表非主键查询</span></b>
+
+</p>
+<p>如果要查询表person中具有相同的first name的人员，那么就必须针对fname创建相应的索引，否则查询速度会非常缓慢。</p>
+<p>Create index on person(fname);</p>
+<p>Cassandra目前只能对表中的某一列建立索引，不允许对多列建立联合索引。</p>
+<p><b>2.2 多表关联查询</b>
+
+</p>
+<p>Cassandra并不支持关联查询，也不支持分组和聚合操作。</p>
+<p>那是不是就说明Cassandra只是看上去很美其实根本无法解决实际问题呢？答案显然是No,只要你不坚持用RDBMS的思路来解决问题就是了。</p>
+<p>比如我们有两张表，一张表(Departmentt)记录了公司部门信息，另一张表(employee)记录了公司员工信息。显然每一个员工必定有归属的部门，如果想知道每一个部门拥有的所有员工。如果是用RDBMS的话，SQL语句可以写成：</p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414142711_2." name="code">select * from employee e , department d where e.depId = d.depId;</pre>要用Cassandra来达到同样的效果，就必须在employee表和department表之外，再创建一张额外的表(dept_empl)来记录每一个部门拥有的员工信息。
+<p></p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414142711_3." name="code">Create table dept_empl (
+deptId text,</pre>
+
+<p>看到这里想必你已经明白了，在Cassandra中通过数据冗余来实现高效的查询效果。将关联查询转换为单一的表操作。</p>
+<p><b>2.3 分组和聚合</b>
+
+</p>
+<p>在RDBMS中常见的group by和max、min在Cassandra中是不存在的。</p>
+<p>如果想将所有人员信息按照姓进行分组操作的话，那该如何创建数据模型呢？</p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414142711_4." name="code">Create table fname_person (
+fname text,
+userId text,
+primary key(fname)
+);</pre><b>&nbsp;2.4 子查询</b>
+
+<br>
+<p></p>
+<p>Cassandra不支持子查询，下图展示了一个在MySQL中的子查询例子：
+    <br>
+</p>
+<p style="text-align: center;">
+    <a href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/544a0597a5aad.jpg" target="_blank">
+        <img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/544a0597a5aad.jpg" border="0" style="">
+    </a>
+    <br>
+</p>
+<p>要用Cassandra来实现，必须通过添加额外的表来存储冗余信息。
+    <br>
+</p>
+<p></p><pre class="" code_snippet_id="495474" snippet_file_name="ptcms_1414142711_5." name="code">Create table office_empl (
+officeCode text,
+country text,
+lastname text,
+firstname,
+primary key(officeCode,country));
+create index on office_empl(country);</pre>
+
+<p></p>
+<p><b>&nbsp;2.5 小结</b>
+
+</p>
+<p>总的来说，在建立Cassandra数据模型的时候，要求对数据的读取需求进可能的清晰，然后利用反范式的设计方式来实现快速的读取，原则就是以空间来换取时间。</p>
+<p>参考资料</p>
+<p></p>
+<ul>
+    <li>
+        <a href="http://planetcassandra.org/blog/cql-cassandra-query-language/">http://planetcassandra.org/blog/cql-cassandra-query-language/</a>
+    </li>
+    <li>
+        <a href="http://maxgrinev.com/2010/07/12/do-you-really-need-sql-to-do-it-all-in-cassandra/">http://maxgrinev.com/2010/07/12/do-you-really-need-sql-to-do-it-all-in-cassandra/</a>
+    </li>
+</ul>
+ <h3><b><span style="color: #7f7f7f;"><i>PS：第三节“利用Spark强化Cassandra的实时分析功能”请点击下方“下一页”访问。</i></span></b></h3>
+
+<p></p>
+<hr>
+<p><b>免费订阅“<span style="color: #0080ff;">CSDN云计算（左）</span>和<span><span style="color: #ff0000;">CSDN大数据（右）</span></span>”微信公众号，实时掌握第一手云中消息，<b>了解最新的大数据进展！</b></b>
+</p>
+<p>
+    <a href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/53e87db637d1b.jpg" target="_blank">
+        <img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/53e87db637d1b.jpg" style="float: left; margin: 0px 10px 10px 0px; width: 150px; height: 150px;" alt="" border="0">
+    </a>
+    <a href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/53e87dc4b2f5c.jpg" target="_blank">
+        <img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/53e87dc4b2f5c.jpg" style="float: right; margin: 0px 0px 10px 10px; width: 150px; height: 150px;" alt="" border="0">
+    </a>CSDN发布虚拟化、Docker、OpenStack、CloudStack、数据中心等相关云计算资讯， &nbsp; &nbsp; 分享Hadoop、Spark、NoSQL/NewSQL、HBase、Impala、内存计算、流计算、机器学习和智能算法等相关大数据观点，提供云计算和大数据技术、平台、实践和产业信息等服务。
+    &nbsp; &nbsp; &nbsp;&nbsp;
+    <br>
+</p>
+<p>				
+				</p><p class="copyright"></p>
+				</div>
+								<div class="page_nav">
+					<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/1" class="first" id="firstclick">首页</a>
+					<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/1" class="pre" id="preclick">上一页</a>
+										<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/1" class="click on" id="click_1">1</a>
+										<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/2" class="click" id="click_2">2</a>
+										<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/2" class="next" id="nextclick">下一页</a>
+					<a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/2" class="last" id="lastclick">尾页</a>
+				</div>
+				
+				<div class="guide">
+					<h3>本文导读</h3>
+					<ul>
+									 
+						<li><a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/1" id="linkfirst"><strong>第1页：【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）</strong></a></li>					
+										
+											<li><a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline/2" id="linktitle_1"> 第2页：3. 利用Spark强化Cassandra的实时分析功能  </a></li>
+										
+					</ul>
+				</div>
+									 
+		
+		 
+		 <div class="share"> 	 
+			  <div class="bdsharebuttonbox bdshare-button-style0-32" style="float:right;" data-bd-bind="1416064966661">
+			  <!-- a href="#" class="bds_more" data-cmd="more"></a -->
+			  <a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+			  <a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+			  <a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+			  <a href="http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+			  </div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>  
+			
+ 		</div> 
+
+				<div class="detail">
+				<div class="digg">
+						<input type="hidden" id="digg_id" value="2822278">
+						<dl class="support">
+							<dt>顶</dt>
+							<dd>5</dd>
+						</dl>
+						<dl class="oppose">
+							<dt>踩</dt>
+							<dd>1</dd>
+						</dl>
+				</div>
+			</div>	
+ 	
+				<div class="ad_475_60"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|banner2&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+				<div class="related">推荐阅读相关主题：
+											<a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/news" title="数据分析" target="_blank">数据分析</a>
+											<a href="http://www.csdn.net/tag/%E9%AB%98%E6%80%A7%E8%83%BD/news" title="高性能" target="_blank">高性能</a>
+											<a href="http://www.csdn.net/tag/nosql%E6%95%B0%E6%8D%AE%E5%BA%93/news" title="nosql数据库" target="_blank">nosql数据库</a>
+											<a href="http://www.csdn.net/tag/linux%E5%86%85%E6%A0%B8/news" title="linux内核" target="_blank">linux内核</a>
+											<a href="http://www.csdn.net/tag/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/news" title="分布式存储" target="_blank">分布式存储</a>
+											<a href="http://www.csdn.net/tag/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97/news" title="分布式计算" target="_blank">分布式计算</a>
+									</div>
+				<!-- relational article and news -->
+				<div id="Tab3" class="relational">
+					<h2 class="tab_1 Menubox">
+						<ul>
+						<li id="three1" onclick="setTab(&#39;three&#39;,1,2)" class="hover">相关文章</li>
+						<li id="three2" onclick="setTab(&#39;three&#39;,2,2)">最新报道</li>
+						</ul>
+					</h2>
+					<div class="con Contentbox">
+						<div id="con_three_1" class="hover">
+							<ul class="list_1">								
+														</ul>
+						</div>
+						<div id="con_three_2" style="display:none">
+							<ul class="list_1 ">
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-14/2822652-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline-2" title="【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）" target="_blank">【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-14/2822643-BDTC-Questionnaire" title="参与2014中国大数据行业大调查 BDTC门票等你拿" target="_blank">参与2014中国大数据行业大调查 BDTC门票等你拿</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-14/2822640" title="【AWS re:Invent2014直播系列】AWS EC2 Container服务发布：支持Docker 免费提供" target="_blank">【AWS re:Invent2014直播系列】AWS EC2 Container服务发布：支持Docker 免费提供</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-13/2822624-Drawbridge" title="揭秘微软的Container技术之一Drawbridge" target="_blank">揭秘微软的Container技术之一Drawbridge</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-13/2822633-amazon-details-how-it-does-networking-in-its-data-centers" title="【AWS re:Invent2014直播系列】AWS副总裁谈数据中心网络打造" target="_blank">【AWS re:Invent2014直播系列】AWS副总裁谈数据中心网络打造</a></li>
+							 
+							<li><a href="http://www.csdn.net/article/2014-11-13/2822621" title="【先锋】思明软件大数据技术平台打造历程和Impala实战分享" target="_blank">【先锋】思明软件大数据技术平台打造历程和Impala实战分享</a></li>
+													
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- //relational article and news 广告 -->	
+
+				<!-- comments -->
+                
+									<div id="comments" class="csdn_comments">    <h2 class="comments_tit">        <p>已有<span>6</span>条评论</p>    </h2>                <div class="reply topreply">            <h6>还可以再输入<span>500</span>个字</h6>            <dl>                <dt class="user_img"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_datayes.jpg" alt=""></dt>                <dd><textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="4"></textarea>                    <div class="reply_submit note_grey clearfix">                    <div class="fr"><input id="user" value="发表评论" type="submit" class="reply_btn"></div>                    <span class="loginwrap"><a href="javascript:;;" style="cursor: text; color: #000" class="user_name" realname="datayes">datayes</a>欢迎您！</span>                   <!-- <span class="error">您还没有登录! </span> 请<a href="#"> 登录 </a> 或<a href="#">  注册 </a>-->                    </div>                </dd>            </dl>            </div>    <div id="csdnTab" class="comments_reply">        <h3 class="tit tab_1">            <ul>                <li class="hover">最新评论</li>                <li>最热评论</li>            </ul>        </h3>        <div class="con last"><div lang="346032" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/u010655205"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_u010655205.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/u010655205" class="user_name" realname="u010655205">u010655205</a>   <span class="time">2014-10-28 21:39</span>   <span class="from"></span></div>                                        <div class="reply_content">学习</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="u010655205346032_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="u010655205346032_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="u010655205346032_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="u010655205346032_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="344856" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/emacswu"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_emacswu.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/emacswu" class="user_name" realname="emacswu">破砂锅</a>   <span class="time">2014-10-26 20:02</span>   <span class="from"></span></div>                                        <div class="reply_content">最好先给个Spark读写Cassandra的例子。为了有效从RDD里访问Cassandra，还需要给出有关connection pool的办法。</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="emacswu344856_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="emacswu344856_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="emacswu344856_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="emacswu344856_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="344855" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/youniyouwoyes"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_youniyouwoyes.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/youniyouwoyes" class="user_name" realname="youniyouwoyes">MelodyYue2009</a>   <span class="time">2014-10-26 19:57</span>   <span class="from"></span></div>                                        <div class="reply_content">MARK</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="youniyouwoyes344855_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="youniyouwoyes344855_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="youniyouwoyes344855_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="youniyouwoyes344855_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="344759" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/wolf5434"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_wolf5434.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/wolf5434" class="user_name" realname="wolf5434">小峰灿曰</a>   <span class="time">2014-10-26 13:46</span>   <span class="from"></span></div>                                        <div class="reply_content">Mark</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="wolf5434344759_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="wolf5434344759_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="wolf5434344759_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="wolf5434344759_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="344405" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/forever_wind"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_forever_wind.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/forever_wind" class="user_name" realname="forever_wind">CXH_ME</a>   <span class="time">2014-10-24 19:27</span>   <span class="from"></span></div>                                        <div class="reply_content">很有启发性</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="forever_wind344405_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="forever_wind344405_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="forever_wind344405_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="forever_wind344405_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div lang="344385" class="reply parentId_0">            <dl>                <dt class="user_img"><a target="_blank" href="http://my.csdn.net/qq2686"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/3_qq2686.jpg"></a></dt>                <dd>                    <div class="note_grey"><a target="_blank" href="http://my.csdn.net/qq2686" class="user_name" realname="qq2686">qq2686</a>   <span class="time">2014-10-24 18:16</span>   <span class="from"></span></div>                                        <div class="reply_content">学习+</div>                    <div class="comment-btns note_grey clearfix">                        <span class="fr">                            <span class="votewrap" style="display:none;"><span class="num">0</span>票，来自<span class="from"></span></span>                            <a class="vote vote-like" href="javascript:void(0);" id="qq2686344385_vote" title="顶一下"> </a>                            <a href="javascript:void(0);" class="more more_close" id="qq2686344385_more" style="display:none;">更多</a>                            <span style="display:inline-block; width:12px;"></span>                            <span class="dislike_count" style="display: none" title="被踩了0票">0票</span>                            <a class="vote vote-dislike" href="javascript:void 0" id="qq2686344385_vote_dislike" title="踩一下"> </a>                             <a class="reply_comments" href="javascript:void(0);">回复</a>                        </span>                    </div>                    <div class="vote_user " style="display:none;"></div>                    <div class="reply_reply" style="display:none;">                        <textarea class="reply_box" placeholder="有什么感想，你也来说说吧！" name="" rows="3"></textarea>                        <div class="reply_submit note_grey clearfix">                            <div class="fr"><input id="qq2686344385_btn" value="回复" type="submit" class="reply_btn"></div>                        </div>                    </div>                </dd>            </dl>        </div><div id="page_nav" class="page_nav"><span style="display:none;">共<span class="num">6</span>个 </span>共<span class="total">1</span>页 <a class="homepage" href="javascript:void(0);">首页</a>&nbsp;&nbsp;<a class="prev" href="javascript:void(0);">上一页</a>&nbsp;<a class="pages on" href="javascript:void(0);" lang="1">1</a>&nbsp;<a class="next" href="javascript:void(0);">下一页</a>&nbsp;&nbsp;<a class="endpage" href="javascript:void(0);">末页</a></div></div>        <div class="con hot" style="display:none"><div class="empty-placeholder">                <div class="empty-tip">还没有评论，赶快来抢沙发吧。</div>            </div></div>        <div>请您注意        <ul class="note_grey">            <li>·自觉遵守：爱国、守法、自律、真实、文明的原则</li>            <li>·尊重网上道德，遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律法规</li>             <li>·严禁发表危害国家安全，破坏民族团结、国家宗教政策和社会稳定，含侮辱、诽谤、教唆、淫秽等内容的作品</li>             <li>·承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>             <li>·您在CSDN新闻评论发表的作品，CSDN有权在网站内保留、转载、引用或者删除</li>             <li>·参与本评论即表明您已经阅读并接受上述条款</li>        </ul>        </div>    </div></div>
+                    <script type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/cnick.js"></script>
+					<script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/comments.js" type="text/javascript"></script>
+					<!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script-->
+					<script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline",
+					        title:"%E3%80%90%E9%97%AE%E5%BA%95%E3%80%91%E8%AE%B8%E9%B9%8F%EF%BC%9A%E4%BD%BF%E7%94%A8Spark%2BCassandra%E6%89%93%E9%80%A0%E9%AB%98%E6%80%A7%E8%83%BD%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0%EF%BC%88%E4%B8%80%EF%BC%89",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script>
+								<!-- //comments -->
+			</div>
+			
+			
+		</div>
+		
+		<div class="right">	
+						
+			<div class="ad_300_250"><script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=csdn|article|pip&amp;db=csdnim&amp;border=0&amp;local=yes&amp;js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script></div>
+			
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:10px; margin-bottom:20px;">
+            	 <ul style=" float:right; width: 160px; padding:5px;">
+                    <li style="font-size:16px; font-weight:bold;">CSDN官方微信</li>
+                    <li style="float:left;">扫描二维码,向CSDN吐槽</li>
+                    <li>微信号：CSDNnews</li>
+                </ul>
+                <img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/28_121116100507_1.jpg" width="100" height="100">
+            </div>
+			
+			
+			<div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;"><img style="vertical-align:middle; margin-right:10px;" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/icon_ipad.png"><a href="http://subject.csdn.net/programmer-ipad/" target="_blank">程序员杂志for iPad 免费下载 </a></div>
+			
+			<div class="sitemap"><a href="http://www.csdn.net/article/lastnews" target="_blank">每日资讯快速浏览 </a></div>	
+						<!-- 订阅和关注 -->
+			<div class="report">
+				<h2 class="tit_2"><p>微博关注</p></h2>
+								<iframe width="100%" height="300" class="share_self" frameborder="0" scrolling="no" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/index.html"></iframe>
+								
+			</div>
+ 	
+			
+			<div class="rtbrill" id="digestComment"></div>		
+			<!-- recommend and hot weekly -->			
+			<div id="Tab2" class="hot_weekly">
+				<h2 class="tit_2"><p>相关热门文章</p></h2>
+				<div class="con Contentbox">
+					<div id="con_two_2">
+						<ul class="list_1 ">
+													<li><a href="http://www.csdn.net/article/2014-11-10/2822571" title="【观察】阿里11.11第六年，用我们的视角直播技术与数据" target="_blank">【观察】阿里11.11第六年，用我们的视角直播技术与数据</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-11/2822572" title="鏖战双11，电商架构大起底" target="_blank">鏖战双11，电商架构大起底</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-12/2822602" title="LinkedIn开源大数据计算引擎 Cubert，并为此创建新的语言" target="_blank">LinkedIn开源大数据计算引擎 Cubert，并为此创建新的语言</a></li>
+													<li><a href="http://www.csdn.net/article/2014-10-30/2822381" title="Druid创始人Eric Tschetter详解开源实时大数据分析系统Druid" target="_blank">Druid创始人Eric Tschetter详解开源实时大数据分析系统Druid</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-13/2822624-Drawbridge" title="揭秘微软的Container技术之一Drawbridge" target="_blank">揭秘微软的Container技术之一Drawbridge</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-13/2822621" title="【先锋】思明软件大数据技术平台打造历程和Impala实战分享" target="_blank">【先锋】思明软件大数据技术平台打造历程和Impala实战分享</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-11/2822594" title="一次“奇幻”的Docker libcontainer代码阅读之旅" target="_blank">一次“奇幻”的Docker libcontainer代码阅读之旅</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-14/2822652-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline-2" title="【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）" target="_blank">【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-11/2822580" title="20大议题独家披露，BDTC2014上演干货接力" target="_blank">20大议题独家披露，BDTC2014上演干货接力</a></li>
+													<li><a href="http://www.csdn.net/article/2014-11-13/2822620" title="【AWS re:Invent2014直播系列】亚马逊AWS re:Invent首日一瞥" target="_blank">【AWS re:Invent2014直播系列】亚马逊AWS re:Invent首日一瞥</a></li>
+												</ul>
+					</div>
+				</div>
+			</div>
+			  
+			  <!-- hot tag -->
+			<div class="hot_tag">
+				<h2 class="tit_2"><p><a href="http://www.csdn.net/tag">热门标签</a></p></h2>
+				<ul class="list_1">
+				 
+									 
+										<li><a href="http://www.csdn.net/tag/hadoop" title="Hadoop" target="_blank">Hadoop</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/aws" title="AWS" target="_blank">AWS</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F" title="移动游戏" target="_blank">移动游戏</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/java" title="Java" target="_blank">Java</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/android" title="Android" target="_blank">Android</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ios" title="iOS" target="_blank">iOS</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/swift" title="Swift" target="_blank">Swift</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6" title="智能硬件" target="_blank">智能硬件</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/docker" title="Docker" target="_blank">Docker</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/openstack" title="OpenStack" target="_blank">OpenStack</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/vpn" title="VPN" target="_blank">VPN</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/spark" title="Spark" target="_blank">Spark</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/erp" title="ERP" target="_blank">ERP</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ie10" title="IE10" target="_blank">IE10</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/eclipse" title="Eclipse" target="_blank">Eclipse</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/crm" title="CRM" target="_blank">CRM</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/javascript" title="JavaScript" target="_blank">JavaScript</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" title="数据库" target="_blank">数据库</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/ubuntu" title="Ubuntu" target="_blank">Ubuntu</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/nfc" title="NFC" target="_blank">NFC</a></li>
+									 
+										<li><a href="http://www.csdn.net/tag/wap" title="WAP" target="_blank">WAP</a></li>
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+									 
+											
+				</ul>
+			</div>
+			<!-- //hot tag -->
+			
+			<!-- share -->
+			<div class="box share">
+    			<h2 class="tit_2"><p><a target="_blank" href="http://share.csdn.net/">CSDN Share PPT下载</a></p></h2>
+    							
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/9615" title="Btrfs_Current status_and_future_prospects"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/c1547b60ad7d74d065cb3132ed7d073a_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/9615" title="Btrfs_Current status_and_future_prospects">Btrfs_Current status_and_future_prospects</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/9273" title="数据挖掘.PPT"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/cfaddddbc6146e95a5de91dc787bd10f_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/9273" title="数据挖掘.PPT">数据挖掘.PPT</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/9207" title="45分钟搞定R语言之数据库交互及统计绘图"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/dc0045c85fd4a434a26dda1711876539_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/9207" title="45分钟搞定R语言之数据库交互及统计绘图">45分钟搞定R语言之数据库交互及统计绘图</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                				
+      			<dl>
+      				
+      	      	    <dt class="clearfix"><a target="_blank" href="http://share.csdn.net/slides/9170" title="回到未来 - 苹果官网的15年，探究其网站是如何改善变化的"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/b37b7f3121d655680fa72c587c44fcc6_thumb.jpg"></a>
+      	      	    <a target="_blank" href="http://share.csdn.net/slides/9170" title="回到未来 - 苹果官网的15年，探究其网站是如何改善变化的">回到未来 - 苹果官网的15年，探究其网站是如何改善变化的</a>
+      	      	    </dt>
+                   
+                </dl>              	
+      			
+                	
+</div>
+			<!-- //share -->
+			
+					</div>
+	</div>
+			<div class="hot_topic">
+		<h1><span class="title">热门专区</span></h1>
+		<ul>
+						<li><a href="http://g.csdn.net/5272864" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/ronglian1.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5272864" target="_blank">容联云通讯开发者技术专区</a></span></li>
+					<li><a href="http://g.csdn.net/5272863" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/tengx.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5272863" target="_blank">腾讯云技术社区</a></span></li>
+					<li><a href="http://g.csdn.net/5253320" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/IBM PMI03.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5253320" target="_blank">IBM新兴技术大学</a></span></li>
+					<li><a href="http://g.csdn.net/5271687" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/Atlassian.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5271687" target="_blank">高效能团队解决方案</a></span></li>
+					<li><a href="http://g.csdn.net/5261231" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/160x120(1)01.jpg" alt=""></a><span class="title"><a href="http://g.csdn.net/5261231" target="_blank">高通开发者专区 </a></span></li>
+					</ul>
+	</div>
+		<script type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/like.js"></script>
+	<script>
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2014-10-24%2F2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc3', tabobjlinks[2]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2822278&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+		function pongoad2(val){
+			$("#job_ul").html(val);
+		}
+		var callbackfun="pongoad2";
+		document.write(unescape('%3Cscript src="http://a.pongo.cn/Job/GetAdForCallBack%3Fid%3D2%26UrlAdParam%3D'+encodeURIComponent(location.href)+'%26&CallBack%3D'+callbackfun+'" type="text/javascript"%3E%3C/script%3E'));
+	</script><script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/GetAdForCallBack" type="text/javascript"></script>
+
+
+	<script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script>
+
+	<script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script><script src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/highlighter.js"></script>
+	
+	<!-- 广告位：富媒体广告 -->
+	<script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script>
+  <img alt="Top_arrow" id="top_arrow" class="top_arrow" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/top_arrow.png" style="display: block; cursor: pointer;">
+	<script type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/top_arrow.js"></script>
+  
+	<!-- public footer -->
+      <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script><script type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a>|<a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a>|<a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a> <a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a> <span class="phone" title="服务热线">400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px; left: -72px; top: 2042px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/notify.js"></script>
+	<!-- //public footer -->
+</div>
+<!-- tab js -->
+<script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script>
+<script type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script> 
+<!--<script id="noticeScript" type="text/javascript" charset="utf-8" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" src="http://static.csdn.net/public/common/toolbar/js/notify.js"></script>-->
+<script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）-CSDN.NET_files/toolbar.js"></script>
+
+
+ 
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

@@ -1,0 +1,2161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0052)http://www.infoq.com/cn/articles/microservices-intro -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>微服务：分解应用以实现可部署性和可扩展性</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./微服务：分解应用以实现可部署性和可扩展性_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./微服务：分解应用以实现可部署性和可扩展性_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./微服务：分解应用以实现可部署性和可扩展性_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn1.infoqstatic.com/favicon.ico?20141119-0542" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn1.infoqstatic.com/apple-touch-icon.png?20141119-0542">
+
+        <link rel="stylesheet" href="./微服务：分解应用以实现可部署性和可扩展性_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./微服务：分解应用以实现可部署性和可扩展性_files/ga.js"></script><script async="" type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+        
+        
+        <script>
+			$( this ).one( "mousemove", function() {
+				$.getScript("/scripts/__hd.ifq?hdt=axavGU9sDQ8RfjSa")
+			});		
+		</script>
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()])</script>
+	
+    <script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/forum.js"></script>
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+    <meta property="og:image" content="https://www.infoq.com/resource/articles/microservices-intro/zh/smallimage/logo.jpg">
+
+<meta property="og:title" content="微服务：分解应用以实现可部署性和可扩展性 ">
+<meta property="og:description" content="本文描述了日渐流行的微服务架构模式，它可以用来将大型、复杂且历时长久的应用在架构上设计为内聚的服务，这些服务能够随着时间的流逝而演化。">
+<meta property="og:site_name" content="InfoQ">
+	<link rel="image_src" href="./微服务：分解应用以实现可部署性和可扩展性_files/logo.jpg">
+	<meta name="keywords" content="microservices intro,架构 &amp; 设计,AMQP,REST,消息传送,Web服务,Web API,SOA,设计模式,API,企业架构,架构 ,模式,性能和可伸缩性,设计,">
+	<meta name="description" content="本文描述了日渐流行的微服务架构模式，它可以用来将大型、复杂且历时长久的应用在架构上设计为内聚的服务，这些服务能够随着时间的流逝而演化。">
+	<meta name="tprox" content="1403156220000">
+
+    
+    
+    	
+	    
+	        <script type="text/javascript">
+	            $(function() {
+	                var box = $('.related_sponsors.visible.stacked');
+	                if (box.length === 0) {
+	                    return;
+	                }
+	                var nextSibling = $(box).next();
+	                
+	                if ($('#lowerFullwidthVCR').length === 0) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                if (blockElement(nextSibling)) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                while (!blockElement($(nextSibling).next())) {
+	                        nextSibling = $(nextSibling).next();
+	                        if (firstLowerThanSecond(nextSibling, box)) {
+	                            return;
+	                        }
+	                }
+	                moveLowerInThePage(box);
+	
+	                function blockElement(elem) {
+	                    if ($(elem).prop('tagName') === 'BLOCKQUOTE'
+	                        || $(elem).prop('tagName') === 'IMG'
+	                        || $(elem).prop('tagName') === 'PRE'
+	                        || ($(elem).prop('tagName') === 'P' && $(elem).children().length === 1 && $(elem).children('img').length === 1)) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function firstLowerThanSecond(elem1, elem2) {
+	                    var elem1BottomYCoordinate = $(elem1).offset().top + $(elem1).height()
+	                    var elem2BottomYCoordinate = $(elem2).offset().top + $(elem2).height();
+	                    if (elem1BottomYCoordinate > elem2BottomYCoordinate) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function moveLowerInThePage(box) {
+	                    if ($('#lowerFullwidthVCR').length !== 0) {
+	                        $('#lowerFullwidthVCR').replaceWith(box);
+	                    }
+	                    $(box).removeClass('stacked');
+	                }
+	            });
+	        </script>
+	    
+    
+
+        
+        
+			<link rel="image_src" href="http://cdn2.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+			<meta property="og:image" content="http://cdn2.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+		
+    <script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><iframe src="./微服务：分解应用以实现可部署性和可扩展性_files/container.html" style="visibility: hidden; display: none;"></iframe><script src="./微服务：分解应用以实现可部署性和可扩展性_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./微服务：分解应用以实现可部署性和可扩展性_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./微服务：分解应用以实现可部署性和可扩展性_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./微服务：分解应用以实现可部署性和可扩展性_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="axavGU9sDQ8RfjSa">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./微服务：分解应用以实现可部署性和可扩展性_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">开发由云支持的端到端物联网解决方案</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./微服务：分解应用以实现可部署性和可扩展性_files/Lepisto_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">联网设备如今已经遍布于我们身边，从以Arduinos与Raspberry Pi打造的小型传感装置到电视，再到恒温器乃至涡轮机可谓无所不包。通过本次分享，你可以了解我们如何才能在低成本、高可扩展性以及自动化云计算服务的帮助下对来自这些设备的数据流进行获取、存储与计算。了解我们如何才能通过分析、结论整理以及反馈控制这一流程为客户的实际使用以及个人生活带来附加价值。 此外，大家还能够亲眼见证各类端对端物...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">开发由云支持的端到端物联网解决方案</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./微服务：分解应用以实现可部署性和可扩展性_files/Lepisto_100.jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">联网设备如今已经遍布于我们身边，从以Arduinos与Raspberry Pi打造的小型传感装置到电视，再到恒温器乃至涡轮机可谓无所不包。通过本次分享，你可以了解我们如何才能在低成本、高可扩展性以及自动化云计算服务的帮助下对来自这些设备的数据流进行获取、存储与计算。了解我们如何才能通过分析、结论整理以及反馈控制这一流程为客户的实际使用以及个人生活带来附加价值。 此外，大家还能够亲眼见证各类端对端物...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./微服务：分解应用以实现可部署性和可扩展性_files/nigel-newlogo1.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">在最近的敏捷澳洲大会上，InfoQ与 Nigel Dalton 谈到了现代管理实践中的一些社会化实验，包括在工作环境中应用精益、敏捷和系统化思考，此外还谈到破坏性创新和他的“20 by 2020”目标：到2020年，让20%的组织中使用敏捷管理方法。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/aws-fault-isolation">AWS全球范围故障隔离案例研究</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./微服务：分解应用以实现可部署性和可扩展性_files/aws4.png" alt="" border="0">
+							<span id="operations-infrastructureHDSummary"></span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4" style="left: -999em;">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">领域驱动设计精简版（全新修订）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./微服务：分解应用以实现可部署性和可扩展性_files/100cover.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">本书是Eric Evans的《领域驱动模型》一书的精简版，让你在短时间内理解领域驱动设计的内容。这本书没有介绍任何新的概念，它只是概要总结了领域驱动设计的本质， 抽取了Eric Evans原书中关于这一主题的大部分内容，以及其他相关资料，包括已经出版的书籍和各种领域驱动设计讨论群组等。这本书可以让你快速了解领域驱动设计的基础知识，但不能替代Eric书中提供的大量事例和 案例研究或者Jimmy书中提...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn1.infoqstatic.com/images/ads/banners/qcon/cn/2014/20141111_banner.jpg?20141119-0542" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://2015.qconbeijing.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/articles?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="文章">文章</a>
+                
+		
+		<span class="last">微服务：分解应用以实现可部署性和可扩展性</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+        <h1 class="general with_pic">
+            微服务：分解应用以实现可部署性和可扩展性
+            <span class="article_image_title">
+                <img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/logo.jpg">
+            </span>
+        </h1>
+	<span class="author_general">
+		作者
+		
+			
+		
+		<a href="http://www.infoq.com/cn/author/Chris-Richardson" class="editorlink f_taxonomyEditor">
+Chris Richardson</a>
+
+        
+			
+				
+			
+        	，译者
+        	<strong><a href="http://www.infoq.com/cn/author/%E5%BC%A0%E5%8D%AB%E6%BB%A8" class="editorlink f_taxonomyTranslator">
+张卫滨</a>
+</strong>
+        
+        发布于
+        2014年6月19日
+        <em>|</em> 
+        
+	<a id="noOfComments" title="" href="http://www.infoq.com/cn/articles/microservices-intro#theCommentsSection" class="comments_like">
+		
+	    
+	        <span class="comments_counts">
+	        	<span class="nr">
+					讨论
+	        	</span>
+	        </span>
+	    
+	</a></span>
+
+   	
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1416405400627">
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/articles/microservices-intro#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="Bookmarks.bookmarkContent(&#39;articles&#39;, &#39;microservices-intro&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+			
+	<div class="clear"></div>
+<div class="article_page_left text_content_container">
+	
+			
+	<div class="text_info text_info_article">
+		
+			
+	       	<p>本文描述了日渐流行的<a href="http://microservices.io/patterns/microservices.html">微服务架构模式</a>。微服务背后大的理念是将大型、复杂且历时长久的应用在架构上设计为内聚的服务，这些服务能够随着时间的流逝而演化。<b>微</b>服务这个术语强烈建议服务应该是很小的。</p>
+<p>社区中有些人甚至建议构建10-100代码行（LOC）的服务。但是，尽管很小的服务是我们想要的，但这不应该是主要的目标。你应该致力于将系统分解为服务，以解决下面所讨论的开发和部署问题。一些服务可能确实会很微小，但有些可能会非常大。</p>
+<p>微服务架构的本质并不新鲜。分布式系统的理念历史非常悠久。微服务架构也很类似于SOA。</p>
+			<div class="clear"></div>
+	        
+	            
+
+
+
+
+
+
+
+
+
+    <div class="related_sponsors visible stacked">
+        
+        
+                       
+            <div class="gray_section_related only1 fullWidth">
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6195&t=f" target="_blank">
+	                                    “双11”背后淘宝、京东、一号店的技术支撑
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6009&t=f" target="_blank">
+	                                    率先在国内落地的全球化云服务，深度了解Windows Azure
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6010&t=f" target="_blank">
+	                                    利用开发测试云实现精益创业、快速迭代
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6011&t=f" target="_blank">
+	                                    Windows Azure自管理服务实现近乎零停机维护
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6012&t=f" target="_blank">
+	                                    Windows Azure专区上线，全面了解云服务
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+            </div>
+        
+        
+        
+        
+            <div class="paid_section  only2">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6046&t=f" target="_blank">
+                        <img src="./微服务：分解应用以实现可部署性和可扩展性_files/100x50.jpg" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">Windows Azure专区上线，全面了解云服务</font><a href="http://www.infoq.com/infoq/url.action?i=6013&t=f" target="_blank"><font face="Verdana">精彩呈现</font></a>！</p>
+
+                </div>
+            </div>
+        
+        <div class="clear"></div>
+    </div>
+
+	        
+	        
+<p>它甚至曾经被称为轻量级或细粒度的SOA。确实是这样，思考微服务架构的一种方式就是将其视为没有商用和沉重WS*以及ESB的SOA。尽管这不是一个全新的理念，但微服务架构还是值得讨论的，因为它不同于传统的SOA，更为重要的是它能够解决目前很多组织所遇到的问题。</p>
+<p>在本文中，你将会学习到采用微服务架构的驱动力以及如何将其与更为传统的、<a href="http://microservices.io/patterns/monolithic.html">整体（monolithic）架构</a>进行对比。我们会讨论微服务架构所能带来的收益及其缺点。你能够学习到如何解决使用微服务架构时所遇到的关键技术挑战，包括服务间的通信以及分布式数据管理。</p>
+<h2>整体架构（有时是有害的）</h2>
+<p>从最早为Web系统开发应用开始，最为广泛使用的企业应用架构就是将应用所有的服务端组件打包成一个单元。很多的企业级Java应用由一个WAR或EAR文件所组成。其他语言，如<a href="https://engineering.groupon.com/2013/misc/i-tier-dismantling-the-monoliths/">Ruby</a>甚至<a href="http://highscalability.com/amazon-architecture">C++</a>，所编写的应用也是同样的情况。</p>
+	        
+	        
+	            <div id="lowerFullwidthVCR"></div>
+	        
+	       	
+<p>比如，让我们假设一下，你正在构建一个在线商店，它会接受顾客的订单、检查库存以及可用的额度，然后完成运送。应用很可能构建成如图1所示的样子。</p>
+<p><img src="./微服务：分解应用以实现可部署性和可扩展性_files/0618000.png" width="600" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图1——整体的架构</small></b></p>
+<p>应用有多个组件组成，包括StoreFront UI，它实现了用户界面，以及用来管理产品目录、处理订单和管理用户账号的服务。这些服务共享领域模型，模型中包含了实体，如Product、Order和Customer。</p>
+<p>尽管有一个逻辑上的模块化设计，但应用还是会作为一个整体进行部署。例如，如果你使用Java的话，那么应用会由一个WAR文件组成，它会运行在Web容器中，如Tomcat。如果应用是Rails版本的话，它会由一个目录结构组成，如果使用Apache/Nginx的话，可以使用Phusion Passenger部署，或者使用Tomcat的时候，利用JRuby进行部署。</p>
+<p>这种所谓的整体架构会有很多的优点。整体架构开发起来较为容易，因为IDE和其他的开发工具都是面向开发单个应用的。它们测试起来很容易，因为你只需要启动一个应用。整体架构的应用也很容易进行部署，因为你只需要将部署单元——一个文件或目录——复制到运行对应种类服务器的机器上就可以了。</p>
+<p>这种方式对于相对小的应用来说，工作起来是很好的。但是，对于复杂应用来讲，整体架构就会变得很笨重了。对于开发者来说，大型的整体架构应用会很难理解和维护。对于频繁部署来说，这也是一个障碍。要部署某个应用组件的变更，你必须要构建和部署整个庞大的应用，这会很复杂、有风险、耗时，并且需要与众多的开发人员协调从而导致很长的测试周期。</p>
+<p>整体架构使得很难去试验和采用新技术。例如，如果不重写整个应用的话，很难去尝试使用新的基础设施框架，而重写整个应用是有风险且不现实的。所导致的结果就是，你必须坚守项目初期所选择的技术。换句话说，整体架构不能进行扩展以支持大型的、长期存在的应用。</p>
+<h2>将应用分解为服务</h2>
+<p>幸运的是，有很多其他的架构风格来支持可扩展性。在<a href="http://theartofscalability.com/"><i>《可扩展性的艺术》（The Art of Scalability）</i></a>一书中，描述了很有用的三维可扩展性模型：<a href="http://akfpartners.com/techblog/2008/05/08/splitting-applications-or-services-for-scale/">扩展性立方</a>，如图2所示。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618001.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图2——扩展性立方</small></b></p>
+<p>在这个模型中，要对应用进行扩展，最常用的方式就是在负载均衡器后面运行多个完全相同的应用，这也就是所谓的X轴扩展。对于提升应用的处理能力以及可用性来讲，这是一种很好的方式。</p>
+<p>当使用Z轴扩展时，每个服务器都运行着相同的代码。在这方面，它很类似于X轴扩展。很大区别在于每个服务器只负责数据的一个子集。系统中会有些组件负责将每个请求路由到对应的服务器。一个常用的路由条件就是请求的属性，如要访问实体的主键，这也就是所谓的sharding。另外一个常见的路由条件是客户类型。例如，相对于免费客户，应用可能需要对收费客户提供更高的SLA，这样的话，就需要将收费客户的请求路由到具有更高处理能力的不同服务器上面。</p>
+<p>Z轴扩展，类似于X轴扩展，提升了应用的处理能力和可用性。但是，它们都无法解决不断增长的开发和应用复杂性。为了解决这些问题，我们需要Y轴扩展。</p>
+<p>扩展的第三个维度称为Y轴扩展或功能分解。与Z轴扩展中对事情进行拆分类似，Y轴扩展会将不同的事情进行拆分。在应用层，Y轴扩展会将庞大的整体应用拆分为一组服务。每个服务实现一组相关的功能，如订单管理、客户管理等。</p>
+<p>决定如何将系统拆分为一组服务在很大程度上来讲是一门艺术，不过有一些策略可以提供帮助。拆分服务的一种方式是按照动词（verb）或者是用例来进行拆分。例如，稍后你会看到拆分后的在线商店应用包含了Checkout UI服务，它实现了结账用例的UI功能。</p>
+<p>另外一种拆分方式就是将系统按照名词或者说是资源进行拆分。这种服务会负责给定类型实体/资源的所有操作。例如，稍后你会看到如何使在线商店具有一个Catalog服务，它会管理产品的目录。</p>
+<p>理想情况下，每个服务应该只有很小的一个责任集合。Bob大叔Martin<a href="http://www.objectmentor.com/resources/articles/srp.pdf">曾经提出过使用单一责任原则（Single Responsible Principle，SRP）来设计类[PDF]</a>。SRP将类的职责定义为变更的原因，应该只有一个原因会导致某个类产生变更。当设计服务时，使用SRP也是很有价值的。</p>
+<p>服务设计时，另外一个可以提供帮助的类比对象就是Unix的系统工具。Unix提供了大量的工具集，如grep、cat和find。每个工具只做一件事情，通常会做的特别好，而且可以通过shell脚本与其他工具联合起来执行复杂的任务。遵循Unix系统工具的方式对服务进行建模是很好的，这种方式会创建出单一功能的服务。</p>
+<p>要强调的很重要的一点就是分解的目标并不在于片面追求微小（如<a href="http://yobriefca.se/blog/2013/04/28/micro-service-architecture/">如有些人所主张的10-100代码行</a>）的服务。与之相反，它的目标在于解决上文中所提到的整体架构所面临的问题和限制。有些服务很微小是非常合适的，不过其他的会更大一些。</p>
+<p>如果对样例应用使用Y轴分解的话，我们得到的架构如图3所示。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618002.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图3——微服务架构</small></b></p>
+<p>分解后的应用包含了各种前端服务以及多个后端服务，这些前端服务实现了各个部分的用户界面。前端服务包含了Catalog UI，它实现了产品搜索和浏览，还包括Checkout UI，它实现了购物车和结账过程。后端服务包括了相同的逻辑服务，这些已经在本文开始的时候进行了描述。我们已经将应用中的每个主要组件转换成了单独的服务。让我们看一下这样做的结果是什么。</p>
+<h2>微服务架构的收益与缺点</h2>
+<p>这种架构能够带来很多的收益。首先，每个微服务相对比较小。对于开发人员来说，代码更易于理解。很小的代码基并不会拖慢IDE，因此能使开发人员更为高效。同时，每个服务在启动方面也比大型的整体应用快得多，这同样会使得开发人员更为高效，并且会加速部署。</p>
+<p>第二，每个服务可以独立于其他服务进行部署。如果负责某个服务的开发人员需要部署一个变更，这个变更仅仅涉及到这个服务本地的内容，那么他们没有必要协调其他的开发人员。他们可以只部署自己的变更就可以了。微服务架构使得持续部署变得可行。</p>
+<p>第三，每个服务可以独立于其他服务使用X轴克隆和Z轴分区进行扩展。此外，每个服务可以部署到最适合其资源需求的硬件上。这与使用整体架构时有很大的区别，在整体架构中，具有严重资源需求差异的组件（如CPU密集与内存密集）必须部署在一起。</p>
+<p>微服务架构使得开发的扩展也变得更为容易。你可以围绕多个小团队（如两个披萨原则）组织研发。每个团队只需负责开发和部署一个服务或一组相关的服务。每个团队能够独立于其他的团队开发、部署和扩展他们的服务。</p>
+<p>微服务架构同时也能提升故障的隔离性。例如，某个服务中的内存泄露只会影响到这个服务自己。其他服务能够继续正常地处理请求。与之形成对比的是，整体架构中如果有一个不合格的组件，那么将会拖垮整个系统。</p>
+<p>最后但并非最不重要的，微服务架构消除了对某个技术栈的长期依赖。原则上，当开发新的服务时，开发人员可以任意选择最适合该服务的语言和框架。当然，在很多组织中，限制可选的技术方案是有一定的道理的，不过关键的一点在于，你不再受制于过去所作出的决策。</p>
+<p>另外，因为服务比较小，使用更好的语言和技术重写它们变得更为可行。这也意味着，如果<a href="http://www.infoq.com/presentations/evolving-architecture-guardian-uk">对一项新技术的尝试</a>失败的话，你尽可以抛弃这个成果，而不会对整个项目带来风险。这与采用整体架构有很大的区别，在整体架构中，初始的技术选择严重限制你将来采用不同语言和框架的能力。</p>
+<h2>缺点</h2>
+<p>当然，没有什么技术是银弹，微服务架构有一些明显的<a href="http://highscalability.com/blog/2014/4/8/microservices-not-a-free-lunch.html">缺点和问题</a>。首先，开发人员必须要处理创建分布式系统所带来的额外的复杂性。开发人员必须要实现进程间的通信机制。要实现跨多个服务的用例的话，如果不使用分布式事务是很难完成的。IDE以及其他的开发工具关注于开发整体架构的应用，并没有为开发分布式应用提供明确的支持。编写涉及到多个服务的自动化测试用例也是很有挑战的。在开发整体架构应用时，你无需处理这样的问题。</p>
+<p>微服务架构同样引入了明显的运维复杂性。在这种架构下，有了更多正在运行中的不同部件，也就是不同类型服务的多个实例，在生产环境下必须对它们进行管理。为了成功做到这一点，你需要一个高度自动化的工具，要么是自己编写代码，要么是类似于PaaS的技术，如Netflix <a href="https://github.com/Netflix/asgard">Asgard</a>及其关联组件，或者是现成的PaaS，如<a href="http://www.gopivotal.com/platform-as-a-service/pivotal-cf">Pivotal Cloud Foundry。</a></p>
+<p>同时，部署跨多个服务的特性时，需要认真地协调不同的开发团队。根据服务间的依赖关系，你要创建服务如何按顺序部署的规划。这与整体架构有着很大的差异，在整体架构模式下，你可以很容易一次性地更新多个组件。</p>
+<p>使用微服务架构的另外一个挑战就是要决定在应用生命周期的哪个时间点上采用这种架构。当开发应用的第一个版本时，这种架构所能解决的问题你通常还不会遇到。另外，使用复杂的、分布式的架构将会延缓开发。</p>
+<p>对于初创公司来讲，这可能是一个两难的困境，它们最大的挑战通常在于如何快速地演化业务模型以及相关的应用。使用Y轴分解可能会使得快速迭代更为困难。稍后，当挑战变成如何扩展的话，你需要进行功能分解，此时混乱的依赖关系可能让你很难将整体的应用分解为一组服务。</p>
+<p>鉴于这些问题的存在，采用微服务架构不应该是草率做出的决策。但是，对于需要进行扩展的应用，如面向客户的Web应用或SaaS应用，这通常是正确的选择。知名的站点如<a href="http://www.addsimplicity.com/downloads/eBaySDForum2006-11-29.pdf">eBay</a>[PDF]、<a href="http://highscalability.com/amazon-architecture">Amazon.com</a>、<a href="https://engineering.groupon.com/2013/misc/i-tier-dismantling-the-monoliths/">Groupon</a>以及<a href="http://www.slideshare.net/LappleApple/gilt-from-monolith-ruby-app-to-micro-service-scala-service-architecture">Gilt</a>都已经从整体架构转移到微服务架构上来了。</p>
+<p>既然已经看过了其收益和缺点，现在我们来看一下在微服务架构中几个关键的设计问题，首先是应用内部以及应用与客户端之间的通信机制。</p>
+<h2>微服务架构中的通信机制</h2>
+<p>在微服务架构中，客户端和应用之间以及应用的组件之间的通信机制与整体架构是有所不同的。我们首先看一下应用的客户端与微服务交互的问题，稍后，会看到应用内部的通信机制。</p>
+<h2>API网关模式</h2>
+<p>在一个整体架构的应用中，应用的客户端，如Web浏览器和原生的应用，会发起HTTP请求，负载均衡器将请求转发到N个完全相同的应用实例中的某一个上面。但是在微服务架构之中，庞大的应用被替换为一组服务。所造成的结果就是，我们需要回答客户端到底与谁交互的问题。</p>
+<p>应用的客户端，如原生的移动应用，可以对单个服务发起RESTful HTTP请求，如图4所示。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618003.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图4——直接调用服务</small></b></p>
+<p>表面上看，这种方式可能会很有吸引力。但是，在粒度方面，单个服务的API与客户端所需要的数据之间可能会存在明显的不匹配。例如，展现一个Web页面可能需要调用大量的服务。举例来说，Amazon.com<a href="http://highscalability.com/amazon-architecture">描述了</a>一些页面需要调用100个以上的服务。发起如此之多的服务，即使是在高速互联网连接之中也会导致低效和很差的用户体验，更别提更低带宽、更高延迟的移动网络了。</p>
+<p>一种更好的方式是让客户端在每个页面发送少量的请求，可能只有一个，这样的请求会通过互联网发送到前端服务器上，这种服务器称之为API网关，如图5所示。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618004.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图5——API网关</small></b></p>
+<p>API网关位于应用的客户端和微服务之间。它提供了针对客户端定制的API。API网关为移动客户端提供粗粒度的API，为桌面客户端提供细粒度的API，因为桌面客户端能够使用高性能的网络。在本例中，桌面客户端发起多次请求来检索关于某个产品的信息，而移动客户端只发送一次请求。</p>
+<p>API网关在处理传入的请求时，会通过高性能的LAN对一定数量的微服务发起请求。例如，Netflix<a href="http://techblog.netflix.com/2013/01/optimizing-netflix-api.html">描述了</a>如何将每个请求发散为平均6个后端服务。在本例中，来自于桌面客户端的细粒度请求只是简单代理到对应的服务上，而来自移动客户端的每个粗粒度请求得到了处理，在这里会将调用多个服务的结果进行聚合。</p>
+<p>API网关不仅优化了客户端和应用之间的通信，而且还封装了微服务的细节。这样的话，就能使微服务的演化不至于影响到客户端。例如，两个微服务可能会进行合并。另外的某一个微服务则可能会拆分为两个或更多的服务。只有API网关需要更新以适应这些变化，客户端并不会受到影响。</p>
+<p>我们已经看到了API网关如何在应用及其客户端之间进行协调，现在来看一下如何在微服务之间实现通信。</p>
+<h2>服务间通信机制</h2>
+<p>微服务架构的另外一个重要差异就是应用的不用组件之间如何进行交互。在整体架构的应用之中，组件调用其他的组件会使用常规的方法调用。但是在微服务架构中，不同的服务运行在不同的进程之中。由此导致的结果就是服务必须使用进程间通信机制（inter-process communication，IPC）来实现通信功能。</p>
+<h3>同步HTTP</h3>
+<p>在微服务架构中，有两种主要的方式来实现进程间的通信。一种可选的方案是基于HTTP的同步机制，如REST或SOAP。这是一种简单且熟悉的IPC机制。它对防火墙友好，所以在互联网上广泛使用并且请求/响应（request/reply）式的通信较为简单。HTTP的不足之处在于它不支持其他的通信模式，如发布-订阅（publish-subscribe）。</p>
+<p>另外一个限制就是客户端和服务器必须同时可用，但是这并不是永远都能保证的，因为分布式系统容易产生局部的故障。同时，HTTP客户端需要知道服务器的主机和端口。尽管听起来这没什么问题，但实际上并没有那么简单，尤其是在云部署的时候，会使用自动扩展的机制，服务实例的生命周期是很短暂的。应用需要使用一种服务发现机制。有些应用使用服务注册器，如Apache <a href="http://zookeeper.apache.org/">ZooKeeper</a>或Netflix <a href="https://github.com/Netflix/eureka">Eureka</a>。在其他的应用中，服务必须注册到负载均衡器中，如<a href="http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/USVPC_creating_basic_lb.html">在一个Amazon VPC内部使用的ELB。</a></p>
+<h3>异步消息</h3>
+<p>同步HTTP的一个替代方案就是基于消息的异步机制，如基于AMQP的消息broker。这种方式有一些优点。它解耦了消息的生产者和消费者。消息broker会一直缓存消息，直到消费者能够处理它们为止。生产者完全不用关心消费者。生产者只需与消息broker交互就可以，无需使用服务发现机制。基于消息的通信机制同时支持多种通信模式，包括单向请求以及发布-订阅。使用消息的一个不足之处在于需要有消息broker，这个运转部件会为系统添加复杂性。另外的一个不足之处在于它与请求/响应式的通信机制并不能自然融合。</p>
+<p>两种方式各有利弊。应用通常会混合使用这两种方式，例如，在下一节中将会讨论如何解决架构拆分所带来的数据管理问题，你就会看到怎样使用HTTP与消息了。</p>
+<h3>去中心化的数据管理</h3>
+<p>将应用拆分为服务的一个结果就是数据库也会进行拆分。为了确保低耦合，每个服务有自己的数据库（模式）。另外，不同的服务可能使用不同类型的数据库——这就是所谓的多种类持久化架构（polyglot persistence architecture）。例如，需要ACID事务的某个服务可能会使用关系型数据库，而管理社交网络的服务可能会使用图数据库。拆分数据库是很必要的，但是我们现在有了一个新的问题需要解决：有些请求要访问多个服务的数据，这样的请求该如何处理。让我们先看一下如何处理读请求，然后再看一下更新请求。</p>
+<h3>处理读</h3>
+<p>例如，考虑在线商店中的每个顾客都有一个信用额度。当顾客试图下订单时，系统必须检查所有订单的总额不超过他们的信用额度。在整体架构的应用中实现这种逻辑规则会很简单。但是如果在系统中，顾客要通过CustomerService来管理，订单要通过OrderService来管理，那么实现这种检查就困难多了。OrderService必须要以某种方式访问CustomerService所维护的信用额度。</p>
+<p>一种解决方案是OrderService通过发起对CustomerService的RPC调用检索到信用额度。这种方式实现起来很简单，并且能够确保OrderService能够得到最新的信用额度值。不足之处在于它降低了可用性，因为为了下一个订单，必须要保证CustomerService处于正在运行的状态。它也会因为额外的RPC调用增加响应的时间。</p>
+<p>另外一种方式就是OrderService保存信用额度的一个副本。这消除了对CustomerService所发起的请求，所以能够增加可用性并降低响应时间。但是，它意味着我们必须实现一种机制，每当CustomerService服务中的信用额度更新时，同时要更新OrderService中的副本。</p>
+<h2>处理更新请求</h2>
+<p>确保OrderService中的信用额度保持最新只是一类更通用问题的特例，这类问题就是如何处理多个服务共有数据的更新请求。</p>
+<h3>分布式事务</h3>
+<p>当然，一种解决方案就是使用分布式事务。例如，当更新顾客的信用额度时，CustomerService可以使用分布式事务同时更新自身的信用额度以及由OrderService维护的对应的信用额度。使用分布式事务能够确保数据始终是一致的，不足之处在于使用它会降低系统的可用性，因为为了事务能够提交，必须要求所有的参与者均可用。另外，分布式事务确实有些不再受欢迎了，现代的软件栈通常都不会支持它，如REST、NoSQL数据库等等。</p>
+<h3>事件驱动的异步更新</h3>
+<p>另外一种方式是使用<a href="http://queue.acm.org/detail.cfm?id=1394128">事件驱动的异步复制（asynchronous replication）。</a>服务发布事件声明有些数据发生了变化，其他的服务订阅这些事件并更新它们的数据。例如，当CustomerService更新顾客的信用额度时，它发布一个CustomerCreditLimitUpdatedEvent，这个事件中包含了顾客的id以及新的信用额度。OrderService订阅这些事件并更新其信用额度的副本。事件的流程如图6所示。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618005.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图6——使用事件复制信用额度</small></b></p>
+<p>这种方式主要的优点在于事件的生产者和消费者实现了解耦。这不仅简化了开发，相对于分布式事务，它还提升了可用性。如果某个消费者不能处理事件的话，消息broker会将消息放到队列中，直至消费者处理为止。这种方式的主要缺点在于它为了可用性牺牲了一致性。应用的编写方式必须能够容忍最终一致性数据。开发人员可能也需要实现事务补偿来执行逻辑回滚。尽管存在这些缺点，对于很多应用来说，这是推荐的方式。</p>
+<h3>重构整体架构的庞然大物</h3>
+<p>令人遗憾的是，我们通常并没有这样的好运气从事一个全新的、尚未进行开发的项目。很可能你所在的团队负责一个庞大的、令人生畏的整体架构应用。每天你都在处理本文开头时所提到的那些问题。好消息是你可以使用一些技术将庞大的应用拆分为一组服务。</p>
+<p>首先，停止让问题变得更糟糕。不要继续在这个庞然大物上添加代码来实现重要的新功能。与之相反，你应该以某种方式将功能实现为独立的服务，如图7所示。这可能并不容易做到，你需要编写凌乱复杂的胶水代码来实现服务与庞大应用的集成。但是，对于拆分整体架构的应用来说，这是很好的第一步。</p>
+<p><img width="600" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618006.png" _href="img://null" _p="true" alt=""></p>
+<p><b><small>图7——抽取服务</small></b></p>
+<p>第二，识别整体应用中的一个组件，然后将其转换为内聚且独立的服务。要进行抽取时，比较好的可选组件包括那些经常变化的或具备不一致资源需求的组件，如需要大量内存缓存或CPU密集型操作。展现层也是一个很好的可选项。你将组件转换为服务，并编写胶水代码使其能够与应用的其他部分进行交互。再次强调一遍，这可能会比较痛苦，但是能够让你渐进式地迁移到微服务架构。</p>
+<h2>总结</h2>
+<p>在构建企业级应用时，<a href="http://microservices.io/patterns/monolithic.html">整体架构模式</a>是一种常用的模式。对小型应用来说，它的确运行的很不错：开发、测试以及部署小的整体架构应用相对很简单。但是，对于大型的复杂应用，整体架构就成为开发和部署的障碍了。很难做到持续交付，并且通常会长期局限于最初所作出的技术选择。对于大型的应用，使用<a href="http://microservices.io/patterns/microservices.html">微服务架构</a>会更好，这种架构会将应用拆分为一组服务。</p>
+<p>微服务架构有很多的优势。例如，单个服务更易于理解，可以独立于其他服务进行开发和部署，更易于使用新的语言和技术，因为你可以每次在服务中尝试新的技术。微服务架构也有一些明显的不足。尤其是，应用要复杂得多，会有更多的运行时组件。你需要高度的自动化，如PaaS，才能有效地使用微服务。在开发微服务时，你还要处理一些复杂的分布式数据管理问题。尽管有这些不足，但是对于快速演化的大型复杂应用，尤其是SaaS风格的应用来讲，微服务架构是很有意义的。</p>
+<p>要将已有的整体架构应用演进为微服务架构，可以采用多种策略。开发人员应该将新功能实现为单独的服务，并编写胶水代码将服务与庞大的应用进行集成。另外一种很好的办法就是迭代式地识别组件并将其从整体架构中抽取出来，然后将其转换为服务。尽管演进过程并不简单，但是总比开发和维护笨重的整体架构应用要强得多。</p>
+<h2>关于作者</h2>
+<p><img style="float: left; margin-right: 10px" src="./微服务：分解应用以实现可部署性和可扩展性_files/0618007.jpg" _href="img://null" _p="true" alt=""><strong>Chris Richardson</strong>是一名开发人员和架构师。他是Java专家以及JavaOne上的明星，以及POJOs in Action一书的作者，这本书描述了如何使用POJO和Spring、Hibernate这样的框架编写企业级应用。Chris也是Cloud Foundry最初的创立者，这是针对Amazon EC2的早期Java PaaS。他为组织提供咨询服务，促使他们采用云计算、微服务以及NoSQL这样的技术提升开发和部署应用的水平。他的Twitter <a href="https://twitter.com/crichardson">@crichardson</a>。</p>
+<div style="clear:both"></div>
+<p><strong>查看英文原文：</strong><a href="http://www.infoq.com/articles/microservices-intro">Microservices: Decomposing Applications for Deployability and Scalability</a></p>
+	       	
+       	
+		<div class="clear"></div>
+				
+		<div style="margin-bottom:5px">【<a href="http://bj2014.archsummit.com/" target="_blank">ArchSummit北京2014</a>】解读“双11”背后淘宝、京东、一号店的技术支撑。年末的技术盛宴，CTO与架构师的大Party。11月30日前报名享受9折优惠，<a href="http://bj2014.archsummit.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture-design" name="architecture-design" id="6,821"><b>架构 &amp; 设计</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/patterns" name="patterns" id="942">模式</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/webservices" name="webservices" id="816">Web服务</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/rest" name="rest" id="891">REST</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/messaging" name="messaging" id="841">消息传送</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/DesignPattern" name="DesignPattern" id="3,539">设计模式</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Design" name="Design" id="859">设计</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/amqp" name="amqp" id="946">AMQP</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/API" name="API" id="4,815">API</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/WebAPI" name="WebAPI" id="6,966">Web API</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/performance-scalability" name="performance-scalability" id="754">性能和可伸缩性</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture" name="architecture" id="1,390">架构 </a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/soa" name="soa" id="742">SOA</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/enterprise-architecture" name="enterprise-architecture" id="786">企业架构</a></li>
+			</ul>							
+		</div>
+      
+		
+		
+		
+			
+			
+
+
+
+
+
+
+
+
+<div class="related_sponsors relEdRelRes" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended only1" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">当当网开源Dubbox，扩展Dubbo服务框架支持REST风格远程调用</a></h3><h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/micro-soa-1?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">微观SOA：服务设计原则及其实践方式（上篇）</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/08/hypermedia-dancing?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">超媒体就像跳舞</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/07/rest-haskell?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">rest：Haskell的REST开源框架</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/07/drupal-ios-android-sdk?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Drupal实现与原生iOS和Android应用程序的集成</a></h3></div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "305,926,84,91,-1000,-1000", "title": "微服务：分解应用以实现可部署性和可扩展性", "contentPath": "/articles/microservices-intro", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": 'microservices-intro',
+            "uriMapping": 'articles'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || researchExists) {
+                $('.related_sponsors.relEdRelRes').show(); // show the big related box
+            }
+
+            // in case all three available, leave now
+            if (recommendedExists) {
+            	$(grayBox).show(); // show the gray box for vcr and recommendations
+                return;
+            }
+        });
+</script>
+<div class="clear"></div>
+		
+		
+
+		<div class="clear"></div>
+				
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=37023;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+    </div>
+
+    <div class="all_comments">
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/articles/microservices-intro#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+<div id="mostPopularSection" class="news_in_tabs" style="display: block;">
+	<!-- the tabs -->
+	<ul class="tabs">
+		
+			<li><div class="tab_title">热点内容</div></li>
+			<li><a href="javascript:;" class="current">10天</a></li>
+			<li><a href="javascript:;">40天</a></li>
+			<li><a href="javascript:;">近6个月</a></li>
+				
+	</ul>
+	<!-- tab "panes" -->
+	<div class="panes">
+	<div style="display: block;"><h3 class="h3news" <!--pageviews:8059="" publication="" date:="" 2014-11-10--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：搜索引擎实时秒级更新</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5009="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice?utm_source=infoq&utm_medium=popular_links_homepage">小米11.11：海量数据压力下的推送服务</a></h3><h3 class="h3news" <!--pageviews:4637="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/fastsocket-github-opensource?utm_source=infoq&utm_medium=popular_links_homepage">两周内在Github上收获1800+个星：内核层网络栈优化项目Fastsocket背后的故事</a></h3><h3 class="h3news" <!--pageviews:4147="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：移动端性能提升两倍</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:3417="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture?utm_source=infoq&utm_medium=popular_links_homepage">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></h3><h3 class="h3news" <!--pageviews:2877="" publication="" date:="" 2014-11-15--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage">京东11.11：交易系统的关键技术</a><a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2274="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/jd-1111-jdcloud?utm_source=infoq&utm_medium=popular_links_homepage">京东11.11：电商狂欢背后的云基础设施服务</a></h3><h3 class="h3news" <!--pageviews:2105="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/http2-develop?utm_source=infoq&utm_medium=popular_links_homepage">Google性能工程师Ilya Grigorik谈HTTP/2</a></h3><h3 class="h3news" <!--pageviews:2081="" publication="" date:="" 2014-11-13--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/aws-lambda-summary?utm_source=infoq&utm_medium=popular_links_homepage">AWS Lambda发布，可以用代码自由定义Then的IFTTT</a></h3><h3 class="h3news" <!--pageviews:2052="" publication="" date:="" 2014-11-09--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/android-multidex?utm_source=infoq&utm_medium=popular_links_homepage">Android应用打破65K方法数限制</a></h3></div><div style="display: none;"><h3 class="h3minibooks" <!--pageviews:10661="" publication="" date:="" 2014-10-15--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-201410?utm_source=infoq&utm_medium=popular_links_homepage">架构师（2014年10月）</a></h3><h3 class="h3news" <!--pageviews:8059="" publication="" date:="" 2014-11-10--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：搜索引擎实时秒级更新</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:7239="" publication="" date:="" 2014-10-20--="">
+                        <a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage">万台规模下的SDN控制器集群部署实践</a><a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5193="" publication="" date:="" 2014-10-22--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage">当当网开源Dubbox，扩展Dubbo服务框架支持REST风格远程调用</a><a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">30</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5009="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice?utm_source=infoq&utm_medium=popular_links_homepage">小米11.11：海量数据压力下的推送服务</a></h3><h3 class="h3news" <!--pageviews:4967="" publication="" date:="" 2014-11-05--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage">蘑菇街回应TeamTalk版权：开源的底线是尊重</a><a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:4853="" publication="" date:="" 2014-10-28--="">
+                        <a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage">Java戏法</a><a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4637="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/fastsocket-github-opensource?utm_source=infoq&utm_medium=popular_links_homepage">两周内在Github上收获1800+个星：内核层网络栈优化项目Fastsocket背后的故事</a></h3><h3 class="h3news" <!--pageviews:4399="" publication="" date:="" 2014-10-14--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/aliyun-monitor-system-overview?utm_source=infoq&utm_medium=popular_links_homepage">阿里云监控体系现状概览</a></h3><h3 class="h3news" <!--pageviews:4202="" publication="" date:="" 2014-10-17--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/continuous-integration?utm_source=infoq&utm_medium=popular_links_homepage">另一种声音：持续集成已死</a><a href="http://www.infoq.com/cn/news/2014/10/continuous-integration?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">12</span></span>                        </a></h3></div><div style="display: none;"><h3 class="h3articles" <!--pageviews:24500="" publication="" date:="" 2014-07-31--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage">深入浅出Docker（一）：Docker核心技术预览</a><a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:23260="" publication="" date:="" 2014-09-20--="">
+                        <a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a><a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:20829="" publication="" date:="" 2014-05-29--="">
+                        <a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage">Netty系列之Netty高性能之道</a><a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">29</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:18387="" publication="" date:="" 2014-07-22--="">
+                        <a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage">几种线程池的实现算法分析</a><a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:17016="" publication="" date:="" 2014-09-26--="">
+                        <a href="http://www.infoq.com/cn/minibooks/alibaba-techman?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a></h3><h3 class="h3minibooks" <!--pageviews:16003="" publication="" date:="" 2014-08-18--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-201408?utm_source=infoq&utm_medium=popular_links_homepage">架构师（2014年8月刊）</a></h3><h3 class="h3articles" <!--pageviews:15276="" publication="" date:="" 2014-05-22--="">
+                        <a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage">支付宝的性能测试</a><a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:14839="" publication="" date:="" 2014-09-25--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage">Docker源码分析（一）：Docker架构</a><a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:13880="" publication="" date:="" 2014-06-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-jun-10-2014?utm_source=infoq&utm_medium=popular_links_homepage">架构师（6月刊）</a></h3><h3 class="h3minibooks" <!--pageviews:13378="" publication="" date:="" 2014-07-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect--201407?utm_source=infoq&utm_medium=popular_links_homepage">架构师（7月刊）</a></h3></div></div>
+	<div class="clear"></div>
+</div>
+    <div class="banner_type3" id="id_300x250_banner_top">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+        </script>
+    </div>  
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="开发由云支持的端到端物联网解决方案" href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">
+					开发由云支持的端到端物联网解决方案
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Markku-Lepisto" class="editorlink" title="Markku Lepisto">
+Markku Lepisto</a>
+
+				11月18日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="开发由云支持的端到端物联网解决方案" href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/Lepisto_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="可测性分析和实践" href="http://www.infoq.com/cn/articles/testability-analysis-and-practice">
+					可测性分析和实践
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%A9%AC%E5%86%A0%E5%8D%97" class="editorlink" title="马冠南">
+马冠南</a>
+
+				11月18日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="可测性分析和实践" href="http://www.infoq.com/cn/articles/testability-analysis-and-practice">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/parall-logo.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top" style="display: none;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”" href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">
+					Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Shane-Hastie" class="editorlink" title="Shane Hastie">
+Shane Hastie</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”" href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/nigel-newlogo1.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="利用云端开发测试平台实现精益创业" href="http://www.infoq.com/cn/presentations/cloud-test-platform-development-realize-lean-startup">
+					利用云端开发测试平台实现精益创业
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%99%88%E4%BC%9F%E5%9F%BA" class="editorlink" title="陈伟基">
+陈伟基</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="利用云端开发测试平台实现精益创业" href="http://www.infoq.com/cn/presentations/cloud-test-platform-development-realize-lean-startup">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/chenweiji_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room" href="http://www.infoq.com/cn/interviews/agile2014-list-culture">
+					Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Doc-List" class="editorlink" title="Doc List">
+Doc List</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room" href="http://www.infoq.com/cn/interviews/agile2014-list-culture">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/Doc-List-small.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="minibooks">
+				<a title="领域驱动设计精简版（全新修订）" href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">
+					领域驱动设计精简版（全新修订）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Eric-Evans" class="editorlink" title="Eric Evans">
+Eric Evans</a>
+
+				11月16日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="领域驱动设计精简版（全新修订）" href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">
+				<img border="0" alt="" src="./微服务：分解应用以实现可部署性和可扩展性_files/100cover(1).png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/articles/microservices-intro#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3'); });
+		 		</script>
+		 	</div>
+ 		</div>
+
+    <script type="text/javascript">
+    	$($('.banner_type3').get(1)).css('display','none');
+    </script>
+</div>
+
+
+
+
+
+
+
+
+<div class="newsletter ">
+	<h3>InfoQ每周精要</h3>
+	<p>
+		通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。
+		<span id="floatingNewsletterEmailSuccess" style="color:green;"></span>
+		<span id="floatingNewsletterEmailError" style="color:red;"></span>
+	</p>
+	<div class="click2view">
+		<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+			<img src="./微服务：分解应用以实现可部署性和可扩展性_files/click2view_zh.png" alt="" border="0">
+		</a>
+	</div>
+	<div class="clear"></div>
+	<form name="floatingNewsletterForm" id="floatingNewsletteForm" action="http://www.infoq.com/cn/articles/microservices-intro#" onsubmit="floatingNewsletter.saveSubscription(); return false;">
+		<fieldset>
+			<input type="text" class="input_text" id="floatingNewsletterEmail" name="floatingNewsletterEmail" value="您的邮箱" onclick="floatingNewsletter.clearEmailText();" onblur="floatingNewsletter.resetEmailText();">
+			<input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return floatingNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+		</fieldset>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	var floatingNewsletter = new Newsletter('您的邮箱', 'floatingNewsletterEmail', 'floatingNewsletterForm', 'floatingNewsletterEmailError', 'floatingNewsletterEmailSuccess');
+</script>
+
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./微服务：分解应用以实现可部署性和可扩展性_files/infoqcn.js"></script>
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://js-agent.newrelic.com/nr-100.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","bfafe6a5f6",5582901,"YAFWMEEAW0RUVk1cCllLfjdjTlRFQVxaWQBES0cMXBYbXUZF",0,126,new Date().getTime()])</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/typescript-1.3-release-protected" title="TypeScript 1.3发布:支持protected访问修饰符和元组类型">TypeScript 1.3发布:支持protected访问修饰符和元组类型</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/deis-v1.0-release" title="Deis v1.0 发布">Deis v1.0 发布</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2014/11/typescript-1.3-release-protected" title="TypeScript 1.3发布:支持protected访问修饰符和元组类型">TypeScript 1.3发布:支持protected访问修饰符和元组类型</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/deis-v1.0-release" title="Deis v1.0 发布">Deis v1.0 发布</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/golang-goes-git-github" title="Go语言正在向Git和GitHub迁移">Go语言正在向Git和GitHub迁移</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2014/11/baidu-salon56-summary" title="百度技术沙龙第56期回顾：代码重构与灵活交付（含资料下载）">百度技术沙龙第56期回顾：代码重构与灵活交付（含资料下载）</a></p><p><a href="http://www.infoq.com/cn/articles/agile-aus2014-dalton" title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”">Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”</a></p><p><a href="http://www.infoq.com/cn/interviews/agile2014-list-culture" title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room">Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aws-security-enhance" title="重要特性不容错过：AWS最近新增一些安全增强机制">重要特性不容错过：AWS最近新增一些安全增强机制</a></p><p><a href="http://www.infoq.com/cn/articles/aws-fault-isolation" title="AWS全球范围故障隔离案例研究">AWS全球范围故障隔离案例研究</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/agile-HR-collaboration" title="敏捷与HR协同案例研究">敏捷与HR协同案例研究</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/kanban-for-change" title="用看板驱动变革：一家保险公司的案例研究">用看板驱动变革：一家保险公司的案例研究</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer">东京 2015年4月</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年9月21-25日">里约 2015年9月21-25日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./微服务：分解应用以实现可部署性和可扩展性_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/articles/microservices-intro#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+    <li><a href="http://www.infoq.com/cn/aliyun/"><strong>阿里云专区</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./微服务：分解应用以实现可部署性和可扩展性_files/engine.js" type="text/javascript"></script>
+            <script src="./微服务：分解应用以实现可部署性和可扩展性_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./微服务：分解应用以实现可部署性和可扩展性_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/microservices-intro#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+    <script src="./微服务：分解应用以实现可部署性和可扩展性_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="http://hm.baidu.com/h.js?5101210b73a0e033d1509b3e487c929c" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "微服务：分解应用以实现可部署性和可扩展性";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn2.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141119-0542");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S1 -->
+<script type="text/javascript" async="" src="./微服务：分解应用以实现可部署性和可扩展性_files/nr-100.js"></script><script type="text/javascript" src="./微服务：分解应用以实现可部署性和可扩展性_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><script type="text/javascript" async="" src="./微服务：分解应用以实现可部署性和可扩展性_files/nr-100.js"></script></body></html>

@@ -1,0 +1,741 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0069)http://www.topbiz360.com/web/html/city/km/point/2014/0114/143983.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<meta name="keywords" content="新闻资讯，第一商业网，华为，大数据，昆明">
+<meta name="description" content="科技的进步在很多的时候总会超出我们的想象，如果未来我们一个人拥有的电脑设备超过现在全球现在计算能力的总和，一个人产生的数据量超过现在全球数据量的总和，甚至你的宠物小狗产生的信息量都超过现在全球数据量的总和，世界会发生什么呢？阅读本文，大数据（Big Data">
+<title>华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网</title>
+<link href="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/mydefault.css" rel="stylesheet" media="screen" type="text/css">
+<link href="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/index_ch.css" rel="stylesheet" type="text/css">
+<script language="javascript" type="text/javascript" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/j.js"></script><style type="text/css"></style>
+<script language="javascript" type="text/javascript" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/jquery.cookie.js"></script>
+<script language="javascript" type="text/javascript" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+/*
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/web/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+*/	
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_userlogin');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/web/member/loginsta.php");
+	  DedeXHTTP = null;	  
+}
+
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/web/plus/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "/web/plus/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/web/plus/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+function check(){
+		if(document.formsearch.searchtype.value=="")
+		document.formsearch.action="http://www.google.cn/custom"
+		else
+		document.formsearch.action="/web/plus/search.php"
+	} 
+-->
+</script>
+</head>
+
+<body><script src="http://tajs.qq.com/jiathis.php?uid=1686713&dm=www.topbiz360.com" charset="utf-8"></script><link href="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/jiathis_share.css" rel="stylesheet" type="text/css"><iframe frameborder="0" style="position: absolute; display: none; opacity: 0;"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;"></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto;"></div><iframe frameborder="0" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/jiathis_utility.html" style="display: none;"></iframe>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#3F70A1">
+  <tbody><tr>
+    <td><script language="JavaScript">
+<!--
+function AddFavorite(sURL, sTitle){ 
+   try    {        window.external.addFavorite(sURL, sTitle);    } 
+      catch (e)    { 
+	         try        {  window.sidebar.addPanel(sTitle, sURL, "");       
+	   } 
+      catch (e)   {  alert("请使用Ctrl+D进行添加");  }  
+    }
+  }
+
+function SetHome(obj,vrl){
+   try{  obj.style.behavior='url(#default#homepage)';obj.setHomePage(vrl); }
+      catch(e){ 
+	     if(window.netscape) {
+		  try {netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); }
+		    catch (e) {
+			  alert("此操作被浏览器拒绝！\n请在浏览器地址栏输入“about:config”并回车\n然后将 [signed.applets.codebase_principal_support]的值设置为'true',双击即可。");
+		  var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+		  prefs.setCharPref('browser.startup.homepage',vrl);
+		 }
+	 }
+   }
+ }
+ //-->
+ </script>
+ <!-- #BeginLibraryItem "/Library/topmenu.lbi" -->
+ <table width="980" border="0" align="center" cellpadding="0" cellspacing="0" class="topfont">
+   <tbody><tr>
+     <td width="13" class="title">&nbsp;</td>
+     <td width="418" class="title" height="20px"><div id="_userlogin">
+         <table width="397" border="0" cellspacing="0" cellpadding="0">
+           <form action="http://www.topbiz360.com/web/member/index_do.php" method="post" name="form1" id="form1"></form>
+             <input type="hidden" name="fmdo" value="login">
+             <input type="hidden" name="dopost" value="login">
+             <input type="hidden" name="keeptime" value="604800">
+             <tbody><tr>
+               <td width="28" height="20" align="center" class="fw">会员</td>
+               <td width="94"><input name="userid" type="text" size="12" class="inputbox"></td>
+               <td width="31" align="center" class="fw">密码</td>
+               <td width="72"><input name="pwd" type="password" class="inputbox" size="8"></td>
+               <td width="59"><input name="Submit" type="submit" class="f12" value="登录">               </td>
+               <td width="41" align="center" class="fw"><a href="http://www.topbiz360.com/web/member" target="_blank" class="ftitle fw">注册</a></td>
+               <td width="63" align="center" class="fw"><a href="http://www.topbiz360.com/web/member/login.php#b">会员权益</a></td>
+             </tr>
+           
+         </tbody></table>
+     </div>
+         <script language="JavaScript" type="text/javascript">CheckLogin();</script>     </td>
+     <td width="549" class="title"><a href="http://www.topbiz360.com/" class="fw">首页</a><span class="fw"> | </span><a href="http://www.topbiz360.com/web/html/qiyezhaopin/" class="fw">招聘</a><span class="fw"> | </span><a href="mailto:topbiz360@126.com?subject=%E5%91%A8%E5%88%8A%E8%AE%A2%E9%98%85" target="_blank" class="fw">周刊订阅</a> <span class="fw"> | </span><span class="fw">报料18926281283</span><span class="fw"> | </span><a href="mailto:topbiz360@126.com?subject=%E6%8A%95%E7%A8%BF" target="_blank" class="fw">投稿箱</a><span class="fw"> | </span><a href="http://www.topbiz360.com/web/html/newscenter/origin/125977.html" target="_blank" class="fw">手机APP</a><span class="fw"> | </span><a onclick="SetHome(this,window.location)" class="fw" style="cursor:hand">设为首页</a><span class="fw"> | </span><a onclick="AddFavorite(window.location,document.title)" class="fw" style="cursor:hand">收藏本站</a></td>
+   </tr>
+ </tbody></table>
+ <!-- #EndLibraryItem --></td>
+  </tr>
+</tbody></table>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td><table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td width="225" height="76" align="center"><a href="http://www.topbiz360.com/"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/logo.jpg" width="222" height="60" border="0" align="right" style="vertical-align:top"></a></td>
+    <td width="755" align="center" valign="middle"><table width="700" border="0" id="mainmenu">
+      <tbody><tr>
+        <td width="85" align="left"><a href="http://www.topbiz360.com/web/html/newscenter" target="_blank"><strong>商业动态</strong></a></td>
+        <td width="83" align="left"><a href="http://www.topbiz360.com/web/html/tongjishuju" target="_blank">行业数据</a></td>
+        <td width="105" align="left"><a href="http://www.topbiz360.com/web/html/club/" target="_blank" style="">商界总裁俱乐部</a></td>
+        <td width="86" align="left"><a href="http://www.topbiz360.com/web/html/channel/bizproperty/" target="_blank"><strong>商业地产</strong></a></td>
+        <td width="92" align="left"><a href="http://www.topbiz360.com/web/html/channel/jjjc/" target="_blank">家居建材</a></td>
+        <td width="81" align="left"><a href="http://www.topbiz360.com/web/html/channel/brand/" target="_blank">专业店</a></td>
+        <td width="80" align="left"><a href="http://www.topbiz360.com/web/html/channel/3c" target="_blank">3C店</a></td>
+        <td width="54" align="left"><a href="http://www.topbiz360.com/web/html/club/VIP/" target="_blank"><strong>会员</strong></a></td>
+      </tr>
+      <tr>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/theme/" target="_blank"><strong>培训信息</strong></a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/gati" target="_blank">港澳台</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/gati" target="_blank">国际视窗</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/department/" target="_blank"><strong>百货商场</strong></a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/luxury" target="_blank">奢侈名品</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/fashion/" target="_blank">服饰连锁</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/restaurant/" target="_blank">餐饮连锁</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/huiyuanboke/" target="_blank"><strong>专栏</strong></a></td>
+      </tr>
+      <tr>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/school/" target="_blank"><strong>管理学院</strong></a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/stock" target="_blank">商股纵横</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/franchise/" target="_blank">特许加盟</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/supermarket/" target="_blank"><strong>连锁超市</strong></a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/bl" target="_blank">便利店</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/Lodging/" target="_blank">连锁酒店</a></td>
+        <td align="left"><a href="http://www.topbiz360.com/web/html/channel/TI/" target="_blank">信息化</a></td>
+        <td align="left"></td>
+      </tr>
+    </tbody></table></td>
+  </tr>
+</tbody></table>
+</td>
+  </tr>
+</tbody></table>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#0262AC" id="city">
+  <tbody><tr>
+    <td width="9%" height="21" align="left">&nbsp;&nbsp;<a href="http://www.topbiz360.com/" target="_blank">首页</a> |</td>
+    <td width="89%" align="left"><table width="815" border="0" align="center" cellpadding="0" cellspacing="0" id="city">
+  <tbody><tr>
+    <td width="69%" height="21" align="left">&nbsp;<a href="http://qy.topbiz360.com/">清远站</a> | &nbsp;<a href="http://km.topbiz360.com/">昆明站</a> | &nbsp;<a href="http://www.topbiz360.com/web/tags.php?%B9%E3%B7%F0%D5%D8" target="_blank">广佛肇</a> | <a href="http://www.topbiz360.com/web/tags.php?%C9%EE%DD%B8%BB%DD" target="_blank">深莞惠</a> | <a href="http://www.topbiz360.com/web/tags.php?%D6%E9%D6%D0%BD%AD" target="_blank">珠中江</a> | <a href="http://www.topbiz360.com/web/tags.php?%C9%CF%BA%A3" target="_blank">上海</a> | <a href="http://www.topbiz360.com/web/tags.php?%B1%B1%BE%A9" target="_blank">北京</a> | <a href="http://www.topbiz360.com/web/tags.php?%CE%E4%BA%BA" target="_blank">武汉</a> | <a href="http://www.topbiz360.com/web/tags.php?%B3%A4%C9%B3" target="_blank">长沙</a> | <a href="http://www.topbiz360.com/web/tags.php?%B4%A8%D3%E5" target="_blank">川渝</a></td>
+    <td width="31%" align="right"><table width="250" height="24" border="0" cellpadding="0" cellspacing="0">
+      <form action="http://www.topbiz360.com/web/plus/search.php" name="formsearch" target="_blank" id="formsearch"></form>
+        <tbody><tr>
+          <td width="71" align="right" id="city">关键字</td>
+          <td width="161" align="center"><input type="hidden" name="kwtype" value="0">
+                <input name="keyword" type="text" class="f12" id="keyword" size="15">
+                <input type="hidden" name="searchtype" value="titlekeyword"></td>
+          <td width="57" align="left"><input name="Submit2" type="submit" class="f12" value=" 搜 索"></td>
+        </tr>
+      
+    </tbody></table></td>
+  </tr>
+</tbody></table></td>
+    <td width="2%" align="center">&nbsp;</td>
+  </tr>
+</tbody></table>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0" class="TitleBoxFull place">
+  <tbody><tr>
+    <td height="10">当前位置: <a href="http://www.topbiz360.com/">主页</a>&gt;<a href="http://www.topbiz360.com/web/html/city/">城市频道</a>&gt;<a href="http://www.topbiz360.com/web/html/city/km/">昆明</a>&gt;<a href="http://www.topbiz360.com/web/html/city/km/point/">观点争锋</a>&gt;</td>
+  </tr>
+</tbody></table>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td height="4"><div class="blankA"></div></td>
+  </tr>
+</tbody></table>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td width="727" height="1" align="left" valign="top">
+    <table width="704" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td width="702" class="main">
+		<div class="viewbox">
+			<div class="title">
+				<h2>华为内部狂转好文：有关大数据，看这一篇就够了</h2>
+			</div><!-- /title -->
+			<div class="info">
+				<small>时间:</small>2014-01-14<small>来源:</small>华为IT产品解决方案 <small>作者:</small>潘少 <script src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/count.php" language="javascript"></script> </div>
+			<!-- /info -->
+ <table width="361" border="0" align="center" cellpadding="0" cellspacing="0" style="">
+  <tbody><tr>
+    <td width="361"><div align="center" style="padding:1px;font-size:12px; line-height:20px">
+  <div style="vertical-align:middle; line-height:150%; margin:5px" align="center">
+  <script src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/AC_RunActiveContent.js" type="text/javascript"></script>
+  <script language="JavaScript" type="text/javascript" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/innerHeadAd.php">
+</script></div></div></td></tr></tbody></table>
+			<div class="content1">
+			<table width="100%">
+				<tbody><tr><td><p style="text-align:center"><span style="font-size: 18px;"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/13897040665890.jpg" title="大数据.jpg"></span></p><p><span style="font-size: 18px;">&nbsp;</span><br></p><p style="text-indent:32px"><span style="font-size: 18px;"><span style="font-family: 宋体; color: rgb(192, 0, 0);">（导读）科技的进步在很多的时候总会超出我们的想象，如果未来我们一个人拥有的电脑设备超过现在全球现在计算能力的总和，一个人产生的数据量超过现在全球数据量的总和，甚至你的宠物小狗产生的信息量都超过现在全球数据量的总和，世界会发生什么呢？阅读本文，大数据（</span><span style="color: rgb(192, 0, 0);">Big Data</span><span style="font-family: 宋体; color: rgb(192, 0, 0);">）会告诉你一个充满奇幻色彩的世界。</span></span></p><p><br></p><p>&nbsp;</p><p><span style="font-size: 18px;">　　<span style="font-size: 18px; color: rgb(0, 112, 192);"><strong>一、详解时髦词汇：大数据</strong></span></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　似乎一夜之间，大数据（Big Data）变成一个IT行业中最时髦的词汇。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　首先，大数据不是什么完完全全的新生事物，Google的搜索服务就是一个典型的大数据运用，根据客户的需求，Google实时从全球海量的数字资产（或数字垃圾）中快速找出最可能的答案，呈现给你，就是一个最典型的大数据服务。只不过过去这样规模的数据量处理和有商业价值的应用太少，在IT行业没有形成成型的概念。现在随着全球数字化、网络宽带化、互联网应用于各行各业，累积的数据量越来越大，越来越多企业、行业和国家发现，可以利用类似的技术更好地服务客户、发现新商业机会、扩大新市场以及提升效率，才逐步形成大数据这个概念。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">有一个有趣的故事是关于奢侈品营销的。</span></strong>PRADA在纽约的旗舰店中每件衣服上都有RFID码。每当一个顾客拿起一件PRADA进试衣间，RFID会被自动识别。同时，数据会传至PRADA总部。每一件衣服在哪个城市哪个旗舰店什么时间被拿进试衣间停留多长时间，数据都被存储起来加以分析。如果有一件衣服销量很低，以往的作法是直接干掉。但如果RFID传回的数据显示这件衣服虽然销量低，但进试衣间的次数多。那就能另外说明一些问题。也许这件衣服的下场就会截然不同，也许在某个细节的微小改变就会重新创造出一件非常流行的产品。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　从这个案例来看，大数据并不是很神奇的事情。就如同电影《永无止境》提出的问题：人类通常只使用了20%的大脑，如果剩余80%大脑潜能被激发出来，世界会变得怎样？在企业、行业和国家的管理中，通常只有效使用了不到20%的数据（甚至更少），如果剩余80%数据的价值激发起来，世界会变得怎么样呢？特别是随着海量数据的新摩尔定律，数据爆发式增长，然后数据又得到更有效应用，世界会怎么样呢？</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　单个的数据并没有价值，但越来越多的数据累加，量变就会引起质变，就好像一个人的意见并不重要，但1千人、1万人的意见就比较重要，上百万人就足以掀起巨大的波澜，上亿人足以改变一切。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">中国的航班晚点非常多，相比之下美国航班准点情况好很多。这其中，美国航空管制机构一个的好做法发挥了积极的作用，说起来也非常简单，就是美国会公布每个航空公司、每一班航空过去一年的晚点率和平均晚点时间，这样客户在购买机票的时候就很自然会选择准点率高的航班，从而通过市场手段牵引各航空公司努力提升准点率。这个简单的方法比任何管理手段都直接和有效。</span></strong></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　没有整合和挖掘的数据，价值也呈现不出来。《永无止境》中的库珀如果不能把海量信息围绕某个公司的股价整合起来、串联起来，这些信息就没有价值。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">因此，海量数据的产生、获取、挖掘及整合，使之展现出巨大的商业价值，这就是我理解的大数据。</span></strong>在互联网对一切重构的今天，这些问题都不是问题。因为，大数据是互联网深入发展的下一波应用，是互联网发展的自然延伸。目前，可以说大数据的发展到了一个临界点，因此才成为IT行业中最热门的词汇之一。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(0, 112, 192);">二、大数据将重构很多行业的商业思维和商业模式</span></strong></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　我想以对未来汽车行业的狂野想象来展开这个题目。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　在人的一生中，汽车是一项巨大的投资。以一部30万车、7年换车周期来算，每年折旧费4万多（这里还不算资金成本），加上停车、保险、油、维修、保养等各项费用，每年耗费应在6万左右。汽车产业也是一个很长产业链的龙头产业，这个方面只有房地产可以媲美。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　但同时，汽车产业链是一个低效率、变化慢的产业。汽车一直以来就是四个轮子、一个方向盘、两排沙发（李书福语）。这么一个昂贵的东西，围绕车产生的数据却少的可怜，行业产业链之间几无任何数据传递。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">我们在这里狂野地想象一番，如果将汽车全面数字化，都大数据了，会产生什么结果？</span></strong></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　有些人说，汽车数字化，不就是加个MBB模块吗？不，这太小儿科了。在我理想中，数字化意味着汽车可以随时联上互联网，意味着汽车是一个大型计算系统加上传统的轮子、方向盘和沙发，意味着可以数字化导航、自动驾驶，意味着你和汽车相关的每一个行动都数字化，包括每一次维修、每一次驾驶路线、每一次事故的录像、每一天汽车关键部件的状态，甚至你的每一个驾驶习惯（如每一次的刹车和加速）都记录在案。这样，你的车每月甚至每周都可能产生T比特的数据。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　好了，我们假设这些数据都可以存储并分享给相关的政府、行业和企业。这里不讨论隐私问题带来的影响，假设在隐私保护的前提下，数据可以自由分享。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　那么，保险公司会怎么做呢？保险公司把你的所有数据拿过去建模分析，发现几个重要的事实：一是你开车主要只是上下班，南山到坂田这条线路是非繁华路线，红绿灯很少，这条路线过去一年统计的事故率很低；你的车况（车的使用年限、车型）好，此车型在全深圳也是车祸率较低；甚至统计你的驾驶习惯，加油平均，临时刹车少，超车少，和周围车保持了应有的车距，驾驶习惯好。最后结论是你车型好，车况好，驾驶习惯好，常走的线路事故率低，过去一年也没有出过车祸，因此可以给予更大幅度的优惠折扣。这样保险公司就完全重构了它的商业模式了。在没有大数据支撑之前，保险公司只把车险客户做了简单的分类，一共分为四种客户，第一种是连续两年没有出车祸的，第二种过去一年没有出车祸，第三种过去一年出了一次车祸，第四种是过去一年出了两次及以上车祸的，就四种类型。在大数据的支持下，保险公司可以真正以客户为中心，把客户分为成千上万种，每个客户都有个性化的解决方案，<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">这样保险公司经营就完全不同，对于风险低的客户敢于大胆折扣，对于风险高的客户报高价甚至拒绝，一般的保险公司就完全难以和这样的保险公司竞争了。拥有大数据并使用大数据的保险公司比传统公司将拥有压倒性的竞争优势，大数据将成为保险公司最核心的竞争力，因为保险就是一个基于概率评估的生意，大数据对于准确评估概率毫无疑问是最有利的武器，而且简直是量身定做的武器。</span></strong></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　在大数据的支持下，4S店的服务也完全不同了。车况信息会定期传递到4S店，4S店会根据情况及时提醒车主及时保养和维修，特别是对于可能危及安全的问题，在客户同意下甚至会采取远程干预措施，同时还可以提前备货，车主一到4S店就可以维修而不用等待。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　对于驾驶者来说，不想开车的时候，在大数据和人工智能的支持下，车辆可以自动驾驶，并且对于你经常开的线路可以自学习自优化。谷歌的自动驾驶汽车，为了对周围环境作出预测，每秒钟要收集差不多1GB的数据，没有大数据的支持，自动驾驶是不可想象的；在和周围车辆过近的时候，会及时提醒车主避让；上下班的时候，会根据实时大数据情况，对于你经常开车的线路予以提醒，绕开拥堵点，帮你选择最合适的线路；到城市中心，寻找车位是一件很麻烦的事情，但未来你可以到了商场门口后，让汽车自己去找停车位，等想要回程的时候，提前通知让汽车自己开过来接。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　车辆是城市最大最活跃的移动物体，是拥堵的来源，也是最大的污染来源之一。数字化的车辆、大数据应用将带来很多的改变。红绿灯可以自动优化，根据不同道路的拥堵情况自动进行调整，甚至在很多地方可以取消红绿灯；城市停车场也可以大幅度优化，根据大数据的情况优化城市停车位的设计，如果配合车辆的自动驾驶功能，停车场可以革命性演变，可以设计专门为自动驾驶车辆的停车楼，地下、地上楼层可以高达几十层，停车楼层可以更矮，只要能高于车高度即可（或者把车竖起来停），这样将对城市规划产生巨大的影响；政府还可以每年公布各类车型的实际排污量、税款、安全性等指标，鼓励民众买更节能、更安全的车。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　电子商务和快递业也可能发生巨大的变化。运快递的车都可以自动驾驶，不用赶白天的拥堵的道路，晚上半夜开，在你家门口设计自动接收箱，通过密码开启自动投递进去，就好像过去报童投报一样。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　这么想象下来，我认为，汽车数字化、互联网化、大数据应用、人工智能，将对汽车业及相关的长长的产业链产生难以想象的巨大变化和产业革命，具有无限的想象空间，可能完全被重构。当然，要实现我所描述的场景，估计至少50年、100年之后的事情了，估计我这辈子是看不到的。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　在这个章节的最后，我想总结一下自己对大数据的看法。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">第一，大数据使企业真正有能力从以自我为中心改变为以客户为中心。</span></strong>企业是为客户而生，目的是为股东获得利润。只有服务好客户，才能获得利润。大数据的使用能够使对企业的经营对象从客户的粗略归纳（就是所谓提炼归纳的“客户群”）还原成一个个活生生的客户，这样经营就有针对性，对客户的服务就更好，投资效率就更高。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">第二，大数据一定程度上将颠覆了企业的传统管理方式。</span></strong>现代企业的管理方式是来源于对军队的模仿，依赖于层层级级的组织和严格的流程，依赖信息的层层汇集、收敛来制定正确的决策，再通过决策在组织的传递与分解，以及流程的规范，确保决策得到贯彻，确保每一次经营活动都有质量保证，也确保一定程度上对风险的规避。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">第三，大数据另外一个重大的作用是改变了商业逻辑，提供了从其他视角直达答案的可能性。</span></strong>现在人的思考或者是企业的决策，事实上都是一种逻辑的力量在主导起作用。大数据给了我们其他的选择，就是利用数据的力量，直接获得答案。就好像我们学习数学，小时候学九九乘法表，中学学几何，大学还学微积分，碰到一道难题，我们是利用了多年学习沉淀的经验来努力求解，但我们还有一种方法，在网上直接搜索是不是有这样的题目，如果有，直接抄答案就好了。很多人就会批评说，这是抄袭，是作弊。但我们为什么要学习啊？不就是为了解决问题嘛。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">第四，通过大数据，我们可能有全新的视角来发现新的商业机会和重构新的商业模式。</span></strong>我们现在看这个世界，比如分析家中食品腐败，主要就是依赖于我们的眼睛再加上我们的经验，但如果我们有一台显微镜，我们一下就看到坏细菌，那么分析起来完全就不一样了。大数据就是我们的显微镜，它可以让我们从全新视角来发现新的商业机会，并可能重构商业模型。我们的产品设计可能不一样了，很多事情不用猜了，客户的习惯和偏好一目了然，我们的设计就能轻易命中客户的心窝；我们的营销也完全不同了，我们知道客户喜欢什么、讨厌什么，更有针对性。特别是显微镜再加上广角镜，我们就有更多全新的视野了。这个广角镜就是跨行业的数据流动，使我们过去看不到的东西都能看到了。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<strong><span style="font-size: 18px; color: rgb(192, 0, 0);">最后一点，我想谈的是大数据发展对IT本身技术架构的革命性影响。</span></strong>大数据的根基是IT系统。我们现代企业的IT系统基本上是建立在IOE（IBM小型机、Oracle数据库、EMC存储）+Cisco模型基础上的，这样的模型是Scale-UP型的架构，在解决既定模型下一定数据量的业务流程是适配的，但如果是大数据时代，很快会面临成本、技术和商业模式的问题，大数据对IT的需求很快就会超越了现有厂商架构的技术顶点，超大数据增长将带来IT支出增长之间的线性关系，使企业难以承受。因此，目前在行业中提出的去IOE趋势，利用Scale-out架构+开源软件对Scale-up架构+私有软件的取代，本质是大数据业务模型所带来的，也就是说大数据将驱动IT产业新一轮的架构性变革。去IOE潮流中的所谓国家安全因素，完全是次要的。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<span style="font-size: 18px; color: rgb(192, 0, 0);"><strong>所以，美国人说，大数据是资源，和大油田、大煤矿一样，可以源源不断挖出大财富。而且和一般资源不一样，它是可再生的，是越挖越多、越挖越值钱的，这是反自然规律的。对企业如此，对行业、对国家也是这样，对人同样如此。</strong></span></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<span style="font-size: 18px; color: rgb(0, 112, 192);"><strong>三、新智慧生物的诞生？</strong></span></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　自然语言的机器翻译，是长期以来人工智能研究的一个重要体现。人工智能从过去到未来都有清晰而巨大的商业前景，是以前IT业的热点，其热度一点不亚于现在的“互联网”和“大数据”。但是，人类过去在推进人工智能的研究遇到了巨大的障碍，最后几乎绝望。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　当时人工智能就是模拟人的智能思考方式来构筑机器智能。以机器翻译来说，语言学家和语言专家必须不辞劳苦地编撰大型词典和与语法、句法、语义学有关的规则，数十万词汇构成词库，语法规则高达数万条，考虑各种情景、各种语境，模拟人类翻译，计算机专家再构建复杂的程序。最后发现人类语言实在是太复杂了，穷举式的做法根本达不到最基本的翻译质量。这条道路最后的结果是，1960年代后人工智能的技术研发停滞不前数年后，科学家痛苦地发现以“模拟人脑”、“重建人脑”的方式来定义人工智能走入一条死胡同，这导致后来几乎所有的人工智能项目都进入了冷宫。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　后来有人就想，机器为什么要向人学习逻辑呢，又难学又学不好，机器本身最强大的是计算能力和数据处理能力，为什么不扬长避短、另走一条道路呢？这条道路就是IBM“深蓝”走过的道路。1997年5月11日，国际象棋大师卡斯帕罗夫在和IBM公司开发的计算机“深蓝”进行对弈时宣布失败，计算机“深蓝”因此赢得了这场意义深远的“人机对抗”。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　类似的逻辑在后续也用到了机器翻译上。谷歌、微软和IBM都走上了这条道路。就是主要采用匹配法，同时结合机器学习，依赖于海量的数据及其相关相关统计信息，不管语法和规则，将原文与互联网上的翻译数据对比，找到最相近、引用最频繁的翻译结果做为输出。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　总而言之，利用这种技术，计算机教会自己从大数据中建立模式。有了足够大的信息量，你就能让机器学会做看上去有智能的事情，别管是导航、理解话语、翻译语言，还是识别人脸，或者模拟人类对话。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<span style="font-size: 18px; color: rgb(192, 0, 0);"><strong>假设目前刚刚兴起的穿戴式计算设备取得巨大的进展。这种进展到什么程度呢？就是你家的宠物小狗身上也装上了各种传感器和穿戴式设备，比如有图像采集，有声音采集，有嗅觉采集，有对小狗的健康进行监控的小型医疗设备，甚至还有电子药丸在小狗的胃中进行消化情况监控。</strong></span>小狗当然也联上网，也一样产生了巨大的数据量。这时，我们假设基于这些大数据建模，能够模拟小狗的喜怒哀乐，然后还能够通过拟人化的处理进行语音表达，换句话说，就是模拟小狗说人话，比如主人回家时，小狗摇尾巴，旺旺叫，那么这个附着于小狗身上的人工智能系统就会说，“主人，真高兴看到你回家”。不仅如此，你还可以和小狗的人工智能系统进行对话，因为这个人工智能系统能基本理解你的意思，又能够代替小狗拟人化表达。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　我们继续把这个故事来做延伸，把小狗换成未来的人，人在一生中产生大量的数据，根据这些数据建模可以直接推演出很多的结论，比如喜欢看什么样的电影啊，喜欢什么口味的菜啊，在遇到什么问题时会怎么采取什么行动啊。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　<span style="font-size: 18px; color: rgb(192, 0, 0);"><strong>这样的数据一直累积下来，直到这个人去世。我们有个大胆的想象，这些巨大的数据能否让这个人以某种方式继续存在下去呢？后代有什么问题需要寻求答案的时候，比如在人生的关键抉择时，比如大学要上什么专业、该不该和某个姑娘结婚，可不可以问问这个虚拟的人（祖先）有什么建议呢？答案是当然可以。在这种情况下，数字化生存不仅在人生前存在，也可以在人死后继续存在。人死了，可以在虚拟空间中继续存在。一辈子、一辈子的人故去，这些虚拟的智慧都可以继续存在，假设很多年过去了，这些虚拟智慧的祖宗们太多太多了，活着的子孙们甚至可以组建一个“祖宗联席参谋委员会”，优选那些考得好的（比如中过状元），当过国家高级公务员（比如太守）、当过企业高管（比如CEO）、当过教授、当过作家的等等当过成功人士的祖宗，专门用于后代的咨询、解惑。让这些祖宗死后还有竞争，别死了就没有事情干了。</strong></span></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　这些说明什么呢？就是随着大数据和机器学习的进一步进展，这个世界出现了新的智慧生物！大数据和机器学习在改变、重构和颠覆很多企业、行业和国家以后，终于到了改变人类自身的时候了！人类的演进出现了新的分支！</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　有科学家画了下面一张图，来描述这两者智慧生物。一种是基于生物性的，经过几百万年的进化而来；一种是基于IT技术，基于大数据和机器学习，通过自模拟、自学习而来。前者更有逻辑性，更有丰富的情感，有创造力，但生命有限；后者没有很强的逻辑性，没有生物上的情感，但有很强的计算、建模和搜索能力，理论上生命是无限的。</span></p><p><span style="font-size: 18px;"><br></span></p><p style="text-align: center;"><span style="font-size: 18px;"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/1389704522168.jpg" title="华为科学家图.jpg"></span></p><p><span style="font-size: 18px;">&nbsp;</span><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　当然，这些事情要发生都会非常非常遥远。反正我们活着的时候是见不到了，死了也见不到，因为我们死的时候，我相信这种建立在大数据和机器学习之上的虚拟生命还不会存在。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　<strong><span style="font-size: 18px; color: rgb(0, 112, 192);">　四、结束语</span></strong></span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　我最后想说的是，我们对未来的认知，主要是基于常识和对未来的想象。根据统计，现在《纽约时报》一周的信息量比18世纪一个人一生所收到的资讯量更大，现在18个月产生的信息比过去5000年的总和更多，现在我家一台5000元电脑的计算能力比我刚入大学时全校的计算能力更强大。科技的进步在很多的时候总会超出我们的想象，试想如果未来我们一个人拥有的电脑设备超过现在全球现在计算能力的总和，一个人产生的数据量超过现在全球数据量的总和，甚至你的宠物小狗产生的信息量都超过现在全球数据量的总和，世界会发生什么呢？那就取决于你的想象力了。</span></p><p><span style="font-size: 18px;">&nbsp;</span></p><p><span style="font-size: 18px;">　　对于未来，你想象到什么了呢？</span></p>
+</td></tr>
+			</tbody></table>
+			</div><!-- /content -->
+			<div class="dede_pages">
+				<ul class="pagelist">
+          
+				</ul>
+			</div><!-- /pages -->
+			
+			
+			<div class="handle">
+				<div class="context">
+					<ul>
+						<li>上一篇：<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0114/143982.html">新公关时代—媒体人必读</a> </li>
+						<li>下一篇：<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0115/144083.html">从用户行为看移动营销7大趋势</a> </li>
+					</ul>
+				</div><!-- /context -->
+				<div class="actbox">
+					<ul>
+						<li id="act-fav"><a href="http://www.topbiz360.com/web/plus/stow.php?aid=143983" target="_blank">收藏本文</a></li>
+						<!--li id="act-err"><a href="/web/plus/erraddsave.php?aid=143983&title=华为内部狂转好文：有关大数据，看这一篇就够了" target="_blank">挑错</a></li-->
+						<li id="act-pus"><a href="http://www.topbiz360.com/web/plus/recommend.php?aid=143983" target="_blank">推荐本文</a></li>
+						<li id="act-pnt"><a href="http://www.topbiz360.com/web/html/city/km/point/2014/0114/143983.html#" onclick="window.print();">打印本文</a></li>
+					</ul>
+				</div><!-- /actbox -->
+			</div><!-- /handle -->
+			
+			
+			<div class="handle">
+			<div class="actbox2" align="left" style="width:360px; height:50px">
+			<div align="left" style="float:left"><font style="font-size:15px; color:#191919; font-weight:700">将本文分享到&nbsp;&nbsp;</font></div>
+		
+				
+			<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_32x32" style="height:80px; float:left">
+	<a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+    <a class="jiathis_button_weixin" title="分享到微信"><span class="jiathis_txt jtico jtico_weixin"></span></a>
+	<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+	<a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+	<a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+	<a href="http://www.jiathis.com/share?uid=1686713" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+</div>
+<script type="text/javascript">var jiathis_config = {data_track_clickback:true};</script>
+<script type="text/javascript" src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END --><!-- /actbox -->
+			</div><!-- /handle -->
+			
+			<div class="boxoff">
+				<strong>------分隔线----------------------------</strong>
+			</div>
+			
+			<!-- //顶踩 -->
+			<div class="newdigg" id="newdigg"><div class="diggbox digg_good" onmousemove="this.style.backgroundPosition=&#39;left bottom&#39;;" onmouseout="this.style.backgroundPosition=&#39;left top&#39;;" onclick="postDigg(&#39;good&#39;,143983)">
+			<div class="digg_act">顶一下</div>
+			<div class="digg_num">(0)</div>
+			<div class="digg_percent">
+				<div class="digg_percent_bar"><span style="width:0.00%"></span></div>
+				<div class="digg_percent_num">0.00%</div>
+			</div>
+		</div>
+		<div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition=&#39;right bottom&#39;;" onmouseout="this.style.backgroundPosition=&#39;right top&#39;;" onclick="postDigg(&#39;bad&#39;,143983)">
+			<div class="digg_act">踩一下</div>
+			<div class="digg_num">(0)</div>
+			<div class="digg_percent">
+				<div class="digg_percent_bar"><span style="width:0.00%"></span></div>
+				<div class="digg_percent_num">0.00%</div>
+			</div>
+		</div></div>
+			<script language="javascript" type="text/javascript">getDigg(143983);</script>
+			<!-- //顶踩部份的源码结束 -->
+			
+			
+		</div><!-- /viewbox -->
+	</div></td>
+  </tr>
+</tbody></table>
+   <!-- //主模板必须要引入/web/include/dedeajax2.js -->
+<a name="postform"></a>
+<div class="mt1">
+		<dl class="tbox">
+			<dt>
+				<strong>发表评论</strong>
+				<span class="more"></span>
+			</dt>
+			<dd>
+				<div class="dede_comment_post">
+          <form action="http://www.topbiz360.com/web/html/city/km/point/2014/0114/143983.html#" method="post" name="feedback">
+          <input type="hidden" name="dopost" value="send">
+          <input type="hidden" name="comtype" value="comments">
+          <input type="hidden" name="aid" value="143983">
+          <input type="hidden" name="fid" id="feedbackfid" value="0">
+          <div class="dcmp-title">
+						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论.</small>
+					</div>
+          <!-- /dcmp-title -->
+					<div class="dcmp-stand">
+						<strong>评价:</strong>
+							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu"><label for="dcmp-stand-neu"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/cmt-neu.gif">中立</label>
+							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good"><label for="dcmp-stand-good"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/cmt-good.gif">好评</label>
+							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad"><label for="dcmp-stand-bad"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/cmt-bad.gif">差评</label>
+					</div><!-- /dcmp-stand -->
+                    <div class="clr"></div>
+                    <div class="dcmp-mood">
+						<strong>表情:</strong>
+						<ul>                               
+                                <li><input type="radio" name="face" value="1" checked="1"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-1.gif"></li>
+                                <li><input type="radio" name="face" value="2"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-2.gif"></li>
+                                <li><input type="radio" name="face" value="3"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-3.gif"></li>
+                                <li><input type="radio" name="face" value="4"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-4.gif"></li>
+                                <li><input type="radio" name="face" value="5"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-5.gif"></li>
+                                <li><input type="radio" name="face" value="6"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-6.gif"></li>
+                                <li><input type="radio" name="face" value="7"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-7.gif"></li>
+                                <li><input type="radio" name="face" value="8"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-8.gif"></li> 
+                                <li><input type="radio" name="face" value="9"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-9.gif"></li>
+                                <li><input type="radio" name="face" value="10"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-10.gif"></li>
+                                <li><input type="radio" name="face" value="11"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-11.gif"></li> 
+                                <li><input type="radio" name="face" value="12"><img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/ico-mood-12.gif"></li>
+						</ul>
+					</div><!-- /dcmp-mood -->
+					<div class="dcmp-content">
+						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
+					</div><!-- /dcmp-content -->
+					<div class="dcmp-post"><!--未登陆-->
+							<div class="dcmp-userinfo" id="_ajax_feedback">
+								用户名:<input type="text" name="username" size="16" class="ipt-txt">
+                                验证码:<input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;">
+								<img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+&#39;?&#39;" width="93" height="42" title="点击我更换图片" alt="点击我更换图片">（若看不清,点击图片更换）
+								   <!--mt 120709 1026 --> 
+								   <!-- div style="display:none"> 
+								     <input type="checkbox" name="notuser" id="dcmp-submit-guest" /> <label for="dcmp-submit-guest" />匿名? </label>
+								   </div--> 
+                                
+							</div>
+              <script language="javascript" type="text/javascript">CheckLogin();</script>
+							<div class="dcmp-submit">
+								<button type="button" onclick="PostComment()">发表评论</button>
+							</div>
+						</div>
+        </form>
+				</div>
+			</dd>
+		</dl>
+	</div><!-- //评论表单区结束 -->
+
+<!-- //评论内容区 -->
+	<a name="commettop"></a>
+	<div class="mt1">
+			<dl class="tbox">
+				<dt>
+					<strong>最新评论</strong>
+					<span class="more"><a href="http://www.topbiz360.com/web/plus/feedback.php?aid=143983">进入详细评论页&gt;&gt;</a></span>
+				</dt>
+				<!-- //这两个ID的区块必须存在，否则JS会出错 -->
+				<dd id="commetcontentNew"></dd>
+				<dd id="commetcontent"></dd>
+				<dd>◆尊重网上道德，遵守《全国人大常委会关于维护互联网安全的决定》及中华人民共和国其他各项有关法律、法规，承担一切因您的行为直接或间接引起的民事或刑事法律责任。管理人员有权保留或删除新闻留言中的任意内容。
+·参与新闻留言表明您已经阅读并接受上述条款。<br>
+<br>
+◆第一商业网版权与免责声明<br>
+1、凡本网注明“摘自：本站原创”的所有作品，版权均属第一商业网所有，未经本网书面授权不得转载、摘编、复制或利用其他方式使用上述作品。已经本网授权使用作品的，被授权人应在授权范围内使用，并注明“来源：第一商业网”。<br>
+违反上述声明者，本网将追究其相关法律责任。<br>
+2、本网其他来源作品，均转载自其他媒体，转载目的在于传播更多信息，丰富网络文化，此类稿件不代表本网观点。<br>
+3、任何单位或个人认为本网站或本网站链接内容可能涉嫌侵犯其合法权益，应该及时向本网站书面反馈，并提供身份证明，权属证明及详细侵权情况证明，本网站在收到上述法律文件后，将会尽快移除被控侵权的内容或链接。<br>
+4、如因作品内容、版权和其他问题需要与本网联系的，请在该事由发生之日起30日内进行。电话：020-38248250 传真 020-38248296<br>
+</dd>
+			</dl>
+	</div>
+<!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+-->
+<script language="javascript">
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='/web/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("/web/plus/feedback_ajax.php?dopost=getlist&aid=143983&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='/web/images/loadinglit.gif' />正在发送中...</div>";
+		if(f.msg.value=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(f.msg.value.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		//mt 2012-07-09 判断是否是未登录用户
+/*		if(f.username) { 
+		   alert("管理员设置了游客不允许发表评论，请先登入或注册！"); 
+		   return; 
+		 }
+*/		 
+		//mt
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = 'gb2312';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '143983');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', f.msg.value);
+		myajax.SendPost2('/web/plus/feedback_ajax.php');
+		f.msg.value = '';
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "/web/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+}
+function quoteCommet(fid)
+{
+	document.feedback.fid.value = fid;
+}
+LoadCommets(1);
+</script><!-- //评论内容区结束 -->
+
+<script language="JavaScript" type="text/javascript">
+  	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/web/member/ajax_feedback.php");
+	  DedeXHTTP = null;	
+</script>
+
+    </td>
+    <td width="253" align="right" valign="top">
+    <!-- //右边内容开始 -->
+<table width="250" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td>	
+ 		
+     </td>
+  </tr>
+</tbody></table> 
+<div class="blankA"></div>
+<div class="blankA"></div>   
+    <table width="250" height="22" border="0" align="center" cellpadding="0" cellspacing="0" background="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/bg_title.jpg" class="TitleBoxFull">
+                  <tbody><tr>
+                    <td width="76" height="22" align="center" valign="middle" class="TitleText">推荐</td>
+                    <td width="123">&nbsp;</td>
+                    <td width="49" align="center" valign="middle">&nbsp;</td>
+                  </tr>
+      </tbody></table>
+       <table width="250" border="0" align="center" cellpadding="4" cellspacing="0" class="TitleBoxU">
+                    <tbody><tr>
+                      <td height="80" align="left" valign="top" class="second">				
+           <a href="http://www.topbiz360.com/web/html/newscenter/chain/144055.html">深圳Ole引入自助结账终端 “买单”快过</a><br>
+<a href="http://www.topbiz360.com/web/html/newscenter/entertainment/144053.html">“一日三餐”生活经济成本：湛江比深圳</a><br>
+<a href="http://www.topbiz360.com/web/html/newscenter/Catering/144052.html">平价餐饮连锁“绿茶”入穗 首店落户乐</a><br>
+<a href="http://www.topbiz360.com/web/html/newscenter/businessproperty/144049.html">华润置地近40亿竞得福州两商服用地 将</a><br>
+<a href="http://www.topbiz360.com/web/html/newscenter/businessproperty/144050.html">绿地香港上海60亿项目引入华润置地 双</a><br>
+<a href="http://www.topbiz360.com/web/html/newscenter/businessproperty/144047.html">深国投下沙拿地建“印象城” 沃尔玛或</a><br>
+
+					</td>
+         </tr>
+      </tbody></table>
+	<div class="blankA"></div>
+	<div class="blankA"></div>
+	<table width="250" height="22" border="0" align="center" cellpadding="0" cellspacing="0" background="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/bg_title.jpg" class="TitleBoxFull">
+                  <tbody><tr>
+                    <td width="90" height="22" align="center" valign="middle"><a href="http://www.topbiz360.com/web/html/newscenter/" target="_blank" class="TitleText">热点内容</a></td>
+                    <td width="91">&nbsp;</td>
+                    <td width="44" align="center" valign="middle"><a href="http://www.topbiz360.com/web/html/newscenter/" target="_blank" class="more">更多</a></td>
+                  </tr>
+      </tbody></table>
+     
+    <table width="250" border="0" align="center" cellpadding="4" cellspacing="0" class="TitleBoxU">
+      <tbody><tr>
+        <td height="80" align="left" valign="top" class="second">
+                    <a href="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网.html">华为内部狂转好文：有关大数据，看这一</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0104/143404.html"><strong>互联网会干掉房地产吗？</strong></a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0104/143405.html"><strong>深阅读 | 周鸿祎：传统企业拥抱互联网</strong></a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2013/1215/142455.html">【管理分享】海底捞张勇3招，让你的员</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2013/1215/142462.html">【观点争锋】传统企业如何玩转互联网？</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2013/1215/142417.html">世联宋春生：商业运营最大核心在于人才</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2013/1215/142453.html">【观点争锋】商业地产王三炮：“七剑下</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0106/143501.html"><strong>复星全球投资逻辑和战略</strong></a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2013/1215/142418.html">卓越总裁张远：满城尽是综合体 繁荣背</a><br>
+<a href="http://www.topbiz360.com/web/html/city/km/point/2014/0107/143591.html"><strong>柳传志：如果不创业，那就会是非常平庸</strong></a><br>
+
+		  </td>
+      </tr>
+    </tbody></table>
+	<div class="blankA"></div>
+	<div class="blankA"></div>
+	<table width="250" height="22" border="0" align="center" cellpadding="0" cellspacing="0" background="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/bg_title.jpg" class="TitleBoxFull">
+                  <tbody><tr>
+                    <td width="93" height="22" align="center" valign="middle" class="TitleText">招商拓展</td>
+                    <td width="76">&nbsp;</td>
+                    <td width="64" align="center" valign="middle"><a href="http://www.topbiz360.com/html/topices/" target="_blank" class="pubBu">&gt;&gt;发布</a></td>
+                  </tr>
+      </tbody></table>
+	  
+	  
+	
+	<table width="250" border="0" align="center" cellpadding="4" cellspacing="0" class="TitleBoxU">
+      <tbody><tr>
+        <td width="235" height="80" align="left" valign="top" class="second"><a href="http://www.topbiz360.com/web/html/info/zhaoshang/20140109/143753.html" target="_blank">星耀101广场火热招商</a><br>
+<a href="http://www.topbiz360.com/web/plus/view.php?aid=142708" target="_blank">蓝色港湾招商</a><br>
+<a href="http://www.topbiz360.com/web/plus/view.php?aid=139808" target="_blank">广东城际置业有限公司</a><br>
+<a href="http://www.topbiz360.com/web/plus/view.php?aid=139807" target="_blank">南海怡丰城</a><br>
+</td>
+      </tr>
+    </tbody></table>
+	<div class="blankA"></div>
+	<div class="blankA"></div>
+	<table width="250" height="22" border="0" align="center" cellpadding="0" cellspacing="0" background="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/bg_title.jpg" class="TitleBoxFull">
+                  <tbody><tr>
+                    <td width="90" height="22" align="center" valign="middle"><a href="http://www.topbiz360.com/web/html/theme/gongkaikecheng/" target="_blank" class="TitleText">培训信息</a></td>
+                    <td width="91">&nbsp;</td>
+                    <td width="44" align="center" valign="middle"><a href="http://www.topbiz360.com/web/html/theme/gongkaikecheng/" target="_blank" class="more">更多</a></td>
+                  </tr>
+      </tbody></table>
+	
+	<table width="250" border="0" align="center" cellpadding="4" cellspacing="0" class="TitleBoxU">
+      <tbody><tr>
+        <td width="235" height="80" align="left" valign="top" class="second"><a href="http://www.topbiz360.com/web/html/theme/industry/hot/128966.html" target="_blank">经销商管理与终端销量提升</a><br>
+<a href="http://www.topbiz360.com/web/html/theme/industry/hot/82521.html" target="_blank">打造金牌店长特训营</a><br>
+<a href="http://www.topbiz360.com/web/html/theme/industry/hot/126271.html" target="_blank">十招激活销售团队实战班</a><br>
+<a href="http://www.topbiz360.com/web/html/theme/industry/hot/124927.html" target="_blank">大店店长精细化管理实战班</a><br>
+</td>
+      </tr>
+    </tbody></table></td>
+  </tr>
+</tbody></table>
+<div class="blankA"></div>
+<div id="blankA"></div>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td height="24" align="center" bgcolor="#FCFCFC" class="F_news_menu"><table width="728" border="0" cellpadding="0" cellspacing="1">
+      <tbody><tr>
+        <td height="22" align="center" class="topfont">Copyright&#169;2012&nbsp;&nbsp;第一商业网版权所有 &nbsp;&nbsp;&nbsp;&nbsp;www.topbiz360.com　</td>
+      </tr>
+    </tbody></table></td>
+  </tr>
+</tbody></table>
+<div id="floatTips" style="position: fixed; left: 1124px; top: 250px;">
+  <img src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/self_QR.jpg" width="109" height="200"> </div>
+<script>
+//浮动
+function scrollx(p){
+  var d = document,dd = d.documentElement,db = d.body,w = window,o = d.getElementById(p.id),ie6 = /msie 6/i.test(navigator.userAgent),style,timer;
+  if(o){
+      o.style.cssText +=";position:"+(p.f&&!ie6?'fixed':'absolute')+";"+(p.l==undefined?'right:0;':'left:'+p.l+'px;')+(p.t!=undefined?'top:'+p.t+'px':'bottom:0');
+         if(p.f&&ie6){
+		      o.style.cssText +=';left:expression(documentElement.scrollLeft + '+(p.l==undefined?dd.clientWidth-o.offsetWidth:p.l)+' + "px");top:expression(documentElement.scrollTop+'+(p.t==undefined?dd.clientHeight-o.offsetHeight:p.t)+'+ "px" );';
+			  dd.style.cssText +=';background-image: url(about:blank);background-attachment:fixed;';
+			     }else{
+				     if(!p.f){
+					    w.onresize = w.onscroll = function(){
+						                              clearInterval(timer);
+													  timer = setInterval(function(){
+													           //双选择为了修复chrome 下xhtml解析时dd.scrollTop为 0
+															       	      var st = (dd.scrollTop||db.scrollTop),c;
+																		  c = st - o.offsetTop + (p.t!=undefined?p.t:(w.innerHeight||dd.clientHeight)-o.offsetHeight);
+																		             if(c!=0){
+																					    o.style.top = o.offsetTop + Math.ceil(Math.abs(c)/10)*(c<0?-1:1) + 'px';
+																						   	  }else{
+																							       clearInterval(timer);
+																					     }//if(c!=0)
+																						},10)
+															  }//function 
+				        }//if(!p.f)
+		}//p.f &&ie6
+     }//o
+         }// scrollx(p)
+//scrollx({id:'aa'})
+scrollx({id:'floatTips',l:1124,t:250,f:1})
+//scrollx({id:'cc',l:0,t:200,f:1})
+/*
+id 你要滚动的内容的id
+l 横坐标的位置 不写为紧贴右边
+t 你要放在页面的那个位置默认是贴着底边 0是贴着顶边
+f 1表示固定 不写或者0表示滚动
+*/
+</script>
+<script language="javascript" type="text/javascript">
+//下升
+$(function(){
+//标题层的高度--提示打开或关闭
+var titHeight=$("#ditTitle").height();
+//内容层的高度
+var conHeight=$("#divContent").height();
+//打开或关闭
+$("#close").toggle(function(){
+//改变提示
+$("#close").text("关闭");
+//动画--一秒内消息层高度增加,top增加
+$("#msgDiv").animate({height:titHeight+conHeight},1000,function(){
+//展开后执行的函数
+});
+},function(){
+//改变提示
+$("#close").text("打开");
+//alert(temp+" "+titHeight);
+$("#msgDiv").animate({height:titHeight},1000,function(){
+//关闭后执行的函数
+});
+})
+//执行
+var myTimer,i=8;
+function starFun()
+{
+//触发click事件,显示
+if(i==7)
+{
+$("#close").click();
+}
+//清除timeout,触发click事件,关闭层
+if(i==0)
+{
+window.clearTimeout(myTimer);
+if($("#close").text()!="打开")
+$("#close").click();
+}
+myTimer=window.setTimeout(starFun,1000);
+i=i-1;
+}
+starFun()
+});
+</script>
+<script src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-799519-2";
+urchinTracker();
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb55a690d734651b05afccf557ee66681' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./华为内部狂转好文：有关大数据，看这一篇就够了-第一商业网_files/h.js" type="text/javascript"></script>
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0027)http://www.nginx.cn/76.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="keywords" content="nginx基本配置, 参数, 配置, ">
+<meta name="description" content="#运行用户user nobody;#启动进程,通常设置成和cpu的数量相等worker_processes  1;#全局错误日志及PID文件#error_log  logs/error.log">
+<link rel="shortcut icon" href="http://www.nginx.cn/favicon.ico">
+<title>nginx基本配置与参数说明  –  运维与架构</title>
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有文章" href="http://www.nginx.cn/feed">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0 - 所有评论" href="http://www.nginx.cn/comments/feed">
+<link rel="pingback" href="http://www.nginx.cn/xmlrpc.php">
+
+<script src="./nginx基本配置与参数说明 – 运维与架构_files/wb.js" type="text/javascript" charset="utf-8"></script><style type="text/css"></style>
+<script type="text/javascript" src="./nginx基本配置与参数说明 – 运维与架构_files/prettify.js"></script>
+
+	<!-- style START -->
+	<!-- default style -->
+	<style type="text/css" media="screen">@import url( http://www.nginx.cn/wp-content/themes/inove/style.css );</style>
+	<!-- for translations -->
+			<link rel="stylesheet" href="./nginx基本配置与参数说明 – 运维与架构_files/chinese.css" type="text/css" media="screen">
+		<!--[if IE]>
+		<link rel="stylesheet" href="http://www.nginx.cn/wp-content/themes/inove/ie.css" type="text/css" media="screen" />
+	<![endif]-->
+	<!-- style END -->
+
+	<!-- script START -->
+	<script type="text/javascript" src="./nginx基本配置与参数说明 – 运维与架构_files/base.js"></script>
+	
+	<script type="text/javascript" src="./nginx基本配置与参数说明 – 运维与架构_files/menu.js"></script>
+	<!-- script END -->
+
+	<link rel="alternate" type="application/rss+xml" title="运维与架构 » nginx基本配置与参数说明 评论 Feed" href="http://www.nginx.cn/76.html/feed">
+<script type="text/javascript">
+var duoshuoQuery = {"short_name":"nginx","sso":{"login":"http:\/\/www.nginx.cn\/wp-login.php?action=duoshuo_login","logout":"http:\/\/www.nginx.cn\/wp-login.php?action=logout&_wpnonce=dca6db865c"},"theme":"default","stylePatch":"wordpress\/iNove"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script>
+<script type="text/javascript" src="./nginx基本配置与参数说明 – 运维与架构_files/embed.js" charset="UTF-8" async="async"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.nginx.cn/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.nginx.cn/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Nginx不间断服务的平滑升级方法" href="http://www.nginx.cn/62.html">
+<link rel="next" title="nginx负载均衡配置" href="http://www.nginx.cn/78.html">
+<meta name="generator" content="WordPress 3.5.1">
+<link rel="canonical" href="./nginx基本配置与参数说明 – 运维与架构_files/nginx基本配置与参数说明 – 运维与架构.htm">
+<link rel="shortlink" href="http://www.nginx.cn/?p=76">
+<link href="./nginx基本配置与参数说明 – 运维与架构_files/prettify.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="./nginx基本配置与参数说明 – 运维与架构_files/embed.default.css"><link href="./nginx基本配置与参数说明 – 运维与架构_files/bdsstyle.css" rel="stylesheet" type="text/css"><script charset="UTF-8" src="./nginx基本配置与参数说明 – 运维与架构_files/bundle.js"></script><script src="./nginx基本配置与参数说明 – 运维与架构_files/logger.js"></script><script charset="UTF-8" src="./nginx基本配置与参数说明 – 运维与架构_files/iframeWidget.js"></script></head>
+
+
+<body onload="prettyPrint()"><iframe id="sina_anywhere_iframe" style="display: none;"></iframe><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.nginx.cn/76.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.nginx.cn/76.html#" class="goWebsite">百度分享</a></p></div></div></div><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.nginx.cn/76.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.nginx.cn/76.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.nginx.cn/76.html#" class="goWebsite">百度分享</a></p></div></div></div>
+<!-- wrap START -->
+<div id="wrap">
+
+<!-- container START -->
+<div id="container">
+
+<!-- header START -->
+<div id="header">
+
+	<!-- banner START -->
+		<!-- banner END -->
+
+	<div id="caption">
+<span id="title"><a href="http://www.nginx.cn/">运维与架构</a></span>
+		<div id="tagline">好的架构减少运维，好的运维反哺架构</div>
+	</div>
+
+	<div class="fixed"></div>
+</div>
+<!-- header END -->
+
+<!-- navigation START -->
+<div id="navigation">
+	<!-- menus START -->
+	<ul id="menus">
+	    <li class="current_page_item"><a class="home" title="首页" href="http://www.nginx.cn/">首页</a></li>
+		<li class="page_item page-item-9"><a href="http://www.nginx.cn/nginx-download">nginx最新版下载</a></li>
+<li class="page_item page-item-55"><a href="http://www.nginx.cn/install">Nginx安装</a></li>
+<li class="page_item page-item-55"><a href="./nginx基本配置与参数说明 – 运维与架构_files/nginx基本配置与参数说明 – 运维与架构.htm">Nginx配置</a></li>
+<li class="page_item page-item-55"><a href="http://www.nginx.cn/231.html">PHP-FPM安装配置</a></li>
+<li class="page_item page-item-353"><a href="http://www.nginx.cn/nginx-how-to">nginx中文手册</a></li>
+<li class="page_item page-item-43"><a href="http://www.nginx.cn/nginxchscommandline">运行和控制Nginx</a></li>
+<li class="page_item page-item-620"><a href="http://www.nginx.cn/manual" title="常用运维手册">在线手册</a></li>
+<li class="page_item page-item-55"><a href="http://www.nginx.cn/links" title="好站推荐">友情链接</a></li>
+<li class="page_item page-item-620"><a href="http://www.nginx.cn/about">关于我</a></li>
+		<li><a class="lastmenu" href="javascript:void(0);"></a></li>
+
+	</ul>
+	<!-- menus END -->
+
+
+
+	<div class="fixed"></div>
+</div>
+<!-- navigation END -->
+<!-- content START -->
+<div id="content">
+
+	<!-- main START -->
+	<div id="main">
+
+	<div id="postpath">
+		<a title="转到首页" href="http://www.nginx.cn/">首页</a>
+		 &gt; <a href="http://www.nginx.cn/category/nginx-article" title="查看 nginx 中的全部文章" rel="category tag">nginx</a>		 &gt; nginx基本配置与参数说明	</div>
+
+	<div class="post" id="post-76">
+		<h1>nginx基本配置与参数说明</h1>
+		<div class="info">
+			<span class="date">2012年7月26日</span>
+			<span class="author"><a href="http://www.nginx.cn/author/mood" title="由 mood 发布" rel="author">mood</a></span>										<span class="addcomment"><a href="http://www.nginx.cn/76.html#respond">发表评论</a></span>
+				<span class="comments"><a href="http://www.nginx.cn/76.html#comments">阅读评论</a></span>
+						<div class="fixed"></div>
+		</div>
+<div id="ad"><br><table width="650" height="40" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;border: 1px solid #b8d4ea;">  <tbody>  <tr>  <td align="center"><a href="http://www.cnpm25.com/" title="全国空气质量指数" target="_blank"><font color="red">空气质量指数</font></a></td>  <td align="center"><a href="http://www.264.cn/jx/" title="手机号码吉凶测试" target="_blank"><font color="blue">手机号码吉凶测试</font></a></td>  <td align="center"><a href="http://www.264.cn/jisuanqi/" title="智能计算器" target="_blank"><font color="gray">智能计算器</font></a></td>  </tr>  </tbody>  </table>  <br></div>
+		<div class="content">
+<div style="float:right;padding:8px;">
+<script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- nginx-content -->
+<ins class="adsbygoogle" style="display:inline-block;width:250px;height:250px" data-ad-client="ca-pub-8728612882429404" data-ad-slot="8926172305"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+			<pre class="prettyprint"><span class="com">#运行用户</span><span class="pln">
+user nobody</span><span class="pun">;</span><span class="pln">
+</span><span class="com">#启动进程,通常设置成和cpu的数量相等</span><span class="pln">
+worker_processes  </span><span class="lit">1</span><span class="pun">;</span><span class="pln">
+
+</span><span class="com">#全局错误日志及PID文件</span><span class="pln">
+</span><span class="com">#error_log  logs/error.log;</span><span class="pln">
+</span><span class="com">#error_log  logs/error.log  notice;</span><span class="pln">
+</span><span class="com">#error_log  logs/error.log  info;</span><span class="pln">
+
+</span><span class="com">#pid        logs/nginx.pid;</span><span class="pln">
+
+</span><span class="com">#工作模式及连接数上限</span><span class="pln">
+events </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">#epoll是多路复用IO(I/O Multiplexing)中的一种方式,</span><span class="pln">
+    </span><span class="com">#仅用于linux2.6以上内核,可以大大提高nginx的性能</span><span class="pln">
+    </span><span class="kwd">use</span><span class="pln">   epoll</span><span class="pun">;</span><span class="pln"> 
+
+    </span><span class="com">#单个后台worker process进程的最大并发链接数    </span><span class="pln">
+    worker_connections  </span><span class="lit">1024</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="com"># 并发总数是 worker_processes 和 worker_connections 的乘积</span><span class="pln">
+    </span><span class="com"># 即 max_clients = worker_processes * worker_connections</span><span class="pln">
+    </span><span class="com"># 在设置了反向代理的情况下，max_clients = worker_processes * worker_connections / 4  为什么</span><span class="pln">
+    </span><span class="com"># 为什么上面反向代理要除以4，应该说是一个经验值</span><span class="pln">
+    </span><span class="com"># 根据以上条件，正常情况下的Nginx Server可以应付的最大连接数为：4 * 8000 = 32000</span><span class="pln">
+    </span><span class="com"># worker_connections 值的设置跟物理内存大小有关</span><span class="pln">
+    </span><span class="com"># 因为并发受IO约束，max_clients的值须小于系统可以打开的最大文件数</span><span class="pln">
+    </span><span class="com"># 而系统可以打开的最大文件数和内存大小成正比，一般1GB内存的机器上可以打开的文件数大约是10万左右</span><span class="pln">
+    </span><span class="com"># 我们来看看360M内存的VPS可以打开的文件句柄数是多少：</span><span class="pln">
+    </span><span class="com"># $ cat /proc/sys/fs/file-max</span><span class="pln">
+    </span><span class="com"># 输出 34336</span><span class="pln">
+    </span><span class="com"># 32000 &lt; 34336，即并发连接总数小于系统可以打开的文件句柄总数，这样就在操作系统可以承受的范围之内</span><span class="pln">
+    </span><span class="com"># 所以，worker_connections 的值需根据 worker_processes 进程数目和系统可以打开的最大文件总数进行适当地进行设置</span><span class="pln">
+    </span><span class="com"># 使得并发总数小于操作系统可以打开的最大文件数目</span><span class="pln">
+    </span><span class="com"># 其实质也就是根据主机的物理CPU和内存进行配置</span><span class="pln">
+    </span><span class="com"># 当然，理论上的并发总数可能会和实际有所偏差，因为主机还有其他的工作进程需要消耗系统资源。</span><span class="pln">
+    </span><span class="com"># ulimit -SHn 65535</span><span class="pln">
+
+</span><span class="pun">}</span><span class="pln">
+
+
+http </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">#设定mime类型,类型由mime.type文件定义</span><span class="pln">
+    include    mime</span><span class="pun">.</span><span class="pln">types</span><span class="pun">;</span><span class="pln">
+    default_type  application</span><span class="pun">/</span><span class="pln">octet</span><span class="pun">-</span><span class="pln">stream</span><span class="pun">;</span><span class="pln">
+    </span><span class="com">#设定日志格式</span><span class="pln">
+    log_format  main  </span><span class="str">'$remote_addr - $remote_user [$time_local] "$request" '</span><span class="pln">
+                      </span><span class="str">'$status $body_bytes_sent "$http_referer" '</span><span class="pln">
+                      </span><span class="str">'"$http_user_agent" "$http_x_forwarded_for"'</span><span class="pun">;</span><span class="pln">
+
+    access_log  logs</span><span class="pun">/</span><span class="pln">access</span><span class="pun">.</span><span class="pln">log  main</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="com">#sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，</span><span class="pln">
+    </span><span class="com">#对于普通应用，必须设为 on,</span><span class="pln">
+    </span><span class="com">#如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，</span><span class="pln">
+    </span><span class="com">#以平衡磁盘与网络I/O处理速度，降低系统的uptime.</span><span class="pln">
+    sendfile     on</span><span class="pun">;</span><span class="pln">
+    </span><span class="com">#tcp_nopush     on;</span><span class="pln">
+
+    </span><span class="com">#连接超时时间</span><span class="pln">
+    </span><span class="com">#keepalive_timeout  0;</span><span class="pln">
+    keepalive_timeout  </span><span class="lit">65</span><span class="pun">;</span><span class="pln">
+    tcp_nodelay     on</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="com">#开启gzip压缩</span><span class="pln">
+    gzip  on</span><span class="pun">;</span><span class="pln">
+    gzip_disable </span><span class="str">"MSIE [1-6]."</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="com">#设定请求缓冲</span><span class="pln">
+    client_header_buffer_size    </span><span class="lit">128k</span><span class="pun">;</span><span class="pln">
+    large_client_header_buffers  </span><span class="lit">4</span><span class="pln"> </span><span class="lit">128k</span><span class="pun">;</span><span class="pln">
+
+
+    </span><span class="com">#设定虚拟主机配置</span><span class="pln">
+    server </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">#侦听80端口</span><span class="pln">
+        listen    </span><span class="lit">80</span><span class="pun">;</span><span class="pln">
+        </span><span class="com">#定义使用 www.nginx.cn访问</span><span class="pln">
+        server_name  www</span><span class="pun">.</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">cn</span><span class="pun">;</span><span class="pln">
+
+        </span><span class="com">#定义服务器的默认网站根目录位置</span><span class="pln">
+        root html</span><span class="pun">;</span><span class="pln">
+
+        </span><span class="com">#设定本虚拟主机的访问日志</span><span class="pln">
+        access_log  logs</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">access</span><span class="pun">.</span><span class="pln">log  main</span><span class="pun">;</span><span class="pln">
+
+        </span><span class="com">#默认请求</span><span class="pln">
+        location </span><span class="pun">/</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            
+            </span><span class="com">#定义首页索引文件的名称</span><span class="pln">
+            index index</span><span class="pun">.</span><span class="pln">php index</span><span class="pun">.</span><span class="pln">html index</span><span class="pun">.</span><span class="pln">htm</span><span class="pun">;</span><span class="pln">   
+
+        </span><span class="pun">}</span><span class="pln">
+
+        </span><span class="com"># 定义错误提示页面</span><span class="pln">
+        error_page   </span><span class="lit">500</span><span class="pln"> </span><span class="lit">502</span><span class="pln"> </span><span class="lit">503</span><span class="pln"> </span><span class="lit">504</span><span class="pln"> </span><span class="pun">/</span><span class="lit">50x</span><span class="pun">.</span><span class="pln">html</span><span class="pun">;</span><span class="pln">
+        location </span><span class="pun">=</span><span class="pln"> </span><span class="str">/50x.html {
+        }
+
+        #静态文件，nginx自己处理
+        location ~ ^/</span><span class="pun">(</span><span class="pln">images</span><span class="pun">|</span><span class="pln">javascript</span><span class="pun">|</span><span class="pln">js</span><span class="pun">|</span><span class="pln">css</span><span class="pun">|</span><span class="pln">flash</span><span class="pun">|</span><span class="pln">media</span><span class="pun">|</span><span class="kwd">static</span><span class="pun">)/</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            
+            </span><span class="com">#过期30天，静态文件不怎么更新，过期可以设大一点，</span><span class="pln">
+            </span><span class="com">#如果频繁更新，则可以设置得小一点。</span><span class="pln">
+            expires </span><span class="lit">30d</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+
+        </span><span class="com">#PHP 脚本请求全部转发到 FastCGI处理. 使用FastCGI默认配置.</span><span class="pln">
+        location </span><span class="pun">~</span><span class="pln"> </span><span class="pun">.</span><span class="pln">php$ </span><span class="pun">{</span><span class="pln">
+            fastcgi_pass </span><span class="lit">127.0</span><span class="pun">.</span><span class="lit">0.1</span><span class="pun">:</span><span class="lit">9000</span><span class="pun">;</span><span class="pln">
+            fastcgi_index index</span><span class="pun">.</span><span class="pln">php</span><span class="pun">;</span><span class="pln">
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name</span><span class="pun">;</span><span class="pln">
+            include fastcgi_params</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+
+        </span><span class="com">#禁止访问 .htxxx 文件</span><span class="pln">
+            location </span><span class="pun">~</span><span class="pln"> </span><span class="pun">/.</span><span class="pln">ht </span><span class="pun">{</span><span class="pln">
+            deny all</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>
+<!-- Baidu Button BEGIN -->
+</p><div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+<span class="bds_more">分享到：</span>
+<a class="bds_qzone" title="分享到QQ空间" href="http://www.nginx.cn/76.html#">QQ空间</a>
+<a class="bds_tsina" title="分享到新浪微博" href="http://www.nginx.cn/76.html#">新浪微博</a>
+<a class="bds_tqq" title="分享到腾讯微博" href="http://www.nginx.cn/76.html#">腾讯微博</a>
+<a class="bds_renren" title="分享到人人网" href="http://www.nginx.cn/76.html#">人人网</a>
+<a class="bds_t163" title="分享到网易微博" href="http://www.nginx.cn/76.html#">网易微博</a>
+<a class="shareCount" href="http://www.nginx.cn/76.html#" title="累计分享10次">10</a>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=945645" src="./nginx基本配置与参数说明 – 运维与架构_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+<div style="clear:both;"></div>
+<span style="color:red">
+除非注明，本站文章均为: <a href="http://www.nginx.cn/" target="_blank">Nginx中文站</a>原创，转载请注明本文地址:
+<a href="./nginx基本配置与参数说明 – 运维与架构_files/nginx基本配置与参数说明 – 运维与架构.htm" target="_blank" title="nginx基本配置与参数说明">http://www.nginx.cn/76.html</a></span>
+<p></p>
+<p id="wan">--完--</p><p>
+
+
+			</p><div class="fixed"></div>
+		</div>
+		<div class="under">
+			<span class="categories">分类: </span><span><a href="http://www.nginx.cn/category/nginx-article" title="查看 nginx 中的全部文章" rel="category tag">nginx</a></span>			<span class="tags">标签: </span><span><a href="http://www.nginx.cn/tag/nginx%e5%9f%ba%e6%9c%ac%e9%85%8d%e7%bd%ae" rel="tag">nginx基本配置</a>, <a href="http://www.nginx.cn/tag/%e5%8f%82%e6%95%b0" rel="tag">参数</a>, <a href="http://www.nginx.cn/tag/%e9%85%8d%e7%bd%ae" rel="tag">配置</a></span>		</div>
+	</div>
+
+	<!-- related posts START -->
+		<!-- related posts END -->
+
+	<a name="comments"></a>
+
+<div class="ds-thread" data-thread-key="76" data-author-key="1" data-title="nginx基本配置与参数说明" data-url="http://www.nginx.cn/76.html" id="ds-thread"><div id="ds-reset"><div class="ds-rounded" id="ds-hot-posts"><div class="ds-header ds-gradient-bg">被顶起来的评论</div><ul><li class="ds-post" data-post-id="1234302957248316058"><div class="ds-post-self" data-post-id="1234302957248316058" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="8164795"><a rel="nofollow author" target="_blank" href="http://www.kaixin001.com/home/?uid=5725353" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" title="李桂宝"><img src="./nginx基本配置与参数说明 – 运维与架构_files/50_5725353_1.jpg" alt="李桂宝"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://www.kaixin001.com/home/?uid=5725353" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" rel="nofollow" target="_blank" data-user-id="8164795">李桂宝</a></div><p>新版nginx已经很好的配置好了fastcgi_params了，千万不要再配置<br>
+<br>
+“fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;”<br>
+<br>
+了！！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-07-25T15:36:53+08:00" title="2014年7月25日 下午3:36:53">7月25日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315992"><div class="ds-post-self" data-post-id="1234302957248315992" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="http://0.gravatar.com/avatar/0f4def7ae00eb465717a4e81de839cdc?s=50" alt="perlcn"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">perlcn</span></div><p>请教下，如何使用nginx做soap服务器？<br>
+我现在配置nginx为soap服务器后，通过soapui发送消息给nginx，nginx返回两个报文，一个200，一个400.感觉是nginx将一个soap请求作为两个报文来处理了</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-05-23T22:26:20+08:00" title="2014年5月23日 下午10:26:20">5月23日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(1)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></div><div class="ds-comments-info"><div class="ds-sort"><a class="ds-order-desc ds-current">最新</a><a class="ds-order-asc">最早</a><a class="ds-order-hot">最热</a></div><ul class="ds-comments-tabs"><li class="ds-tab"><a class="ds-comments-tab-duoshuo ds-current" href="javascript:void(0);"><span class="ds-highlight">17</span>条评论</a></li></ul></div><ul class="ds-comments"><li class="ds-post" data-post-id="1234302957248316076"><div class="ds-post-self" data-post-id="1234302957248316076" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="micropan"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">micropan</span></div><p>想问下在设置php的地方<br>
+“ location ~ .php$ ” <br>
+拦截的正则是不是写的不对，感觉应该写为<br>
+“location ~ \.php$”</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-08-28T16:47:22+08:00" title="2014年8月28日 下午4:47:22">8月28日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248316058"><div class="ds-post-self" data-post-id="1234302957248316058" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="8164795"><a rel="nofollow author" target="_blank" href="http://nginx.duoshuo.com/user-url/?user_id=8164795" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" title="李桂宝"><img src="./nginx基本配置与参数说明 – 运维与架构_files/50_5725353_1.jpg" alt="李桂宝"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://www.kaixin001.com/home/?uid=5725353" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" rel="nofollow" target="_blank" data-user-id="8164795">李桂宝</a></div><p>新版nginx已经很好的配置好了fastcgi_params了，千万不要再配置<br>
+<br>
+“fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;”<br>
+<br>
+了！！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-07-25T15:36:53+08:00" title="2014年7月25日 下午3:36:53">7月25日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248316079"><div class="ds-post-self" data-post-id="1234302957248316079" data-thread-id="1234302957248315402" data-root-id="1234302957248316058" data-source="duoshuo"><div class="ds-avatar" data-user-id="8785651"><a rel="nofollow author" target="_blank" href="http://t.qq.com/redapple16325975" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8785651&#39;;" title="红苹果"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="红苹果"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/redapple16325975" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8785651&#39;;" rel="nofollow" target="_blank" data-user-id="8785651">红苹果</a></div><p>那应该怎么配置？</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-09-04T13:14:30+08:00" title="2014年9月4日 下午1:14:30">9月4日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248316086"><div class="ds-post-self" data-post-id="1234302957248316086" data-thread-id="1234302957248315402" data-root-id="1234302957248316058" data-source="duoshuo"><div class="ds-avatar" data-user-id="8164795"><a rel="nofollow author" target="_blank" href="http://www.kaixin001.com/home/?uid=5725353" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" title="李桂宝"><img src="./nginx基本配置与参数说明 – 运维与架构_files/50_5725353_1.jpg" alt="李桂宝"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://www.kaixin001.com/home/?uid=5725353" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=8164795&#39;;" rel="nofollow" target="_blank" data-user-id="8164795">李桂宝</a></div><p>fastcgi_param SCRIPT_FILENAME $request_filename;</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-09-24T16:41:11+08:00" title="2014年9月24日 下午4:41:11">9月24日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></li></ul></li><li class="ds-post" data-post-id="1234302957248315992"><div class="ds-post-self" data-post-id="1234302957248315992" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="http://0.gravatar.com/avatar/0f4def7ae00eb465717a4e81de839cdc?s=50" alt="perlcn"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">perlcn</span></div><p>请教下，如何使用nginx做soap服务器？<br>
+我现在配置nginx为soap服务器后，通过soapui发送消息给nginx，nginx返回两个报文，一个200，一个400.感觉是nginx将一个soap请求作为两个报文来处理了</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-05-23T22:26:20+08:00" title="2014年5月23日 下午10:26:20">5月23日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(1)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248316028"><div class="ds-post-self" data-post-id="1234302957248316028" data-thread-id="1234302957248315402" data-root-id="1234302957248315992" data-source="duoshuo"><div class="ds-avatar" data-user-id="7339597"><a rel="nofollow author" target="_blank" href="http://t.qq.com/brighntessxiao" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=7339597&#39;;" title="brightness"><img src="./nginx基本配置与参数说明 – 运维与架构_files/50" alt="brightness"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/brighntessxiao" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=7339597&#39;;" rel="nofollow" target="_blank" data-user-id="7339597">brightness</a></div><p>请问解决了吗？我也碰到类似问题无法解决</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-06-11T18:45:46+08:00" title="2014年6月11日 下午6:45:46">6月11日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248316033"><div class="ds-post-self" data-post-id="1234302957248316033" data-thread-id="1234302957248315402" data-root-id="1234302957248315992" data-source="duoshuo"><div class="ds-avatar"><img src="http://0.gravatar.com/avatar/0f4def7ae00eb465717a4e81de839cdc?s=50" alt="perlcn"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">perlcn</span></div><p>没有解决！<br>
+不知道什么原因引起的，不确定是不是Linux自己本身解包有问题导致的。</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-06-19T22:33:11+08:00" title="2014年6月19日 下午10:33:11">6月19日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></li></ul></li><li class="ds-post" data-post-id="1234302957248315904"><div class="ds-post-self" data-post-id="1234302957248315904" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="3212117"><a rel="nofollow author" target="_blank" href="http://ituibar.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3212117&#39;;" title="爱推吧"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1" alt="爱推吧"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://ituibar.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3212117&#39;;" rel="nofollow" target="_blank" data-user-id="3212117">爱推吧</a></div><p>typecho安装在wp的二级目录下有没有配置文件呢？</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-03-13T09:01:06+08:00" title="2014年3月13日 上午9:01:06">3月13日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315882"><div class="ds-post-self" data-post-id="1234302957248315882" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="buildhappy"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">buildhappy</span></div><p>怎么设置error.log的记录格式啊？</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-02-18T12:20:59+08:00" title="2014年2月18日 下午12:20:59">2月18日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315836"><div class="ds-post-self" data-post-id="1234302957248315836" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="3500362"><a rel="nofollow author" target="_blank" href="http://weibo.com/wgr1101587171" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3500362&#39;;" title="vPage"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(1)" alt="vPage"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/wgr1101587171" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3500362&#39;;" rel="nofollow" target="_blank" data-user-id="3500362">vPage</a></div><p>了解</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-12-23T09:14:02+08:00" title="2013年12月23日 上午9:14:02">2013年12月23日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315777"><div class="ds-post-self" data-post-id="1234302957248315777" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="1800031"><a rel="nofollow author" target="_blank" href="http://www.inewya.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=1800031&#39;;" title="新亚网-先知天下事"><img src="./nginx基本配置与参数说明 – 运维与架构_files/u54473882-4.jpg" alt="新亚网-先知天下事"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://www.inewya.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=1800031&#39;;" rel="nofollow" target="_blank" data-user-id="1800031">新亚网-先知天下事</a></div><p>这个系统很适合老鸟，而且很适合门户网站</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-11-14T16:50:46+08:00" title="2013年11月14日 下午4:50:46">2013年11月14日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315759"><div class="ds-post-self" data-post-id="1234302957248315759" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="sss"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">sss</span></div><p> <img src="./nginx基本配置与参数说明 – 运维与架构_files/jxz_org.gif" alt="[巨蟹座]" title="[巨蟹座]" class="ds-smiley"> </p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-10-28T19:43:30+08:00" title="2013年10月28日 下午7:43:30">2013年10月28日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315672"><div class="ds-post-self" data-post-id="1234302957248315672" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="ryan"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">ryan</span></div><p>文章骂死看到有个小失误，如    <br>
+    #设定日志格式<br>
+    access_log    /var/log/nginx/access.log;<br>
+<br>
+此处应该是设置存取日志路径吧</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-08-09T22:32:18+08:00" title="2013年8月9日 下午10:32:18">2013年8月9日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248315696"><div class="ds-post-self" data-post-id="1234302957248315696" data-thread-id="1234302957248315402" data-root-id="1234302957248315672" data-source="duoshuo"><div class="ds-avatar" data-user-id="1348212"><a rel="nofollow author" target="_blank" href="http://weibo.com/1882396727" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=1348212&#39;;" title="寂寞不懂夜的美"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(2)" alt="寂寞不懂夜的美"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/1882396727" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=1348212&#39;;" rel="nofollow" target="_blank" data-user-id="1348212">寂寞不懂夜的美</a></div><p>访问日志 听着更舒服~</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-08-30T17:14:16+08:00" title="2013年8月30日 下午5:14:16">2013年8月30日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></li><li class="ds-post" data-post-id="1234302957248315655"><div class="ds-post-self" data-post-id="1234302957248315655" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="http://0.gravatar.com/avatar/0bf05ea63bc3b8cfe800c100bfa88e7e?s=50" alt="frankwong"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">frankwong</span></div><p>反向代理的的情况下最大连接数为什么要除以4， 具体可以参考Nginx wiki部分<br>
+worker_connections <br>
+Syntax: worker_connections number <br>
+Default: <br>
+The worker_connections and worker_proceses from the main section allows you to calculate maxclients value: <br>
+max_clients = worker_processes * worker_connections <br>
+In a reverse proxy situation, max_clients becomes <br>
+max_clients = worker_processes * worker_connections/4<br>
+Since a browser opens 2 connections by default to a server ,and nginx uses the fds (file descriptors) from the same pool to connect to the upstream backend .<br>
+每个成功的请求会建立4个链接。1.browser-&gt;nginx  2. nginx-upstream 3.upstream-&gt;nginx 4.nginx-&gt;browser</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-07-13T10:22:30+08:00" title="2013年7月13日 上午10:22:30">2013年7月13日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1234302957248315648"><div class="ds-post-self" data-post-id="1234302957248315648" data-thread-id="1234302957248315402" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="lyf"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">lyf</span></div><p>怎么解决nginx负载不均衡问题 我使用的是权轮询 设置的权重都是一样的</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-06-28T10:51:24+08:00" title="2013年6月28日 上午10:51:24">2013年6月28日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div><ul class="ds-children"><li class="ds-post" data-post-id="1234302957248315688"><div class="ds-post-self" data-post-id="1234302957248315688" data-thread-id="1234302957248315402" data-root-id="1234302957248315648" data-source="duoshuo"><div class="ds-avatar"><img src="./nginx基本配置与参数说明 – 运维与架构_files/noavatar_default.png" alt="lolo"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">lolo</span></div><p>设置权重一样的话，还不如不设置</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2013-08-28T00:04:58+08:00" title="2013年8月28日 上午12:04:58">2013年8月28日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></li></ul><div class="ds-paginator" style="display: none;"><div class="ds-border"></div><a data-page="1" href="javascript:void(0);" class="ds-current">1</a></div><a name="respond"></a><div class="ds-toolbar"><div class="ds-account-control"><span class="ds-icon ds-icon-settings"></span> <span>帐号管理</span><ul><li><a class="ds-bind-more" href="javascript:void(0);" style="border-top: none">绑定更多</a></li><li><a target="_blank" href="http://duoshuo.com/settings/">设置</a></li><li><a rel="nofollow" href="http://nginx.duoshuo.com/logout/?sso=1&redirect_uri=http%3A%2F%2Fwww.nginx.cn%2Fwp-login.php%3Faction%3Dlogout%26_wpnonce%3Ddca6db865c%26redirect_to%3Dhttp%253A%252F%252Fwww.nginx.cn%252F76.html" style="border-bottom: none">登出</a></li></ul></div><div class="ds-visitor"><a class="ds-visitor-name" href="http://t.qq.com/h4Breeze" target="_blank">charles</a><a class="ds-unread-comments-count" href="javascript:void(0);" title="你没有新回复" style="display: none;">0</a></div></div><div class="ds-replybox"><a class="ds-avatar" href="http://duoshuo.com/settings/avatar/" target="_blank" title="设置头像"><img src="./nginx基本配置与参数说明 – 运维与架构_files/100" alt="charles"></a><form method="post"><input type="hidden" name="thread_id" value="1234302957248315402">
+<input type="hidden" name="parent_id" value="">
+<input type="hidden" name="nonce" value="54756a9ec8fce"><div class="ds-textarea-wrapper ds-rounded-top"><textarea name="message" title="Ctrl+Enter快捷提交" placeholder="说点什么吧…"></textarea><pre class="ds-hidden-text"></pre></div><div class="ds-post-toolbar"><div class="ds-post-options ds-gradient-bg"><span class="ds-sync"><input id="ds-sync-checkbox" type="checkbox" name="repost" checked="checked" value="qqt,qzone"> <label for="ds-sync-checkbox">分享到:</label><a href="javascript:void(0)" class="ds-service-icon ds-qqt" data-service="qqt" title="腾讯微博"></a><a href="javascript:void(0)" class="ds-service-icon ds-qzone" data-service="qzone" title="QQ空间"></a></span></div><button class="ds-post-button" type="submit">发布</button><div class="ds-toolbar-buttons"><a class="ds-toolbar-button ds-add-emote" title="插入表情"></a></div></div></form></div><p class="ds-powered-by"><a href="http://duoshuo.com/" target="_blank" rel="nofollow">多说</a></p></div></div>
+
+<script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script>
+	<div id="ds-ssr">
+
+		
+            <ol id="commentlist">
+                		<li class="post pingback">
+			<p>Pingback: <a href="http://www.nginx.cn/591.html" rel="external nofollow" class="url">nginx配置入门 – NGINX中文站</a></p>
+		</li>
+		<li class="post pingback">
+			<p>Pingback: <a href="http://www.kltreasure.com/?p=442" rel="external nofollow" class="url">开罗宝藏 » nginx基本配置与参数说明</a></p>
+		</li>
+		<li class="post pingback">
+			<p>Pingback: <a href="http://www.kltreasure.com/?p=449" rel="external nofollow" class="url">开罗宝藏 » nginx配置入门</a></p>
+		</li>
+		<li class="comment even thread-even depth-1" id="li-comment-372">
+			<article id="comment-372" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">lyf</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-372"><time pubdate="" datetime="2013-06-28T10:51:24+00:00">2013 年 6 月 28 日 at 上午 10:51</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>怎么解决nginx负载不均衡问题 我使用的是权轮询 设置的权重都是一样的</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment odd alt depth-2" id="li-comment-433">
+			<article id="comment-433" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">lolo</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-433"><time pubdate="" datetime="2013-08-28T00:04:58+00:00">2013 年 8 月 28 日 at 上午 12:04</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>设置权重一样的话，还不如不设置</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+</ul>
+</li>
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-382">
+			<article id="comment-382" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">frankwong</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-382"><time pubdate="" datetime="2013-07-13T10:22:30+00:00">2013 年 7 月 13 日 at 上午 10:22</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>反向代理的的情况下最大连接数为什么要除以4， 具体可以参考Nginx wiki部分<br>
+worker_connections<br>
+Syntax: worker_connections number<br>
+Default:<br>
+The worker_connections and worker_proceses from the main section allows you to calculate maxclients value:<br>
+max_clients = worker_processes * worker_connections<br>
+In a reverse proxy situation, max_clients becomes<br>
+max_clients = worker_processes * worker_connections/4<br>
+Since a browser opens 2 connections by default to a server ,and nginx uses the fds (file descriptors) from the same pool to connect to the upstream backend .<br>
+每个成功的请求会建立4个链接。1.browser-&gt;nginx  2. nginx-upstream 3.upstream-&gt;nginx 4.nginx-&gt;browser</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+		<li class="comment odd alt thread-even depth-1" id="li-comment-415">
+			<article id="comment-415" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">ryan</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-415"><time pubdate="" datetime="2013-08-09T22:32:18+00:00">2013 年 8 月 9 日 at 下午 10:32</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>文章骂死看到有个小失误，如<br>
+    #设定日志格式<br>
+    access_log    /var/log/nginx/access.log;</p>
+<p>此处应该是设置存取日志路径吧</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment even depth-2" id="li-comment-439">
+			<article id="comment-439" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://weibo.com/1882396727" rel="external nofollow" class="url">寂寞不懂夜的美</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-439"><time pubdate="" datetime="2013-08-30T17:14:16+00:00">2013 年 8 月 30 日 at 下午 5:14</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>访问日志 听着更舒服~</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+</ul>
+</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-626">
+			<article id="comment-626" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">sss</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-626"><time pubdate="" datetime="2013-10-28T19:43:30+00:00">2013 年 10 月 28 日 at 下午 7:43</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p> <img src="./nginx基本配置与参数说明 – 运维与架构_files/jxz_org.gif"> </p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+		<li class="comment even thread-even depth-1" id="li-comment-644">
+			<article id="comment-644" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://www.inewya.com/" rel="external nofollow" class="url">新亚网-先知天下事</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-644"><time pubdate="" datetime="2013-11-14T16:50:46+00:00">2013 年 11 月 14 日 at 下午 4:50</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>这个系统很适合老鸟，而且很适合门户网站</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+		<li class="post pingback">
+			<p>Pingback: <a href="http://www.opcnz.com/qian-duan-kai-fa/1278.shtml" rel="external nofollow" class="url">nginx配置 | Web开源笔记-专注Web开发技术,分享Web开发技术与资源</a></p>
+		</li>
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-758">
+			<article id="comment-758" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://weibo.com/wgr1101587171" rel="external nofollow" class="url">vPage</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-758"><time pubdate="" datetime="2013-12-23T09:14:02+00:00">2013 年 12 月 23 日 at 上午 9:14</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>了解</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+		<li class="post pingback">
+			<p>Pingback: <a href="http://115.28.141.15/?p=41" rel="external nofollow" class="url">LNMP搭建笔记③之编译安装nginx | aidsay</a></p>
+		</li>
+		<li class="post pingback">
+			<p>Pingback: <a href="http://www.imhhzy.com/%e5%8d%9a%e5%ae%a2%e6%90%ad%e5%bb%ba%e4%b9%8bdebianubuntu%e4%b8%8b%e5%ae%89%e8%a3%85lnmp.html" rel="external nofollow" class="url">博客搭建之Debian/Ubuntu下安装lnmp - imhhzy - imhhzy</a></p>
+		</li>
+		<li class="comment even thread-even depth-1" id="li-comment-816">
+			<article id="comment-816" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">buildhappy</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-816"><time pubdate="" datetime="2014-02-18T12:20:59+00:00">2014 年 2 月 18 日 at 下午 12:20</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>怎么设置error.log的记录格式啊？</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment byuser comment-author-mood bypostauthor odd alt depth-2" id="li-comment-817">
+			<article id="comment-817" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">mood</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-817"><time pubdate="" datetime="2014-02-19T10:44:28+00:00">2014 年 2 月 19 日 at 上午 10:44</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>error_log  logs/nginx.error.log;</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+</ul>
+</li>
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-841">
+			<article id="comment-841" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://wanmeishijie.ikxs.org/" rel="external nofollow" class="url">完美世界</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-841"><time pubdate="" datetime="2014-03-13T09:01:06+00:00">2014 年 3 月 13 日 at 上午 9:01</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>typecho安装在wp的二级目录下有没有配置文件呢？</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+		<li class="comment odd alt thread-even depth-1" id="li-comment-940">
+			<article id="comment-940" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">perlcn</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-940"><time pubdate="" datetime="2014-05-23T22:26:20+00:00">2014 年 5 月 23 日 at 下午 10:26</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>请教下，如何使用nginx做soap服务器？<br>
+我现在配置nginx为soap服务器后，通过soapui发送消息给nginx，nginx返回两个报文，一个200，一个400.感觉是nginx将一个soap请求作为两个报文来处理了</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment even depth-2" id="li-comment-990">
+			<article id="comment-990" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://t.qq.com/brighntessxiao" rel="external nofollow" class="url">brightness</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-990"><time pubdate="" datetime="2014-06-11T18:45:46+00:00">2014 年 6 月 11 日 at 下午 6:45</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>请问解决了吗？我也碰到类似问题无法解决</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment odd alt depth-3" id="li-comment-1002">
+			<article id="comment-1002" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">perlcn</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-1002"><time pubdate="" datetime="2014-06-19T22:33:11+00:00">2014 年 6 月 19 日 at 下午 10:33</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>没有解决！<br>
+不知道什么原因引起的，不确定是不是Linux自己本身解包有问题导致的。</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+</ul>
+</li>
+</ul>
+</li>
+		<li class="comment even thread-odd thread-alt depth-1" id="li-comment-1042">
+			<article id="comment-1042" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://www.kaixin001.com/home/?uid=5725353" rel="external nofollow" class="url">李桂宝</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-1042"><time pubdate="" datetime="2014-07-25T15:36:53+00:00">2014 年 7 月 25 日 at 下午 3:36</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>新版nginx已经很好的配置好了fastcgi_params了，千万不要再配置</p>
+<p>“fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;”</p>
+<p>了！！</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment odd alt depth-2" id="li-comment-1089">
+			<article id="comment-1089" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://t.qq.com/redapple16325975" rel="external nofollow" class="url">红苹果</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-1089"><time pubdate="" datetime="2014-09-04T13:14:30+00:00">2014 年 9 月 4 日 at 下午 1:14</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>那应该怎么配置？</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		<ul class="children">
+		<li class="comment even depth-3" id="li-comment-1097">
+			<article id="comment-1097" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn"><a href="http://www.kaixin001.com/home/?uid=5725353" rel="external nofollow" class="url">李桂宝</a></span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-1097"><time pubdate="" datetime="2014-09-24T16:41:11+00:00">2014 年 9 月 24 日 at 下午 4:41</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>fastcgi_param SCRIPT_FILENAME $request_filename;</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+</ul>
+</li>
+</ul>
+</li>
+		<li class="comment odd alt thread-even depth-1" id="li-comment-1080">
+			<article id="comment-1080" class="comment">
+				<footer class="comment-meta">
+					<cite class="comment-author vcard">
+						<span class="fn">micropan</span> on <a rel="nofollow" href="http://www.nginx.cn/76.html#comment-1080"><time pubdate="" datetime="2014-08-28T16:47:22+00:00">2014 年 8 月 28 日 at 下午 4:47</time></a> <span class="says">said:</span>					</cite><!-- .comment-author .vcard -->
+				</footer>
+	
+				<div class="comment-content"><p>想问下在设置php的地方<br>
+“ location ~ .php$ ”<br>
+拦截的正则是不是写的不对，感觉应该写为<br>
+“location ~ .php$”</p>
+</div>
+				
+			</article><!-- #comment-## -->
+		</li>
+            </ol>
+
+		            
+    </div>
+	<div id="postnavi">
+		<span class="prev"><a href="http://www.nginx.cn/78.html" rel="next">nginx负载均衡配置</a></span>
+		<span class="next"><a href="http://www.nginx.cn/62.html" rel="prev">Nginx不间断服务的平滑升级方法</a></span>
+		<div class="fixed"></div>
+	</div>
+
+<script type="text/javascript">
+/*120*270，创建于2014-1-3*/
+var cpro_id = "u1448424";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/f.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*250*200，创建于2014-1-3*/
+var cpro_id = "u1448426";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/f.js" type="text/javascript"></script>
+
+	</div>
+	<!-- main END -->
+
+	
+<!-- sidebar START -->
+<div id="sidebar">
+
+<!-- sidebar north START -->
+<div id="northsidebar" class="sidebar">
+
+	<!-- feeds -->
+	<div class="widget widget_feeds">
+		<div class="content">
+			<div id="subscribe"><wb:follow-button uid="1652773702" type="red_1" width="67" height="24"><iframe src="./nginx基本配置与参数说明 – 运维与架构_files/followbutton.htm" width="67" height="24" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:follow-button></div>
+			
+
+
+	<!-- searchbox START -->
+	<div id="searchbox">
+					<form action="http://www.nginx.cn/" method="get">
+				<div class="content">
+					<input type="text" class="textfield searchtip" name="s" size="24" value="">
+					<input type="submit" class="button" value="">
+				</div>
+			</form>
+			</div>
+<script type="text/javascript">
+//<![CDATA[
+	var searchbox = MGJS.$("searchbox");
+	var searchtxt = MGJS.getElementsByClassName("textfield", "input", searchbox)[0];
+	var searchbtn = MGJS.getElementsByClassName("button", "input", searchbox)[0];
+	var tiptext = "请输入关键字...";
+	if(searchtxt.value == "" || searchtxt.value == tiptext) {
+		searchtxt.className += " searchtip";
+		searchtxt.value = tiptext;
+	}
+	searchtxt.onfocus = function(e) {
+		if(searchtxt.value == tiptext) {
+			searchtxt.value = "";
+			searchtxt.className = searchtxt.className.replace(" searchtip", "");
+		}
+	}
+	searchtxt.onblur = function(e) {
+		if(searchtxt.value == "") {
+			searchtxt.className += " searchtip";
+			searchtxt.value = tiptext;
+		}
+	}
+	searchbtn.onclick = function(e) {
+		if(searchtxt.value == "" || searchtxt.value == tiptext) {
+			return false;
+		}
+	}
+//]]>
+</script>
+	<!-- searchbox END -->
+
+
+
+
+			<div class="fixed"></div>
+		</div>
+	</div>
+<!--taobao-->
+<script type="text/javascript">
+/*自定义标签云，创建于2013-8-10*/
+var cpro_id = "u1341918";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+<!--end taobao-->
+	<!-- showcase -->
+			<div class="widget">
+							<h3>本站公告</h3>
+						<div class="content">
+				<br>
+<p>查找问题解决方法时，你是不是经常发现同一篇文章转来转去，却没有一个说清楚究竟怎么回事。<br><br>你是不是偶尔也会发现自己曾经很复杂的解决方法，可以用一个巧妙的精简的方法替代，在想自己当初为什么那么笨而想不到。<br><br>现在好了如果你有刻骨铭心的Nginx经历，别让它被遗忘，欢迎与大家分享，投稿邮箱<a href="mailto:tougao@nginx.cn?subject=%E6%8A%95%E9%80%92%E6%96%87%E7%AB%A0%EF%BC%9A">tougao@nginx.cn</a>。</p>
+
+<p>新开Nginx QQ群，欢迎大家一起交流探讨，2000人群号212026468。<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=ffc35d46a323ba73a483ce9ea469b920b5b93d669f09b87a6580981ae089b4f4"><img border="0" src="./nginx基本配置与参数说明 – 运维与架构_files/group.png" alt="nginx" title="nginx"></a></p>
+
+
+<p>如果你喜欢本站，请添加本站链接。</p>			</div>
+		</div>
+	
+		<div id="recent-posts-2" class="widget widget_recent_entries">		<h3>近期文章</h3>		<ul>
+					<li>
+				<a href="http://www.nginx.cn/2451.html" title="crontab不执行问题">crontab不执行问题</a>
+						</li>
+					<li>
+				<a href="http://www.nginx.cn/2449.html" title="mysql-bin文件">mysql-bin文件</a>
+						</li>
+					<li>
+				<a href="http://www.nginx.cn/2446.html" title="动态更新运行中程序的配置信息">动态更新运行中程序的配置信息</a>
+						</li>
+					<li>
+				<a href="http://www.nginx.cn/2431.html" title="有人帮我更新博客">有人帮我更新博客</a>
+						</li>
+					<li>
+				<a href="http://www.nginx.cn/821.html" title="高并发下的 Nginx 优化">高并发下的 Nginx 优化</a>
+						</li>
+				</ul>
+		</div><div id="views-2" class="widget widget_views"><h3>点击排行</h3><ul>
+<li><a href="http://www.nginx.cn/install" title="Nginx安装">Nginx安装</a> - 108,825 ℃</li><li><a href="http://www.nginx.cn/231.html" title="nginx php-fpm安装配置">nginx php-fpm安装配置</a> - 75,015 ℃</li><li><a href="./nginx基本配置与参数说明 – 运维与架构_files/nginx基本配置与参数说明 – 运维与架构.htm" title="nginx基本配置与参数说明">nginx基本配置与参数说明</a> - 66,441 ℃</li><li><a href="http://www.nginx.cn/nginx-how-to" title="nginx中文手册">nginx中文手册</a> - 65,323 ℃</li><li><a href="http://www.nginx.cn/nginx-download" title="nginx最新版下载">nginx最新版下载</a> - 42,672 ℃</li><li><a href="http://www.nginx.cn/nginxchscommandline" title="运行和控制Nginx">运行和控制Nginx</a> - 37,594 ℃</li><li><a href="http://www.nginx.cn/115.html" title="nginx location匹配规则">nginx location匹配规则</a> - 33,506 ℃</li><li><a href="http://www.nginx.cn/927.html" title="nginx反向代理配置">nginx反向代理配置</a> - 28,238 ℃</li><li><a href="http://www.nginx.cn/102.html" title="nginx+php-fpm出现502 bad gateway错误解决方法">nginx+php-fpm出现502 bad gateway错误解决方法</a> - 27,583 ℃</li><li><a href="http://www.nginx.cn/216.html" title="nginx rewrite 指令">nginx rewrite 指令</a> - 21,344 ℃</li><li><a href="http://www.nginx.cn/78.html" title="nginx负载均衡配置">nginx负载均衡配置</a> - 20,978 ℃</li><li><a href="http://www.nginx.cn/666.html" title="nginx php-fpm 输出php错误日志">nginx php-fpm 输出php错误日志</a> - 20,645 ℃</li><li><a href="http://www.nginx.cn/about" title="关于我">关于我</a> - 20,298 ℃</li><li><a href="http://www.nginx.cn/255.html" title="nginx日志切割">nginx日志切割</a> - 19,993 ℃</li><li><a href="http://www.nginx.cn/110.html" title="使用ab对nginx进行压力测试">使用ab对nginx进行压力测试</a> - 17,897 ℃</li></ul>
+</div><div id="tag_cloud-2" class="widget widget_tag_cloud"><h3>标签</h3><div class="tagcloud"><a href="http://www.nginx.cn/tag/301" class="tag-link-93" title="2 个话题" style="font-size: 8pt;">301</a>
+<a href="http://www.nginx.cn/tag/400" class="tag-link-83" title="2 个话题" style="font-size: 8pt;">400</a>
+<a href="http://www.nginx.cn/tag/404" class="tag-link-27" title="3 个话题" style="font-size: 10.507462686567pt;">404</a>
+<a href="http://www.nginx.cn/tag/android-2" class="tag-link-196" title="2 个话题" style="font-size: 8pt;">android</a>
+<a href="http://www.nginx.cn/tag/apache" class="tag-link-15" title="2 个话题" style="font-size: 8pt;">apache</a>
+<a href="http://www.nginx.cn/tag/css" class="tag-link-130" title="2 个话题" style="font-size: 8pt;">css</a>
+<a href="http://www.nginx.cn/tag/discuz" class="tag-link-147" title="2 个话题" style="font-size: 8pt;">discuz</a>
+<a href="http://www.nginx.cn/tag/ftp" class="tag-link-168" title="2 个话题" style="font-size: 8pt;">ftp</a>
+<a href="http://www.nginx.cn/tag/gd" class="tag-link-127" title="3 个话题" style="font-size: 10.507462686567pt;">gd</a>
+<a href="http://www.nginx.cn/tag/gzip" class="tag-link-81" title="3 个话题" style="font-size: 10.507462686567pt;">gzip</a>
+<a href="http://www.nginx.cn/tag/json" class="tag-link-47" title="2 个话题" style="font-size: 8pt;">json</a>
+<a href="http://www.nginx.cn/tag/linode" class="tag-link-219" title="5 个话题" style="font-size: 14.268656716418pt;">linode</a>
+<a href="http://www.nginx.cn/tag/log" class="tag-link-123" title="2 个话题" style="font-size: 8pt;">log</a>
+<a href="http://www.nginx.cn/tag/mongodb" class="tag-link-23" title="3 个话题" style="font-size: 10.507462686567pt;">mongodb</a>
+<a href="http://www.nginx.cn/tag/mysql" class="tag-link-13" title="8 个话题" style="font-size: 17.820895522388pt;">mysql</a>
+<a href="http://www.nginx.cn/tag/nginx" class="tag-link-4" title="2 个话题" style="font-size: 8pt;">nginx</a>
+<a href="http://www.nginx.cn/tag/php" class="tag-link-37" title="13 个话题" style="font-size: 22pt;">php</a>
+<a href="http://www.nginx.cn/tag/php-fpm" class="tag-link-18" title="5 个话题" style="font-size: 14.268656716418pt;">php-fpm</a>
+<a href="http://www.nginx.cn/tag/php-ini" class="tag-link-124" title="2 个话题" style="font-size: 8pt;">php.ini</a>
+<a href="http://www.nginx.cn/tag/redis" class="tag-link-160" title="2 个话题" style="font-size: 8pt;">redis</a>
+<a href="http://www.nginx.cn/tag/rewrite" class="tag-link-25" title="6 个话题" style="font-size: 15.731343283582pt;">rewrite</a>
+<a href="http://www.nginx.cn/tag/shell" class="tag-link-159" title="5 个话题" style="font-size: 14.268656716418pt;">shell</a>
+<a href="http://www.nginx.cn/tag/timeout" class="tag-link-135" title="2 个话题" style="font-size: 8pt;">timeout</a>
+<a href="http://www.nginx.cn/tag/wordpress" class="tag-link-38" title="4 个话题" style="font-size: 12.597014925373pt;">wordpress</a>
+<a href="http://www.nginx.cn/tag/%e4%b9%b1%e7%a0%81" class="tag-link-113" title="4 个话题" style="font-size: 12.597014925373pt;">乱码</a>
+<a href="http://www.nginx.cn/tag/%e4%bb%a3%e7%90%86" class="tag-link-75" title="2 个话题" style="font-size: 8pt;">代理</a>
+<a href="http://www.nginx.cn/tag/%e5%8f%82%e6%95%b0" class="tag-link-59" title="3 个话题" style="font-size: 10.507462686567pt;">参数</a>
+<a href="http://www.nginx.cn/tag/%e5%8f%8d%e5%90%91%e4%bb%a3%e7%90%86" class="tag-link-66" title="3 个话题" style="font-size: 10.507462686567pt;">反向代理</a>
+<a href="http://www.nginx.cn/tag/%e5%90%af%e5%8a%a8" class="tag-link-29" title="2 个话题" style="font-size: 8pt;">启动</a>
+<a href="http://www.nginx.cn/tag/%e5%91%bd%e4%bb%a4" class="tag-link-63" title="2 个话题" style="font-size: 8pt;">命令</a>
+<a href="http://www.nginx.cn/tag/%e5%9f%9f%e5%90%8d" class="tag-link-26" title="2 个话题" style="font-size: 8pt;">域名</a>
+<a href="http://www.nginx.cn/tag/%e5%ae%89%e8%a3%85" class="tag-link-161" title="7 个话题" style="font-size: 16.776119402985pt;">安装</a>
+<a href="http://www.nginx.cn/tag/%e5%ae%9a%e6%97%b6" class="tag-link-144" title="2 个话题" style="font-size: 8pt;">定时</a>
+<a href="http://www.nginx.cn/tag/%e6%89%a9%e5%b1%95" class="tag-link-162" title="2 个话题" style="font-size: 8pt;">扩展</a>
+<a href="http://www.nginx.cn/tag/%e6%89%a9%e5%b1%95%e5%90%8d" class="tag-link-43" title="2 个话题" style="font-size: 8pt;">扩展名</a>
+<a href="http://www.nginx.cn/tag/%e6%8e%92%e9%94%99" class="tag-link-139" title="2 个话题" style="font-size: 8pt;">排错</a>
+<a href="http://www.nginx.cn/tag/%e6%97%a5%e5%bf%97" class="tag-link-31" title="4 个话题" style="font-size: 12.597014925373pt;">日志</a>
+<a href="http://www.nginx.cn/tag/%e6%a0%87%e9%a2%98" class="tag-link-98" title="2 个话题" style="font-size: 8pt;">标题</a>
+<a href="http://www.nginx.cn/tag/%e7%bc%93%e5%ad%98" class="tag-link-64" title="2 个话题" style="font-size: 8pt;">缓存</a>
+<a href="http://www.nginx.cn/tag/%e7%bc%a9%e7%95%a5%e5%9b%be" class="tag-link-102" title="2 个话题" style="font-size: 8pt;">缩略图</a>
+<a href="http://www.nginx.cn/tag/%e8%b6%85%e6%97%b6" class="tag-link-145" title="3 个话题" style="font-size: 10.507462686567pt;">超时</a>
+<a href="http://www.nginx.cn/tag/%e9%85%8d%e7%bd%ae" class="tag-link-58" title="4 个话题" style="font-size: 12.597014925373pt;">配置</a>
+<a href="http://www.nginx.cn/tag/%e9%87%8d%e5%86%99" class="tag-link-30" title="3 个话题" style="font-size: 10.507462686567pt;">重写</a>
+<a href="http://www.nginx.cn/tag/%e9%87%8d%e5%ae%9a%e5%90%91" class="tag-link-94" title="2 个话题" style="font-size: 8pt;">重定向</a>
+<a href="http://www.nginx.cn/tag/%e9%94%99%e8%af%af" class="tag-link-155" title="2 个话题" style="font-size: 8pt;">错误</a></div>
+</div></div>
+<!-- sidebar north END -->
+
+<div id="centersidebar">
+
+	<!-- sidebar east START -->
+	<div id="eastsidebar" class="sidebar">
+ 
+
+
+	</div>
+	<!-- sidebar east END -->
+
+	<!-- sidebar west START -->
+	<div id="westsidebar" class="sidebar">
+	<div id="categories-2" class="widget widget_categories"><h3>分类目录</h3>		<ul>
+	<li class="cat-item cat-item-184"><a href="http://www.nginx.cn/category/android" title="查看 android 下的所有文章">android</a>
+</li>
+	<li class="cat-item cat-item-189"><a href="http://www.nginx.cn/category/cplusplus" title="查看 c++ 下的所有文章">c++</a>
+</li>
+	<li class="cat-item cat-item-130"><a href="http://www.nginx.cn/category/css" title="查看 css 下的所有文章">css</a>
+</li>
+	<li class="cat-item cat-item-190"><a href="http://www.nginx.cn/category/java" title="查看 java 下的所有文章">java</a>
+</li>
+	<li class="cat-item cat-item-298"><a href="http://www.nginx.cn/category/js" title="查看 js 下的所有文章">js</a>
+</li>
+	<li class="cat-item cat-item-86"><a href="http://www.nginx.cn/category/linux" title="查看 linux 下的所有文章">linux</a>
+</li>
+	<li class="cat-item cat-item-13"><a href="http://www.nginx.cn/category/mysql" title="查看 mysql 下的所有文章">mysql</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.nginx.cn/category/nginx-article" title="nginx入门文章，介绍nginx的安装和配置相关内容">nginx</a>
+</li>
+	<li class="cat-item cat-item-191"><a href="http://www.nginx.cn/category/oracle" title="查看 oracle 下的所有文章">oracle</a>
+</li>
+	<li class="cat-item cat-item-37"><a href="http://www.nginx.cn/category/php" title="查看 php 下的所有文章">php</a>
+</li>
+	<li class="cat-item cat-item-192"><a href="http://www.nginx.cn/category/python" title="查看 python 下的所有文章">python</a>
+</li>
+	<li class="cat-item cat-item-160"><a href="http://www.nginx.cn/category/redis" title="查看 redis 下的所有文章">redis</a>
+</li>
+	<li class="cat-item cat-item-173"><a href="http://www.nginx.cn/category/seo" title="查看 seo 下的所有文章">seo</a>
+</li>
+	<li class="cat-item cat-item-38"><a href="http://www.nginx.cn/category/wordpress" title="查看 wordpress 下的所有文章">wordpress</a>
+</li>
+	<li class="cat-item cat-item-176"><a href="http://www.nginx.cn/category/%e5%b0%8f%e6%8a%80%e5%b7%a7" title="查看 小技巧 下的所有文章">小技巧</a>
+</li>
+	<li class="cat-item cat-item-186"><a href="http://www.nginx.cn/category/whoami" title="查看 杂谈 下的所有文章">杂谈</a>
+</li>
+	<li class="cat-item cat-item-188"><a href="http://www.nginx.cn/category/site" title="查看 网站 下的所有文章">网站</a>
+</li>
+		</ul>
+</div>	</div>
+	<!-- sidebar west END -->
+	<div class="fixed"></div>
+</div>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-8728612882429404";
+/* nginx右侧导航 */
+google_ad_slot = "8826641902";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<!-- sidebar south START -->
+<div id="southsidebar" class="sidebar">
+<div id="archives-2" class="widget widget_archive"><h3>文章归档</h3>		<ul>
+			<li><a href="http://www.nginx.cn/date/2014/11" title="2014 年十一月">2014 年十一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/10" title="2014 年十月">2014 年十月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/07" title="2014 年七月">2014 年七月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/06" title="2014 年六月">2014 年六月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/05" title="2014 年五月">2014 年五月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/04" title="2014 年四月">2014 年四月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/03" title="2014 年三月">2014 年三月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/02" title="2014 年二月">2014 年二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2014/01" title="2014 年一月">2014 年一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/12" title="2013 年十二月">2013 年十二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/11" title="2013 年十一月">2013 年十一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/10" title="2013 年十月">2013 年十月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/09" title="2013 年九月">2013 年九月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/08" title="2013 年八月">2013 年八月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/07" title="2013 年七月">2013 年七月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/06" title="2013 年六月">2013 年六月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/05" title="2013 年五月">2013 年五月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/04" title="2013 年四月">2013 年四月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/03" title="2013 年三月">2013 年三月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/02" title="2013 年二月">2013 年二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2013/01" title="2013 年一月">2013 年一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/12" title="2012 年十二月">2012 年十二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/11" title="2012 年十一月">2012 年十一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/10" title="2012 年十月">2012 年十月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/09" title="2012 年九月">2012 年九月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/08" title="2012 年八月">2012 年八月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/07" title="2012 年七月">2012 年七月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/06" title="2012 年六月">2012 年六月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/05" title="2012 年五月">2012 年五月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/04" title="2012 年四月">2012 年四月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/03" title="2012 年三月">2012 年三月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/02" title="2012 年二月">2012 年二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2012/01" title="2012 年一月">2012 年一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/12" title="2011 年十二月">2011 年十二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/11" title="2011 年十一月">2011 年十一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/10" title="2011 年十月">2011 年十月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/09" title="2011 年九月">2011 年九月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/08" title="2011 年八月">2011 年八月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/07" title="2011 年七月">2011 年七月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/06" title="2011 年六月">2011 年六月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/05" title="2011 年五月">2011 年五月</a></li>
+	<li><a href="http://www.nginx.cn/date/2011/03" title="2011 年三月">2011 年三月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/11" title="2010 年十一月">2010 年十一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/10" title="2010 年十月">2010 年十月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/09" title="2010 年九月">2010 年九月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/08" title="2010 年八月">2010 年八月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/07" title="2010 年七月">2010 年七月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/06" title="2010 年六月">2010 年六月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/05" title="2010 年五月">2010 年五月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/04" title="2010 年四月">2010 年四月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/03" title="2010 年三月">2010 年三月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/02" title="2010 年二月">2010 年二月</a></li>
+	<li><a href="http://www.nginx.cn/date/2010/01" title="2010 年一月">2010 年一月</a></li>
+	<li><a href="http://www.nginx.cn/date/2009/12" title="2009 年十二月">2009 年十二月</a></li>
+		</ul>
+</div><div id="ds-recent-visitors-4" class="widget ds-widget-recent-visitors"><h3>最近访客</h3><ul class="ds-recent-visitors" data-num-items="16" data-show-time="0" data-avatar-size="50" id="ds-recent-visitors"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://t.qq.com/h4Breeze" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=9362546&#39;;" title="charles"><img src="./nginx基本配置与参数说明 – 运维与架构_files/100" alt="charles" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/2840185097" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3466757&#39;;" title="葱头在行动"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(3)" alt="葱头在行动" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/3291855233" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=3141570&#39;;" title="我亲爱的小盆友们"><img src="./nginx基本配置与参数说明 – 运维与架构_files/u2806434-8.jpg" alt="我亲爱的小盆友们" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/2343700811" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=9687601&#39;;" title="leon走上了前端不归路"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(4)" alt="leon走上了前端不归路" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1456599720" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=7449847&#39;;" title="FlyingHail"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(5)" alt="FlyingHail" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/zhangyangwpp" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=9228964&#39;;" title="LarryZ83WPP"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(6)" alt="LarryZ83WPP" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/ft15222919293" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=5876727&#39;;" title="冯不通"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(7)" alt="冯不通" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://www.cxsir.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=2887891&#39;;" title="残雪"><img src="http://0.gravatar.com/avatar/2b78b41c052c105e70ec503641fb7aa0?s=50" alt="残雪" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://geekdada.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=436509&#39;;" title="geekdada"><img src="http://0.gravatar.com/avatar/a01bdc552fbe76cc4732c1eac75e7c85?s=50" alt="geekdada" style="width:50px;height:50px"></a></div><div class="ds-avatar"><img src="http://q.qlogo.cn/qqapp/100229475/94EE905798034BDA0D9EB0BC9A59BB9D/100" alt=" hi" style="width:50px;height:50px"></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/2101863667" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=592791&#39;;" title="黄健"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(8)" alt="黄健" style="width:50px;height:50px"></a></div><div class="ds-avatar"><img src="http://q.qlogo.cn/qqapp/100229475/28BC661932891793DFDC36DE67903532/100" alt="天理" style="width:50px;height:50px"></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/wangbozian" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=193896&#39;;" title="Hsu三炮"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(9)" alt="Hsu三炮" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/2714029752" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=7835246&#39;;" title="寻找薛定谔的黄小猫THU"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(10)" alt="寻找薛定谔的黄小猫THU" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://www.guocundian.com/" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=9267985&#39;;" title="过村店"><img src="http://q.qlogo.cn/qqapp/100229475/77E4F261EF1E08F09A67D5AE8215CC28/100" alt="过村店" style="width:50px;height:50px"></a></div><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/fanzhijun" onclick="this.href=&#39;http://nginx.duoshuo.com/user-url/?user_id=993133&#39;;" title="fansxnet"><img src="./nginx基本配置与参数说明 – 运维与架构_files/1(11)" alt="fansxnet" style="width:50px;height:50px"></a></div></ul></div><script>
+if (typeof DUOSHUO !== 'undefined')
+	DUOSHUO.RecentVisitors('.ds-recent-visitors');
+</script></div>
+<!-- sidebar south END -->
+
+</div>
+<!-- sidebar END -->	<div class="fixed"></div>
+</div>
+<script type="text/javascript" src="./nginx基本配置与参数说明 – 运维与架构_files/copy.js"></script>
+<script type="text/javascript">
+(function(){
+//支付鼓励
+        //添加在本篇完之后
+
+        var targetLastP = document.getElementById("ad");
+
+        if (targetLastP ) {
+          //alert('targetlastp');
+                targetLastP.innerHTML = targetLastP.innerHTML + '<br/><table width="650" height="40" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;border: 1px solid #b8d4ea;">  <tbody>  <tr>  <td align="center"><a href="http://www.cnpm25.com/" title="全国空气质量指数" target="_blank"><font color="red">空气质量指数</font></a></td>  <td align="center"><a href="http://www.264.cn/jx/" title="手机号码吉凶测试" target="_blank"><font color="blue">手机号码吉凶测试</font></a></td>  <td align="center"><a href="http://www.264.cn/jisuanqi/" title="智能计算器" target="_blank"><font color="gray">智能计算器</font></a></td>  </tr>  </tbody>  </table>  <br/>';
+        }
+})();
+</script>
+<!-- content END -->
+
+<!-- footer START -->
+<div id="footer">
+	<a id="gotop" href="http://www.nginx.cn/76.html#" onclick="MGJS.goTop();return false;">回到顶部</a>
+	
+	<div id="copyright">
+		版权所有 © 2009-2014  <a title="nginx中文网" href="http://www.nginx.cn/">服务器运维与Web架构</a> Theme by NeoEase.
+	</div>
+	
+</div>
+<!-- footer END -->
+
+</div>
+<!-- container END -->
+</div><div id="ds-notify" style="top: 24px; right: 24px; display: none;"><div id="ds-reset"><a class="ds-logo" href="http://duoshuo.com/" target="_blank" title="多说"></a><ul class="ds-notify-unread"><li style="display:none;"><a data-type="unread-comments" href="javascript:void(0);">你有undefined条新回复</a></li><li style="display:none;"><a data-type="unread-notifications" href="javascript:void(0);">你有undefined条系统消息</a></li></ul></div></div>
+<!-- wrap END -->
+
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7f826a2d9c693c7ed804c0145be7da9d' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://hm.baidu.com/h.js?7f826a2d9c693c7ed804c0145be7da9d" type="text/javascript"></script>
+</div>
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=6&amp;pos=right&amp;uid=945645"></script>
+
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END --><script language="javascript">
+document.body.oncopy = function () { 
+	setTimeout( function () { 
+		var text = getClipboard();
+		if (text) { 
+			text = text + "\r\n详细出处参考："+location.href.toString(); 
+copy2Clipboard(text);
+		} 
+				}, 100 ) 
+}
+</script>
+
+
+</body></html>

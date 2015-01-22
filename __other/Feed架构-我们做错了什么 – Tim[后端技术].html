@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0052)http://timyang.net/architecture/feed-data-arch-cons/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Feed架构-我们做错了什么 – Tim[后端技术]</title>
+
+<meta name="description" content="在过去几年，所在的微博技术团队在一定程度成功解决了feed架构的扩展性与性能的问题，大部分精力已经从应对峰值性能或者数据扩展中解放出来。 几天前，拿着上面这张架构图问内部一些架构师，目前完成的工作及存在的主要问题是什么？ 完成的工作不出意料，大家的观点比较类似，主要在架构的工程成熟度方面。 解决了数据规模大且长尾访问的问题，通过按时间线的冷热分区设计，在MySQL等数据库上成功实现了低成本的长尾分区实现。由于社交产品中大部分访问（90%以上）发生在最近的数据，而较旧的数据（长尾数据）相对访问偏少，因此在存储上利用时间维度进行不同存储区域区分，来达到性能及成本的收益。 解决了数据存储可扩展的问题，可以满足3年左右数据扩展的需要。这个主要利用成熟的数据库拆分方案，简单的实现通常设计成倍扩容，在最初建表时候预留足够多的分表，当容量增长时将这些表迁移到更多服务器上去。 解决了百万QPS访问的问题，主要依赖缓存分区及复制机制的成功应用，通过缓存复制及分级，可以让每秒上十万次访问的数据获得非常好的访问性能，同时数据复制机制可以提高可用性，防止单点机器故障时给数据库带来范围压力。 解决了可用性及错误隔离问题，得益于历年来建设的SLA体系，服务之间有良好的服务契约及错误隔离手段，因此核心功能 有99.99%+的可用性。 但是对于不足呢？如果架构重新再来，你会怎么做？这个问题回答比较多元，经过整理一些主要观点如下。 首先是从解决架构的问题说起，上述feed架构主要解决了在社交媒体环境中，实时及可扩展的解决基于关注关系的数据分发问题。 由于微博是一个实时的网络，人们常把Twitter/微博这种社交媒体产品比作是地球的脉搏，它确实无时不刻都在产生海量的数据，并且产生着不可预测的大量随机峰值访问，业界也是首次随着社交网络的出现遭遇这种架构上的scalability问题，记得在2009-2010年左右，Twitter由于压力过大经常出现鲸鱼页面错误。经过几年的努力，包括微博在内的业界主要公司都已经成功解决了关系模型的数据分发架构问题。 但在用户的层面，使用社交媒体产品依旧被信息过载的问题所困扰。 虽然每天收到大量信息，但是大部分不是自己感兴趣的信息。 基于用户关注维度的兴趣阅读效率不高，用户关注了一个兴趣领域的同行，但这个同行却大部分时候在谈风花雪月。 由于传播的低成本，大号在过度的使用消息通道，生产大量用户未必感兴趣的低质内容。 广告及普通内容的界限很模糊。 由于利益关系，僵尸帐号及内容通过变换形式在大行其道。 内容同质化及雷同问题，内容被精英占领，小人物声音不能得到有效传递。 在社交网络中，上述问题，不可能全部像Google的使命那样，通过技术手段得到解决。但是大部分又跟技术密切相关。 基于用户维度组织内容高效满足兴趣阅读的难度。在上图中，绿色的框中是数据流经的主要通道，但在传统的SNS架构中，这些数据的组织都是基于用户纬度。从用户纬度组织数据较好解决了传统feed模型基于关系聚合数据的问题。但正是由于数据是从关系维度来组织的结构，造成并不能给改进上述阅读效率问题带来便利。由于在一定程度信息过载，兴趣阅读是发展方向，但是在架构上目前并没有清晰的解法。 信息识别及低质内容鉴定的技术挑战。虽然业界已经在大数据、自然语言处理等方面积累了不少经验，但在具体场景中，信息识别仍然还在比较初级的阶段。低质内容不一定是垃圾广告，只是当前浏览者不感兴趣。 反垃圾算法。 社交网络的信息架构和搜索引擎有很大的不同，在浏览feed是并不像使用搜索有明确的搜索意图，Facebook曾经尝试使用EdgeRank来解决newsfeed算法的效率问题，但是结果并不如预期理想。由于社交关系的存在，用户对出现（及不出现）什么内容的可解释性非常敏感，不能接受好友的信息在排序结果不能看到。因此仅能说feed架构只是解决了初步的问题，更大的问题依旧在思考及寻找解决的途中。 PS：本文上述内容会在12月19日ArchSummit北京 大数据环境的feed架构 演讲中介绍，欢迎参会的同行前来交流。 如想及时阅读Tim Yang的文章，可通过页面右上方扫码订阅最新更新。">
+<link rel="stylesheet" type="text/css" href="./Feed架构-我们做错了什么 – Tim[后端技术]_files/style.css">
+<!--[if IE 5]>
+<style type="text/css"> 
+/* IE 5 does not use the standard box model, so the column widths are overidden to render the page correctly. */
+#outerWrapper #contentWrapper #rightColumn {
+  width: 220px;
+}
+</style>
+<![endif]-->
+<!--[if IE]>
+<style type="text/css"> 
+/* The proprietary zoom property gives IE the hasLayout property which addresses several bugs. */
+#outerWrapper #contentWrapper #content {
+  zoom: 1;
+}
+</style>
+<![endif]-->
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://timyang.net/feed/atom/">
+<link rel="alternate" type="application/rss+xml" title="Tim[后端技术] RSS Feed" href="http://timyang.net/feed/">
+<link rel="pingback" href="http://timyang.net/blog/xmlrpc.php">
+<link rel="alternate" type="application/rss+xml" title="Tim[后端技术] » Feed架构-我们做错了什么 Comments Feed" href="http://timyang.net/architecture/feed-data-arch-cons/feed/">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./Feed架构-我们做错了什么 – Tim[后端技术]_files/pagenavi-css.css" type="text/css" media="all">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://timyang.net/blog/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://timyang.net/blog/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Feed消息队列架构分析" href="http://timyang.net/data/feed-message-queue/">
+<meta name="generator" content="WordPress 4.0">
+<link rel="canonical" href="./Feed架构-我们做错了什么 – Tim[后端技术]_files/Feed架构-我们做错了什么 – Tim[后端技术].html">
+<link rel="shortlink" href="http://timyang.net/?p=1150">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<style type="text/css"></style></head>
+<body>
+<div id="outerWrapper">
+<div id="header">
+<h1><a title="Home" href="http://timyang.net/">Tim[后端技术]</a></h1>
+<span class="description">Tim's blog, 关于后端架构、互联网技术、分布式、大型网络应用、NoSQL、技术感悟等</span>
+</div>
+<form method="get" id="searchform" action="http://timyang.net/"> 
+<div class="navbar"><a href="http://timyang.net/">Home</a> | <a href="http://timyang.net/about/">About</a> | <a href="http://timyang.net/tag/English/">English version</a> | <a href="http://timyang.net/about/#comment">留言(Guestbook)</a> | <a href="http://timyang.net/feed/"><img src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/feed-icon.gif"></a><a href="http://timyang.net/feed/">订阅RSS</a>  
+<label class="hidden" for="s"></label> <input type="text" name="s" id="s" value=""> <input type="submit" id="searchsubmit" value="Search">
+</div></form>
+<div id="contentWrapper">
+<div id="rightColumn">
+<li>
+<ul><li>			<div class="textwidget">Email: <img src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/email.png">
+
+<p>微信公众号：</p>
+<img class="alignnone size-full wp-image-1073" src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/qrcode_for_timyang_small.jpg" alt="qrcode_for_timyang_small" width="129" height="129"></div>
+		</li></ul><ul><li><h3>Similar Posts</h3><ul><li><a href="http://timyang.net/data/feed-message-queue/" rel="bookmark" title="December 11, 2014">Feed消息队列架构分析</a></li>
+
+<li><a href="http://timyang.net/sns/facebook-feed/" rel="bookmark" title="June 2, 2009">Facebook的feed格式设计</a></li>
+
+<li><a href="http://timyang.net/architecture/friendfeed-like-aggregator/" rel="bookmark" title="April 3, 2009">Ideas for creating a friendfeed like feed aggregator system</a></li>
+
+<li><a href="http://timyang.net/architecture/cell-distributed-system/" rel="bookmark" title="December 16, 2013">单元化与分布式架构的切分问题</a></li>
+
+<li><a href="http://timyang.net/sns/facebook-platform-f8-07/" rel="bookmark" title="June 10, 2009">Facebook平台设计(一)</a></li>
+</ul><!-- Similar Posts took 25.474 ms --></li></ul><ul><li><h3>Most Commented</h3><ul><li><a href="http://timyang.net/data/mcdb-tt-redis/" title="MemcacheDB, Tokyo Tyrant, Redis performance test">MemcacheDB, Tokyo Tyrant, Redis performance test</a> (117)</li><li><a href="http://timyang.net/programming/c-erlang-java-performance/" title="C, Erlang, Java and Go Web Server performance test">C, Erlang, Java and Go Web Server performance test</a> (94)</li><li><a href="http://timyang.net/about/" title="About Tim Yang">About Tim Yang</a> (86)</li><li><a href="http://timyang.net/data/redis-misunderstanding/" title="Redis几个认识误区">Redis几个认识误区</a> (76)</li><li><a href="http://timyang.net/programming/memcache-mutex/" title="Memcache mutex设计模式">Memcache mutex设计模式</a> (50)</li><li><a href="http://timyang.net/misc/macbook-air-productive/" title="MacBook Air与工作效率">MacBook Air与工作效率</a> (45)</li><li><a href="http://timyang.net/architecture/consistent-hashing-practice/" title="某分布式应用实践一致性哈希的一些问题">某分布式应用实践一致性哈希的一些问题</a> (42)</li><li><a href="http://timyang.net/google/open-source/" title="为什么优秀开发者进入Google后就不参与开源了">为什么优秀开发者进入Google后就不参与开源了</a> (39)</li><li><a href="http://timyang.net/data/memcached-lru-evictions/" title="Memcached数据被踢(evictions&gt;0)现象分析">Memcached数据被踢(evictions&gt;0)现象分析</a> (37)</li><li><a href="http://timyang.net/architecture/microblog-design-qcon-beijing/" title="构建可扩展的微博架构(qcon beijing 2010演讲)">构建可扩展的微博架构(qcon beijing 2010演讲)</a> (33)</li></ul></li></ul>		<ul><li>		<h3>Recent Posts</h3>		<ul>
+					<li>
+				<a href="./Feed架构-我们做错了什么 – Tim[后端技术]_files/Feed架构-我们做错了什么 – Tim[后端技术].html">Feed架构-我们做错了什么</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/data/feed-message-queue/">Feed消息队列架构分析</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/data/key-list-pagination/">为什么长尾数据的翻页技术实现复杂</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/container/kubernetes-evaluation/">Kubernetes – Google分布式容器技术初体验</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/architecture/refactoring/">当谈系统重构时，我们谈什么</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/service/application-failure-managment/">应用层的容错与分层设计</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/distributed/service-architecture/">分布式服务框架的4项特性</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/im/mobile-im-xmpp/">开源移动通讯架构与XMPP</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/data/cache-failure/">分布式缓存的一起问题</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/architecture/mobile-pubsub-design/">基于分发机制的公众订阅平台设计</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/architecture/cell-distributed-system/">单元化与分布式架构的切分问题</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/tech/career-promotion/">技术晋升的误区</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/tech/conference/">寡头时代的技术大会</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/data/cassandra-vs-redis/">Cassandra代替Redis?</a>
+						</li>
+					<li>
+				<a href="http://timyang.net/tech/interview/">当我谈招聘时我谈什么</a>
+						</li>
+				</ul>
+		</li></ul><ul><li><h3>Recent Comments</h3><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="http://steelpdf.blogspot.com/" rel="external nofollow" class="url">asme b31.1asme bpvc viiinbbi nb23nfpa 70</a></span> on <a href="http://timyang.net/python/python-thread-socket-server/comment-page-1/#comment-1112624">Python thread socket server</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://sigitmuddikuncoro.my.id/" rel="external nofollow" class="url">sigitmuddikuncoro.my.id</a></span> on <a href="http://timyang.net/misc/speech/comment-page-1/#comment-1112423">当我谈演讲时候，我谈些什么</a></li><li class="recentcomments"><span class="comment-author-link">Tim</span> on <a href="http://timyang.net/data/key-list-pagination/comment-page-1/#comment-1111053">为什么长尾数据的翻页技术实现复杂</a></li><li class="recentcomments"><span class="comment-author-link">gongweixin</span> on <a href="http://timyang.net/data/key-list-pagination/comment-page-1/#comment-1111005">为什么长尾数据的翻页技术实现复杂</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://www.baidu.com/" rel="external nofollow" class="url">kobe</a></span> on <a href="http://timyang.net/misc/macbook-air-productive/comment-page-1/#comment-1110959">MacBook Air与工作效率</a></li></ul></li></ul><ul><li><h3>Categories</h3>		<ul>
+	<li class="cat-item cat-item-139"><a href="http://timyang.net/category/container/">container</a>
+</li>
+	<li class="cat-item cat-item-79"><a href="http://timyang.net/category/data/">data</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://timyang.net/category/erlang/" title="Erlang语言">Erlang</a>
+</li>
+	<li class="cat-item cat-item-52"><a href="http://timyang.net/category/google/">Google</a>
+</li>
+	<li class="cat-item cat-item-45"><a href="http://timyang.net/category/im/">im</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://timyang.net/category/java/">Java</a>
+</li>
+	<li class="cat-item cat-item-32"><a href="http://timyang.net/category/linux/">Linux</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="http://timyang.net/category/lua/">Lua</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://timyang.net/category/python/">Python</a>
+</li>
+	<li class="cat-item cat-item-137"><a href="http://timyang.net/category/service/">service</a>
+</li>
+	<li class="cat-item cat-item-57"><a href="http://timyang.net/category/sns/">SNS</a>
+</li>
+	<li class="cat-item cat-item-69"><a href="http://timyang.net/category/tech/">tech</a>
+</li>
+	<li class="cat-item cat-item-17"><a href="http://timyang.net/category/web/">Web</a>
+</li>
+	<li class="cat-item cat-item-58"><a href="http://timyang.net/category/product/">产品</a>
+</li>
+	<li class="cat-item cat-item-87"><a href="http://timyang.net/category/distributed/" title="分布式算法及思想">分布式</a>
+</li>
+	<li class="cat-item cat-item-130"><a href="http://timyang.net/category/management/">技术管理</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://timyang.net/category/architecture/" title="后端架构">架构</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://timyang.net/category/programming/">编程</a>
+</li>
+	<li class="cat-item cat-item-134"><a href="http://timyang.net/category/tao/">随想</a>
+</li>
+	<li class="cat-item cat-item-72"><a href="http://timyang.net/category/misc/" title="非技术话题">非技术</a>
+</li>
+		</ul>
+</li></ul><ul><li><h3>Archives</h3>		<ul>
+	<li><a href="http://timyang.net/2014/12/">December 2014</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2014/11/">November 2014</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2014/10/">October 2014</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2014/05/">May 2014</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2013/12/">December 2013</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2013/11/">November 2013</a>&nbsp;(4)</li>
+	<li><a href="http://timyang.net/2013/06/">June 2013</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2013/05/">May 2013</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2013/01/">January 2013</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2012/10/">October 2012</a>&nbsp;(5)</li>
+	<li><a href="http://timyang.net/2012/09/">September 2012</a>&nbsp;(4)</li>
+	<li><a href="http://timyang.net/2012/05/">May 2012</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2012/02/">February 2012</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2012/01/">January 2012</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2011/12/">December 2011</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2011/08/">August 2011</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2011/07/">July 2011</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2011/04/">April 2011</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2011/02/">February 2011</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2011/01/">January 2011</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2010/12/">December 2010</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2010/11/">November 2010</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2010/09/">September 2010</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2010/08/">August 2010</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2010/07/">July 2010</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2010/06/">June 2010</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2010/05/">May 2010</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2010/04/">April 2010</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2010/03/">March 2010</a>&nbsp;(4)</li>
+	<li><a href="http://timyang.net/2010/02/">February 2010</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2010/01/">January 2010</a>&nbsp;(1)</li>
+	<li><a href="http://timyang.net/2009/12/">December 2009</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2009/11/">November 2009</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2009/10/">October 2009</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2009/09/">September 2009</a>&nbsp;(4)</li>
+	<li><a href="http://timyang.net/2009/08/">August 2009</a>&nbsp;(5)</li>
+	<li><a href="http://timyang.net/2009/07/">July 2009</a>&nbsp;(6)</li>
+	<li><a href="http://timyang.net/2009/06/">June 2009</a>&nbsp;(5)</li>
+	<li><a href="http://timyang.net/2009/05/">May 2009</a>&nbsp;(11)</li>
+	<li><a href="http://timyang.net/2009/04/">April 2009</a>&nbsp;(7)</li>
+	<li><a href="http://timyang.net/2009/03/">March 2009</a>&nbsp;(3)</li>
+	<li><a href="http://timyang.net/2009/02/">February 2009</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2009/01/">January 2009</a>&nbsp;(2)</li>
+	<li><a href="http://timyang.net/2008/12/">December 2008</a>&nbsp;(2)</li>
+		</ul>
+</li></ul></li><li>
+<h3>Feeds</h3>
+<ul>
+<li><a href="http://timyang.net/feed/">Entries (RSS)</a></li>
+<li><a href="http://timyang.net/comments/feed/">Comments (RSS)</a></li>
+</ul>
+</li>
+<li>
+<form method="get" id="searchform" action="http://timyang.net/">
+<div><label class="hidden" for="s"></label>
+<input type="text" size="15" value="" name="s" id="s">
+<input type="submit" id="searchsubmit" value="Search"></div>
+</form></li>
+</div><div id="content">
+<div class="post-1150 post type-post status-publish format-standard hentry category-architecture" id="post-1150">
+<h2 class="posttitle"><a href="./Feed架构-我们做错了什么 – Tim[后端技术]_files/Feed架构-我们做错了什么 – Tim[后端技术].html" rel="bookmark" title="Permanent Link to Feed架构-我们做错了什么">Feed架构-我们做错了什么</a></h2>
+<div class="postinfo">
+Saturday, Dec 13th, 2014  by Tim </div>
+<div class="entry">
+<p>在过去几年，所在的微博技术团队在一定程度成功解决了feed架构的扩展性与性能的问题，大部分精力已经从应对峰值性能或者数据扩展中解放出来。</p>
+<p><img class="alignnone size-full wp-image-1151" src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/feed-arch.jpg" alt="feed arch" width="455" height="499"></p>
+<p>几天前，拿着上面这张架构图问内部一些架构师，目前完成的工作及存在的主要问题是什么？</p>
+<p>完成的工作不出意料，大家的观点比较类似，主要在架构的工程成熟度方面。</p>
+<ul>
+<li>解决了数据规模大且长尾访问的问题，通过按时间线的冷热分区设计，在MySQL等数据库上成功实现了低成本的长尾分区实现。由于社交产品中大部分访问（90%以上）发生在最近的数据，而较旧的数据（长尾数据）相对访问偏少，因此在存储上利用时间维度进行不同存储区域区分，来达到性能及成本的收益。</li>
+<li>解决了数据存储可扩展的问题，可以满足3年左右数据扩展的需要。这个主要利用成熟的数据库拆分方案，简单的实现通常设计成倍扩容，在最初建表时候预留足够多的分表，当容量增长时将这些表迁移到更多服务器上去。</li>
+<li>解决了百万QPS访问的问题，主要依赖缓存分区及复制机制的成功应用，通过缓存复制及分级，可以让每秒上十万次访问的数据获得非常好的访问性能，同时数据复制机制可以提高可用性，防止单点机器故障时给数据库带来范围压力。</li>
+<li>解决了可用性及错误隔离问题，得益于历年来建设的SLA体系，服务之间有良好的服务契约及错误隔离手段，因此核心功能 有99.99%+的可用性。</li>
+</ul>
+<p>但是对于不足呢？如果架构重新再来，你会怎么做？这个问题回答比较多元，经过整理一些主要观点如下。</p>
+<p>首先是从解决架构的问题说起，上述feed架构主要解决了在社交媒体环境中，实时及可扩展的解决基于关注关系的数据分发问题。</p>
+<p>由于微博是一个实时的网络，人们常把Twitter/微博这种社交媒体产品比作是地球的脉搏，它确实无时不刻都在产生海量的数据，并且产生着不可预测的大量随机峰值访问，业界也是首次随着社交网络的出现遭遇这种架构上的scalability问题，记得在2009-2010年左右，Twitter由于压力过大经常出现鲸鱼页面错误。经过几年的努力，包括微博在内的业界主要公司都已经成功解决了关系模型的数据分发架构问题。</p>
+<p>但在用户的层面，使用社交媒体产品依旧被信息过载的问题所困扰。</p>
+<ul>
+<li>虽然每天收到大量信息，但是大部分不是自己感兴趣的信息。</li>
+<li>基于用户关注维度的兴趣阅读效率不高，用户关注了一个兴趣领域的同行，但这个同行却大部分时候在谈风花雪月。</li>
+<li>由于传播的低成本，大号在过度的使用消息通道，生产大量用户未必感兴趣的低质内容。</li>
+<li>广告及普通内容的界限很模糊。</li>
+<li>由于利益关系，僵尸帐号及内容通过变换形式在大行其道。</li>
+<li>内容同质化及雷同问题，内容被精英占领，小人物声音不能得到有效传递。</li>
+</ul>
+<p>在社交网络中，上述问题，不可能全部像Google的使命那样，通过技术手段得到解决。但是大部分又跟技术密切相关。</p>
+<ul>
+<li>基于用户维度组织内容高效满足兴趣阅读的难度。在上图中，绿色的框中是数据流经的主要通道，但在传统的SNS架构中，这些数据的组织都是基于用户纬度。从用户纬度组织数据较好解决了传统feed模型基于关系聚合数据的问题。但正是由于数据是从关系维度来组织的结构，造成并不能给改进上述阅读效率问题带来便利。由于在一定程度信息过载，兴趣阅读是发展方向，但是在架构上目前并没有清晰的解法。</li>
+<li>信息识别及低质内容鉴定的技术挑战。虽然业界已经在大数据、自然语言处理等方面积累了不少经验，但在具体场景中，信息识别仍然还在比较初级的阶段。低质内容不一定是垃圾广告，只是当前浏览者不感兴趣。</li>
+<li>反垃圾算法。</li>
+</ul>
+<p>社交网络的信息架构和搜索引擎有很大的不同，在浏览feed是并不像使用搜索有明确的搜索意图，Facebook曾经尝试使用<a href="http://en.wikipedia.org/wiki/EdgeRank">EdgeRank</a>来解决newsfeed算法的效率问题，但是结果并不如预期理想。由于社交关系的存在，用户对出现（及不出现）什么内容的可解释性非常敏感，不能接受好友的信息在排序结果不能看到。因此仅能说feed架构只是解决了初步的问题，更大的问题依旧在思考及寻找解决的途中。</p>
+<p>PS：本文上述内容会在12月19日ArchSummit北京 <a href="http://bj2014.archsummit.com/schedule.html">大数据环境的feed架构</a> 演讲中介绍，欢迎参会的同行前来交流。</p>
+<p><span style="color: #999999;"><em>如想及时阅读Tim Yang的文章，可通过<span style="color: #0000ff;">页面右上方</span>扫码订阅最新更新。</em></span></p>
+</div>
+</div>
+<!-- You can start editing here. -->
+ 
+<div id="respond">
+<div class="cancel-comment-reply">
+<a rel="nofollow" id="cancel-comment-reply-link" href="http://timyang.net/architecture/feed-data-arch-cons/#respond" style="display:none;">Cancel Reply</a></div>
+<h4 id="postcomment">Leave a Comment</h4>
+<form action="http://timyang.net/blog/wp-comments-post.php" method="post" id="commentform">
+<p>
+<input type="text" name="author" id="author" value="" size="20" tabindex="1">
+<label for="author">Name (required)</label>
+</p>
+<p>
+<input type="text" name="email" id="email" value="" size="20" tabindex="2">
+<label for="email">E-mail (required, never displayed)</label>
+</p>
+<p>
+<input type="text" name="url" id="url" value="" size="20" tabindex="3">
+<label for="url"><abbr title="Uniform Resource Identifier">URI</abbr></label>
+</p>
+<p>
+<textarea name="comment" id="comment" cols="80" rows="10" tabindex="4"></textarea>
+</p>
+<p>
+<input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment">
+<input type="hidden" name="comment_post_ID" value="1150">
+<input type="hidden" name="comment_post_ID" value="1150" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="8dc08c2018"></p><p style="display: none;"></p><input type="hidden" id="ak_js" name="ak_js" value="1418552980968"></form>
+</div>
+	
+</div>
+<br class="clearFloat">
+</div>
+<div id="footer">
+<p><small>Except where otherwise noted, content on this site is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0</a> License</small></p>
+</div>
+</div>
+<script type="text/javascript" src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/form.js"></script>
+<script type="text/javascript" src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Feed架构-我们做错了什么 – Tim[后端技术]_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-8036291-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

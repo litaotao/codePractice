@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://www.cnblogs.com/LBSer/p/3310455.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery17002780408365651965_1418275400853&adModuleId=2&content=GeoHash%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90&_=1418275400933"></script>
+<meta charset="utf-8">
+<title>GeoHash核心原理解析 - zhanlijun - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/bundle-darkgreentrip.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/LBSer/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/LBSer/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/LBSer/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/gpt.js"></script><script src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'LBSer', cb_enable_mathjax=false;</script>
+<script src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/blog-common.js" type="text/javascript"></script>
+<style type="text/css"></style><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_55.js"></script></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/LBSer/"><img id="blogLogo" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/LBSer/">zhanlijun</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/LBSer/">首页</a></li>
+<li><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/zhanlijun">联系</a></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/LBSer/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/LBSer/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+<!--done-->
+随笔- 27&nbsp;
+文章- 0&nbsp;
+评论- 81&nbsp;
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/GeoHash核心原理解析 - zhanlijun - 博客园.htm">GeoHash核心原理解析</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p class="p1"><a href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/GeoHash核心原理解析 - zhanlijun - 博客园.htm" target="_blank"><strong>http://www.cnblogs.com/LBSer/p/3310455.html</strong></a></p>
+<p class="p1"><strong>引子</strong></p>
+<p class="p2"><span class="s1">　　机机是个好动又好学的孩子，平日里就喜欢拿着手机地图点点按按来查询一些好玩的东西。某一天机机到北海公园游玩，肚肚饿了，于是乎打开手机地图，搜索北海公园附近的餐馆，并选了其中一家用餐。</span></p>
+<p class="p3"><img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185116-62c01e9a4d374cf1bd302b9aaa88057f.png" alt="">&nbsp;</p>
+<p class="p2"><span class="s1">　　饭饱之后机机开始反思了，地图后台如何根据自己所在位置查询来查询附近餐馆的呢？苦思冥想了半天，机机想出了个方法：计算所在位置P与北京所有餐馆的距离，然后返回距离&lt;=1000米的餐馆。小得意了一会儿，机机发现北京的餐馆何其多啊，这样计算不得了，于是想了，既然知道经纬度了，那它应该知道自己在西城区，那应该计算所在位置P与西城区所有餐馆的距离啊，机机运用了递归的思想，想到了西城区也很多餐馆啊，应该计算所在位置P与所在街道所有餐馆的距离，这样计算量又小了，效率也提升了。</span></p>
+<p class="p2"><span class="s1">　　机机的计算思想很朴素，就是通过过滤的方法来减小参与计算的餐馆数目，从某种角度上讲，机机在使用索引技术。</span></p>
+<p class="p2"><span class="s1">　　一提到索引，大家脑子里马上浮现出B树索引，因为大量的数据库（如MySQL、oracle、PostgreSQL等）都在使用B树。B树索引本质上是对索引字段进行排序，然后通过类似二分查找的方法进行快速查找，即它要求索引的字段是可排序的，一般而言，可排序的是一维字段，比如时间、年龄、薪水等等。但是对于空间上的一个点（二维，包括经度和纬度），如何排序呢？又如何索引呢？解决的方法很多，下文介绍一种方法来解决这一问题。</span></p>
+<p class="p2"><span class="s1"><strong>　　思想：</strong>如果能通过某种方法将二维的点数据转换成一维的数据，那样不就可以继续使用B树索引了嘛。那这种方法真的存在嘛，答案是肯定的。目前很火的GeoHash算法就是运用了上述思想，下面我们就开始GeoHash之旅吧。</span></p>
+<p class="p4"><span class="s1"><strong>一、感性认识GeoHash</strong></span></p>
+<p class="p5"><span class="s2">首先来点感性认识，<a href="http://openlocation.org/geohash/geohash-js/"><span class="s3">http://openlocation.org/geohash/geohash-js/</span></a> 提供了在地图上显示geohash编码的功能。</span></p>
+<p class="p2"><span class="s1">1）GeoHash将二维的经纬度转换成字符串，比如下图展示了北京9个区域的GeoHash字符串，分别是WX4ER，WX4G2、WX4G3等等，每一个字符串代表了某一矩形区域。也就是说，这个矩形区域内所有的点（经纬度坐标）都共享相同的GeoHash字符串，这样既可以保护隐私（只表示大概区域位置而不是具体的点），又比较容易做缓存，<strong>比如左上角这个区域内的用户不断发送位置信息请求餐馆数据</strong>，由于这些用户的GeoHash字符串都是WX4ER，所以可以把WX4ER当作key，把该区域的餐馆信息当作value来进行缓存，而如果不使用GeoHash的话，由于区域内的用户传来的经纬度是各不相同的，很难做缓存。</span></p>
+<p class="p3"><img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185339-add66a56b3da417ab00370e354c74667.png" alt="">&nbsp;</p>
+<p class="p2"><span class="s1">2）字符串越长，表示的范围越精确。如图所示，5位的编码能表示10平方千米范围的矩形区域，而6位编码能表示更精细的区域（约0.34平方千米）</span></p>
+<p class="p3">&nbsp;<img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185401-358f8e5e9f1a475f81afaf88f661e4ac.png" alt=""></p>
+<p class="p2"><span class="s1">3）字符串相似的表示距离相近（特殊情况后文阐述），这样可以利用字符串的前缀匹配来查询附近的POI信息。如下两个图所示，一个在城区，一个在郊区，城区的GeoHash字符串之间比较相似，郊区的字符串之间也比较相似，而城区和郊区的GeoHash字符串相似程度要低些。</span></p>
+<p class="p6">&nbsp;</p>
+<table class="t1">
+<tbody>
+<tr>
+<td class="td1" align="center" width="100%*" height="100%*">
+<p class="p7" align="center"><span class="s1">&nbsp;<img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185429-61ee10089e3546819e4aee54e01b21d5.png" alt="" width="234" height="245"></span></p>
+<p class="p7" align="center"><span class="s1"><span class="s1">城区</span></span></p>
+</td>
+<td class="td1" align="center" width="100%*" height="100%*">
+<p class="p8" align="center"><span class="s1">&nbsp;<img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185600-1461ccd246724de988abba5d31241881.png" alt=""></span></p>
+<p class="p9" style="text-align: center;"><span class="s1">郊区</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="p3">&nbsp;　　<span class="s1">通过上面的介绍我们知道了GeoHash就是一种将经纬度转换成字符串的方法，并且使得在大部分情况下，字符串前缀匹配越多的距离越近，回到我们的案例，根据所在位置查询来查询附近餐馆时，只需要将所在位置经纬度转换成GeoHash字符串，并与各个餐馆的GeoHash字符串进行前缀匹配，匹配越多的距离越近。</span></p>
+<p class="p4"><span class="s1"><strong>二、GeoHash算法的步骤</strong></span></p>
+<p class="p2"><span class="s1">下面以北海公园为例介绍GeoHash算法的计算步骤</span></p>
+<p class="p3" style="text-align: center;">&nbsp;<img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185643-54781d96efc94b9191a3c21134e182d7.png" alt=""></p>
+<p class="p2"><span class="s1">2.1. 根据经纬度计算GeoHash二进制编码</span></p>
+<p class="p11"><span class="s1">地球纬度区间是[-90,90]， 北海公园的纬度是39.928167，可以通过下面算法对纬度39.928167进行逼近编码:</span></p>
+<p class="p11"><span class="s1">1）区间[-90,90]进行二分为[-90,0),[0,90]，称为左右区间，可以确定39.928167属于右区间[0,90]，给标记为1；</span></p>
+<p class="p11"><span class="s1">2）接着将区间[0,90]进行二分为 [0,45),[45,90]，可以确定39.928167属于左区间 [0,45)，给标记为0；</span></p>
+<p class="p11"><span class="s1">3）递归上述过程39.928167总是属于某个区间[a,b]。随着每次迭代区间[a,b]总在缩小，并越来越逼近39.928167；</span></p>
+<p class="p11"><span class="s1">4）如果给定的纬度x（39.928167）属于左区间，则记录0，如果属于右区间则记录1，这样随着算法的进行会产生一个序列1011100，序列的长度跟给定的区间划分次数有关。</span></p>
+<p class="p13" style="text-align: center;"><span class="s1">根据纬度算编码</span>&nbsp;</p>
+<table class="t1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>bit</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>min</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>mid</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>max</strong></span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">-90.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">0.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">90.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">0.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">45.000</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">90.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">0.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">22.500</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">45.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">22.500</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">33.750</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">45.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">33.7500</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">39.375</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">45.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">39.375</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">42.188</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p14"><span class="s1">45.000</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">39.375</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">40.7815</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p14"><span class="s1">42.188</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">39.375</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">40.07825</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">40.7815</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p14"><span class="s1">39.375</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">39.726625</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">40.07825</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">39.726625</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">39.9024375</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">40.07825</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="p3"><span class="s1">同理，地球经度区间是[-180,180]，可以对经度</span><span class="s4">116.389550进行编码。</span></p>
+<p class="p13" style="text-align: center;"><span class="s1">根据经度算编码</span></p>
+<table class="t1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>bit</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>min</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>mid</strong></span></p>
+</td>
+<td class="td2" valign="top">
+<p class="p13"><span class="s1"><strong>max</strong></span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">-180</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">0.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">180</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td7" valign="top">
+<p class="p1"><span class="s1">0.000</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">90</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">180</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">90</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">135</span></p>
+</td>
+<td class="td7" valign="top">
+<p class="p1"><span class="s1">180</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">90</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">112.5</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">135</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">112.5</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">123.75</span></p>
+</td>
+<td class="td8" valign="top">
+<p class="p1"><span class="s1">135</span></p>
+</td>
+</tr>
+<tr>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p1"><span class="s1">112.5</span></p>
+</td>
+<td class="td6" valign="top">
+<p class="p14"><span class="s1">118.125</span></p>
+</td>
+<td class="td5" valign="top">
+<p class="p1"><span class="s1">123.75</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td7" valign="top">
+<p class="p1"><span class="s1">112.5</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">115.3125</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">118.125</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">0</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">115.3125</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">116.71875</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">118.125</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">115.3125</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">116.015625</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">116.71875</span></p>
+</td>
+</tr>
+<tr>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">1</span></p>
+</td>
+<td class="td3" valign="top">
+<p class="p1"><span class="s1">116.015625</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">116.3671875</span></p>
+</td>
+<td class="td4" valign="top">
+<p class="p1"><span class="s1">116.71875</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="p3">&nbsp;</p>
+<p class="p16"><span class="s1">2.2. 组码</span></p>
+<p class="p16"><span class="s1">　　通过上述计算，纬度产生的编码为10111 00011，经度产生的编码为11010 01011。偶数位放经度，奇数位放纬度，把2串编码组合生成新串：11100 11101 00100 01111。</span></p>
+<p class="p16"><span class="s1">　　最后使用用0-9、b-z（去掉a, i, l, o）这32个字母进行base32编码，首先将11100 11101 00100 01111转成十进制，对应着28、29、4、15，十进制对应的编码就是wx4g。</span><span class="s1">同理，将编码转换成经纬度的解码算法与之相反，具体不再赘述。</span></p>
+<p class="p16" style="text-align: center;"><span class="s1"><img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185841-f7b45cc7e26b45aeac6ff6dc5fa9708c.png" alt=""></span></p>
+<p class="p4"><span class="s1"><strong>三、GeoHash Base32编码长度与精度</strong></span></p>
+<p class="p17"><span class="s2">　　下表摘自维基百科：<a href="http://en.wikipedia.org/wiki/Geohash"><span class="s5">http://en.wikipedia.org/wiki/Geohash</span></a></span></p>
+<p class="p18"><span class="s1">　　可以看出，当geohash base32编码长度为8时，精度在19米左右，而当编码长度为9时，精度在2米左右，编码长度需要根据数据情况进行选择。</span></p>
+<p class="p18"><span class="s1"><img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185913-9f6f65fc3d3c40ecb3328970831c625c.png" alt=""></span></p>
+<p class="p4"><span class="s1"><strong>三、GeoHash算法</strong></span></p>
+<p class="p2"><span class="s1">　　上文讲了GeoHash的计算步骤，仅仅说明是什么而没有说明为什么？为什么分别给经度和维度编码？为什么需要将经纬度两串编码交叉组合成一串编码？本节试图回答这一问题。</span></p>
+<p class="p2"><span class="s1">　　如图所示，我们将二进制编码的结果填写到空间中，当将空间划分为四块时候，编码的顺序分别是左下角00，左上角01，右下脚10，右上角11，也就是类似于Z的曲线，当我们递归的将各个块分解成更小的子块时，编码的顺序是自相似的（分形），每一个子快也形成Z曲线，这种类型的曲线被称为Peano空间填充曲线。</span></p>
+<p class="p2"><span class="s1">　　这种类型的空间填充曲线的优点是将二维空间转换成一维曲线（事实上是分形维），对大部分而言，编码相似的距离也相近， 但Peano空间填充曲线最大的缺点就是突变性，有些编码相邻但距离却相差很远，比如0111与1000，编码是相邻的，但距离相差很大。</span></p>
+<p class="p2"><span class="s1"><img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09185941-53f7b0f1a9b6407eb5cd06b028d98fb8.png" alt=""></span></p>
+<p class="p2"><span class="s1">　　</span></p>
+<p class="p2"><span class="s1">　　除Peano空间填充曲线外，还有很多空间填充曲线，如图所示，其中效果公认较好是Hilbert空间填充曲线，相较于Peano曲线而言，Hilbert曲线没有较大的突变。为什么GeoHash不选择Hilbert空间填充曲线呢？可能是Peano曲线思路以及计算上比较简单吧，事实上，Peano曲线就是一种四叉树线性编码方式。</span></p>
+<p class="p2"><span class="s1"><img style="display: block; margin-left: auto; margin-right: auto;" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09190057-edd8e085d8b84456ba1afd1b4bf99318.png" alt=""></span><span class="s4"><span style="font-size: 14px; line-height: 1.5;">&nbsp;</span></span></p>
+<p class="p4"><span class="s1"><strong>四、使用注意点</strong></span></p>
+<p class="p10">&nbsp;<span class="s1">1）由于GeoHash是将区域划分为一个个规则矩形，并对每个矩形进行编码，这样在查询附近POI信息时会导致以下问题，比如红色的点是我们的位置，绿色的两个点分别是附近的两个餐馆，但是在查询的时候会发现距离较远餐馆的GeoHash编码与我们一样（因为在同一个GeoHash区域块上），而较近餐馆的GeoHash编码与我们不一致。这个问题往往产生在边界处。</span></p>
+<p class="p10" style="text-align: center;"><span class="s1"><img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/09190137-edd3b1fe3d754c5d836e2812ac298674.png" alt=""></span></p>
+<p class="p2"><span class="s1">解决的思路很简单，我们查询时，除了使用定位点的GeoHash编码进行匹配外，还使用周围8个区域的GeoHash编码，这样可以避免这个问题。</span>&nbsp;</p>
+<p class="p2"><span class="s1">2）我们已经知道现有的GeoHash算法使用的是Peano空间填充曲线，这种曲线会产生突变，造成了编码虽然相似但距离可能相差很大的问题，因此在查询附近餐馆时候，首先筛选GeoHash编码相似的POI点，然后进行实际距离计算。</span></p>
+<p class="p2">&nbsp;</p>
+<p class="p2">参考文献：</p>
+<p class="p2"><a class="external-link" href="http://en.wikipedia.org/wiki/Geohash" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/Geohash</a></p>
+<p class="p1"><span class="s1"><a class="external-link" href="http://openlocation.org/geohash/geohash-js/" rel="nofollow" target="_blank">http://openlocation.org/geohash/geohash-js/</a></span><span class="s2">&nbsp;</span></p>
+<p class="p1"><span class="s2">Cantor空間填充曲線之演算法探討.pdf</span></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/LBSer/category/575692.html">空间索引原理</a></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/LBSer/tag/lbs%20%E5%AE%9A%E4%BD%8D/">lbs 定位</a>, <a href="http://www.cnblogs.com/LBSer/tag/%E7%B4%A2%E5%BC%95/">索引</a></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(3310455,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/zhanlijun" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/LBSer/" target="_blank"><img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/20130427214904.png" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/LBSer/">zhanlijun</a><br>
+<a href="http://home.cnblogs.com/u/LBSer/followees">关注 - 5</a><br>
+<a href="http://home.cnblogs.com/u/LBSer/followers">粉丝 - 20</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(3310455,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">4</span>
+    </div>
+	<div class="buryit" onclick="votePost(3310455,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/LBSer/p/3298057.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/LBSer/p/3298057.html" title="发布于2013-09-03 09:32">Geohash距离估算</a><br><a href="http://www.cnblogs.com/LBSer/p/3322630.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/LBSer/p/3322630.html" title="发布于2013-09-15 15:52">位图索引:原理（BitMap index）</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2013-09-09 19:03</span> <a href="http://www.cnblogs.com/LBSer/">zhanlijun</a> 阅读(<span id="post_view_count">5327</span>) 评论(<span id="post_comment_count">9</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=3310455" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/LBSer/p/3310455.html#" onclick="AddToWz(3310455);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=true,cb_blogId=149585,cb_entryId=3310455,cb_blogApp=currentBlogApp,cb_blogUserGuid='54719cbf-40af-e211-83e8-90b11c0b17d6',cb_entryCreatedDate='2013/9/9 19:03:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2771822,&#39;eBfHgcGiztLANFVSvyLIQoMCUwDGpfm5Hj207vSxKFJFk2zh1n3K7Q==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2771822,&#39;eBfHgcGiztLANFVSvyLIQoMCUwDGpfm5Hj207vSxKFJFk2zh1n3K7Q==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2771822" class="layer">#1楼</a><a name="2771822" id="comment_anchor_2771822"></a>  <span class="comment_date">2013-09-09 20:02</span> <a id="a_comment_author_2771822" href="http://home.cnblogs.com/u/566134/" target="_blank">lreis</a> <a href="http://msg.cnblogs.com/msg/send/lreis" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2771822" class="blog_comment_body">好文！收藏了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2771822,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2771822,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2818420,&#39;UrIArZujmxtBtuZ661viOZGtCc+DExTDbjhYvQQ5uNpL/IVABPq18A==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2818420,&#39;UrIArZujmxtBtuZ661viOZGtCc+DExTDbjhYvQQ5uNpL/IVABPq18A==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2818420" class="layer">#2楼</a><a name="2818420" id="comment_anchor_2818420"></a>  <span class="comment_date">2013-11-18 10:32</span> <a id="a_comment_author_2818420" href="http://www.cnblogs.com/tanshaohua0911/" target="_blank">tanshaohua</a> <a href="http://msg.cnblogs.com/msg/send/tanshaohua" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2818420" class="blog_comment_body">你好，请问下，如果要选择2公里，3公里等，应该怎么处理，geohash没有指名具体每公里的情况</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2818420,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2818420,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2818420_avatar" style="display:none;">http://pic.cnitblog.com/face/u256719.jpg?id=10232657</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2818870,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2818870,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2818870" class="layer">#3楼</a><a name="2818870" id="comment_anchor_2818870"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2013-11-18 19:16</span> <a id="a_comment_author_2818870" href="http://www.cnblogs.com/LBSer/" target="_blank">zhanlijun</a> <a href="http://msg.cnblogs.com/msg/send/zhanlijun" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2818870" class="blog_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#2818420" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,2818420);">@</a>tanshaohua<br>您好，您可以参考下这个，会有大致的估算<a href="http://www.cnblogs.com/LBSer/p/3298057.html" target="_blank">http://www.cnblogs.com/LBSer/p/3298057.html</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2818870,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2818870,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2818870_avatar" style="display:none;">http://pic.cnitblog.com/face/522490/20130427214904.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2819081,&#39;UrIArZujmxtBtuZ661viOZGtCc+DExTDbjhYvQQ5uNpL/IVABPq18A==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2819081,&#39;UrIArZujmxtBtuZ661viOZGtCc+DExTDbjhYvQQ5uNpL/IVABPq18A==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2819081" class="layer">#4楼</a><a name="2819081" id="comment_anchor_2819081"></a>  <span class="comment_date">2013-11-19 08:57</span> <a id="a_comment_author_2819081" href="http://www.cnblogs.com/tanshaohua0911/" target="_blank">tanshaohua</a> <a href="http://msg.cnblogs.com/msg/send/tanshaohua" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2819081" class="blog_comment_body">嗯，谢谢，这篇文章之前也看过，我就是想用户可以根据选择距离来查询多少公里内的东西，不知道除了geohash还有什么比较适用</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2819081,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2819081,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2819081_avatar" style="display:none;">http://pic.cnitblog.com/face/u256719.jpg?id=10232657</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2819299,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2819299,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2819299" class="layer">#5楼</a><a name="2819299" id="comment_anchor_2819299"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2013-11-19 11:58</span> <a id="a_comment_author_2819299" href="http://www.cnblogs.com/LBSer/" target="_blank">zhanlijun</a> <a href="http://msg.cnblogs.com/msg/send/zhanlijun" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2819299" class="blog_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#2819081" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,2819081);">@</a>tanshaohua<br>其实你需要的是空间范围查询，为了更高效地进行空间查询需要使用空间索引，geohash只是其中一种，还有四叉树、R树等索引。四叉树和R树这种树类型的空间索引支持你查询具体距离以内的东西，目前postgreSQL、mysql都有相应的空间扩展支持</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2819299,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2819299,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2819299_avatar" style="display:none;">http://pic.cnitblog.com/face/522490/20130427214904.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2969854,&#39;PAvMVBxGJAL4A+4nUYJSM1safWhcNj/oeaX0s3M7/oarRPOvSDv4ww==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2969854,&#39;PAvMVBxGJAL4A+4nUYJSM1safWhcNj/oeaX0s3M7/oarRPOvSDv4ww==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2969854" class="layer">#6楼</a><a name="2969854" id="comment_anchor_2969854"></a>  <span class="comment_date">2014-06-23 14:22</span> <a id="a_comment_author_2969854" href="http://www.cnblogs.com/lanxuezaipiao/" target="_blank">Alexia(minmin)</a> <a href="http://msg.cnblogs.com/msg/send/Alexia(minmin)" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2969854" class="blog_comment_body">请问下<a href="http://segmentfault.com/q/1010000000586274#a" target="_blank">http://segmentfault.com/q/1010000000586274#a</a>-1020000000586281 这个需求能不能用geohash</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2969854,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2969854,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2969854_avatar" style="display:none;">http://pic.cnitblog.com/face/390583/20141208132814.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2970895,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2970895,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2970895" class="layer">#7楼</a><a name="2970895" id="comment_anchor_2970895"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2014-06-25 07:47</span> <a id="a_comment_author_2970895" href="http://www.cnblogs.com/LBSer/" target="_blank">zhanlijun</a> <a href="http://msg.cnblogs.com/msg/send/zhanlijun" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2970895" class="blog_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#2969854" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,2969854);">@</a>Alexia(minmin)<br>这个需求应该不能用geohash，原因是geohash的x,y指的是二维平面上的一个点，而你需求的x,y指的是区间范围，意义是不一样的。<br>用hash来解决这种没有规律的范围问题应该很难。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2970895,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2970895,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2970895_avatar" style="display:none;">http://pic.cnitblog.com/face/522490/20130427214904.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2987230,&#39;ZyJvi/DEdUEvKzSAUhsQybri6y4rE9f6qIzBPzKFh0UpFRzAWG+7Vg==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2987230,&#39;ZyJvi/DEdUEvKzSAUhsQybri6y4rE9f6qIzBPzKFh0UpFRzAWG+7Vg==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2987230" class="layer">#8楼</a><a name="2987230" id="comment_anchor_2987230"></a>  <span class="comment_date">2014-07-16 15:31</span> <a id="a_comment_author_2987230" href="http://home.cnblogs.com/u/651351/" target="_blank">ginger_jiang</a> <a href="http://msg.cnblogs.com/msg/send/ginger_jiang" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2987230" class="blog_comment_body">geohash值可以区分精度，位数越多，精度越高，表达的地理位置越精细；如如一位的geohash值把地球划分为32个矩形，8位的geohash值把地球划分为32^8个小矩形<br><br>1. 适合根据某个经纬度坐标position计算出geohash值，然后和数据库中精度更高的geohash值做前缀比较<br><br>2. 由于有边界突变，在做大小比较时会有如下问题，比如：<br>    A   （1, 1)  --&gt; s00twy01<br>    B   (-1, -1) --&gt; 7zz631zy<br>    C   (1, 20)  --&gt; s2njxn59<br>虽然A与B距离更接近，但geohash值相差更大；为了修复边界的问题，常用的方法是找出该position周围的8个点，然后和数据库中的值比较</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2987230,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2987230,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"><a href="javascript:void(0);" onclick="return ReplyComment(2987559,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">回复</a><a href="javascript:void(0);" onclick="return QuoteComment(2987559,&#39;M/oChiriZuGq1oVqCfaT0oCCgO2UgW3UIozjQrIsmqdhOZTI13vSLw==&#39;)">引用</a></span>
+				</div>
+				<a href="http://www.cnblogs.com/LBSer/p/3310455.html#2987559" class="layer">#9楼</a><a name="2987559" id="comment_anchor_2987559"></a>[<span class="louzhu">楼主</span>]<span id="comment-maxId" style="display:none;">2987559</span><span id="comment-maxDate" style="display:none;">2014/7/17 7:42:02</span>  <span class="comment_date">2014-07-17 07:42</span> <a id="a_comment_author_2987559" href="http://www.cnblogs.com/LBSer/" target="_blank">zhanlijun</a> <a href="http://msg.cnblogs.com/msg/send/zhanlijun" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2987559" class="blog_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#2987230" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,2987230);">@</a>ginger_jiang<br>说得很对，从数学上讲geohash本质上是Peano空间填充曲线，将二维空间降维成分形曲线，此分形曲线能保持一定的空间局部性，从而可以用于排序。<br>Peano曲线突变比较厉害，空间局部性不是特别好，相比之下Hilbert空间填充曲线空间局部性非常不错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2987559,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2987559,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2987559_avatar" style="display:none;">http://pic.cnitblog.com/face/522490/20130427214904.png</span>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/LBSer/p/3310455.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/LBSer/p/3310455.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div id="commentform_title">发表评论</div>
+<span id="tip_comment" style="color:Red"></span>
+<p>
+昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50" value="h4breeze">
+</p>
+<div class="commentbox_main">
+<div class="commentbox_title">
+<div class="commentbox_title_left">评论内容：</div>
+<div class="commentbox_title_right">
+<img id="ubb_quote" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/quote.gif" alt="引用" title="添加引用" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;quote&#39;)">
+<img id="ubb_bold" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/b.png" alt="粗体" title="添加粗体" onclick="insertUBB(&#39;tbCommentBody&#39;,&#39;b&#39;)">
+<img id="ubb_url" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/lk.png" alt="链接" title="添加链接" onclick="insertUbbUrl(&#39;tbCommentBody&#39;)">
+<img id="ubb_indent" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/indent.png" alt="缩进" title="添加首行缩进" onclick="insertIndent(&#39;tbCommentBody&#39;)">
+<img id="ubb_code" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/InsertCode.gif" alt="代码" title="添加代码" onclick="insertUbbCode()">
+<img id="ubb_img" class="comment_icon" src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/img.gif" alt="图片" title="上传图片" onclick="OpenImageUploadWindow();">
+</div>
+</div>
+<div class="clear"></div>
+<textarea id="tbCommentBody" class="comment_textarea" rows="20" cols="50"></textarea>
+</div>
+<p id="commentbox_opt">
+<input id="btn_comment_submit" type="button" class="comment_btn" value="提交评论">
+<span id="span_comment_canceledit" style="display:none"><a href="javascript:void(0);" onclick="return CancelCommentEdit()">不改了</a></span>
+<a href="javascript:void(0);" onclick="return logout();">注销</a>
+        <a id="commentbox_opt_sub" href="javascript:void(0);" title="订阅后有新评论时会邮件通知您" onclick="commentManager.Subscribe()">订阅评论</a>
+</p>
+<p>
+[使用Ctrl+Enter键快速提交]
+</p>
+<div style="display:none">
+<span id="comment_edit_id"></span><span id="span_parentcomment_id"></span>
+<span id="span_parent_id"></span>
+<span id="span_comment_replyto"></span>
+<span id="span_comment_posted"></span>
+</div>
+</div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/510669/" target="_blank">国行4G版iPad Air 2及mini 3登陆苹果官网</a><br> ·  <a href="http://news.cnblogs.com/n/510668/" target="_blank">海洋中漂浮的塑料垃圾总量超过26万吨</a><br> ·  <a href="http://news.cnblogs.com/n/510667/" target="_blank">迅雷弹窗被叫停，后果很严重</a><br> ·  <a href="http://news.cnblogs.com/n/510666/" target="_blank">停产后iPod classic价格疯涨，送果粉的最佳礼物</a><br> ·  <a href="http://news.cnblogs.com/n/510665/" target="_blank">使用Visual Studio进行SQL Server源代码管理和部署</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/510356/" target="_blank">为什么社交网络中数据翻页技术复杂</a><br> ·  <a href="http://kb.cnblogs.com/page/510354/" target="_blank">案例分析：基于消息的分布式架构</a><br> ·  <a href="http://kb.cnblogs.com/page/506621/" target="_blank">你的数据库危机四伏</a><br> ·  <a href="http://kb.cnblogs.com/page/510192/" target="_blank">《星际穿越》科学解析</a><br> ·  <a href="http://kb.cnblogs.com/page/510190/" target="_blank">《星际穿越》初解析：一部空前绝后的史诗科学巨作</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><a href="http://info.flagcounter.com/g4sY"><img src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/saved_resource" alt="Flag Counter" border="0">
+</a>
+<div class="subtitle">工作：美团网移动后台研发工程师</div><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/LBSer/">zhanlijun</a><br>园龄：<a href="http://home.cnblogs.com/u/LBSer/" title="入园时间：2013-04-27">1年7个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/LBSer/followers/">20</a><br>关注：<a href="http://home.cnblogs.com/u/LBSer/followees/">5</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;54719cbf-40af-e211-83e8-90b11c0b17d6&#39;)">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2014/11/01&#39;);return false;">&lt;</a></td><td align="center">2014年12月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2015/01/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">30</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td class="CalWeekendDay" align="center">6</td></tr><tr><td class="CalWeekendDay" align="center">7</td><td align="center">8</td><td align="center">9</td><td align="center">10</td><td class="CalTodayDay" align="center">11</td><td align="center">12</td><td class="CalWeekendDay" align="center">13</td></tr><tr><td class="CalWeekendDay" align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td class="CalWeekendDay" align="center">20</td></tr><tr><td class="CalWeekendDay" align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td class="CalWeekendDay" align="center">27</td></tr><tr><td class="CalWeekendDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td></tr><tr><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td><td class="CalOtherMonthDay" align="center">10</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<div class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+
+
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/LBSer/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/LBSer/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/LBSer/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/LBSer/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/LBSer/tag/" title="我的博客的标签列表">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="http://www.cnblogs.com/LBSer/p/3310455.html#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div>
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/LBSer/tag/lbs%20%E5%AE%9A%E4%BD%8D/">lbs 定位</a>(3)</li><li><a href="http://www.cnblogs.com/LBSer/tag/%E7%B4%A2%E5%BC%95/">索引</a>(3)</li><li><a href="http://www.cnblogs.com/LBSer/tag/jetty/">jetty</a>(2)</li><li><a href="http://www.cnblogs.com/LBSer/tag/%E6%9E%B6%E6%9E%84%E3%80%81%E7%9B%91%E6%8E%A7%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%BD%E8%B8%AA/">架构、监控、分布式追踪</a>(2)</li><li><a href="http://www.cnblogs.com/LBSer/tag/%E6%8E%A5%E5%8F%A3%E9%99%90%E6%B5%81/">接口限流</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/BitMap%20%E4%BD%8D%E5%9B%BE%E7%B4%A2%E5%BC%95/">BitMap 位图索引</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/HttpClient%20HttpGet%20web/">HttpClient HttpGet web</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/java/">java</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/%E5%AD%97%E5%85%B8/">字典</a>(1)</li><li><a href="http://www.cnblogs.com/LBSer/tag/">更多</a></li>
+</ul>
+</div>
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/LBSer/category/475421.html">LBS(5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/LBSer/category/575726.html">paper阅读笔记(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/LBSer/category/635623.html">大数据(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/LBSer/category/575729.html">定位原理/算法(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/LBSer/category/575697.html">发表的SCI/SSCI(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/LBSer/category/628522.html">服务治理(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/LBSer/category/575692.html">空间索引原理(5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/LBSer/category/575695.html">数据库(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/LBSer/category/575727.html">推荐相关</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="http://www.cnblogs.com/LBSer/category/575723.html">线上问题定位及解决(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="http://www.cnblogs.com/LBSer/category/575696.html">消息系统</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="http://www.cnblogs.com/LBSer/category/575694.html">信息检索算法/实践(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="http://www.cnblogs.com/LBSer/category/575698.html">应用服务器(2)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catListPostArchive">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/LBSer/archive/2014/11.html">2014年11月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/LBSer/archive/2014/10.html">2014年10月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/LBSer/archive/2014/05.html">2014年5月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/LBSer/archive/2014/04.html">2014年4月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/LBSer/archive/2014/03.html">2014年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/LBSer/archive/2013/11.html">2013年11月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/LBSer/archive/2013/10.html">2013年10月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/LBSer/archive/2013/09.html">2013年9月 (8)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/LBSer/p/3392491.html#3071598">1. Re:深入浅出空间索引：为什么需要空间索引</a></li>
+    <li class="recent_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#3071586" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3071586);">@</a>见吻戏哦<br>近期的一些精力主要放在模型算法上</li>
+    <li class="recent_comment_author">--zhanlijun</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/LBSer/p/3392491.html#3071597">2. Re:深入浅出空间索引：为什么需要空间索引</a></li>
+    <li class="recent_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#3071586" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3071586);">@</a>见吻戏哦<br>争取周末吧</li>
+    <li class="recent_comment_author">--zhanlijun</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/LBSer/p/3392491.html#3071586">3. Re:深入浅出空间索引：为什么需要空间索引</a></li>
+    <li class="recent_comment_body">楼主什么时候分布四叉树的文章啊</li>
+    <li class="recent_comment_author">--见吻戏哦</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/LBSer/p/3392491.html#3071585">4. Re:深入浅出空间索引：为什么需要空间索引</a></li>
+    <li class="recent_comment_body"><a href="http://www.cnblogs.com/LBSer/p/3310455.html#3070946" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3070946);">@</a>见吻戏哦<br>thks</li>
+    <li class="recent_comment_author">--zhanlijun</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/LBSer/p/4119841.html#3071044">5. Re:lucene字典实现原理</a></li>
+    <li class="recent_comment_body">mark</li>
+    <li class="recent_comment_author">--阿斯兰</li>
+</ul>
+</div>
+</div>
+</div><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/GeoHash核心原理解析 - zhanlijun - 博客园.htm">1. GeoHash核心原理解析(5326)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3322630.html">2. 位图索引:原理（BitMap index）(2680)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3295642.html">3. LBS定位技术(1780)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3703967.html">4. 发布或重启线上服务时抖动问题解决方案(1201)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3330383.html">5. NoSQL之HBase(1140)</a></li></ul></div>
+</div>
+</div><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/LBSer/p/3322630.html">1. 位图索引:原理（BitMap index）(14)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3328841.html">2. NoSQL之Cassandra(14)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3703967.html">3. 发布或重启线上服务时抖动问题解决方案(11)</a></li><li><a href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/GeoHash核心原理解析 - zhanlijun - 博客园.htm">4. GeoHash核心原理解析(9)</a></li><li><a href="http://www.cnblogs.com/LBSer/archive/2013/04/25/3048754.html">5. LBS核心技术解析（引子）(8)</a></li></ul></div>
+</div>
+</div><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/LBSer/p/4083131.html">1. 接口限流实践(7)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3322630.html">2. 位图索引:原理（BitMap index）(6)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/3392491.html">3. 深入浅出空间索引：为什么需要空间索引(5)</a></li><li><a href="./GeoHash核心原理解析 - zhanlijun - 博客园_files/GeoHash核心原理解析 - zhanlijun - 博客园.htm">4. GeoHash核心原理解析(4)</a></li><li><a href="http://www.cnblogs.com/LBSer/p/4119841.html">5. lucene字典实现原理(3)</a></li></ul></div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script><iframe src="./GeoHash核心原理解析 - zhanlijun - 博客园_files/container.htm" style="visibility: hidden; display: none;"></iframe>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2014 zhanlijun
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+</body></html>

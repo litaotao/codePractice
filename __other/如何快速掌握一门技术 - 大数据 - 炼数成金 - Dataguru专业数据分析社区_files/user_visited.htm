@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- saved from url=(0105)http://www.dataguru.cn/user_visited.php?url=%2Farticle-5672-1.html&referer=https%3A%2F%2Fwww.sssis.com%2F -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<style type="text/css"></style></head>
+<body>
+<script src="jquery-1.8.3.min(1).js"></script>
+<script src="fingerprint.js"></script>
+<script type="text/javascript">
+
+//var uuid = uuid();
+$(function(){
+	var title = window.parent.document.title;
+	var url = "/article-5672-1.html";
+	var referer = "https://www.sssis.com/";
+	//获得用户指纹唯一标识
+	//var uuid = new Fingerprint({screen_resolution: true}).get();
+	var uuid = new Fingerprint({canvas: true}).get();
+	//console.log(uuid);
+	jQuery.ajax({
+		type : "POST",
+		data : {'title' : title, 'url' : url, 'referer' : referer, 'uuid' : uuid, 'inajax' : 1, 'random' : Math.random()},
+		url : '/user_visited.php',
+		success : function(data){	
+			//var dataObj = eval("("+data+")");//转换为json对象 
+			//not output
+			//alert(data);
+		}
+	});
+})
+</script>
+
+</body></html>

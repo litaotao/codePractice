@@ -1,0 +1,113 @@
+@charset "utf-8";
+/****************
+ * @description : 评论插件
+ * @author   : 袁远 <jinglei@staff.sina.com.cn>
+ * @date     : 2014-07-07
+ ****************/
+/*css reset*/
+/*评论居底*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0}html,body,form,fieldset,p,div,h1,h2,h3,h4,h5,h6{-webkit-text-size-adjust:none}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;block;clear:all;}
+body{font-family:'XinGothic-SinaWeibo','Microsoft YaHei',helvetica,arial,sans-serif;-webkit-text-size-adjust:none;color:#1a1a1a;background:#f9f9f9;-webkit-text-size-adjust: none; min-width:320px; font-size:16px}
+.fl{float:left;}.fr{float:right;}.hide{display:none!important;}.show{display: block!important;}
+.cmt_num_t,.cmt_share,.god_comment em,.tips{ background:url(../images/addComment.png) no-repeat; background-size:54px auto}
+.foot_comment{height: 44px; border-top:1px solid #cdcdcd;position: fixed; left:0; right:0;bottom: 0;width: 100%;background:rgba(230,230,230,.9); z-index:1000}
+.foot_commentcont{ clear:both; padding:7px 6px;display: -webkit-box;display:box;}
+.foot_cmt_input{-webkit-box-flex: 3; flex: 3; margin:0 6px; height:28px; line-height:28px; background:#fff; border:1px solid #cccccc; color:#666; border-radius:2px}
+.foot_cmt_input p{ padding:0 15px; font-size:14px;}
+.foot_cmt_input a{color: #3990e6;font-size:14px;padding:0 4px;}
+
+.foot_cmt_num{-webkit-box-flex: 2; flex: 2; margin:0 6px; height:28px; line-height:28px;background:#fff; border:1px solid #cccccc; color:#5494ea; text-align:center;border-radius:2px}
+.cmt_num_t{ font-size:12px; display:inline-block; background-position:0 -31px; padding-left:18px}
+.foot_cmt_share{-webkit-box-flex: 1; flex: 1; margin:0 6px; height:28px; line-height:28px;background:#fff; border:1px solid #cccccc; text-align:center;border-radius:2px}
+.cmt_share{ display:inline-block; width:28px; height:28px; line-height:28px; text-indent:999em; overflow:hidden;background-position:5px 5px }
+.foot_cmt_god{-webkit-box-flex: 1; flex: 1; margin:0 6px; height:28px; line-height:28px;background:#fff; border:1px solid #cccccc; text-align:center;border-radius:2px}
+.foot_cmt_god p{ color: #3990e6;font-size:14px;padding:0 4px; cursor: pointer; }
+
+
+
+.cmnt_tp{ height: 30px; padding: 10px 0; border-bottom: 1px solid #eee;}
+.cmnt_pop{ display: none; clear: both; overflow: hidden; *zoom: 1; font-size: 14px; background: #f9f9f9; }
+.cmnt_wrap{ margin: 0 10px 10px;}
+.cmntarea { border: 1px solid #d8d8d8; overflow: hidden; margin-bottom:10px; position: relative;}
+.cmntarea textarea { border: none; font-size: 16px; height: 80px; padding: 5px 10px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
+.cmnt_single{ clear: both; margin: 3px 0 0;}
+.cmnt_single .cmntarea textarea{ height: 40px; font-size: 12px;}
+.cmnt_bm{ clear:both; overflow:hidden; *zoom:1; font-size:12px}
+.cmnt_bm span{ display: inline-block; height: 20px; line-height: 20px;}
+a.cmnt_smt{ border:none; display: inline-block; width:60px; height: 30px; line-height: 30px; font-size: 14px; color: #fff; text-align: center; cursor:pointer; background: #00a0fe;}
+.cmnt_single .cmnt_smt{ width:36px; height: 20px; line-height: 20px; font-size: 12px;}
+.cmnt_cancel{ display: inline-block; width:60px; height: 30px; line-height: 30px; font-size: 14px; color: #666; text-align: center; background: #eee;}
+.cmnt_login{ height: 50px; line-height: 50px; font-size: 14px; color: #347ed2; padding-right: 120px; position: relative;}
+.unlogin{ padding-right: 40px;}
+.cmnt_login .fl{ float: none; display: block; width: 100%; white-space:nowrap; text-overflow:ellipsis; overflow:hidden}
+.cmnt_login .fr{ float: none; position: absolute; right: 0; top: 0; display: inline-block; height: 50px; line-height: 50px;}
+.cmnt_login img{ width: 32px; height: 32px; -moz-border-radius: 16px; -webkit-border-radius: 16px; border-radius: 16px; margin-right: 10px;}
+.cmnt_login a{ color: #347ed2;}
+.cmnt_login code{ color: #999; font-size: 12px;}
+.login{ display: inline-block; height: 32px; line-height: 32px; background:url(../images/addComment.png) no-repeat; background-size: 32px auto;  background-position: 0px -233px; padding-left: 36px; margin-right: 10px; vertical-align: middle;}
+
+
+/**页面操作组件*/
+.center_bg{ position: fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,.6); z-index:600}
+.center_pic_bg{ position: fixed; left:0; right:0; top:0; bottom:0; background:#000; z-index:600}
+
+.god_close_ico {position: absolute;right:0;width:40px;height:40px;top:0px; z-index:999; color:#fff; cursor:pointer}
+.god_close_ico b {position: absolute;right:6px;top:6px;-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);width:28px;height: 28px;-webkit-border-radius:50%;border-radius: 50%;-webkit-user-select: none;-moz-user-select: none; }
+.god_close_ico b::before {content: '';position: absolute;height:20px;width: 2px;left:14px;top:5px;background: #666;}
+.god_close_ico b::after {content: '';position: absolute;width: 20px;height: 2px;left:5px;top:14px;background: #666;}
+
+.comment_remind{position: fixed; top: 0; left: 0; right: 0;  z-index: 999;  height: 44px; line-height: 44px; font-size: 14px; text-align: center; color: #fff; background: rgba(68,68,68,.9);}
+.comment_remind p{display: block;  font-size: 14px; color: #fff; }
+.marker_t{   text-align:center; }
+.center_marker_pic{ position: absolute; z-index:600; left:0; right:0; top:0; bottom:0; text-align:center; line-height:100%; font-size:0;}
+.center_marker_pic img{ vertical-align:middle; font-size:0;}
+
+
+@media screen and (max-width:320px){
+.center_marker_pic img{ width:100%}
+}
+@media screen and (min-width:321px) and (max-width:800px){
+.center_marker_pic img{ width:100%}
+}
+
+.animation_marker{
+-webkit-animation:rotate_tk .5s .2s ease both;
+-moz-animation:rotate_tk .5s .2s ease both;}
+@-webkit-keyframes rotate_tk{
+0%{opacity:0}
+100%{opacity:1}
+}
+@-moz-keyframes rotate_tk{
+0%{opacity:0}
+100%{opacity:1}
+}
+.god_comment_box{display:none; padding: 20px 0; background: #e6e6e6; position: fixed; bottom: 44px; left: 0px; width: 100%; }
+.god_comment_notice{font-size: 12px; display: block; margin-left: 3px; padding: 0 18px; color:#666;}
+.god_comment_notice:hover{color:#666}
+.tips{padding-left: 38px; background-position: 16px -96px;}
+.god_comment{margin: 20px 0;padding: 0 18px;}
+.god_comment strong{font-weight: normal;}
+.god_comment span{ display: inline-block; height: 24px; line-height: 24px; font-size: 12px; background: #fff; padding: 0 6px; margin: 3px; cursor: pointer;}
+.god_comment .red{background: #eb6100; color: #fff;}
+.god_comment .orange{background: #f39800; color: #fff;}
+.god_comment .yellow{background: #f3b700; color: #fff;}
+.god_comment em{position: relative; font-style:normal; background-position: 4px -70px; padding-left:15px; font-size: 10px; }
+.god_bg{ display: none; position: fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,.6); z-index:500}
+.god_count{font-style:normal;}
+
+.god_comment_fly{ position: absolute; display: inline-block;background:url(../images/addComment.png) no-repeat; background-size:27px auto; background-position: 0 -88px; width: 28px; height: 16px; left:8px; top: 0; opacity: 1;
+animation:comment_flying .6s;
+-webkit-animation:comment_flying .6s;
+animation-fill-mode: forwards;
+-webkit-animation-fill-mode: forwards;
+}
+@keyframes comment_flying {
+	0% { background-size:27px auto; background-position: 0 -88px; width: 28px; height: 16px; top: -4px; opacity: 1 }
+	100% {transform:scale(1.3,1.3); top: -202px; opacity: 0.5}
+}
+@-webkit-keyframes comment_flying {
+	0% { background-size:27px auto; background-position: 0 -88px; width: 28px; height: 16px; top: -4px; opacity: 1}
+	100% {  -webkit-transform:scale(1.3,1.3); top: -20px; opacity: 0.5}
+}
+
+.tipsCeng{display: none;}

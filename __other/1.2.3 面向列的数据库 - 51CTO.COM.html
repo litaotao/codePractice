@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0043)http://book.51cto.com/art/201206/340959.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK"><script src="http://v1.ujian.cc/code/ujian.js?uid=1609262" charset="utf-8" id="uyan_script"></script><script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/style7.js" charset="utf-8" id="uyan_script"></script><script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/saved_resource" charset="utf-8" id="uyan_script"></script>
+
+<meta http-equiv="x-ua-compatible" content="ie=7">
+
+<title>1.2.3  面向列的数据库 - 51CTO.COM</title>
+<meta name="description" content="《NoSQL数据库入门》第1章NoSQL数据库的基础知识，本章首先介绍关系型数据库的起源、特征,以及它的优缺点，进而引出NoSQL数据库。然后介绍NoSQL数据库的种类，以及如何更好地区别使用关系型数据库和NoSQL数据库。本节为大家介绍面向列的数据库。">
+<meta name="keywords" content="NoSQL数据库,NoSQL数据库入门">
+<!--<base target="_blank">--><base href="." target="_blank">
+<link href="./1.2.3 面向列的数据库 - 51CTO.COM_files/grid.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="./1.2.3 面向列的数据库 - 51CTO.COM_files/art_master_top.css">
+<link href="./1.2.3 面向列的数据库 - 51CTO.COM_files/css3.css" rel="stylesheet" type="text/css">
+<script async="" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/analytics.js"></script><script language="javaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/base_art.js"></script><style type="text/css"></style>
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/index_1_down.js"></script>
+<style type="text/css">
+.bds_tools a{ padding:0; margin:0;}
+</style>
+<style type="text/css"></style><link href="./1.2.3 面向列的数据库 - 51CTO.COM_files/bdsstyle.css" rel="stylesheet" type="text/css"><script charset="utf-8" async="" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/sm.min.js"></script><script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/logger.js"></script><style type="text/css">.uyan_cmt_uname{color: #2B8CE6 !important;}#uyan_cmt_box{width: 100% !important;}#uyan_star{display: none !important;}#uyan_cmty_btn{display: block !important;}#uyan_login_btn{display: block !important;}#uyan_usp{display: none !important;}.uyan_st_slog{right: 162px !important;}#uyan_ddword{display: none !important;}#uyan_info_sync{display: none !important;}</style></head>
+<body><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_renren rrw">人人网</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_douban db">豆瓣网</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_thx thx">和讯微博</a></li><li><a href="http://book.51cto.com/art/201206/340959.htm#" class="bds_more">更多...</a></li></ul><p><a href="http://book.51cto.com/art/201206/340959.htm#" class="goWebsite">百度分享</a></p></div></div></div>
+<!-- 导航 开始-->
+<script id="allmobilize" charset="utf-8" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://book.51cto.com/art/201206/340959.htm#">
+<div id="home_top">    <div class="top_nav">        <div class="left" style="width:400px"><div class="logo_51cto" title="51CTO.COM - 技术成就梦想 -  中国领先的IT技术网站"></div><a href="http://www.51cto.com/">首页</a><img width="16" height="25" align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/top_bg_xian.gif" style="padding-top: 2px;"><a onmouseover="show(1,this);" onmouseout="popupClose();" href="http://www.51cto.com/col/35/" target="_blank">技术频道<img align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a><img width="16" height="25" align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/top_bg_xian.gif"><a onmouseover="show(2,this);" onmouseout="popupClose();" href="http://www.51cto.com/" target="_blank">51CTO旗下网站<img align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a><img width="16" height="25" align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/top_bg_xian.gif"><a href="http://www.51cto.com/about/map.htm" target="_blank">地图</a> <a href="http://www.51cto.com/about/rss.html" target="_blank"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/143749870.gif" style="vertical-align:middle; margin-bottom: 5px; margin-left:5px;"></a>       </div>        <div class="right">            <div class="more"><img width="27" height="16" align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/top_shequ.gif">社区：<a href="http://edu.51cto.com/" target="_blank" style="color:#CC0000">学院</a><a href="http://down.51cto.com/" target="_blank">下载</a><a href="http://bbs.51cto.com/" target="_blank">论坛</a><a href="http://blog.51cto.com/" target="_blank">博客</a><a onmouseover="show(3,this)" onmouseout="popupClose()" href="javascript:viod(0);">更多<img align="absmiddle" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/nav_ico1.gif" style="padding-left: 4px;"></a>            </div>            <span id="login_status"><div class="login" style="padding-top:8px; text-align:right;"><a href="http://edu.51cto.com/top" style="background:none"><img style="margin-top:-3px" id="dia" align="absmiddle" width="20" title="今天你领学分了吗？" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/dia.gif"></a><a href="http://home.51cto.com/?reback=http%253A%252F%252Fbook.51cto.com%252Fart%252F201206%252F340959.htm" target="_self">登录</a><a href="http://ucenter.51cto.com/reg_01.php?reback=http%253A%252F%252Fbook.51cto.com%252Fart%252F201206%252F340959.htm" target="_self">注册</a></div></span>                </div>    </div></div>
+<div class="subMenu1" id="s1" onmouseover="popupNoClose();" onmouseout="popupClose();">
+<ul>
+<li><a href="http://network.51cto.com/" target="_blank">网络</a></li>
+<li><a href="http://netsecurity.51cto.com/" target="_blank">安全</a></li>
+<li><a href="http://developer.51cto.com/" target="_blank">开发</a></li>
+<li><a href="http://database.51cto.com/" target="_blank">数据库</a></li>
+<li><a href="http://server.51cto.com/" target="_blank">服务器</a></li>
+<li><a href="http://os.51cto.com/" target="_blank">系统</a></li>
+<li><a href="http://virtual.51cto.com/" target="_blank">虚拟化</a></li>
+<li><a href="http://cloud.51cto.com/" target="_blank">云计算</a></li>
+<li><a href="http://developer.51cto.com/embed/" target="_blank">嵌入式</a></li>
+<li><a href="http://mobile.51cto.com/" target="_blank">移动开发</a></li>
+</ul>
+</div> 
+<div class="subMenu2" id="s2" onmouseover="popupNoClose()" onmouseout="popupClose()">
+<ul>
+<li><a href="http://www.51cto.com/" target="_blank" title="中国领先的IT技术网站">51CTO.COM</a></li>
+<li><a href="http://www.cioage.com/" target="_blank" title="中国首个专门服务于CIO的专业网站">CIOage.com</a></li>
+<li><a href="http://www.watchstor.com/" target="_blank" title="领先的中文存储网络媒体">WatchStor.com</a></li>
+<li><a href="http://www.hc3i.cn/" target="_blank" title="中国首家专注于数字医疗及医疗信息化的专业网站">HC3i.cn</a></li>
+</ul>
+</div>
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+	$(".bann").height(265);	 
+	$(".bann").css("background-color","white");
+});
+var edunum=2;
+$(function(){
+	$("#change").click(function(){
+		$("#edu > ul").css("display","none");
+		var eduid='edu'+edunum;
+		$("#" + eduid).css("display","block");	
+		if(edunum<4){
+			edunum++;	
+		}else{
+			edunum=1;	
+		}							
+	});  
+});
+</script>
+
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/head_art_more1.js"></script><div class="subMenu3" id="s3" onmouseover="popupNoClose()" onmouseout="popupClose()" style="z-index:9999;position: absolute;">
+<ul>
+<li><a href="http://home.51cto.com/" target="_blank">家园</a></li>
+<li><a href="http://edu.51cto.com/" target="_blank">学院</a></li>
+<li><a href="http://blog.51cto.com/" target="_blank">博客</a></li>
+<li><a href="http://bbs.51cto.com/" target="_blank">论坛</a></li>
+<li><a href="http://down.51cto.com/" target="_blank">下载</a></li>
+<li><a href="http://selftest.51cto.com/" target="_blank">自测</a></li>
+<li><a href="http://doctor.51cto.com/" target="_blank">门诊</a></li>
+<li><a href="http://blog.51cto.com/newsletter/" target="_blank">周刊</a></li>
+<li><a href="http://book.51cto.com/" target="_blank">读书</a></li>
+<li><a href="http://g.51cto.com/" target="_blank">技术圈</a></li>
+</ul>
+</div>
+
+<!-- 登陆信息 -->
+<!-- 导航 结束--> 
+ <div class="g_39 mb10">
+	<div id="tonglanad" class="fl"><script language="JavaScript" src="http://www.51cto.com/ad/art/tonglan/ad.js"></script></div>
+	<div id="list4" class="fr">
+		<ul>
+			<li id="wordlinkad1"></li>
+			<li id="wordlinkad2"></li>
+			<li id="wordlinkad3"></li>
+			<li id="wordlinkad4"></li>
+		</ul>
+	</div>
+<br class="dle">
+</div>
+
+<div class="g_39 menu">
+<div class="subNav_logo"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/dushu_logo.gif"></div>
+  <div class="subNav_l"><a href="http://book.51cto.com/" target="_blank">首页</a> | <a href="http://www.51cto.com/col/1198/" target="_blank">网络</a> | <a href="http://www.51cto.com/col/1203/" target="_blank">安全</a> | <a href="http://www.51cto.com/col/1210/" target="_blank">系统</a> | <a href="http://www.51cto.com/col/1216/" target="_blank">数据库</a> | <a href="http://www.51cto.com/col/1221/" target="_blank">开发</a> | <a href="http://www.51cto.com/col/1232/" target="_blank">Web应用</a> | <a href="http://www.51cto.com/col/1235/" target="_blank">考试认证</a> | <a href="http://www.51cto.com/col/1260/" target="_blank">职场</a> | <a href="http://www.51cto.com/col/1259/" target="_blank">管理</a> | <a href="http://publish.51cto.com/list/1192/" target="_blank">全部文章</a></div>  
+<div class="search fr">
+<dl>
+<form name="searchform" action="http://www.51cto.com/php/search.php" target="_blank" method="post" style="margin:0px; padding:0px;">
+<dt class="fl"><input name="keyword" type="text" class="searchInput f14 input" value="请输入关键字" onfocus="doempty(this, &#39;请输入关键字&#39;);" onblur="doempty(this, &#39;请输入关键字&#39;);"></dt>
+<dd class="fl"><input type="image" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/search.gif"></dd></form>
+</dl>
+</div>
+<br class="dle">
+</div>
+<div class="g_39 b3-s-4273B3 rel">
+<!--width : 26*25 - 15 = 635px-->
+<div class="g_26 fl m_l">
+<div class="brief bgF8F8F8">
+<p class="crumb ">您所在的位置：<a href="http://book.51cto.com/">读书频道</a> &gt; <a href="http://book.51cto.com/col/1216/">数据库</a> &gt; <a href="http://book.51cto.com/col/1218/">SQL Server</a> &gt;  <b>1.2.3  面向列的数据库</b> </p>
+<h1>1.2.3  面向列的数据库</h1>
+<div class="msg">
+<div>2012-06-07 11:35  罗勇 译  人民邮电出版社 <span class="f12-a"><a href="http://book.51cto.com/art/201206/340959.htm#commment" target="_self"></a></span> 字号：<span class="f14-b"><a href="javascript:setfont(12);" target="_self">T</a></span> | <span class="f16-b"><a href="javascript:setfont(16);" target="_self">T</a></span></div>
+<div class="artHd" id="books" style="padding:5px 25px;"><script language="JavaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/getBookData.php"></script><p class="artHd_l"><span class="item1">综合评级：</span><span class="xx4 item2"></span></p><p class="artHd_r"><a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/0" target="_blank">想读(8)</a>&nbsp;&nbsp;<a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/1" target="_blank">在读(2)</a>&nbsp;&nbsp;<a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/2" target="_blank">已读(0)</a>&nbsp;&nbsp; <a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/good/1" target="_blank">品书斋鉴(0)</a>&nbsp;&nbsp; <a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874" target="_blank"><span>已有10</span>人发表书评 </a></p></div>
+<div class="fav"><a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/Fav.gif" alt="一键收藏，随时查看，分享好友！" border="0"></a></div>
+</div>
+<div class="brieftext">
+<p class="f14 green">《NoSQL数据库入门》第1章NoSQL数据库的基础知识，本章首先介绍关系型数据库的起源、特征,以及它的优缺点，进而引出NoSQL数据库。然后介绍NoSQL数据库的种类，以及如何更好地区别使用关系型数据库和NoSQL数据库。本节为大家介绍面向列的数据库。</p>
+<p class="ad">AD：<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/keywords_ad_new.js"></script><a href="http://edu.51cto.com/course/course_id-1189.html" target="_blank" style="text-decoration: none;color:red">2014WOT全球软件技术峰会北京站 课程视频发布</a>
+</p>
+</div>
+</div>
+<div class="tag bgF8F8F8" id="indexlist" style="display:none;">
+<ul id="indexliststr">
+</ul>
+<br class="dle">
+</div>
+<div class="content bgF8F8F8 f14">
+<div id="content">
+<p></p><p><strong>1.2.3&nbsp; 面向列的数据库</strong></p>
+<p>Cassandra、Hbase、HyperTable属于这种类型。由于近年来数据量出现爆发性增长，这种类型的NoSQL数据库尤其引人注目。</p>
+<p>面向行的数据库和面向列的数据库</p>
+<p>普通的关系型数据库都是以行为单位来存储数据的，擅长进行以行为单位的读入处理，比如特定条件数据的获取。因此，关系型数据库也被称为面向行的数据库。相反，面向列的数据库是以列为单位来存储数据的，擅长以列为单位读入数据。表1-3所示为面向行的数据库和面向列的数据库比较。</p>
+<p>表1-3 面向行的数据库和面向列的数据库比较</p>
+<table class="ln" cellspacing="0" bordercolordark="#ffffff" align="center" bgcolor="#ddddd" bordercolorlight="#999999" border="1">
+<tbody>
+<tr>
+<td bgcolor="#ffffff"><a href="./1.2.3 面向列的数据库 - 51CTO.COM_files/113946541.jpg" target="_blank"><img class="fit-image" onload="javascript:if(this.width&gt;498)this.width=498;" onmousewheel="javascript:return big(this)" height="107" alt="" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/113946541.jpg" width="498" border="0"></a>&nbsp;<a href="http://book.51cto.com/files/uploadimg/20060921/153223104.gif" target="_blank"></a></td></tr>
+<tr></tr></tbody></table>
+<p>高扩展性</p>
+<p>面向列的数据库具有高扩展性，即使数据增加也不会降低相应的处理速度(特别是写入速度)，所以它主要应用于需要处理大量数据的情况。另外，利用面向列的数据库的优势，把它作为批处理程序的存储器来对大量数据进行更新也是非常有用的。但由于面向列的数据库跟现行数据库存储的思维方式有很大不同，应用起来十分困难。 </p>
+<p>高扩展性(特别是写入处理)</p>
+<p>应用十分困难</p>
+<p>最近，像Twitter和Facebook这样需要对大量数据进行更新和查询的网络服务不断增加，面向列的数据库的优势对其中一些服务是非常有用的，但是由于这与本书所要介绍的内容关系不大，就不进行详细介绍了。<br></p>
+<div align="right">【责任编辑：<a class="ln" href="mailto:limian@51cto.com">book</a> TEL：（010）68476606】</div><br><table align="center"><tbody><tr><td><a href="http://book.51cto.com/art/201206/340884.htm"><b>回书目</b></a>&nbsp;&nbsp;&nbsp;<a href="http://book.51cto.com/art/201206/340958.htm" target="_self"><b>上一节</b></a>&nbsp;&nbsp;&nbsp;<a href="http://book.51cto.com/art/201206/340960.htm" target="_self"><b>下一节</b></a>  </td></tr></tbody></table>
+ 
+<p class="blank10"></p> 
+ 
+ 
+
+
+<div class="f12"> <span class="fl">原文：<a href="./1.2.3 面向列的数据库 - 51CTO.COM_files/1.2.3 面向列的数据库 - 51CTO.COM.html" class="blue"><b>1.2.3  面向列的数据库</b></a></span> <span class="fr"><a href="http://book.51cto.com/">返回读书频道首页</a></span> </div>
+<p class="blank1"></p>
+</div>
+<iframe width="600" height="239" frameborder="0" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bulkfollow.html" scrolling="no"></iframe>
+<div class="tips">
+<div style="float:left;">
+<span style="float:left; margin-top:4px;">分享到：</span>
+<!-- Baidu Button BEGIN -->
+    <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare" style="margin-right:5px; float:left;">
+        <a class="bds_qzone" title="分享到QQ空间" href="http://book.51cto.com/art/201206/340959.htm#"></a>
+        <a class="bds_tsina" title="分享到新浪微博" href="http://book.51cto.com/art/201206/340959.htm#"></a>
+        <a class="bds_tqq" title="分享到腾讯微博" href="http://book.51cto.com/art/201206/340959.htm#"></a>
+        <a class="bds_renren" title="分享到人人网" href="http://book.51cto.com/art/201206/340959.htm#"></a>
+        <a class="bds_t163" title="分享到网易微博" href="http://book.51cto.com/art/201206/340959.htm#"></a>
+        <span class="bds_more"></span>
+		<a class="shareCount" href="http://book.51cto.com/art/201206/340959.htm#" title="累计分享0次">0</a>
+
+</div>
+<!--<div class="fl"> 
+    </div>
+--><script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=585532" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+	var bds_config = {'snsKey':{'tsina':'2378297317'}};
+	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+</script>
+<!-- Baidu Button END -->
+
+
+
+</div><div class="fr blue"><a href="javascript:AddFavorite(document.location.href,document.title);" target="_self">收藏</a>|<a href="javascript:window.print();" target="_self">打印</a>|<a id="msnqqcopy" title="分享本资源给好友" target="_self">复制</a></div>
+</div>
+</div>
+<!--内容 end-->
+<div class="topbiaoqing">
+<div class="biaoqing fixfloat pad">
+<ul>
+<li><a href="javascript:getcountscom(340959,1)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq1.jpg"></a>
+<div><a href="javascript:getcountscom(340959,1)" target="_self">给力</a></div>
+<span id="340959_1">(0票)</span></li>
+<li><a href="javascript:getcountscom(340959,2)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq2.jpg"></a>
+<div><a href="javascript:getcountscom(340959,2)" target="_self">动心</a></div>
+<span id="340959_2">(0票)</span></li>
+<li><a href="javascript:getcountscom(340959,3)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq3.jpg"></a>
+<div><a href="javascript:getcountscom(340959,3)" target="_self">废话</a></div>
+<span id="340959_3">(0票)</span></li>
+<li><a href="javascript:getcountscom(340959,4)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq4.jpg"></a>
+<div><a href="javascript:getcountscom(340959,4)" target="_self">专业</a></div>
+<span id="340959_4">(0票)</span></li>
+<li><a href="javascript:getcountscom(340959,5)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq5.jpg"></a>
+<div><a href="javascript:getcountscom(340959,5)" target="_self">标题党</a></div>
+<span id="340959_5">(0票)</span></li>
+<li><a href="javascript:getcountscom(340959,6)" target="_self"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/bq6.jpg"></a>
+<div><a href="javascript:getcountscom(340959,6)" target="_self">路过</a></div>
+<span id="340959_6">(0票)</span></li>
+</ul>
+</div>
+<script language="javascript"> 
+getcountscom(340959,11);
+
+</script>
+</div>
+<p class="blank10"></p>
+<!--reltag end-->
+
+<p class="blank10"></p>
+<div class="uyan">
+<div id="uyan_frame"><div id="uyan_cmt_box" style="width: 100%; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; position: relative; float: left;"><div id="uyan_top" style="height: 33px; overflow: hidden; font-size: 12px; font-weight: bold;"><div id="uyan_cmt_tit" style="float: left; padding-right: 13px; padding-top: 0px; font-size: 16px; color: #424242; font-weight: 600; line-height: 30px;">发表评论<div style="clear: both;"></div></div><div id="uyan_star" style="height: 22px; width: 120px; float:left; margin-top:7px; overflow: hidden;"><div style="float: left;"><a id="uyan_vs_1" onclick="UYAN.voteStar(1);" onmouseover="UYAN.cagStar(1);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_2" onclick="UYAN.voteStar(2);" onmouseover="UYAN.cagStar(2);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_3" onclick="UYAN.voteStar(3);" onmouseover="UYAN.cagStar(3);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_4" onclick="UYAN.voteStar(4);" onmouseover="UYAN.cagStar(4);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><a id="uyan_vs_5" onclick="UYAN.voteStar(5);" onmouseover="UYAN.cagStar(5);" onmouseout="UYAN.cagStar(0);" style="background: url(&#39;http://v2.uyan.cc/code/images/star_un.png&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; float: left; height: 16px; padding-right: 5px; width: 16px;"></a><div style="clear: both;"></div></div></div><div id="uyan_cmty_btn" style="height: 23px; overflow: hidden; background: url(&#39;http://v2.uyan.cc/code/images/linkbg.png&#39;) repeat-x; border: 1px solid #D7D7D7; border-radius: 3px; float: right; line-height: 23px; margin-left: 10px; padding: 0 8px; margin-top: 3px;"><a onclick="UYAN.cmty();" style="cursor: pointer; color: #424242; text-decoration: none; font-size: 12px; font-weight: bold;">社区</a></div><div id="uyan_like" style="height: 23px; overflow: hidden; background: url(&#39;http://v2.uyan.cc/code/images/linkbg.png&#39;) repeat-x; border: 1px solid #D7D7D7; border-radius: 3px; float: right; line-height: 23px; padding: 0 8px; margin-top: 3px;"><span id="uyan_vun" style="font-size: 11px; font-weight: bold; color: #303030;">0</span><a id="uyan_vu" onclick="UYAN.voteUD(&#39;uu&#39;);" style="cursor: pointer; font-size: 12px; font-weight: bold; color: #424242; text-decoration: none;">&nbsp;喜欢</a></div><div style="clear: both;"></div></div><div id="uyan_usp" style="margin-bottom: 10px;"><div style="font-size: 13px; height: 26px; overflow: hidden;"><a id="uyan_uname_txt_t" style="color: #2B8CE6; cursor: pointer; display: block; float: left; font-weight: bold; margin: 6px 0 0 0; text-decoration: none; font-size: 16px; line-height: 17px;" href="javascript:;"></a><div style="background: url(&#39;http://v2.uyan.cc/code/images/medalIcon.png&#39;) no-repeat scroll 0 2px transparent; float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 15px; line-height: 18px;"><div id="uyan_utname_edit" style="display: none;"><div style="color: #333333; float: left; padding-right: 4px;">头衔:</div><input id="uyan_utname" type="text" value="" style="color: #777777; float: left; height: 12px; padding: 1px 3px; width: 100px;"><a onclick="UYAN.setUtname();" style="background-color: #8BAD50; border: 1px solid #799E3C; border-radius: 3px 3px 3px 3px; color: #FFFFFF; cursor: pointer; float: left; margin-left: 3px; padding: 0 10px; text-align: center; text-decoration: none;">确定</a><a onclick="UYAN.changeUtname();" style="color: #AAAAAA; cursor: pointer; float: left; margin-left: 6px;">取消</a></div><div id="uyan_utname_txt"><div id="uyan_utname_show" style="color: #444444; float: left; padding-right: 5px;"></div><a onclick="UYAN.changeUtname();" style="color: #2B8CE6; cursor: pointer; float: left; text-decoration: none;">编辑头衔</a></div></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/emailIcon.png&#39;) no-repeat scroll 0 0 transparent; float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 19px; line-height: 18px;"><div id="uyan_femail_edit" style="display: none;"><div style="color: #333333; float: left; padding-right: 4px;">邮箱:</div><input id="uyan_femail" type="text" value="" style="color: #777777; float: left; height: 12px; padding: 1px 3px; width: 100px;"><a onclick="UYAN.setFemail();" style="background-color: #8BAD50; border: 1px solid #799E3C; border-radius: 3px 3px 3px 3px; color: #FFFFFF; cursor: pointer; float: left; margin-left: 3px; padding: 0 10px; text-align: center; text-decoration: none;">确定</a><a onclick="UYAN.changeFemail();" style="color: #AAAAAA; cursor: pointer; float: left; margin-left: 6px;">取消</a></div><div id="uyan_femail_txt"><div id="uyan_femail_show" style="color: #444444; float: left; padding-right: 5px;"></div><a onclick="UYAN.changeFemail();" style="color: #2B8CE6; cursor: pointer; float: left; text-decoration: none;">跟踪回复</a></div></div><div id="uyan_uacn" style="float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 0px; line-height: 18px; color: #2B8CE6;">0条评论</div><div id="uyan_uvon" style="float: left; height: 20px; margin: 6px 0 0 10px; padding-left: 2px; line-height: 18px; color: #2B8CE6;">0次被喜欢</div><div style="clear: both;"></div></div><div style="clear: both;"></div></div><div id="uyan_loginot" style="padding: 0 0 3px 60px;"><div style="clear: both;"></div></div><div style="height: 58px; overflow: hidden; padding: 0 0 30px 0;"><div style="float: left; border-radius: 6px 6px 6px 6px; width: 50px; height: 60px; margin-right: 10px;"><img id="uyan_uface" style="box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22); border-radius: 4px; width: 50px; height: 50px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/duface.png"></div><div style="padding: 0 0 0 60px; overflow: visible;"><div onclick="UYAN.hidIntro(this.firstChild);" style="height: 40px; background: url(&#39;http://v2.uyan.cc/code/images/textareabg.png&#39;) repeat-x scroll 0 0 #FFFFFF; border-top: 1px solid #b8b8b8; border-left: 1px solid #b8b8b8; border-right: 1px solid #b8b8b8; background-color: #ffffff; background-repeat: repeat-x; border-radius: 3px 3px 0 0; box-shadow: 0 0; padding: 7px; position: relative; overflow: hidden; cursor: text;"><textarea id="uyan_comment" onkeyup="UYAN.checkTxt(this, 140);" onkeydown="UYAN.checkTxt(this, 140);" onfocus="UYAN.hidIntro(this);" onblur="UYAN.shoIntro(this);" style="background: none repeat scroll 0 0 #FFFFFF; padding: 0; box-shadow: 0 0; color: #BDBBBB; border: 0; z-index: 90; overflow: hidden; float: left; font-size: 13px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; resize: none; height: 40px; display: block; outline: none; word-wrap: break-word; margin: 0;">请输入你的评论</textarea><pre style="width: 100%; font-size: 13px; left: 0; line-height: 18px; position: absolute; top: 0; visibility: hidden; word-wrap: break-word; white-space: pre-wrap;" id="uyan_cmt_cnt"></pre></div><div style="opacity: 1; visibility: visible; border-top: 1px dotted #C6CDD6; border-bottom: 1px solid #b8b8b8; border-left: 1px solid #b8b8b8; border-right: 1px solid #b8b8b8; bottom: 0; height: 28px; left: 0; right: 0; padding: 0 10px; background-color: #FFFFFF;"><div id="uyan_smile" title="表情" onclick="UYAN.shoSmile(this);" onmouseover="UYAN.mouseOO(this, &#39;on&#39;);" onmouseout="UYAN.mouseOO(this, &#39;out&#39;);" style="cursor: pointer; width: 18px; height: 16px; float: left; overflow: hidden; background: url(&#39;http://v2.uyan.cc/code/images/emotion2.png&#39;) no-repeat; margin-top: 6px; margin-right: 6px;"></div><div style="font-size: 14px; float: right; line-height: 28px; font-family: Georgia,Constantia; color: #cecece;"><span id="uyan_tts">140</span></div></div><div style="clear:both;"></div></div></div><div id="uyan_ssmile" style="margin-left: 60px; position: absolute; z-index: 9999; display: none;"><div style="border: 1px solid #989999; border-radius: 5px; width: 322px; height: 160px; background: #fff; font-size: 12px; padding: 6px;"><ul style="margin: 5px 0 0 0; padding: 0; height: 24px;"><li id="uyan_ssmile_df" onclick="UYAN.shoSmile(this, &#39;df&#39;);" style="float: left; list-style: none; line-height: 22px; background: url(&#39;http://v2.uyan.cc/code/images/smileb.gif&#39;) no-repeat scroll 0 center transparent; color: #ffffff; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">默认表情</li><li id="uyan_ssmile_al" onclick="UYAN.shoSmile(this, &#39;al&#39;);" style="float: left; list-style: none; line-height: 22px; background: none repeat scroll 0 center transparent; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">阿狸</li></ul><ul id="uyan_ssmile_list" style="margin: 0; padding: 0; width: 310px; border-top: 1px solid #d3e4f0; border-left: 1px solid #d3e4f0; margin: 5px 0 0 5px;"></ul></div></div><div id="uyan_stat_btn" style="position: relative; overflow: hidden; margin-bottom: 5px; margin-top: 0px; line-height: 15px;"><div style="font-size: 12px; float: right; margin-top: 5px; width: 72px;"><a id="uyan_cmt_btn" onclick="UYAN.addCmt(this);" onmouseover="UYAN.cagBtn(&#39;on&#39;, this);" onmouseout="UYAN.cagBtn(&#39;out&#39;, this);" style="cursor: pointer; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; padding: 0px; border-radius: 3px 3px 3px 3px; color: #666666; display: inline-block; font-weight: 600; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6); float: right; background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x scroll 0px 0px transparent; text-align: center; width: 70px; border: 1px solid #B8B8B8; font-size: 12px; line-height: 22px; height: 22px;">发&nbsp;&nbsp;布</a></div><div id="uyan_vis" style="float: right; margin-right: 10px; min-height: 32px; padding-left: 5px; width: 116px;"><p id="uyan_lb_uname" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; padding: 0;"><input maxlength="20" onfocus="UYAN.changeBn(this, &#39;昵称（必填）&#39;);" onblur="UYAN.changeBn(this, &#39;昵称（必填）&#39;);" id="uyan_l_uname" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px;  margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="昵称（必填）"><a onclick="UYAN.changeLB(this, &#39;s&#39;);" title="加入邮箱和网址信息" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat; width: 10px; height: 5px; display: block; float: right; top: -15px; _margin-top: -15px; right: -9px; _margin-right: -15px; position: relative; _position: none;"></a></p><p id="uyan_lb_email" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; display: none; padding: 0;"><input maxlength="50" onfocus="UYAN.changeBn(this, &#39;邮箱&#39;);" onblur="UYAN.changeBn(this, &#39;邮箱&#39;);" id="uyan_l_email" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px; margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="邮箱"></p><p id="uyan_lb_ulink" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; display: none; padding: 0;"><input maxlength="100" onfocus="UYAN.changeBn(this, &#39;网址&#39;);" onblur="UYAN.changeBn(this, &#39;网址&#39;);" id="uyan_l_ulink" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px; margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="网址"></p><input id="uyan_sync" class="uyan_st_sync" type="hidden"></div><div id="uyan_ottype" style="float: right; width: 160px;"><span style="display: block;"><a onclick="UYAN.loginTSina();" onmouseover="UYAN.mouseOO(this, &#39;tsinambtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tsinambtn2.png&#39;);" title="使用新浪微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tsinambtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginQq();" onmouseover="UYAN.mouseOO(this, &#39;qqmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;qqmbtn2.png&#39;);" title="使用QQ账号账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/qqmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginTQq();" onmouseover="UYAN.mouseOO(this, &#39;tqqmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tqqmbtn2.png&#39;);" title="使用腾讯微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tqqmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float:left; overflow:hidden; margin-right:5px; margin-top:5px;"></a><a onclick="UYAN.loginRenren();" onmouseover="UYAN.mouseOO(this, &#39;renrenmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;renrenmbtn2.png&#39;);" title="使用人人账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/renrenmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginTSohu();" onmouseover="UYAN.mouseOO(this, &#39;tsohumbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tsohumbtn2.png&#39;);" title="使用搜狐微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tsohumbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.changeML(this, &#39;s&#39;);" title="选择更多登陆账号" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat scroll right 11px transparent; width: 10px; height: 20px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a id="uyan_ml_kaixin001" onmouseover="UYAN.mouseOO(this, &#39;kaixin001mbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;kaixin001mbtn2.png&#39;);" title="kaixin001" onclick="UYAN.loginKaixin001();" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/kaixin001mbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: none; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a id="uyan_ml_t163" onmouseover="UYAN.mouseOO(this, &#39;t163mbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;t163mbtn2.png&#39;);" title="163" onclick="UYAN.loginT163();" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/t163mbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: none; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a></span></div><div style="clear: both;"></div></div><div id="uyan_slog" class="uyan_st_slog" onmouseover="UYAN.show(this);" onmouseout="UYAN.hide(this);" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; position: absolute; z-index: 90000; padding: 1px 3px; display: none; width: 20px;"><div onclick="UYAN.loginKaixin001();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/kaixin001.png"></div><div onclick="UYAN.loginTSohu();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/tsohu.png"></div><div onclick="UYAN.loginT163();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/t163.png"></div></div><div id="uyan_sort" style="color: #424242; font-size: 12px; margin: 0px; padding: 0px;"><div style="height: 28px; overflow: hidden; float: left;"><div style="float: left; padding: 4px 8px 5px; text-shadow: 0px 1px 0px #FFFFFF; border-bottom: 2px solid #2B8CE6;"><a id="uyan_sort_name" onclick="UYAN.cmtSort();" style="line-height: 17px; background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat scroll right 7px transparent; color: #787878; cursor: pointer; display: block; float: left; font-size: 12px; padding-right: 15px; font-weight:600;">按时间排序</a></div><div style="float: left; font-size:11px; color: #999999; padding: 4px 1px;">|</div><div style="text-shadow: 0 1px 0 #FFFFFF; float:left; padding:4px 8px 5px;"><a id="uyan_sort_tsina" onclick="UYAN.cmtSort(0, &#39;tsina&#39;);" style="line-height: 17px; color: #787878; cursor: pointer; display: block; float: left; font-size: 12px;">新浪微博</a></div><div style="float: left; font-size: 11px; color: #999999; padding: 4px 1px;">|</div><div style="text-shadow: 0 1px 0 #FFFFFF; float: left; padding: 4px 8px 5px;"><a id="uyan_sort_tqq" onclick="UYAN.cmtSort(0, &#39;tqq&#39;);" style="line-height: 17px; color: #787878; cursor: pointer; display: block; float: left; font-size: 12px;">腾讯微博</a></div></div><div style="clear: both;"></div></div><div id="uyan_sort_box" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; left: 15px; position: absolute; width: 115px; z-index: 90000; display: none;"><div style="color: #9797C4; font-size: 12px; font-weight: normal; padding-bottom: 2px; padding-left: 21px; padding-top: 4px; height: 16px;">排序方式:</div><a id="uyan_sort_time" onclick="UYAN.cmtSort(0);" style="color: rgb(28, 28, 28); cursor: pointer; display: block; font-size: 12px; padding-bottom: 2px; padding-left: 21px; padding-top: 2px; height: 16px; font-weight: bold; background: url(http://v2.uyan.cc/code/images/currentSort.png) 8px 8px no-repeat scroll transparent;">按时间排序</a><a id="uyan_sort_hot" onclick="UYAN.cmtSort(1);" style="color: #1C1C1C; cursor: pointer; display: block; font-size: 12px; padding-bottom: 2px; padding-left: 21px; padding-top: 2px; height: 16px;">按热度排序</a></div><div id="uyan_cmt_list"><div id="uyan_cmt_list_warn" style="margin-top: 10px; padding-top: 10px; font-size: 12px; color: #303030; text-align: center;">还没有评论内容</div></div><div class="ujian-uyan"></div><div style="float: right; font-size: 12px; padding: 20px 8px 10px 0;">    <a style="color: #aaaaaa; text-decoration: none;" target="_blank" title="社会化评论是什么？" href="http://www.uyan.cc/">友言[?]</a>    </div>    <div style="clear: both;"></div></div><div id="uyan_rpy" style="display: none; padding-left: 60px; padding-top: 10px;"><div style="height: 58px; overflow: hidden; padding: 0 0 30px 0;"><div style="float: left; border-radius: 6px 6px 6px 6px; width: 38px; height: 60px; margin-right: 10px;"><img id="uyan_uface_r" style="box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22); border-radius: 4px; width: 38px; height: 38px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/duface.png"></div><div style="padding: 0 0 0 48px; overflow: visible;"><div onclick="UYAN.hidIntro(this.firstChild, uyan_smile_region);" style="height: 40px; background: url(&#39;http://v2.uyan.cc/code/images/textareabg.png&#39;) repeat-x scroll 0 0 #FFFFFF; border-top: 1px solid #b8b8b8; border-left: 1px solid #b8b8b8; border-right: 1px solid #b8b8b8; background-color: #ffffff; background-repeat: repeat-x; border-radius: 3px 3px 0 0; box-shadow: 0 0; padding: 7px; position: relative; overflow: hidden; cursor: text;"><textarea id="uyan_comment" onkeyup="UYAN.checkTxt(this, 140, uyan_tts_region);" onkeydown="UYAN.checkTxt(this, 140, uyan_tts_region);" onfocus="UYAN.hidIntro(this, uyan_smile_region);" onblur="UYAN.shoIntro(this, uyan_smile_region);" style="background: none repeat scroll 0 0 #FFFFFF; padding: 0; box-shadow: 0 0; color: #BDBBBB; border: 0; z-index: 90; overflow: hidden; float: left; font-size: 13px; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; resize: none; height: 40px; display: block; outline: none; word-wrap: break-word; margin: 0;">请输入你的评论</textarea><pre style="width: 100%; font-size: 13px; left: 0; line-height: 18px; position: absolute; top: 0; visibility: hidden; word-wrap: break-word; white-space: pre-wrap;" id="uyan_cmt_cnt"></pre></div><div style="opacity: 1; visibility: visible; border-top: 1px dotted #C6CDD6; border-bottom: 1px solid #b8b8b8; border-left: 1px solid #b8b8b8; border-right: 1px solid #b8b8b8; bottom: 0; height: 28px; left: 0; right: 0; padding: 0 10px; background-color: #FFFFFF;"><div id="uyan_smile" title="表情" onclick="UYAN.shoSmile(this, &#39;&#39;, uyan_smile_region);" onmouseover="UYAN.mouseOO(this, &#39;on&#39;);" onmouseout="UYAN.mouseOO(this, &#39;out&#39;);" style="cursor: pointer; width: 18px; height: 16px; float: left; overflow: hidden; background: url(&#39;http://v2.uyan.cc/code/images/emotion2.png&#39;) no-repeat; margin-top: 6px; margin-right: 6px;"></div><div style="font-size: 14px; float: right; line-height: 28px; font-family: Georgia,Constantia; color: #cecece;"><span id="uyan_tts">140</span></div></div><div style="clear:both;"></div></div></div><div id="uyan_ssmile" style="margin-left: 48px; position: absolute; z-index: 9999; display: none;"><div style="border: 1px solid #989999; border-radius: 5px; width: 322px; height: 160px; background: #fff; font-size: 12px; padding: 6px;"><ul style="margin: 5px 0 0 0; padding: 0; height: 24px;"><li id="uyan_ssmile_df" onclick="UYAN.shoSmile(this, &#39;df&#39;, uyan_smile_region);" style="float: left; list-style: none; line-height: 22px; background: url(&#39;http://v2.uyan.cc/code/images/smileb.gif&#39;) no-repeat scroll 0 center transparent; color: #fff; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">默认表情</li><li id="uyan_ssmile_al" onclick="UYAN.shoSmile(this, &#39;al&#39;, uyan_smile_region);" style="float: left; list-style: none; line-height: 22px; background: none repeat scroll 0 center transparent; width: 68px; height: 24px; overflow: hidden; text-align: center; margin: 0 5px; display: inline; cursor: pointer; padding: 0;">阿狸</li></ul><ul id="uyan_ssmile_list" style="margin: 0; padding: 0; width: 310px; border-top: 1px solid #d3e4f0; border-left: 1px solid #d3e4f0; margin: 5px 0 0 5px;"></ul></div></div><div id="uyan_stat_btn_r" style="position: relative; overflow: hidden; margin-bottom: 5px; margin-top: 0px; line-height: 15px;"><div style="font-size: 12px; float: right; margin-top: 5px; width: 72px;"><a id="uyan_cmt_btn" onclick="UYAN.addCmt(this, uyan_comment_region);" onmouseover="UYAN.cagBtn(&#39;on&#39;, this);" onmouseout="UYAN.cagBtn(&#39;out&#39;, this);" style="cursor: pointer; font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; padding: 0px; border-radius: 3px 3px 3px 3px; color: #666666; display: inline-block; font-weight: 600; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6); float: right; background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x scroll 0px 0px transparent; text-align: center; width: 70px; border: 1px solid #B8B8B8; font-size: 12px; line-height: 22px; height: 22px;">回&nbsp;&nbsp;复</a></div><div id="uyan_vis" style="float: right; margin-right: 10px; min-height: 32px; padding-left: 5px; width: 116px;"><p id="uyan_lb_uname" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; padding: 0;"><input maxlength="20" onfocus="UYAN.changeBn(this, &#39;昵称（必填）&#39;);" onblur="UYAN.changeBn(this, &#39;昵称（必填）&#39;);" id="uyan_l_uname" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px;  margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="昵称（必填）"><a onclick="UYAN.changeLB(this, &#39;s&#39;, uyan_lb_region);" title="加入邮箱和网址信息" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat; width: 10px; height: 5px; display: block; float: right; top: -15px; _margin-top: -15px; right: -9px; _margin-right: -15px; position: relative; _position: none;"></a></p><p id="uyan_lb_email" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; display: none; padding: 0;"><input maxlength="50" onfocus="UYAN.changeBn(this, &#39;邮箱&#39;);" onblur="UYAN.changeBn(this, &#39;邮箱&#39;);" id="uyan_l_email" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px; margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="邮箱"></p><p id="uyan_lb_ulink" style="height: 26px; text-indent: 0; margin: 5px 0 0px; width: 100px; display: none; padding: 0;"><input maxlength="100" onfocus="UYAN.changeBn(this, &#39;网址&#39;);" onblur="UYAN.changeBn(this, &#39;网址&#39;);" id="uyan_l_ulink" type="text" style="font-family: &#39;Microsoft YaHei&#39;,arial,tahoma,宋体,sans-serif; background-color: rgba(255, 255, 255, 0.45); background-repeat: repeat-x; border: 1px solid #b8b8b8; border-radius: 3px 3px 3px 3px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset; font-size: 12px; height: 22px; line-height: 22px; margin: 0; padding: 0px 8px; width: 100%; vertical-align: top; color: #999999;" value="网址"></p><input id="uyan_sync" class="uyan_st_sync" type="hidden"></div><div style="float: right; width: 160px;"><span style="display: block;"><a onclick="UYAN.loginTSina();" onmouseover="UYAN.mouseOO(this, &#39;tsinambtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tsinambtn2.png&#39;);" title="使用新浪微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tsinambtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginQq();" onmouseover="UYAN.mouseOO(this, &#39;qqmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;qqmbtn2.png&#39;);" title="使用QQ账号账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/qqmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginTQq();" onmouseover="UYAN.mouseOO(this, &#39;tqqmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tqqmbtn2.png&#39;);" title="使用腾讯微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tqqmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float:left; overflow:hidden; margin-right:5px; margin-top:5px;"></a><a onclick="UYAN.loginRenren();" onmouseover="UYAN.mouseOO(this, &#39;renrenmbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;renrenmbtn2.png&#39;);" title="使用人人账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/renrenmbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.loginTSohu();" onmouseover="UYAN.mouseOO(this, &#39;tsohumbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;tsohumbtn2.png&#39;);" title="使用搜狐微博账号登陆" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/tsohumbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a onclick="UYAN.changeML(this, &#39;s&#39;, uyan_ml_region);" title="选择更多登陆账号" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/sorttype.png&#39;) no-repeat scroll right 11px transparent; width: 10px; height: 20px; display: block; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a id="uyan_ml_kaixin001" onmouseover="UYAN.mouseOO(this, &#39;kaixin001mbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;kaixin001mbtn2.png&#39;);" title="kaixin001" onclick="UYAN.loginKaixin001();" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/kaixin001mbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: none; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a><a id="uyan_ml_t163" onmouseover="UYAN.mouseOO(this, &#39;t163mbtn.png&#39;);" onmouseout="UYAN.mouseOO(this, &#39;t163mbtn2.png&#39;);" title="163" onclick="UYAN.loginT163();" style="cursor: pointer; background: url(&#39;http://v2.uyan.cc/code/images/t163mbtn2.png&#39;) no-repeat; width: 24px; height: 24px; display: none; float: left; overflow: hidden; margin-right: 5px; margin-top: 5px;"></a></span></div><div style="clear: both;"></div></div><div id="uyan_slog" class="uyan_st_slog" onmouseover="UYAN.show(this);" onmouseout="UYAN.hide(this);" style="background-color: #FFFFFF; border-color: #d3d2d2; border-width: 1px 1px 2px; border-style: solid; position: absolute; z-index: 90000; padding: 1px 3px; display: none; width: 20px;"><div onclick="UYAN.loginKaixin001();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/kaixin001.png"></div><div onclick="UYAN.loginTSohu();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/tsohu.png"></div><div onclick="UYAN.loginT163();" style="color: #9797C4;  font-size: 12px; font-weight: normal; width:16px; margin:0 auto; padding:2px 0; cursor: pointer; height: 17px; overflow: hidden;"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/t163.png"></div></div></div><div style="clear: both;"></div><div id="uyan_box" style="font-family: &#39;Microsoft YaHei&#39;; display: none; top: 0px; left: 0px; z-index: 9999999; opacity: 1; empty-cells: show; position: absolute; background: none repeat scroll 0 0 #FFFFFF; text-align: left;"><table cellspacing="0" cellpadding="0" border="0" style="border: none; width: auto; line-height: normal;"><tbody><tr><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxnw.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td><td style="background-color: black; height: 10px; opacity: 0.3; padding: 0; filter: alpha(opacity=60);"></td><td onclick="UYAN.hideBox();" style="background: url(&#39;http://v2.uyan.cc/code/images/boxclose.png&#39;) no-repeat scroll 0 0 transparent; _background: url(&#39;http://v2.uyan.cc/code/images/boxclose.gif&#39;) no-repeat scroll 0 0 transparent; cursor: pointer; display: block; height: 23px; position: absolute; right: -8px; top: -8px; width: 23px; z-index: 100000; padding: 0;"></td></tr><tr><td style="background-color: black; opacity: 0.6; padding: 0; width: 10px; opacity: 0.3; filter: alpha(opacity=60);"></td><td style="background-color: white; padding: 0;"><div id="uyan_box_cnt"></div></td><td style="background-color: black; opacity: 0.6; padding: 0; width: 10px; opacity: 0.3; filter: alpha(opacity=60);"></td></tr><tr><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxsw.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td><td style="background-color: black; height: 10px; opacity: 0.3; padding: 0; filter: alpha(opacity=60);"></td><td style="background: url(&#39;http://v2.uyan.cc/code/images/boxse.png&#39;) repeat scroll 0 0 transparent; height: 10px; padding: 0; width: 10px; opacity: 0.5;"></td></tr></tbody></table></div><div id="uyan_cmty" style="display: none;"><div style="width: 520px;"><div style="border-bottom: 1px solid #b6b5b5; background: #eeeeee; color: #666; font-size: 16px; height: 22px; padding: 10px 0;"><span id="uyan_sdm_name" style="float: left; padding-left: 25px; text-shadow: 0 1px 0 #fff;">book.51cto.com</span></div><div style="color: #666;"><div style="background: url(&#39;http://v2.uyan.cc/code/images/commentWeb.png&#39;) no-repeat 20px 13px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_dacn" style="font-size: 18px;">2799</span><br><span style="font-size: 12px;">评论数</span></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/likeWeb.png&#39;) no-repeat 24px 10px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_dvun" style="font-size: 18px;">1613</span><br><span style="font-size: 12px;">喜欢数</span></div><div style="background: url(&#39;http://v2.uyan.cc/code/images/humanWeb.png&#39;) no-repeat 27px 13px; border-right: 1px solid #EEEEEE; float: left; height: 49px; padding-left: 70px; padding-top: 6px; width: 102px;"><span id="uyan_daun" style="font-size: 18px;">43</span><br><span style="font-size: 12px;">用户数</span></div><div style="clear: both;"></div></div><div id="uyan_cmty_info_tmp" style="border-top: 1px solid #CCCCCC; padding: 10px 20px; font-size: 15px; color: #555555;">数据正在加载中...</div><div style="background-color: #F0F0F0; border-top: 1px solid #CCCCCC; height: 20px; padding-top: 6px;"><a target="_blank" href="http://www.uyan.cc/" style="color: #6B6B6B; cursor: pointer; display: block; float: right; font-family: Arial, Helvetica, sans-serif; font-size: 11px; margin-right: 15px; text-decoration: none;">友言</a><div style="clear: both;"></div></div></div></div><div id="uyan_login" style="display: none;"><div style="border-bottom: 1px solid #b6b5b5; background: #eeeeee; color: #666; font-size: 16px; height: 22px; padding: 10px 0;"><span style="padding-left: 25px; text-shadow: 0 1px 0 #fff; font-weight: 600;">社会化帐号登录</span></div><div style="width: 429px; padding: 22px;"><h2 style="margin: 0; font-size: 14px; font-weight: normal; color: #666; padding-left: 25px; padding-bottom: 5px; background: none repeat scroll 0 center transparent;">点击按钮，使用社交帐号评论</h2><div id="uyan_loginom" style="padding-bottom: 20px;"><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用新浪微博账号登陆" onclick="UYAN.loginTSina();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用新浪微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/tsina.png">&nbsp;&nbsp;新浪微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用QQ账号登陆" onclick="UYAN.loginQq();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用QQ账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/qq.png">&nbsp;&nbsp;QQ</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用腾讯微博账号登陆" onclick="UYAN.loginTQq();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用腾讯微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/tqq.png">&nbsp;&nbsp;腾讯微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用人人网账号登陆" onclick="UYAN.loginRenren();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用人人网账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/renren.png">&nbsp;&nbsp;人人网</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用网易微博账号登陆" onclick="UYAN.loginT163();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用网易微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/t163.png">&nbsp;&nbsp;网易微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用搜狐微博账号登陆" onclick="UYAN.loginTSohu();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用搜狐微博账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/tsohu.png">&nbsp;&nbsp;搜狐微博</a></span><span style="height: 16px; float: left; display: block; line-height: 16px; overflow: hidden; width: 60px; margin: 15px 22px 0 25px; display: inline;"><a title="用开心网账号登陆" onclick="UYAN.loginKaixin001();" style="cursor: pointer; font-size: 14px; color: #666; text-decoration: none;"><img title="用开心网账号登陆" border="0" style="display: block; float: left; width: 16px; height: 16px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/kaixin001.png">&nbsp;&nbsp;开心网</a></span><div style="clear: both;"></div></div><div id="uyan_vis_login"><h2 style="padding-top: 10px; border-top: 1px solid #ccc; margin: 0; font-size: 14px; font-weight: normal; color: #666; padding-left: 25px; margin-top: 15px; background: none repeat scroll 0 center transparent;">作为游客留言</h2><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 15px;"><p style="text-indent: 0; display: block; float: left; width: 58px; line-height: 30px; text-align: left; margin: 0; font-size: 14px; color: #666;">Email <span style="color: #ff0000;">*</span></p><input onkeyup="UYAN.syncEN();" onkeydown="UYAN.syncEN();" id="uyan_email_tmp" type="text" style="margin: auto; border: 1px solid #c1c1c1; color: #687793; float: left; height: 24px; line-height: 24px; padding: 2px 8px; width: 230px; border-radius: 5px;"></span><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 18px;"><p style="text-indent: 0; display: block; float: left; width: 58px; line-height: 30px; text-align: left; margin: 0; font-size: 14px; color: #666;">昵&nbsp;&nbsp;称</p><input onfocus="UYAN.nnbg(&#39;h&#39;);" onblur="UYAN.nnbg(&#39;s&#39;);" id="uyan_uname_tmp" type="text" style="margin: auto; background: #f2f2f2; border: 1px solid #c1c1c1; color: #687793; float: left; height: 24px; line-height: 24px; padding: 2px 8px; width: 230px; border-radius: 5px; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;"></span><span style="height: 30px; display: block; padding-left: 54px; overflow: hidden; margin-top: 15px; width: 306px;"><div id="uyan_login_warn_tmp" style="color: #ff0000; float: left; font-family: Arial, Helvetica, sans-serif; font-size: 13px; padding-right: 15px; padding-top: 8px; text-align: right; width: 150px;"></div><input onclick="UYAN.loginEmail();" type="submit" style="margin: auto; background: url(&#39;http://v2.uyan.cc/code/images/btn.jpg&#39;) no-repeat; width: 86px; height: 26px; border: none; font-size: 14px; font-weight: bold; color: #666; float: right; cursor: pointer;" value="登录"></span></div></div></div><div style="background-color: #FFFFFF; border-color: #D3D2D2; border-style: solid; border-width: 1px 1px 2px; height: 130px; position: absolute; top: 23px; width: 135px; z-index: 99999; display: none;"><div style="color: #9797C4; font-size: 12px; font-weight: normal; padding: 4px 0 4px 10px; line-height: 18px;">顶并分享到:</div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 3px 0;"><input id="sinaShareBox" style="float: left; margin: 2px 5px 0 10px; padding: 0;" type="checkbox"><div style="background: url(&#39;http://v2.uyan.cc/code/images/tsina.png&#39;) no-repeat scroll 0 0 transparent; color: #494949; float: left; height: 18px; line-height: 18px; font-size: 12px; font-weight: normal; padding-left: 18px;">新浪微博</div><div style="clear: both;"></div></div><div style="padding: 5px 0 0 10px;"><a style="border: 1px solid #D0CFCF; background: url(&#39;http://v2.uyan.cc/code/images/buttonLarge.png&#39;) repeat-x; border-radius: 3px 3px 3px 3px; color: #666; font-weight: bold; cursor: pointer; font-weight: normal; float: left; font-size: 12px; height: 20px; line-height: 22px; overflow: hidden; padding: 0 18px;">顶</a><a style="background-color: #FFFFFF; border: 1px solid #FFFFFF; color: #737373; height: 20px; line-height: 22px; overflow: hidden; cursor: pointer; display: block; float: left; font-size: 12px; font-weight: normal; padding: 0 18px;">取消</a><div style="clear: both; height: 1px; overflow: hidden;"></div></div></div></div>
+<script type="text/javascript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/uyan.js"></script>
+</div>
+<!--box end-->
+
+<div class="bor">
+<div class="titbg pl15">关于<a href="http://www.51cto.com/php/search.php?keyword=NoSQL%CA%FD%BE%DD%BF%E2" target="_blank" class="underline">NoSQL数据库</a>&nbsp;&nbsp;<a href="http://www.51cto.com/php/search.php?keyword=NoSQL%CA%FD%BE%DD%BF%E2%C8%EB%C3%C5" target="_blank" class="underline">NoSQL数据库入门</a>的更多文章</div>
+<div class="reltag">
+<ul class="fl list02">
+  <li><a href="http://book.51cto.com/art/201309/410577.htm" title="2.3.4　SQL与NoSQL">2.3.4　SQL与NoSQL</a></li><li><a href="http://book.51cto.com/art/201308/407430.htm" title="NoSQL精粹">NoSQL精粹</a></li><li><a href="http://book.51cto.com/art/201308/407458.htm" title="3.6　要点">3.6　要点</a></li><li><a href="http://book.51cto.com/art/201308/407457.htm" title="3.5　构建数据存取模型">3.5　构建数据存取模型</a></li><li><a href="http://book.51cto.com/art/201308/407456.htm" title="3.4　物化视图">3.4　物化视图</a></li>
+</ul>
+<div class="fr">
+<div class="h5 f12"><a href="http://book.51cto.com/art/201311/415756.htm" title="程序员第二步——从程序员到项目经理"><b>程序员第二步——从程序员到项目经理</b></a></div>
+<a href="http://book.51cto.com/art/201311/415756.htm" title="程序员第二步——从程序员到项目经理"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioJlJ46bHyx8MsAAAmUt8BQNE839.gif" alt="程序员第二步——从程序员到项目经理" width="100" height="80" border="0"></a>
+<p class="c666">这本书是写给程序员和项目经理的。作者结合自身的丰富成长历程，<a class="blue" href="http://book.51cto.com/art/201311/415756.htm" title="程序员第二步——从程序员到项目经理">[详细]</a></p>
+</div>
+</div></div>
+
+<p class="blank10"></p>
+
+
+
+<div class="relart fl bor">
+<div class="titbg">
+<h3 class="fl t1">栏目热门</h3>
+<a href="http://book.51cto.com/click/1218" class="tmore">更多&gt;&gt;</a></div>
+<ul>
+  
+	  <li><a href="http://book.51cto.com/art/201310/414745.htm" title="1.3.7  SQL Server 2012数据类型（1）">1.3.7  SQL Server 2012数据类型（1）</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201310/414722.htm" title="SQL Server 2012 管理高级教程（第2版）">SQL Server 2012 管理高级教程（第2版）</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201311/415438.htm" title="SQL Server 2012 Analysis Services高级教程（第2版）">SQL Server 2012 Analysis Services高级教</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201310/414752.htm" title="1.5  小结">1.5  小结</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201310/414793.htm" title="3.2.1  本地升级">3.2.1  本地升级</a></li>
+	  
+</ul>
+</div>
+<div class="cathot fr bor">
+<div class="titbg">
+<h3 class="fl t1">同期最新</h3>
+<a href="http://book.51cto.com/col/1218" class="tmore">更多&gt;&gt;</a></div>
+<ul>
+	
+	  <li><a href="http://book.51cto.com/art/201206/340958.htm" title="1.2.2 面向文档的数据库">1.2.2 面向文档的数据库</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201206/340957.htm" title="1.2.1 键值存储">1.2.1 键值存储</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201206/340954.htm" title="1.2 NoSQL数据库是什么">1.2 NoSQL数据库是什么</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201206/340953.htm" title="1.1.6 NoSQL数据库">1.1.6 NoSQL数据库</a></li>
+	  
+	  <li><a href="http://book.51cto.com/art/201206/340952.htm" title="1.1.5 关系型数据库的不足">1.1.5 关系型数据库的不足</a></li>
+	  
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="fl t1"><a href="http://book.51cto.com/">读书频道</a></h3>
+<span class="pl10">频道导航</span></div>
+ <ul class="xtlist">
+<li><span class="tit">网络维护</span> 
+<div><a href="http://book.51cto.com/col/1199/">网络管理</a>|<a href="http://book.51cto.com/col/1200/">布线</a>|<a href="http://book.51cto.com/col/1201/">网络协议</a>|<a href="http://book.51cto.com/col/1211/">服务器与存储</a>|<a href="http://book.51cto.com/col/1202/">Cisco</a>|</div></li>
+<li><span class="tit">安全</span> 
+<div><a href="http://book.51cto.com/col/1208/">网络安全</a>|<a href="http://book.51cto.com/col/1207/">数据安全</a>|<a href="http://book.51cto.com/col/1205/">病毒</a>|<a href="http://book.51cto.com/col/1204/">综合</a></div></li>
+<li><span class="tit">操作系统</span> 
+<div><a href="http://book.51cto.com/col/1213">Linux</a>|<a href="http://book.51cto.com/col/1212">Windows</a>|<a href="http://book.51cto.com/col/1214">Unix</a>|<a href="http://book.51cto.com/col/1215">其他</a></div></li>
+<li><span class="tit">数据库</span> 
+<div><a href="http://book.51cto.com/col/1217/">Oracle</a>|<a href="http://book.51cto.com/col/1218/">SQL Server</a>|<a href="http://book.51cto.com/col/1219/">MySQL</a>|<a href="http://book.51cto.com/col/1220/">综合</a></div></li>
+<li><span class="tit">设计开发</span> 
+<div><a href="http://book.51cto.com/col/1222">.Net系列</a>|<a href="http://book.51cto.com/col/1223">Java系列</a>|<a href="http://book.51cto.com/col/1224">C++</a>|<a href="http://book.51cto.com/col/1225">数据库开发</a>|<a href="http://book.51cto.com/col/1226">网站开发|</a><a href="http://book.51cto.com/col/1227">其他开发|</a><a href="http://book.51cto.com/col/1228">软件工程</a></div></li>
+<li><span class="tit">网络应用</span> 
+<div><a href="http://book.51cto.com/col/1232/">Web应用</a>|<a href="http://book.51cto.com/col/1234/">ERP/BI</a>|<a href="http://book.51cto.com/col/1231/">Office</a></div></li>
+<li><span class="tit">考试认证</span> 
+<div><a href="http://book.51cto.com/col/1236/">综合</a>|<a href="http://book.51cto.com/col/1237/">软考</a>|<a href="http://book.51cto.com/col/1238/">网工</a>|<a href="http://book.51cto.com/col/1240/">等考</a></div></li>
+<li class="last"><span class="tit">管理生活</span> 
+<div><a href="http://book.51cto.com/col/1259/">企业管理</a>|<a href="http://book.51cto.com/col/1260/">技术职场</a></div></li></ul> 
+</div> 
+<p class="blank10"></p>
+<div class="leftbotcon">
+<div class="bor jdlist">
+<div class="titbg">
+<h3 class="t2">热点推荐</h3></div>
+<ul>
+<li><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://mobile.51cto.com/mobile-182392.htm"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/153546162.jpg"></a> 
+<div class="name"><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://mobile.51cto.com/mobile-182392.htm">Android开发应用详解</a></div></li>
+<li><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://developer.51cto.com/art/201106/266369.htm"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/133620622.jpg"></a> 
+<div class="name"><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-t-4&#39;]);" href="http://developer.51cto.com/art/201106/266369.htm">那些性感的让人尖叫的程序员</a></div></li>
+<li><a href="http://developer.51cto.com/art/200907/133407.htm"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/134217922.jpg"></a> 
+<div class="name"><a href="http://developer.51cto.com/art/200907/133407.htm">HTML5 下一代Web开发标准详解</a></div></li>
+<li><a href="http://developer.51cto.com/art/201104/257581.htm"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/123123954.jpg"></a> 
+<div class="name"><a href="http://developer.51cto.com/art/201104/257581.htm">高性能WEB开发应用指南</a></div></li>
+<li><a href="http://os.51cto.com/art/200706/49181.htm"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/195816929.jpg"></a> 
+<div class="name"><a href="http://os.51cto.com/art/200706/49181.htm">Ubuntu开源技术交流频道</a></div></li></ul></div>
+<p class="blank10"></p>
+<div class="bor hotTag"><strong>热门标签：</strong> <a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-2]);" href="http://os.51cto.com/windows/">windows频道</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://mobile.51cto.com/">移动开发</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://cloud.51cto.com/">云计算</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://mobile.51cto.com/mobile/objc/">objective-c</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://network.51cto.com/art/200909/151122.htm">tp-link路由器设置图解</a><a onclick="javascript: _gaq.push([&#39;_trackPageview&#39;, &#39;/51cto/neirong/d-w&#39;]);" href="http://developer.51cto.com/art/200907/133407.htm">html5</a> </div></div>
+<div class="leftbotbox"> </div>
+</div>
+<!--left end-->
+<div class="g_13 fr">
+<div class="focus fixfloat"> 
+ <img width="298" style="border: 1px solid #CCCCCC; margin:5px 0px 5px;" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/weixin.png"><div class="hot">
+<ul>
+<li class="tit"><em>热点</em> <a href="http://book.51cto.com/art/201110/298391.htm">黑客：计算机革命的英雄</a> </li>
+<li class="con"><dl><dt><a href="http://book.51cto.com/art/201110/298391.htm"><img border="0" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/105906683.jpg"></a></dt>
+<dd>本书描述了黑客用默默无闻的行动为数字世界照亮了一条道路的故事。 </dd>
+</dl></li></ul><ol class="hotlist"><li><a href="http://book.51cto.com/art/201108/282390.htm">Linux服务器配置全程实录</a></li><li><a href="http://book.51cto.com/art/201107/278179.htm">揭秘--优秀PPT这样制作</a></li></ol></div>
+<p id="hzh_one">
+<script language="JavaScript" src="http://www.51cto.com/ad/art/hzh/ad.js" type="text/javascript"></script>
+</p>
+</div>
+<div class="rank">
+<div class="tlt">
+      <h3>文章排行</h3>
+      <a onmouseover="change_top10(3);" id="top_3">本月</a><a onmouseover="change_top10(2);" id="top_2">本周</a><a onmouseover="change_top10(1);" class="myon" id="top_1">24小时</a> </div>
+ <div id="top10_1" style="display: block;" class="list"><ul>
+<li><a href="http://book.51cto.com/art/201410/455377.htm" target="_blank" title="Storm源码分析">Storm源码分析</a>
+</li><li><a href="http://book.51cto.com/art/201408/448416.htm" target="_blank" title="Spark亚太研究院系列丛书——Spark实战">Spark亚太研究院系列丛书——Spark实战</a>
+</li><li><a href="http://book.51cto.com/art/201410/455224.htm" target="_blank" title="Photoshop网站UI设计全程揭秘-全彩">Photoshop网站UI设计全程揭秘-全彩</a>
+</li><li><a href="http://book.51cto.com/art/201408/449252.htm" target="_blank" title="Ruby基础教程（第4版）">Ruby基础教程（第4版）</a>
+</li><li><a href="http://book.51cto.com/art/201110/298391.htm" target="_blank" title="黑客">黑客</a>
+</li><li><a href="http://book.51cto.com/art/201411/456391.htm" target="_blank" title="Arduino魔法书：实现梦想的工具和技术">Arduino魔法书：实现梦想的工具和技术</a>
+</li><li><a href="http://book.51cto.com/art/201409/450835.htm" target="_blank" title="程序员健康指南">程序员健康指南</a>
+</li><li><a href="http://book.51cto.com/art/200704/46276.htm" target="_blank" title="网络工程师必读——网络工程基础">网络工程师必读——网络工程基础</a>
+</li><li><a href="http://book.51cto.com/art/201410/453313.htm" target="_blank" title="从零开始学Storm">从零开始学Storm</a>
+</li><li><a href="http://book.51cto.com/art/201410/455735.htm" target="_blank" title="价值为王——互联网精准营销实战密码">价值为王——互联网精准营销实战密码</a>
+</li></ul></div>
+<div id="top10_2" style="display: none;" class="list"><ul>
+<li><a href="http://book.51cto.com/art/201411/456694.htm" target="_blank" title="Python自动化运维：技术与最佳实践">Python自动化运维：技术与最佳实践</a>
+</li><li><a href="http://book.51cto.com/art/201411/456889.htm" target="_blank" title="Python网络编程攻略">Python网络编程攻略</a>
+</li><li><a href="http://book.51cto.com/art/201411/456933.htm" target="_blank" title="疯狂Java讲义精粹（第2版）">疯狂Java讲义精粹（第2版）</a>
+</li><li><a href="http://book.51cto.com/art/201411/456924.htm" target="_blank" title="沟通力">沟通力</a>
+</li><li><a href="http://book.51cto.com/art/201411/457032.htm" target="_blank" title="美国制造：国家繁荣为什么离不开制造业">美国制造：国家繁荣为什么离不开制造业</a>
+</li><li><a href="http://book.51cto.com/art/201411/457045.htm" target="_blank" title="向毛泽东学带队伍">向毛泽东学带队伍</a>
+</li><li><a href="http://book.51cto.com/art/201411/457056.htm" target="_blank" title="移动互联时代的O2O营销革命">移动互联时代的O2O营销革命</a>
+</li><li><a href="http://book.51cto.com/art/201411/457079.htm" target="_blank" title="勇者征途：攀登七大高峰">勇者征途：攀登七大高峰</a>
+</li><li><a href="http://book.51cto.com/art/201411/457087.htm" target="_blank" title="PhoneGap 3.0移动应用开发实战详解">PhoneGap 3.0移动应用开发实战详解</a>
+</li><li><a href="http://book.51cto.com/art/201109/293514.htm" target="_blank" title="悟道：一位IT高管20年的职场心经">悟道：一位IT高管20年的职场心经</a>
+</li></ul></div>
+<div id="top10_3" style="display: none;" class="list"><ul>
+<li><a href="http://book.51cto.com/art/201410/455224.htm" target="_blank" title="Photoshop网站UI设计全程揭秘-全彩">Photoshop网站UI设计全程揭秘-全彩</a>
+</li><li><a href="http://book.51cto.com/art/201410/455377.htm" target="_blank" title="Storm源码分析">Storm源码分析</a>
+</li><li><a href="http://book.51cto.com/art/201410/455275.htm" target="_blank" title="网站用户体验设计全程揭秘">网站用户体验设计全程揭秘</a>
+</li><li><a href="http://book.51cto.com/art/201410/455735.htm" target="_blank" title="价值为王——互联网精准营销实战密码">价值为王——互联网精准营销实战密码</a>
+</li><li><a href="http://book.51cto.com/art/201411/456391.htm" target="_blank" title="Arduino魔法书：实现梦想的工具和技术">Arduino魔法书：实现梦想的工具和技术</a>
+</li><li><a href="http://book.51cto.com/art/201410/455770.htm" target="_blank" title="人人都是产品经理（纪念版）">人人都是产品经理（纪念版）</a>
+</li><li><a href="http://book.51cto.com/art/201411/456694.htm" target="_blank" title="Python自动化运维：技术与最佳实践">Python自动化运维：技术与最佳实践</a>
+</li><li><a href="http://book.51cto.com/art/201410/454394.htm" target="_blank" title="信息安全完全参考手册（第2版）">信息安全完全参考手册（第2版）</a>
+</li><li><a href="http://book.51cto.com/art/201410/455638.htm" target="_blank" title="网络工程师考试试题分类精解（第5版）">网络工程师考试试题分类精解（第5版）</a>
+</li><li><a href="http://book.51cto.com/art/201410/455795.htm" target="_blank" title="Hadoop权威指南（第3版）">Hadoop权威指南（第3版）</a>
+</li></ul></div>
+ 
+ </div>
+<p class="blank1"></p>
+
+<div class="bor">
+<div class="titbg">
+<h3 class="fl t1">热点专题</h3>
+<a href="http://book.51cto.com/speclist/1218" class="tmore">更多&gt;&gt;</a></div>
+<ul class="plist01">
+<li><a href="http://book.51cto.com/art/201310/415004.htm" title="Linux命令、编辑器与Shell编程（第3版）"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioJlJyVPrQ75FhAAAwShJSv1o272.gif" alt="Linux命令、编辑器与Shell编程（第3版）" width="100" height="80"></a>
+<h5><a href="http://book.51cto.com/art/201310/415004.htm" title="Linux命令、编辑器与Shell编程（第3版）">Linux命令、编辑器与S</a></h5>
+<div class="c666">Linux是当今的主要Internet服务器平台。系统管理员和W</div>
+</li><li><a href="http://book.51cto.com/art/201310/414965.htm" title="iOS 6游戏开发入门经典（第2版）"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioOVJyRoqTouv2AAATjrRNk6Y719.gif" alt="iOS 6游戏开发入门经典（第2版）" width="100" height="80"></a>
+<h5><a href="http://book.51cto.com/art/201310/414965.htm" title="iOS 6游戏开发入门经典（第2版）">iOS 6游戏开发入门经</a></h5>
+<div class="c666">使用 iOS 6游戏开发入门经典(第2版) ，学习为iPhone 5</div>
+</li><li><a href="http://book.51cto.com/art/201310/414931.htm" title="Android应用程序安全"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioOVJyMnyBuPuTAAAZtIu05HY116.gif" alt="Android应用程序安全" width="100" height="80"></a>
+<h5><a href="http://book.51cto.com/art/201310/414931.htm" title="Android应用程序安全">Android应用程序安全</a></h5>
+<div class="c666">本书是一本系统讲解Android应用开发安全的书籍。它首</div>
+</li> 
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="tagCloud">
+<div class="tlt">
+<h3>热点标签</h3>
+</div>
+<div class="taglist"><a title="网络管理" href="http://book.51cto.com/col/1199/">网络管理</a> <a title="Windows" href="http://book.51cto.com/col/1212/">Windows</a> <a title="Linux" href="http://book.51cto.com/col/1213/">Linux</a> <a title="SQL Server" href="http://book.51cto.com/col/1218/">SQL Server</a> <a title="Oracle" href="http://book.51cto.com/col/1217/">Oracle</a> <a class="imp" title="Java系列" href="http://book.51cto.com/col/1223/">Java系列</a> <a title="软件工程" href="http://book.51cto.com/col/1228/">软件工程</a> <a title=".Net系列" href="http://book.51cto.com/col/1222/">.Net系列</a> <a title="Web开发" href="http://book.51cto.com/col/1226/">Web开发</a> <a title="技术职场" href="http://book.51cto.com/col/1260/">技术职场</a></div>
+</div>
+<div class="rss">
+<ul>
+<li class="lin f12-c"><a href="http://news.51cto.com/col/1323/"><strong>点击这里查看样刊</strong></a></li>
+<li>
+<dl>
+<dt> </dt>
+<dd><a href="http://home.51cto.com/index.php?s=/Subscribe"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/dingy.gif"></a></dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1">全站热点</h3>
+</div>
+<div class="webhot fixfloat">
+<ul>
+
+<li>
+  <a href="http://netsecurity.51cto.com/secu/RSA/Security_Analytics/" title="智能安全分析：高级威胁的终结者"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioOVHvnfyAH-0aAAAQgU0pHCQ362.jpg"></a>
+  <div><a href="http://netsecurity.51cto.com/secu/RSA/Security_Analytics/" title="智能安全分析：高级威胁的终结者">智能安全分析：高级威胁的终结者</a></div>
+</li>
+
+<li>
+  <a href="http://mobile.51cto.com/exp/Push2013/index.html" title="云推送移动互联网的太极推手"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/wKioOVHsxF-gUATqAAApioMlGJQ755.jpg"></a>
+  <div><a href="http://mobile.51cto.com/exp/Push2013/index.html" title="云推送移动互联网的太极推手">云推送移动互联网的太极推手</a></div>
+</li>
+
+</ul>
+</div>
+<p class="blank1"></p>
+<ul class="list03">
+
+<li><a href="http://server.51cto.com/Micro-411196.htm" title="能效当先 凌动C2000冷数据处理解析">能效当先 凌动C2000冷数据处理解析</a></li>
+
+<li><a href="http://mobile.51cto.com/news-411177.htm" title="移动周回顾:马化腾复仇记 周鸿祎的新愁旧伤">移动周回顾:马化腾复仇记 周鸿祎的新</a></li>
+
+<li><a href="http://server.51cto.com/Micro-411174.htm" title="浪潮发布凌动微服务器  全球五强地位再次巩固">浪潮发布凌动微服务器  全球五强地位</a></li>
+
+<li><a href="http://server.51cto.com/Micro-411160.htm" title="横扫三大领域 英特尔“Avoton”看点解析">横扫三大领域 英特尔“Avoton”看点</a></li>
+
+<li><a href="http://server.51cto.com/sCollege-411158.htm" title="如何为虚拟化扩展购买服务器新硬件">如何为虚拟化扩展购买服务器新硬件</a></li>
+
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1">读书</h3>
+</div>
+  
+<div class="catbook"><a href="http://book.51cto.com/art/200704/44736.htm" title="Fedora Core 5 Linux系统安装与管理"><img src="./1.2.3 面向列的数据库 - 51CTO.COM_files/110823292.jpg" width="66" height="98" border="0"></a>
+<h5><a href="http://book.51cto.com/art/200704/44736.htm">Fedora Core 5 Linux系统安装与管理</a></h5>
+<div class="c666 text">以Linux为代表的自由软件及其稳定性，逐渐在全世界崭露头角且备受重视。由于可以支持多种网络环境，因此在采用Linux系统之前，必</div>
+</div>
+
+
+<ul class="list03">
+
+<li><a href="http://book.51cto.com/art/200712/62661.htm" title="Cisco CCNA 640-802题库">Cisco CCNA 640-802题库</a></li>
+
+<li><a href="http://book.51cto.com/art/200712/62749.htm" title="网络渗透测试——保护网络安全的技术、工具和过程">网络渗透测试——保护网络安全的技术、工具和过程</a></li>
+
+<li><a href="http://book.51cto.com/art/200712/62793.htm" title="Web服务安全">Web服务安全</a></li>
+
+<li><a href="http://book.51cto.com/art/200712/62907.htm" title="Linux安全体系分析与编程">Linux安全体系分析与编程</a></li>
+
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="bor">
+<div class="titbg">
+<h3 class="t1 fl">博文推荐</h3>
+<a class="tmore" href="http://blog.51cto.com/">更多&gt;&gt;</a></div>
+
+<ul class="list03">
+ <li><a href="http://anxiongbo.blog.51cto.com/805770/164083/" target="_blank" title="Denyhosts 轻松应对SSH暴力破解">Denyhosts 轻松应对SSH暴力破解</a></li><li><a href="http://wangchunhai.blog.51cto.com/225186/164071/" target="_blank" title="安全连接Internet-让ISA Server 2006做为企业中的代理服务器">安全连接Internet-让ISA Server 2006</a></li><li><a href="http://iamsujie.blog.51cto.com/661150/164069/" target="_blank" title="产品设计体会（6027）实战思路，“老板，要光盘么”">产品设计体会（6027）实战思路，“老</a></li><li><a href="http://zhuyunxiang.blog.51cto.com/653596/163852/" target="_blank" title="我的写作感悟暨Unix编程需要学习的内容（1）《精通Unix下C语言与项目实践》读书笔记（11）">我的写作感悟暨Unix编程需要学习的内</a></li>
+</ul>
+</div>
+<p class="blank10"></p>
+<div class="tj">
+<div class="tlt">
+<h3>最新热帖</h3>
+<a class="more" href="http://bbs.51cto.com/hotthreads.php">更多&gt;&gt;</a></div>
+<ul>
+<li><a href="http://bbs.51cto.com/thread-26429-1.html" target="_blank" title="通用WAP网站生成系统(PowerDiamond) v.1">通用WAP网站生成系统(PowerDiamond) </a></li><li><a href="http://bbs.51cto.com/thread-11063-1.html" target="_blank" title="八类大学毕业生求职时不受欢迎">八类大学毕业生求职时不受欢迎</a></li><li><a href="http://bbs.51cto.com/thread-6946-1.html" target="_blank" title="IT人为什么难以拿到高薪？【转帖】">IT人为什么难以拿到高薪？【转帖】</a></li><li><a href="http://bbs.51cto.com/thread-4333-1.html" target="_blank" title="想去外企上班">想去外企上班</a></li>
+</ul>
+</div>
+<div class="picAD">
+<script language="JavaScript" src="http://www.51cto.com/ad/art/baidugoogle/ad.js" type="text/javascript"></script>
+</div>
+</div>
+<p class="blank1"></p> 
+<!--leftbotcon end-->
+</div> 
+<div class="subweb">
+<h4>51CTO旗下网站</h4>
+<div>
+<a target="_blank" href="http://www.51cto.com/">领先的IT技术网站 51CTO</a>
+<a target="_blank" href="http://www.watchstor.com/">领先的中文存储媒体 WatchStor</a>
+<a target="_blank" href="http://www.cioage.com/">中国首个CIO网站 CIOage</a>
+<a target="_blank" href="http://www.hc3i.cn/">中国首家数字医疗网站 HC3i</a>
+</div>
+</div>
+<div id="ft"><div id="foot" align="center"><script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/copy_right.js"></script>Copyright&#169;2005-2014 <a href="http://www.51cto.com/">51CTO.COM</a> 版权所有 未经许可 请勿转载</div></div>
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/count.js"></script><script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/count.php"></script>
+<script type="text/javascript">
+
+	$("#uyan_cmt_list").next().remove();	
+	$("#uyan_cmt_list").next().css("display","none");	
+</script>
+<style>
+.Nfloat {
+    position: fixed;
+    right: 2%;
+    top: 35%;
+    z-index: 801;
+}
+</style>
+<div style="display:none">
+<script> 
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ 
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), 
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) 
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga'); 
+
+ga('create', 'UA-56422726-1', 'auto'); 
+ga('send', 'pageview'); 
+
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3fe9272bf48a68ad34ff7d08e600bc4b' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://hm.baidu.com/h.js?3fe9272bf48a68ad34ff7d08e600bc4b" type="text/javascript"></script>
+</div>
+
+<!-- 新监测代码 -->
+<!-- 新监测代码 -->
+<div id="MyMoveAd" style="display: none; height: 2px;">
+<span id="wordlink_1"><script src="http://www.51cto.com/ad/art/wordlink/wordlink1.js"></script></span>
+<span id="wordlink_2"><script src="http://www.51cto.com/ad/art/wordlink/wordlink2.js"></script></span>
+<span id="wordlink_3"><script src="http://www.51cto.com/ad/art/wordlink/wordlink3.js"></script></span>
+<span id="wordlink_4"><script src="http://www.51cto.com/ad/art/wordlink/wordlink4.js"></script></span>
+<span id="pinglun"><script language="JavaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/getArtCount.php"></script>0</span>
+<span id="tonglan"></span>
+<span id="wordlink"><script language="JavaScript" src="http://www.51cto.com/ad/art/wordlink/ad.js"></script></span>
+<script src="http://www.51cto.com/ad/art/wordlink/ad.js"></script>
+<span id="bookss"><script language="JavaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/getBookData.php"></script><p class="artHd_l"><span class="item1">综合评级：</span><span class="xx4 item2"></span></p><p class="artHd_r"><a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/0" target="_blank">想读(8)</a>&nbsp;&nbsp;<a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/1" target="_blank">在读(2)</a>&nbsp;&nbsp;<a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/status/2" target="_blank">已读(0)</a>&nbsp;&nbsp; <a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874/good/1" target="_blank">品书斋鉴(0)</a>&nbsp;&nbsp; <a href="http://home.51cto.com/apps/book/index.php?s=/Index/book/bid/2874" target="_blank"><span>已有10</span>人发表书评 </a></p></span>
+</div>   
+<script language="javascript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/favorite.js"></script>
+
+<script language="javaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/dialog_utf8.js"></script>
+<script language="javaScript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/mail.js"></script>  
+<script type="text/javascript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/favorbox.js"></script>
+<script language="javascript" src="./1.2.3 面向列的数据库 - 51CTO.COM_files/clipboard.js"></script>
+<script language="javaScript"> 
+	var thistid=340959; 
+	
+	//收藏按钮
+	var favor_url = 'http://book.51cto.com/art/201206/340959.htm';  // 如：http://bbs.51cto.com/thread-789649-1.html
+	var favor_title = '1.2.3  面向列的数据库';       //  
+	
+	//绑定复制按钮
+	copy('msnqqcopy', 'http://book.51cto.com/art/201206/340959.htm', '分享到MSN/QQ的链接复制成功!');
+//	copy('bbscopy', '[url=http://book.51cto.com/art/201206/340959.htm][u]1.2.3  面向列的数据库[/u][/url]', '分享到论坛的UBB代码复制成功!');
+
+</script><div style="position: absolute; left: 829px; top: 1597px; width: 35px; height: 12px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="http://images.51cto.com/images/art/newart1012/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="35" height="12" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=35&amp;height=12" wmode="transparent"></div> 
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/index.php" charset="utf-8"></script>
+<script src="./1.2.3 面向列的数据库 - 51CTO.COM_files/count(1).php" language="javascript"></script>
+<script language="javascript">
+document.getElementById('books').innerHTML = document.getElementById("bookss").innerHTML; 
+</script>
+
+
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

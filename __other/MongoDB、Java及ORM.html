@@ -1,0 +1,2404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0053)http://www.infoq.com/cn/articles/mongodb-java-orm-bcd -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>MongoDB、Java及ORM</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./MongoDB、Java及ORM_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./MongoDB、Java及ORM_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./MongoDB、Java及ORM_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn4.infoqstatic.com/favicon.ico?20141119-0542" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn3.infoqstatic.com/apple-touch-icon.png?20141119-0542">
+
+        <link rel="stylesheet" href="./MongoDB、Java及ORM_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./MongoDB、Java及ORM_files/ga.js"></script><script async="" type="text/javascript" src="./MongoDB、Java及ORM_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script>
+        <script type="text/javascript" src="./MongoDB、Java及ORM_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+        
+        
+        <script>
+			$( this ).one( "mousemove", function() {
+				$.getScript("/scripts/__hd.ifq?hdt=E4F3f63K4YwJaXU0")
+			});		
+		</script>
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+
+	
+    
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=u(e),f=c.length,s=i(a,o,r),p=0;f>p;p++)c[p].apply(s,n);return s}function a(t,e){f[t]=u(t).concat(e)}function u(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:u,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=l.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&c&&c.body){l.proto="https"===p.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=c.createElement("script");e.src=l.proto+t.agent,c.body.appendChild(e)}}function r(){"complete"===c.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),u=window,c=u.document,f="addEventListener",s="attachEvent",p=(""+location).split("?")[0],l=e.exports={offset:i(),origin:p,features:{}};c[f]?(c[f]("DOMContentLoaded",o,!1),u[f]("load",n,!1)):(c[s]("onreadystatechange",r),u[s]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}]},{},["G9z0Bl"]);</script><script type="text/javascript" src="./MongoDB、Java及ORM_files/forum.js"></script><style type="text/css"></style><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script><iframe src="./MongoDB、Java及ORM_files/container.html" style="visibility: hidden; display: none;"></iframe>
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+    <meta property="og:image" content="https://www.infoq.com/resource/articles/mongodb-java-orm-bcd/zh/smallimage/logo.JPG">
+
+<meta property="og:title" content="MongoDB、Java及ORM ">
+<meta property="og:description" content="MongoDB是一种非常易用的NoSQL方案，Brian C. Dilley在这篇文章里介绍了MongoDB的优劣势，并介绍了MJORM项目。MJORM用于MongoDB，是一个没有注解的Java ORM库。">
+<meta property="og:site_name" content="InfoQ">
+	<link rel="image_src" href="./MongoDB、Java及ORM_files/logo.JPG">
+	<meta name="keywords" content="mongodb java orm bcd,语言 &amp; 开发,MongoDB,Java,NoSQL,数据库,">
+	<meta name="description" content="MongoDB是一种非常易用的NoSQL方案，Brian C. Dilley在这篇文章里介绍了MongoDB的优劣势，并介绍了MJORM项目。MJORM用于MongoDB，是一个没有注解的Java ORM库。">
+	<meta name="tprox" content="1337662800000">
+
+    
+    
+    	
+	    
+	        <script type="text/javascript">
+	            $(function() {
+	                var box = $('.related_sponsors.visible.stacked');
+	                if (box.length === 0) {
+	                    return;
+	                }
+	                var nextSibling = $(box).next();
+	                
+	                if ($('#lowerFullwidthVCR').length === 0) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                if (blockElement(nextSibling)) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                while (!blockElement($(nextSibling).next())) {
+	                        nextSibling = $(nextSibling).next();
+	                        if (firstLowerThanSecond(nextSibling, box)) {
+	                            return;
+	                        }
+	                }
+	                moveLowerInThePage(box);
+	
+	                function blockElement(elem) {
+	                    if ($(elem).prop('tagName') === 'BLOCKQUOTE'
+	                        || $(elem).prop('tagName') === 'IMG'
+	                        || $(elem).prop('tagName') === 'PRE'
+	                        || ($(elem).prop('tagName') === 'P' && $(elem).children().length === 1 && $(elem).children('img').length === 1)) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function firstLowerThanSecond(elem1, elem2) {
+	                    var elem1BottomYCoordinate = $(elem1).offset().top + $(elem1).height()
+	                    var elem2BottomYCoordinate = $(elem2).offset().top + $(elem2).height();
+	                    if (elem1BottomYCoordinate > elem2BottomYCoordinate) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function moveLowerInThePage(box) {
+	                    if ($('#lowerFullwidthVCR').length !== 0) {
+	                        $('#lowerFullwidthVCR').replaceWith(box);
+	                    }
+	                    $(box).removeClass('stacked');
+	                }
+	            });
+	        </script>
+	    
+    
+
+        
+        
+			<link rel="image_src" href="http://cdn3.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+			<meta property="og:image" content="http://cdn3.infoqstatic.com/styles/i/logo-big.jpg?20141119-0542">
+		
+    <script src="./MongoDB、Java及ORM_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./MongoDB、Java及ORM_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./MongoDB、Java及ORM_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./MongoDB、Java及ORM_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="E4F3f63K4YwJaXU0">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./MongoDB、Java及ORM_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">开发由云支持的端到端物联网解决方案</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./MongoDB、Java及ORM_files/Lepisto_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">联网设备如今已经遍布于我们身边，从以Arduinos与Raspberry Pi打造的小型传感装置到电视，再到恒温器乃至涡轮机可谓无所不包。通过本次分享，你可以了解我们如何才能在低成本、高可扩展性以及自动化云计算服务的帮助下对来自这些设备的数据流进行获取、存储与计算。了解我们如何才能通过分析、结论整理以及反馈控制这一流程为客户的实际使用以及个人生活带来附加价值。 此外，大家还能够亲眼见证各类端对端物...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">开发由云支持的端到端物联网解决方案</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./MongoDB、Java及ORM_files/Lepisto_100(1).jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">联网设备如今已经遍布于我们身边，从以Arduinos与Raspberry Pi打造的小型传感装置到电视，再到恒温器乃至涡轮机可谓无所不包。通过本次分享，你可以了解我们如何才能在低成本、高可扩展性以及自动化云计算服务的帮助下对来自这些设备的数据流进行获取、存储与计算。了解我们如何才能通过分析、结论整理以及反馈控制这一流程为客户的实际使用以及个人生活带来附加价值。 此外，大家还能够亲眼见证各类端对端物...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./MongoDB、Java及ORM_files/nigel-newlogo1.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">在最近的敏捷澳洲大会上，InfoQ与 Nigel Dalton 谈到了现代管理实践中的一些社会化实验，包括在工作环境中应用精益、敏捷和系统化思考，此外还谈到破坏性创新和他的“20 by 2020”目标：到2020年，让20%的组织中使用敏捷管理方法。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/aws-fault-isolation">AWS全球范围故障隔离案例研究</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./MongoDB、Java及ORM_files/aws4.png" alt="" border="0">
+							<span id="operations-infrastructureHDSummary"></span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">领域驱动设计精简版（全新修订）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./MongoDB、Java及ORM_files/100cover.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">本书是Eric Evans的《领域驱动模型》一书的精简版，让你在短时间内理解领域驱动设计的内容。这本书没有介绍任何新的概念，它只是概要总结了领域驱动设计的本质， 抽取了Eric Evans原书中关于这一主题的大部分内容，以及其他相关资料，包括已经出版的书籍和各种领域驱动设计讨论群组等。这本书可以让你快速了解领域驱动设计的基础知识，但不能替代Eric书中提供的大量事例和 案例研究或者Jimmy书中提...</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn3.infoqstatic.com/images/ads/banners/qcon/cn/2014/20141111_banner.jpg?20141119-0542" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://2015.qconbeijing.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/articles?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="文章">文章</a>
+                
+		
+		<span class="last">MongoDB、Java及ORM</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+        <h1 class="general with_pic">
+            MongoDB、Java及ORM
+            <span class="article_image_title">
+                <img border="0" alt="" src="./MongoDB、Java及ORM_files/logo.JPG">
+            </span>
+        </h1>
+	<span class="author_general">
+		作者
+		
+			
+		
+		<a href="http://www.infoq.com/cn/author/Brian-C.-Dilley" class="editorlink f_taxonomyEditor">
+Brian C. Dilley</a>
+
+        
+			
+				
+			
+        	，译者
+        	<strong><a href="http://www.infoq.com/cn/author/%E7%8E%8B%E4%B8%BD%E5%A8%9F" class="editorlink f_taxonomyTranslator">
+王丽娟</a>
+</strong>
+        
+        发布于
+        2012年5月22日
+        <em>|</em> 
+        
+	<a id="noOfComments" title="" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#theCommentsSection" class="comments_like">
+		
+	        <span class="comments_counts">
+	        	<span class="nr">
+	        		3
+	        	</span>
+	        </span>
+			讨论
+	    
+	    
+	</a></span>
+
+   	
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1416408413607">
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="Bookmarks.bookmarkContent(&#39;articles&#39;, &#39;mongodb-java-orm-bcd&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+			
+	<div class="clear"></div>
+<div class="article_page_left text_content_container">
+	
+			
+	<div class="text_info text_info_article">
+		
+			
+	       	<h3>MongoDB简介</h3>
+<p>目前有很多互相竞争的NoSQL产品，它们使用的方式不尽相同，但都能很好地解决大数据问题。<a href="http://www.mongodb.org/">MongoDB</a>就是其中一款非常不错的产品。MongoDB是面向文档、无Schema的存储解决方案，它用JSON风格的文档展现、查询、修改数据。</p>
+<p>MongoDB有很丰富的文档，安装和设置都很简单，而且易于扩展。它支持大家熟知的复制、分片、索引和Map/Reduce等概念。MongoDB开源社区的规模很大，也很活跃。让MongoDB引以为豪的是，包括Disney、Craigslist、Foursquare、Github和SourceForge在内的大型、高流量生产环境都已经部署了MongoDB。MongoDB是个开源项目，由DoubleClick前高管们创办的<a href="http://www.10gen.com/">10gen.com</a>公司创建和维护。除了很积极地参与社区支持外，10gen也提供商业支持。</p>
+<h2>MongoDB和NoSQL的优劣势</h2>
+<p>作为NoSQL解决方案，MongoDB的优势是很容易上手。在我第一次深入研究NoSQL数据库的时候，尝试了很多基于Java的解决方案，我发现要搞清楚什么是列族（column  family）、Hadoop和HBase之间是什么关系、ZooKeeper到底是什么非常费时间。我最终想明白这些问题的时候，才明白Cassandra、HBase等产品都是非常完善的NoSQL解决方案。和其他解决方案相比，MongoDB则更容易掌握一些，开始写代码之前不需要理解太多的概念。</p>
+			<div class="clear"></div>
+	        
+	            
+
+
+
+
+
+
+
+
+
+    <div class="related_sponsors visible stacked">
+        
+        
+                       
+            <div class="gray_section_related only1 fullWidth">
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6193&t=f" target="_blank">
+	                                    “双11”背后淘宝、京东、一号店的技术支撑
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5997&t=f" target="_blank">
+	                                    率先在国内落地的全球化云服务，深度了解Windows Azure
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5998&t=f" target="_blank">
+	                                    利用开发测试云实现精益创业、快速迭代
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=5999&t=f" target="_blank">
+	                                    Windows Azure自管理服务实现近乎零停机维护
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6000&t=f" target="_blank">
+	                                    Windows Azure专区上线，全面了解云服务
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    
+	                    
+	                    
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+            </div>
+        
+        
+        
+        
+            <div class="paid_section  only2">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6044&t=f" target="_blank">
+                        <img src="./MongoDB、Java及ORM_files/100x50.jpg" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">Windows Azure专区上线，全面了解云服务</font><a href="http://www.infoq.com/infoq/url.action?i=6001&t=f" target="_blank"><font face="Verdana">精彩呈现</font></a>！</p>
+
+                </div>
+            </div>
+        
+        <div class="clear"></div>
+    </div>
+
+	        
+	        
+<p>很显然，MongoDB和任何软件一样都存在缺陷。在学习、使用MongoDB的过程中，我遇到过几件可算是“陷阱”的事情：</p>
+<ul>
+    <li>不要把它用成RDBMS。这一点看起来显而易见，但在MongoDB里创建、执行复杂查询都很容易，以至于到了想用它做实时查询的时候，你可能才会发现自己已经做过头了，而且可能会碰到性能问题。<a href="https://jira.mongodb.org/browse/SERVER-1745">（我以前就犯过这样的错）</a></li>
+    <li>MongoDB的索引是Binary Tree。如果你不太熟悉B-Tree，应该<a href="http://en.wikipedia.org/wiki/B-tree">研究</a>一下。查询条件的顺序要和创建索引的顺序相匹配。</li>
+    <li>精心设计索引。这和前面提到的B-Tree有关系。我刚开始创建的几个索引都包含文档里的很多字段，因为总是想着以后可能会查询它们，这种想法你应该能够理解。不要犯这样的错误。我曾给一个很小的集合（大约一千万条记录）创建了一个索引，这个索引后来增长到17GB，比集合本身还要大。如果某个数组字段可能会包含成百上千的条目，你可能不会给它创建索引。</li>
+    <li>MongoDB支持NoSQL的方法非常有趣，它用BSON存储、用JSON表示，管理和Map/Reduce则用了JavaScript。这样一来，等MongoDB发展的时间足够久、和更流行的大数据解决方案一样长的时候，MongoDB必然会出现一些奇怪的小问题，<a href="https://jira.mongodb.org/browse/SERVER-1672">比如在NumberLong上使用等于运算符会判断失败</a>。</li>
+</ul>
+<h2>MongoDB、控制台、驱动程序</h2>
+<p>MongoDB的管理通常可以在一个JavaScript客户端控制台应用上进行，控制台应用能简化数据迁移和操作等复杂任务；你也完全可以用JavaScript语言编程实现MongoDB的管理。在这篇文章里，我们会示范控制台的使用。现在的MongoDB客户端产品非常多，它们都具备能投入生产环境的品质，MongoDB社区也称它们为驱动程序。一般来说，每种编程语言都有各自的驱动程序，这些驱动程序能覆盖所有流行的编程语言，还有一些并不是很流行的编程语言。本文将展示MongoDB的Java驱动程序该如何使用，也会和使用ORM库（MJORM）的方式进行比较。</p>
+<h2>MJORM简介：MongoDB的ORM解决方案</h2>
+<p>NoSQL数据存储还有很多有趣的问题需要解决，最近让应用程序员比较关心的是对象关系映射（ORM）。ORM是指持久化数据和应用所用对象之间的映射，持久化数据过去都存储在关系型数据库里。ORM能让处理数据的过程更加流畅、更加贴近编写应用的语言。</p>
+	        
+	        
+	            <div id="lowerFullwidthVCR"></div>
+	        
+	       	
+<p>MongoDB面向文档的架构让它很容易进行ORM，因为它存储的文档本身就是对象。不过可惜的是，可用于MongoDB的Java ORM库还不是很多，目前只有<a href="http://code.google.com/p/morphia/">morphia</a>（针对MongoDB的Java库，是类型安全的）和<a href="http://www.springsource.org/spring-data/mongodb">spring-data</a>（Spring Data综合项目的MongoDB实现）。</p>
+<p>这些ORM库使用了大量注解，出于很多原因，我并不倾向于使用注解，其中最重要的是被注解的对象在多个项目之间的可移植性问题。所以我创建了mongo-Java-orm项目（MJORM，发音为me-yorm），它是针对MongoDB的Java ORM。MJORM使用MIT许可，放在了<a href="http://code.google.com/p/mongo-Java-orm/">Google Code</a>上。项目用Maven构建，Maven的工件库目前托管在Google Code的Subversion服务器上。写这篇文章的时候，MJORM最新的稳定发布版本是0.15，个别项目已经在生产环境里使用了。</p>
+<h2>MJORM入门</h2>
+<h3>将MJORM库添加到项目里</h3>
+<p>Maven用户首先要将MJORM的Maven仓库添加到pom.xml文件里，以便自己的项目能使用MJORM工件：</p>
+<pre>&lt;repository&gt; 	
+    &lt;id&gt;mjorm-webdav-maven-repo&lt;/id&gt;
+    &lt;name&gt;mjorm maven repository&lt;/name&gt;
+    &lt;url&gt;http://mongo-Java-orm.googlecode.com/svn/maven/repo/&lt;/url&gt;
+    &lt;layout&gt;default&lt;/layout&gt; 
+&lt;/repository&gt; 
+</pre>
+<p>然后添加依赖本身：</p>
+<pre>&lt;dependency&gt;
+    &lt;groupid&gt;com.googlecode&lt;/groupid&gt;
+    &lt;artifactid&gt;mongo-Java-orm&lt;/artifactid&gt;
+    &lt;version&gt;0.15&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+<p>这样你就能把MJORM类导入到自己的应用里并使用它们。如果你没用Maven，那你需要手动下载MJORM库，还有MJORM pom.xml里列出的所有依赖。</p>
+<h3>创建POJO</h3>
+<p>依赖关系处理好之后，就开始编写代码吧。我们先编写Java POJO：</p>
+<pre>class Author {
+    private String firstName;
+    private String lastName;
+    // ... setters and getters ...
+}
+
+class Book {
+    private String id;
+    private String isbn;
+    private String title;
+    private String description;
+    private Author author;
+    // ... setters and getters ...
+}
+</pre>
+<p>上面的对象模型描述了作者和书，作者有一个ID、还有姓氏和名字，书的描述信息则包含ID、ISBN号、标题、描述信息和作者。</p>
+<p>可以看到书的ID属性是一个String，它会适应成MongoDB的<a href="http://www.mongodb.org/display/DOCS/Object+IDs">ObjectId</a>类型，ObjectId类型是个十二字节的二进制值，用十六进制的字符串来表示。虽然MongoDB要求所有集合里的每个文档都要有一个唯一的ID，但并没有要求ID必须是ObjectId类型。目前MJORM支持的ID类型只有ObjectId，而且会把它们表示成String。</p>
+<p>你可能已经注意到，Author对象没有ID。这是因为Author是Book文档的子文档，所以就没必要非得有一个ID了。请记住，MongoDB的ID只需要放在一个集合的根级别文档中。</p>
+<h3>创建XML映射文件</h3>
+<p>下一步是创建XML映射文件，MJORM会用这些映射文件把MongoDB文档映射成对象。在本文的演示里，我们会给两个对象各创建一个文档，但真正合理的做法是把所有的映射都放在一个XML文件里，或者根据实际需要进行分割。</p>
+<p>下面是Author.mjorm.xml：</p>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;descriptors&gt;
+    &lt;object class="Author"&gt;
+        &lt;property name="firstName" /&gt;
+        &lt;property name="lastName" /&gt;
+    &lt;/object&gt;
+&lt;/descriptors&gt;
+</pre>
+<p>Book.mjorm.xml是：</p>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;descriptors&gt;
+    &lt;object class="Book"&gt;
+        &lt;property name="id" id="true" auto="true" /&gt;
+        &lt;property name="isbn" /&gt;
+        &lt;property name="title" /&gt;
+        &lt;property name="description" /&gt;
+        &lt;property name="author" /&gt;
+    &lt;/object&gt;
+&lt;/descriptors&gt;
+</pre>
+<p>映射文件完全能自解释。descriptors元素是根元素，所有的映射文件都要有。根元素下面是object元素，用来定义要被映射到MongoDB文档的类。object会包含property元素，用来描述POJO的所有属性，以及它们怎样映射到MongoDB文档的属性。property元素至少要有一个name属性，这是POJO属性的名称，也是MongoDB文档属性的名称。property元素还可以添加一个column属性，指定MongoDB文档里备用的属性名称。</p>
+<p>包含id属性的property元素会被看作是对象的唯一标识符。一个object元素可以只包含一个带有id属性的property元素。auto属性是让MJORM在持久化这个属性时给它自动生成一个值。</p>
+<p>要想了解有关XML映射文件更详细的说明，请移步至Google Code上的MJORM项目。</p>
+<h3>整合</h3>
+<p>我们现在已经创建好了数据模型，还有告诉MJORM在数据写入MongoDB时如何解析POJO、从MongoDB读取数据时如何封装POJO的映射文件，那我们就可以开始一段有趣的学习之旅了。首先我们必须打开到MongoDB的连接：</p>
+<pre>Mongo mongo = new Mongo(
+    new MongoURI("mongodb://localhost/mjormIsFun")); // 10gen驱动程序
+</pre>
+<p>Mongo对象来自10gen员工编写的Java驱动程序。这个例子打开了一个到本地MongoDB实例的连接，使用mjormIsFun数据库。接下来我们创建MJORM里的ObjectMapper。目前MJORM里可用的ObjectMapper接口实现只有XmlDescriptorObjectMapper，它使用前面的XML Schema，MJORM以后的实现可能会支持注解或其他配置机制。</p>
+<pre>XmlDescriptorObjectMapper objectMapper = new XmlDescriptorObjectMapper();
+mapper.addXmlObjectDescriptor(new File("Book.mjorm.xml"));
+mapper.addXmlObjectDescriptor(new File("Author.mjorm.xml"));
+</pre>
+<p>我们创建了XmlDescriptorObjectMapper对象，并添加了映射文件。下一步我们会创建一个MJORM提供的MongoDao对象实例：</p>
+<pre>DB db = mongo.getDB("mjormIsFun"); // 10gen驱动程序
+MongoDao dao = new MongoDaoImpl(db, objectMapper);
+</pre>
+<p>我们先获取了一个10gen驱动程序里的DB对象实例。然后用DB对象和先前创建的ObjectMapper来创建MongoDao。现在已经做好了持久化数据的准备，那让我们创建一个Book对象，并把它保存到MongoDB里去。</p>
+<pre>Book book = new Book();
+book.setIsbn("1594743061");
+book.setTitle("MongoDB is fun");
+book.setDescription("...");
+
+book = dao.createObject("books", book);
+System.out.println(book.getId()); // 4f96309f762dd76ece5a9595
+</pre>
+<p>我们先创建了Book对象，赋值之后调用了MongoDao的createObject方法，两个参数分别是集合名称“books”和Book对象。MJORM接着会用先前创建的XML映射文件把Book转换成DBObject（10gen的Java驱动程序所使用的基本对象类型），并把新的文档持久化到“books”集合中。然后MJORM会返回Book对象的实例，返回的Book对象实例带有生成的id属性。重点要注意的是，MongoDB在默认情况下并不会要求创建好数据库或集合后才能使用；MongoDB在需要的时候才会创建它们，这有时候会引起混乱。从MongoDB控制台上看到的新Book如下所示：</p>
+<pre>&gt; db.books.find({_id:ObjectId("4f96309f762dd76ece5a9595")}).pretty()
+{
+    "_id":          ObjectId("4f96309f762dd76ece5a9595"),
+    "isbn":         "1594743061",
+    "title":        "MongoDB is fun",
+    "description":  "..."
+}
+</pre>
+<p>让我们来看看如果不使用MJORM，而是直接用10gen的Java驱动程序，createObject的过程是怎样的：</p>
+<pre>Book book = new Book();
+book.setIsbn("1594743061");
+book.setTitle("MongoDB is fun");
+book.setDescription("...");
+
+DBObject bookObj = BasicDBObjectBuilder.start()
+    .add("isbn", 		book.getIsbn())
+    .add("title",		book.getTitle())
+    .add("description",	book.getDescription())
+    .get();
+
+// ‘db’是我们先前创建的DB对象
+DBCollection col = db.getCollection("books");
+col.insert(bookObj);
+
+ObjectId id = ObjectId.class.cast(bookObj.get("_id"));
+System.out.println(id.toStringMongod()); // 4f96309f762dd76ece5a9595
+</pre>
+<p>现在我们来查询一下对象：</p>
+<pre>Book book = dao.readObject("books", "4f96309f762dd76ece5a9595", Book.class);
+System.out.println(book.getTitle()); // "MongoDB is fun"
+</pre>
+<p>readObject方法用指定的id从特定集合中读取文件，然后将文件转换成相应的类（会再次使用先前的映射文件）并返回。</p>
+<p>敏锐的你可能已经察觉到我们的Book还没Author，但Book仍然被持久化了。这正是MongoDB的无Schema特性。除了id之外，我们不能要求集合里的文档包含任何属性，所以在MongoDB里创建没有Author的Book是完全没有问题的。让我们给Book添加一位Author并更新：</p>
+<pre>Author author = new Author();
+author.setFirstName("Brian");
+author.setLastName("Dilley");
+
+book.setAuthor(author);
+
+dao.updateObject("books", "4f96309f762dd76ece5a9595", book);
+</pre>
+<p>现在的Book包含了Author，也持久化到了MongoDB。让我们从MongoDB控制台上看看新的Book：</p>
+<pre>&gt; db.books.find({_id:ObjectId("4f96309f762dd76ece5a9595")}).pretty()
+{
+    "_id":          ObjectId("4f96309f762dd76ece5a9595"),
+    "isbn":         "1594743061",
+    "title":        "MongoDB is fun",
+    "description":  "..."
+    "author": {
+        "firstName": "Brian",
+        "lastName": "Dilley"
+    }
+}
+</pre>
+<p>正如你所看到的，持久化的Book现在包含一个作者。接着再看看不使用MJORM的情况：</p>
+<pre>Author author = new Author();
+author.setFirstName("Brian");
+author.setLastName("Dilley");
+
+book.setAuthor(author);
+
+DBObject bookObj = BasicDBObjectBuilder.start()
+    .add("isbn", 		book.getIsbn())
+    .add("title",		book.getTitle())
+    .add("description",	book.getDescription())
+    .push("author")
+        .add("firstName", 	author.getFirstName())
+        .add("lastName", 	author.getLastName())
+        .pop()
+    .get();
+
+DBCollection col = db.getCollection("books");
+col.update(new BasicDBObject("_id", bookObj.get("_id")), bookObj);
+</pre>
+<p>在这篇文章里我们就不深入介绍MongoDao的所有方法了。如果你想在项目里使用MJORM，推荐你看看MJORM项目的文档，或者是MJORM项目提供的MongoDao接口。</p>
+<h2>结论</h2>
+<p>希望这篇文章能让大家对MongoDB和MJORM开始感兴趣。方兴未艾的MongoDB是个很优秀的NoSQL数据存储产品，有很多很不错的特性。如果你要在Java项目里使用MongoDB，那你可以考虑用MJORM库来满足ORM需求。要是能提出功能需求、Bug报告、文档，或给源码打补丁，我们将不胜感激！</p>
+<h2>作者介绍</h2>
+<p><strong><img hspace="3" align="left" _p="true" _href="img://brian_dilley.jpg" alt="" src="./MongoDB、Java及ORM_files/brian_dilley.jpg"></strong></p>
+<p><strong><img hspace="3" align="left" src="file:///mag4media/repositories/fs/articles/mongodb-java-orm-bcd/en/resources/brian_dilley.jpg" alt="" _href="img://brian_dilley.jpg" _p="true">Brian Dilley</strong>是一位经验丰富的高级工程师，带过十三年的团队，他的技术专长有Java、Java EE、Spring Framework、Linux内部原理和管理。Brian曾单枪匹马创立了好几家互联网公司，并维护着它们的产品。他还擅长IaaS、云、PHP、Linux管理，以及生产环境和公司里软硬件基础设施的安装、配置，比如负载均衡、数据库、Web等。你可以在Twitter上Follow <a href="https://twitter.com/#%21/dilleybrian">Brian</a>。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>查看英文原文：</strong><a href="http://www.infoq.com/articles/mongodb-java-orm-bcd">MongoDB, Java and Object Relational Mapping</a></p>
+<p>译者后记：</p>
+<p>MongoDB并不是一款关系型数据库，针对文中的ORM这个词语，读者Roopesh Shenoy提出：</p>
+<blockquote>用ORM描述MJORM框架似乎并不合适——毕竟没有关系型数据库！
+<p>也许我们可以使用其他名称？Database Mapper？</p>
+</blockquote>
+<p>Jean-Baptiste DUSSEAUT回复到：</p>
+<blockquote>在我创建的项目里，我管它叫对象文件映射（Object Document Mapper）</blockquote>
+<p>读者朋友们，你们对此有什么看法呢？</p>
+<hr>
+<p>给InfoQ中文站投稿或者参与内容翻译工作，请邮件至<a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a>。也欢迎大家通过新浪微博（<a href="http://www.weibo.com/infoqchina">@InfoQ</a>）或者腾讯微博（<a href="http://t.qq.com/infoqchina">@InfoQ</a>）关注我们，并与我们的编辑和其他读者朋友交流。</p>
+	       	
+       	
+		<div class="clear"></div>
+				
+		<div style="margin-bottom:5px">【<a href="http://bj2014.archsummit.com/" target="_blank">ArchSummit北京2014</a>】解读“双11”背后淘宝、京东、一号店的技术支撑。年末的技术盛宴，CTO与架构师的大Party。11月30日前报名享受9折优惠，<a href="http://bj2014.archsummit.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Database" name="Database" id="1,159">数据库</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/java" name="java" id="739">Java</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/NoSQL" name="NoSQL" id="6,099">NoSQL</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/MongoDB" name="MongoDB" id="6,494">MongoDB</a></li>
+			</ul>							
+		</div>
+      
+		
+		
+		
+			
+			
+
+
+
+
+
+
+
+
+<div class="related_sponsors relEdRelRes" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended only1" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/09/mongo-db-cloud?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">MongoDB进一步进军云平台</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/09/ebay-cmdb-mongodb?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">eBay Cloud基于MongoDB的CMDB经验分享</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/08/ark-mongodb?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Tokutek宣布了用于MongoDB的新一致性算法</a></h3><h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/mongodb-deployment-backup-security?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">为首次部署MongoDB做好准备：备份和安全</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/04/MongoDB-2.6-Kelly-Stirman?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">MongoDB 2.6发布——Kelly Stirman访谈</a></h3></div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "1853,1,1902,-1000,-1000", "title": "MongoDB、Java及ORM", "contentPath": "/articles/mongodb-java-orm-bcd", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": 'mongodb-java-orm-bcd',
+            "uriMapping": 'articles'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || researchExists) {
+                $('.related_sponsors.relEdRelRes').show(); // show the big related box
+            }
+
+            // in case all three available, leave now
+            if (recommendedExists) {
+            	$(grayBox).show(); // show the gray box for vcr and recommendations
+                return;
+            }
+        });
+</script>
+<div class="clear"></div>
+		
+		
+
+		<div class="clear"></div>
+				
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=24586;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./MongoDB、Java及ORM_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./MongoDB、Java及ORM_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./MongoDB、Java及ORM_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+            
+
+                <div class="comment_title lvl0" id="com87137">
+
+                    <a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#anch87137" title="">
+                        <strong>刚在百度文库上看到了这篇文档</strong>
+                        <span>
+                            by
+                            wang zhaoyang
+                            Posted
+                            <span class="treeRelativeTime">2012年5月25日 02:12</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com87482">
+
+                    <a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#anch87482" title="">
+                        <strong>MongoDB、Java及ORM</strong>
+                        <span>
+                            by
+                            Yang Anis
+                            Posted
+                            <span class="treeRelativeTime">2012年6月6日 03:30</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com89873">
+
+                    <a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#anch89873" title="">
+                        <strong>文章并未很好的介绍了优劣</strong>
+                        <span>
+                            by
+                            相 小卓
+                            Posted
+                            <span class="treeRelativeTime">2012年8月31日 11:12</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+    </div>
+
+    <div class="all_comments">
+        
+            
+                <div class="answers" id="ans87137">
+                    <a name="anch87137"></a>
+                    
+                    <p>
+                        <b class="title">刚在百度文库上看到了这篇文档</b>
+                        <span>
+                            <span class="bodyRelativeTime">2012年5月25日 02:12</span>
+                            by
+                            <q>wang zhaoyang</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        如题，百度文库地址：<a rel="nofollow" href="http://wenku.baidu.com/view/f405fe1f227916888486d7e6.html" target="_blank">wenku.baidu.com/view/f405fe1f227916888486d7e6.html</a>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1337926342610">
+                    <input type="hidden" name="createdOn" value="2012年5月25日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans87482">
+                    <a name="anch87482"></a>
+                    
+                    <p>
+                        <b class="title">MongoDB、Java及ORM</b>
+                        <span>
+                            <span class="bodyRelativeTime">2012年6月6日 03:30</span>
+                            by
+                            <q>Yang Anis</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        AGPL3.0的协议限制了其使用，不会考虑MongoDB，即使再优秀
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1338967806288">
+                    <input type="hidden" name="createdOn" value="2012年6月6日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans89873">
+                    <a name="anch89873"></a>
+                    
+                    <p>
+                        <b class="title">文章并未很好的介绍了优劣</b>
+                        <span>
+                            <span class="bodyRelativeTime">2012年8月31日 11:12</span>
+                            by
+                            <q>相 小卓</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        MONGODB，让我未感觉很强烈的NOSQL成分， 通过创建对象，这种方式速度真的很快吗，和hibernate又有何区别，除了数据存储方式，hibernate改造下是否也可以作为NOSQL支撑的一种框架
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1346382720119">
+                    <input type="hidden" name="createdOn" value="2012年8月30日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+<div id="mostPopularSection" class="news_in_tabs" style="display: block;">
+	<!-- the tabs -->
+	<ul class="tabs">
+		
+			<li><div class="tab_title">热点内容</div></li>
+			<li><a href="javascript:;" class="current">10天</a></li>
+			<li><a href="javascript:;">40天</a></li>
+			<li><a href="javascript:;">近6个月</a></li>
+				
+	</ul>
+	<!-- tab "panes" -->
+	<div class="panes">
+	<div style="display: block;"><h3 class="h3news" <!--pageviews:8059="" publication="" date:="" 2014-11-10--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：搜索引擎实时秒级更新</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5009="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice?utm_source=infoq&utm_medium=popular_links_homepage">小米11.11：海量数据压力下的推送服务</a></h3><h3 class="h3news" <!--pageviews:4637="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/fastsocket-github-opensource?utm_source=infoq&utm_medium=popular_links_homepage">两周内在Github上收获1800+个星：内核层网络栈优化项目Fastsocket背后的故事</a></h3><h3 class="h3news" <!--pageviews:4147="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：移动端性能提升两倍</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-mobile-app?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:3417="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/mogujie-1111-architecture?utm_source=infoq&utm_medium=popular_links_homepage">蘑菇街11.11：流量超过预期，系统曾被冲垮</a></h3><h3 class="h3news" <!--pageviews:2877="" publication="" date:="" 2014-11-15--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage">京东11.11：交易系统的关键技术</a><a href="http://www.infoq.com/cn/news/2014/11/jd-1111-trading-system?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2274="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/jd-1111-jdcloud?utm_source=infoq&utm_medium=popular_links_homepage">京东11.11：电商狂欢背后的云基础设施服务</a></h3><h3 class="h3news" <!--pageviews:2105="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/http2-develop?utm_source=infoq&utm_medium=popular_links_homepage">Google性能工程师Ilya Grigorik谈HTTP/2</a></h3><h3 class="h3news" <!--pageviews:2081="" publication="" date:="" 2014-11-13--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/aws-lambda-summary?utm_source=infoq&utm_medium=popular_links_homepage">AWS Lambda发布，可以用代码自由定义Then的IFTTT</a></h3><h3 class="h3news" <!--pageviews:2052="" publication="" date:="" 2014-11-09--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/android-multidex?utm_source=infoq&utm_medium=popular_links_homepage">Android应用打破65K方法数限制</a></h3></div><div style="display: none;"><h3 class="h3minibooks" <!--pageviews:10661="" publication="" date:="" 2014-10-15--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-201410?utm_source=infoq&utm_medium=popular_links_homepage">架构师（2014年10月）</a></h3><h3 class="h3news" <!--pageviews:8059="" publication="" date:="" 2014-11-10--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage">天猫11.11：搜索引擎实时秒级更新</a><a href="http://www.infoq.com/cn/news/2014/11/tmall-1111-search-engine?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:7239="" publication="" date:="" 2014-10-20--="">
+                        <a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage">万台规模下的SDN控制器集群部署实践</a><a href="http://www.infoq.com/cn/articles/sdn-stories-distributed-practice?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5193="" publication="" date:="" 2014-10-22--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage">当当网开源Dubbox，扩展Dubbo服务框架支持REST风格远程调用</a><a href="http://www.infoq.com/cn/news/2014/10/dubbox-open-source?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">30</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:5009="" publication="" date:="" 2014-11-12--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/xiaomi-1111-pushservice?utm_source=infoq&utm_medium=popular_links_homepage">小米11.11：海量数据压力下的推送服务</a></h3><h3 class="h3news" <!--pageviews:4967="" publication="" date:="" 2014-11-05--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage">蘑菇街回应TeamTalk版权：开源的底线是尊重</a><a href="http://www.infoq.com/cn/news/2014/11/teamtalk-opensource-road?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:4853="" publication="" date:="" 2014-10-28--="">
+                        <a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage">Java戏法</a><a href="http://www.infoq.com/cn/articles/Java-Sleight-of-Hand?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4637="" publication="" date:="" 2014-11-11--="">
+                        <a href="http://www.infoq.com/cn/news/2014/11/fastsocket-github-opensource?utm_source=infoq&utm_medium=popular_links_homepage">两周内在Github上收获1800+个星：内核层网络栈优化项目Fastsocket背后的故事</a></h3><h3 class="h3news" <!--pageviews:4399="" publication="" date:="" 2014-10-14--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/aliyun-monitor-system-overview?utm_source=infoq&utm_medium=popular_links_homepage">阿里云监控体系现状概览</a></h3><h3 class="h3news" <!--pageviews:4202="" publication="" date:="" 2014-10-17--="">
+                        <a href="http://www.infoq.com/cn/news/2014/10/continuous-integration?utm_source=infoq&utm_medium=popular_links_homepage">另一种声音：持续集成已死</a><a href="http://www.infoq.com/cn/news/2014/10/continuous-integration?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">12</span></span>                        </a></h3></div><div style="display: none;"><h3 class="h3articles" <!--pageviews:24500="" publication="" date:="" 2014-07-31--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage">深入浅出Docker（一）：Docker核心技术预览</a><a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:23260="" publication="" date:="" 2014-09-20--="">
+                        <a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a><a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:20829="" publication="" date:="" 2014-05-29--="">
+                        <a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage">Netty系列之Netty高性能之道</a><a href="http://www.infoq.com/cn/articles/netty-high-performance?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">29</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:18387="" publication="" date:="" 2014-07-22--="">
+                        <a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage">几种线程池的实现算法分析</a><a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:17016="" publication="" date:="" 2014-09-26--="">
+                        <a href="http://www.infoq.com/cn/minibooks/alibaba-techman?utm_source=infoq&utm_medium=popular_links_homepage">阿里巴巴上市背后的技术力量</a></h3><h3 class="h3minibooks" <!--pageviews:16003="" publication="" date:="" 2014-08-18--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-201408?utm_source=infoq&utm_medium=popular_links_homepage">架构师（2014年8月刊）</a></h3><h3 class="h3articles" <!--pageviews:15276="" publication="" date:="" 2014-05-22--="">
+                        <a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage">支付宝的性能测试</a><a href="http://www.infoq.com/cn/articles/performance-test-of-zhifubao?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:14839="" publication="" date:="" 2014-09-25--="">
+                        <a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage">Docker源码分析（一）：Docker架构</a><a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_links_homepage#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:13880="" publication="" date:="" 2014-06-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect-jun-10-2014?utm_source=infoq&utm_medium=popular_links_homepage">架构师（6月刊）</a></h3><h3 class="h3minibooks" <!--pageviews:13378="" publication="" date:="" 2014-07-08--="">
+                        <a href="http://www.infoq.com/cn/minibooks/architect--201407?utm_source=infoq&utm_medium=popular_links_homepage">架构师（7月刊）</a></h3></div></div>
+	<div class="clear"></div>
+</div>
+    <div class="banner_type3" id="id_300x250_banner_top">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+        </script>
+    </div>  
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="开发由云支持的端到端物联网解决方案" href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">
+					开发由云支持的端到端物联网解决方案
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Markku-Lepisto" class="editorlink" title="Markku Lepisto">
+Markku Lepisto</a>
+
+				11月18日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="开发由云支持的端到端物联网解决方案" href="http://www.infoq.com/cn/presentations/cloud-support-end-to-end-networking-solutions-development">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/Lepisto_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="可测性分析和实践" href="http://www.infoq.com/cn/articles/testability-analysis-and-practice">
+					可测性分析和实践
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%A9%AC%E5%86%A0%E5%8D%97" class="editorlink" title="马冠南">
+马冠南</a>
+
+				11月18日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="可测性分析和实践" href="http://www.infoq.com/cn/articles/testability-analysis-and-practice">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/parall-logo.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top" style="display: none;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”" href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">
+					Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Shane-Hastie" class="editorlink" title="Shane Hastie">
+Shane Hastie</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”" href="http://www.infoq.com/cn/articles/agile-aus2014-dalton">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/nigel-newlogo1.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="利用云端开发测试平台实现精益创业" href="http://www.infoq.com/cn/presentations/cloud-test-platform-development-realize-lean-startup">
+					利用云端开发测试平台实现精益创业
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%99%88%E4%BC%9F%E5%9F%BA" class="editorlink" title="陈伟基">
+陈伟基</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="利用云端开发测试平台实现精益创业" href="http://www.infoq.com/cn/presentations/cloud-test-platform-development-realize-lean-startup">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/chenweiji_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room" href="http://www.infoq.com/cn/interviews/agile2014-list-culture">
+					Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Doc-List" class="editorlink" title="Doc List">
+Doc List</a>
+
+				11月17日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room" href="http://www.infoq.com/cn/interviews/agile2014-list-culture">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/Doc-List-small.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="minibooks">
+				<a title="领域驱动设计精简版（全新修订）" href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">
+					领域驱动设计精简版（全新修订）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Eric-Evans" class="editorlink" title="Eric Evans">
+Eric Evans</a>
+
+				11月16日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="领域驱动设计精简版（全新修订）" href="http://www.infoq.com/cn/minibooks/domain-driven-design-quickly-new">
+				<img border="0" alt="" src="./MongoDB、Java及ORM_files/100cover.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3'); });
+		 		</script>
+		 	</div>
+ 		</div>
+
+    <script type="text/javascript">
+    	$($('.banner_type3').get(1)).css('display','none');
+    </script>
+</div>
+
+
+
+
+
+
+
+
+<div class="newsletter ">
+	<h3>InfoQ每周精要</h3>
+	<p>
+		通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。
+		<span id="floatingNewsletterEmailSuccess" style="color:green;"></span>
+		<span id="floatingNewsletterEmailError" style="color:red;"></span>
+	</p>
+	<div class="click2view">
+		<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+			<img src="./MongoDB、Java及ORM_files/click2view_zh.png" alt="" border="0">
+		</a>
+	</div>
+	<div class="clear"></div>
+	<form name="floatingNewsletterForm" id="floatingNewsletteForm" action="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onsubmit="floatingNewsletter.saveSubscription(); return false;">
+		<fieldset>
+			<input type="text" class="input_text" id="floatingNewsletterEmail" name="floatingNewsletterEmail" value="您的邮箱" onclick="floatingNewsletter.clearEmailText();" onblur="floatingNewsletter.resetEmailText();">
+			<input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return floatingNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+		</fieldset>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	var floatingNewsletter = new Newsletter('您的邮箱', 'floatingNewsletterEmail', 'floatingNewsletterForm', 'floatingNewsletterEmailError', 'floatingNewsletterEmailSuccess');
+</script>
+
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./MongoDB、Java及ORM_files/infoqcn.js"></script>
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"applicationID":"5528250","applicationTime":79,"beacon":"beacon-1.newrelic.com","queueTime":0,"licenseKey":"bfafe6a5f6","transactionName":"YAFWMEEAW0RUVk1cCllLfjdjTlRFQVxaWQBES0cMXBYbXUZF","agent":"js-agent.newrelic.com\/nr-476.min.js","errorBeacon":"bam.nr-data.net"}</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2014/11/hadoop-data-migration-tools" title="Hadoop的快速发展带动了对数据迁移工具的需求">Hadoop的快速发展带动了对数据迁移工具的需求</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aurora-performance-doubt" title="Aurora性能遭社区质疑，超MySQL 5倍但未公布详情">Aurora性能遭社区质疑，超MySQL 5倍但未公布详情</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2014/11/hadoop-data-migration-tools" title="Hadoop的快速发展带动了对数据迁移工具的需求">Hadoop的快速发展带动了对数据迁移工具的需求</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aurora-performance-doubt" title="Aurora性能遭社区质疑，超MySQL 5倍但未公布详情">Aurora性能遭社区质疑，超MySQL 5倍但未公布详情</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/typescript-1.3-release-protected" title="TypeScript 1.3发布:支持protected访问修饰符和元组类型">TypeScript 1.3发布:支持protected访问修饰符和元组类型</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2014/11/baidu-salon56-summary" title="百度技术沙龙第56期回顾：代码重构与灵活交付（含资料下载）">百度技术沙龙第56期回顾：代码重构与灵活交付（含资料下载）</a></p><p><a href="http://www.infoq.com/cn/articles/agile-aus2014-dalton" title="Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”">Nigel Dalton在敏捷澳洲大会上谈论系统化思考、社会化实验和“20 by 2020”</a></p><p><a href="http://www.infoq.com/cn/interviews/agile2014-list-culture" title="Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room">Doc List 谈敏捷中坚力量、协作文化和Teaching from the Back of the Room</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/aurora-performance-doubt" title="Aurora性能遭社区质疑，超MySQL 5倍但未公布详情">Aurora性能遭社区质疑，超MySQL 5倍但未公布详情</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/aws-security-enhance" title="重要特性不容错过：AWS最近新增一些安全增强机制">重要特性不容错过：AWS最近新增一些安全增强机制</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2014/11/new-features-ec2-ebs-s3" title="AWS re:Invent——计算和存储服务的性能增强">AWS re:Invent——计算和存储服务的性能增强</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/agile-HR-collaboration" title="敏捷与HR协同案例研究">敏捷与HR协同案例研究</a></p><p><a href="http://www.infoq.com/cn/news/2014/11/kanban-for-change" title="用看板驱动变革：一家保险公司的案例研究">用看板驱动变革：一家保险公司的案例研究</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer">东京 2015年4月</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年9月21-25日">里约 2015年9月21-25日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./MongoDB、Java及ORM_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+    <li><a href="http://www.infoq.com/cn/aliyun/"><strong>阿里云专区</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./MongoDB、Java及ORM_files/engine.js" type="text/javascript"></script>
+            <script src="./MongoDB、Java及ORM_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./MongoDB、Java及ORM_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/mongodb-java-orm-bcd#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+    <script src="./MongoDB、Java及ORM_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="http://hm.baidu.com/h.js?5101210b73a0e033d1509b3e487c929c" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "MongoDB、Java及ORM";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn3.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141119-0542");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S2 -->
+<script type="text/javascript" src="./MongoDB、Java及ORM_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><script src="./MongoDB、Java及ORM_files/nr-476.min.js"></script><script type="text/javascript" src="./MongoDB、Java及ORM_files/bfafe6a5f6"></script></body></html>

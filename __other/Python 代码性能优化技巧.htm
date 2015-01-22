@@ -1,0 +1,876 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0061)http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN" class="dj_webkit dj_chrome dj_contentbox"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Python 代码性能优化技巧</title>
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+<link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico">
+<meta name="DC.Rights" content="© Copyright IBM Corporation 2012">
+<meta name="Keywords" content="python, 性能优化，Profiler，Cython, tttlca">
+<meta name="DC.Date" scheme="iso8601" content="2012-07-20">
+<meta name="Source" content="v17 delivery:developerWorks">
+<meta name="Security" content="Public">
+<meta name="Abstract" content="选择了脚本语言就要忍受其速度，这句话在某种程度上说明了 python 作为脚本的一个不足之处，那就是执行效率和性能不够理想，特别是在 performance 较差的机器上，因此有必要进行一定的代码优化来提高程序的执行效率。如何进行 Python 性能优化，是本文探讨的主要问题。本文会涉及常见的代码优化方法，性能优化工具的使用以及如何诊断代码的性能瓶颈等内容，希望可以给 Python 开发人员一定的参考。">
+<meta name="Description" content="选择了脚本语言就要忍受其速度，这句话在某种程度上说明了 python 作为脚本的一个不足之处，那就是执行效率和性能不够理想，特别是在 performance 较差的机器上，因此有必要进行一定的代码优化来提高程序的执行效率。如何进行 Python 性能优化，是本文探讨的主要问题。本文会涉及常见的代码优化方法，性能优化工具的使用以及如何诊断代码的性能瓶颈等内容，希望可以给 Python 开发人员一定的参考。">
+<meta name="IBM.Effective" scheme="W3CDTF" content="2012-07-20">
+<meta name="Owner" content="developerWorks/China/IBM">
+<meta name="DC.Language" scheme="rfc1766" content="zh-CN">
+<meta name="IBM.SpecialPurpose" content="SP001">
+<meta name="IBM.Country" content="CN">
+<meta name="Robots" content="index,follow">
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="CT316">
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="SWGC0">
+<meta name="dW.ContentArea" content="2">
+<meta name="dW.Topic" content="46">
+
+<meta scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCLNXCN">
+
+<link rel="canonical" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/index.html">
+<!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<link href="./Python 代码性能优化技巧_files/www.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Python 代码性能优化技巧_files/cnzh.css" rel="stylesheet" title="www" type="text/css">
+<!-- Masthead/footer -->
+<link href="./Python 代码性能优化技巧_files/dw-mfN2014-05.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Python 代码性能优化技巧_files/dw-article-6.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Python 代码性能优化技巧_files/dw-common-features.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Python 代码性能优化技巧_files/dw-local-site-v17-N2014-05.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<script type="text/javascript" src="./Python 代码性能优化技巧_files/www.js">//</script><style type="text/css"></style><script type="text/javascript" src="./Python 代码性能优化技巧_files/eluminate.js"></script><script src="./Python 代码性能优化技巧_files/head.js"></script><script language="javascript" type="text/javascript" src="./Python 代码性能优化技巧_files/50200000.js"></script><script language="javascript" type="text/javascript" src="./Python 代码性能优化技巧_files/rules_50200000.js"></script><script language="javascript" type="text/javascript" src="./Python 代码性能优化技巧_files/dispatcher-v3.js"></script><script src="./Python 代码性能优化技巧_files/yahoo-min.js" type="text/javascript"></script><script src="./Python 代码性能优化技巧_files/cp-v3.js" type="text/javascript"></script><script src="./Python 代码性能优化技巧_files/json-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="./Python 代码性能优化技巧_files/dw-www.js">//</script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/Dialog.xd.js"></script> 
+<script type="text/javascript">
+//  ibmweb.config.set({ sbs: { enabled: false }});
+</script>
+<!-- Exp -->
+<script type="text/javascript">dojo.addOnLoad(function(){var dw_source="dwchina";var dw_register="注册免费的 Bluemix 试用版";var dw_connect="连接 Bluemix 开发者";var dw_vp="在 IBM Bluemix 云平台上开发并部署您的下一个应用。";var dw_cta="现在就开始免费试用";var dw_tile_alt="在 IBM Bluemix 云平台上开发并部署您的下一个应用。现在就开始免费试用";var dw_campaign="bluemix";var dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-2];if(dw_content=="library"){dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-1];dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-3]+"-"+dw_content.substring(0,dw_content.indexOf(".html"))}var bluDevComURL="https://developer.ibm.com/bluemix/";var bluLink="https://www.bluemix.net/";var iotLink="http://www.bluemix.net/#/solutions/solution=internet_of_things";var lnkID;var lnkIDd;var lnkIDt;var bLinkEnd;var bLinkTemp;var idTrkr=[];var idCnt;var artTop=dojo.query("div.ibm-col-1-1")[0];var artChildren=dojo.query(artTop).children();var edgy=false;if(dojo.hasClass(artChildren[0],"ibm-inset"))edgy=true;if((artChildren[0].nodeName=="H2")&&(dojo.hasClass(artChildren[1],"ibm-inset")))edgy=true;if(dojo.hasClass(artChildren[0],"codesection"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"codesection")))edgy=true;if((artChildren[0].nodeName=="H5")&&(artChildren[1].width>=701))edgy=true;if(artChildren[1].width>=701)edgy=true;if(dojo.hasClass(artChildren[0],"ibm-data-table"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"ibm-data-table")))edgy=true;if(!(edgy)){var sBarAB='<div class="dw-article-sidebar dw-bluemix" id="dwc-exp-c">'+'<img src="//dw1.s81c.com/developerworks/i/bluemix-graphic.png" height="64" width="64" alt=""/>'+'<p>'+dw_vp+'</p>'+'<p class="ibm-button-link-alternate dw-button-green">'+'<a id="tutc-sbar-bmix-home-btn-ABc" href="'+bluLink+'" class="dw-button-large">'+dw_cta+'</a></p></div>';dojo.place(sBarAB,artTop,"first");}dojo.forEach(dojo.query("#ibm-content-main a"),function(item,index){var dw_medium="article";if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-sbar-")>-1))dw_medium="sidebar";var bLink=dojo.attr(item,"href");if(bLink&&(bLink.indexOf("//bluemix.net")>-1))bLink=bLink.replace("//bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//ace.ng.bluemix.net")>-1))bLink=bLink.replace("//ace.ng.bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//console.ng.bluemix.net")>-1))bLink=bLink.replace("//console.ng.bluemix.net","//www.bluemix.net");if(bLink&&((bLink.indexOf("//www.bluemix.net")>-1)||(bLink.indexOf("//www.ng.bluemix.net")>-1)||(bLink.indexOf("//hub.jazz.net")>-1))){bLinkEnd="";bLink=bLink.split("?");if((bLink[1])&&(bLink[1].indexOf("/")!=-1))bLinkEnd=bLink[1].substring(bLink[1].indexOf("/"));bLink=bLink[0];if(bLink.indexOf("//hub.jazz.net")>-1){if((bLink.indexOf("//hub.jazz.net/git")>-1)||(bLink.indexOf("//hub.jazz.net/project")>-1)){bLink="https://login.jazz.net/psso/proxy/jazzregister?utm_source="+dw_source+"&utm_medium="+dw_medium+"&utm_content="+dw_content+"&utm_campaign="+dw_campaign+"&redirect_uri="+bLink}else{bLink=bLink+"?utm_source="+dw_source+"&utm_campaign="+dw_campaign+"&utm_content="+dw_content+"&utm_medium="+dw_medium}}else{if(bLink.indexOf("/#/")==-1){if(bLink.substring(bLink.length-7)=="/docs/#"){bLink=bLink.replace("/docs/#","/docs/"+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+"#")}else{bLink=bLink+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}}else{bLink=bLink.substring(0,bLink.indexOf("#"))+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+bLink.substring(bLink.indexOf("#")-1)}}if(bLinkEnd)bLink=bLink+bLinkEnd;dojo.attr(item,"href",bLink);}})});</script><!-- LEADSPACE_STYLES -->
+
+<script type="text/javascript" src="./Python 代码性能优化技巧_files/cnzh-utf8.js" id="dojoIoScript1" charset="utf-8"></script><script type="text/javascript" src="./Python 代码性能优化技巧_files/saved_resource" id="dojoIoScript2" charset="utf-8"></script><script type="text/javascript" src="./Python 代码性能优化技巧_files/profiling.js" id="dojoIoScript3" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/move.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/TimedMoveable.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/_CssStateMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/_FormMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/_DialogMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/DialogUnderlay.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/ContentPane.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/common.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/TooltipDialog.xd.js"></script><script type="text/javascript" src="./Python 代码性能优化技巧_files/blackwhite_lists.json" id="dojoIoScript4" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/Mover.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/Moveable.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/_ContentPaneResizeMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/html.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/loading.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/common.xd(1).js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/autoscroll.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Python 代码性能优化技巧_files/_LayoutWidget.xd.js"></script></head>
+
+<body id="ibm-com" class="v17" aria-busy="false">
+
+	<div id="ibm-top" class="ibm-landing-page ibm-no-scroll"><img src="./Python 代码性能优化技巧_files/ibm_logo_print.png" width="43" height="15" id="ibm-print-masthead" alt="IBM Print">
+
+<!-- MASTHEAD_BEGIN -->
+<div id="ibm-masthead" role="banner">
+
+    <!-- TOP ROW -->    
+	<div id="dw-masthead-top-row">
+		<ul id="ibm-mast-options-dw" role="toolbar" class="cn">
+		<li role="presentation" id="dw-mast-top-4">
+				<a href="http://www.ibm.com/developerworks/cn/" tabindex="0"><img src="./Python 代码性能优化技巧_files/dwn-dw-badge.png" width="43" height="22" alt="dW" aria-label="dW"></a></li>
+			<li role="presentation" id="dw-mast-top-0">
+				<div><a class="" href="http://www.ibm.com/developerworks/dwwi/DWAuthRouter?m=loginpage&lang=zh&d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F" title="" role="button" tabindex="0">登录 (或注册)</a></div>
+			</li>
+			<li role="presentation" id="dw-mast-top-1">
+				<div><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#SELECTLANG" role="button">中文</a></div>
+			</li>
+			<li role="presentation" id="dw-mast-top-3">
+				<a role="button" href="http://www.ibm.com/">IBM</a>
+			</li>
+			<li role="presentation" id="dw-mast-top-2" class="dw-mf-hide">
+				<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#">[userid]</a>
+			</li>
+		</ul>
+	</div>
+
+    <!-- TOP ROW SLIDER -->
+	<div id="ibm-my-menu-dw" style="display: none;">
+        <!-- Sign-in -->
+		
+        <!-- Language selector --> 
+		
+		<div id="empty_div" class="dw-mast-columns" role="group"><!-- Authenticated --></div>		
+		<!-- IBM -->
+				
+	<div class="ibm-container-body" dojoattachpoint="ribbonContainer" id="ibmweb_ribbon_0" widgetid="ibmweb_ribbon_0"><a class="ibm-ribbon-prev ibm-disabled" dojoattachpoint="scrollLeftButton" role="button" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" title="上一个" style="margin-top: -12px;">上一个</a><div class="ibm-ribbon-pane" dojoattachpoint="scrollContainer" style="height: 0px;"><div class="ibm-ribbon-section" dojoattachpoint="scrollableNode" role="listbox" id="ibmweb_ribbon_0_scrollable"><div class="ibm-columns" dojoattachpoint="containerNode" role="dialog" id="ibmweb_ribbonSlide_0" widgetid="ibmweb_ribbonSlide_0" aria-labelledby="ibm-rib-menu-0"><h2 class="ibm-access" id="ibm-rib-menu-0">登录 (或注册)</h2><div id="ibmweb_ribbonItemAbstract_0" class="dw-mast-columns" role="group" tabindex="0" widgetid="ibmweb_ribbonItemAbstract_0">
+			<div class="dw-mast-col-1-1">
+				<div id="dw-mast-sso">
+					<div id="signin_error_mf" class="no-display"></div>
+					<div id="dw-mast-sso-form">
+						<form id="sForm_mf" action="" method="post" name="sForm_name_mf" onsubmit="return false;">
+							<div id="dw-mast-sso-id" class="dw-mast-sso-id-cn">
+								<label for="ibmid_mf">IBM ID:</label>
+								<input id="ibmid_mf" value="" name="ibmid_name_mf" maxlength="100" onkeypress="dwsi.siInst.handleEP(event,this.form,&#39;mf&#39;);" type="text">
+							</div>
+							<div id="dw-mast-sso-pw" class="dw-mast-sso-pw-cn">
+								<label for="pw_mf">密码：</label>
+								<input id="pw_mf" value="" name="pw_name_mf" maxlength="100" onkeypress="dwsi.siInst.handleEP(event,this.form,&#39;mf&#39;);" type="password">
+							</div>
+							<div id="dw-mast-sso-target" class="dw-mast-sso-target-cn">
+								<p class="dw-mf-perm-box">
+									<input id="perm_mf" name="perm_name_mf" type="checkbox"><label for="perm_mf"> 保持登录。</label>
+								</p>
+							</div>					
+							<div id="dw-mast-sso-terms">
+								<p class="dw-mast-sso-terms-cn">单击提交则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+									</div>
+							<div>
+								<input class="dw-mf-submit-btn-cn" name="ibm_submit_name_mf" value="提交" onclick="dwsi.siInst.signin(&#39;mf&#39;);return false;" type="submit">
+							</div>
+						</form>
+					</div>
+					<div id="dw-mast-sso-update">
+						<div id="dw-mast-sso-update-id">
+							<ul>
+								<li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="(function ()
+								    {window.location=&#39;//www.ibm.com/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d=&#39;+encodeURIComponent(location.href);})();">需要一个 IBM ID？</a></li>
+								<li><a href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a></li>
+							</ul>
+						</div>
+						<div id="dw-mast-sso-update-pw">
+							<ul class="dw-mf-pwupdate">
+								<li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="(function ()
+								    {window.location=&#39;https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(dwsi.siInst.getAuthUrl())+&#39;%3Fm%3Dloginpage%26lang%3Den_US%26d%3D&#39;+encodeURIComponent(location.href);})();">忘记密码？</a></li>
+								<li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="(function ()
+								    {window.location=&#39;https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(location.href);})();">更改您的密码</a></li>
+							</ul>
+						</div>
+					</div>
+					<div id="dw-mast-sso-text">
+						<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+						<p class="dw-mf-secure-cn">所有提交的信息确保安全。</p>
+					</div>
+				</div>
+				<div id="dw-mast-dname" class="dw-mf-hide">
+					<p>当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+					<div id="signin_dname_error_mf" class="no-display"></div>
+					<div id="dw-mast-dname-form" class="dw-mast-dname-form-cn">
+						<form id="dForm_mf" action="" method="post" name="dForm_name_mf" onsubmit="return false;">
+							<div id="dw-mast-dname-mf">
+								<label for="dname_mf">昵称：</label>
+								<input id="dname_mf" name="dname_name_mf" maxlength="31" size="25" value="" onkeypress="dwsi.siInst.handleEP(event,this.form,&#39;mf&#39;);" type="text">
+							</div>
+							<div id="dw-mast-dname-terms">
+								<p class="dw-mast-dname-terms-cn">单击<strong>提交</strong>则表示您同意developerWorks
+								    的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+									</div>
+							<div>
+								<input class="dw-mf-submit-btn-cn" name="dname_submit_name_mf" value="提交" onclick="dwsi.siInst.signin(&#39;mf&#39;);return false;" type="submit">
+							</div>
+						</form>								
+					</div>
+					<div id="dw-mast-dname-secure">
+						<p class="dw-mf-secure-cn">所有提交的信息确保安全。</p>
+					</div>
+				</div>
+				<div id="dw-mast-auth" class="dw-mf-hide">
+					<div>
+						<h2>developerWorks 社区:</h2>
+                		<ul>
+							<li><a id="dw-mast-top-0-0" href="http://www.ibm.com/developerworks/community/homepage?lang=zh">我的首页</a></li>						    
+							<li><a href="http://www.ibm.com/developerworks/community/profiles/html/myProfileView.do?lang=zh">我的概要信息</a></li>
+							<li><a href="http://www.ibm.com/developerworks/community/groups/service/html/mycommunities?lang=zh">我的社区</a></li>
+			                 <li><a href="http://www.ibm.com/developerworks/community/news/?lang=zh">设置</a></li>
+										    
+						</ul>     
+					</div>
+					
+					<div class="dw-mast-more">
+						<ul class="ibm-link-list">
+							<li><a class="dw-more-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="dwsi.siInst.signOut(); return false;"><strong>退出</strong></a></li>
+						</ul>
+					</div>
+				</div>								
+			</div>		
+		</div></div><div class="ibm-columns" dojoattachpoint="containerNode" role="dialog" id="ibmweb_ribbonSlide_1" widgetid="ibmweb_ribbonSlide_1" aria-labelledby="ibm-rib-menu-1"><h2 class="ibm-access" id="ibm-rib-menu-1">中文</h2><div id="ibmweb_ribbonItemAbstract_1" class="dw-mast-columns" role="group" tabindex="0" widgetid="ibmweb_ribbonItemAbstract_1">
+			<div class="dw-mast-col-2-1">
+				<h2>选择语言：</h2>
+				<ul>
+					<li><a id="dw-mast-top-1-0" href="http://www.ibm.com/developerworks/" lang="en">English</a></li>
+					<li><a href="http://www.ibm.com/developerworks/cn/">中文</a></li>
+					<li><a href="http://www.ibm.com/developerworks/jp/" lang="ja">日本語</a></li>
+					<li><a href="http://www.ibm.com/developerworks/ru/" lang="ru">Русский</a></li>
+				</ul>
+			</div>
+			<div class="dw-mast-col-2-2">
+				<ul>
+					<li><a href="http://www.ibm.com/developerworks/br/" lang="pt">Português (Brasil)</a></li>
+					<li><a href="http://www.ibm.com/developerworks/ssa/" lang="es">Español</a></li>
+					<li><a href="http://www.ibm.com/developerworks/vn/" lang="vi">Việt</a></li>
+				</ul>
+			</div>
+		</div></div><div class="ibm-columns" dojoattachpoint="containerNode" role="dialog" id="ibmweb_ribbonSlide_2" widgetid="ibmweb_ribbonSlide_2" aria-labelledby="ibm-rib-menu-2"><h2 class="ibm-access" id="ibm-rib-menu-2">IBM</h2><div id="ibmweb_ribbonItemAbstract_2" class="dw-mast-columns" role="group" tabindex="0" widgetid="ibmweb_ribbonItemAbstract_2">
+			<div class="dw-mast-col-2-1">
+				<ul>
+					<li><a id="dw-mast-top-3-0" href="http://www.ibm.com/cn/zh/">IBM 主页</a></li>
+					<li><a href="http://www.ibm.com/solutions/cn/zh/">解决方案</a></li>
+					<li><a href="http://www.ibm.com/software/cn/">软件</a></li>
+				</ul>
+			</div>
+			<div class="dw-mast-col-2-2 dw-mast-ibm">
+				<ul>
+							<li><a href="http://www.ibm.com/support/cn/zh/">支持门户</a></li>
+							<li><a href="http://www.ibm.com/support/documentation/cn/zh/">产品文档</a></li>
+							<li><a href="http://www.ibm.com/redbooks/">Redbooks（英文）</a></li>
+				</ul>
+			</div>	
+		</div></div></div></div><a class="ibm-ribbon-next" dojoattachpoint="scrollRightButton" role="button" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" title="下一个" style="margin-top: -12px;">下一个</a><div class="ibm-mm-close"><span tabindex="0" aria-label="关闭" role="button" title="关闭"></span></div></div></div>
+		
+    <!-- BOTTOM ROW -->
+	<div id="ibm-universal-nav-dw" aria-label="Site map">
+		<ul id="ibm-unav-links-dw">
+			<li id="ibm-unav-home-dwlogo">
+				<a href="http://www.ibm.com/developerworks/cn/"><img src="./Python 代码性能优化技巧_files/dwn-dw-wordmark.png" width="225" height="28" alt="developerWorks®"></a>
+			</li>
+		</ul>
+		<ul id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn" role="toolbar" aria-label="Site map">
+			<li id="dw-mast-nav-0" role="presentation"><a href="http://www.ibm.com/developerworks/cn/topics/" tabindex="0">技术主题</a></li>
+			<li id="dw-mast-nav-1" role="presentation"><a href="http://www.ibm.com/developerworks/cn/downloads/">软件下载</a></li>
+			<li id="dw-mast-nav-2" role="presentation"><a href="http://www.ibm.com/developerworks/community/?lang=zh">社区</a></li>
+			<li id="dw-mast-nav-3" role="presentation"><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&lang=zh">技术讲座</a></li>
+		</ul>
+		<form id="ibm-search-form" action="http://www.ibm.com/search/csass/search/" method="get" name="form1" aria-label="搜索 developerWorks" role="search">
+			<p>
+				<label for="q"><span class="ibm-access">搜索 developerWorks</span></label>
+				<input id="q" type="text" name="q" value="搜索 developerWorks" maxlength="100">
+				<input type="hidden" name="sn" value="dw">
+				<input type="hidden" name="lang" value="zh">
+				<input type="hidden" name="cc" value="CN">
+				<input type="hidden" name="en" value="utf">
+				<input type="hidden" name="hpp" value="20">
+				<input type="hidden" name="dws" value="cndw">
+				<input type="hidden" name="lo" value="zh">
+				<input id="ibm-search" class="ibm-btn-search" type="submit" value="提交">
+			</p>
+		</form>
+	</div>    
+	
+<div id="ibm-social-tools" role="navigation" aria-label="社交工具" style="display: block;"><ul role="toolbar" aria-label="Social tool list"><li><a class="ibm-share-print" title="打印本页面" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" rel="print" dojoattrid="0" role="button" tabindex="0">打印本页面</a></li><li><a class="ibm-share-email" title="用电子邮件发送本页面" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" rel="email" dojoattrid="1" role="button" tabindex="-1">用电子邮件发送本页面</a></li><li></li><li></li><li><a class="ibm-share-weibo" tabindex="-1" role="button" dojoattrid="2" rel="新浪微博" title="新浪微博" href="http://service.weibo.com/share/share.php?title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F&language=zh_cn" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://service.weibo.com/share/share.php?title=%{TITLE}&amp;url=%{URL}&amp;language=zh_cn&#39;});">新浪微博</a></li><li><a class="ibm-share-renren" tabindex="-1" role="button" dojoattrid="3" rel="人人网" title="人人网" href="http://share.renren.com/share/buttonshare?title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7&link=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://share.renren.com/share/buttonshare?title=%{TITLE}&amp;link=%{URL}&#39;});">人人网</a></li><li><a class="dwcn-tencent-link" tabindex="-1" role="button" dojoattrid="4" rel="腾讯微博" title="腾讯微博" href="http://v.t.qq.com/share/share.php?title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://v.t.qq.com/share/share.php?title=%{TITLE}&amp;url=%{URL}&#39;});">腾讯微博</a></li><li><a class="dwcn-sohu-link" tabindex="-1" role="button" dojoattrid="5" rel="搜狐微博" title="搜狐微博" href="http://t.sohu.com/third/post.jsp?title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7%20&link=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://t.sohu.com/third/post.jsp?title=%{TITLE}%20&amp;link=%{URL}&#39;});">搜狐微博</a></li><li><a class="dwcn-netease-link" tabindex="-1" role="button" dojoattrid="6" rel="网易微博" title="网易微博" href="http://t.163.com/article/user/checkLogin.do?info=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7%20http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://t.163.com/article/user/checkLogin.do?info=%{TITLE}%20%{URL}&#39;});">网易微博</a></li><li><a class="ibm-share-digg" title="Digg" href="http://digg.com/submit?phase=2&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F&title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7" rel="digg" dojoattrid="7" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://digg.com/submit?phase=2&amp;url=%{URL}&amp;title=%{TITLE}&#39;});">Digg</a></li><li><a class="ibm-share-facebook" title="Facebook" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F&t=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7" rel="facebook" dojoattrid="8" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://www.facebook.com/sharer.php?u=%{URL}&amp;t=%{TITLE}&#39;});">Facebook</a></li><li><a class="ibm-share-twitter" title="Twitter" href="http://twitter.com/?status=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F%20-%20Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7" rel="twitter" dojoattrid="9" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://twitter.com/?status=%{URL}%20-%20%{TITLE}&#39;});">Twitter</a></li><li><a class="ibm-share-delicious" title="Delicious" href="http://delicious.com/post?url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F&title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7" rel="delicious" dojoattrid="10" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://delicious.com/post?url=%{URL}&amp;title=%{TITLE}&#39;});">Delicious</a></li><li><a class="ibm-share-linkedin" title="Linked In" href="http://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F&title=Python%20%E4%BB%A3%E7%A0%81%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7" rel="linkedin" dojoattrid="11" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://www.linkedin.com/shareArticle?mini=true&amp;url=%{URL}&amp;title=%{TITLE}&#39;});">Linked In</a></li></ul></div></div>
+<div id="fdiv" class="ibm-access"></div><!-- MASTHEAD_END -->
+	    
+<!-- LAYOUT -->
+<!-- LEADSPACE_BEGIN --> 
+<div id="ibm-access-cntr" role="main"><div id="ibm-leadspace-head">
+	<!-- LEADSPACE_BODY_BEGIN --> 
+	<div id="ibm-leadspace-body">
+		<!-- Navigation_Trail_BEGIN -->
+      <ul id="ibm-navigation-trail" role="navigation" aria-label="Bread Crumbs"><li><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></li><li><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp">文档库</a></li></ul>
+		<!-- END_Navigation_Trail -->
+			<!-- Title_Subtitle -->
+			<h1>Python 代码性能优化技巧</h1>
+	</div>
+	<!-- LEADSPACE_BODY_END --> 
+	<!-- SUMMARY_BEGIN -->
+	<div id="dw-summary-area" class="dw-summary-columns">
+		<div class="ibm-col-6-4">
+		<p>选择了脚本语言就要忍受其速度，这句话在某种程度上说明了 python 作为脚本的一个不足之处，那就是执行效率和性能不够理想，特别是在 performance 较差的机器上，因此有必要进行一定的代码优化来提高程序的执行效率。如何进行 Python 性能优化，是本文探讨的主要问题。本文会涉及常见的代码优化方法，性能优化工具的使用以及如何诊断代码的性能瓶颈等内容，希望可以给 Python 开发人员一定的参考。</p>
+		<p class="ibm-no-print ibm-ind-link">
+
+			
+			<span id="nCmts"><span>5</span><img class="dw-cmts-arrow" alt="" src="./Python 代码性能优化技巧_files/dw-cmts-arrow.png" height="7" width="7"> <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#icomments" class="dw-cmt-link">评论：</a></span>
+		</p>
+		</div>
+		<div class="ibm-col-6-2 dw-toc-margin">
+			<p class="dw-summary-author"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#authorN1001A" class="ibm-popup-link" onclick="ibmweb.overlay.show(&#39;authorN1001A&#39;,this);return false;">张 颖</a>, 软件工程师, IBM</p>
+<div id="authorN1001A" class="ibm-common-overlay"><div class="ibm-head"><p><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+张颖，软件工程师，任职于 CSTL Director Build/BVT team，从事 Build/BVT 相关方面的工作。</p><br><br></div></div></div></div><div class="ibm-footer"><!----></div></div>
+			<p class="dw-summary-date">2012 年 7 月 20 日</p>
+			
+
+
+			<div aria-hidden="true" class="ibm-container" id="dw-toc"><div class="ibm-container-body"><ul class="ibm-twisty"><li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#toggle" class="ibm-twisty-trigger ibm-twisty-trigger-closed"><img src="./Python 代码性能优化技巧_files/c.gif" alt="+"></a><span class="ibm-twisty-head">内容</span><div class="ibm-twisty-body" style="display: none;"><ul style="font-size:0.8em" class="ibm-link-list">
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#major1">Python 代码优化常见技巧</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#major2">定位程序性能瓶颈</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#major3">Python 性能优化工具</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#major4">总结</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#resources">参考资料 </a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#icomments">评论</a></li></ul></div></li></ul></div></div>
+		</div>
+	</div>
+	<!-- SUMMARY_END -->
+</div><div id="ibm-pcon">
+
+<!-- BEGIN_IBM-CONTENT -->
+<div id="ibm-content">
+
+<!-- BEGIN_IBM-CONTENT-BODY -->
+<div id="ibm-content-body">
+
+<!-- BEGIN_IBM-CONTENT-MAIN -->
+<div id="ibm-content-main">
+
+<!-- 1_1_COLUMN_BEGIN -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1"><div class="dw-article-sidebar dw-bluemix" id="dwc-exp-c"><img src="./Python 代码性能优化技巧_files/bluemix-graphic.png" height="64" width="64" alt=""><p>在 IBM Bluemix 云平台上开发并部署您的下一个应用。</p><p class="ibm-button-link-alternate dw-button-green"><a id="tutc-sbar-bmix-home-btn-ABc" href="https://www.bluemix.net/?cm_mmc=dwchina-_-bluemix-_-l-cn-python-optim-_-sidebar" class="dw-button-large">现在就开始免费试用</a></p></div>
+
+<h2 id="major1">Python 代码优化常见技巧</h2><p>代码优化能够让程序运行更快，它是在不改变程序运行结果的情况下使得程序的运行效率更高，根据 80/20 原则，实现程序的重构、优化、扩展以及文档相关的事情通常需要消耗 80% 的工作量。优化通常包含两方面的内容：减小代码的体积，提高代码的运行效率。</p><h3 id="minor1.1">改进算法，选择合适的数据结构</h3><p>一个良好的算法能够对性能起到关键作用，因此性能改进的首要点是对算法的改进。在算法的时间复杂度排序上依次是：</p><p>    O(1) -&gt; O(lg n) -&gt; O(n lg n) -&gt; O(n^2) -&gt; O(n^3) -&gt; O(n^k) -&gt; O(k^n) -&gt; O(n!)</p><p>因此如果能够在时间复杂度上对算法进行一定的改进，对性能的提高不言而喻。但对具体算法的改进不属于本文讨论的范围，读者可以自行参考这方面资料。下面的内容将集中讨论数据结构的选择。</p><ul class="ibm-bullet-list"><li>字典 (dictionary) 与列表 (list)</li></ul><p>Python 字典中使用了 hash table，因此查找操作的复杂度为 O(1)，而 list 实际是个数组，在 list 中，查找需要遍历整个 list，其复杂度为 O(n)，因此对成员的查找访问等操作字典要比 list 更快。</p><h5 id="listing1">清单 1. 代码 dict.py</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ list = ['a','b','is','python','jason','hello','hill','with','phone','test', 
+'dfdf','apple','pddf','ind','basic','none','baecr','var','bana','dd','wrd'] 
+ #list = dict.fromkeys(list,True) 
+ print list 
+ filter = [] 
+ for i in range (1000000): 
+	 for find in ['is','hat','new','list','old','.']: 
+		 if find not in list: 
+			 filter.append(find) 
+ print "total run time:"
+ print time()-t</pre></div><p>上述代码运行大概需要 16.09seconds。如果去掉行 #list = dict.fromkeys(list,True) 的注释，将 list 转换为字典之后再运行，时间大约为 8.375 seconds，效率大概提高了一半。因此在需要多数据成员进行频繁的查找或者访问的时候，使用 dict 而不是 list 是一个较好的选择。</p><ul class="ibm-bullet-list"><li>集合 (set) 与列表 (list)</li></ul><p>set 的 union， intersection，difference 操作要比 list 的迭代要快。因此如果涉及到求 list 交集，并集或者差的问题可以转换为 set 来操作。</p><h5 id="listing2">清单 2. 求 list 的交集：</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ lista=[1,2,3,4,5,6,7,8,9,13,34,53,42,44] 
+ listb=[2,4,6,9,23] 
+ intersection=[] 
+ for i in range (1000000): 
+	 for a in lista: 
+		 for b in listb: 
+			 if a == b: 
+				 intersection.append(a) 
+
+
+ print "total run time:"
+ print time()-t</pre></div><p>上述程序的运行时间大概为：</p><div class="codesection"><pre class="displaycode"> total run time: 
+ 38.4070000648</pre></div><h5 id="listing3">清单 3. 使用 set 求交集</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ lista=[1,2,3,4,5,6,7,8,9,13,34,53,42,44] 
+ listb=[2,4,6,9,23] 
+ intersection=[] 
+ for i in range (1000000): 
+	 list(set(lista)&amp;set(listb)) 
+ print "total run time:"
+ print time()-t</pre></div><p>改为 set 后程序的运行时间缩减为 8.75，提高了 4 倍多，运行时间大大缩短。读者可以自行使用表 1 其他的操作进行测试。</p><h5 id="N10076">表 1. set 常见用法</h5><table border="0" cellpadding="0" cellspacing="0" class="ibm-data-table" summary=""><thead xmlns:dw="http://www.ibm.com/developerWorks/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><th style="vertical-align:top"><strong>语法</strong></th><th style="vertical-align:top"><strong>操作</strong></th><th style="vertical-align:top"><strong>说明</strong></th></tr></thead><tbody xmlns:dw="http://www.ibm.com/developerWorks/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><td style="text-align:center; vertical-align:top">
+ set(list1) | set(list2) 
+</td><td style="text-align:center; vertical-align:top">
+ union 
+</td><td style="text-align:center; vertical-align:top">
+包含 list1 和 list2 所有数据的新集合
+</td></tr><tr><td style="text-align:center; vertical-align:top">
+ set(list1) &amp; set(list2) 
+</td><td style="text-align:center; vertical-align:top">
+ intersection 
+</td><td style="text-align:center; vertical-align:top">
+包含 list1 和 list2 中共同元素的新集合
+</td></tr><tr><td style="text-align:center; vertical-align:top">
+ set(list1) - set(list2) 
+</td><td style="text-align:center; vertical-align:top">
+ difference 
+</td><td style="text-align:center; vertical-align:top">
+在 list1 中出现但不在 list2 中出现的元素的集合
+</td></tr></tbody></table><h3 id="minor1.2">对循环的优化</h3><p>对循环的优化所遵循的原则是尽量减少循环过程中的计算量，有多重循环的尽量将内层的计算提到上一层。 下面通过实例来对比循环优化后所带来的性能的提高。程序清单 4 中，如果不进行循环优化，其大概的运行时间约为 132.375。</p><h5 id="listing4">清单 4. 为进行循环优化前</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ lista = [1,2,3,4,5,6,7,8,9,10] 
+ listb =[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.01] 
+ for i in range (1000000): 
+	 for a in range(len(lista)): 
+		 for b in range(len(listb)): 
+			 x=lista[a]+listb[b] 
+ print "total run time:"
+ print time()-t</pre></div><p>现在进行如下优化，将长度计算提到循环外，range 用 xrange 代替，同时将第三层的计算 lista[a] 提到循环的第二层。</p><h5 id="listing5">清单 5. 循环优化后</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ lista = [1,2,3,4,5,6,7,8,9,10] 
+ listb =[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.01] 
+ len1=len(lista) 
+ len2=len(listb) 
+ for i in xrange (1000000): 
+	 for a in xrange(len1): 
+		 temp=lista[a] 
+		 for b in xrange(len2): 
+			 x=temp+listb[b] 
+ print "total run time:"
+ print time()-t</pre></div><p>上述优化后的程序其运行时间缩短为 102.171999931。在清单 4 中 lista[a] 被计算的次数为 1000000*10*10，而在优化后的代码中被计算的次数为 1000000*10，计算次数大幅度缩短，因此性能有所提升。</p><h3 id="minor1.3">充分利用 Lazy if-evaluation 的特性</h3><p>python 中条件表达式是 lazy evaluation 的，也就是说如果存在条件表达式 if x and y，在 x 为 false 的情况下 y 表达式的值将不再计算。因此可以利用该特性在一定程度上提高程序效率。</p><h5 id="listing6">清单 6. 利用 Lazy if-evaluation 的特性</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ abbreviations = ['cf.', 'e.g.', 'ex.', 'etc.', 'fig.', 'i.e.', 'Mr.', 'vs.'] 
+ for i in range (1000000): 
+	 for w in ('Mr.', 'Hat', 'is', 'chasing', 'the', 'black', 'cat', '.'): 
+		 if w in abbreviations: 
+		 #if w[-1] == '.' and w in abbreviations: 
+			 pass 
+ print "total run time:"
+ print time()-t</pre></div><p>在未进行优化之前程序的运行时间大概为 8.84，如果使用注释行代替第一个 if，运行的时间大概为 6.17。</p><h3 id="minor1.4">字符串的优化</h3><p>python 中的字符串对象是不可改变的，因此对任何字符串的操作如拼接，修改等都将产生一个新的字符串对象，而不是基于原字符串，因此这种持续的 copy 会在一定程度上影响 python 的性能。对字符串的优化也是改善性能的一个重要的方面，特别是在处理文本较多的情况下。字符串的优化主要集中在以下几个方面：</p><ol start="1" type="1"><li>在字符串连接的使用尽量使用 join() 而不是 +：在代码清单 7 中使用 + 进行字符串连接大概需要 0.125 s，而使用 join 缩短为 0.016s。因此在字符的操作上 join 比 + 要快，因此要尽量使用 join 而不是 +。
+			
+<h5 id="listing7">清单 7. 使用 join 而不是 + 连接字符串</h5><div class="codesection"><pre class="displaycode"> from time import time 
+
+ t = time() 
+ s = ""
+ list = ['a','b','b','d','e','f','g','h','i','j','k','l','m','n'] 
+ for i in range (10000): 
+	 for substr in list: 
+		 s+= substr 	
+ print "total run time:"
+ print time()-t</pre></div><p>	同时要避免：</p><div class="codesection"><pre class="displaycode"> s = ""
+ for x in list: 
+    s += func(x)</pre></div><p>	而是要使用：</p><div class="codesection"><pre class="displaycode"> slist = [func(elt) for elt in somelist] 
+ s = "".join(slist)</pre></div></li><li>
+				当对字符串可以使用正则表达式或者内置函数来处理的时候，选择内置函数。如 str.isalpha()，str.isdigit()，str.startswith(('x', 'yz'))，str.endswith(('x', 'yz'))</li><li>对字符进行格式化比直接串联读取要快，因此要使用
+			
+<div class="codesection"><pre class="displaycode"> out = "&lt;html&gt;%s%s%s%s&lt;/html&gt;" % (head, prologue, query, tail)</pre></div><p>而避免</p><div class="codesection"><pre class="displaycode"> out = "&lt;html&gt;" + head + prologue + query + tail + "&lt;/html&gt;"</pre></div></li></ol><h3 id="minor1.5">使用列表解析（list comprehension）和生成器表达式（generator expression）</h3><p>列表解析要比在循环中重新构建一个新的 list 更为高效，因此我们可以利用这一特性来提高运行的效率。</p><div class="codesection"><pre class="displaycode"> from time import time 
+ t = time() 
+ list = ['a','b','is','python','jason','hello','hill','with','phone','test', 
+'dfdf','apple','pddf','ind','basic','none','baecr','var','bana','dd','wrd'] 
+ total=[] 
+ for i in range (1000000): 
+	 for w in list: 
+		 total.append(w) 
+ print "total run time:"
+ print time()-t</pre></div><p>使用列表解析：</p><div class="codesection"><pre class="displaycode"> for i in range (1000000): 
+	 a = [w for w in list]</pre></div><p>上述代码直接运行大概需要 17s，而改为使用列表解析后 ，运行时间缩短为 9.29s。将近提高了一半。生成器表达式则是在 2.4 中引入的新内容，语法和列表解析类似，但是在大数据量处理时，生成器表达式的优势较为明显，它并不创建一个列表，只是返回一个生成器，因此效率较高。在上述例子上中代码 a = [w for w in list] 修改为 a = (w for w in list)，运行时间进一步减少，缩短约为 2.98s。</p><h3 id="minor1.6">其他优化技巧</h3><ol start="1" type="1"><li>如果需要交换两个变量的值使用 a,b=b,a 而不是借助中间变量 t=a;a=b;b=t；
+			
+<div class="codesection"><pre class="displaycode"> &gt;&gt;&gt; from timeit import Timer 
+ &gt;&gt;&gt; Timer("t=a;a=b;b=t","a=1;b=2").timeit() 
+ 0.25154118749729365 
+ &gt;&gt;&gt; Timer("a,b=b,a","a=1;b=2").timeit() 
+ 0.17156677734181258 
+ &gt;&gt;&gt;</pre></div></li><li>在循环的时候使用 xrange 而不是 range；使用 xrange 可以节省大量的系统内存，因为 xrange() 在序列中每次调用只产生一个整数元素。而 range() 將直接返回完整的元素列表，用于循环时会有不必要的开销。在 python3 中 xrange 不再存在，里面 range 提供一个可以遍历任意长度的范围的 iterator。</li><li>使用局部变量，避免"global" 关键字。python 访问局部变量会比全局变量要快得多，因	此可以利用这一特性提升性能。</li><li>if done is not None 比语句 if done != None 更快，读者可以自行验证；</li><li>在耗时较多的循环中，可以把函数的调用改为内联的方式；</li><li>使用级联比较 "x &lt; y &lt; z" 而不是 "x &lt; y and y &lt; z"；</li><li>while 1 要比 while True 更快（当然后者的可读性更好）；</li><li>build in 函数通常较快，add(a,b) 要优于 a+b。</li></ol><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major2">定位程序性能瓶颈</h2><p>对代码优化的前提是需要了解性能瓶颈在什么地方，程序运行的主要时间是消耗在哪里，对于比较复杂的代码可以借助一些工具来定位，python 内置了丰富的性能分析工具，如 profile,cProfile 与 hotshot 等。其中 Profiler 是 python 自带的一组程序，能够描述程序运行时候的性能，并提供各种统计帮助用户定位程序的性能瓶颈。Python 标准模块提供三种 profilers:cProfile,profile 以及 hotshot。</p><p>profile 的使用非常简单，只需要在使用之前进行 import 即可。具体实例如下：</p><h5 id="listing8">清单 8. 使用 profile 进行性能分析</h5><div class="codesection"><pre class="displaycode"> import profile 
+ def profileTest(): 
+    Total =1; 
+    for i in range(10): 
+        Total=Total*(i+1) 
+        print Total 
+    return Total 
+ if __name__ == "__main__": 
+    profile.run("profileTest()")</pre></div><p>程序的运行结果如下：</p><h5 id="fig1">图 1. 性能分析结果</h5><img alt="图 1. 性能分析结果" src="./Python 代码性能优化技巧_files/image001.png" width="572"><p>其中输出每列的具体解释如下：</p><ul class="ibm-bullet-list"><li>ncalls：表示函数调用的次数；</li><li>tottime：表示指定函数的总的运行时间，除掉函数中调用子函数的运行时间；</li><li>percall：（第一个 percall）等于 tottime/ncalls；</li><li>cumtime：表示该函数及其所有子函数的调用运行的时间，即函数开始调用到返回的时间；</li><li>percall：（第二个 percall）即函数运行一次的平均时间，等于 cumtime/ncalls；</li><li>filename:lineno(function)：每个函数调用的具体信息；</li></ul><p>如果需要将输出以日志的形式保存，只需要在调用的时候加入另外一个参数。如 profile.run("profileTest()","testprof")。</p><p>对于 profile 的剖析数据，如果以二进制文件的时候保存结果的时候，可以通过 pstats 模块进行文本报表分析，它支持多种形式的报表输出，是文本界面下一个较为实用的工具。使用非常简单：</p><div class="codesection"><pre class="displaycode"> import pstats 
+ p = pstats.Stats('testprof') 
+ p.sort_stats("name").print_stats()</pre></div><p>其中 sort_stats() 方法能够对剖分数据进行排序， 可以接受多个排序字段，如 sort_stats('name', 'file') 将首先按照函数名称进行排序，然后再按照文件名进行排序。常见的排序字段有 calls( 被调用的次数 )，time（函数内部运行时间），cumulative（运行的总时间）等。此外 pstats 也提供了命令行交互工具，执行 python – m pstats 后可以通过 help 了解更多使用方式。</p><p>对于大型应用程序，如果能够将性能分析的结果以图形的方式呈现，将会非常实用和直观，常见的可视化工具有 Gprof2Dot，visualpytune，KCacheGrind 等，读者可以自行查阅相关官网，本文不做详细讨论。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major3">Python 性能优化工具</h2><p>Python 性能优化除了改进算法，选用合适的数据结构之外，还有几种关键的技术，比如将关键 python 代码部分重写成 C 扩展模块，或者选用在性能上更为优化的解释器等，这些在本文中统称为优化工具。python 有很多自带的优化工具，如 Psyco，Pypy，Cython，Pyrex 等，这些优化工具各有千秋，本节选择几种进行介绍。</p><h3 id="minor3.1">Psyco</h3><p>psyco 是一个 just-in-time 的编译器，它能够在不改变源代码的情况下提高一定的性能，Psyco 将操作编译成有点优化的机器码，其操作分成三个不同的级别，有"运行时"、"编译时"和"虚拟时"变量。并根据需要提高和降低变量的级别。运行时变量只是常规 Python 解释器处理的原始字节码和对象结构。一旦 Psyco 将操作编译成机器码，那么编译时变量就会在机器寄存器和可直接访问的内存位置中表示。同时 python 能高速缓存已编译的机器码以备今后重用，这样能节省一点时间。但 Psyco 也有其缺点，其本身运行所占内存较大。目前 psyco 已经不在 python2.7 中支持，而且不再提供维护和更新了，对其感兴趣的可以参考 <a href="http://psyco.sourceforge.net/">http://psyco.sourceforge.net/</a></p><h3 id="minor3.2">Pypy</h3><p>PyPy 表示 "用 Python 实现的 Python"，但实际上它是使用一个称为 RPython 的 Python 子集实现的，能够将 Python 代码转成 C， .NET， Java 等语言和平台的代码。PyPy 集成了一种即时 (JIT) 编译器。和许多编译器，解释器不同，它不关心 Python 代码的词法分析和语法树。 因为它是用 Python 语言写的，所以它直接利用 Python 语言的 Code Object.。 Code Object 是 Python 字节码的表示，也就是说， PyPy 直接分析 Python 代码所对应的字节码 ,，这些字节码即不是以字符形式也不是以某种二进制格式保存在文件中， 而在 Python 运行环境中。目前版本是 1.8. 支持不同的平台安装，windows 上安装 Pypy 需要先下载 <a href="https://bitbucket.org/pypy/pypy/downloads/pypy-1.8-win32.zip">https://bitbucket.org/pypy/pypy/downloads/pypy-1.8-win32.zip</a>，然后解压到相关的目录，并将解压后的路径添加到环境变量 path 中即可。在命令行运行 pypy，如果出现如下错误："没有找到 MSVCR100.dll, 因此这个应用程序未能启动，重新安装应用程序可能会修复此问题"，则还需要在微软的官网上下载 VS 2010 runtime libraries 解决该问题。具体地址为 <a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=5555">http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=5555</a></p><p>安装成功后在命令行里运行 pypy，输出结果如下：</p><div class="codesection"><pre class="displaycode"> C:\Documents and Settings\Administrator&gt;pypy 
+ Python 2.7.2 (0e28b379d8b3, Feb 09 2012, 18:31:47) 
+ [PyPy 1.8.0 with MSC v.1500 32 bit] on win32 
+ Type "help", "copyright", "credits" or "license" for more information. 
+ And now for something completely different: ``PyPy is vast, and contains 
+ multitudes''
+ &gt;&gt;&gt;&gt;</pre></div><p>以清单 5 的循环为例子，使用 python 和 pypy 分别运行，得到的运行结果分别如下：</p><div class="codesection"><pre class="displaycode"> C:\Documents and Settings\Administrator\ 桌面 \doc\python&gt;pypy loop.py 
+ total run time: 
+ 8.42199993134 
+
+ C:\Documents and Settings\Administrator\ 桌面 \doc\python&gt;python loop.py 
+ total run time: 
+ 106.391000032</pre></div><p>可见使用 pypy 来编译和运行程序，其效率大大的提高。</p><h3 id="minor3.3">Cython</h3><p>Cython 是用 python 实现的一种语言，可以用来写 python 扩展，用它写出来的库都可以通过 import 来载入，性能上比 python 的快。cython 里可以载入 python 扩展 ( 比如 import math)，也可以载入 c 的库的头文件 ( 比如 :cdef extern from "math.h")，另外也可以用它来写 python 代码。将关键部分重写成 C 扩展模块</p><p>Linux Cpython 的安装：</p><p>第一步：下载</p><div class="codesection"><pre class="displaycode"> [root@v5254085f259 cpython]# wget -N http://cython.org/release/Cython-0.15.1.zip 
+ --2012-04-16 22:08:35--  http://cython.org/release/Cython-0.15.1.zip 
+ Resolving cython.org... 128.208.160.197 
+ Connecting to cython.org|128.208.160.197|:80... connected. 
+ HTTP request sent, awaiting response... 200 OK 
+ Length: 2200299 (2.1M) [application/zip] 
+ Saving to: `Cython-0.15.1.zip'
+
+ 100%[======================================&gt;] 2,200,299   1.96M/s   in 1.1s 
+
+ 2012-04-16 22:08:37 (1.96 MB/s) - `Cython-0.15.1.zip' saved [2200299/2200299]</pre></div><p>第二步：解压</p><div class="codesection"><pre class="displaycode"> [root@v5254085f259 cpython]# unzip -o Cython-0.15.1.zip</pre></div><p>第三步：安装</p><div class="codesection"><pre class="displaycode"> python setup.py install</pre></div><p>安装完成后直接输入 cython，如果出现如下内容则表明安装成功。</p><div class="codesection"><pre class="displaycode"> [root@v5254085f259 Cython-0.15.1]# cython 
+ Cython (http://cython.org) is a compiler for code written in the 
+ Cython language.  Cython is based on Pyrex by Greg Ewing. 
+
+ Usage: cython [options] sourcefile.{pyx,py} ... 
+
+ Options: 
+  -V, --version                  Display version number of cython compiler 
+  -l, --create-listing           Write error messages to a listing file 
+  -I, --include-dir &lt;directory&gt;  Search for include files in named directory 
+                                 (multiple include directories are allowed). 
+  -o, --output-file &lt;filename&gt;   Specify name of generated C file 
+  -t, --timestamps               Only compile newer source files 
+  -f, --force                    Compile all source files (overrides implied -t) 
+  -q, --quiet                    Don't print module names in recursive mode 
+  -v, --verbose                  Be verbose, print file names on multiple compil ation 
+  -p, --embed-positions          If specified, the positions in Cython files of each 
+  function definition is embedded in its docstring. 
+  --cleanup &lt;level&gt; 
+  Release interned objects on python exit, for memory debugging. 
+    Level indicates aggressiveness, default 0 releases nothing. 
+  -w, --working &lt;directory&gt; 
+  Sets the working directory for Cython (the directory modules are searched from) 
+  --gdb Output debug information for cygdb 
+  -D, --no-docstrings 
+              Strip docstrings from the compiled module. 
+  -a, --annotate 
+              Produce a colorized HTML version of the source. 
+  --line-directives 
+              Produce #line directives pointing to the .pyx source 
+  --cplus 
+              Output a C++ rather than C file. 
+  --embed[=&lt;method_name&gt;] 
+              Generate a main() function that embeds the Python interpreter. 
+  -2          Compile based on Python-2 syntax and code seman tics. 
+  -3          Compile based on Python-3 syntax and code seman tics. 
+  --fast-fail     Abort the compilation on the first error 
+  --warning-error, -Werror       Make all warnings into errors 
+  --warning-extra, -Wextra       Enable extra warnings 
+  -X, --directive &lt;name&gt;=&lt;value&gt; 
+  [,&lt;name=value,...] Overrides a compiler directive</pre></div><p>其他平台上的安装可以参考文档：<a href="http://docs.cython.org/src/quickstart/install.html">http://docs.cython.org/src/quickstart/install.html</a></p><p>Cython 代码与 python 不同，必须先编译，编译一般需要经过两个阶段，将 pyx 文件编译为 .c 文件，再将 .c 文件编译为 .so 文件。编译有多种方法：</p><ul class="ibm-bullet-list"><li>通过命令行编译：
+			
+<p>假设有如下测试代码，使用命令行编译为 .c 文件。</p><div class="codesection"><pre class="displaycode"> def sum(int a,int b): 
+        print a+b 
+
+ [root@v5254085f259 test]# cython sum.pyx 
+ [root@v5254085f259 test]# ls 
+ total 76 
+ 4 drwxr-xr-x 2 root root  4096 Apr 17 02:45 . 
+ 4 drwxr-xr-x 4 root root  4096 Apr 16 22:20 .. 
+ 4 -rw-r--r-- 1 root root    35 Apr 17 02:45 1 
+ 60 -rw-r--r-- 1 root root 55169 Apr 17 02:45 sum.c 
+ 4 -rw-r--r-- 1 root root    35 Apr 17 02:45 sum.pyx</pre></div><p>在 linux 上利用 gcc 编译为 .so 文件：</p><div class="codesection"><pre class="displaycode"> [root@v5254085f259 test]# gcc -shared -pthread -fPIC -fwrapv -O2 
+ -Wall -fno-strict-aliasing -I/usr/include/python2.4 -o sum.so sum.c 
+ [root@v5254085f259 test]# ls 
+ total 96 
+ 4 drwxr-xr-x 2 root root  4096 Apr 17 02:47 . 
+ 4 drwxr-xr-x 4 root root  4096 Apr 16 22:20 .. 
+ 4 -rw-r--r-- 1 root root    35 Apr 17 02:45 1 
+ 60 -rw-r--r-- 1 root root 55169 Apr 17 02:45 sum.c 
+ 4 -rw-r--r-- 1 root root    35 Apr 17 02:45 sum.pyx 
+ 20 -rwxr-xr-x 1 root root 20307 Apr 17 02:47 sum.so</pre></div></li><li>使用 distutils 编译
+			
+<p>建立一个 setup.py 的脚本：</p><div class="codesection"><pre class="displaycode"> from distutils.core import setup 
+ from distutils.extension import Extension 
+ from Cython.Distutils import build_ext 
+
+ ext_modules = [Extension("sum", ["sum.pyx"])] 
+
+ setup( 
+    name = 'sum app', 
+    cmdclass = {'build_ext': build_ext}, 
+    ext_modules = ext_modules 
+ ) 
+
+
+ [root@v5254085f259 test]#  python setup.py build_ext --inplace 
+ running build_ext 
+ cythoning sum.pyx to sum.c 
+ building 'sum' extension 
+ gcc -pthread -fno-strict-aliasing -fPIC -g -O2 -DNDEBUG -g -fwrapv -O3 
+ -Wall -Wstrict-prototypes -fPIC -I/opt/ActivePython-2.7/include/python2.7 
+  -c sum.c -o build/temp.linux-x86_64-2.7/sum.o 
+ gcc -pthread -shared build/temp.linux-x86_64-2.7/sum.o 
+ -o /root/cpython/test/sum.so</pre></div></li></ul><p>编译完成之后可以导入到 python 中使用：</p><div class="codesection"><pre class="displaycode"> [root@v5254085f259 test]# python 
+ ActivePython 2.7.2.5 (ActiveState Software Inc.) based on 
+ Python 2.7.2 (default, Jun 24 2011, 11:24:26) 
+ [GCC 4.0.2 20051125 (Red Hat 4.0.2-8)] on linux2 
+ Type "help", "copyright", "credits" or "license" for more information. 
+ &gt;&gt;&gt; import pyximport; pyximport.install() 
+ &gt;&gt;&gt; import sum 
+ &gt;&gt;&gt; sum.sum(1,3)</pre></div><p>下面来进行一个简单的性能比较：</p><h5 id="listing9">清单 9. Cython 测试代码</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ def test(int n): 
+        cdef int a =0 
+        cdef int i 
+        for i in xrange(n): 
+                a+= i 
+        return a 
+
+ t = time() 
+ test(10000000) 
+ print "total run time:"
+ print time()-t</pre></div><p>测试结果：</p><div class="codesection"><pre class="displaycode"> [GCC 4.0.2 20051125 (Red Hat 4.0.2-8)] on linux2 
+ Type "help", "copyright", "credits" or "license" for more information. 
+ &gt;&gt;&gt; import pyximport; pyximport.install() 
+ &gt;&gt;&gt; import ctest 
+ total run time: 
+ 0.00714015960693</pre></div><h5 id="listing10">清单 10. Python 测试代码</h5><div class="codesection"><pre class="displaycode"> from time import time 
+ def test(n): 
+        a =0; 
+        for i in xrange(n): 
+                a+= i 
+        return a 
+
+ t = time() 
+ test(10000000) 
+ print "total run time:"
+ print time()-t 
+
+ [root@v5254085f259 test]# python test.py 
+ total run time: 
+ 0.971596002579</pre></div><p>从上述对比可以看到使用 Cython 的速度提高了将近 100 多倍。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major4">总结</h2><p>本文初步探讨了 python 常见的性能优化技巧以及如何借助工具来定位和分析程序的性能瓶颈，并提供了相关可以进行性能优化的工具或语言，希望能够更相关人员一些参考。</p><!--CMA ID: 826698--><!--Site ID: 10--><!--XSLT stylesheet used to transform this file: dw-document-html-7.0.xsl-->
+
+
+</div>
+</div>
+<!-- 1_1_COLUMN_END -->
+
+<!-- SPLIT_COLUMNS_BEGIN -->
+<div class="ibm-columns">
+
+<!-- 6_4_COLUMN_BEGIN -->
+<div class="ibm-col-6-4">
+
+<h2 id="resources" class="ibm-rule">参考资料 </h2><h3 class="dw-resources-category-heading">学习</h3><ul class="ibm-bullet-list"><li>参考 <a href="http://www.cython.org/">Cython 官网</a>，了解更多关于 Cython 的信息。</li><li>参考 <a href="http://www.pypy.org/">Pypy 官网</a>，了解更多关于 pypy 的知识。</li><li>查看文章"<a href="http://www.ibm.com/developerworks/cn/linux/sdk/python/charm-28/">可爱的 Python: 用 Psyco 让 Python 运行得像 C 一样快</a>"，了解如何使用 Psyco 提高效率。</li><li>参考 <a href="http://www.python.org/">Python 官网</a>，了解更多 Python 最新的动态。</li><li>获取 <a href="http://code.google.com/p/visualpytune/">visualpytune</a>进行试用。</li><li>了解更多关于 <a href="http://code.google.com/p/jrfonseca/wiki/Gprof2Dot">Gprof2Dot</a>的信息。</li><li> 在 <a href="http://www.ibm.com/developerworks/cn/linux/"> developerWorks Linux 专区</a> 寻找为 Linux 开发人员（包括 <a href="http://www.ibm.com/developerworks/cn/linux/newto/">Linux 新手入门</a>）准备的更多参考资料，查阅我们 <a href="http://www.ibm.com/developerworks/cn/linux/best2009/index.html">最受欢迎的文章和教程</a>。 </li><li>在 developerWorks 上查阅所有 <a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp?search_by=Linux+%E6%8A%80%E5%B7%A7"> Linux 技巧</a> 和 <a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp?type_by=%E6%95%99%E7%A8%8B"> Linux 教程</a>。 </li><li>随时关注 developerWorks <a href="http://www.ibm.com/developerworks/cn/offers/techbriefings/">技术活动</a>和<a href="http://www.ibm.com/developerworks/cn/swi/">网络广播</a>。 </li></ul><h3 class="dw-resources-category-heading">讨论</h3><ul class="ibm-bullet-list"><li>加入 <a href="http://www.ibm.com/developerworks/cn/community/">developerWorks 中文社区</a>，developerWorks 社区是一个面向全球 IT 专业人员，可以提供博客、书签、wiki、群组、联系、共享和协作等社区功能的专业社交网络社区。</li><li>加入 <a href="https://www.ibm.com/developerworks/mydeveloperworks/groups/service/html/communityview?communityUuid=38997896-bb16-451a-aa97-189a27a3cd5a/?lang=zh">IBM 软件下载与技术交流群组</a>，参与在线交流。</li></ul>
+
+<!-- INLINE_COMMENTS_BEGIN -->
+<h2 id="icomments" class="ibm-alternate-rule ibm-no-print">条评论</h2>
+    
+<div class="ibm-no-print" id="dw-icomments-container">	
+	<div id="threadShow"><img id="imgPlHdr" src="./Python 代码性能优化技巧_files/animated-progress-38x38c.gif" alt="" style="display: none;"><div id="cmtTog"><div class="ibm-container ibm-alternate-two dw-commentbox dw-noborder"><div class="ibm-container-body dw-commentbox dw-noborder"><p id="signInSect">请 <a onclick="var e=arguments[0] || window.event; dwsi.siInst &amp;&amp; dwsi.siInst.showSignIn(); if (e.stopPropagation){ e.stopPropagation();} else { e.cancelBubble = true; } e.preventDefault &amp;&amp; e.preventDefault(); return false;" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#">登录</a> 或 <a href="http://www.ibm.com/developerworks/dwwi/DWAuthRouter?m=register&lang=zh_CN&d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-python-optim%2F%23icomments">注册</a>  后发表评论。</p><p id="cmtHead"><label for="newCmt"><strong>添加评论:</strong></label></p><p>注意：评论中不支持 HTML 语法</p><div id="infoCmt"></div><form focus="name" enctype="multipart/form-data" method="post" action="" name="form" class="ibm-column-form ibm-styled-form"><p class="6-4-textarea"><textarea rows="5" name="newCmt" id="newCmt" class="dw-inoperable" disabled=""></textarea><br></p><span class="ibm-input-group"><input type="checkbox" value="1" name="comment_notification" id="comment_notification" disabled="disabled"><label id="notifyText" class="ibm-form-note dw-btn-cancel-sec" for="comment_notification">有新评论时提醒我</label></span><span class="ibm-form-note dw-btn-cancel-sec notifySection" id="maxCharsCount">剩余 <span id="charCount">1000</span> 字符</span><p class="ibm-buttons-row"><input type="button" value="发布" name="postCmt" id="postCmt" class="ibm-btn-sec ibm-btn-small ibm-disabled" disabled="disabled"></p></form></div></div><div class="ibm-alternate-rule"><hr></div><div id="topControl" class="ibm-container ibm-alternate-two dw-comment-totals" style=""><div class="ibm-container-body"><form id="selectComments" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts">5</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts"><label for="howManyComments"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论   </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Python 代码性能优化技巧_files/short-btn.gif" alt="Go"><br></span></p></form></div></div><div id="cmtSect"><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>Hi, can you tell me how to install pip for pypy in window 32bit ? thanks</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/%E9%87%8D%E5%A4%8D%E7%9A%84%E5%A4%AA%E5%A4%9A%E4%BA%86">重复的太多了</a></strong>  于 2014年03月25日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20Hi%2C%20can%20you%20tell%20me%20how%20to%20install%20pip%20for%20pypy%20in%20window%2032bit%20%3F%20thanks%0D%E7%94%B1%20%E9%87%8D%E5%A4%8D%E7%9A%84%E5%A4%AA%E5%A4%9A%E4%BA%86%20%20%E4%BA%8E%202014%E5%B9%B403%E6%9C%8825%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>"现在针对字符串使用+应该是进行了优化，要比格式化字符串快</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/knd2">knd2</a></strong>  于 2013年10月23日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%22%E7%8E%B0%E5%9C%A8%E9%92%88%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BD%BF%E7%94%A8%2B%E5%BA%94%E8%AF%A5%E6%98%AF%E8%BF%9B%E8%A1%8C%E4%BA%86%E4%BC%98%E5%8C%96%EF%BC%8C%E8%A6%81%E6%AF%94%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BF%AB%0D%E7%94%B1%20knd2%20%20%E4%BA%8E%202013%E5%B9%B410%E6%9C%8823%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>"python初学想看看性能如何。。<br>这清单5这样的时间复杂度怎么还要这么长时间，list 不是 O(1) 的吧？ <br>下面是我的测试<br>Linux tux 3.10.7-gentoo #2 SMP Mon Sep 9 00:41:46 Local time zone must be set--see zic m x86_64 Intel(R) Core(TM) i7-2630QM CPU @ 2.00GHz GenuineIntel GNU/Linux<br>&gt;&gt;&gt; (54.47915577888489- 43.6319739818573)/43.6319739818573<br>0.24860625837231148<br><br>把list 改为dict 后<br>(58.18786597251892-46.833130836486816)/46.833130836486816<br>0.2424509088592865</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/skiz">skiz</a></strong>  于 2013年10月19日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%22python%E5%88%9D%E5%AD%A6%E6%83%B3%E7%9C%8B%E7%9C%8B%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95%E3%80%82%E3%80%82%E8%BF%99%E6%B8%85%E5%8D%955%E8%BF%99%E6%A0%B7%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%80%8E%E4%B9%88%E8%BF%98%E8%A6%81%E8%BF%99%E4%B9%88%E9%95%BF%E6%97%B6%E9%97%B4%EF%BC%8Clist%20%E4%B8%8D%E6%98%AF%20O(1)%20%E7%9A%84%E5%90%A7%EF%BC%9F%20%E4%B8%8B%E9%9D%A2%E6%98%AF%E6%88%91%E7%9A%84%E6%B5%8B%E8%AF%95Linux%20tux%203.10.7-gentoo%20%232%20SMP%20Mon%20Sep%209%2000%3A41%3A46%20Local%20time%20zone%20must%20be%20set--see%20zic%20m%20x86_64%20Intel(R)%20Core(TM)%20i7-2630QM%20CPU%20%40%202.00GHz%20GenuineIntel%20GNU%2FLinux%26gt%3B%26gt%3B%26gt%3B%20(54.47915577888489-%2043.6319739818573)%2F43.63197398185730.24860625837231148%E6%8A%8Alist%20%E6%94%B9%E4%B8%BAdict%20%E5%90%8E(58.18786597251892-46.833130836486816)%2F46.8331308364868160.2424509088592865%0D%E7%94%B1%20skiz%20%20%E4%BA%8E%202013%E5%B9%B410%E6%9C%8819%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>"\u201C清单5.循环优化后\u201D<br>使用xrange替代range,是语言实现的差异带来的性能提升，提倡这样做。将内层循环的计算放到外层，的确减少了计算的次数，减少时间。但我测试了，优化后的性能提升为 (36.2007350922-31.4166100025)/ 36.2007350922 = 13.2%,并不是\u201C大幅度的提升\u201D<br><br>4、if done is not None 比语句 if done != None 更快，读者可以自行验证；<br>直接 if done:</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/kiddingmu">kiddingmu</a></strong>  于 2013年09月02日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%22%5Cu201C%E6%B8%85%E5%8D%955.%E5%BE%AA%E7%8E%AF%E4%BC%98%E5%8C%96%E5%90%8E%5Cu201D%E4%BD%BF%E7%94%A8xrange%E6%9B%BF%E4%BB%A3range%2C%E6%98%AF%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%B7%AE%E5%BC%82%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%EF%BC%8C%E6%8F%90%E5%80%A1%E8%BF%99%E6%A0%B7%E5%81%9A%E3%80%82%E5%B0%86%E5%86%85%E5%B1%82%E5%BE%AA%E7%8E%AF%E7%9A%84%E8%AE%A1%E7%AE%97%E6%94%BE%E5%88%B0%E5%A4%96%E5%B1%82%EF%BC%8C%E7%9A%84%E7%A1%AE%E5%87%8F%E5%B0%91%E4%BA%86%E8%AE%A1%E7%AE%97%E7%9A%84%E6%AC%A1%E6%95%B0%EF%BC%8C%E5%87%8F%E5%B0%91%E6%97%B6%E9%97%B4%E3%80%82%E4%BD%86%E6%88%91%E6%B5%8B%E8%AF%95%E4%BA%86%EF%BC%8C%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87%E4%B8%BA%20(36.2007350922-31.4166100025)%2F%2036.2007350922%20%3D%2013.2%25%2C%E5%B9%B6%E4%B8%8D%E6%98%AF%5Cu201C%E5%A4%A7%E5%B9%85%E5%BA%A6%E7%9A%84%E6%8F%90%E5%8D%87%5Cu201D4%E3%80%81if%20done%20is%20not%20None%20%E6%AF%94%E8%AF%AD%E5%8F%A5%20if%20done%20!%3D%20None%20%E6%9B%B4%E5%BF%AB%EF%BC%8C%E8%AF%BB%E8%80%85%E5%8F%AF%E4%BB%A5%E8%87%AA%E8%A1%8C%E9%AA%8C%E8%AF%81%EF%BC%9B%E7%9B%B4%E6%8E%A5%20if%20done%3A%0D%E7%94%B1%20kiddingmu%20%20%E4%BA%8E%202013%E5%B9%B409%E6%9C%8802%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>"清单 7. 的例子，用pypy反而慢了好多。</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/bhfo">bhfo</a></strong>  于 2013年05月20日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%22%E6%B8%85%E5%8D%95%207.%20%E7%9A%84%E4%BE%8B%E5%AD%90%EF%BC%8C%E7%94%A8pypy%E5%8F%8D%E8%80%8C%E6%85%A2%E4%BA%86%E5%A5%BD%E5%A4%9A%E3%80%82%0D%E7%94%B1%20bhfo%20%20%E4%BA%8E%202013%E5%B9%B405%E6%9C%8820%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div></div></div><div id="bottomControl" class="ibm-container ibm-alternate-two dw-comment-totals" style="display:none"><div class="ibm-container-body"><form id="selectComments2" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts2">5</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts2"><label for="howManyComments2"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments2" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论   </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Python 代码性能优化技巧_files/short-btn.gif" alt="Go"><br></span></p></form></div></div></div>
+</div>
+<!-- Sign in OVERLAY STARTS HERE -->
+    
+<!-- Sign in OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="signin_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+
+ <div class="ibm-title">
+<h2>developerWorks: 登录</h2>
+<div id="ibm-overlay-error-signin" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form class="ibm-column-form" id="sFormId" action="" method="post" name="sForm" onsubmit="return false;">
+<p><label for="ibmid">IBM ID:<span class="ibm-required">*</span></label><span>
+    <input name="ibm-id" id="ibmid" size="25" value="" class="required" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);">
+    <br><a onclick="window.location=&#39;/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d=&#39;+encodeURIComponent(location.protocol + &#39;//&#39; + location.hostname + location.pathname + &#39;#icomments&#39;); return false;" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" class="ibm-forward-link">需要一个 IBM ID？</a> <br>
+    <a class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a> 
+</span>
+</p> 
+<p><label for="password">密码：<span class="ibm-required">*</span></label><span>
+    <input name="password" id="password" size="25" value="" class="required" type="password" onkeypress="dwsi.siInst.handleEP(event,this.form);">
+    <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="(function ()
+        {window.location=&#39;https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(dwsi.siInst.getAuthUrl())+&#39;%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D&#39;+encodeURIComponent(location.href);})();">忘记密码？</a>
+    <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+<p class="dw-perm-box">
+	<span><input id="perm" type="checkbox" name="perm_name"><label for="perm"> 保持登录。</label></span>
+</p>
+<p>单击提交则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>。</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide(&#39;signin_overlay&#39;);return false;"></p>
+</div>
+</form>
+ <div class="ibm-overlay-rule"><hr></div> 
+
+<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+<!-- Display name OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="displayname_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+<div class="ibm-title">
+<h2>选择您的昵称</h2><br><br>
+<div id="ibm-overlay-error-dname" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 
+    您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form id="dFormId" method="post" action="" name="dForm" onsubmit="return false;" class="ibm-column-form">
+<p><label for="displayname">昵称：<span class="ibm-required">*</span></label><span>
+    <input name="displayname" id="displayname" size="25" value="" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);"></span>
+    <span class="ibm-form-note">(昵称长度在 3 至 31 个字符之间)</span>
+</p>
+<p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide(&#39;displayname_overlay&#39;);return false;"></p>
+</div>
+</form>
+<div class="ibm-overlay-rule"><hr></div>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+
+
+<!-- INLINE_COMMENTS_END -->
+
+</div>
+<!-- 6_4_COLUMN_END -->
+
+<!-- 6_2_COLUMN_BEGIN -->
+<div class="ibm-col-6-2">
+
+<!-- Next_Steps -->
+<!-- Dig_Deeper -->
+
+
+<!-- Promotion_Module -->
+    
+<!-- PROMOTION_MODULE_START -->
+<div class="ibm-alternate-rule"><hr></div>
+<ul class="ibm-portrait-module-list">
+<li><a class="" href="http://www.ibm.com/developerworks/cn/puresystems/" tabindex="-1" role="presentation"><img height="60" width="60" src="./Python 代码性能优化技巧_files/sm-f-cl-puresystems70.jpg" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/puresystems/">IBM PureSystems</a></h3>
+<p>IBM PureSystems™ 系列解决方案是一个专家集成系统</p></li>
+<li><a class="" href="http://www.ibm.com/developerworks/cn/views/global/libraryview.jsp?type_by=Knowledge+paths" tabindex="-1" role="presentation"><img height="60" width="60" src="./Python 代码性能优化技巧_files/sm-f-knowledgepath50.jpg" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/views/global/libraryview.jsp?type_by=Knowledge+paths">developerWorks 学习路线图</a></h3>
+<p>通过学习路线图系统掌握软件开发技能</p></li>
+<li><a class="" href="http://www.ibm.com/developerworks/cn/downloads/" tabindex="-1" role="presentation"><img height="60" width="60" src="./Python 代码性能优化技巧_files/sm-f-evaluationsoftware60.png" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/downloads/">软件下载资源中心</a></h3>
+<p>软件下载、试用版及云计算</p></li>
+</ul>
+<!-- PROMOTION_MODULE_END -->
+
+</div>
+<!-- 6_2_COLUMN_END -->
+
+</div>
+<!-- SPLIT_COLUMNS_END -->
+
+<!-- BOTTOM_BACK_TO_TOP -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+	<div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p>
+</div>
+</div>
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Linux</div><div class="metavalue">ArticleID=826698</div><div class="metavalue">ArticleTitle=Python 代码性能优化技巧</div><div class="metavalue">publish-date=07202012</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g,  '%3C')+'</div>');</script><div class="metavalue">url=http://www.ibm.com/developerworks/cn/linux/l-cn-python-optim/</div><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- END_IBM_CONTENT_MAIN -->
+
+</div>
+<!-- END_IBM_CONTENT_BODY -->
+
+</div>
+<!-- END_IBM_CONTENT -->
+
+</div></div>
+<!-- LEADSPACE_END -->
+
+
+<!-- END_IBM_PCON -->
+<!-- FOOTER_BEGIN -->
+<!-- FOOTER_BEGIN -->
+<div id="ibm-footer" aria-label="页脚"><!-- IBM footer container; disabled --></div>
+
+<div id="ibm-footer-module-dwwrapper" role="contentinfo" aria-label="developerWorks Footer">
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-5-1">
+			<ul>
+                <li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina&start=true">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/">订阅源</a></li>
+			</ul>
+        </div>
+		<div class="dw-footer-col-5-2">
+			<ul>
+			<li><a href="http://www.ibm.com/vrm/newsletter/10104?S_TACT=105AGX52&S_CMP=dwcntop">在线浏览每周时事通讯</a></li>
+				<li><a class="dwcn-sina-link" href="http://weibo.com/ibmdw/" target="_blank">新浪微博</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh">使用条款</a></li>
+				<li><a href="https://www.ibm.com/developerworks/cn/community/terms/thirdparty/">第三方提示</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-5-3">
+			<ul>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/">浏览辅助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/academic/">IBM 教育学院教育培养计划</a></li><li><a href="http://www.ibm.com/developerworks/cn/gep/">IBM 创业企业全球扶持计划</a></li><li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-5-4">
+		
+ 
+			<ul>
+				<li><a href="http://www.ibm.com/developerworks/cn/newsletter/">dW 中国每周时事通讯</a><br> 
+				
+				</li>
+			</ul>
+			
+		</div>
+		<div class="dw-footer-col-5-5">
+			<img width="223" height="46" alt="IBM®" src="./Python 代码性能优化技巧_files/dwn-ibm-logo-v17.png">
+			<img class="dw-preload" src="./Python 代码性能优化技巧_files/ibm_sprite_social_blue_ON.png" alt="" width="1" height="1">
+		</div>
+	</div>
+	<!-- Language selector no-script -->
+	<noscript>
+	&lt;div id="dw-footer-selectlang"&gt;
+		&lt;h2&gt;&lt;a name="SELECTLANG"&gt;选择语言：&lt;/a&gt;&lt;/h2&gt;
+		&lt;ul&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/" lang="en"&gt;English&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/cn/"&gt;中文&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/jp/" lang="ja"&gt;日本語&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/ru/" lang="ru"&gt;Русский&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/br/" lang="pt"&gt;Português (Brasil)&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/ssa/" lang="es"&gt;Español&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/vn/" lang="vi"&gt;Việt&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
+	</noscript>
+</div>
+
+</div><!-- FOOTER_END --><!-- FOOTER_END -->
+
+<!-- END_IBM-TOP -->
+</div>
+
+<!-- SCRIPTS_INCLUDE_BEGIN -->
+<script type="text/javascript" src="./Python 代码性能优化技巧_files/dw-comments.js">//</script>
+<script type="text/javascript" language="JavaScript">
+		dojo.ready(function(){
+		rBHash = null;
+		rBHash = new Object();
+		rBHash['viperLang'] = 'zh';
+		rBHash['urlLang'] = 'cn';
+		
+		dwsi.siInst = new dwweb.dynnav.dwsi();
+		dwsi.siInst.initSI();		
+
+		// construct the comment widget
+dwc.cmts = '条评论';
+dwc.signInPreText = '请';
+dwc.signIn = '登录';
+dwc.or = '或';
+dwc.register = '注册';
+dwc.signInPostText = '';
+dwc.leaveCmt = '后发表评论。';
+dwc.view = '查看';
+dwc.totalCmts = '共有评论';
+dwc.postYourCmt = '添加您的评论';
+dwc.show = '显示：';
+dwc.recentCmts = '最新评论';
+dwc.allCmts = '所有评论';
+dwc.tooLongCmt = '您的评论超过了 1000 字符限制';
+dwc.numCharsLeft = '剩余 <span id="charCount">{1}</span> 字符';
+dwc.reportAbuse = '报告滥用';
+dwc.notifyMsg = '有新评论时提醒我';
+dwc.htmlWarning = '注意：评论中不支持 HTML 语法'; 
+dwc.cmt = '评论：';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.doNotErase = '--在下方添加评论--'; 
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+dwc.viperLang = 'zh';
+//dwc.abuseHref =  null;
+dwc.maxChars = 1000;
+dwc.cmtTxt =  '评论：';
+dwc.cmtsTxt =  '评论：';  
+		dwc && new dwc.comments('threadShow','95%',5,'nCmts','icomments');
+		});
+</script>
+
+
+
+<!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<script language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=1&ibmCmaId=826698&ibmContentAreas=linux";</script>
+<!--END --><!-- SCRIPTS_INCLUDE_END -->
+
+<div id="ibm-metrics">
+<script src="./Python 代码性能优化技巧_files/stats.js" type="text/javascript">//</script>
+</div>
+
+
+
+</body></html>

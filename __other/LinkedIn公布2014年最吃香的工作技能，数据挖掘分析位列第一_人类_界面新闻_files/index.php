@@ -1,0 +1,1 @@
+var day_hits=15;

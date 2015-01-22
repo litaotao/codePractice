@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://tech.163.com/13/0830/11/97H8RJCN00094O1B.html -->
+<html class="ua-mac"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+  <meta charset="gb2312">
+<title>Pinterest 陶涛：Pinterest系统架构的变迁_网易科技</title>
+<!--<base target="_blank">--><base href="." target="_blank"><!--[if lte IE 6]> </base> <![endif]-->
+<meta http-equiv="expires" content="0">
+<meta name="keywords" content="2013中国软件开发者大会">
+<meta name="description" content="Pinterest 陶涛：Pinterest系统架构的变迁,2013中国软件开发者大会">
+<meta name="author" content="网易">
+<meta name="Copyright" content="网易版权所有">
+<link href="http://img1.cache.netease.com/cnews/css07/style.css" rel="stylesheet">
+<link href="http://img1.cache.netease.com/cnews/css13/endpage1301_v1.5.css" rel="stylesheet"><link href="http://img1.cache.netease.com/cnews/css13/endpage1301_include_v1.5.css" rel="stylesheet"><link href="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/ep1301_tech_1.1.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" media="screen" href="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/common_nav_v2.3.4.css">
+<script charset="gb2312" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/ntes_jslib_1.x.js" language="javascript" type="text/javascript"></script><style type="text/css"></style>
+<link href="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/wb2.0.8.css" charset="utf-8" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/wb2.2.8.js" charset="utf-8"></script>
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/wbshare1.0.3.js" charset="utf-8"></script>
+<script>if(Math.random() < 0.1) NTES.epId = 'kjwza'</script>
+</head>
+<body><div id="wb-article-shade"></div>
+<style type="text/css">
+.daren-item, .msg-item { zoom: 1; margin: 8px 0; background: #FFF; overflow: hidden; font-size: 12px; padding: 10px 10px 10px 110px; border: 1px solid #d8d9d9; }
+.daren_w .daren-item, .daren_w .msg-item { margin: 0; }
+.avatar { width: 90px; display: inline; margin-left: -100px; float: left; }
+.avatar img { background: none repeat scroll 0 0 #FFFFFF; border: 1px solid #CCCCCC; height: 84px; padding: 2px; width: 84px; display: block; }
+.wb-article-folow, .wb-article-minFolow { margin: 6px auto 0; }
+.author-info, .status-info { color: #1e50a2; }
+.info-top { min-height: 72px; _height: 72px; }
+#endText a.author-name, a.author-name { vertical-align: bottom; text-decoration: none; font-size: 14px; font-weight: bold; color: #1e50a2; }
+.daren-icon { vertical-align: top; margin-left: 5px; display: inline-block; width: 19px; height: 19px; background: url(http://img1.cache.netease.com/t/2011/03/weibo_fe.gif) no-repeat 0 -8px; }
+.daren-icon {  *vertical-align: baseline; }
+.weibo-up-arr { background: url(http://img1.cache.netease.com/t/2011/03/weibo_fe.gif) no-repeat 0 -27px; font-size: 0; height: 8px; left: 16px; position: absolute; top: 18px; width: 11px; }
+#endText a.talk-to, .talk-to { margin-left: 5px; white-space: nowrap; color: #1e50a2; text-decoration: none; vertical-align: bottom; }
+#endText a.talk-to:visited, .talk-to:visited { color: #1e50a2; }
+#endText a.talk-to:hover, .talk-to:hover { text-decoration: underline; color: #1e50a2; }
+.followers { line-height: 24px; color: #636363; }
+.status, .reason { color: #000; line-height: 1.5em; }
+.status-link, #endText .status-link a { text-decoration: none; color: #ba2636; }
+.option-item { text-align: right; color: #999999; }
+#endText .option-item a, .option-item a { color: #8ba4cd; text-decoration: none; }
+#endText .option-item a:hover, .option-item a:hover { text-decoration: underline; }
+.daren-keyword { position: relative; }
+.daren_w { display: none; background: url(http://img1.cache.netease.com/t/2011/03/weibo_fe.gif) no-repeat 0 -40px; padding-top: 24px; position: absolute; z-index: 9999; width: 264px; text-align: left; }
+.daren_w .daren-close { width: 9px; height: 8px; background: url(http://img1.cache.netease.com/t/2011/03/weibo_fe.gif) no-repeat 0 0; cursor: pointer; position: absolute; right: 8px; top: 32px; font-size: 0; }
+#btn-retweet { background: url(http://img1.cache.netease.com/t/2011/03/weibo_fe.gif) no-repeat 0 -100px; width: 90px; height: 25px; display: none; position: absolute; }
+#btn-retweet:hover { background-position: 0 -125px; }
+#btn-retweet:active { background-position: 0 -150px; }
+</style>
+<script type="text/javascript">
+function getWeiboDaren() {
+	var html = [], user = userData,
+		userUrl = 'http://t.163.com/' + user.screenName + '?method=click&keyfrom=wenzhang_dr&sitechannel=tech';
+	html.push('<div class="daren-item">');
+	html.push('<div class="avatar">');
+	html.push('<a target="_blank" href="' + userUrl + '"><img src="' + user.headPic + '"></img></a>');
+	html.push('<a href="' + userUrl + '" target="_blank" class="wb-article-btn wb-article-folow" >加关注</a>');
+	html.push('</div><div class="author-info">');
+	html.push('<a target="_blank" class="author-name" href="' +userUrl + '">' + user.name + '</a>');
+	if(user.daren == true) {
+		html.push('<a class="daren-icon" href="http://t.163.com/rank/daren" title="网易微博 i 认证"></a>');
+	}
+	html.push('<a class="talk-to" href="javascript:;" target="_self" onclick="WbApp.WbSay(\'' + user.name + '\',{keyfrom:\'wenzhang_DR\',sitechannel:\'tech\'}); return false;">对Ta说</a><br />');
+	html.push('<span class="followers">' + user.follower + '人关注他</span></div>');
+	html.push('<div class="reason">' + user.reason + '</div></div>');
+	return html.join('');
+}
+// 微博消息
+function getWeiboMsg(data) {
+	var html = [], user = data.user, 
+		userUrl = 'http://t.163.com/' + user.screenName + '?method=click&keyfrom=wenzhang_mr&sitechannel=tech',
+		tweetUrl = 'http://t.163.com/' + user.screenName + '/status/' + data.tweetId + '?method=click&keyfrom=wenzhang_mr&sitechannel=tech';
+	html.push('<div class="msg-item"><div class="avatar">');
+	html.push('<a target="_blank" href="' + userUrl + '"><img src="' + user.headPic + '"></img></a>');
+	html.push('<a href="' + userUrl + '" target="_blank" class="wb-article-btn wb-article-folow" >加关注</a></div>');
+	html.push('<div class="status-info"><div class="info-top">');
+	html.push('<a target="_blank" class="author-name" href="' + userUrl + '">' + user.name + '</a>');
+	if(user.daren == true) {
+		html.push('<a class="daren-icon" href="http://t.163.com/rank/daren" title="网易微博 i 认证"></a>');
+	}
+	html.push('：<span class="status">' + data.tweet + '</span>');
+	html.push('<span class="status-link">[<a target="_blank" href="' + tweetUrl + '">查看微博</a>]</span></div>');
+	html.push('<div class="option-item"><a href="' + tweetUrl + '" target="_blank">转发</a> | ');
+	html.push('<a href="' + tweetUrl + '" target="_blank">评论</a></div>');
+	html.push('</div></div>');
+	return html.join('');			
+}
+function renderDaren(data) {
+	document.write(getWeiboDaren());
+}
+function renderMsg(data) {
+	document.write(getWeiboMsg(data));
+}
+function getCoords(el) {
+	var box = el.getBoundingClientRect(),
+		doc = el.ownerDocument,
+		body = doc.body,
+		html = doc.documentElement,
+		clientTop = html.clientTop || body.clientTop || 0,
+		clientLeft = html.clientLeft || body.clientLeft || 0,
+		top = box.top + (self.pageYOffset || html.scrollTop || body.scrollTop) - clientTop,
+		left = box.left + (self.pageXOffset || html.scrollLeft || body.scrollLeft) - clientLeft;
+	return { 'top': top, 'left': left };
+};
+</script><div class="ntes-nav" id="js_N_nav">
+    <div class="ntes-nav-main clearfix">
+        <div class="c-fl">
+             <div class="ntes-nav-select ntes-nav-select-wide ntes-nav-app js_N_navSelect c-fl" tabindex="0">
+                <a href="http://www.163.com/#f=topnav" class="ntes-nav-select-title ntes-nav-entry-bgblack JS_NTES_LOG_FE" data-module-name="n_topnavapp">应用<em class="ntes-nav-select-arr"></em></a>
+                <div class="ntes-nav-select-pop">
+                    <ul class="ntes-nav-select-list clearfix">
+                       <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_0">
+                    <a href="http://m.163.com/newsapp/#f=topnav"><span><em class="ntes-nav-app-newsapp">网易新闻</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_1">
+                    <a href="http://music.163.com/#f=topnav"><span><em class="ntes-nav-app-msc">网易云音乐</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_2">
+                    <a href="http://yuedu.163.com/#f=topnav"><span><em class="ntes-nav-app-yuedu">网易云阅读</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_3">
+                    <a href="http://note.youdao.com/#f=topnav"><span><em class="ntes-nav-app-note">有道云笔记</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_4">
+                    <a href="http://love.163.com/?vendor=163.home.app&utm_source=home.163.com&utm_campaign=163"><span><em class="ntes-nav-app-ht">网易花田</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_5">
+                    <a href="http://open.163.com/#f=topnav"><span><em class="ntes-nav-app-open">网易公开课</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_6">
+                    <a href="http://caipiao.163.com/mobile/client_cp.jsp#from=yingyong"><span><em class="ntes-nav-app-cp">网易彩票</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_7">
+                    <a href="http://cidian.youdao.com/?vendor=topnav"><span><em class="ntes-nav-app-cd">有道词典</em></span></a>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_8">
+                    <a href="http://mail.163.com/client/dl.html?from=mail46"><span><em class="ntes-nav-app-mail">邮箱大师</em></span></a>
+                </li>
+                <li class="last JS_NTES_LOG_FE" data-module-name="n_topnavapplist_t_9">
+                    <a href="http://www.lofter.com/?act=qb163rk_20141031_01"><span><em class="ntes-nav-app-lofter">LOFTER</em></span></a>
+                </li>
+                    </ul>
+                </div>
+            </div>
+            <a class="ntes-nav-entry-wide c-fl" href="http://www.163.com/" title="网易首页">网易首页</a>
+        </div>
+        <div class="c-fr">
+            <div class="c-fl">
+                <div class="c-fl" id="js_N_navLoginBefore" style="display: none;">
+                    <div id="js_N_navHighlight" class="js_loginframe ntes-nav-login ntes-nav-login-normal ntes-nav-login-scroll">
+                        <a href="http://reg.163.com/" class="ntes-nav-login-title">登录</a>
+                         <div class="ntes-nav-loginframe-pop" id="js_N_login_wrap" style="display:none">
+                            <div class="ntes-loginframe clearfix">
+                                <div class="ntes-loginframe-blank clearfix">
+                                    <span class="ntes-loginframe-tips">网易邮箱/通行证用户可直接登录</span>
+                                    <br>
+                                    <label class="ntes-loginframe-label clearfix"><span class="loginframe-hidden">账号：</span>
+                                        <input id="js_loginframe_username" type="text" class="ntes-loginframe-label-ipt" placeholder="网易通行证/登录邮箱">
+                                    </label>
+                                </div>
+                                <div class="ntes-loginframe-blank clearfix">
+                                    <label class="ntes-loginframe-label clearfix"><span class="loginframe-hidden">密码：</span>
+                                        <input type="password" class="ntes-loginframe-label-ipt" placeholder="请输入密码">
+                                    </label>
+                                    <span class="ntes-loginframe-label mt6 mb12 clearfix"> <label class="c-fl">
+                                            <input type="checkbox" name="autologin" class="ntes-loginframe-checkbox">
+                                            <span class="c-fl">十天内免登录</span></label> <a href="http://reg.163.com/RecoverPassword.shtml?f=www" class="c-fr">忘记密码？</a> </span>
+                                    <button class="ntes-loginframe-btn">
+                                        登　录
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="ntes-nav-entry-wide c-fl JS_NTES_LOG_FE" data-module-name="n_topnavreg" href="http://reg.email.163.com/mailregAll/reg0.jsp?from=163navi&regPage=163">注册免费邮箱</a>
+                </div>
+                <div class="c-fl" id="js_N_NavLoginAfter" style="display: block;">
+                    <span class="left mr6">欢迎您，</span>
+                     <div id="js_N_logined_warp" data-module-name="n_topnavlogined" class="js_N_navSelect ntes-nav-logined JS_NTES_LOG_FE ntes-nav-logined-scroll" tabindex="0">
+                        <span class="ntes-nav-select-title ntes-nav-logined-userinfo"><span id="js_N_navUsername">llltyg@126.com</span><em class="ntes-nav-select-arr"></em></span>
+                        <div id="js_login_suggest_wrap" class="ntes-nav-select-pop">
+                            <ul id="js_logined_suggest" class="ntes-nav-select-list clearfix"><li><a href="http://reg.163.com/Main.jsp?username=llltyg@126.com"><span>进入通行证</span></a></li><li><a href="http://entry.mail.126.com/cgi/ntesdoor?verifycookie=1&lightweight=1&style=-1&df=163navi"><span>进入我的邮箱</span></a></li><li><a href="http://www.lofter.com/?act=qb163rk_20141031_02"><span>进入我的LOFTER</span></a></li><li><a href="http://photo.163.com/?username=llltyg@126.com"><span>进入我的相册</span></a></li><li><a href="http://love.163.com/?keyfrom=163site.mynavi"><span>进入我的花田</span></a></li><li><a href="http://yuehui.163.com/"><span>进入我的同城约会</span></a></li><li><a href="http://blog.163.com/passportIn.do?entry=163"><span>进入我的博客</span></a></li><li><a href="http://note.youdao.com/web?entry=163.com"><span>进入我的云笔记</span></a></li><li><a href="http://caipiao.163.com/#from=www_top_entry"><span>进入我的彩票</span></a></li><li><a href="http://baoxian.163.com/car/#from=www_top_entry"><span>进入我的车险</span></a></li><li><a href="http://baoxian.163.com/#from=www_top_entry"><span>进入我的保险</span></a></li><li><a href="http://mall.163.com/#from=www_top_entry"><span>进入网易商城</span></a></li><li class="last"><a href="http://yuedu.163.com/#f=topnav"><span>进入网易云阅读</span></a></li></ul>
+                        </div>
+                    </div>
+                    <a class="ntes-nav-entry-wide c-fl" target="_self" href="http://reg.163.com/Logout.jsp?username=llltyg&url=http://tech.163.com/13/0830/11/97H8RJCN00094O1B.html" id="js_N_navLogout">安全退出</a>
+                </div>
+            </div>
+            <ul class="ntes-nav-inside">
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavlofter">
+                    <div class="ntes-nav-select js_N_navSelect c-fl" tabindex="0">
+                        <a id="js_lofter_icon_url" href="http://www.lofter.com/entry?act=qb163sydl_20140917_01&from=163top&logined=true" class="ntes-nav-select-title ntes-nav-entry-bgblack"><em class="ntes-nav-entry-lofter">LOFTER</em><em class="ntes-nav-select-arr"></em><span class="ntes-nav-msg ntes-nav-lofter-msg" id="js_N_navLofterMsg" style="display: none;"><em class="ntes-nav-msg-num"></em></span></a>
+                        <div class="ntes-nav-select-pop ntes-nav-select-pop-lofter">
+                            <ul id="js_lofter_pop_url" class="ntes-nav-select-list clearfix">
+                                <li>
+                                    <a href="http://www.lofter.com/entry?act=qb163sydl_20140917_03&from=163top&logined=true"><span>进入LOFTER</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://www.lofter.com/entry?act=qb163sydl_20140917_04&from=163top&target=http://www.lofter.com/activity&logined=true"><span>热门话题</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://www.lofter.com/entry?act=qb163sydl_20140917_05&from=163top&target=http://www.lofter.com/wall&logined=true"><span>热门标签</span></a>
+                                </li>
+                                <li class="last">
+                                    <a href="http://www.lofter.com/entry?act=qb163sydl_20140917_06&from=163top&target=http://www.lofter.com/app&logined=true"><span>下载LOFTER客户端</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavmail">
+                    <div class="ntes-nav-select js_N_navSelect c-fl" tabindex="0">
+                        <a id="js_mail_url" href="http://entry.mail.126.com/cgi/ntesdoor?verifycookie=1&lightweight=1&style=-1&df=163nav_icon" class="ntes-nav-select-title ntes-nav-entry-bgblack"><em class="ntes-nav-entry-mail">邮箱</em><em class="ntes-nav-select-arr"></em><span class="ntes-nav-msg" id="js_N_navMailMsg" style="display: block;"><em class="ntes-nav-msg-num">99+</em></span></a>
+                        <div class="ntes-nav-select-pop ntes-nav-select-pop-mail">
+                            <ul class="ntes-nav-select-list clearfix">
+                                <li>
+                                    <a href="http://email.163.com/#f=topnav"><span>免费邮箱</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://vipmail.163.com/#f=topnav"><span>VIP邮箱</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://qiye.163.com/#f=topnav"><span>企业邮箱</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://reg.email.163.com/mailregAll/reg0.jsp?from=ntes_nav&regPage=163"><span>免费注册</span></a>
+                                </li>
+                                <li class="last">
+                                    <a href="http://reg.email.163.com/unireg/call.do?cmd=register.entrance&flow=mobile&from=ntes_nav"><span>快速注册</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                 <li class="JS_NTES_LOG_FE" data-module-name="n_topnavpay">
+                    <div class="ntes-nav-select js_N_navSelect c-fl" tabindex="0">
+                        <a href="http://pay.163.com/" class="ntes-nav-select-title ntes-nav-entry-bgblack"><em class="ntes-nav-entry-money">支付</em><em class="ntes-nav-select-arr"></em></a>
+                        <div class="ntes-nav-select-pop ntes-nav-select-pop-temp">
+                            <ul class="ntes-nav-select-list clearfix">
+                                <li>
+                                    <a href="http://pay.163.com/#f=topnav"><span>一卡通充值</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://ecard.163.com/script/index#f=topnav"><span>一卡通购买</span></a>
+                                </li>
+                                <li class="last">
+                                        <a href="http://analytics.163.com/ntes_clck?urlid=454&sign=c03a07caa005eecc65356644a11332ba&url=https%3A%2F%2Fepay.163.com%2Findex.jsp#f=topnav"><span>我的网易宝</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="JS_NTES_LOG_FE" data-module-name="n_topnavhuatian">
+                    <div class="ntes-nav-select js_N_navSelect c-fl" tabindex="0">
+                        <a id="js_love_url" href="http://love.163.com/park/xunren?vendor=163.navi.icon&utm_source=163.com&utm_campaign=163navi" class="ntes-nav-select-title ntes-nav-entry-bgblack"><em class="ntes-nav-entry-huatian">花田</em><em class="ntes-nav-select-arr"></em><span class="ntes-nav-msg" id="js_N_navHuatianMsg"><em class="ntes-nav-msg-num"></em></span></a>
+                        <div class="ntes-nav-select-pop ntes-nav-select-pop-huatian">
+                            <ul class="ntes-nav-select-list clearfix">
+                                <li>
+                                    <a href="http://love.163.com/search/user?vendor=163.navi.icon&utm_source=163.com&utm_campaign=163navi"><span>找对象</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://love.163.com/park?vendor=163.navi.icon&utm_source=163.com&utm_campaign=163navi"><span>搭讪广场</span></a>
+                                </li>
+                                <li>
+                                    <a href="http://love.163.com/?vendor=163.navi.icon&utm_source=163.com&utm_campaign=163navi"><span>我的花田</span></a>
+                                </li>
+                                <li class="last">
+                                    <a href="http://love.163.com/app?vendor=163.navi.icon&utm_source=163.com&utm_campaign=163navi"><span>下载花田客户端</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/ntes_jslib_1.x.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/commonnav_v_1.0.9.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+        var nav_value = {
+            platform : ""
+        };
+        var nav = {
+            detect : function() {
+                if (navigator.platform.indexOf("Win") > -1) {
+                    nav_value.platform = "ua-win";
+                } else if (navigator.platform.indexOf("Mac") > -1) {
+                    nav_value.platform = "ua-mac";
+                } else if (navigator.platform.indexOf("iPad") > -1 || navigator.platform.indexOf("iPhone") > -1) {
+                    nav_value.platform = "ua-ios";
+                } else {
+                    return false
+                }
+                ;
+            },
+            init : function() {
+                this.detect();
+                if (nav_value.platform) {
+                    $("html").addCss(nav_value.platform);
+                };
+            }
+        };
+        nav.init();
+    })();
+    
+    NTES.ready(function($){
+        
+        var App = NTESCommonNavigator.core.Controller,
+            Event = NTESCommonNavigator.core.Event.Base,
+            ModelEvent = NTESCommonNavigator.core.Event.Model, 
+            app = NTESCommonNavigator.utils.app = App();//添加全局登录响应.
+            
+            app.bind(Event.DATA_CHANGED, function(data){});
+            
+            app.bind(ModelEvent.MAIL_INFO_LOADED, function(data){});
+            
+            app.bind(ModelEvent.LOFTER_INFO_LOADED, function(data){});
+            
+        app.refresh();
+    });
+//]]>
+</script><div class="ep-header">
+    <div class="N-nav-channel JS_NTES_LOG_FE" data-module-name="xwwzy_11_headdaohang">
+    <a class="first" href="http://news.163.com/">新闻</a><a href="http://sports.163.com/">体育</a><a href="http://sports.163.com/nba/">NBA</a><a href="http://ent.163.com/">娱乐</a><a href="http://money.163.com/">财经</a><a href="http://money.163.com/stock/">股票</a><a id="_link_auto" href="http://auto.163.com/">汽车</a><a href="http://tech.163.com/">科技</a><a href="http://mobile.163.com/">手机</a><a href="http://digi.163.com/">数码</a><a href="http://lady.163.com/">女人</a><a href="http://bbs.163.com/">论坛</a><a href="http://v.163.com/">视频</a><a href="http://travel.163.com/">旅游</a><a id="houseUrl" href="http://house.163.com/">房产</a><a href="http://home.163.com/" id="homeUrl">家居</a><a href="http://edu.163.com/">教育</a><a href="http://book.163.com/">读书</a><a id="_link_game" href="http://game.163.com/">游戏</a><a href="http://jiankang.163.com/">健康</a><a href="http://caipiao.163.com/#from=dh">彩票</a><a href="http://baoxian.163.com/car/#from=dh">车险</a><a href="http://zhenhua.163.com/">真话</a><a href="http://m.163.com/">应用</a><a class="last" href="http://jiu.163.com/">酒香</a>
+</div>
+    <span class="blank6"></span>
+    <div class="ep-area">
+        <div class="ep-header-main">
+                        <!-- AD590x130_1 -->
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 590px 130px;"> </iframe>
+        </div>
+        <div class="ep-header-side">
+                        <div class="ep-sp-recommend clearfix" id="js-epSpRecommend" style="display: block;">
+                <div class="tabctrl">
+                    <span class=""></span>
+                    <span class=""></span>
+                    <span class="current"></span>
+                    <span class=""></span>
+                    <div class="brl"></div>
+                </div>
+                <div class="tabcon">
+                    <div id="tbtj-1" class="hidden clearfix"><iframe src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/tbtj1301_digi.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
+                    <div id="tbtj-2" class="hidden clearfix">
+                        <!-- artice logo295x129 -->
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 295px 129px;"> </iframe>                    </div>
+                    <div id="tbtj-3" class="hidden clearfix current"><iframe src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/tbtj1301_money.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
+                    <div id="tbtj-4" class="hidden clearfix"><iframe src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/tbtj1301_travel.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
+                </div>
+                <div class="ctrlbtn" style="display:none;">&gt;</div>
+            </div>
+            <script type="text/javascript">
+                NTES.ready(function() {
+                    var config = {
+                        channels : ['tech', 'game', 'digi', 'travel', 'money', 'mobile', 'edu', 'house', 'home', 'auto', 'lady'],
+                        baseurl : 'http://www.163.com/special/00774IN2/tbtj1301_'
+                    };
+                    var countArr = [],
+                        i,
+                        recommend = $('#js-epSpRecommend'),
+                        ctrl = $(recommend.$('.ctrlbtn')[0]);
+                    for(i = 0; i < config.channels.length; i++){
+                        countArr.push(i);
+                    }
+                    if(window.epTools && window.epTools.getRadomArray) {
+                        countArr = window.epTools.getRadomArray(countArr, 3);
+                    } else {
+                        countArr.sort(function(){ return 0.5 - Math.random(); });
+                    }
+                    $('#tbtj-1').innerHTML = '<iframe src="' + config.baseurl + config.channels[countArr[0]] + '.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
+                    $('#tbtj-3').innerHTML = '<iframe src="' + config.baseurl + config.channels[countArr[1]] + '.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
+                    $('#tbtj-4').innerHTML = '<iframe src="' + config.baseurl + config.channels[countArr[2]] + '.html" width="295" height="129" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>';
+                    i = Math.floor(Math.random() * 4);
+                    var slide = new NTES.ui.Slide ($('#js-epSpRecommend > .tabctrl > span'),$('#js-epSpRecommend > .tabcon > div'),'current','mouseover', 10000);
+                    slide.show(i);
+                    recommend.style.display = 'block';
+                    recommend.addEvent('mouseover', function(){
+                        ctrl.style.display = 'block';
+                    }).addEvent('mouseout', function(){
+                        ctrl.style.display = 'none';
+                    });
+                    ctrl.addEvent('click', function(){
+                        slide.showNext();
+                    })
+                });
+            </script>
+        </div>
+    </div>
+    <div class="ep-area">
+                <div class="ep-path clearfix">
+            <span class="ep-logo"><a href="http://tech.163.com/"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/logo_tech.png" height="24"></a></span>
+            <span class="ep-crumb JS_NTES_LOG_FE" data-module-name="xwwzy_12_eyedaohang"><a href="http://www.163.com/">网易首页</a> &gt; <a href="http://tech.163.com/">网易科技</a> &gt; <a href="http://tech.163.com/special/2013sdcc/"> 2013中国软件开发者大会</a> &gt;  正文</span>
+                        <div class="ep-search">
+                <form target="_blank" id="ytsearch_form" name="ytsearch_form" method="get" action="http://www.yodao.com/search">
+                    <label><input type="text" class="ep-search-text" value="热门新闻搜索" onfocus="javascript:if(this.value==&#39;热门新闻搜索&#39;){this.value=&#39;&#39;;this.style.color=&#39;#000&#39;}" onblur="javascript:if(this.value==&#39;&#39;){this.value=&#39;热门新闻搜索&#39;;this.style.color=&#39;#dcdcdc&#39;}" id="ytsearch_input" name="q" autocomplete="off"></label>
+                    <input type="hidden" value="gbk" name="ue">
+                    <input type="hidden" value="10" name="ttimesort" id="ttimesort">
+                    <input type="hidden" value="163.page" name="keyfrom">
+                    <input type="hidden" value="163.com" name="site" id="tsearchsite">
+                    <input type="submit" class="ep-search-btn JS_NTES_LOG_FE" data-module-name="xwwzy_14_search" value="" title="搜索" onclick="javascript:var input=document.getElementById(&#39;ytsearch_input&#39;);if(input.value==&#39;热门新闻搜索&#39;){input.value=&#39;&#39;;input.focus();input.style.color=&#39;#000&#39;;return false;} return true;">
+                </form>
+            </div>        </div>    </div>
+</div>
+<div class="ep-content" id="js-epContent" style="position: relative;">
+    <div class="ep-content-bg clearfix">
+        <div class="ep-content-main" id="epContentLeft">
+          <div class="ep-main-bg">
+                    <!-- -->
+<!-- <style type="text/css">
+.ep-content-main{margin-top:-40px;position: relative;}
+.ep-main-bg{ padding-top:70px;
+background-image: url(http://img1.126.net/channel12/014706/590120_1230gl.jpg); 
+background-repeat: no-repeat;
+}
+.bgad_130805_logo{ position: absolute; top: 0; left: 0; background: url(http://img3.cache.netease.com/img09/space.gif); width:115px; height:30px;  }
+.bgad_130805_logo a{ display:block; width:100%; height:100% }
+</style>
+<div class="bgad_130805_logo"><a href="http://g.163.com/a?CID=23616&Values=1774412719&Redirect=http://hta.htwisdom.com/click/uwnpb5yoz2u7uf7j3bx1sq9yotm8y74t/http://1hz.gree.com/campaign/shuangji/"></a></div>
+<span class="clear"></span> -->
+                        <h1 id="h1title" class="ep-h1">Pinterest 陶涛：Pinterest系统架构的变迁</h1>
+            <div class="clearfix">
+                <div class="ep-info cDGray"><div class="left">2013-08-30 11:32:36　来源: <a href="http://tech.163.com/" target="_blank">网易科技报道</a>　<a class="cDRed js-tielink JS_NTES_LOG_FE" data-module-name="xwwzy_15_tieview1" href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" title="点击查看跟贴">有<span class="js-tiecount">0</span>人参与</a></div><div class="ep-icon-tie"><a title="快速发贴" href="http://tech.163.com/13/0830/11/97H8RJCN00094O1B.html#tiePostBox" target="_self" class="js-tieachor JS_NTES_LOG_FE" data-module-name="xwwzy_15_tiepost1"></a> </div>
+                    <div class="ep-share-top js-ep-pop JS_NTES_LOG_FE" data-module-name="xwwzy_16_sns">
+                        <span class="title">分享到<em class="ep-poplist-arr"></em></span>
+                        <div class="ep-poplist ntshare-wrap">
+                            <ul class="clearfix">
+                                <li class="first">
+                                    <a href="" id="wb-article-share">
+                                        <span class="inner">
+                                            <i class="ep-share-icon ep-share-163"></i>
+                                            网易微博
+                                            <span class="count" style="display:none;">0</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="ntshare-sina">
+                                        <span class="inner">
+                                            <i class="ep-share-icon ep-share-sina"></i>
+                                            新浪微博
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="ntshare-qzone">
+                                        <span class="inner">
+                                            <i class="ep-share-icon ep-share-qzone"></i>
+                                            腾讯空间
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="" class="ntshare-renren">
+                                        <span class="inner">
+                                            <i class="ep-share-icon ep-share-renren"></i>
+                                            人人网
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="last">
+                                    <a href="" class="ntshare-youdao">
+                                        <span class="inner">
+                                            <i class="ep-share-icon ep-share-youdao"></i>
+                                            有道云笔记
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div id="endText">
+                <p>网易科技讯 8月30日消息，由CSDN主办的2013中国软件开发者大会今天在北京新云南皇冠假日酒店举行，网易科技在现场直播报道。</p><p>Pinterest首位中国工程师陶涛介绍了Pinterest系统架构的变迁。</p><p class="f_center"><img alt="Pinterest 陶涛：Pinterest系统架构的变迁" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20130830113222e4dd7.jpg"></p><p>主持人：刚才蒋涛已经讲到，我觉得比特币对我们技术来说有很大的启发性。我们今天的主题是软件定义未来，我有了技术就像刚开始讲的，你现在有了锤子，要到处找钉子，比特币是某些技术人员看到的一个钉子，而且是巨大的。因为货币你想你往里投几百块钱，几十块钱，其实纸是没有价值的，但是为什么拿这个能换东西呢？它实际上是凭证，它本身是信息，信息最好的方式就是用数字化的方式解决，所以有人想到用密码、算法等等一套完整的机制设计了比特币。但是我们如果在自己熟悉的领域里头你也可以找一找自己身边有没有这样的钉子，大家习以为常了，觉得历来如此，认为现实条件、技术条件以前都是这样的，实际上是可以改变的。一旦找到这样一颗钉子的，很大的一片天可以突破。一旦你想到这样的点子，马上可以用编程，用自己的技术实现。我有很多这样的朋友，原来出版界，新闻界，媒体界会发现很多的问题，他要解决会来找我，说刘江你有没有技术高手做网站，做UP，做什么东西解决。他想到了，但是一时半会儿做不到，而我们有这样的人，这是非常有意义的启发的点。</p><p>下面我们有请来自美国Pinterest陶涛，Pinterest大家也很熟悉，在网站形成瀑布流，包括国内有很多的模仿的，整个的业绩都很好。Pinterest是我们之前介绍的非常典型的硅谷的公司，几十个人，现在排名已经非常前了。看看Pinterest怎么做的，大家掌声有幸陶涛。</p><p>陶涛：谢谢大家，谢谢蒋涛董事长和刘江主编给我这个机会，同时感谢CSDN所有的工作人员和志愿者把会议组织的这么成功。</p><p>我今天要讲的题目是Pinterest系统构架的变迁。我大概简单介绍一下Pinterest，因为它还是一家比较小的创业公司，很多人不是很熟悉。</p><p>Pinterest是一家互联网站，很多互联网公司其实是在前互联网时代，就是没有互联网的时候都有一些原型。互联网本质上来说就是把前互联网时代的一些东西搬到了互联网时代。Pinterest在前互联网时代是什么东西呢？就是这个东西。我们知道我们小时候有一些街坊大叔大妈、爷爷奶奶们有一些爱好，会把报纸上非常漂亮的图片和文章剪下来贴在大册子上面，作为收藏的目的。在美国其实也有类似的概念，即便到今天为止还是有很多人，他会把办公室或者工作间放上一个大板子，用图钉把一些感兴趣的图片或者便签，或者收藏的东西拼在这个大板子上，这些就是Pinterest的原型。我们看今天Pinterest的网站还可以看到很多那时候的生活的习惯。</p><p>这是Pinterest今天的网站的形式，首先每个人可以建一个主页，主页下面，我们知道前面的大板子叫做Board，我们延用了这个概念，比如说我喜欢养狗，我就建了狗的Board。Pinterest还是社交网站，社交网站我们知道非常典型的就是facebook或者推特，Pinterest延用了推特的形式，我可以follow一个感兴趣的人，它就出现在一个图片流里头，这就叫瀑布流，刚才刘江主编介绍了，这Pinterest最早引进的，甚至今天瀑布流的方式比Pinterest更有名，很多网站都采用这种方式。这是简单的介绍了Pinterest是什么。</p><p>我们下面进入一些技术话题。在技术话题的最开始我想介绍两个人，一个是Yashh，一个是Marty，他们改变了Pinterest整个的框架。我不是最早加入的，早期的历史我不知道。我来之前Marty说我是不是应该照一张更好看的图片。我说你虽然长的不好看，但是我们是技术大会，所以问题不大。</p><p>Pinterest最早在2010年3月份的时候上线，那时候没有任何流量，也很少用户，除了自己的员工以外有很少的用户。做这样一个网站其实非常简单，有一台web机，一台数据库就够了，那时候有两个工程师，也是两个创始人。这是他们的图片，他们笑得非常开心，一个原因当时没有流量，没有流量就没有压力。同时他们也在憧憬以后美好的未来，所以笑得非常开心。</p><p>大概过了一年，发展到2011年的1月份，我们求爷爷告奶奶，终于有一些流量了，我们很开心。为了庆祝一下，他们需要改造一下这个系统支持这个流量。这时候我们采用Amazon EC2，当时非常流行，很多硅谷的公司都在使用，所以我们选择了它。这时候你有实际的流量的时候，你一台master是不够的，所以我们加了一台。这时候有两个工程师加两个创始人，这是早期的图片，这是非常典型的硅谷创业公司的景象，大家聚在一块吃比萨。背对着我们的是工程师，用电脑的是设计师，分比萨的是创始人，它和Ben两位创始人是负责产品的。穿红衣服的女士很有意思，她在早期是Pinterest的用户，很早阶段就很喜欢，很活跃的在上面拼各种东西，很快的积累了人气，用微博的说法就是草根大V的形式。当时的系统很不稳定，她一贴东西我们的网站就有问题，当时怎么办呢？既然对付不了她就招安了吧。她对很多核心用户都很了解，她负责跟各种用户进行交流，了解用户的需要。今天看虽然只有5、6个人，但是麻雀虽小五脏俱全，我们有设计、产品，有跟客户交流的人员。到今天为止其实整个公司的构架也基本上这样，但是每个都已经成倍增加了。</p><p>继续往下发展，2011年对Pinterest来说是一个大爆发的一年，我们可以看到流量成指数型的增长。用一句话形容他们当时的心情是白岩松的一本书，痛并快乐着。一方面非常开心，我们的流量很快的增长，证明产品被认可了。同时也带来很大的压力，有一种有病乱投医的状况。我们当时实验了很多的技术，包括大家还是在用Amazon EC2，但是我们回过头来看这个列表有很大的问题，这个问题是什么呢？最后一行，我们只有三个工程师，你整这么一堆东西能对付的了吗？很显然对付不了。那么到最后他们完全承受不了工作压力的时候就退一步来想一下是不是有一些问题。</p><p>我们作为创业公司总结了一些经验和教训跟大家分享一下：</p><p>1、保持简单，这对创业公司来讲非常重要，一个简单的系统出错的可能性就很小，出错以后解决问题的可能性就变得很大。保持简单我们认为对创业公司来说是非常关键的问题。</p><p>2、我们认为一项技术的超级用户遇到的难度是远远大于普通用户的。我们知道大家今天都在用一些开元软件，这些开元软件是逐步发展的过程，很多软件在早期并没有经历过很大的压力测试，在一定的流量基础上他们都工作的非常少，但是超过一定流量的话都有各种各样的问题。如果你作为超级用户，你可能接触到的问题是前人完全没有遇到的，你很难在社区里得到任何求助，需要自己读它的代码，去看是不是我能解决，如果解决不了的话怎么办？如果解决了当然是可以去改一下它的代码，如果解决不了的话，有的时候构架的限制解决不了是很麻烦的问题。</p><p>3、新技术往往看上去很美。这个话其实有两层意思，一种是真的看上去很美，如果看上去不美也不能叫新技术了。第二层意思是往往只是看上去很美，真正用起来并不美。我们知道一项技术在使用的时候真正麻烦的首先是配置，每天要进行操作，错了以后如何去改，这些都是不美的地方。我们认为在采用新技术的时候需要非常谨慎。我个人非常欣赏我们创始人有一句话，Pinterest本质上不是一家靠出卖技术为生的公司。卖技术很简单，人家是出卖技术为生的，技术一定要领先时代，否则没人使用你的东西。对于Pinterest这样的网站我们卖的是产品，我们创始人Ben曾经有一次说过，我们不是在做技术竞争，一项技术的难和简单不是我们最终要考虑的目的，我们要考虑用户需求什么。如果一项技术很简单，但是解决了一个用户需要的问题，那也是很好的项目。</p><p>有了这些经验教训以后我们就对框架进行了很大的改进。这是2012年1月份的时候，这时候主要的人已经涨到15个工程师，25个员工，但是使用的技术相对减少了。我们还是用Amazon EC2、NGX。2012年1月份大概10个人，我2月份的时候去面试的，那时候就这个样。2012年6月份的时候，我加入公司几个月，我们当时有三四十人，当时公司的发展挺好的，主要的框架改进基本完成了。</p><p>下面我们看到这些故事以后讲一下创业公司发展的选择，当然这只是Pinterest发展过程中的选择，不一定适用于所有的公司。我们想问一下自己大概这些问题：</p><p>1、这个技术是不是满足你的需求。如果一项技术不满足你的需求，它看上去再美也没有用。</p><p>2、这个技术的成熟程度。包括是否被广泛的使用，社区是否活跃，容错性特别好、扩展性特别好，方便调试，这一系列的问题都和技术的成熟有关。</p><p>3、花费问题，我们知道创业公司最缺的就是钱。比如说技术成熟，今天Pinterest使用这个数据库也是奢侈的举动。</p><p>我们看早期技术的选择。首先是Hosting，我们采用Amazon EC2的选择，Amazon EC2包括了很多各种配置的菜单，如果我今天立马需要一台服务器，我可以现在去定，5分钟以后拿到这台机器，这是无法取代的功能，非常方便。Amazon 同时负载了防火墙、DNS。我没有统计，但是有感觉，在硅谷的创业公司几乎都在用Amazon 平台。Amazon 的平台稳定性相对比较好。我印象过去一年半的时间里只有一次大的事故，当时新泽西刮大风，把整个电网吹断了，整个网站全部瘫痪了，这是唯一一次比较大的事故，大部分时间比较好。但是Amazon 也有它的问题，它非常贵。</p><p>第二，Amazon 整个云计算IO性能非常差，这是以前没有使用Amazon 的时候无法想象的差，但是现在我们也没有办法，我们没有足够的人去建自己的数据中心，暂时只能使用Amazon 的云平台。</p><p>我们的语言早期选择了Python，这个语言很成熟了，而且这几年数量在逐渐增加的状态。它的社区非常活跃，有比较方便的web构架。有Python以后你可以很方便的调试。这是早期语言的选择。稍候我还会重新再来讨论一下这个语言的选择问题。</p><p>我们的存储使用了my SQL和Memcached，很多公司都会用Memcached，你抓几个人，十个人有九个人用过，它的读的效率非常高。它有很好的技术支持，有发展20多年的技术，而且技术支持社区非常活跃。但是最重要的问题是它免费。</p><p>我们同时也使用Redis，Redis支持各种不同的存储的选择，可以只放在内存里，或者可以备份在硬盘里，可以独立的作为存储方式使用，Redis也是免费的。</p><p>同样的看一下Cassandra，MongoDB、Membase我们最后淘汰的没有选择使用的。我这里讲的是2011年底的情况，这三个项目其实一直在开发，首先Cassandra和Memcached丢数据，Membase表面上免费实际上不免费。</p><p>发展到2013年，就是今年的4月份，我们大概有70个工程师，总员工超过130个人了。这时候我就不再称Pinterest是一家创业公司了，叫一个小型的公司比较合适。我们使用的最核心的东西还是Amazon EC2、Memcached这些东西。同时因为人员的增加和整个的功能性的增加，我们会继续扩展，开始把整个组织构架转向这种叫面向服务的体系结构、框架。由于这种转变有一些非核心的，不像最核心的内容那样周期的东西，我们可以放在一些不是那么重要的一些存储结构上面，所以我们重新使用了它。</p><p>这大概是今年6月份的时候我们新装修好办公室以后，搬新家的时候一幅照片。当时前一天晚上HR发信说都要穿Pinterest的T恤衫，但是我没有看到这个信息，后来我想这个事很不好，所以以后我就天天穿，到今天我也穿Pinterest的T恤衫。</p><p>我前面讲到140人的公司很难说是初创公司，可以说是小规模的公司了。问题还是那些问题，但是我们需要考虑的是机器的效率和人的效率的平衡。在很小的公司，比如说只有3、4个工程师的时候，人的时间是最宝贵的，如果你能用很好很快速的解决问题的方法的话，可以大大解决人员的开销，但是你到一百三四十人的时候，七八十个工程师，可以做一些优化。这时候你的流量也可以十倍、百倍增加了，任何在硬件上的开销节省都可以转换成很大一部分钱。这时候做了一些其他的改进，首先我前面说了我们要重新看一下语言的问题。python这个语言问题比较大，效率很低。python的CPU效率非常低，这似乎没有特别好的解决方案。你可以在CPU使用很频繁的地方用C语言来写，但是C语言是一门大家都不愿去碰的语言。所以我们当时的讨论就是说我既然要转换成这样的话，我就换语言。语言上我们有很多种选择，但是我个人理解语言更多的是工程师之间的妥协，而不是技术方面的问题。比如说我个人很喜欢Scala这门语言，我用了很多年。但是我当时提出用Scala的时候，一堆砖头扔过来。几乎很多人说我没有用过，也不喜欢，还有一个工程师用过，但是非常恨这门语言，所以最终没有选择。C++基本上没有提上日程，基本上是前谷歌的员工用了，但是就是唠叨了几句，因为知道提出来也不会用。Go语言太新，我们当时测试过，它的效率很低，我们可以说重写一遍效率比较高，但是我们不知道一门新的语言潜在的问题很多，想再等等。我个人非常喜欢Go这门语言，原因是它的作者都是我们业界的有名人士，它的效率一定会解决。</p><p>最后我们选择了劳动大众很喜欢的语言JAVA，它到今天为止还是很大的语言，有很活跃的社区和支持。我们当时在推特内部使用这套框架很好用，效率也非常高。并且推特有一套比较完整的开元的软件，这个包括其他大公司，谷歌、facebook都没有完整的开元。我们觉得用推特这套框架是非常完整的选择，最后我们选择了JAVA。</p><p>我们最终重新提上日程的NoSQL，原因很简单，有一些非核心功能的增加，这些开发人员并不太想去使用Memcached，因为它的格式比较固定，同时很多人不想去做。我们之前用过很有很糟印象的不会再使用了。之前没有试过的HBase今天会选择。还有Pinterest里有很多前谷歌的员工。HBase本身基于Big&nbsp; table这篇文章写的，所以最终选择了它。</p><p>我们开始建自己的搜索，我们采用Solr+Lucene这套框架。我们使用的过程中发现Solr的效果不是太好，但是很简单，所以我们推倒了自己重新写，但是Lucene做的非常好，短期内不会碰它这块。</p><p>这大概是今天Pinterest的大概的框架，跟后端的连接是用的lukeeper来连接的。我们使用的推特开元的东西去减少整个过程产生的问题。Pinterest是一家图片网站，所以我们有大量的图片。我们暂时存在空间里，这个存储非常贵，我们的图片非常大，所以我们正在做一套自己图片存储的东西。我们一些应用使用ribits，其他的应用使用HBase。我们用的startD的性能比较简单。</p><p>这是我们智能算法的都是，我们数据处理的一套东西。最上面是API，它会写到KQ里头，分两层，一层是拷到S-street上面去，利用一些软件计算，当年的职能算法是在这上面来算，处理这些。还有一套准实时的东西，我们有一些lesser，去监听整个Kafka的状态，如果产生任何事件以后，会交给实时处理的简单的服务，这个服务会形成实时的推荐和搜索，写入实时推荐和搜索引擎。</p><p>这是我们非实时数据处理的，我们选择的Hive、Redshift和Casoading，Hive非常简单，但是很慢。Redshift比Hive快，我们正在向这方面改。我们非常复杂的计算采用Casoading，采用JAVA的语言。这大概只是搜索和推荐每天要运行的所有的数据，大概一百多个，我们用Azkaban来做。Azkaban有一些问题我们也内部做了改进。</p><p>我们的实时处理大概用了Kafka和listeners，我前面讲过了。我们这里实时讲的是分钟级别的，而不是秒的级别。</p><p>这是我讲的所有的内容，非常感谢大家听我罗嗦这么半天，谢谢。</p><p></p><div class="gg200x300">
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"> </iframe>
+</div><p>主持人：感谢陶涛，陶涛明天还有一场，讲推荐系统方面的，比较细的，大家听到陶涛之前在推特，硅谷这几个核心的公司，Pinterest、Facebook，推特，他们参与的这些体系现在在世界上是我们特别关注的，所以陶涛讲的我听挺有收获。</p><p>今天整个上午我们听到很多这种演讲，其实大家可以看到，我们今天基本上是侧重在开眼界的，大家可能各方面的，有些新思想、新思路可以吸收一下。下午我们还会有更多的来自不同领域的这种专家的介绍，更多进入细节、产品方面的明天会更集中。</p><p>感谢大家今天上午的参与，我们下午1点半开始，请大家午餐以后准时回到现场，谢谢大家。</p>
+                                                                                <div class="ep-source cDGray">
+                    <span class="left"><a href="http://tech.163.com/"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/end_tech.png" alt="田英雷" width="13" height="12" class="icon"></a> 本文来源：网易科技报道  </span>
+                                    </div>
+                            </div>
+            <!-- 分页 -->
+                                                            <span class="blank20"></span>
+                        <span class="blank20"></span>
+            <!-- AD590x130_1 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 590px 180px;"></iframe>
+            <span class="blank20"></span>
+                        <span class="blank20"></span>
+            <span class="ep-main-parting"></span>
+            <span class="blank9"></span>
+            <div class="ep-keywords clearfix">
+                                        <div class="mod-title ep-title-3 clearfix">
+                        关键词阅读：
+                                                    <span class="cBlue normal">
+                                                                                                <a href="http://tech.163.com/keywords/0/3/00320030003100334e2d56fd8f6f4ef65f0053d1800559274f1a/1.html">2013中国软件开发者大会</a>
+                                                                                            </span>
+                                            </div>
+                    <span class="blank12"></span>
+                        <ul class="mod-f14list ep-list-1 JS_NTES_LOG_FE" data-module-name="xwwzy_35_bottomnewslink">
+                                                        <li><span class="title"><a href="http://tech.163.com/13/0830/10/97H4DFFK00094O1B.html#from=relevant#xwwzy_35_bottomnewskwd">CSDN创始人蒋涛：软件正在吞食世界</a></span> <span class="time">2013/08/30</span></li>
+                                                        <li><span class="title"><a href="http://tech.163.com/13/0830/10/97H4NQ4B00094O1B.html#from=relevant#xwwzy_35_bottomnewskwd">小米副总裁洪锋：MIUI设计成长之路</a></span> <span class="time">2013/08/30</span></li>
+                                                        <li><span class="title"><a href="http://tech.163.com/13/0830/10/97H4TPR800094O1B.html#from=relevant#xwwzy_35_bottomnewskwd">百度首席架构师侯震宇：百度移动·云生态</a></span> <span class="time">2013/08/30</span></li>
+                                                        <li><span class="title"><a href="http://tech.163.com/13/0830/11/97H8BTQ900094O1B.html#from=relevant#xwwzy_35_bottomnewskwd">Ripple CTO：Bitcoin与未来支付应用开发</a></span> <span class="time">2013/08/30</span></li>
+                                                        <li><span class="title"><a href="http://tech.163.com/13/0820/14/96NSKDGP00094O06.html#from=relevant#xwwzy_35_bottomnewskwd">SDCC 2013大会讲师名单议题出炉</a></span> <span class="time">2013/08/20</span></li>
+                                                    </ul>
+                                </div>
+            <span class="blank20"></span>
+                        <div class="ep-returnlink JS_NTES_LOG_FE" data-module-name="xwwzy_32_bottomdaohang">
+<a href="http://www.163.com/" class="ep-btn-1b"><span class="inner"><span class="ep-icon-enter">网易首页</span></span></a><a href="http://tech.163.com/" class="ep-btn-1b"><span class="inner"><span class="ep-icon-enter">科技首页</span></span></a>
+            </div>            <span class="blank20"></span>
+            <span class="blank15"></span>
+                        <div class="clearfix">
+                <div class="ep-share-end ntshare-wrap JS_NTES_LOG_FE" data-module-name="xwwzy_16_sns">
+                    <ul>
+                        <li class="first">
+                            <a href="" title="分享到网易微博" id="wb-article-share-end">
+                                <i class="ep-share-icon ep-share-163"></i>
+                                <span class="count" style="display:none;">0</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" title="分享到新浪微博" class="ntshare-sina">
+                                <i class="ep-share-icon ep-share-sina"></i>
+                            </a>
+                        </li>
+                        <!-- comment trigger -->
+<!-- comment trigger -->
+                        <li>
+                            <a href="" title="分享到QQ空间" class="ntshare-qzone">
+                                <i class="ep-share-icon ep-share-qzone"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" title="分享到人人网" class="ntshare-renren">
+                                <i class="ep-share-icon ep-share-renren"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" title="收藏到有道云笔记" class="ntshare-youdao">
+                                <i class="ep-share-icon ep-share-youdao"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left ep-tie-simple JS_NTES_LOG_FE" data-module-name="xwwzy_33_tieview2"><a href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" class="js-tielink left"><span class="ep-tie-count js-tiecount">0</span></a><span class="left">人参与</span></div>
+            </div>
+            <span class="blank6"></span>
+            <span class="ep-parting"></span>
+            <span class="blank12"></span>
+            <div class="clearfix">
+                <div class="right JS_NTES_LOG_FE" data-module-name="xwwzy_34_appdownload"><a href="http://m.163.com/newsapp/" title="下载网易新闻客户端" id="bot_appdownload"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/newsapp2.png" alt="下载网易新闻客户端" width="178" height="24"></a></div>
+            </div>
+            <span class="blank15"></span>
+                        <div class="atleLP">
+  <div class="clearfix">
+    <h2 class="left tech-tt"><a href="http://tech.163.com/">科技头条</a></h2>
+    <div class="right scI"> <a href="http://tech.163.com/">科技首页</a> | <a href="http://tech.163.com/cnstock">中概股</a> | <a href="http://tech.163.com/special/0009rt/ycbd.html">原创</a> | <a href="http://tech.163.com/latest">滚动</a> </div>
+  </div>
+  <div class="clearfix aBlock uB">
+    <div class="imgNews">
+         <a href="http://tech.163.com/photoview/5FVH0009/6399.html#p=ABSORIFK5FVH0009"><img alt="如何让卧室变得更舒适" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141125091432e2931.jpg" width="160" height="96"></a>
+      <h3><a href="http://tech.163.com/photoview/5FVH0009/6399.html#p=ABSORIFK5FVH0009">如何让卧室变得更舒适</a></h3>
+    </div>
+    <div class="mainNews">
+         <h3><a href="http://tech.163.com/14/1125/01/ABS0GNQ3000915BD.html" class="atlecB">社交媒体技术：银行业的未来</a></h3>
+         <p><a href="http://tech.163.com/14/1125/07/ABSO7Q8V000915BF.html">射手和人人的关停命运是可预见的？</a></p>
+         <p><a href="http://tech.163.com/14/1125/07/ABSLLP8L000915BF.html">360三季度净利5770万美元 增30%</a></p>
+         <p><a href="http://tech.163.com/14/1125/03/ABS8MTRL000915BF.html">微软诉美国国税局：查税手段不透明</a></p>
+         <p><a href="http://tech.163.com/14/1125/08/ABSOLQJH000915BF.html">第三方支付为什么会兴起？</a></p>
+    </div>
+  </div>
+  <div class="clearfix aBlock">
+    <div class="imgNews">
+         <a href="http://tech.163.com/photoview/5FVH0009/6396.html#p=ABQ2LOQ35FVH0009"><img alt="看看全球最快的计算机" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141124080333350f9.jpg" width="160" height="96" class="pt20h "></a>
+      <h3><a href="http://tech.163.com/photoview/5FVH0009/6396.html#p=ABQ2LOQ35FVH0009">看看全球最快的计算机</a></h3>
+         <a href="http://tech.163.com/14/1122/13/ABLJJ74B000915BD.html"><img alt="一览镀金版iPad Air 2" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/201411221325372ec43.jpg" width="160" height="96" class="pt20h  mt16h "></a>
+      <h3><a href="http://tech.163.com/14/1122/13/ABLJJ74B000915BD.html">一览镀金版iPad Air 2</a></h3>
+    </div>
+    <div class="mainNews">
+      <ul>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/20/ABU3R45I000915BD.html">联发科回应与小米分手传闻：一切正常</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/18/ABTS5TL6000915BF.html">当当三季度净利润2450万元 同比扭亏</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/11/ABT4BNDP000915BF.html">PPTV任命苏宁范志军为管理委员会主席</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/15/ABTIH2QF000915BF.html">豌豆荚遭遇"内乱门" 有钱就是任性？</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/08/ABSPU2JJ00094ODU.html">让刘强东后悔:美团的狼牙棒与铁军</a></li>
+      </ul>
+      <ul class="mt-2h">
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/23/ABUDLFNR000915BD.html">去哪儿网的“三级”跳</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/17/ABTP7Q12000915BF.html">"宇宙社交"诞生：可与宇航员实时对话</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/15/ABTJB447000915BF.html">乐视确认贾跃亭已回国 谜团即将揭晓</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/08/ABSPEIGA000915BE.html">虚拟运营商第五批牌照最早明年发放</a></li>
+           <li><a href="http://tech.163.com/special/0009rt/ycbd.html">要闻</a> | <a href="http://tech.163.com/14/1125/01/ABS342E9000915BD.html">银联手机商互送秋波 将推Android Pay</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<span class="blank20"></span>
+<span class="blank20"></span>
+            <!-- 额外手动更新 -->
+                                    <script language="JavaScript">
+<!--
+var ghchnid="xkj";//（新闻、科技、教育）
+//-->
+</script>
+<!-- AD590x130_2 -->
+<script type="text/javascript">
+var banner_rdm=Math.random();
+banner3_rdm=Math.ceil(banner_rdm*3);
+if(banner3_rdm==1){
+document.write('<iframe src="http://qzs.qq.com/qzone/biz/gdt/display/positions/waicai/590x130_v.html?pid=3050107065421397&ptag=12786096_54936_46_12872692" width="590" height="130" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" ></iframe>'); 
+}
+</script>
+            <span class="blank20"></span>
+            <span class="blank20"></span>
+            <div>
+            <!-- 跟贴 -->
+                        <script type="text/javascript" language="javascript">//<![CDATA[
+var isShowComments = true,tieChannel = "tech",isStrict = true;
+//]]></script>
+<!--tie begin-->
+<link type="text/css" charset="utf-8" rel="stylesheet" href="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/tieanywhere2.3.1-min.css">
+<div id="tieArea" class="tie-area">
+    <div class="tie-show js-tie-show">
+        <div class="tie-titlebar">
+            <strong></strong><span class="tie-info">
+            <a href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" class="js-actCount tie-actCount" target="_blank">0</a>人跟贴 <span class="info-line">|</span> 
+            <a href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" class="js-joinCount tie-actCount" target="_blank">0</a>人参与 </span>
+        </div>
+        <div class="js-tie-data">
+        </div>
+    </div>
+    <div class="tie-post js-post-area" id="tiePostBox">
+        <div class="tie-titlebar tie-title-mend">
+            <strong>网友跟贴</strong> 
+            <span class="tie-info"><a href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" class="js-bactCount tie-actCount" target="_blank">0</a>人跟贴 <span class="info-line">|</span> 
+            <a href="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html" class="js-bjoinCount tie-actCount" target="_blank">0</a>人参与 <span class="info-line">|</span>
+                <a href="http://m.163.com/newsapp/" target="_blank" class="tie-byMobile"><em class="tie-sprite"></em>
+                    手机发跟贴</a> <span class="info-line">|</span> <a href="http://reg.163.com/reg0.shtml?url=http://tech.163.com/13/0830/11/97H8RJCN00094O1B.html#tie-reply" class="tie-reg js-reg" target="_blank">注册</a>
+            </span>
+        </div>
+        <!-- <style type="text/css">
+    .tie-post .tie-post-area .post-area-photo{border-left-color:#cc1b1b;border-bottom-color:#cc1b1b;}
+    .tie-post .tie-post-area .post-area-input{ border-right-color:#cc1b1b;border-bottom-color:#cc1b1b;}
+    .tie-post .tie-hotword {border-left-color: #cc1b1b; border-right-color:#cc1b1b;}
+    #tieAds{ border:1px solid #cc1b1b;border-bottom-width:0;width:588px; overflow:hidden; }
+    .tie-post .tie-post-area .post-area-hover { border-color:#aad2ff;}
+</style>
+<div style="text-align:center;" id="tieAds">
+<a href="http://g.163.com/a?CID=21960&Values=3003932173&Redirect=http://idigger.allyes.com/main/c?db=idigger&bid=59638,28853,1&cid=26723,21327,364&sid=58998&show=ignore&url=http://idigger.allyes.com/main/c?db=mso&bid=159508,79794,6135&cid=82790,6654,149&sid=159605&show=ignore&url=http://www.wlj-china.com/jdb2013" target="_blank"><img src="http://img1.126.net/channel7/014340/jdb59038_130801.jpg" width="590" height="38"></a>
+</div> -->        <div class="tie-postform">
+            <div class="tie-hotword">
+                <p>跟贴热词： </p>
+            </div>
+            <form target="_blank" method="post" action="http://comment.tech.163.com/reply/dopost.jsp" class="js-postForm">
+            <div class="tie-post-area">
+                 <div class="post-area-photo js-ularea-photo" style="display: none;">
+                    <a href="javascript:;" target="_self" title="请登录" class="tie-sprite area-photo-nohover">
+                    </a>
+                </div>
+                <div class="post-area-photo js-area-photo" style="display: block;">
+                    <a href="http://tie.163.com/setting/avatar/?from=userPanel" title="请上传头像" class="tie-sprite area-photo-icon">
+                    </a>
+                </div>
+                <div class="post-area-photo js-larea-photo" style="display: none;">
+                    <a href="http://tie.163.com/setting/avatar/?from=userPanel">
+                        <img width="65" height="65">
+                    </a>
+                </div>
+                <div class="post-area-input js-postinput">
+                    <textarea rows="8" cols="80" class="tie-textarea js-postBox" name="body"></textarea>
+                    <div class="area-input-tips js-tie-tips">
+                        文明上网，登录发贴</div>
+                    <div class="area-input-leftline">
+                    </div>
+                    <div class="area-input-topline">
+                    </div>
+                    <input type="hidden" name="board" value="tech_bbs">
+                    <input type="hidden" name="username">
+                    <input type="hidden" name="threadid" value="97H8RJCN00094O1B">
+                    <input type="hidden" name="url" value="http://comment.tech.163.com/tech_bbs/97H8RJCN00094O1B.html">
+                    <input type="hidden" name="isTinyBlogSyn" value="1">
+                </div>
+            </div>
+            </form>
+            <div class="tie-author js-tie-author">
+                <div class="js-unlogin" style="display: none;">
+                    <div class="js-loginInput">
+                        <div class="author-name">
+                            <em class="tie-sprite"></em>
+                            <input type="text" class="tie-textbox js-username">
+                            <div class="author-tips js-nametips">
+                                账号</div>
+                        </div>
+                        <div class="author-pwd">
+                            <em class="tie-sprite"></em>
+                            <input type="password" class="tie-textbox js-password">
+                            <div class="author-tips js-pwdtips">
+                                密码</div>
+                        </div>
+                    </div>
+                    <div class="tie-author-login">
+                        <label>
+                            <input type="checkbox" checked="checked" class="js-save">自动登录</label>
+                        <label class="js-syn">
+                            <input type="checkbox" checked="checked"><em class="tie-sprite"></em></label>
+                        <a href="javascript:void(0);" target="_self" class="tie-sprite post-btn js-loginPostBtn">
+                            登录并发表</a>
+                    </div>
+                </div>
+                <div class="js-login" style="display: block;">
+                    <div class="tie-author-logon">
+                        <a rel="nofollow" target="_blank" class="js-tie-myhome" href="http://tie.163.com/reply/myaction.jsp?action=reply2me&username=llltyg">
+                            <strong class="js-tie-username">llltyg</strong></a>&nbsp; <a rel="nofollow" class="js-tie-myposts" target="_blank" href="http://tie.163.com/reply/myaction.jsp?action=reply2me&username=llltyg">我的跟贴</a> |
+                        <a rel="nofollow" target="_blank" href="http://t.163.com/">我的微博</a> | <a rel="nofollow" class="js-tie-logout" href="http://reg.163.com/Logout.jsp?username=llltyg&url=http://tech.163.com/13/0830/11/97H8RJCN00094O1B.html" target="_self">退出</a>
+                    </div>
+                    <div class="tie-author-login">
+                        <label class="js-syn">
+                            <input type="checkbox" checked="checked"><em class="tie-sprite"></em></label>
+                        <a href="javascript:void(0);" target="_self" class="tie-sprite post-btn js-postBtn">
+                            马上发表</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="tie-reminder">
+            网友评论仅供其表达个人看法，并不表明网易立场。</p>
+    </div>
+</div>
+<script charset="utf-8" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/loader1.0.3.js" language="javascript" type="text/javascript"></script>
+        
+                                <script type="text/javascript">
+    if (typeof isForceShowComment != "undefined") {
+        isShowComments = isForceShowComment;
+    };
+    function tieInit() {
+        tie_load({
+            urs: "http://img1.cache.netease.com/utf8/microblog/urs/urs1.0.3.js",
+            tie: "http://img1.cache.netease.com/utf8/tie/tieanywhere2.6.2-min.js"
+        },
+            function() {
+                var replyCount = 0,
+                    totalCount = 0,
+                    threadId = "97H8RJCN00094O1B",
+                    boardId = "tech_bbs",
+                    host = tieChannel;
+                $(".js-tielink").attr("href", "http://comment." + host + ".163.com/" + boardId + "/" + threadId + ".html")
+                $(".js-tiecount").attr("innerHTML", totalCount);
+                $(".js-joinCount").attr("innerHTML", TieAnywhere.formatNumber(totalCount.toString(), 3));
+                $(".js-bjoinCount").attr("innerHTML", TieAnywhere.formatNumber(totalCount.toString(), 3));
+                $(".js-actCount").attr("innerHTML", TieAnywhere.formatNumber(replyCount.toString(), 3));
+                $(".js-bactCount").attr("innerHTML", TieAnywhere.formatNumber(replyCount.toString(), 3));
+                new TieAnywhere.Tie({
+                    wraper: NTES("#tieArea"),
+                    threadId: threadId,
+                    boardId: boardId,
+                    host: host,
+                    isShowComment: isShowComments,
+                    isStrict: isStrict
+                });
+            })
+    };
+    tie_ready(function() {
+        if (!window.NTES) {
+            tie_load({ lib: "http://img1.cache.netease.com/cnews/js/ntes_jslib_1.x.js" }, function() {
+                tieInit();
+            }, "GBK")
+        } else {
+            tieInit();
+        };
+    });
+</script>
+<!--tie end-->
+                        </div>
+            <span class="blank20"></span>
+            <span class="blank20"></span>
+                        <iframe class="ep-tjiframe" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/pdtj12.html" width="590" height="582" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>            <span class="blank9"></span>
+                        <!-- AD590x130_3 -->
+<!-- <div id="conBtnForP">
+<iframe src="http://img1.126.net/channel18/017171/0819/04t/index.htm" width="590" height="130" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" ></iframe>
+</div> -->
+          </div>
+        </div>
+        <div class="ep-content-side" id="epContentRight">
+                        <!-- article right main model -->
+<!-- 页内画中画A-->
+<div class="gg300">
+    <!-- --><iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"> </iframe>
+</div>
+<span class="blank20"></span>
+<!-- 页内画中画03 -->
+<div class="gg300">
+    <!-- -->
+<iframe scrolling="no" frameborder="0" src="about:blank" marginwidth="0" marginheight="0" style="width: 300px; height: 250px; display: none !important; visibility: hidden !important; opacity: 0 !important;" width="0" height="0"></iframe></div>
+<span class="blank20"></span>
+<!-- 新闻推荐1 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix">
+    <h2 class="title JS_NTES_LOG_FE" data-module-name="xwwzy_18_newsrecmd1"><a href="http://news.163.com/#xwwzy_18_newsrecmd">新闻推荐</a></h2>
+    <span class="entry cDGray JS_NTES_LOG_FE" data-module-name="xwwzy_18_morenews1"><a href="http://news.163.com/">进入新闻频道</a></span>
+</div>
+<div class="js-xwtj JS_NTES_LOG_FE" data-module-name="xwwzy_18_newslink1"><h2 class="ep-title-3"><a href="http://j.news.163.com/docs/99/2014112417/ABR6E2NS000915BD.html#jnewsartrside1" title="低价版小米平板获核准 或售499元">低价版小米平板获核准 或售499元</a></h2><ul class="mod-f12list"><li><a href="http://j.news.163.com/docs/5/2014112516/ABTL1CO490011CO5.html#jnewsartrside1" title="苹果iPhone6可播放4K视频有何意义">苹果iPhone6可播放4K视频有何意义</a></li><li><a href="http://j.news.163.com/docs/5/2014112517/ABTPJOPK9001JOPL.html#jnewsartrside1" title="印度成为小米最大的海外市场">印度成为小米最大的海外市场</a></li><li><a href="http://j.news.163.com/docs/99/2014112512/ABTFA6PQ00964KCS.html#jnewsartrside1" title="iPhone 6又惹新麻烦：屏幕真不给力">iPhone 6又惹新麻烦：屏幕真不给力</a></li><li><a href="http://j.news.163.com/docs/99/2014112414/ABQSCCRD000915BD.html#jnewsartrside1" title="腾讯大门遭泼漆 无耻二字是骂谁？">腾讯大门遭泼漆 无耻二字是骂谁？</a></li><li><a href="http://j.news.163.com/docs/99/2014112514/ABTVAQQ79001AQQ8.html#jnewsartrside1" title="苹果iCloud为何会搞得一团糟？">苹果iCloud为何会搞得一团糟？</a></li><li><a href="http://j.news.163.com/docs/5/2014112513/ABTE5J8K90015J8L.html#jnewsartrside1" title="iPhone 5S力压新“肾6”成最受欢迎苹果机">iPhone 5S力压新“肾6”成最受欢迎苹果机</a></li><li><a href="http://j.news.163.com/docs/5/2014112517/ABTQOFQ59001OFQ6.html#jnewsartrside1" title="爆炸消息：2016年智能机完全充电可能只需30秒！">爆炸消息：2016年智能机完全充电可能只需30秒！</a></li></ul></div>
+<div class="hidden">
+    <div class="js-xwtj-content">
+                        <h2 class="ep-title-3"><a href="http://news.163.com/14/1125/10/ABT13N8P00014JB5.html#f=randomresys">习近平：坚定支持巴勒斯坦争取民族权利</a></h2>
+                <ul class="mod-f12list">
+                                    <li><a class="cBlack" href="http://ent.163.com/#f=randomresys">娱乐</a> <span class="cLGray">|</span> <a href="http://ent.163.com/14/1125/08/ABSQQ8D900031H2L.html#f=randomresys">汪涵儿子正面照</a> <a target="_blank" href="http://ent.163.com/14/1124/23/ABRR3FL500031H2L.html">陈岚发文缅怀向华胜</a></li>
+                                    <li><a class="cBlack" href="http://sports.163.com/#f=randomresys">体育</a> <span class="cLGray">|</span> <a href="http://sports.163.com/gjb/#f=randomresys">欧冠-3:45直播拜仁客战曼城</a> <a target="_blank" href="http://goal.sports.163.com/58/match/preview/2014/1464992.html">梅西再冲纪录</a></li>
+                                    <li><a class="cBlack" href="http://money.163.com/#f=randomresys">财经</a> <span class="cLGray">|</span> <a href="http://money.163.com/special/shouping/#f=randomresys">沪指涨1.37%创39个月新高</a> <a target="_blank" href="http://money.163.com/special/yhjx/">央行降息</a> <a target="_blank" href="http://money.163.com/special/nbi060/">图解</a></li>
+                    </ul>
+    </div>
+    <div class="js-xwtj-content">
+                        <h2 class="ep-title-3"><a href="http://auto.163.com/photoview/5BD20008/170646.html#f=randomresys">哭傻了 实习生拍车错把陆风当路虎被开</a></h2>
+                <ul class="mod-f12list">
+                                    <li><a class="cBlack" href="http://tech.163.com/#f=randomresys">科技</a> <span class="cLGray">|</span> <a href="http://tech.163.com/13/0727/09/94PEQ3PD000915BF.html#f=randomresys">网购化妆品调查：走私货高仿品黑链条</a></li>
+                                    <li><a class="cBlack" href="http://mobile.163.com/#f=randomresys">手机</a> <span class="cLGray">|</span> <a href="http://mobile.163.com/special/mobileinvestigation_02/#f=randomresys">vivo推2K分辨率智能手机 超6成网友非常看好</a></li>
+                                    <li><a class="cBlack" href="http://travel.163.com/#f=randomresys">旅游</a> <span class="cLGray">|</span> <a href="http://travel.163.com/photoview/5B8F0006/7869.html#p=9FB0SLS65B8F0006#f=randomresys">在北海道仙境 与天鹅共浴</a></li>
+                    </ul>
+    </div>
+    <div class="js-xwtj-content">
+                        <h2 class="ep-title-3"><a href="http://lady.163.com/special/sense/2014shijiebei10.html#f=randomresys">七成人认为：女人看球就是看男人</a></h2>
+                <ul class="mod-f12list">
+                                    <li><a class="cBlack" href="http://digi.163.com/#f=randomresys">数码</a> <span class="cLGray">|</span> <a href="http://digi.163.com/14/1122/22/ABMKAVTF00162OUT.html#f=randomresys">[观点]Google Play进入中国可能为时已晚</a></li>
+                                    <li><a class="cBlack" href="http://house.163.com/#f=randomresys">房产</a> <span class="cLGray">|</span> <a href="http://gz.house.163.com/special/gz_jiangxi/#f=randomresys">1线城市下调公积金贷款利率 穗下调0.25%</a></li>
+                                    <li><a class="cBlack" href="http://edu.163.com/#f=randomresys">教育</a> <span class="cLGray">|</span> <a href="http://edu.163.com/14/1124/09/ABQCL12U00294IIH.html#f=randomresys">"首富"清华办学经费过百亿 远低哈佛</a></li>
+                    </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    NTES.ready(function() {
+        var areas = $('.js-xwtj'),
+                contents = $('.js-xwtj-content'),
+                countArr = [0, 1, 2].sort(function(){ return 0.5 - Math.random(); }),
+                content_cnxh = $('#js-cnxh-content');
+        if(window.epTools && window.epTools.getRadomArray) {
+            countArr = window.epTools.getRadomArray([0, 1, 2], 3);
+        }
+        var api_xwtjpr = "http://j.news.163.com/hy/demorecdocapi.s?limit=12&callback=xwtjpr";
+        window.xwtjpr = function(data){
+            var xwtjData = data,
+                    html = [],
+                    len_max = 12,
+                    num,
+                    re = /\'|\"/gi,
+                    alttitle;
+            html[0] = [];
+            html[1] = [];
+            html[2] = [];
+            var tjtype = { '0': '#jnewsartrside1', '1': '#jnewsartrside2','2': '#jnewsartrside3'};
+            if(xwtjData.length >= len_max) {
+                for(var i = 0; i < len_max; i++){
+                    alttitle = xwtjData[i].title.replace(re, "&quot;");
+                    num = Math.floor(i / 8);
+                    if(i % 8 == 0) {
+                        html[num].push('<h2 class="ep-title-3"><a href="' + xwtjData[i].link + tjtype[num] + '" title="' + alttitle + '">' + xwtjData[i].title + '</a></h2><ul class="mod-f12list">');
+                    } else {
+                        html[num].push('<li><a href="' + xwtjData[i].link +  tjtype[num] + '" title="' + alttitle + '">' + xwtjData[i].title + '</a></li>');
+                    }
+                    if(i % 8 == 7) {
+                        html[num].push('</ul>');
+                    }
+                };
+                areas[0].innerHTML = html[0].join('');
+                areas[1].innerHTML = html[1].join('');
+                if(content_cnxh) {
+                    content_cnxh.innerHTML = html[2].join('');
+                }
+            } else {
+                for(var i = 0; i < areas.length; i++) {
+                    areas[i].innerHTML = contents[countArr[i]].innerHTML;
+                }
+            }
+        };
+        NTES.ajax.importJs(api_xwtjpr, function(){}, 'utf-8')
+    });
+</script>
+<span class="blank15"></span>
+<!-- 页内画中画B -->
+<div class="gg300">
+    <!-- AD300x150_1 -->
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"> </iframe>
+</div>
+<span class="blank20"></span>
+<!-- 新闻推荐2 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix">
+    <h2 class="title JS_NTES_LOG_FE" data-module-name="xwwzy_18_newsrecmd2"><a href="http://news.163.com/#xwwzy_18_newsrecmd">新闻推荐</a></h2>
+    <span class="entry cDGray JS_NTES_LOG_FE" data-module-name="xwwzy_18_morenews2"><a href="http://news.163.com/">进入新闻频道</a></span>
+</div>
+<div class="js-xwtj JS_NTES_LOG_FE" data-module-name="xwwzy_18_newslink2"><h2 class="ep-title-3"><a href="http://j.news.163.com/docs/5/2014112510/ABT3S0N69001S0N7.html#jnewsartrside2" title="Pin&#263;：你的 iPhone 也可以变身为 VR 设备">Pin&#263;：你的 iPhone 也可以变身为 VR 设备</a></h2><ul class="mod-f12list"><li><a href="http://j.news.163.com/docs/99/2014112420/ABRGFMCN000915BD.html#jnewsartrside2" title="德国公司研发新技术 可将水“变成”汽油">德国公司研发新技术 可将水“变成”汽油</a></li><li><a href="http://j.news.163.com/docs/99/2014112517/ABTP7Q12000915BF.html#jnewsartrside2" title="Friends In Space：可以和宇航员实时对话的应用">Friends In Space：可以和宇航员实时对话的应用</a></li><li><a href="http://j.news.163.com/docs/99/2014112521/ABU829L900014Q2A.html#jnewsartrside2" title="科学家发现太阳系外神秘蓝色星球 距地球63光年">科学家发现太阳系外神秘蓝色星球 距地球63光年</a></li></ul></div>
+<span class="blank15"></span>
+<!-- 页内画中画04 -->
+<div class="gg300">
+    <!-- AD300x250_1 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 新闻推荐3 科技企业库 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix" id="side-kjqyk-title">
+    <h2 class="title"><a href="http://tech.163.com/company/">科技企业库</a></h2>
+    <span class="entry cDGray"><a href="http://tech.163.com/company/">阅读全部</a></span>
+</div>
+<ul class="clearfix tech-list-75">
+    <li><a href="http://tech.163.com/special/google_list/">谷歌</a></li>
+    <li><a href="http://tech.163.com/special/yahoo_list/">雅虎</a></li>
+    <li><a href="http://tech.163.com/special/facebook_list/">Facebook</a></li>
+    <li><a href="http://tech.163.com/special/baidu_list/">百度</a></li>
+    <li><a href="http://tech.163.com/special/ctrip_list/">携程</a></li>
+    <li><a href="http://tech.163.com/special/360buy_list/">京东商城</a></li>
+    <li><a href="http://tech.163.com/special/netease_list/">网易</a></li>
+    <li><a href="http://tech.163.com/special/sina_list/">新浪</a></li>
+    <li><a href="http://tech.163.com/special/tencent_list/">腾讯</a></li>
+    <li><a href="http://tech.163.com/special/sohu_list/">搜狐</a></li>
+    <li><a href="http://tech.163.com/special/sogou_list/">搜狗</a></li>
+    <li><a href="http://tech.163.com/special/changyou_list/">畅游</a></li>
+    <li><a href="http://tech.163.com/special/amazon_list/">亚马逊</a></li>
+    <li><a href="http://tech.163.com/special/dangdang_list/">当当网</a></li>
+    <li><a href="http://tech.163.com/special/egou_list/">苏宁易购</a></li>
+    <li><a href="http://tech.163.com/special/snda_list/">盛大网络</a></li>
+</ul>
+<span class="blank15"></span>
+<!-- 02半通栏 -->
+<div class="gg300">
+    <!-- AD300x150_2 -->
+<iframe id="m2" name="m2" src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 热点新闻 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix">
+    <h2 class="title">热点新闻</h2>
+</div>
+<div id="js-specheader"><h2 class="ep-title-3"><a title="康定地震震中塔公乡大部分房屋现裂缝" href="http://news.163.com/smart/0/2/2460/1.html">康定地震震中塔公乡大部分房屋现裂缝</a></h2> <ul class="mod-f12list"><li><a title="3000港警今将清除旺角“占中”路障" href="http://news.163.com/smart/0/2/2576/1.html">3000港警今将清除旺角“占中”路障</a></li><li><a title="京津冀今日起雾霾将持续5天 或现严重污染(图)" href="http://news.163.com/smart/0/2/2514/1.html">京津冀今日起雾霾将持续5天 或现严重污染(图)</a></li><li><a title="俄媒:俄将中国武装到牙齿 中俄在最好蜜月期" href="http://news.163.com/smart/0/2/2529/1.html">俄媒:俄将中国武装到牙齿 中俄在最好蜜月期</a></li></ul></div>
+<span class="blank12"></span>
+<script type="text/javascript">
+window.specheader = function(data) {
+    var html = [],
+        len_max = 4,
+        specHeaderData = data.hotlist;
+    if(specHeaderData.length >= len_max) {
+        for(var i = 0; i < specHeaderData.length && i < 4; i++) {
+            if(i == 0) {
+                html.push('<h2 class="ep-title-3"><a title="' + specHeaderData[i].title + '" href="' + specHeaderData[i].url + '">' + specHeaderData[i].title + '</a></h2> <ul class="mod-f12list">');
+            } else {
+                html.push('<li><a title="' + specHeaderData[i].title + '" href="' + specHeaderData[i].url + '">' + specHeaderData[i].title + '</a></li>');
+            }
+        }
+        html.push('</ul>');
+        if($("#js-specheader")) {
+            $("#js-specheader").innerHTML = html.join('');
+        }
+    }
+}
+NTES.ajax.importJs('http://news.163.com/smart/specheader.json', function(){}, 'gbk');
+</script>
+<!-- 擎天柱02 -->
+<div class="gg300">
+    <!-- AD300x400_2 -->
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 400px;"> </iframe></div>
+<span class="blank20"></span>
+<!-- 市场1 三帧 -->
+<!-- 页内画中画05 -->
+<div class="gg300">
+    <!-- AD300x250_5 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 微博推荐 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix">
+    <h2 class="title">猜你喜欢</h2>
+</div>
+<div id="js-cnxh-content"></div>
+<span class="blank12"></span>
+<!-- 页内画中画06 -->
+<div class="gg300">
+    <!--2014画中画06-->
+<iframe src="about:blank" width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"> </iframe></div>
+<span class="blank20"></span>
+
+<script>!function(e){var t="_nacc=siteclick&_npurl="+escape(document.URL);var n=window.performance&&window.performance.timing?window.performance.timing.connectStart:+new Date;var i=e(window);var r=0;function a(e){this.options=e||{};this.pre=[];this.init()}a.prototype={init:function(){var t=this;e("body").addEvent("click",function(n){n=n||window.event;var i=n.target||n.srcElement;var r=t.options.dlg;if(r){for(var a in r){var o=e(r[a]);if(o&&typeof o.length!="undefined")o=o[0];if(!o)break;if(d(i,o)){t.send.call(i,null,a);return}}}var s=0;while(c(i)!="a"){i=i.parentNode;if(!c(i)||s>5)return;s++}var f=i.getAttribute("clkid");var u=i;while(!f&&!u.getAttribute("_clkid")){u=u.parentNode;if(u==this||!u)break;f=u.getAttribute("clkid")}if(f){t.send.call(i,null,f)}});e.ready(function(){t.onLoad()})},onLoad:function(){var n=this;var a=t+"&_nch="+e.cmonId;var c="";if(window._ntes_sendInfo){for(var d=0,f=this.pre.length;d<f;d++){s(this.pre[d])}this.pre=[];var u="&_msl="+o();i.addEvent("load",function(){c="&_msl="+o()});s("/ntes_u?"+a+u);i.addEvent("beforeunload",v);var l=navigator.userAgent.toLowerCase();if(!/compatible/.test(l)&&/firefox/.test(l))i.addEvent("unload",v)}function v(){if(a){s("/ntes_u?"+a+"&_nct="+o("s")+"&_mcn="+r+c);a=0}}},send:function(n,i){i=i||this.getAttribute("_clkid");if(i){var a="";if(c(this)=="a"){a=this.getAttribute("href")||""}r++;var d="/ntes_p?"+t+"&_nct="+o("s")+"&_nah="+escape(a)+"&_nat="+e.cmonId+"_"+i;if(window._ntes_sendInfo){s(d)}else{this.pre.push(d)}}},batch:function(t){var n=this;for(var i in t){var r=t[i];var a=r.wrap;if(r&&a){if(a.nodeType)a=[a];var o=a.length;if(o){for(var s=0;s<o;s++){if(r.excls&&r.excls.test(a[s].className))continue;c(i,a[s],r)}}}}function c(t,i,r){if(!i||!r)return;if(typeof r.seq=="undefined")r.seq=0;t=parseInt(t)+r.seq;var a=r.proc;if(a){a(t,i,r)}else{if(r.inca){var o=0;e("a",i).each(function(){if(r.excls&&r.excls.test(this.className))return;n.add(t+o++*r.inca,this,r)})}else{n.add(t,i,r)}}if(r.inc)r.seq+=r.inc}},add:function(t,n,i){if(!n)return;i=i||{};var r=i.delg;if(r){n.setAttribute("_clkid",t);e(n).addEvent("click",r)}else if(i.bind){n.setAttribute("_clkid",t);e(n).addEvent("click",this.send)}else{n.setAttribute("clkid",t)}}};function o(e){var t=+new Date-n;return t<0?0:e?Math.round(t/1e3):t}function s(e){_ntes_sendInfo("jc",_ntes_src_addr+e)}function c(e){return e&&e.tagName?e.tagName.toLowerCase():""}function d(e,t){while(e&&e.tagName&&c(e)!="body"){if(e==t){return true}e=e.parentNode}return false}window.clickMon=a}(NTES);</script>
+<script>function clkRegion1(){var a=NTES;var r=a(".atleLP")[0]||[];var w=a(".mainNews",r);return{1821:{wrap:a("#side_xwtj3_body")},4101:{},5201:{wrap:a("> div",r)[0],inca:1},5206:{wrap:a(".imgNews",r)},5207:{wrap:w[0]},5208:{wrap:w[1]}}}function clkRegion2(a){var r=NTES;var w=r(".js-xwtj");var p=r("#js-epTabMarket .mod-tab-panel");return{1803:{wrap:w[0],proc:a["xwtj"]},1812:{wrap:w[1],proc:a["xwtj"]},2001:{wrap:r("#side-kjqyk-title>*"),inc:1},2003:{wrap:r(".tech-list-75")[0]},2301:{wrap:p[0]},2302:{wrap:p[1]},2303:{wrap:p[2]},3801:{wrap:r("#side_jctj_imglst")},3901:{wrap:r("#side_rdtj_wrap")},4301:{wrap:r("#side_blogbbs_head")},4302:{wrap:r("#side_blogbbs_body")}}}</script>
+<script>!function(a){a.cmonId=a.epId;if(!a.cmonId)return;var t=new clickMon({dlg:{1908:".popup-gallery-photoarea",1914:".popup-gallery-lbtn",1915:".popup-gallery-rbtn",1909:".popup-gallery-close",1910:".popup-gallery-logo",1911:".popup-gallery-comment",1912:".popup-gallery-share",1916:".popup-gallery-footer",1913:".popup-gallery-thumb"}});function n(a){if(window.addEventListener){window.addEventListener("load",a,false)}else{if(window.attachEvent){window.attachEvent("onload",a)}}}var e={rank:function(n,e,r){a("a",e||[]).each(function(){t.add(n+(/count/.test(this.parentNode.className)?1:0),this,r)})},page:function(n,e,r){a("a",e||[]).each(function(){t.send.call(this,null,n+(this.className=="ep-pages-all"?1:0))})},xwtj:function(n,e,r){if(!e)return;a(e).addEvent("mouseover",function(){var i=e.children;if(i.length<2)return;if(!i[0].getAttribute("clkid")){t.add(n,i[0],r);a(".mod-f12list li",e).each(function(e){var i=e+1;var o=a("span",this);a("a",this).each(function(a){if(a||o.length==0)i=e+4;t.add(n+i,this,r)})})}})},kw:function(a,n,e){if(n.children.length>0){return}else if(n.innerHTML.replace(/\s+/g,"").length<8){t.add(a,n,e)}else{t.add(5301,n,e)}},nphc:function(n,e,r){var i=e.children;if(i.length>=3){t.add(1906,i[0],r);t.add(1905,i[1],r);a("a",i[2]).each(function(a){t.add(n+a,this,r)})}else{a("a",e).each(function(){t.add(n++,this,r)})}},autonews:function(n,e,r){if(!r.wrap)return;a(".main_img",r.wrap).each(function(){t.add(n,this,r)});a("h3 a,.news_f12_lst",r.wrap).each(function(){t.add(n+1,this,r)});a(".main_list",r.wrap).each(function(){t.add(n+1,this,r)})},cnxh:function(n,e,r){if(!e)return;a(e).addEvent("mouseover",function(){var i=a("h2, ul",e);if(i[0].getAttribute("clkid"))return;i.each(function(a){t.add(n+a,this,r)})})}};var r=a(".tie-info");var i=a(".ep-title-2");var o=a("#js-epTabNews .mod-tab-panel");var p=o[0]||a(".ep-keywords")[0]||[];var c=a("#js_N_navLoginBefore");var l=a(".ntshare-wrap");t.batch({1101:{wrap:a(".N-nav-channel")[0],inca:1},1126:{wrap:a(".ntes-nav-entry-wide")[0]},1127:{wrap:c?c.parentNode:null},1128:{wrap:a(".ntes-nav-entry")[0]},1201:{wrap:a(".ep-logo")[0]},1202:{wrap:a(".ep-crumb")[0]},1501:{wrap:a(".js-tielink")[0]},1502:{wrap:a(".js-tieachor")[0]},1701:{wrap:a("#endText > p a"),proc:e["kw"]},1901:{wrap:a(".nph_photo_ctrl"),proc:e["nphc"]},1903:{wrap:a(".nph_photo_view")},1904:{wrap:a(".nph_list_thumb")},1905:{wrap:a(".nph_set_forward")},1907:{wrap:a(".nph_photo_viewlarge"),bind:true},1919:{wrap:a(".nph_layout_htp_bd"),inca:1},1923:{wrap:a(".nph_layout_htp_title")},1917:{wrap:a(".nph_btn_again"),bind:true},1918:{wrap:a(".nph_layout_close")},3301:{wrap:a(".ep-tie-simple a")[0]},3401:{wrap:a("#bot_appdownload")},3501:{wrap:a(".mod-title",p)},3502:{wrap:a(".ep-list-1",p)[0]},3503:{wrap:o[1]||a(".ep-list-2",p),proc:e["rank"]},3505:{wrap:a("#js-ep-reletag")},3603:{wrap:a(".js-tie-data")[0]},1606:{wrap:a("li > a",l[1]),inc:1},1612:{wrap:a(".yixin-bigbtn")[0]}});var d=clkRegion1(e);!function(t){var n=/qc/.test(a.cmonId)?4101:3101;if(t){d[n]={wrap:a(".extra-tag-title a")[0]};d[n+1]={wrap:t}}}(a("#js-extraTagList"));!function(t){if(t){d[8001]={wrap:a(">a",t.parentNode)[0]};d[8002]={wrap:t,inca:1}}}(a(".imglist-bobo")[0]);if(l[2]){d[1617]={wrap:a("li > a",l[2]),inc:1}}function s(a,t,n){if(!t)return;d[a]={wrap:t,inca:n||1}}s(1801,i[0]);s(1810,i[1]);s(1819,a("#side_xwtj3_head"));s(3201,a(".ep-returnlink")[0]);s(3601,r[0]);s(3604,r[1]);s(4001,a(".extra-box-1")[0]);a("a",l[0]||[]).each(function(a){var t=1601+a+(a>1?-1:0);if(a==1)t=1611;d[t]={wrap:this}});if(d[4101])f(a(".ep-tjiframe")[0],h);t.batch(d);var u=a("#ytsearch_form");if(u){u.addEvent("submit",function(a){t.send.call(this,null,1401)})}a.ready(function(){var n=a("#js-epTabDS")||[];var r=a(".mod-tab-panel",n);var i=a("#js_N_nav_footer")||[];var o=a("#js-epTabRank .mod-tab-panel");t.batch({2101:{wrap:a("#js-cnxh-content"),proc:e["cnxh"]},2203:{wrap:a("#side_newspic_body")},3701:{wrap:a("#side_video_wrap")},4201:{wrap:o[0],proc:e["rank"]},4203:{wrap:o[1],proc:e["rank"]},4401:{wrap:a(".sitemap-info a",i)[0]},4402:{wrap:a(".sitemap-con",i)},4403:{wrap:a(".sitemap-flink a",i)[0]},4404:{wrap:a(".N-nav-bottom")[0]},7401:{wrap:a(".mod-tab-trigger",n),inc:2}});d=clkRegion2(e);s(2201,a("#side_newspic_head"));for(var p=0;p<6;p++){d[7402+2*p]={wrap:r[p]}}var c=a(".ep-love")[0];if(c){d[5401]={wrap:a(".ep-love-title",c)[0]};d[5402]={wrap:a(".love",c)[0]};d[5403]={wrap:a(".tab-ft",c)[0]}}t.batch(d);f(a("#tbtj-1 iframe")[0],function(){w.call(this,"1301")});f(a("#tbtj-2 iframe")[0],function(){w.call(this,"1304")});f(a("#tbtj-3 iframe")[0],function(){w.call(this,"1307")});f(a("#tbtj-4 iframe")[0],function(){w.call(this,"1310")})});function f(a,t){if(!a)return;if(a.getAttribute("src").substr(0,16)=="http://g.163.com")return;var n=v(a);if(n&&n.location.href.indexOf("http://")==0){e()}else if(a.attachEvent){a.attachEvent("onload",e)}else{a.onload=e}function e(){t.call(a)}}function w(n){var e=v(this);if(!e)return;var r={};r[n]={wrap:a(".ep-tbtj a",e),inc:1,bind:true};t.batch(r)}function h(){var n=v(this);if(!n)return;var e=n.getElementById("atleCB")||[];var r=a(".tabCtrl li",e);var i=a(".tabCon > div",e);var o={7701:{wrap:a(".footer",n)[0],bind:true}};var p={0:0,1:1,2:6,3:2,4:3,5:4,6:5};for(var c=0;c<i.length;c++){var l=i[c];if(l){var d=p[c]||c;o[4101+7*d]={wrap:r[c],bind:true};o[4102+7*d]={wrap:a(".imgNews",l),bind:true};o[4103+7*d]={wrap:a(".mainNews",l),bind:true};o[4104+7*d]={wrap:a(".newsLinks a",l),inc:1,bind:true}}}t.batch(o)}function v(a){var t;try{t=a.contentDocument}catch(n){}if(!t&&a.contentWindow){try{if(typeof a.contentWindow.document=="object"){t=a.contentWindow.document}}catch(n){}if(!t)return null}var e=1;try{if(t.location)e=0}catch(n){}return e?null:t}}(NTES);</script>
+<!-- 页内画中画07 -->
+<div class="gg300">
+    <!-- AD300x250_07 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 页内画中画E -->
+<div class="gg300">
+    <!-- 视频推荐上方 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 频道2 科技聚焦 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix" id="side_newspic_head">
+    <h2 class="title"><a href="http://tech.163.com/">科技聚焦</a></h2>
+    <span class="entry cDGray"><a href="http://tech.163.com/">阅读全部</a></span>
+</div>
+<ul class="mod-imglist ep-imglist-1 clearfix" id="side_newspic_body">
+       <li><a title="如何让卧室变得更舒适" href="http://tech.163.com/photoview/5FVH0009/6399.html#p=ABSORIFK5FVH0009"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141125091432e2931.jpg" alt="如何让卧室变得更舒适" width="130" height="90"></a><h3><a href="http://tech.163.com/photoview/5FVH0009/6399.html#p=ABSORIFK5FVH0009">如何让卧室变得更舒适</a></h3></li>
+       <li><a title="看看全球最快的计算机" href="http://tech.163.com/photoview/5FVH0009/6396.html#p=ABQ2LOQ35FVH0009"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141124080333350f9.jpg" alt="看看全球最快的计算机" width="130" height="90"></a><h3><a href="http://tech.163.com/photoview/5FVH0009/6396.html#p=ABQ2LOQ35FVH0009">看看全球最快的计算机</a></h3></li>
+       <li><a title="一览镀金版iPad Air 2" href="http://tech.163.com/14/1122/13/ABLJJ74B000915BD.html"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/201411221325372ec43.jpg" alt="一览镀金版iPad Air 2" width="130" height="90"></a><h3><a href="http://tech.163.com/14/1122/13/ABLJJ74B000915BD.html">一览镀金版iPad Air 2</a></h3></li>
+       <li><a title="iOS 8.1.1引发新吐槽" href="http://tech.163.com/14/1122/09/ABL5FJN3000915BD.html"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141111091051170cf.jpg" alt="iOS 8.1.1引发新吐槽" width="130" height="90"></a><h3><a href="http://tech.163.com/14/1122/09/ABL5FJN3000915BD.html">iOS 8.1.1引发新吐槽</a></h3></li>
+</ul>
+<span class="blank15"></span>
+<!-- 页内画中画08 -->
+<div class="gg300">
+    <!-- AD300x250_8 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 市场2 精彩推荐 -->
+<span class="ep-side-parting"></span>
+<span class="blank20"></span>
+<!-- 04半通栏 -->
+<div class="gg300">
+    <!-- AD300x150_4 -->
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 250px;"></iframe></div>
+<span class="blank20"></span>
+<!-- 05半通栏 -->
+<div class="gg300">
+    <!-- AD300x150_5 -->
+<!-- <iframe src="http://img1.126.net/channel4/015788/tanx05_0401.html" width="300" height="150" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" ></iframe> --></div>
+<span class="blank20"></span>
+<!-- 精彩视频 -->
+<span class="ep-side-parting"></span>
+<div id="side_video_wrap">
+<div class="ep-title-2 clearfix JS_NTES_LOG_FE" data-module-name="xwwzy_37_video">
+    <h2 class="title"><a href="http://v.163.com/">精彩视频</a></h2>
+    <span class="entry cDGray"><a href="http://v.163.com/">进入视频频道</a></span>
+</div>
+<ul class="mod-imglist ep-imglist-1 clearfix JS_NTES_LOG_FE" data-module-name="xwwzy_37_video">
+    <li><a title="杭州&quot;猪肉西施&quot;走红" href="http://v.163.com/zixun/V63F88H2T/VAAUTL6GC.html?elsechannel_article_recommend"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141125111538fe732.jpg" alt="杭州&quot;猪肉西施&quot;走红" width="130" height="90"></a><h3><a href="http://v.163.com/zixun/V63F88H2T/VAAUTL6GC.html?elsechannel_article_recommend">杭州"猪肉西施"走红</a></h3></li>
+    <li><a title="毛主席最欣赏的12女人" href="http://v.163.com/special/jishisubject/historyoftoday187.html?elsechannel_article_recommend"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20140910100832ba5b4.jpg" alt="毛主席最欣赏的12女人" width="130" height="90"></a><h3><a href="http://v.163.com/special/jishisubject/historyoftoday187.html?elsechannel_article_recommend">毛主席最欣赏的12女人</a></h3></li>
+    <li><a title="记者直播中惨遭&quot;爆头&quot;" href="http://v.163.com/zixun/V8GAM8GTF/VAAS9MM9C.html?elsechannel_article_recommend"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/20141124100433e01d8.jpg" alt="记者直播中惨遭&quot;爆头&quot;" width="130" height="90"></a><h3><a href="http://v.163.com/zixun/V8GAM8GTF/VAAS9MM9C.html?elsechannel_article_recommend">记者直播中惨遭"爆头"</a></h3></li>
+    <li><a title="日本曾疯狂崇拜毛泽东" href="http://v.163.com/special/jishisubject/weapon21.html?elsechannel_article_recommend"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/2014110215102236a41.jpg" alt="日本曾疯狂崇拜毛泽东" width="130" height="90"></a><h3><a href="http://v.163.com/special/jishisubject/weapon21.html?elsechannel_article_recommend">日本曾疯狂崇拜毛泽东</a></h3></li>
+</ul>
+</div>
+<span class="blank15"></span>
+<!-- 市场3 热点推荐 -->
+<!--有道推广-->
+<div class="gg300">
+    <div id="ead_ad_15"></div>
+  <script language="javascript">var ead_ad_style='new'</script>
+  <script language="javascript" src="http://impservice2.youdao.com/imp/req_right.js"></script>    
+</div>
+<span class="blank20"></span>
+<!-- 电商 -->
+<!-- 电商 -->
+<!-- 电商Begin  -->
+<span class="ep-side-parting"></span>
+<span class="blank20"></span>
+        <div class="mod-tab ds-tab" id="js-epTabDS">
+            <div class="mod-tab-hd">
+                <div class="mod-tab-trigger current"><a href="http://caipiao.163.com/">彩票</a></div>
+                <div class="mod-tab-trigger"><a href="http://mall.163.com/#from=articlelb">商城</a></div>
+				<div class="mod-tab-trigger"><a href="http://baoxian.163.com/#from=wenzhangye">保险</a></div>
+                <div class="mod-tab-trigger"><a href="http://mall.163.com/mobile/fill.html">话费</a></div>
+                <div class="mod-tab-trigger"><a href="http://mall.163.com/game/queryGame.html">点卡</a></div>
+				<div class="mod-tab-trigger wide"><a href="http://piao.163.com/">电影票</a></div>
+            </div>
+            <div class="mod-tab-bd box-h300">
+                <div class="mod-tab-panel current">
+                    <span class="blank12"></span>
+                    <ul class="ds-linklist">
+                        <li class="clearfix"><iframe scrolling="no" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/mailPromote_static.html" frameborder="0" width="300" height="140"></iframe></li>
+<li class="clearfix"><label><a target="_blank" href="http://caipiao.163.com/#from=wzy">彩票</a>:</label><a target="_blank" href="http://caipiao.163.com/order/ssq/#from=wzy">双色球</a> <a target="_blank" href="http://zx.caipiao.163.com/3d/#from=wzy">3D</a> <a target="_blank" href="http://zx.caipiao.163.com/dlt/#from=wzy">大乐透</a> <a target="_blank" href="http://caipiao.163.com/order/qlc/#from=wzy">七乐彩</a> <a target="_blank" href="http://caipiao.163.com/order/ssc/#from=wzy">时时彩</a> <a target="_blank" href="http://caipiao.163.com/order/jczq/#from=wzy" title="竞彩足球">足彩</a></li>
+<li class="clearfix"><label><a target="_blank" href="http://caipiao.163.com/award/#from=wzy">彩票开奖</a>:</label><a target="_blank" href="http://caipiao.163.com/award/ssq/#from=wzy" title="双色球开奖结果">双色球</a> <a target="_blank" href="http://caipiao.163.com/award/3d/#from=wzy" title="3d开奖结果">3d</a> <a target="_blank" href="http://caipiao.163.com/award/dlt/#from=wzy" title="大乐透开奖结果">大乐透</a> <a target="_blank" href="http://caipiao.163.com/award/kuai3/#from=wzy" title="”快3开奖结果”">快3</a> <a target="_blank" href="http://caipiao.163.com/award/11x5.html#from=wzy" title="”11选5开奖结果”">11选5</a> <a target="_blank" href="http://caipiao.163.com/order/qxc/#from=wzy" title="”快3开奖结果”">七星彩</a></li>
+<li class="clearfix"><label><a target="_blank" href="http://zx.caipiao.163.com/trend/trend.html#from=wzy">走势图</a>:</label><a target="_blank" href="http://zx.caipiao.163.com/trend/ssq_basic.html#from=wzy" title="双色球走势图">双色球</a> <a target="_blank" href="http://zx.caipiao.163.com/trend/x3d_basic.html#from=wzy" title="3d走势图">3d</a> <a target="_blank" href="http://zx.caipiao.163.com/trend/dlt_basic.html#from=wzy" title="”大乐透走势图”">大乐透</a> <a target="_blank" href="http://zx.caipiao.163.com/trend/jxssc/#from=wzy" title="时时彩走势图">时时彩</a> <a target="_blank" href="http://zx.caipiao.163.com/trend/qxc_basic.html#from=wzy" title="七星彩走势图">七星彩</a> <a target="_blank" href="http://zx.caipiao.163.com/trend/d11_basic.html#from=wzy" title="11选5走势图">11选5</a></li>
+					</ul>
+                </div>
+				<div class="mod-tab-panel">
+					<span class="blank12"></span>
+					<div><iframe scrolling="no" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/article_iframe.html" frameborder="0" width="300" height="267"></iframe></div>
+				</div>
+                <div class="mod-tab-panel">
+					<span class="blank12"></span>
+					<ul class="ds-linklist">
+						<li class="clearfix"><label><a href="http://baoxian.163.com/car/#from=wenzhangye" target="_blank">车险</a>:</label><div><a target="_blank" href="http://baoxian.163.com/car/good_pingan.html#from=wenzhangye">平安车险</a>　<a target="_blank" href="http://baoxian.163.com/car/good_picc.html#from=wenzhangye">人保车险</a>　<a target="_blank" href="http://baoxian.163.com/car/good_cpic.html#from=wenzhangye">太平洋车险</a><br><a target="_blank" href="http://baoxian.163.com/car/good_yg.html#from=wenzhangye">阳光车险</a>　<a target="_blank" href="http://baoxian.163.com/notice/12/1211/18/8IFCJ1VI00754JHD.html#from=wenzhangye">违章查询</a>　<a target="_blank" href="http://baoxian.163.com/car/calculator.html#from=wenzhangye">车险计算器</a></div></li>
+						
+						
+						<li class="clearfix"><label>非车险:</label><div><a target="_blank" href="http://baoxian.163.com/products/accident/#from=wenzhangye">意外伤害保险</a>　<a target="_blank" href="http://baoxian.163.com/products/travel/#from=wenzhangye">旅游保险</a>　<a target="_blank" href="http://baoxian.163.com/products/property/#from=wenzhangye">财产保险</a><br><a target="_blank" href="http://baoxian.163.com/products/health/#from=wenzhangye">重大疾病保险</a>　<a target="_blank" href="http://baoxian.163.com/products/life/#from=wenzhangye">人寿保险</a> </div></li>
+						<li class="clearfix"><label><a href="http://baoxian.163.com/products/accident/#from=wenzhangye" target="_blank">意外保险</a>:</label><div><a target="_blank" href="http://baoxian.163.com/products/accident-synthesize/#from=wenzhangye">人身意外险</a>　<a target="_blank" href="http://baoxian.163.com/products/travel/#from=wenzhangye">旅游意外险</a>　<a target="_blank" href="http://baoxian.163.com/products/accident-traffic/271-0-0.html#from=wenzhangye">航空意外险</a><br><a target="_blank" href="http://baoxian.163.com/products/accident-traffic/#from=wenzhangye">交通意外险</a>　<a href="http://baoxian.163.com/products/travel-domestic/101-0.html#from=wenzhangye" target="_blank">自驾意外险</a>　<a href="http://baoxian.163.com/activity/active_global120530.html#from=wenzhangye" target="_blank">综合意外险</a><br><a href="http://baoxian.163.com/products/accident-synthesize/241-0-0.html#from=wenzhangye" target="_blank">儿童意外险</a>　<a href="http://baoxian.163.com/products/accident-synthesize/242-0-0.html#from=wenzhangye" target="_blank">中老年人意外险</a>　<a href="http://baoxian.163.com/products/accident/#from=wenzhangye" target="_blank" rel="nofollow">更多</a></div></li>
+						<li class="clearfix"><label><a href="http://baoxian.163.com/products/travel/#from=wenzhangye" target="_blank">旅游保险</a>:</label><div><a target="_blank" href="http://baoxian.163.com/products/travel-foreign/#from=wenzhangye">境外旅游保险</a>　<a target="_blank" href="http://baoxian.163.com/products/travel-domestic/#from=wenzhangye">国内旅游意外险</a>　<a rel="nofollow" target="_blank" href="http://baoxian.163.com/products/travel/#from=wenzhangye">更多</a></div></li>
+						<li class="clearfix"><label><a href="http://baoxian.163.com/products/health/#from=wenzhangye" target="_blank">健康保险</a>:</label><div><a target="_blank" href="http://baoxian.163.com/products/health/301-0.html#from=wenzhangye">儿童保险</a>　<a target="_blank" href="http://baoxian.163.com/products/health/303-0.html#from=wenzhangye">老人保险</a>　<a target="_blank" href="http://baoxian.163.com/products/health/302-0.html#from=wenzhangye">女性疾病保险</a>　<a rel="nofollow" target="_blank" href="http://baoxian.163.com/products/health/#from=wenzhangye">更多</a></div></li>
+						<li class="clearfix"><label>热门问题:</label><div><a target="_blank" href="http://baoxian.163.com/car/buy_guide.html#from=wenzhangye">车险怎么买？</a>　<a target="_blank" href="http://baoxian.163.com/study/special/baoxian_study/#from=wenzhangye">如何买保险？</a>　<a target="_blank" href="http://baoxian.163.com/10yuan/#from=wenzhangye">保险10元店</a></div></li>
+					</ul>
+				</div>
+                <div class="mod-tab-panel">
+					<span class="blank12"></span>
+					<ul class="ds-linklist">
+						<li><iframe scrolling="no" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/index_hf2.html" frameborder="0" width="300" height="170"></iframe></li>
+						<li><a target="_blank" href="http://mall.163.com/mobile/fill.html#from=163text">网易商城，您身边24小时的联通电信移动营业厅</a></li>
+						<li><a target="_blank" href="http://mall.163.com/mobile/fill.html#from=163text">随时随地为您提供手机话费充值服务。</a></li>
+					</ul>
+				</div>
+				<div class="mod-tab-panel">
+					<span class="blank12"></span>
+					<ul class="ds-linklist ds-big-linklist">
+						<li class="clearfix"><label><a href="http://mall.163.com/game/queryGame.html" target="_blank">热门点卡</a>:</label><div><a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=16&listPrice=30">问道</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=263&listPrice=10">Q币</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=338&listPrice=10">穿越火线</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=10&listPrice=100">征途</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=3&listPrice=1">龙之谷</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=71&listPrice=30">56卡</a><br><a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=1">天龙八部2</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=68&listPrice=240">5914卡</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=23">跑跑卡丁车</a>　<a rel="nofollow" target="_blank" href="http://mall.163.com/game/queryGame.html" class="c_BA2636">更多</a></div></li>
+						<li class="clearfix"><label><a href="http://mall.163.com/game/queryGame.html" target="_blank">热门公司</a>:</label><div><a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=qq">腾讯</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=juren">巨人</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=shengda">盛大</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=sto_jinshan">金山</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=wanmei">完美</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=sohu">搜狐</a><br><a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=jiucheng_guangyu">九城</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=jiucheng_guangyu">光宇</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=jiuyou">久游</a>　<a target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=tiancity">世纪天成</a>　<a rel="nofollow" target="_blank" href="http://mall.163.com/game/queryGame.html?merchant=other" class="c_BA2636">更多</a></div></li>
+						<li class="clearfix"><label><a href="http://mall.163.com/game/queryGame.html" target="_blank">热门搜索</a>:</label><div><a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=17">热血传奇</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=5">武林外传</a>　<a target="_blank" href="http://mall.163.com/game/gamechargeform.html?gameId=7">赤壁</a></div></li>
+						<li class="clearfix"><label><a href="http://mall.163.com/game/queryGame.html#from=163text" target="_blank">热门游戏</a>:</label><div><a href="http://mall.163.com/game/queryGame.html#from=163text" target="_blank">网易游戏</a></div></li>
+					</ul>
+					<div class="ds-footlist">游戏充值:<a href="http://mall.163.com/game/queryGame.html#from=163text" target="_blank">三分钟内到账，点卡充值最低7折起</a></div>
+				</div>
+                
+				<div class="mod-tab-panel">
+					<div class="piao_art_wrap">
+						<ul class="piao_art_ul clearfix">
+                        	<li><h3>热门影院：</h3></li>
+							<li><em>北京：</em><span><a target="_blank" href="http://piao.163.com/cinema/1396.html#from=artfoot">嘉华国际影城</a><a target="_blank" href="http://piao.163.com/cinema/1393.html#from=artfoot">UME国际影城双井店</a></span></li>
+							<li><em>上海：</em><span><a target="_blank" href="http://piao.163.com/cinema/1832.html#from=artfoot">五角万达影城</a><a target="_blank" href="http://piao.163.com/cinema/1763.html#from=artfoot">博纳银兴国际影城</a></span></li>
+							<li><em>广州：</em><span><a target="_blank" href="http://piao.163.com/cinema/1501.html#from=artfoot">保利国际影城</a><a target="_blank" href="http://piao.163.com/cinema/1424.html#from=artfoot">华影星美国际影城</a></span></li>
+							<li><em>深圳：</em><span><a target="_blank" href="http://piao.163.com/cinema/1508.html#from=artfoot">宝安环星影城</a><a target="_blank" href="http://piao.163.com/cinema/1445.html#from=artfoot">中影今典国际影城</a></span></li>
+							<li><em>杭州：</em><span><a target="_blank" href="http://piao.163.com/cinema/1394.html#from=artfoot">新远国际影城</a><a target="_blank" href="http://piao.163.com/cinema/1440.html#from=artfoot">奥斯卡电影大世界</a></span></li>
+							<li><em>成都：</em><span><a target="_blank" href="http://piao.163.com/cinema/1458.html#from=artfoot">上影国际影城</a><a target="_blank" href="http://piao.163.com/cinema/1797.html#from=artfoot">橙天嘉禾影城凯丹店</a></span></li>
+						</ul>
+						<span class="piao_art_line"></span>
+						<p class="piao_art_p"><a target="_blank" href="http://piao.163.com/#from=artfoot">特价影票4折起</a><a target="_blank" href="http://piao.163.com/beijing/cinema/area-0-page-1-keywords-.html#from=artfoot">在线选座</a></p>
+						<span class="piao_art_line"></span>
+						<p class="piao_art_p"><a target="_blank" href="http://piao.163.com/iphone.html#from=artfoot">iphone客户端</a><a target="_blank" href="http://piao.163.com/android.html#from=artfoot">安卓客户端</a></p>
+					</div>
+				</div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        NTES.ready(function() {
+            new NTES.ui.Slide ($('#js-epTabDS .mod-tab-trigger'),$('#js-epTabDS .mod-tab-panel'),'current','mouseover');
+        });
+        </script>
+<!-- 频道3 跟贴点击 -->
+<div class="mod-tab ep-tab-2" id="js-epTabRank">
+            <div class="mod-tab-hd">
+                <div class="mod-tab-trigger current">点击排行</div>
+                <div class="mod-tab-trigger">跟贴排行</div>
+            </div>
+            <div class="mod-tab-bd box-h300">
+                <span class="blank20"></span>
+                <div class="mod-tab-panel current">
+                    <ul class="ep-dotlist ep-list-rank">
+                                                                        <li class="first"><span class="num">1</span><span class="count">144781</span><a href="http://tech.163.com/14/1125/02/ABS4NK1O000915BE.html">国产手机业发函维权 华为、中兴只谈专利</a></li>
+                                                <li><span class="num">2</span><span class="count">137327</span><a href="http://tech.163.com/14/1124/01/ABPGJ4HG000915BD.html">90后快递员的双十一</a></li>
+                                                <li><span class="num">3</span><span class="count">64786</span><a href="http://tech.163.com/14/1124/14/ABQSCCRD000915BD.html">腾讯大门遭泼漆 无耻二字是骂谁？</a></li>
+                                                <li><span class="num">4</span><span class="count">46704</span><a href="http://tech.163.com/14/1125/07/ABSL93PO000915BF.html">天猫商家挂真皮卖人造革 认定售假需5个工作日</a></li>
+                                                <li><span class="num">5</span><span class="count">43121</span><a href="http://tech.163.com/14/1124/15/ABQUORBF000915BF.html">小米新品发布：超薄移动电源 售49元</a></li>
+                                                <li><span class="num">6</span><span class="count">33054</span><a href="http://tech.163.com/14/1124/06/ABQ26782000915BE.html">翻盖手机的回归，可能是这种方式</a></li>
+                                                <li><span class="num">7</span><span class="count">29800</span><a href="http://tech.163.com/14/1124/11/ABQGDO72000915BD.html">人人影视遭查封内幕曝光</a></li>
+                                                <li><span class="num">8</span><span class="count">26992</span><a href="http://tech.163.com/14/1124/07/ABQ5D8EK000915BF.html">苹果在中国开起“1元店”</a></li>
+                                            </ul>
+                </div>
+                <div class="mod-tab-panel">
+                    <ul class="ep-dotlist ep-list-rank">
+                                                                        <li class="first"><span class="num">1</span><span class="count">2731</span><a href="http://tech.163.com/14/1125/11/ABT3AIS0000915BE.html">“月底流量清零案”二审：消费者败诉</a></li>
+                                                <li><span class="num">2</span><span class="count">2189</span><a href="http://tech.163.com/14/1125/02/ABS4NK1O000915BE.html">国产手机业发函维权 华为、中兴只谈专利</a></li>
+                                                <li><span class="num">3</span><span class="count">681</span><a href="http://tech.163.com/14/1125/09/ABSSD4FG000915BE.html">不及S4 三星Galaxy S5销量低于预期40%</a></li>
+                                                <li><span class="num">4</span><span class="count">628</span><a href="http://tech.163.com/14/1125/07/ABSL93PO000915BF.html">天猫商家挂真皮卖人造革 认定售假需5个工作日</a></li>
+                                                <li><span class="num">5</span><span class="count">614</span><a href="http://tech.163.com/14/1125/10/ABSVNC10000915BD.html">美科学家称核爆炸毁灭火星上文明</a></li>
+                                                <li><span class="num">6</span><span class="count">478</span><a href="http://tech.163.com/14/1125/09/ABSTA6F1000915BF.html">消息称小米与联发科合作暂停 官方回应不予置评</a></li>
+                                                <li><span class="num">7</span><span class="count">444</span><a href="http://tech.163.com/14/1125/02/ABS5KRMA000915BE.html">iPhone7 蓝宝石屏或河南造 富士康签地2千亩</a></li>
+                                                <li><span class="num">8</span><span class="count">409</span><a href="http://tech.163.com/14/1125/02/ABS4P7U4000915BE.html">华为预热5G：6亿美金仅是研发预算</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        NTES.ready(function() {
+            new NTES.ui.Slide ($('#js-epTabRank .mod-tab-trigger'),$('#js-epTabRank .mod-tab-panel'),'current','mouseover');
+        });
+        </script>
+<span class="blank9"></span>
+<!-- 博客论坛 -->
+<span class="ep-side-parting"></span>
+<div class="ep-title-2 clearfix" id="side_blogbbs_head">
+    <h2 class="title"><a href="http://tech.163.com/special/00092FUU/blog_tech.html">博客</a></h2>
+</div>
+<div id="side_blogbbs_body">
+<h2 class="ep-title-3"><a href="http://syj163tech.blog.163.com/blog/static/563960412013426114215491/">联想K900动了谁的奶酪所感</a></h2>
+<ul class="mod-f12list">
+    <li><a href="http://wklx1119.blog.163.com/blog/static/98426293201342712338464/">智能家电将引发芯片战略性危机</a></li>
+    <li><a href="http://sdjiaweb.blog.163.com/blog/static/2611485201342792823923/">阿里、百度、360合作：不只是爱情这么简单</a></li>
+    <li><a href="http://axiang0188.blog.163.com/blog/static/4687834201342793333941/">智能手机与平板电脑谁取代谁？</a></li>
+    <li><a href="http://3gshayu.blog.163.com/blog/static/93437958201342592054776/">静看“阿里浪“的碰撞</a></li>
+    <li><a href="http://sdjiaweb.blog.163.com/blog/static/2611485201342401114302/">团购集体转战商城模式</a></li>
+</ul>
+</div>
+        </div>
+    </div>
+    <span class="blank20"></span>
+         <script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/epshare_2.1.min.js"></script>
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/NeteaseShare_v4.1.js"></script>
+<script>
+//微博
+    (function() {
+        var options = {
+            sourceUrl: "http://tech.163.com/",
+            source: encodeURIComponent("网易科技"),
+            title: encodeURIComponent(document.title),
+            link: encodeURIComponent(document.location.href + '#sns_163')
+        };
+        NTES.ready(
+        function() {
+            WbApi.initShareTipsSm(options,"wb-article-share");
+            WbApi.initShareTipsSm(options,"wb-article-share-end");
+        });
+    })();
+//分享组件
+(function(){
+    var _filterHtml = function(str){
+        var container = document.createElement('div'),
+            filteredStr;
+        container.innerHTML = str;
+        filteredStr = container.innerText || container.textContent;
+        container = null;
+        return filteredStr;
+    },_param = {
+        title: 'Pinterest 陶涛：Pinterest系统架构的变迁 网易科技',
+         title_s: 'Pinterest 陶涛：Pinterest系统架构的变迁',         appkey: '3628156158',
+        ralateUid: '1905687615',
+            placeholder: ''
+    };
+    
+    NTES.ready(function() {
+        if(window._ntshare){
+            !_ntshare.fn.isInit && _ntshare.fn.init(_param);
+        }
+    });
+})();
+</script></div>
+ <a href="javascript:;" target="_self" id="btn-retweet" style="left: 284px; top: 911px; display: none;"></a>
+<script type="text/javascript">
+document.domain = '163.com';
+(function() {
+	var retweet = document.getElementById('btn-retweet'), timer, img;
+	$('#endText img').each(function() {
+		var self = this;
+		$(this).addEvent('mouseover', function(e) {
+			if(timer) {
+				clearTimeout(timer);
+			}
+			if(retweet && (self.width > 300 || self.height > 300)) {
+				var coords;
+				img = this,
+				coords = getCoords(img);
+				retweet.style.left = coords.left + 4 + 'px';
+				retweet.style.top = coords.top + img.clientHeight - 28 + 'px';
+				retweet.style.display = 'block';
+			}
+		}).addEvent('mouseout', function(e) {
+			timer = setTimeout(function() {
+				retweet.style.display = 'none';
+			}, 13);
+		});
+	});
+	$(retweet).addEvent('mouseover', function(e) {
+		if(timer) {
+			clearTimeout(timer);
+		}
+	}).addEvent('mouseout', function(e) {
+		retweet.style.display = 'none';
+	}).addEvent('click', function() {
+		var options = {
+			sourceUrl: "http://tech.163.com/",
+			source: encodeURIComponent("网易科技"),
+			title: encodeURIComponent("Pinterest 陶涛：Pinterest系统架构的变迁"),
+			link: encodeURIComponent(document.location.href),
+			images: function() { return img.src; },
+			togImg:true,
+			method: 'click',
+			keyfrom: 'share163tu.click'
+		};
+		WbApp.showPopWindow(options);
+		return false;
+	});
+})();
+</script>
+<script type="text/javascript">
+NTES.ready(function(NTES) {
+	function ShowDaren(ref, wrapper) {
+		var coords = getCoords(ref);
+		wrapper.style.display = 'none';
+		wrapper.style.top = coords.top + 'px';
+		wrapper.style.left = coords.left - 12 + 'px';
+		wrapper.style.display = 'block';
+	}
+	NTES.event.addEvent(NTES(".daren-keyword"), "mouseover", function() {
+		var self = this,
+			userid = this.getAttribute('userid'),
+			wrapperId = 'daren_w' + userid,
+			darenWrapper = document.getElementById(wrapperId);
+		if(darenWrapper) {
+			ShowDaren(self, darenWrapper);
+		} else {		
+			NTES.ajax.importJs('http://static.t.126.net/share/user/daren/' + userid + '.js', function() {				
+				darenWrapper = document.createElement('div');
+				darenWrapper.id = wrapperId;
+				darenWrapper.className = 'daren_w';
+				darenWrapper.innerHTML = '<div class="weibo-up-arr"></div><div class="daren-close" onclick="this.parentNode.style.display=\'none\'"></div>'
+					+ getWeiboDaren()
+					.replace('wb-article-folow', 'wb-article-minFolow') // 替换按钮样式
+					.replace(/wenzhang_dr/g, 'wenzhang_hc'); // 替换参数
+				darenWrapper.onmouseout = function(e) {
+					var evt = e? e: window.event,
+						target = evt.target? evt.target: evt.srcElement;
+				
+					if ( !evt.relatedTarget && evt.fromElement ) {
+						evt.relatedTarget = evt.fromElement == target ? evt.toElement : evt.fromElement;
+					}
+					var parent = evt.relatedTarget;
+					while ( parent && parent != this ) {
+						try { parent = parent.parentNode; }
+						catch(e) { parent = this; }
+					}
+					if( parent != this ){
+						this.style.display = 'none';
+					}
+				}
+				darenWrapper.onclick = function(e) {
+					var target;
+					e = e? e: window.event;
+					target = e.target? e.target: e.srcElement;
+					if(target.className.indexOf('talk-to') != -1) {
+						this.style.display = 'none';
+					}
+				}
+				document.body.appendChild(darenWrapper);
+				ShowDaren(self, darenWrapper);
+			}, 'utf-8');
+		}
+	});
+});
+</script><span class="blank20"></span>
+<div class="ep-area">
+        <!-- AD960x130_1 -->
+<div class="ep-area" id="conBtnForP2">
+<iframe src="about:blank" width="0" height="0" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 960px 130px;"></iframe>
+</div><!-- 页内底部通栏 -->
+</div>
+<style type="text/css">
+/* foot */
+#js_N_nav_footer{padding:28px 0 0;background:#F6F6F6;}
+.js_N_nav_footer_nav_fixed{position:fixed;z-index:1000;border-top:1px solid #ddd;width:100%;left:0;}
+.fixed-sitemap-main{width:960px;margin:0 auto;overflow:hidden;}
+.subfoot-wrap{width:100%;margin-top:80px;border-top:1px solid #ddd;background:#F6F6F6;}
+.subfoot-wrap .main{width:960px;margin:0 auto;position:relative;z-index:100;}
+.sitemap-ctrl{width: 100px;height:32px;cursor:pointer;position:absolute;right: 0;top: -34px;z-index:1000;border:1px solid #ddd;text-align: center;line-height: 32px;background-color:#f6f6f6;_display:none;}
+.sitemap-fixed-arr{position: absolute;z-index:10;left: 50%;top: 50%;margin-top: -2px;margin-left: -4px;border-color: transparent transparent #45454D transparent;border-style: dashed dashed solid;border-width: 0 4px 4px;font-size: 0;height: 0;width: 0;line-height: 0;}
+.sitemap-fix-circle{position:relative;z-index:9;margin:5px 5px 0 0;float:right;border:1px solid #d2d2d2;width:20px;height:20px;background:#fafafa;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;}
+.sitemap{margin-left:-12px;}
+.sitemap-logo{float:left;width:128px;height:71px;overflow:hidden;text-indent:-10em;margin-bottom:30px;background-position:left top;background-image:url(http://img4.cache.netease.com/www/v2013/img/bg_sprites.png);background-repeat:no-repeat;}
+.sitemap-info,.sitemap-con{float:left;_display:inline;width:150px;height:150px;margin-left:12px;margin-bottom:12px;}
+.sitemap-con{line-height:25px;background:#E8E8E8;}
+.sitemap-con:hover{background:#206F96;color:#fff;}
+.sitemap-con:hover a{color:#fff;}
+.sitemap-con strong{display:block;margin:6px 0 0 12px;}
+.sitemap-con strong a{width:auto;margin-left:0;}
+.sitemap-con a{display:inline-block;width:52px;margin-left:12px;white-space:nowrap;}
+.sitemap-icon{float:left;width:20px;height:21px;margin-right:11px;text-indent:-100em;}
+.sitemap-flink{height:40px;padding-right:9px;line-height:30px;border-bottom:1px solid #DEDEDE;text-align:right;}
+.subfoot{height:280px;padding-top:36px;border-top:1px solid #fff;}
+.subfoot-verify{float:left;margin-top:12px;}
+.subfoot-links{float:right;line-height:26px;margin-bottom:20px;}
+.subfoot-links td{padding-right:45px;vertical-align:top;}
+.subfoot-links a,.subfoot-links a:visited,.subfoot-links .text{display:block;white-space:nowrap;color:#666;}
+.subfoot-links a:hover{color:#ba2636;}
+.i-entry{background-image:url(http://img4.cache.netease.com/www/v2013/img/icon_v2.png);background-repeat:no-repeat;padding:2px 22px 2px 0;background-position:right -89px;}
+</style>
+<div class="subfoot-wrap JS_NTES_LOG_FE" data-module-name="xwwzy_44_bottomdaohang">
+    <div class="main">
+		<div id="js_N_nav_footer_trigger" class="sitemap-ctrl" style="position: fixed; left: 1098px; top: 632px;">
+		    <span class="sitemap-fix-circle"><i class="sitemap-fixed-arr"></i></span>全局导航
+		</div>
+		<div id="js_N_nav_footer" class="fixed-sitemap">
+		    <div class="fixed-sitemap-main">
+		        <div class="sitemap clearfix">
+		            <div class="sitemap-info">
+		                <a href="http://www.163.com/#f=endnav" class="sitemap-logo">网易 有态度</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://news.163.com/#f=endnav">新闻</a></strong>
+		                <a href="http://news.163.com/domestic/#f=endnav">国内</a> <a href="http://view.163.com/#f=endnav">评论</a> <a href="http://news.163.com/world/#f=endnav">国际</a> <a href="http://discovery.163.com/#f=endnav">探索</a> <a href="http://news.163.com/shehui/#f=endnav">社会</a> <a href="http://war.163.com/#f=endnav">军事</a> <a href="http://news.163.com/photo/#f=endnav">图片</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://sports.163.com/#f=endnav">体育</a></strong>
+		                <a href="http://sports.163.com/nba/#f=endnav">NBA</a> <a href="http://sports.163.com/cba/#f=endnav">CBA</a> <a href="http://sports.163.com/allsports/#f=endnav">综合</a> <a href="http://sports.163.com/zc/#f=endnav">中超</a> <a href="http://sports.163.com/world/#f=endnav">国际足球</a> <a href="http://sports.163.com/yc/#f=endnav">英超</a> <a href="http://sports.163.com/xj/#f=endnav">西甲</a> <a href="http://sports.163.com/yj/#f=endnav">意甲</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://ent.163.com/#f=endnav">娱乐</a></strong>
+		                <a href="http://ent.163.com/star/#f=endnav">明星</a> <a href="http://ent.163.com/photo/#f=endnav">图片</a> <a href="http://ent.163.com/movie/#f=endnav">电影</a> <a href="http://data.ent.163.com/#f=endnav">资料库</a> <a href="http://ent.163.com/tv/#f=endnav">电视</a> <a href="http://ent.163.com/music/#f=endnav">音乐</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://money.163.com/#f=endnav">财经</a></strong>
+		                <a href="http://money.163.com/stock/#f=endnav">股票</a> <a href="http://quotes.money.163.com/">行情</a> <a href="http://money.163.com/chanjing/#f=endnav">产经</a> <a href="http://money.163.com/ipo/#f=endnav">新股</a> <a href="http://money.163.com/finance/#f=endnav">金融</a> <a href="http://money.163.com/fund/#f=endnav">基金</a> <a href="http://biz.163.com/#f=endnav">商业</a> <a href="http://money.163.com/licai/#f=endnav">理财</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://auto.163.com/#f=endnav">汽车</a></strong>
+		                <a href="http://auto.163.com/buy/#f=endnav">购车</a> <a href="http://auto.163.com/depreciate/#f=endnav">行情</a> <a href="http://product.auto.163.com/#f=endnav">选车</a> <a href="http://product.auto.163.com/brand/#f=endnav">车型库</a> <a href="http://club.auto.163.com/#f=endnav">论坛</a> <a href="http://auto.163.com/news/#f=endnav">行业</a> <a href="http://auto.163.com/chezhu#f=endnav">用车</a> <a href="http://auto.163.com/photo/#f=endnav">汽车图片</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://tech.163.com/#f=endnav">科技</a></strong>
+		                <a href="http://tech.163.com/cnstock#f=endnav">中国概念股</a> <a href="http://tech.163.com/company/#f=endnav">科技企业库</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://lady.163.com/#f=endnav">女人</a></strong>
+		                <a href="http://baby.163.com/#f=endnav">亲子</a> <a href="http://fashion.163.com/art#f=endnav">艺术</a> <a href="http://fashion.163.com/#f=endnav">时尚</a> <a href="http://lady.163.com/astro/#f=endnav">星座</a> <a href="http://lady.163.com/sense/#f=endnav">情爱</a> <a href="http://cosmetic.lady.163.com/trial/#f=endnav">免费试用</a> <a href="http://lady.163.com/beauty/#f=endnav">美容</a> <a href="http://lady.163.com/photo/#f=endnav">女人图库</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://mobile.163.com/#f=endnav">手机</a>/<a href="http://digi.163.com/#f=endnav">数码</a></strong>
+		                <a href="http://mobile.163.com/mi/#f=endnav">移动</a> <a href="http://tech.163.com/digi/nb/#f=endnav">笔记本</a> <a href="http://product.mobile.163.com/#f=endnav">手机库</a> <a href="http://hea.163.com/#f=endnav">家电</a> <a href="http://club.tech.163.com/#f=endnav">手机论坛</a> <a href="http://digi.163.com/pad/#f=endnav">平板</a> <a href="http://tech.163.com/digi/dc/#f=endnav">相机</a><a href="http://v.mobile.163.com/#f=endnav">手机视频</a>
+		            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://house.163.com/#f=endnav">房产</a>/<a href="http://home.163.com/#f=endnav">家居</a></strong>
+		                <a href="http://bj.house.163.com/#f=endnav">北京房产</a> <a href="http://sh.house.163.com/#f=endnav">上海房产</a> <a href="http://gz.house.163.com/#f=endnav">广州房产</a> <a href="http://house.163.com/city/#f=endnav">全部分站</a> <a href="http://xf.house.163.com/#f=endnav">楼盘库</a> <a href="http://home.163.com/jiaju/#f=endnav">家具</a> <a href="http://home.163.com/weiyu/#f=endnav">卫浴</a> <a href="http://home.163.com/special/jiajuyigui/#f=endnav">衣柜</a>
+		            </div>
+            <div class="sitemap-con">
+                <strong><a href="http://travel.163.com/#f=endnav">旅游</a></strong>
+                <a href="http://travel.163.com/outdoor/#f=endnav">户外</a> <a href="http://guizhou.travel.163.com/#f=endnav">贵州</a> <a href="http://travel.163.com/food/#f=endnav">美食</a>
+                <a href="http://jingdian.travel.163.com/domestic/1000066937/#f=endnav">四川</a> <a href="http://jingdian.travel.163.com/#f=endnav">景点</a> <a href="http://jingdian.travel.163.com/domestic/1000066944/#f=endnav">新疆</a> <a href="http://travel.163.com/special/travellist/#f=endnav">专题</a> <a href="http://jingdian.travel.163.com/domestic/1000066926/#f=endnav">西藏</a>
+            </div>
+		            <div class="sitemap-con">
+		                <strong><a href="http://edu.163.com/#f=endnav">教育</a></strong>
+		                <a href="http://edu.163.com/yimin/#f=endnav">移民</a> <a href="http://edu.163.com/kaoyan/#f=endnav">考研</a> <a href="http://edu.163.com/liuxue/#f=endnav">留学</a> <a href="http://edu.163.com/special/official/#f=endnav">公务员</a> <a href="http://edu.163.com/en/#f=endnav">外语</a> <a href="http://kids.163.com/#f=endnav">中小学</a> <a href="http://edu.163.com/gaokao/#f=endnav">高考</a> <a href="http://daxue.163.com/#f=endnav">校园</a>
+		            </div>
+		        </div>
+		        <div class="sitemap-flink">
+		            <a href="http://sitemap.163.com/#f=endnav" class="i-entry">查看网易地图</a>
+		        </div>
+		    </div>
+		</div><div></div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+(function($, undefined){
+    var 
+        getElementHeight=function(elm){return elm.clientHeight||elm.offsetHeight||0},
+        getElementWidth=function(elm){return elm.clientWidth||elm.offsetWidth||0},
+        getElementPosition = function(a){var b=navigator.userAgent.toLowerCase();var c=(b.indexOf('opera')!=-1);var d=(b.indexOf('msie')!=-1&&!c);var e=typeof a=="string"?document.getElementById(a):a;if(e.parentNode===null||e.style.display=='none'){return false}var f=null;var g=[];var h;if(e.getBoundingClientRect){h=e.getBoundingClientRect();var i=Math.max(document.documentElement.scrollTop,document.body.scrollTop);var j=Math.max(document.documentElement.scrollLeft,document.body.scrollLeft);return{x:h.left+j,y:h.top+i}}else if(document.getBoxObjectFor){h=document.getBoxObjectFor(e);var k=(e.style.borderLeftWidth)?parseInt(e.style.borderLeftWidth):0;var l=(e.style.borderTopWidth)?parseInt(e.style.borderTopWidth):0;g=[h.x-k,h.y-l]}else{g=[e.offsetLeft,e.offsetTop];f=e.offsetParent;if(f!=e){while(f){g[0]+=f.offsetLeft;g[1]+=f.offsetTop;f=f.offsetParent}}if(b.indexOf('opera')!=-1||(b.indexOf('safari')!=-1&&e.style.position=='absolute')){g[0]-=document.body.offsetLeft;g[1]-=document.body.offsetTop}}if(e.parentNode){f=e.parentNode}else{f=null}while(f&&f.tagName!='BODY'&&f.tagName!='HTML'){g[0]-=f.scrollLeft;g[1]-=f.scrollTop;if(f.parentNode){f=f.parentNode}else{f=null}}return{x:g[0],y:g[1]}},
+        getViewHeight=function(){return document.all?document.getElementsByTagName("html")[0].offsetHeight:window.innerHeight},
+        getPageHeight=function(){return Math.max(getViewHeight(),document.getElementsByTagName("body")[0].scrollHeight)},
+        insertAfter = function(a,b){var c=b.parentNode;if(c.lastChild==b){c.appendChild(a)}else{c.insertBefore(a,b.nextSibling)}},
+        removeElement = function(a){var b=a.parentNode;b&&b.removeChild(a)},
+        getPageScrollTop = function(){
+            return Nbd.scrollTop || document.documentElement.scrollTop;
+        },
+        extend = NTES.util.extend,
+        emptyFunc = function(){},
+        isIE6 = !!NTES.browser.msie && (NTES.browser.version == "6.0"),
+        
+        console = typeof console == "undefined" ? (console = {}, console.log = emptyFunc, console) : console,
+        
+        /*
+         * default configs
+         */
+        duration = 0,
+        boundary = 0,
+        triggerShowClass = "js_N_nav_footer_trigger_show",
+        footerNavFixedClass = "js_N_nav_footer_nav_fixed",
+        globalNavSelector = "#js_N_nav_footer",
+        globalNavTriggerSelector = "#js_N_nav_footer_trigger",
+        onGlobalNavFixedChange = emptyFunc,
+        autoBindTrigger = false,
+        /*
+         * default apis
+         */
+        
+        defaultsInterface = {
+            destory: emptyFunc,
+            update: emptyFunc,
+            fixGlobalNav: emptyFunc
+        },
+        
+        
+        
+        /*
+         * private member
+         */
+        hasFixed = false,
+        triggerHasFixed = false,
+        keepFixed = false,
+        
+        scrollTimer = null,
+        Nwin = null,
+        Nbd = null,
+        footerNav = null,
+        footerNavTrigger = null,
+        footerNavPlaceholder = null,
+        triggerElm = null,
+        footerNavElm = null,
+        
+        viewHeight = 0,
+        pageHeight = 0,
+        footerNavHeight = 0,
+        
+        scrollHandler = emptyFunc,
+        resizeHandler = emptyFunc,
+        triggerClickHander = emptyFunc,
+        
+        footerNavTriggerPostion = {x: 0, y: 0},
+        footerNavPosition = {x:0, y: 0},
+        lastScrollTop = 0,
+        
+        
+        
+        init = function(configs){
+            
+            
+            
+            if(isIE6){
+                return false;
+            }
+            
+            Nwin = $(window);
+            Nbd = document.body;
+            
+            
+            /*
+             * make config
+             */
+            configs = configs || {};
+            onGlobalNavFixed = configs.onGlobalNavFixed || emptyFunc;
+            triggerShowClass = configs.triggerShowClass || triggerShowClass;
+            footerNavFixedClass = configs.footerNavFixedClass || footerNavFixedClass;
+            footerNav = $(configs.globalNavSelector || globalNavSelector);
+            footerNavTrigger = $( configs.globalNavTriggerSelector || globalNavTriggerSelector);
+            autoBindTrigger = configs.autoBindTrigger || autoBindTrigger;
+            onGlobalNavFixedChange = configs.onGlobalNavFixedChange || onGlobalNavFixedChange;
+            
+            footerNavPlaceholder = document.createElement("div");
+            insertAfter(footerNavPlaceholder, footerNav);
+            triggerElm = footerNavTrigger.get(0);
+            footerNavElm = footerNav.get(0);
+            
+            
+            viewHeight = getViewHeight();
+            pageHeight = getPageHeight();
+            
+            footerNavHeight = getElementHeight(footerNav);
+            footerNavTriggerHeight = 33;
+                    
+            footerNavTriggerPostion = getElementPosition(triggerElm);
+            footerNavPosition = getElementPosition(footerNavElm);
+            
+            //init position info
+            hasFixed = false;
+            triggerHasFixed = false;
+            
+            //Nbd.scrollTop = lastScrollTop;
+            setTriggerPosition();
+            keepFixed && setGlobalNavPosition();
+            
+            
+            bindEvent();
+            
+            return true;        
+        },
+        bindEvent = function(){
+            
+            var setTimer = function(fn){
+                    if(duration){
+                        scrollTimer = setTimeout(function(){fn()}, duration);
+                        return;
+                    }
+                    fn();
+                };
+            scrollHandler = function(e){
+                lastScrollTop = getPageScrollTop();
+                if(scrollTimer){
+                    clearTimer();
+                    return;
+                }
+                setTimer(function(){
+                    
+                    //reset trigger and nav postion
+                    !keepFixed && setTriggerPosition();
+                    keepFixed && setGlobalNavPosition();
+                    clearTimer();
+                });
+            };
+            resizeHandler = function(){
+                update();
+            };
+            triggerClickHander = function(){
+                if(hasFixed){
+                    keepFixed = false;
+                    setGlobalNavPosition(true, true);
+                    footerNavTrigger.removeCss("sitemap-ctrl-active");
+                    return;
+                }
+                keepFixed = true;
+                setGlobalNavPosition(true, false);
+                footerNavTrigger.addCss("sitemap-ctrl-active");
+            };
+            Nwin.addEvent("scroll", scrollHandler);
+            Nwin.addEvent("resize", resizeHandler);
+            autoBindTrigger && footerNavTrigger.addEvent("click", triggerClickHander);
+            
+        },
+        
+        setTriggerPosition = function(force, clear){
+            var detectY = getPageScrollTop() + viewHeight + boundary - footerNavTriggerHeight,
+                resetTriggerTop = 0;
+                
+            if((force && clear) || !keepFixed && (detectY >= footerNavTriggerPostion.y)){
+                if(!triggerHasFixed){
+                    return;
+                }
+                triggerHasFixed = false;
+                clearTriggerFix();
+                return;
+            }
+            
+            if((force && !clear) || (detectY < footerNavTriggerPostion.y)){
+                if(triggerHasFixed && !force){
+                    return;
+                }
+                triggerHasFixed = true;
+                
+                triggerElm.style.position = "fixed";
+                triggerElm.style.left =  footerNavTriggerPostion.x + "px";
+                
+                resetTriggerTop = viewHeight - boundary - footerNavTriggerHeight;
+                
+                if(hasFixed ){
+                    triggerElm.style.top = (resetTriggerTop - footerNavHeight) + "px";
+                }else{
+                    triggerElm.style.top = resetTriggerTop + "px";
+                }
+            }
+            
+        },
+        setGlobalNavPosition = function(force, clear){
+            var detectY = getPageScrollTop() + viewHeight + boundary - footerNavHeight;
+            
+            if((force && clear) || (detectY >= footerNavPosition.y)){
+                
+                if(!hasFixed){
+                    return;
+                }else{
+                    globlNavFixChange(false);
+                }
+                clearGlobalFix();
+                
+                return;
+                
+            }
+            if((force && !clear) || (detectY < footerNavPosition.y)){
+                if(hasFixed){
+                    return;
+                }else{
+                    globlNavFixChange(true);
+                }
+                
+                footerNavPlaceholder.style.height = footerNavHeight + "px";
+                footerNav.addCss(footerNavFixedClass);
+                footerNavElm.style.top = (viewHeight - footerNavHeight) + "px";
+            }
+            
+        },
+        
+        clearTriggerFix = function(){
+            triggerElm.style.position = "";
+            triggerElm.style.left =  "";
+            triggerElm.style.top = "";
+        },
+        clearGlobalFix = function(){
+            footerNavPlaceholder.style.height = "";
+            footerNav.removeCss(footerNavFixedClass);
+            footerNavElm.style.top = "";
+        },
+        
+        globlNavFixChange = function(fix){
+            hasFixed = !!fix;
+            setTriggerPosition(true, keepFixed ? !hasFixed: hasFixed);
+            onGlobalNavFixedChange(hasFixed);
+        },
+        
+        
+        clearTimer = function(){
+            if(scrollTimer){
+                clearTimeout(scrollTimer);
+                scrollTimer = null;
+            }
+        },
+        
+        update = function(){
+            destory();
+            init();
+        },
+        destory = function(){
+            clearTimer();
+            Nwin.removeEvent("scroll", scrollHandler);
+            Nwin.removeEvent("resize", resizeHandler);
+            autoBindTrigger && footerNavTrigger.removeEvent("click", triggerClickHander);
+            
+            clearGlobalFix();
+            clearTriggerFix();
+            
+            removeElement(footerNavPlaceholder);
+            
+        };
+        
+        NTES.plugin = NTES.plugin || {};
+        NTES.plugin.globalFixedNav = function(configs){
+            
+            
+            if(init(configs)){
+                defaultsInterface = extend(defaultsInterface, {
+                    destory: function(){
+                        destory();
+                    },
+                    update: function(){
+                        update();
+                    },
+                    fixGlobalNav: function(fix){
+                        keepFixed = !!fix;
+                        setGlobalNavPosition(true, !keepFixed);
+                    }
+                    
+                });     
+            };
+            
+            //once been instanced, destory export api;
+            NTES.plugin.globalFixedNav = emptyFunc;
+            
+            return defaultsInterface;
+            
+        };
+        
+        NTES.ready(function(){
+            
+            //for test
+            window.gf = NTES.plugin.globalFixedNav({
+                duration: 0,
+                boundary: 0,
+                triggerShowClass: "js_N_nav_footer_trigger_show",
+                footerNavFixedClass: "js_N_nav_footer_nav_fixed",
+                globalNavSelector: "#js_N_nav_footer",
+                globalNavTriggerSelector: "#js_N_nav_footer_trigger",
+                onGlobalNavFixedChange: function(beFixed){
+                    console.log(beFixed);
+                },
+                autoBindTrigger: true
+                
+            });
+        });
+})(NTES);
+//]]>
+</script><div class="N-nav-bottom">
+    <div class="N-nav-bottom-main">
+        <span class="N-nav-bottom-copyright"><span class="N-nav-bottom-copyright-icon">&#169;</span> 1997-2014 网易公司版权所有</span> <a href="http://corp.163.com/">About NetEase</a> | <a href="http://gb.corp.163.com/gb/about/overview.html">公司简介</a> | <a href="http://gb.corp.163.com/gb/contactus.html">联系方法</a> | <a href="http://corp.163.com/gb/job/job.html">招聘信息</a> | <a href="http://help.163.com/">客户服务</a> | <a href="http://gb.corp.163.com/gb/legal.html">隐私政策</a> | <a href="http://emarketing.biz.163.com/">广告服务</a> | <a href="http://sitemap.163.com/">网站地图</a> | <a href="http://t.163.com/zt/feedback">意见反馈</a> | <a href="http://www.bjjubao.org/index.htm">不良信息举报</a>
+    </div>
+</div>
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/eptools_1.1.min.js"></script>
+<!--滚动条联动浮层投放代码开始-->
+<!-- <script language="javascript"> 
+var liandong_rdm=parseInt(Math.random()*2+1);
+if(liandong_rdm==1){
+adInfoTempGdtld = 
+{
+ jpg:"http://img1.126.net/channel3/017106_100300gm_140817.jpg",
+ swf:"http://img1.126.net/channel3/017106_100300gm_140817.swf",
+ url:"http://g.163.com/a?CID=29957&Values=3728534339&Redirect=http://a777.oadz.com/link/C/777/8199/837ejLCFxSfqMt0Vm6Vxt0t9fi4_/p074/0/http://prom.gome.com.cn/html/prodhtml/topics/201408/chb/dfbigwar18_08.html?cmpid=ad_163_c-t1_3_0_1_0_20140804_sy_o_o"
+}
+document.write('<scr'+'ipt type="text/javascript" src="http://img2.126.net/ntesrich/auto/gdtld/gdtldBox-v2.0.3-140317.js"></scr'+'ipt>');
+}
+if(liandong_rdm==2){
+adInfoTempGdtld = 
+{
+ jpg:"http://img1.126.net/channel3/017106_100300gm_140817.jpg",
+ swf:"http://img1.126.net/channel3/017106_100300gm_140817.swf",
+ url:"http://g.163.com/a?CID=29957&Values=3728534339&Redirect=http://a777.oadz.com/link/C/777/8199/837ejLCFxSfqMt0Vm6Vxt0t9fi4_/p074/0/http://prom.gome.com.cn/html/prodhtml/topics/201408/chb/dfbigwar18_08.html?cmpid=ad_163_c-t1_3_0_1_0_20140804_sy_o_o"
+}
+document.write('<scr'+'ipt type="text/javascript" src="http://img2.126.net/ntesrich/auto/gdtld/gdtldBox-v2.0.3-140317.js"></scr'+'ipt>');
+}
+</script> -->
+<!--滚动条联动浮层投放代码结束-->
+<!-- 触发式擎天柱广告-->
+<script type="text/javascript">
+	var chufa_rdm=Math.random();
+	chufa_rdm=Math.ceil(chufa_rdm*2);
+	if(chufa_rdm==1){
+adInfoTempCfqtz = 
+{
+src1:"http://img1.126.net/channel5/018248/100600a_141117.swf", 
+src2:"http://img1.126.net/channel5/018248/100250a_141117.swf",
+url:"http://g.163.com/a?CID=31776&Values=2757793358&Redirect=http://mlt01.com/c.htm?pv=1&sp=0,1191752,1193032,2211025,0,1,1&target=http://men.163.com/special/sunjian_home/",
+ key:"aosnxo5xxden1"
+}
+document.write('<scr'+'ipt type="text/javascript" src="http://img2.126.net/ntesrich/auto/cfqtz/cfqtzBox-v2.0.5-140317.js"></scr'+'ipt>');
+}	
+</script><script type="text/javascript" src="http://img2.126.net/ntesrich/auto/cfqtz/cfqtzBox-v2.0.5-140317.js"></script> 
+<!-- 触发式擎天柱广告--> 
+<!-- ad end  -->
+<!-- ad end common -->
+<script language="JavaScript">
+var cpm_rdm=Math.random();
+</script>
+<!--018149 可控视频开始 -->
+<script type="text/javascript">
+adInfoTempSc = 
+{
+	src:"http://img2.126.net/ntesrich/2014/1111/1415695822617_nuya.swf",
+	url:"http://g.163.com/a?CID=31885&Values=1169674011&Redirect=http://www.163.com/taidu  ",
+	key:"7201367901415696565813958"
+}
+if(cpm_rdm>0.2 && cpm_rdm<0.4){
+document.write('<scr'+'ipt type="text/javascript" src="http://img2.126.net/ntesrich/auto/sc/scbox-v1.1.9-130507.js"></scr'+'ipt>');
+}
+</script>
+<!--018149 可控视频结束-->
+<!--五分之一视窗 017144-->
+<script type="text/javascript">
+adInfoTempSc = 
+{
+	src:"http://img2.126.net/ntesrich/2014/1030/1414658021256_27ei.swf",
+	url:"http://g.163.com/a?CID=31045&Values=1409633214&Redirect=http://bsch.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=20&mc=click&pli=11160979&PluID=0&ord=[timestamp]",
+	key:"68623821414659014087137"
+}
+if(cpm_rdm>0.6&&cpm_rdm<0.8){
+document.write('<scr'+'ipt type="text/javascript" src="http://img2.126.net/ntesrich/auto/sc/scbox-v1.1.9-130507.js"></scr'+'ipt>');
+}
+</script>
+<!--五分之一视窗 017144--><!-- 延长线广告自动投放代码 -->
+<script type="text/javascript">
+adInfoTempHq = 
+{
+ src1:"http://img1.126.net/channel18/018164/bmw590600_1119.jpg",
+ src2:"http://img1.126.net/channel18/018164/bmw300600_1119.jpg",
+ url1:"http://g.163.com/a?CID=31535&Values=688492787&Redirect=http://c.admaster.com.cn/c/a23773,b200573449,c1327,i0,m101,h",
+ url2:"http://g.163.com/a?CID=31535&Values=688492787&Redirect=http://c.admaster.com.cn/c/a23773,b200573449,c1327,i0,m101,h"
+}
+</script>
+<script language="javascript" src="http://img2.126.net/ntesrich/auto/hq/hqbox-v1.0.45-131226_img.js"></script>
+<!--延长线广告自动投放代码结束-->
+<!-- standby合同延长线广告自动投放代码 -->
+<!-- <script type="text/javascript">
+adInfoTempHq = 
+{
+ src1:'<iframe frameborder="0" marginheight="0" marginwidth="0" border="0"  width="590" height="600" src="http://img1.126.net/channel1/html/ycx_590600_1202.html"></iframe>',
+ src2:'<iframe frameborder="0" marginheight="0" marginwidth="0" border="0"  width="300" height="600" src="http://img1.126.net/channel1/html/ycx_300600_1202.html"></iframe>',
+ url1:"",
+ url2:""
+}//http://img2.126.net/ntesrich/auto/hq/
+</script>
+<script language="javascript" src="http://img2.126.net/ntesrich/auto/hq/hqbox-v1.0.45-131205_iframe.js"></script> -->
+<!--延长线广告自动投放代码结束-->
+<!-- START WRating v1.0 -->
+<script type="text/javascript" src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/wrating.js">
+</script>
+<script type="text/javascript">
+var vjAcc="860010-0509010000";
+var wrUrl="http://163.wrating.com/";
+vjTrack();
+</script><div style="display:none"><img src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/a.gif" id="wrTagImage" width="1" height="1"></div>
+<noscript>&lt;img src="http://163.wrating.com/a.gif?a=&amp;c=860010-0509010000" width="1" height="1"/&gt;</noscript>
+<!-- END WRating v1.0 -->
+<!-- NetEase Analytics code 2006-06-27 -->
+<script src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/ntes.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    _ntes_nacc = "tech"; //站点ID。
+    neteaseTracker();
+</script>
+<!-- big data statistics -->
+<!-- big data analysis -->
+<script src="./Pinterest 陶涛：Pinterest系统架构的变迁_网易科技_files/analysis.350ctAoOoFtN.3.js"></script>
+
+<div id="js_passportUserNameList" class="ntes-domain-selector" style="display: none; left: 0px; top: 0px;"><div class="ntes-domain-selector-main"><table width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td class="ntes-domain-selector-title">请选择或继续输入...</td></tr><tr><td></td><td></td></tr></tbody></table></div><iframe src="javascript:'';" style=" z-index:1008;width:100%;height:0px;display:block  " frameborder="0"></iframe></div><div style="width:100%;" id="passport_helper_div"></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

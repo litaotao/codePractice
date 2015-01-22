@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0040)http://www.hao32.com/unix-linux/462.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="generator" content="WordPress 3.5.1"> <!-- leave this for stats -->
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/style.css">
+    <!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="http://www.hao32.com/wp-content/themes/wp-simply-06/main-msie.css" /><![endif]-->
+    <link rel="stylesheet" media="screen,projection" type="text/css" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/scheme.css">
+    <link rel="stylesheet" media="print" type="text/css" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/print.css">
+    <link rel="alternate" type="application/rss+xml" title="hao32的个人日志 RSS Feed" href="http://www.hao32.com/feed">
+    <link rel="pingback" href="http://www.hao32.com/xmlrpc.php">
+
+    <title>  配置文件~/.ssh/config和/etc/ssh/ssh_config - hao32的个人日志</title>
+
+<link rel="alternate" type="application/rss+xml" title="hao32的个人日志 » 配置文件~/.ssh/config和/etc/ssh/ssh_config 评论 Feed" href="http://www.hao32.com/unix-linux/462.html/feed">
+<link rel="stylesheet" id="NextGEN-css" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/nggallery.css" type="text/css" media="screen">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/pagenavi-css.css" type="text/css" media="all">
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/jquery.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/jquery.cycle.all.min.js"></script>
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/ngg.slideshow.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.hao32.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.hao32.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="解决nginx莫名奇妙的“Resource temporarily unavailable”" href="http://www.hao32.com/webserver/459.html">
+<link rel="next" title="解决类似”package libstdc++-4.3.0-8.x86_64 (which is newer than libstdc++-4.1.2-46.el5_4.2.i386) is already installed“的问题" href="http://www.hao32.com/unix-linux/464.html">
+<meta name="generator" content="WordPress 3.5.1">
+<link rel="canonical" href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志.htm">
+<link rel="shortlink" href="http://www.hao32.com/?p=462">
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/audio-player.js"></script>
+<script type="text/javascript">AudioPlayer.setup("http://www.hao32.com/wp-content/plugins/audio-player/assets/player.swf?ver=2.0.4.6", {width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"E5E5E5",text:"333333",leftbg:"CCCCCC",lefticon:"333333",volslider:"666666",voltrack:"FFFFFF",rightbg:"B4B4B4",rightbghover:"999999",righticon:"333333",righticonhover:"FFFFFF",track:"FFFFFF",loader:"009900",border:"CCCCCC",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script><style type="text/css" media="screen">p.audioplayer_container span {visibility:hidden;height:24px;overflow:hidden;padding:0;border:none;}</style>
+	<style type="text/css">
+
+	.page_navigation {
+		padding: 5px;
+	}
+
+	.page_navigation img {
+		padding: 0 7px;
+	}
+	</style><link rel="stylesheet" href="http://www.hao32.com/wp-content/plugins/coolcode/coolcode.css">
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/coolcode.js"></script>
+
+	<!-- Added By Highslide Plugin. Version 1.28  -->
+	<link href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/highslide.css" rel="stylesheet" type="text/css">
+				<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/highslide.js"></script>
+				<script type="text/javascript">
+				hs.showCredits = false;
+	 			hs.graphicsDir = 'http://www.hao32.com/wp-content/plugins/highslide/graphics/';
+	    		hs.outlineType = 'rounded-white';
+			</script><!-- <meta name="NextGEN" version="1.9.12" /> -->
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'http://dtmvdvtzf8rz0.cloudfront.net/static/';
+	window._wp_rp_wp_ajax_url = "http://www.hao32.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '2.7';
+	window._wp_rp_post_id = '462';
+	window._wp_rp_num_rel_posts = '5';
+	window._wp_rp_blog_id = '2693805';
+	window._wp_rp_ajax_img_src_url = 'http://t.related-posts.com/pageview/?';
+	window._wp_rp_thumbnails = true;
+	window._wp_rp_post_title = '%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%7E%2F.ssh%2Fconfig%E5%92%8C%2Fetc%2Fssh%2Fssh_config';
+	window._wp_rp_post_tags = ['.ssh', 'known_hosts', 'ssh_config', 'unix%2Flinux', 'hat'];
+	window._wp_rp_remote_recommendations = false;
+	window._wp_rp_promoted_content = true;
+	window._wp_rp_traffic_exchange = false;
+</script>
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/pageview.js" async=""></script>
+<link rel="stylesheet" href="http://dtmvdvtzf8rz0.cloudfront.net/static/wp-rp-css/vertical-m.css?version=2.7">
+</head>
+
+<body>
+
+<!-- Header -->
+<div id="header" class="box">
+    <div class="main">
+
+        <!-- Your logo -->
+        <h1 id="logo"><a href="http://www.hao32.com/">hao32的个人日志</a></h1>
+        <hr class="noscreen">
+
+        <!-- Hidden navigation -->
+        <p class="noscreen noprint"><em>Quick links: <a href="http://www.hao32.com/unix-linux/462.html#content">content</a>, <a href="http://www.hao32.com/unix-linux/462.html#nav">navigation</a>, <a href="http://www.hao32.com/unix-linux/462.html#search">search</a>.</em></p>
+
+        <!-- Search -->
+        <fieldset id="search">
+            <form action="http://www.hao32.com/" method="get">
+                <div>
+                    <span class="noscreen">Fulltext:</span>
+                    <div id="search-input"><input type="text" size="30" value="" name="s" id="s"></div>
+                    <input type="image" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/inp-search-submit.gif" value="Search" name="" id="search-submit">
+                </div>
+            </form>
+        </fieldset>
+
+    </div> <!-- /main -->
+</div> <!-- /header -->
+
+<div class="main bg box">
+
+    <!-- Navigation -->
+    <div id="nav" class="box">
+
+        <h3 class="noscreen">Navigation</h3>    
+
+        <ul>
+            <li class="current_page_item"><a href="http://www.hao32.com/">Home</a></li> <!-- Active page (highlighted) -->
+
+	<li class="cat-item cat-item-15"><a href="http://www.hao32.com/category/webserver" title="web服务器构架等相关技术">Server构架</a>
+</li>
+	<li class="cat-item cat-item-27"><a href="http://www.hao32.com/category/unix-linux" title="Unix/Linux的学习笔记">Unix/Linux</a>
+</li>
+	<li class="cat-item cat-item-22"><a href="http://www.hao32.com/category/web-program" title="php程序,html,js,ajax等web应用">Web程序</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.hao32.com/category/blog" title="个人记述 个人日志">个人思绪</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://www.hao32.com/category/images" title="图片欣赏">图片欣赏</a>
+</li>
+	<li class="cat-item cat-item-152"><a href="http://www.hao32.com/category/everything" title="乱七八糟的文章, 什么都涉及">杂七杂八</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.hao32.com/category/articles" title="精选网志">精美网文</a>
+</li>
+
+        </ul>
+    <hr class="noscreen">
+    </div> <!-- /nav -->
+
+    <!-- 2 columns (Content + Sidebar) -->
+    <div class="box">
+
+        <!-- Content -->
+        <div id="content">
+
+			
+        
+        <!-- Article -->
+
+        <div class="article">
+        <div class="navigation">
+			<div class="f-left">« <a href="http://www.hao32.com/webserver/459.html" rel="prev">解决nginx莫名奇妙的“Resource temporarily unavailable”</a></div>
+			<div class="f-right"><a href="http://www.hao32.com/unix-linux/464.html" rel="next">解决类似”package libstdc++-4.3.0-8.x86_64 (which is newer than libstdc++-4.1.2-46.el5_4.2.i386) is already installed“的问题</a> »</div>
+		</div>
+            <div class="info box">
+
+                <p class="f-right"><a href="http://www.hao32.com/unix-linux/462.html#comments" class="ico-comment">尚且没有评论 »</a></p>
+                <h2><a href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志.htm" rel="bookmark" title="Permanent Link to 配置文件~/.ssh/config和/etc/ssh/ssh_config">配置文件~/.ssh/config和/etc/ssh/ssh_config</a></h2>
+            </div><!-- /info -->               
+
+            <p class="date"><span>14. 01.</span></p>
+            <p>一般不需要修改OpenSSH客户端配置文件。对于给定用户，共有两个配置文件，分别是~/.ssh/config（用户专用）和/etc/ssh/ssh_config（全局共享）。要按照该顺序读取这些文件，对于给定的某个参数，它使用的是读取过程中发现的第一个配置。用户可以通过以下方式将全局参数设置覆盖掉：在自己的配置文件中设置同样的参数。在ssh或scp命令行上给出的参数的优先级要高于这两个文件中所设置的参数的优先级。</p>
+<p>用户的~/.ssh/config文件必须由该用户所有（他是目录"~/"的所有者），并且除了所有者之外任何人都不能写入该文件。否则客户端就会给出一条错误消息然后退出。这个文件的模式通常被设为600，这是因为除了它的所有者之外任何人都没有理由能够去读取它。</p>
+<p>这些配置文件中的配置行包含着声明，这些声明均以某个关键字（不区分大小写）开头，后面是空白，最后是参数（区分大小写）。</p>
+<p>可以使用关键字Host来使声明只作用于特定的系统。Host声明作用于它与下一个Host声明之间的所有配置行。在主机名中，可以使用通配符*和?。</p>
+<p>Host hostnames</p>
+<p>将下面的声明（</p>
+<p>直到下一条Host声明）都指定为只适用于hostnames。hostnames采用的格式应该与在命令行上所用的格式一样，而且也能够包含通配符*和?。单个*指定所有主机。</p>
+<p>CheckHostIP yes|no</p>
+<p><span id="more-462"></span></p>
+<p>如果将其设置为yes（默认值），那么除了主机名之外，还可以采用IP地址来识别known_hosts文件中的某个系统。若设置为no，则只能使用主机名。</p>
+<p>ForwardX11 yes|no</p>
+<p>如果设置为yes，则自动通过一条安全通道以不可信模式来转发X11连接，并设置shell变量DISPLAY。也可以在命令行上使用选项"-X"以不可信模式重定向X11连接。这个参数的默认值是no。要想让X11转发起作用，还必须将服务器上的/etc/sshd_config文件中的X11Forwarding设置为yes。更多信息请参见1.6节的"X11转发"部分。</p>
+<p>ForwardX11Trusted yes | no</p>
+<p>如果设置为yes，那么自动通过一条安</p>
+<p>全通道以可信模式来转发X11连接，并设置shell变量DISPLAY。也可以在命令行上使用选项"-Y"以不可信模式重定向X11连接。这个参数的默认值是no，但是Red Hat Linux将其设置为yes。要想让X11转发起作用，还必须将服务器上的/etc/sshd_config文件中的X11Forwarding设置为yes。更多信息请参见1.6节的"X11转发"部分。</p>
+<p>HostbasedAuthentication yes | no</p>
+<p>若设置为yes，则尝试着进行rhosts身份验证。对于安全要求更高的系统，请将其设置为no（默认值）。</p>
+<p>HostKeyAlgorithms algorithms</p>
+<p>其中algorithms是一个由逗号隔开的算法列表，客户端按照优先级顺序依次使用这些算法。从ssh-rsa或ssh-dss中选择算法（默认值为"ssh-rsa, ssh-dss"）。</p>
+<p>TCPKeepAlive yes | no</p>
+<p>如果设置为yes（默认值），就定期检查连接是否存活。如果服务器崩溃或者由于其他原因导致连接死掉，那么这种检查将会导致ssh或scp连接中断，即便只是暂时的。若将这个参数设置为no，则会导致客户端不去检查连接是否存活。</p>
+<p>这项声明用到了TCP keepalive选项，它不可加密，并且容易受到IP欺骗（IP Spoofing）。如果希望采用能够防止IP欺骗的替代选项，可以采用基于服务器的相关技术，请参见1.4.6节的"ClientAliveInterval"部分。</p>
+<p>StrictHostKeyChecking yes | no | ask</p>
+<p>决定OpenSSH是否将主机密钥添加到用户的known_hosts文件中以及如何添加。如果设置为ask（默认值），那么在连接新系统时会询问是否添加主机密钥；如果设置为no，就会自动添加主机密钥；如果设置为yes，就要求手工添加主机密钥。若将参数设置yes或ask，则当某系统的主机密钥发生改变之后，OpenSSH会拒绝连接到该系统。对于安全性要求较高的系统，请将此参数设置为yes或ask。</p>
+<p>User name</p>
+<p>指定登录系统时所用的用户名。用Host声明来指定系统。该选项意味着，在远程系统上登录时，如果使用的用户名不同于在本地系统上登录所用的用户名，那么不必在命令行上输入用户名。、</p>
+<p><strong>很有用的两个参数，可以解决多个系统共享单个IP时的登陆冲突，不用每次去修改或者删除known_hosts文件了：</strong></p>
+<blockquote><p>
+StrictHostKeyChecking no<br>
+UserKnownHostsFile /dev/null
+</p></blockquote>
+
+<div class="wp_rp_wrap  wp_rp_vertical_m" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关日志</h3><ul class="related_post wp_rp" style="visibility: visible"><li data-position="0" data-poid="in-491" data-post-type="none"><a href="http://www.hao32.com/unix-linux/491.html" class="wp_rp_thumbnail"><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/13.jpg" alt="解决ssh登陆主机认证慢的问题"></a><a href="http://www.hao32.com/unix-linux/491.html" class="wp_rp_title">解决ssh登陆主机认证慢的问题</a></li><li data-position="1" data-poid="in-335" data-post-type="none"><a href="http://www.hao32.com/webserver/335.html" class="wp_rp_thumbnail"><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/16.jpg" alt="CentOS默认服务解释"></a><a href="http://www.hao32.com/webserver/335.html" class="wp_rp_title">CentOS默认服务解释</a></li><li data-position="2" data-poid="in-385" data-post-type="none"><a href="http://www.hao32.com/unix-linux/385.html" class="wp_rp_thumbnail"><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/29.jpg" alt="解决编译内核时出现’No module dm-mem-cache found for kernel’"></a><a href="http://www.hao32.com/unix-linux/385.html" class="wp_rp_title">解决编译内核时出现’No module dm-mem-cache found for kernel’</a></li><li data-position="3" data-poid="in-452" data-post-type="none"><a href="http://www.hao32.com/webserver/452.html" class="wp_rp_thumbnail"><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/14.jpg" alt="linux下vpn server搭建（PPTP）"></a><a href="http://www.hao32.com/webserver/452.html" class="wp_rp_title">linux下vpn server搭建（PPTP）</a></li><li data-position="4" data-poid="in-47" data-post-type="none"><a href="http://www.hao32.com/webserver/47.html" class="wp_rp_thumbnail"><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/25.jpg" alt="针对中小型网站的服务器架构(三)"></a><a href="http://www.hao32.com/webserver/47.html" class="wp_rp_title">针对中小型网站的服务器架构(三)</a></li></ul></div></div>
+            <hr class="noscreen"> 
+作者: <a href="http://www.hao32.com/">hao32</a> | 可以转载, 转载时务必以超链接形式标明文章<a href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志.htm">原始出处</a>和作者信息及版权声明<br>
+网址：<a href="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志.htm">http://www.hao32.com/unix-linux/462.html</a>             
+            <!-- /article -->
+
+            <!-- Comments -->     
+                        <p>Tags: <a href="http://www.hao32.com/tags/ssh" rel="tag">.ssh</a>, <a href="http://www.hao32.com/tags/known_hosts" rel="tag">known_hosts</a>, <a href="http://www.hao32.com/tags/ssh_config" rel="tag">ssh_config</a></p>
+				<p class="postmetadata alt">
+						本文发表于
+						 星期四 2010-01-14  11:46						属于分类 <a href="http://www.hao32.com/category/unix-linux" title="查看 Unix/Linux 中的全部文章" rel="category tag">Unix/Linux</a>.
+						You can follow any responses to this entry through the <a href="http://www.hao32.com/unix-linux/462.html/feed">RSS 2.0</a> feed.
+
+													You can <a href="http://www.hao32.com/unix-linux/462.html#respond">leave a response</a>, or <a href="http://www.hao32.com/unix-linux/462.html/trackback" rel="trackback">trackback</a> from your own site.
+
+										</p>
+
+	
+<!-- You can start editing here. -->
+
+	
+		<!-- If comments are open, but there are no comments. -->
+
+	 
+
+
+    <div id="commentbox">
+    
+        <h3>发表评论: </h3>
+    
+                
+        <form action="http://www.hao32.com/wp-comments-post.php" method="post" id="commentform">
+        
+                
+        <p><input type="text" name="author" id="author" value="" size="22" tabindex="1" class="inp-border">
+        
+        <label for="author"><small>姓名 (必填)</small></label></p>
+        
+        <p><input type="text" name="email" id="email" value="" size="22" tabindex="2" class="inp-border">
+        
+        <label for="email"><small>电子邮件(不会被公开) (必填)</small></label></p>
+        
+        <p><input type="text" name="url" id="url" value="" size="22" tabindex="3" class="inp-border">
+        
+        <label for="url"><small>网站</small></label></p>
+        
+                
+        <!-- <p><small><strong>XHTML:</strong> You can use these tags: <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></small></p> --> 
+        
+        <p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4" class="inp-border"></textarea></p>
+        
+        <p class="nom"><input name="submit" type="submit" tabindex="5" value="发表评论">
+        
+        <input type="hidden" name="comment_post_ID" value="462">
+        
+        </p>
+        
+        <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="1219cbcc58"></p>    
+
+        </form>
+    
+    </div>
+
+
+
+	       
+               
+
+        </div> <!-- /article -->
+
+        </div> <!-- /content -->
+
+        <hr class="noscreen">
+
+        <!-- Sidebar -->
+        <div id="aside">
+
+            <!-- About me -->            
+            <h3 class="title">About me</h3>
+
+            <div class="aside-padding smaller box">
+                <p><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/francis120.jpg" alt="" class="f-left">
+                <strong>hao32</strong><br>
+                Age: 28<br>
+                System Man, Beijing<br>
+<br><br></p><p>
+Mail me: loveshula#gmail.com<br><br>
+Feed url: http://www.hao32.com/feed
+<!--
+<a target="_blank" href="http://feed.hao32.com"><img border="0" src="http://www.feedsky.com/feed/hao32/sc/gif" /></a>
+ 要<font color="red">
+<b>订阅</b>
+</font>
+吗?
+-->                
+            </p></div> <!-- /aside-padding -->
+
+<h3 class="title">标签</h3><div class="aside-padding box"><div class="tagcloud"><a href="http://www.hao32.com/tags/ssh" class="tag-link-301" title="2 个话题" style="font-size: 11.6pt;">.ssh</a>
+<a href="http://www.hao32.com/tags/bash" class="tag-link-32" title="3 个话题" style="font-size: 14pt;">bash</a>
+<a href="http://www.hao32.com/tags/bash%e6%89%b9%e9%87%8f%e4%bf%ae%e6%94%b9%e6%96%87%e4%bb%b6%e5%90%8d" class="tag-link-16" title="1 个话题" style="font-size: 8pt;">bash批量修改文件名</a>
+<a href="http://www.hao32.com/tags/curl" class="tag-link-173" title="2 个话题" style="font-size: 11.6pt;">curl</a>
+<a href="http://www.hao32.com/tags/fastcgi" class="tag-link-40" title="1 个话题" style="font-size: 8pt;">fastcgi</a>
+<a href="http://www.hao32.com/tags/first-day-of-spring" class="tag-link-23" title="1 个话题" style="font-size: 8pt;">First Day Of Spring</a>
+<a href="http://www.hao32.com/tags/freebsd" class="tag-link-96" title="3 个话题" style="font-size: 14pt;">freebsd</a>
+<a href="http://www.hao32.com/tags/google-%e5%b8%82%e5%9c%ba%e4%bb%bd%e9%a2%9d%e4%b8%8b%e9%99%8d" class="tag-link-17" title="1 个话题" style="font-size: 8pt;">Google 市场份额下降</a>
+<a href="http://www.hao32.com/tags/libcurl" class="tag-link-172" title="2 个话题" style="font-size: 11.6pt;">libcurl</a>
+<a href="http://www.hao32.com/tags/linux" class="tag-link-86" title="3 个话题" style="font-size: 14pt;">linux</a>
+<a href="http://www.hao32.com/tags/linux-qq" class="tag-link-62" title="3 个话题" style="font-size: 14pt;">linux qq</a>
+<a href="http://www.hao32.com/tags/lmysqlclient" class="tag-link-107" title="2 个话题" style="font-size: 11.6pt;">lmysqlclient</a>
+<a href="http://www.hao32.com/tags/moophp" class="tag-link-89" title="8 个话题" style="font-size: 21pt;">MooPHP</a>
+<a href="http://www.hao32.com/tags/nginx" class="tag-link-39" title="9 个话题" style="font-size: 22pt;">nginx</a>
+<a href="http://www.hao32.com/tags/php" class="tag-link-178" title="2 个话题" style="font-size: 11.6pt;">PHP</a>
+<a href="http://www.hao32.com/tags/php-curl" class="tag-link-175" title="2 个话题" style="font-size: 11.6pt;">php curl</a>
+<a href="http://www.hao32.com/tags/qq-for-linux" class="tag-link-61" title="3 个话题" style="font-size: 14pt;">qq for linux</a>
+<a href="http://www.hao32.com/tags/rsync" class="tag-link-84" title="2 个话题" style="font-size: 11.6pt;">rsync</a>
+<a href="http://www.hao32.com/tags/sourceforge" class="tag-link-102" title="2 个话题" style="font-size: 11.6pt;">SourceForge</a>
+<a href="http://www.hao32.com/tags/ss5" class="tag-link-72" title="2 个话题" style="font-size: 11.6pt;">ss5</a>
+<a href="http://www.hao32.com/tags/subversion" class="tag-link-118" title="2 个话题" style="font-size: 11.6pt;">subversion</a>
+<a href="http://www.hao32.com/tags/tomcat" class="tag-link-14" title="1 个话题" style="font-size: 8pt;">tomcat</a>
+<a href="http://www.hao32.com/tags/unix-linux" class="tag-link-27" title="2 个话题" style="font-size: 11.6pt;">Unix/Linux</a>
+<a href="http://www.hao32.com/tags/vsftpd" class="tag-link-50" title="4 个话题" style="font-size: 16pt;">vsftpd</a>
+<a href="http://www.hao32.com/tags/yum" class="tag-link-143" title="4 个话题" style="font-size: 16pt;">yum</a>
+<a href="http://www.hao32.com/tags/%e4%ba%ba%e7%94%9f%e5%93%b2%e7%90%86%e7%9a%84%e6%95%85%e4%ba%8b" class="tag-link-13" title="1 个话题" style="font-size: 8pt;">人生哲理的故事</a>
+<a href="http://www.hao32.com/tags/%e5%85%a8%e5%ae%b6%e7%a6%8f" class="tag-link-34" title="1 个话题" style="font-size: 8pt;">全家福</a>
+<a href="http://www.hao32.com/tags/%e5%8d%97%e5%8c%97%e6%88%98%e4%ba%89" class="tag-link-36" title="1 个话题" style="font-size: 8pt;">南北战争</a>
+<a href="http://www.hao32.com/tags/%e5%93%a5%e6%9e%97%e5%a4%9a%e5%89%8d%e4%b9%a6" class="tag-link-31" title="1 个话题" style="font-size: 8pt;">哥林多前书</a>
+<a href="http://www.hao32.com/tags/%e5%9c%a3%e7%bb%8f" class="tag-link-10" title="3 个话题" style="font-size: 14pt;">圣经</a>
+<a href="http://www.hao32.com/tags/%e5%be%aa%e7%8e%af" class="tag-link-122" title="2 个话题" style="font-size: 11.6pt;">循环</a>
+<a href="http://www.hao32.com/tags/%e6%83%85%e7%97%b4" class="tag-link-9" title="1 个话题" style="font-size: 8pt;">情痴</a>
+<a href="http://www.hao32.com/tags/%e6%84%9f%e6%83%85" class="tag-link-233" title="2 个话题" style="font-size: 11.6pt;">感情</a>
+<a href="http://www.hao32.com/tags/%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%9e%84%e6%9e%b6" class="tag-link-53" title="4 个话题" style="font-size: 16pt;">服务器构架</a>
+<a href="http://www.hao32.com/tags/%e6%af%9b%e7%89%87" class="tag-link-5" title="1 个话题" style="font-size: 8pt;">毛片</a>
+<a href="http://www.hao32.com/tags/%e6%b0%b4%e6%8c%87%e7%94%b2" class="tag-link-309" title="5 个话题" style="font-size: 17.6pt;">水指甲</a>
+<a href="http://www.hao32.com/tags/%e7%88%b1%e4%b8%bb" class="tag-link-25" title="1 个话题" style="font-size: 8pt;">爱主</a>
+<a href="http://www.hao32.com/tags/%e7%88%b9%e5%a8%98" class="tag-link-33" title="1 个话题" style="font-size: 8pt;">爹娘</a>
+<a href="http://www.hao32.com/tags/%e7%be%8e%e4%b8%bd%e7%9a%84%e5%9b%be%e7%89%87" class="tag-link-24" title="1 个话题" style="font-size: 8pt;">美丽的图片</a>
+<a href="http://www.hao32.com/tags/%e8%82%96%e6%81%a9%e5%85%8b" class="tag-link-38" title="1 个话题" style="font-size: 8pt;">肖恩克</a>
+<a href="http://www.hao32.com/tags/%e8%82%96%e6%81%a9%e5%85%8b%e7%9a%84%e6%95%91%e8%b5%8e" class="tag-link-37" title="1 个话题" style="font-size: 8pt;">肖恩克的救赎</a>
+<a href="http://www.hao32.com/tags/%e8%a5%bf%e7%82%b9%e5%86%9b%e6%a0%a1" class="tag-link-35" title="1 个话题" style="font-size: 8pt;">西点军校</a>
+<a href="http://www.hao32.com/tags/%e8%bf%87%e5%b9%b4" class="tag-link-11" title="1 个话题" style="font-size: 8pt;">过年</a>
+<a href="http://www.hao32.com/tags/%e9%9d%99" class="tag-link-192" title="2 个话题" style="font-size: 11.6pt;">静</a>
+<a href="http://www.hao32.com/tags/%e9%bb%84%e5%b1%b1%e6%9d%be%e5%8f%b6%e8%90%bd%e5%8f%b6%e6%9d%be%e5%b1%b1%e9%bb%84" class="tag-link-12" title="1 个话题" style="font-size: 8pt;">黄山松叶落叶松山黄</a></div>
+</div><h3 class="title">链接</h3><div class="aside-padding box">
+	<ul class="xoxo blogroll">
+<li><a href="http://www.webarchs.net/" target="_blank">Chancey's Blog</a></li>
+<li><a href="http://www.linuxsense.org/" title="linux基础知识" target="_blank">LinuxSense</a></li>
+<li><a href="http://www.wooyun.org/" title="剑心的我晕~" target="_blank">WooYun</a></li>
+<li><a href="http://www.ccvita.com/" rel="friend met co-worker sweetheart" title="kimi的blog站" target="_blank">平凡的世界</a></li>
+<li><a href="http://www.chengyongxu.com/blog/" title="系统工程师程永旭的博客" target="_blank">征程无限</a></li>
+<li><a href="http://www.kuaixiang.net/" rel="friend" target="_blank">快享</a></li>
+<li><a href="http://www.guiwan.net/" target="_blank">桂玩网</a></li>
+<li><a href="http://www.54wuhen.com/" rel="friend" target="_blank">萧过无痕的栖息地</a></li>
+
+	</ul>
+</div>
+
+        </div> <!-- /aside -->    
+    
+    </div> <!-- /box -->
+
+    <hr class="noscreen">
+
+
+    <!-- Footer -->
+    <div id="footer" class="box">
+        <p>Copyright © 2014 <a href="http://www.hao32.com/" title="hao32的个人日志"><strong>hao32的个人日志</strong></a>. 
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-4857115-2");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script type="text/javascript" src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/tongji.js"></script><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/tongji.do" border="0" width="1" height="1"><noscript>&lt;a href="http://www.linezing.com"&gt;&lt;img src="http://img.tongji.linezing.com/1201909/tongji.gif"/&gt;&lt;/a&gt;</noscript>
+<strong>黔ICP备05003621号</strong></p>
+    </div> <!-- /footer -->
+
+</div> <!-- /main -->
+ 
+    WARNING: Failed to daemonise.  This is quite common and not fatal.
+<br>
+<b>Warning</b>:  fsockopen() [<a href="http://www.hao32.com/unix-linux/function.fsockopen">function.fsockopen</a>]: unable to connect to 27.120.113.142:53 (Connection refused) in <b>/www/wwwroot/hao32.com/wp-content/themes/wp-simply-06/footer.php</b> on line <b>74</b><br>
+Connection refused (111)
+<div style="padding: 0px; border: none; margin: 0px; position: absolute; left: 0px; top: 0px; width: 100%; z-index: 1001;"><a class="highslide-loading" title="Click to cancel" style="position: absolute; opacity: 0.75; left: -9999px; z-index: 1;">Loading...</a><table cellspacing="0" style="padding: 0px; border: none; margin: 0px; visibility: hidden; position: absolute; border-collapse: collapse;"><tbody style="padding: 0px; border: none; margin: 0px;"><tr style="padding: 0px; border: none; margin: 0px; height: auto;"><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) 0px 0px;"></td><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) 0px -40px;"></td><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) -20px 0px;"></td></tr><tr style="padding: 0px; border: none; margin: 0px; height: auto;"><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) 0px -80px;"></td><td class="rounded-white" style="padding: 0px; border: none; margin: 0px; position: relative;"></td><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) -20px -80px;"></td></tr><tr style="padding: 0px; border: none; margin: 0px; height: auto;"><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) 0px -20px;"></td><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) 0px -60px;"></td><td style="padding: 0px; border: none; margin: 0px; line-height: 0; font-size: 0px; height: 20px; width: 20px; background: url(http://www.hao32.com/wp-content/plugins/highslide/graphics/outlines/rounded-white.png) -20px -20px;"></td></tr></tbody></table><img src="./配置文件~ .ssh config和 etc ssh ssh_config - hao32的个人日志_files/rounded-white.png" style="padding: 0px; border: none; margin: 0px; position: absolute; left: -9999px; top: -9999px;"></div></body></html>

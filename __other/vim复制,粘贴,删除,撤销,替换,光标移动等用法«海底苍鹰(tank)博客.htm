@@ -1,0 +1,845 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0037)http://blog.51yip.com/linux/1140.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="zh-CN"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta property="qc:admins" content="1161332111106375">	
+<meta property="wb:webmaster" content="b1906381053a1c93">
+
+
+<link rel="canonical" href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客.htm"><meta name="keywords" content="linux,nano,vi,vim,使用指南,参考手册">
+<meta name="description" content="vim复制,粘贴,删除,撤销,替换,光标移动等用法">
+	<title>  vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客</title>
+<meta name="google-site-verification" content="Z1PF5NCqkdtwbxzUTwlOmG4skCjHJETmCtJKx7U4s4E">
+	<link rel="stylesheet" href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/style.css" type="text/css" media="screen">
+  <link rel="shortcut icon" type="image/ico" href="http://blog.51yip.com/linux/favicon.ico">
+	<link rel="alternate" type="application/rss+xml" title="海底苍鹰(tank)博客 RSS Feed" href="http://blog.51yip.com/feed">
+	<link rel="alternate" type="application/atom+xml" title="海底苍鹰(tank)博客 Atom Feed" href="http://blog.51yip.com/feed/atom">
+	<link rel="pingback" href="http://blog.51yip.com/xmlrpc.php">
+	<!--<link rel="author" href="https://plus.google.com/113380862708536382046" />-->
+		<link rel="archives" title="2015年一月" href="http://blog.51yip.com/date/2015/01">
+	<link rel="archives" title="2014年十二月" href="http://blog.51yip.com/date/2014/12">
+	<link rel="archives" title="2014年十一月" href="http://blog.51yip.com/date/2014/11">
+	<link rel="archives" title="2014年十月" href="http://blog.51yip.com/date/2014/10">
+	<link rel="archives" title="2014年九月" href="http://blog.51yip.com/date/2014/09">
+	<link rel="archives" title="2014年八月" href="http://blog.51yip.com/date/2014/08">
+	<link rel="archives" title="2014年七月" href="http://blog.51yip.com/date/2014/07">
+	<link rel="archives" title="2014年六月" href="http://blog.51yip.com/date/2014/06">
+	<link rel="archives" title="2014年五月" href="http://blog.51yip.com/date/2014/05">
+	<link rel="archives" title="2014年四月" href="http://blog.51yip.com/date/2014/04">
+	<link rel="archives" title="2014年三月" href="http://blog.51yip.com/date/2014/03">
+	<link rel="archives" title="2014年二月" href="http://blog.51yip.com/date/2014/02">
+	<link rel="archives" title="2013年十二月" href="http://blog.51yip.com/date/2013/12">
+	<link rel="archives" title="2013年十一月" href="http://blog.51yip.com/date/2013/11">
+	<link rel="archives" title="2013年十月" href="http://blog.51yip.com/date/2013/10">
+	<link rel="archives" title="2013年九月" href="http://blog.51yip.com/date/2013/09">
+	<link rel="archives" title="2013年八月" href="http://blog.51yip.com/date/2013/08">
+	<link rel="archives" title="2013年七月" href="http://blog.51yip.com/date/2013/07">
+	<link rel="archives" title="2013年六月" href="http://blog.51yip.com/date/2013/06">
+	<link rel="archives" title="2013年五月" href="http://blog.51yip.com/date/2013/05">
+	<link rel="archives" title="2013年四月" href="http://blog.51yip.com/date/2013/04">
+	<link rel="archives" title="2013年三月" href="http://blog.51yip.com/date/2013/03">
+	<link rel="archives" title="2013年二月" href="http://blog.51yip.com/date/2013/02">
+	<link rel="archives" title="2013年一月" href="http://blog.51yip.com/date/2013/01">
+	<link rel="archives" title="2012年十二月" href="http://blog.51yip.com/date/2012/12">
+	<link rel="archives" title="2012年十一月" href="http://blog.51yip.com/date/2012/11">
+	<link rel="archives" title="2012年十月" href="http://blog.51yip.com/date/2012/10">
+	<link rel="archives" title="2012年九月" href="http://blog.51yip.com/date/2012/09">
+	<link rel="archives" title="2012年八月" href="http://blog.51yip.com/date/2012/08">
+	<link rel="archives" title="2012年七月" href="http://blog.51yip.com/date/2012/07">
+	<link rel="archives" title="2012年六月" href="http://blog.51yip.com/date/2012/06">
+	<link rel="archives" title="2012年五月" href="http://blog.51yip.com/date/2012/05">
+	<link rel="archives" title="2012年四月" href="http://blog.51yip.com/date/2012/04">
+	<link rel="archives" title="2012年三月" href="http://blog.51yip.com/date/2012/03">
+	<link rel="archives" title="2012年二月" href="http://blog.51yip.com/date/2012/02">
+	<link rel="archives" title="2012年一月" href="http://blog.51yip.com/date/2012/01">
+	<link rel="archives" title="2011年十二月" href="http://blog.51yip.com/date/2011/12">
+	<link rel="archives" title="2011年十一月" href="http://blog.51yip.com/date/2011/11">
+	<link rel="archives" title="2011年十月" href="http://blog.51yip.com/date/2011/10">
+	<link rel="archives" title="2011年九月" href="http://blog.51yip.com/date/2011/09">
+	<link rel="archives" title="2011年八月" href="http://blog.51yip.com/date/2011/08">
+	<link rel="archives" title="2011年七月" href="http://blog.51yip.com/date/2011/07">
+	<link rel="archives" title="2011年六月" href="http://blog.51yip.com/date/2011/06">
+	<link rel="archives" title="2011年五月" href="http://blog.51yip.com/date/2011/05">
+	<link rel="archives" title="2011年四月" href="http://blog.51yip.com/date/2011/04">
+	<link rel="archives" title="2011年三月" href="http://blog.51yip.com/date/2011/03">
+	<link rel="archives" title="2011年二月" href="http://blog.51yip.com/date/2011/02">
+	<link rel="archives" title="2011年一月" href="http://blog.51yip.com/date/2011/01">
+	<link rel="archives" title="2010年十二月" href="http://blog.51yip.com/date/2010/12">
+	<link rel="archives" title="2010年十一月" href="http://blog.51yip.com/date/2010/11">
+	<link rel="archives" title="2010年十月" href="http://blog.51yip.com/date/2010/10">
+	<link rel="archives" title="2010年九月" href="http://blog.51yip.com/date/2010/09">
+	<link rel="archives" title="2010年八月" href="http://blog.51yip.com/date/2010/08">
+	<link rel="archives" title="2010年七月" href="http://blog.51yip.com/date/2010/07">
+	<link rel="archives" title="2010年六月" href="http://blog.51yip.com/date/2010/06">
+	<link rel="archives" title="2010年五月" href="http://blog.51yip.com/date/2010/05">
+	<link rel="archives" title="2010年四月" href="http://blog.51yip.com/date/2010/04">
+	<link rel="archives" title="2010年三月" href="http://blog.51yip.com/date/2010/03">
+	<link rel="archives" title="2010年二月" href="http://blog.51yip.com/date/2010/02">
+  	  
+  
+	
+	<link rel="alternate" type="application/rss+xml" title="海底苍鹰(tank)博客 » vim复制,粘贴,删除,撤销,替换,光标移动等用法 评论 Feed" href="http://blog.51yip.com/linux/1140.html/feed">
+<link rel="stylesheet" id="wp-pagenavi-css" href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/pagenavi-css.css" type="text/css" media="">
+<script type="text/javascript" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/jquery.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/comment-reply.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.51yip.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.51yip.com/wp-includes/wlwmanifest.xml"> 
+<link rel="index" title="海底苍鹰(tank)博客" href="http://blog.51yip.com/">
+<link rel="start" title="linux  eclipse 安装  php 插件安装" href="http://blog.51yip.com/eclipse/15.html">
+<link rel="prev" title="xampp innodb disable 解决方法" href="http://blog.51yip.com/linux/1139.html">
+<link rel="next" title="centos fluxbox 安装,个性化配置" href="http://blog.51yip.com/linux/1141.html">
+<meta name="generator" content="WordPress 2.9.1">
+<link rel="canonical" href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客.htm">
+	<link href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/SyntaxHighlighter.css" type="text/css" rel="stylesheet">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<link href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/logger.js"></script></head>
+
+<body><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://blog.51yip.com/linux/1140.html#" class="bds_more">更多...</a></li></ul><p><a href="http://blog.51yip.com/linux/1140.html#" class="goWebsite">百度分享</a></p></div></div></div>
+
+<div id="wrapper">
+
+	<div id="header">
+
+		<div class="headerwrap">
+
+			<div id="logo">
+								<h2><a href="http://blog.51yip.com/" title="－－一步，二步，三步，N步，二行脚印">海底苍鹰(tank)博客</a></h2>
+							</div>
+
+			<div id="search">
+				<form method="get" id="searchform" action="http://blog.51yip.com/">
+	<div>
+		<input type="text" value="" name="s" id="s">
+		<input type="submit" id="searchsubmit" value="Search">
+	</div>
+</form>			</div>
+
+
+      
+			<div id="description">
+				<h3>－－一步，二步，三步，N步，二行脚印</h3>
+			</div>
+
+      <div id="blackband_top_right">
+        <h2>
+        <ul id="dropmenu">
+        <li class="page_item_3"><a href="http://blog.51yip.com/feed" title="rss订阅"><img src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/rss.jpg"></a></li>
+          <li class="page_item"><a href="http://blog.51yip.com/donate" title="赞助本站">赞助本站</a></li>
+          <li class="page_item"><a href="http://blog.51yip.com/aboutme" title="海底苍鹰(tank)博客">关于我</a></li>
+          <!--<li class="page_item"><a href="http://blog.51yip.com/tag-page" title="标签页">标签页</a></li>-->
+          <li class="page_item"><a href="http://blog.51yip.com/message" title="留言板">留言板</a></li>      
+          <li class="page_item"><a href="http://manual.51yip.com/" title="开发手册">开发手册</a></li>
+          <li class="page_item"><a href="http://linux.51yip.com/" target="_black" title="linux命令手册">linux命令</a></li>
+          <li class="page_item"><a href="http://blog.51yip.com/" title="海底苍鹰(tank)博客">首页</a></li>
+        </ul>
+        </h2>
+      </div>
+      
+      
+		</div>
+
+	</div>
+
+	<div id="page">
+
+		<div class="columns">
+
+<div id="content">
+
+	
+	<div class="posts">
+
+<div class="navigation">
+	<div class="alignleft">&lt;&lt; <a href="http://blog.51yip.com/linux/1141.html" rel="next">centos fluxbox 安装,个性化配置</a></div>
+	<div class="alignright"><a href="http://blog.51yip.com/linux/1139.html" rel="prev">xampp innodb disable 解决方法</a> &gt;&gt;</div>
+	
+</div>
+<div style="clear:both;"></div>
+<div class="navigation_line"></div>
+		<div class="post-1140 post hentry category-linux tag-linux tag-nano tag-vi tag-vim tag-423 tag-422" id="post-1140">
+
+
+
+
+			<div class="title">
+				 <h1 class="title entry-title">vim复制,粘贴,删除,撤销,替换,光标移动等用法</h1>
+			</div>
+
+			<div class="meta">
+				<p><span class="vcard author"><span class="fn">张映</span></span> 发表于 <span class="date updated">2010-11-30</span></p>
+				<p>分类目录： <a href="http://blog.51yip.com/category/linux" title="查看 linux 的全部文章" rel="category tag">linux</a></p>
+				<p>标签：<a href="http://blog.51yip.com/tag/linux" rel="tag">linux</a>, <a href="http://blog.51yip.com/tag/nano" rel="tag">nano</a>, <a href="http://blog.51yip.com/tag/vi" rel="tag">vi</a>, <a href="http://blog.51yip.com/tag/vim" rel="tag">vim</a>, <a href="http://blog.51yip.com/tag/%e4%bd%bf%e7%94%a8%e6%8c%87%e5%8d%97" rel="tag">使用指南</a>, <a href="http://blog.51yip.com/tag/%e5%8f%82%e8%80%83%e6%89%8b%e5%86%8c" rel="tag">参考手册</a></p>			</div>
+			
+			<div class="entry">
+				<p>我接触linux的时候，用的是nano这个文本编辑器，个人觉得他的最大优点就是方便，快速。打开文件，修改文件，到退出都十分的快速，简单。这一点上比vi,vim要强，但是nano不能显示彩色字，不能进行整行删除，编辑各种配置文件的时候，总感觉不是很方便。针对于nano的这些缺点，vim可以很好的解决，并且vim打开文件，里面的字是有颜色的，这一点根editplus,eclipse是一样的，对于做程序的来说，就比较爽了。下面的操作，<span style="color: #800080;"><strong>都是命令状态下进行的，不要进入插入状态了，如果进入了插入状态，[Esc]退出输入状态</strong></span></p>
+<p><span style="color: #000000;"><strong>一，光标移动</strong></span></p>
+<p>大家不要觉得光标移动不重要，其实它是基础，更好的光标移动，复制，粘贴，删除等才能更加的得心应手，进入了编辑器里面后，鼠标就不能用了。</p>
+<p><span id="more-1140"></span></p>
+<table width="100%">
+<tbody style="font-weight: bold;">
+<tr>
+<th colspan="2">光标移动</th>
+</tr>
+<tr>
+<td width="30%">h 或 向左箭头键(←)<p></p>
+<p>20h或者20(←)</p></td>
+<td>光标向左移动一个字符<p></p>
+<p>光标向左移动20个字符,</p></td>
+</tr>
+<tr>
+<td>j 或 向下箭头键(↓)<p></p>
+<p>20j或者20(↓)</p></td>
+<td>光标向下移动一行<p></p>
+<p>光标向下移动20行,</p></td>
+</tr>
+<tr>
+<td>k 或 向上箭头键(↑)<p></p>
+<p>20k或者20(↑)</p></td>
+<td>光标向上移动一行<p></p>
+<p>光标向上移动20行,</p></td>
+</tr>
+<tr>
+<td>l 或 向右箭头键(→)<p></p>
+<p>20l或者20(→)</p></td>
+<td>光标向右移动一个字符<p></p>
+<p>光标向右移动20字符,</p></td>
+</tr>
+<tr>
+<td colspan="2">在这里要注意一点的是,<span style="color: #ff0000;"><strong>不要用小键盘输入数字,不然就会直接输入模式了</strong></span>.个人觉得掌握上面的这些,基本上能满足我们对光标移动的要求了,看下图<p></p>
+<div id="attachment_1143" class="wp-caption alignnone" style="width: 310px"><a href="http://blog.51yip.com/wp-content/uploads/2010/11/vim.jpg"><img class="size-medium wp-image-1143" title="vim" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim-300x141.jpg" alt="vim" width="300" height="141"></a><p class="wp-caption-text">vim</p></div>
+<p><span style="color: #800080;">我们可以根据编辑器右下角的数字来判断,我们要跳转到哪一行，如果想更精确的话，:set nu 设置一下环境变量，让它显示行号是最好的<br>
+</span></p></td>
+</tr>
+<tr>
+<td>Ctrl + f</td>
+<td>屏幕『向下』移动一页，相当于 [Page Down]按键 (常用)</td>
+</tr>
+<tr>
+<td>Ctrl + b</td>
+<td>屏幕『向上』移动一页，相当于 [Page Up] 按键 (常用)</td>
+</tr>
+<tr>
+<td>Ctrl + d</td>
+<td>屏幕『向下』移动半页</td>
+</tr>
+<tr>
+<td>Ctrl + u</td>
+<td>屏幕『向上』移动半页</td>
+</tr>
+<tr>
+<td>Ctrl + e</td>
+<td>屏幕『向下』移动一行</td>
+</tr>
+<tr>
+<td>Ctrl + y</td>
+<td>屏幕『向上』移动一行</td>
+</tr>
+<tr>
+<td>+</td>
+<td>光标移动到非空格符的下一列</td>
+</tr>
+<tr>
+<td>-</td>
+<td>光标移动到非空格符的上一列</td>
+</tr>
+<tr>
+<td>n&lt;space&gt;</td>
+<td>那个 n 表示『数字』，按下数字后再按空格键，光标会向右移动这一行的 n 个字符。例如 20&lt;space&gt; 则光标会向后面移动 20 个字符距离。</td>
+</tr>
+<tr>
+<td>n&lt;Enter&gt;</td>
+<td>n 为数字。光标向下移动 n 行(常用)</td>
+</tr>
+<tr>
+<td>0 或功能键[Home]</td>
+<td>这是数字『 0 』：移动到这一行的最前面字符处 (常用)</td>
+</tr>
+<tr>
+<td>$ 或功能键[End]</td>
+<td>移动到这一行的最后面字符处(常用),<span style="color: #800080;">这里的$在正则里面表示是结尾的意思,这样理解一下就能记住</span></td>
+</tr>
+<tr>
+<td>H</td>
+<td>光标移动到这个屏幕的最上方那一行的第一个字符,<span style="color: #800080;">H你就把它记成是header的缩写，这样就好记了</span></td>
+</tr>
+<tr>
+<td>M</td>
+<td>光标移动到这个屏幕的中夬那一行的第一个字符,<span style="color: #800080;">M你就把它记成middle的缩写</span></td>
+</tr>
+<tr>
+<td>L</td>
+<td>光标移动到这个屏幕的最下方那一行的第一个字符,<span style="color: #800080;">L你就把它记成last的缩写</span></td>
+</tr>
+<tr>
+<td>G</td>
+<td>移动到这个档案的最后一行(常用)</td>
+</tr>
+<tr>
+<td>nG</td>
+<td>n 为数字。移动到这个档案的第 n 行。例如 20G 则会移动到这个档案的第 20 行</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>移动到这个档案的第一行，相当于 1G 啊！ (常用)</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: #000000;"><strong>二，删除，复制，粘贴，撤销</strong></span></p>
+<table width="100%">
+<tbody style="font-weight: bold;">
+<tr>
+<th colspan="2">删除，复制，粘贴，撤销</th>
+</tr>
+<tr>
+<td width="20%">x, X</td>
+<td>在一行字当中，x 为向后删除一个字符 (相当于 [del] 按键)， X 为向前删除一个字符(相当于 [backspace] 亦即是退格键) (常用)</td>
+</tr>
+<tr>
+<td>nx<p></p>
+<p>nX</p></td>
+<td>n 为数字，连续向后删除 n 个字符。举例来说，我要连续删除光标后 10 个字符， 『10x』。<p></p>
+<p>n 为数字，连续删除光标前面的 n 个字符。举例来说，我要连续删除光标前的 10 个字符， 『10X』。</p></td>
+</tr>
+<tr>
+<td>dd<p></p>
+<p>yy</p></td>
+<td>删除光标所在的那一整行(常用)，<p></p>
+<p>复制光标所在的那一行(常用)</p></td>
+</tr>
+<tr>
+<td>ndd<p></p>
+<p>nyy</p></td>
+<td>n 为数字。删除光标所在行向下 n 行，例如 20dd 则是删除 20 行(常用)<p></p>
+<p>n 为数字。复制光标所在行向下 n 行，例如 20yy 则是复制 20 行(常用)</p></td>
+</tr>
+<tr>
+<td>d1G<p></p>
+<p>y1G</p></td>
+<td>删除光标所在行到第一行的所有数据<p></p>
+<p>复制光标所在行到第一行的所有数据</p></td>
+</tr>
+<tr>
+<td>dG<p></p>
+<p>yG</p></td>
+<td>删除光标所在行到最后一行的所有数据<p></p>
+<p>复制光标所在行到最后一行的所有数据</p></td>
+</tr>
+<tr>
+<td>d$<p></p>
+<p>y$</p></td>
+<td>删除光标所在处，到该行的最后一个字符<p></p>
+<p>复制光标所在的那个字符到该行行尾的所有数据</p></td>
+</tr>
+<tr>
+<td>d0<p></p>
+<p>y0</p></td>
+<td>那个是数字的 0 ，删除光标所在处，到该行的最前面一个字符<p></p>
+<p>复制光标所在的那个字符到该行行首的所有数据</p></td>
+</tr>
+<tr>
+<td>p, P</td>
+<td>p将复制的数据，粘贴在光标的下一行，P将复制的数据,粘贴到光标的上一行</td>
+</tr>
+<tr>
+<td>J</td>
+<td>将光标所在行不下一行的数据结合成同一行</td>
+</tr>
+<tr>
+<td>c</td>
+<td>重复删除多个数据，可以通过上下键来决定删除光标上面的，还是下面的</td>
+</tr>
+<tr>
+<td>u</td>
+<td>撤销。(常用)</td>
+</tr>
+<tr>
+<td>Ctrl + r</td>
+<td>撤销的撤销。(常用)</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: #000000;"><strong>三，区块选择，查找，替换</strong></span></p>
+<table width="100%">
+<tbody style="font-weight: bold;">
+<tr>
+<th colspan="2">区块选择，查找，替换</th>
+</tr>
+<tr>
+<td>v</td>
+<td>字符选择，会将光标经过的地方反白选择！</td>
+</tr>
+<tr>
+<td>V</td>
+<td>行选择，会将光标经过的行反白选择！</td>
+</tr>
+<tr>
+<td>Ctrl + v</td>
+<td>区块选择，可以用长方形的方式选择资料</td>
+</tr>
+<tr>
+<td>y</td>
+<td>将反白的地方复制起来</td>
+</tr>
+<tr>
+<td>d</td>
+<td>将反白的地方删除掉</td>
+</tr>
+<tr>
+<td>
+<p></p><div id="attachment_1144" class="wp-caption alignnone" style="width: 310px"><a href="http://blog.51yip.com/wp-content/uploads/2010/11/vim_v_V.jpg"><img class="size-medium wp-image-1144" title="vim_v_V" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim_v_V-300x154.jpg" alt="vim" width="300" height="154"></a><p class="wp-caption-text">v或者V</p></div></td>
+<td>
+<p></p><div id="attachment_1145" class="wp-caption alignnone" style="width: 310px"><a href="http://blog.51yip.com/wp-content/uploads/2010/11/vim_ctrl_v.jpg"><img class="size-medium wp-image-1145" title="vim_ctrl_v" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim_ctrl_v-300x247.jpg" alt="ctrl+v" width="300" height="247"></a><p class="wp-caption-text">ctrl+v</p></div></td>
+</tr>
+<tr>
+<td colspan="2"><span style="color: #800080;">从上面可以看出,v和V主要的是进行,行选择,而Ctrl+v是进行的列选择，从灵活性上来说，ctrl+v更加的灵活一点。</span></td>
+</tr>
+<tr>
+<td>/string<p></p>
+<p>?string</p></td>
+<td>向光标之下寻找一个名称为string字符串<p></p>
+<p>向光标之上寻找一个名称为string字符串</p></td>
+</tr>
+<tr>
+<td>n<p></p>
+<p>N</p></td>
+<td>正向查找，搜索出的string,可以理解成next<p></p>
+<p>反向查找，搜索出的string,可以理解成Not next</p></td>
+</tr>
+<tr>
+<td>
+<p></p><div id="attachment_1146" class="wp-caption alignnone" style="width: 291px"><a href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim_find.jpg"><img class="size-full wp-image-1146" title="vim_find" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim_find.jpg" alt="find" width="281" height="215"></a><p class="wp-caption-text">find</p></div></td>
+<td style="vertical-align:middle"><span style="color: #800080;">为了说明,n和N的区别,作了个例子,看左图,左图是搜索ddd所产生的结果，黄底黑字就是搜索的结果，这个时候，我们可以按n或者N,在这4个搜索区块内,进行切换.</span><p></p>
+<p><span style="color: #800080;">n的顺序是12341234</span></p>
+<p><span style="color: #800080;">N的顺序是43214321</span></p>
+<p><span style="color: #800080;">总之一句话,n是从上到下，N是从下到上</span></p></td>
+</tr>
+<tr>
+<td>:n1,n2s/string1/string2/g</td>
+<td>这里的n1是查找的开始行数，n2是查找结束的行数。【:2,7s/ddd/fff/g】在第2行,第7行之间，将ddd替换成fff</td>
+</tr>
+<tr>
+<td>:1,$s/string1/string2/g</td>
+<td>从第一行到最后一行寻找 string1 字符串，并将该字符串替换为 string2 ！(常用)</td>
+</tr>
+<tr>
+<td>:1,$s/string1/string2/gc</td>
+<td>从第一行到最后一行寻找 string1 字符串，并将该字符串替换为 string2 ！且在替换前显示提示字符给用户确认 (confirm) 是否需要替换！(常用)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>四，保存，退出，环境变量</strong></p>
+<table width="100%">
+<tbody style="font-weight: bold;">
+<tr>
+<th colspan="2">保存，退出，环境变量</th>
+</tr>
+<tr>
+<td width="20%">:w<p></p>
+<p>:w!</p></td>
+<td>将编辑的数据写入硬盘档案中(常用)<p></p>
+<p>若文件属性为『只读』时，强制写入该档案。不过，到底能不能写入， 还是跟你对该档案的档案权限有关啊!</p></td>
+</tr>
+<tr>
+<td>:q<p></p>
+<p>:q!</p></td>
+<td>离开 vi (常用)<p></p>
+<p>若曾修改过档案，又不想储存，使用 ! 为强制离开不储存档案。</p></td>
+</tr>
+<tr>
+<td>:wq<p></p>
+<p>:wq!</p></td>
+<td>储存后离开<p></p>
+<p>强制储存后离开</p></td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>这是大写的 Z 喔！若档案没有更动，则不储存离开，若档案已经被更动过，则储存后离开!</td>
+</tr>
+<tr>
+<td>:w [filename]</td>
+<td>另存为</td>
+</tr>
+<tr>
+<td>:r [filename]</td>
+<td>在编辑的数据中，读入另一个档案的数据。亦即将 『filename』 这个档案内容加到光标所在行后面</td>
+</tr>
+<tr>
+<td>:! command</td>
+<td>暂时离开 vi 到指令列模式下执行 command 的显示结果！例如 『:! cat ./test』即可在 vi 当中察看当前文件夹中的test文件中的内容</td>
+</tr>
+<tr>
+<td>i,I,a,A,o,O,r,R</td>
+<td>进入插入模式，虽然有不同之处，感觉差别不大，就放在一起了</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>退出插入模式，进入命令模式</td>
+</tr>
+<tr>
+<td>:set nu</td>
+<td><span style="color: #800080;">显示行号，设定之后，会在每一行的前缀显示该行的行号,这一点，非常有用，当我们修改配置文件的时候，能知道多少行，就方便多了。</span></td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td>与 set nu 相反，取消行号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>五，小结</strong></p>
+<p>个人觉得，上面的操作能满足，80%--90%的人的需要，如果对多文件进行操作，我想各种开发工具，要比vim更加的方便.</p>
+
+			<!-- Baidu Button BEGIN -->
+			<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare" style="float:right;margin-right:15px;">
+			<a class="bds_qzone" title="分享到QQ空间" href="http://blog.51yip.com/linux/1140.html#"></a>
+			<a class="bds_tsina" title="分享到新浪微博" href="http://blog.51yip.com/linux/1140.html#"></a>
+			<a class="bds_tqq" title="分享到腾讯微博" href="http://blog.51yip.com/linux/1140.html#"></a>
+			<a class="bds_renren" title="分享到人人网" href="http://blog.51yip.com/linux/1140.html#"></a>
+			<a class="bds_t163" title="分享到网易微博" href="http://blog.51yip.com/linux/1140.html#"></a>
+			<span class="bds_more"></span>
+			<a class="shareCount" href="http://blog.51yip.com/linux/1140.html#" title="累计分享10次">10</a>
+			</div>
+			<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=4016707" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/bds_s_v2.js"></script>
+			
+			<script type="text/javascript">
+			document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+			</script>
+			<!-- Baidu Button END -->
+
+    <br><br><b>转载请注明<br>作者:海底苍鹰<br>地址:<a href="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客.htm">http://blog.51yip.com/linux/1140.html</a></b>							</div>
+
+		</div>
+
+	</div>
+
+<div class="navigation">
+	<div class="alignleft">&lt;&lt; <a href="http://blog.51yip.com/linux/1141.html" rel="next">centos fluxbox 安装,个性化配置</a></div>
+	<div class="alignright"><a href="http://blog.51yip.com/linux/1139.html" rel="prev">xampp innodb disable 解决方法</a> &gt;&gt;</div>
+</div>
+
+<div style="clear:both;"></div>
+<div class="navigation_line"></div>
+
+	<div class="lastlist">
+		<p>相关文章</p>
+		<ul>
+		<div class="related_post"><ul><li><a href="http://blog.51yip.com/linux/1677.html" title="vi vim 行尾 ^M 删除">vi vim 行尾 ^M 删除 </a></li><li><a href="http://blog.51yip.com/linux/1669.html" title="linux doc ppt 转 pdf ">linux doc ppt 转 pdf  </a></li><li><a href="http://blog.51yip.com/php/1667.html" title="linux bugfree 安装">linux bugfree 安装 </a></li><li><a href="http://blog.51yip.com/linux/1664.html" title="linux vpn 链路的建立和使用">linux vpn 链路的建立和使用 </a></li><li><a href="http://blog.51yip.com/linux/1634.html" title="centos zeromq 消息队列 安装">centos zeromq 消息队列 安装 </a></li><li><a href="http://blog.51yip.com/linux/1633.html" title="kvm 常用的一些操作">kvm 常用的一些操作 </a></li><li><a href="http://blog.51yip.com/linux/1617.html" title="linux 没有eth0 其他网口转eth0">linux 没有eth0 其他网口转eth0 </a></li><li><a href="http://blog.51yip.com/server/1614.html" title="linux git 客户端 smartgit">linux git 客户端 smartgit </a></li><li><a href="http://blog.51yip.com/server/1612.html" title="linux bugzilla nginx 安装配置 详解">linux bugzilla nginx 安装配置 详解 </a></li><li><a href="http://blog.51yip.com/linux/1584.html" title="ffmpeg 安装 分割 截图 转换 加水印">ffmpeg 安装 分割 截图 转换 加水印 </a></li></ul></div>		
+		</ul>
+	</div>
+
+	<div class="comments">
+		
+<!-- You can start editing here. -->
+
+
+<h3 id="comments">2 条评论</h3>
+
+<ol class="commentlist">
+	
+	<li class="comment even thread-even depth-1" id="comment-356">
+		<div id="div-comment-356" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="http://blog.51yip.com/linux/1140.html#comment-356"></a><cite class="fn"><a href="http://www.jusingsales.com/" rel="external nofollow" class="url">electronics</a></cite> <span class="says">留言</span> <span class="commentmetadata">(2010年12月8日 03:43 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>很基础的操作总结，多谢博主</p>
+					
+			</div>
+		</div>
+</li>
+
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-671">
+		<div id="div-comment-671" class="comment-body">
+			<div class="comment-meta">
+				<div class="comment-author">
+				<a href="http://blog.51yip.com/linux/1140.html#comment-671"></a><cite class="fn">yichi</cite> <span class="says">留言</span> <span class="commentmetadata">(2011年8月18日 14:09 ):</span></div>
+				<div class="comment-avatar"></div>
+			</div>
+			<div class="comment-text">
+								<p>感觉其实还有一些东西没有介绍到,比如我最喜欢的f#跳转功能,不过也由一些不知道的,学习了</p>
+					
+			</div>
+		</div>
+</li>
+</ol>
+
+
+
+
+<div class="commentrespond">
+
+	<div id="respond">
+
+		<h3>留下评论</h3>
+
+		<div class="cancel-comment-reply">
+			<small><a rel="nofollow" id="cancel-comment-reply-link" href="http://blog.51yip.com/linux/1140.html#respond" style="display:none;">点击这里取消回复</a></small>
+		</div>
+
+		
+		<form action="http://blog.51yip.com/pl.php" method="post" id="commentform">
+		<fieldset>
+			<legend>留下评论</legend>
+
+			
+			<ul>
+							<li>
+					<label for="author"><span>名称：</span></label>
+					<input type="text" name="author" id="author" value="" size="22" tabindex="1">
+					<span class="req">(必需)</span>
+				</li>
+				<li>
+					<label for="email"><span>电子邮件：</span></label>
+					<input type="text" name="email" id="email" value="" size="22" tabindex="2">
+					<span class="req">(必需) (will not be published)</span>
+				</li>
+				<li>
+					<label for="email"><span>验证码：</span></label>
+					<input type="text" name="code" id="code" value="" size="22" tabindex="3">
+					<input type="hidden" name="ji" id="ji" value="24" size="22" tabindex="3">
+					<span class="req">(必需) &nbsp;&nbsp;6X4=?</span>					
+				</li>
+				<li>
+					<label for="url"><span>URL：</span></label>
+					<input type="text" name="url" id="url" value="" size="22" tabindex="4">
+				</li>
+							<li class="textarea">
+					<label for="comment"><span>您的评论</span></label>
+					<textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea>
+				</li>
+			</ul>
+			<p>
+				<input name="submit" type="submit" id="submit" tabindex="5" value="提交  评论">
+			</p>
+			<input type="hidden" name="comment_post_ID" value="1140" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+					</fieldset>
+		</form>
+
+
+		</div>
+
+</div>
+
+	</div>
+
+	
+
+	
+</div>
+
+<div id="aside">
+
+	<ul>
+
+<li class="widget widget_categories" id="categories-3">
+<h3 class="widgettitle">欢迎订阅<span><!-- --></span></h3>		
+<br>
+<div>
+<a href="http://www.xianguo.com/subscribe.php?url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_xianguo.gif" alt="订阅到鲜果"></a>
+<a href="http://www.zhuaxia.com/add_channel.php?url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_zhuaxia.gif" alt="订阅到抓虾"></a>
+<a href="http://mail.qq.com/cgi-bin/feed?u=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_qq.gif" alt="订阅到QQ邮箱"></a>
+<a href="http://fusion.google.com/add?feedurl=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_google.gif" alt="google reader"></a>
+<a href="http://www.netvibes.com/subscribe.php?url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_netvibes.gif" alt="netvibes"></a>
+<a href="http://add.my.yahoo.com/rss?url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_yahoo.gif" alt="my yahoo"></a>
+<a href="http://www.rojo.com/add-subscription?resource=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_rojo.gif" alt="Rojo"></a>
+<a href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_newsgator.gif" alt="Newsgator"></a>
+<!--<a href="http://www.bloglines.com/sub/http://feed.feedsky.com/tank_fs4t"><img border="0" src="http://img.feedsky.com/images/icon_subshot02_bloglines.gif" alt="bloglines"></a>-->
+<a href="http://reader.youdao.com/b.do?keyfrom=feedsky&url=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_youdao.gif" alt="订阅到有道"></a>
+<a href="http://www.580k.com/myLook/NewStakeOut_Submit.aspx?cm=1&WebUrl=http://feed.feedsky.com/tank_fs4t"><img border="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/icon_subshot02_580k.gif" alt="订阅到帮看"></a>
+</div>
+</li>
+
+		<li id="categories-3" class="widget widget_categories"><h3 class="widgettitle">分类目录<span><!-- --></span></h3>		<ul>
+	<li class="cat-item cat-item-9"><a href="http://blog.51yip.com/category/apachenginx" title="根apache和nginx有关的文章">apache/nginx</a> (27)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://blog.51yip.com/category/cache" title="根cache有关的文章 ">cache</a> (21)
+</li>
+	<li class="cat-item cat-item-461"><a href="http://blog.51yip.com/category/drupal" title="drupal">drupal</a> (7)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://blog.51yip.com/category/eclipse" title="根eclipse有关的文章">eclipse</a> (8)
+</li>
+	<li class="cat-item cat-item-98"><a href="http://blog.51yip.com/category/google" title="google,google地图,google新闻">google</a> (3)
+</li>
+	<li class="cat-item cat-item-88"><a href="http://blog.51yip.com/category/htmlcss" title="根html和css有关的文章">html/css</a> (11)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://blog.51yip.com/category/jsjquery" title="根js,javascript和jquery有关的文章">js/jquery</a> (49)
+</li>
+	<li class="cat-item cat-item-8"><a href="http://blog.51yip.com/category/linux" title="根linux和windows有关的文章">linux</a> (75)
+</li>
+	<li class="cat-item cat-item-891"><a href="http://blog.51yip.com/category/mariadb" title="查看 mariadb 下的所有文章">mariadb</a> (1)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://blog.51yip.com/category/mysql" title="根mysql有关的文章">mysql</a> (59)
+</li>
+	<li class="cat-item cat-item-756"><a href="http://blog.51yip.com/category/nosql" title="查看 nosql 下的所有文章">nosql</a> (30)
+</li>
+	<li class="cat-item cat-item-520"><a href="http://blog.51yip.com/category/oracle" title="oracle数据库">oracle</a> (9)
+</li>
+	<li class="cat-item cat-item-702"><a href="http://blog.51yip.com/category/pgsql" title="PostgreSQL是以加州大学伯克利分校计算机系开发的 POSTGRES 版本 4.2 为基础的对象关系型数据库管理系统（ORDBMS）,简称pgsql,它支持大部分 SQL">pgsql</a> (7)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://blog.51yip.com/category/php" title="根php有关的文章">php</a> (82)
+</li>
+	<li class="cat-item cat-item-38"><a href="http://blog.51yip.com/category/seo" title="根seo优化有关的文章">seo</a> (16)
+</li>
+	<li class="cat-item cat-item-44"><a href="http://blog.51yip.com/category/shell" title="查看 shell 下的所有文章">shell</a> (11)
+</li>
+	<li class="cat-item cat-item-189"><a href="http://blog.51yip.com/category/smarty" title="smarty学习,smarty使用,smarty技巧">smarty</a> (5)
+</li>
+	<li class="cat-item cat-item-36"><a href="http://blog.51yip.com/category/wordpress" title="根wordpress有关的文章">wordpress</a> (13)
+</li>
+	<li class="cat-item cat-item-135"><a href="http://blog.51yip.com/category/social" title="看到的社会现象">双眼看社会</a> (13)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://blog.51yip.com/category/other" title="杂谈文章">技术其他</a> (20)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://blog.51yip.com/category/server" title="根服务器架构有关的文章，集群，分部式">服务器相关</a> (65)
+</li>
+	<li class="cat-item cat-item-705"><a href="http://blog.51yip.com/category/safe" title="系统安全">系统安全</a> (5)
+</li>
+		</ul>
+</li>		<li id="recent-posts-3" class="widget widget_recent_entries">		<h3 class="widgettitle">最近文章<span><!-- --></span></h3>		<ul>
+				<li><a href="http://blog.51yip.com/server/1687.html" title="munin 5分钟 时间修改">munin 5分钟 时间修改 </a></li>
+				<li><a href="http://blog.51yip.com/server/1685.html" title="munin cgi 动态生成 图片">munin cgi 动态生成 图片 </a></li>
+				<li><a href="http://blog.51yip.com/server/1684.html" title="nagios pnp4nagios 图形监控 mysql">nagios pnp4nagios 图形监控 mysql </a></li>
+				<li><a href="http://blog.51yip.com/server/1682.html" title="nagios监控mysql">nagios监控mysql </a></li>
+				<li><a href="http://blog.51yip.com/server/1680.html" title="corosync pacemaker crmsh crm 实例 详解">corosync pacemaker crmsh crm 实例 详解 </a></li>
+				<li><a href="http://blog.51yip.com/wordpress/1678.html" title="Missing required field entry-title updated hCard author 解决">Missing required field entry-title updated hCard author 解决 </a></li>
+				<li><a href="http://blog.51yip.com/linux/1677.html" title="vi vim 行尾 ^M 删除">vi vim 行尾 ^M 删除 </a></li>
+				<li><a href="http://blog.51yip.com/server/1674.html" title="corosync pacemaker nginx 高可用 安装配置">corosync pacemaker nginx 高可用 安装配置 </a></li>
+				<li><a href="http://blog.51yip.com/linux/1672.html" title="vsftpd 530 Login incorrect 解决">vsftpd 530 Login incorrect 解决 </a></li>
+				<li><a href="http://blog.51yip.com/mariadb/1671.html" title="mysql 向 mariadb 平滑 过渡">mysql 向 mariadb 平滑 过渡 </a></li>
+				</ul>
+		</li>		<li id="recent-comments-3" class="widget widget_recent_comments">			<h3 class="widgettitle">最近评论和留言<span><!-- --></span></h3>			<ul id="recentcomments"><li class="recentcomments">e5460e 在 <a href="http://blog.51yip.com/linux/1443.html/comment-page-1#comment-16458">linux truecrypt 加密工具</a> 上的评论</li><li class="recentcomments">yzhkpli 在 <a href="http://blog.51yip.com/mysql/1650.html/comment-page-1#comment-16443">mysql innobackupex xtrabackup 大数据量 备份 还原</a> 上的评论</li><li class="recentcomments">张映 在 <a href="http://blog.51yip.com/linux/1518.html/comment-page-1#comment-16440">推荐linux命令在线查，简约而不简单</a> 上的评论</li><li class="recentcomments">Jimmy Wang 在 <a href="http://blog.51yip.com/linux/1518.html/comment-page-1#comment-16438">推荐linux命令在线查，简约而不简单</a> 上的评论</li><li class="recentcomments">GH 在 <a href="http://blog.51yip.com/aboutme/comment-page-1#comment-16437">关于我</a> 上的评论</li><li class="recentcomments">佳佳 在 <a href="http://blog.51yip.com/message/comment-page-1#comment-16436">留言板</a> 留言了</li><li class="recentcomments">少林功夫好 在 <a href="http://blog.51yip.com/cache/1320.html/comment-page-1#comment-16433">redis 分布式，主从同步</a> 上的评论</li><li class="recentcomments">SaintScott 在 <a href="http://blog.51yip.com/jsjquery/1607.html/comment-page-1#comment-16430">angularjs directive 实例 详解</a> 上的评论</li><li class="recentcomments">少林功夫好 在 <a href="http://blog.51yip.com/php/931.html/comment-page-1#comment-16429">web集群时利用memcache来同步session</a> 上的评论</li><li class="recentcomments">张映 在 <a href="http://blog.51yip.com/server/1630.html/comment-page-1#comment-16423">centos fastdfs 多服务器 多硬盘 多组 配置详解</a> 上的评论</li></ul>
+		</li><li id="archives-3" class="widget widget_archive"><h3 class="widgettitle">文章归档<span><!-- --></span></h3>		<ul>
+			<li><a href="http://blog.51yip.com/date/2015/01" title="2015年一月">2015年一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2014/12" title="2014年十二月">2014年十二月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2014/11" title="2014年十一月">2014年十一月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/10" title="2014年十月">2014年十月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2014/09" title="2014年九月">2014年九月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2014/08" title="2014年八月">2014年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2014/07" title="2014年七月">2014年七月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/06" title="2014年六月">2014年六月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2014/05" title="2014年五月">2014年五月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2014/04" title="2014年四月">2014年四月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2014/03" title="2014年三月">2014年三月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2014/02" title="2014年二月">2014年二月</a>&nbsp;(11)</li>
+	<li><a href="http://blog.51yip.com/date/2013/12" title="2013年十二月">2013年十二月</a>&nbsp;(8)</li>
+	<li><a href="http://blog.51yip.com/date/2013/11" title="2013年十一月">2013年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2013/10" title="2013年十月">2013年十月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2013/09" title="2013年九月">2013年九月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2013/08" title="2013年八月">2013年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/07" title="2013年七月">2013年七月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/06" title="2013年六月">2013年六月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2013/05" title="2013年五月">2013年五月</a>&nbsp;(7)</li>
+	<li><a href="http://blog.51yip.com/date/2013/04" title="2013年四月">2013年四月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2013/03" title="2013年三月">2013年三月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2013/02" title="2013年二月">2013年二月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2013/01" title="2013年一月">2013年一月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2012/12" title="2012年十二月">2012年十二月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2012/11" title="2012年十一月">2012年十一月</a>&nbsp;(4)</li>
+	<li><a href="http://blog.51yip.com/date/2012/10" title="2012年十月">2012年十月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2012/09" title="2012年九月">2012年九月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2012/08" title="2012年八月">2012年八月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2012/07" title="2012年七月">2012年七月</a>&nbsp;(14)</li>
+	<li><a href="http://blog.51yip.com/date/2012/06" title="2012年六月">2012年六月</a>&nbsp;(5)</li>
+	<li><a href="http://blog.51yip.com/date/2012/05" title="2012年五月">2012年五月</a>&nbsp;(7)</li>
+	<li><a href="http://blog.51yip.com/date/2012/04" title="2012年四月">2012年四月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2012/03" title="2012年三月">2012年三月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2012/02" title="2012年二月">2012年二月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2012/01" title="2012年一月">2012年一月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2011/12" title="2011年十二月">2011年十二月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2011/11" title="2011年十一月">2011年十一月</a>&nbsp;(6)</li>
+	<li><a href="http://blog.51yip.com/date/2011/10" title="2011年十月">2011年十月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2011/09" title="2011年九月">2011年九月</a>&nbsp;(1)</li>
+	<li><a href="http://blog.51yip.com/date/2011/08" title="2011年八月">2011年八月</a>&nbsp;(2)</li>
+	<li><a href="http://blog.51yip.com/date/2011/07" title="2011年七月">2011年七月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2011/06" title="2011年六月">2011年六月</a>&nbsp;(13)</li>
+	<li><a href="http://blog.51yip.com/date/2011/05" title="2011年五月">2011年五月</a>&nbsp;(17)</li>
+	<li><a href="http://blog.51yip.com/date/2011/04" title="2011年四月">2011年四月</a>&nbsp;(13)</li>
+	<li><a href="http://blog.51yip.com/date/2011/03" title="2011年三月">2011年三月</a>&nbsp;(9)</li>
+	<li><a href="http://blog.51yip.com/date/2011/02" title="2011年二月">2011年二月</a>&nbsp;(3)</li>
+	<li><a href="http://blog.51yip.com/date/2011/01" title="2011年一月">2011年一月</a>&nbsp;(11)</li>
+	<li><a href="http://blog.51yip.com/date/2010/12" title="2010年十二月">2010年十二月</a>&nbsp;(18)</li>
+	<li><a href="http://blog.51yip.com/date/2010/11" title="2010年十一月">2010年十一月</a>&nbsp;(26)</li>
+	<li><a href="http://blog.51yip.com/date/2010/10" title="2010年十月">2010年十月</a>&nbsp;(21)</li>
+	<li><a href="http://blog.51yip.com/date/2010/09" title="2010年九月">2010年九月</a>&nbsp;(25)</li>
+	<li><a href="http://blog.51yip.com/date/2010/08" title="2010年八月">2010年八月</a>&nbsp;(24)</li>
+	<li><a href="http://blog.51yip.com/date/2010/07" title="2010年七月">2010年七月</a>&nbsp;(25)</li>
+	<li><a href="http://blog.51yip.com/date/2010/06" title="2010年六月">2010年六月</a>&nbsp;(21)</li>
+	<li><a href="http://blog.51yip.com/date/2010/05" title="2010年五月">2010年五月</a>&nbsp;(26)</li>
+	<li><a href="http://blog.51yip.com/date/2010/04" title="2010年四月">2010年四月</a>&nbsp;(28)</li>
+	<li><a href="http://blog.51yip.com/date/2010/03" title="2010年三月">2010年三月</a>&nbsp;(14)</li>
+	<li><a href="http://blog.51yip.com/date/2010/02" title="2010年二月">2010年二月</a>&nbsp;(21)</li>
+		</ul>
+</li><li id="linkcat-2" class="widget widget_links"><h3 class="widgettitle">友情链接<span><!-- --></span></h3>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.enjoydiy.com/" target="_blank">Enjoy Diy</a></li>
+<li><a href="http://blog.itblood.com/" target="_blank">IT热血青年</a></li>
+<li><a href="http://www.magentonotes.com/" target="_blank">Magento架构师</a></li>
+<li><a href="http://blog.fity.cn/" rel="friend" target="_blank">未来往事</a></li>
+<li><a href="http://www.iitshare.com/" target="_blank">爱积累爱分享</a></li>
+<li><a href="http://www.nowamagic.net/" rel="friend" target="_blank">简明现代魔法</a></li>
+
+	</ul>
+</li>
+<li id="meta-3" class="widget widget_meta"><h3 class="widgettitle">登录<span><!-- --></span></h3>			<ul>
+			<li><a href="http://blog.51yip.com/wp-login.php?action=register">注册</a></li>			<li><a href="http://blog.51yip.com/wp-login.php">登录</a></li>
+			<li><a href="http://blog.51yip.com/feed" title="使用 RSS 2.0 同步此内容">文章 <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<!--<li><a href="http://blog.51yip.com/comments/feed" title="RSS 上的最近评论"><abbr title="Really Simple Syndication">RSS</abbr> 评论</a></li>
+			<li><a href="http://wordpress.org/" title="基于 WordPress，优美的个人信息发布平台。">WordPress.org</a></li>-->
+						</ul>
+</li>
+	</ul>
+
+</div>
+
+		</div>
+
+	</div>
+
+	<div id="footer">
+
+		<div class="columns">
+			<div class="right">
+				<p>© 2010 海底苍鹰(tank)博客 ٠ Powered by 51yip.com ٠<a href="http://www.miitbeian.gov.cn/" target="_black"> 沪ICP备12010825号-1</a> 
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253709140'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1253709140%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1253709140"><a href="http://www.cnzz.com/stat/website.php?web_id=1253709140" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/pic.gif"></a></span><script src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/z_stat.php" type="text/javascript"></script><script src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/core.php" charset="utf-8" type="text/javascript"></script>
+				</p>
+			</div>
+			<div class="left">
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script class="javascript" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/shCore.js"></script>
+<script class="javascript" src="./vim复制,粘贴,删除,撤销,替换,光标移动等用法«海底苍鹰(tank)博客_files/high.js"></script>
+<script class="javascript">
+dp.SyntaxHighlighter.ClipboardSwf = 'http://blog.51yip.com/wp-content/plugins/google-syntax-highlighter/Scripts/clipboard.swf';
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+
+
+<script type="text/javascript">
+
+//  var _gaq = _gaq || [];
+//  _gaq.push(['_setAccount', 'UA-16813496-1']);
+//  _gaq.push(['_setDomainName', '.51yip.com']);
+//  _gaq.push(['_trackPageview']);
+
+//  (function() {
+//    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+//    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//  })();
+
+</script>
+
+
+
+
+<!-- 90 queries. 0.233 seconds. -->
+
+</body></html>

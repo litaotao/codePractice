@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://www.36dsj.com/archives/17941 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<title>重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构 | 36大数据</title>
+<link rel="alternate" type="application/rss+xml" title="36大数据 » 重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构评论Feed" href="http://www.36dsj.com/archives/17941/feed">
+<link rel="stylesheet" id="main-css" href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/style.css" type="text/css" media="all">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.36dsj.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.36dsj.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="我的大数据有精神分裂症" href="http://www.36dsj.com/archives/17930">
+<link rel="next" title="大数据，为农业插上 “数字” 翅膀" href="http://www.36dsj.com/archives/17891">
+<link rel="canonical" href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据.html">
+<link rel="shortlink" href="http://www.36dsj.com/?p=17941">
+<style>a:hover, a:focus,.post-like.actived,.excerpt h2 a:hover,.user-welcome strong,.article-title a:hover,#comments b,.text-muted a:hover,.relates a:hover,.archives .item:hover h3,.linkcat h2,.sticky a:hover,.article-content a:hover,.widget_links li a:hover,.d_postlist li a:hover .text, .d_newtagpost li a:hover h2,.article-meta a:hover{color:#FF6600;}.btn,.article-tags a,.search-form .btn,.widget_tags_inner a:hover:hover,.focusmo a:hover h4,.tagslist .tagname:hover,.excerpt .more a,.pagination ul > .active > a, .pagination ul > .active > span,.widget .title .more,.navbar,.nav li ul > li > a:hover{background-color:#FF6600;}.title strong, .widget .title{border-bottom-color:#FF6600;}#submit{background: #FF6600;border-right: 2px solid #FF6600;border-bottom: 2px solid #FF6600;}.nav li.current-menu-item > a, .nav li.current-menu-parent > a, .nav li.current_page_item > a, .nav li.current-post-ancestor > a,.nav li a:focus,.nav li a:hover, .nav li:hover > a,.nav li ul{background-color:#EC5F00}</style><meta name="keywords" content="大数据, 广点通, 微信, 腾讯大数据, 干货教程">
+<meta name="description" content="2014年10月25日，由eBay、CSDN共同举办的“大数据峰会”将在上海豫园万丽酒店举办。腾讯T4技术专家、数据平台部精准推荐中心总监李勇，以“腾讯大数据平">
+<link rel="shortcut icon" href="http://www.36dsj.com/favicon.ico">
+<!--[if lt IE 9]><script src="http://www.36dsj.com/wp-content/themes/dsj0804/js/html5.js"></script><![endif]-->
+<script charset="utf-8" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/s.js"></script><script type="text/javascript" async="" charset="UTF-8" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/embed.js"></script><script type="text/javascript" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/related_items_v2"></script><script src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/share.js"></script><link type="text/css" rel="stylesheet" href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/embed.bluebox.css"><script type="text/javascript" id="wumiiData" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/hot"></script><style type="text/css"></style><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=f4b44e79.css"><style>html #hm_t_undefined .hm-t-go-top {position:fixed;right:2px;bottom:2px;z-index:99998;cursor:pointer;width:40px;height:37px!important;text-align:center;white-space:normal;font-size:14px;line-height:17px;padding-top:3px;color:#fff;background:#404040;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAAAXCAYAAABH92JbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMjgwMTE3NDA3MjA2ODExODA4M0UyNDA4ODdDRTZBQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBQjc5RkRFNkI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBQjc5RkRFNUI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5HPYM5AAACC0lEQVR42uyZTSgEYRjH90NoqaVcpDblvKW2XOSkNh8H5Yac9sBBDqQokiJKSMpNTi5OPo6Ktsgu67JcUHIXWfK1u3b8Xx6Zxuzu+64dM83uv34zNfu8b8/8Z+d5P8YqSZLFJNLsRmyWvIRMKgVD4AhEwA3YAV0pzGwEqyAEwmAddIICHe7FqhnsdQM14FxKLj+ooFiGE2ykiD8GVbJ4I1ELAnTmasMODnAhpVcIFIMicMgRH6Z4IxnUAh4pP3Zu5TVpUOLXDJgWiB8wkEF9IK7IL07X05oUFLjpZ4JXQQOYYwfzafJcoDjVPqw43KE4lWtUTF+AQ8eBqQSsgTaO2E0apJ7URrdCDZOM62hQJfBzGmShOD+1+2XSiYaJ7utkkBsEgEewnYfauZUmzWmU6DuY0sEgLzgArgzbu6i992cu/1WclqXsa1iHIt0DYlnKP0b9fRZu5pWdZs7dWXqa7B80+s//oF5aMSjflGqBPq5BQnFtVv4UmGHjIPEH96PAZ6C5kVMwf6daPzbFKnqCqvx9Bk/yFjSBFTMvcL+1DerAmUA/p9Rm1+y7AHJdgnqwx9EHm1s0gKtc2CpR6gE00/ZHMm3RKxbJlf0kNb2BDrCk8hsbDdvBay5tuiUTGxL7waTs2iLw0YTR9BLZQRwDUVqwjuTS9q3VRB8C1OQUnM6UqdXX/IcADn0IMADs2AqDOPSutQAAAABJRU5ErkJggg==) no-repeat -42px center #666;*background-image:url(http://ecma.bdimg.com/holmes/t-popup-icons-png8.png);_position:absolute;_top:expression(eval(document.documentElement.scrollTop+(document.documentElement.clientHeight||document.body.clientHeight)-this.offsetHeight-2));}</style><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/imgshare.css?v=754091cd.css"></head>
+<body class="single single-post postid-17941 single-format-standard" style="">
+<section class="container">
+<header class="header">
+	<div class="topbar">
+		<div class="pull-right">
+			<a class="feed-wechat" rel="external nofollow" href="javascript:;" title="" data-content="&lt;img src=&#39;http://www.36dsj.com/wp-content/uploads/2014/07/qrcode_for_gh_8efec1177972_258.png&#39;&gt;" data-original-title="关注”dashuju36“">关注微信</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://weibo.com/36dsj" title="关注微博" target="_blank">微博</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://t.qq.com/youx18" title="关注腾讯微博" target="_blank">腾讯微博</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://www.36dsj.com/feed" title="Feed订阅" target="_blank">RSS订阅</a>
+		</div>
+		欢迎来到大数据中央控制台，请加QQ群：256763600，微信公众号：dashuju36	</div>
+
+	<div class="logo"><a href="http://www.36dsj.com/" title="36大数据 | 关注大数据和大数据应用_大数据第一科技网">36大数据</a></div>	<a href="http://www.36dsj.com/tougao" class="btn pull-right btn-tougao">我要投稿</a>
+	<form method="get" class="search-form" action="http://www.36dsj.com/">
+		<input class="form-control" name="s" type="text" placeholder="输入关键字" x-webkit-speech=""><input class="btn" type="submit" value="搜索">
+	</form>
+	
+
+	<div class="navbar">
+		<div class="container">
+		<ul class="nav"><li id="menu-item-2389" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-2389"><a href="http://www.36dsj.com/">首页</a></li>
+<li id="menu-item-2390" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-2390"><a href="http://www.36dsj.com/archives/category/bigdata">大数据动向</a>
+<ul class="sub-menu">
+	<li id="menu-item-3583" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3583"><a href="http://www.36dsj.com/archives/category/bigdata/baike">大数据百科</a></li>
+	<li id="menu-item-3586" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3586"><a href="http://www.36dsj.com/archives/category/bigdata/large-enterprise-data">大数据企业</a></li>
+	<li id="menu-item-3587" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3587"><a href="http://www.36dsj.com/archives/category/bigdata/big-data-products">大数据产品</a></li>
+	<li id="menu-item-10510" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10510"><a href="http://www.36dsj.com/archives/category/large-data-tools/das">大数据存储</a></li>
+	<li id="menu-item-11969" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11969"><a href="http://www.36dsj.com/archives/category/bigdata/technology">大数据技术</a></li>
+	<li id="menu-item-10501" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10501"><a href="http://www.36dsj.com/archives/category/bigdata/bi-2">商业智能</a></li>
+	<li id="menu-item-10502" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10502"><a href="http://www.36dsj.com/archives/category/bigdata/cloudcomputing">云计算</a></li>
+	<li id="menu-item-10505" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10505"><a href="http://www.36dsj.com/archives/category/large-data-tools/hadoop">Hadoop</a></li>
+</ul>
+</li>
+<li id="menu-item-10483" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10483"><a href="http://www.36dsj.com/archives/category/application-area">大数据应用</a>
+<ul class="sub-menu">
+	<li id="menu-item-10484" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10484"><a href="http://www.36dsj.com/archives/category/application-area/large-medical-data">大数据医疗</a></li>
+	<li id="menu-item-10487" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10487"><a href="http://www.36dsj.com/archives/category/application-area/marketing-application-area">大数据营销</a></li>
+	<li id="menu-item-10489" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10489"><a href="http://www.36dsj.com/archives/category/application-area/application-of-case">应用案例</a></li>
+	<li id="menu-item-10490" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10490"><a href="http://www.36dsj.com/archives/category/application-area/ec">电子商务</a></li>
+	<li id="menu-item-10491" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10491"><a href="http://www.36dsj.com/archives/category/data-analysi/the-game-data">游戏数据</a></li>
+	<li id="menu-item-10500" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10500"><a href="http://www.36dsj.com/archives/category/qita/the-latest-technology-products/wearable-devices">可穿戴设备</a></li>
+</ul>
+</li>
+<li id="menu-item-11975" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-11975"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization">数据可视化</a>
+<ul class="sub-menu">
+	<li id="menu-item-11976" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11976"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/infographic">信息图</a></li>
+	<li id="menu-item-12748" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12748"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/big-data-video">视频</a></li>
+	<li id="menu-item-11978" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11978"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/data-weekly">数据周刊</a></li>
+	<li id="menu-item-11979" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11979"><a href="http://www.36dsj.com/archives/category/data-analysi/data-interpretation">有图有真相</a></li>
+</ul>
+</li>
+<li id="menu-item-10495" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10495"><a href="http://www.36dsj.com/archives/category/data-analysi">数据分析</a>
+<ul class="sub-menu">
+	<li id="menu-item-10496" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10496"><a href="http://www.36dsj.com/archives/category/data-analysi/data-report">数据报告</a></li>
+	<li id="menu-item-10497" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10497"><a href="http://www.36dsj.com/archives/category/data-analysi/datamining">数据挖掘</a></li>
+	<li id="menu-item-10498" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10498"><a href="http://www.36dsj.com/archives/category/data-analysi/user-research">用户研究</a></li>
+	<li id="menu-item-10499" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10499"><a href="http://www.36dsj.com/archives/category/data-analysi/web-analytics">网站分析</a></li>
+</ul>
+</li>
+<li id="menu-item-10512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10512"><a href="http://www.36dsj.com/archives/category/big-data-investment">投资并购</a>
+<ul class="sub-menu">
+	<li id="menu-item-10492" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10492"><a href="http://www.36dsj.com/archives/category/global-vision">全球视野</a></li>
+	<li id="menu-item-10493" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10493"><a href="http://www.36dsj.com/archives/category/analysis/foreign-media-reports">外媒报道</a></li>
+	<li id="menu-item-11970" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11970"><a href="http://www.36dsj.com/archives/category/data-analysi/trend-observation">趋势观察</a></li>
+</ul>
+</li>
+<li id="menu-item-13809" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-13809"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/ganhuo">干货教程</a></li>
+<li id="menu-item-17278" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17278"><a href="http://www.36dsj.com/qiye">企业专区</a></li>
+</ul>		<div class="navbar-r">
+					<a href="http://www.36dsj.com/wp-login.php">注册</a>
+			<a class="item" href="http://www.36dsj.com/wp-login.php?action=register"><span class="glyphicon glyphicon-user"></span> 登录</a>
+				</div>
+		</div>
+	</div>
+</header><div class="content-wrap">
+	<div class="content">
+				<header class="article-header">
+			<h1 class="article-title"><a href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据.html">重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构</a></h1>
+			<ul class="article-meta">
+								<li><span class="glyphicon glyphicon-user"></span> Optimus Prime</li>
+				<li><span class="glyphicon glyphicon-time"></span> 2014-12-02 11:42:20</li>
+				<li><span class="glyphicon glyphicon-list-alt"></span> <a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/ganhuo" rel="category tag">干货教程</a></li>
+				<li><span class="glyphicon glyphicon-comment"></span> 评论(0)</li>
+				<li class="bdshare"><div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1418554646578"><a href="http://www.36dsj.com/archives/17941#" class="bds_more" data-cmd="more"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_tqf" data-cmd="tqf" title="分享到腾讯朋友"></a><a href="http://www.36dsj.com/archives/17941#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a></div></li>
+			</ul>
+		</header>
+				<article class="article-content">
+			<p><em>2014年10月25日，由eBay、CSDN共同举办的“大数据峰会”将在上海豫园万丽酒店举办。腾讯T4技术专家、数据平台部精准推荐中心总监李勇，以“腾讯大数据平台与推荐应用架构”作为峰会的结尾。</em></p>
+<h2><strong><span style="color: #ff6600;">内容简介：</span></strong></h2>
+<ul>
+<li>腾讯的月活跃用户8.3亿</li>
+<li>微信月活跃用户4.4亿</li>
+<li>QQ空间月活跃用户6.5亿</li>
+<li>游戏月活跃用户过亿</li>
+</ul>
+<p>如今腾讯的数据分析已经能做到始终“不落地”，即全部的实时处理。腾讯大数据平台有如下核心模块：TDW、TRC、TDBank、TPR和Gaia。简单来说，TDW用来做批量的离线计算，TRC负责做流式的实时计算，TPR负责精准推荐，TDBank则作为统一的数据采集入口，而底层的Gaia则负责整个集群的资源调度和管理。李勇还特别强调了数据平台体系化是应用基础，数据应用商业化是价值导向。</p>
+<p><strong><span style="color: #ff6600;">数据平台体系化是应用基础，数据应用商业化是价值导向。</span></strong></p>
+<h2><strong><span style="color: #ff6600;">腾讯深度学习平台的挑战</span></strong></h2>
+<p><strong>深度神经网络模型复杂，训练数据多，计算量大</strong></p>
+<ul>
+<li>模型复杂：人脑有100多亿个神经细胞，因此DNN的神经元和权重多</li>
+<li>训练数据多：大量训练数据才能训练出复杂模型</li>
+<li> 微信语音识别：数万个神经元，超过50,000,000参数，超过4,000,000,000样本，单机训练耗时以年计，流行的GPU卡需数周</li>
+</ul>
+<p><strong>深度神经网络需要支持大模型</strong></p>
+<ul>
+<li> 更深更宽的网络能获得更好的结果</li>
+<li> 以图像识别为例，增加卷积层的filter数量，加大模型深度等，可获得更好的模型质量</li>
+</ul>
+<p><strong> 深度神经网络训练中超参数多，需要反复多次实验</strong></p>
+<ul>
+<li> 非线性模型：代价函数非凸，容易收敛到局部最优解</li>
+<li> 敏感的超参数：模型结构、输入数据处理方式、权重初始化方案、参数配置、激活函数选择、权重优化方法等</li>
+<li>数学基础研究稍显不足，倚重技巧和经验</li>
+</ul>
+<h2><strong><span style="color: #ff6600;">腾讯深度学习平台Mariana</span></strong></h2>
+<p><strong> 腾讯有广泛的深度学习应用需求，其挑战如下</strong></p>
+<ul>
+<li> 模型复杂，训练数据多，计算量大</li>
+<li> 需要支持大模型</li>
+<li>训练中超参数多，需要反复多次实验</li>
+</ul>
+<p><strong> Mariana腾讯深度学习平台提供三个框架解决上述问题</strong></p>
+<ul>
+<li> Mariana DNN: 深度神经网络的GPU数据并行框架</li>
+<li> Mariana CNN: 深度卷积神经网络的GPU数据并行和模型并行框架</li>
+<li>Mariana Cluster: 深度神经网络的CPU集群框架</li>
+</ul>
+<p><strong> Mariana已支持了训练加速、大模型和方便的训练作业</strong></p>
+<ul>
+<li> 微信语音识别6 GPU做到4.6倍加速比</li>
+<li>微信图像识别4 GPU做到2.5倍加速比，并支持大模型</li>
+</ul>
+<p><strong> Mariana已成功应用到微信语音识别和微信图像识别，并在广点通广告推荐的点击率预估中积极尝试</strong></p>
+<p><img class="alignnone size-full wp-image-17942" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/114.jpg" alt="腾讯大数据" width="629" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17943" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/27.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17944" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/34.jpg" alt="腾讯大数据" width="630" height="466" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17945" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/44.jpg" alt="腾讯大数据" width="630" height="439" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17946" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/52.jpg" alt="腾讯大数据" width="630" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17947" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/64.jpg" alt="腾讯大数据" width="630" height="461" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17948" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/74.jpg" alt="腾讯大数据" width="630" height="465" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17949" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/84.jpg" alt="腾讯大数据" width="630" height="458" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17950" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/94.jpg" alt="腾讯大数据" width="630" height="472" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17951" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/103.jpg" alt="腾讯大数据" width="630" height="460" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17952" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/115.jpg" alt="腾讯大数据" width="630" height="476" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17953" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/122.jpg" alt="腾讯大数据" width="630" height="461" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17954" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/132.jpg" alt="腾讯大数据" width="630" height="465" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17955" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/142.jpg" alt="腾讯大数据" width="630" height="464" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17956" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/153.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17957" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/162.jpg" alt="腾讯大数据" width="630" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17958" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/172.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17959" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/182.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17960" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/193.jpg" alt="腾讯大数据" width="630" height="471" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17961" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/202.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17962" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/213.jpg" alt="腾讯大数据" width="630" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17963" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/222.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17964" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/233.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17965" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/242.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"></p>
+<p><img class="alignnone size-full wp-image-17966" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/252.jpg" alt="腾讯大数据" width="630" height="471" data-tag="bdshare" data-bd-imgshare-binded="1"></p>
+<p><img class="alignnone size-full wp-image-17967" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/261.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17968" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/271.jpg" alt="腾讯大数据" width="630" height="474" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17969" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/28.jpg" alt="腾讯大数据" width="630" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17970" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/29.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17971" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/30.jpg" alt="腾讯大数据" width="630" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17972" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/311.jpg" alt="腾讯大数据" width="630" height="471" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17973" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/321.jpg" alt="腾讯大数据" width="630" height="473" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17974" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/331.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17975" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/341.jpg" alt="腾讯大数据" width="630" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17976" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/35.jpg" alt="腾讯大数据" width="630" height="473" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17977" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/36.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17978" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/37.jpg" alt="腾讯大数据" width="630" height="471" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17979" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/38.jpg" alt="腾讯大数据" width="630" height="465" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17980" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/39.jpg" alt="腾讯大数据" width="630" height="461" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17981" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/40.jpg" alt="腾讯大数据" width="631" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17982" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/411.jpg" alt="腾讯大数据" width="630" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17983" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/421.jpg" alt="腾讯大数据" width="631" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17984" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/431.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17985" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/441.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17986" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/45.jpg" alt="腾讯大数据" width="630" height="468" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17987" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/46.jpg" alt="腾讯大数据" width="630" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17988" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/47.jpg" alt="腾讯大数据" width="630" height="469" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17989" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/48.jpg" alt="腾讯大数据" width="630" height="466" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17990" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/49.jpg" alt="腾讯大数据" width="630" height="470" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-17991" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/50.jpg" alt="腾讯大数据" width="630" height="467" data-tag="bdshare" data-bd-imgshare-binded="1"></p>
+<p><a href="http://v.csdn.hudong.com/s/article.html?arcid=15820708" target="_blank">演讲视频查看&gt;&gt;&gt;</a></p>
+<p>End.</p>
+<div class="wumii-hook"><div id="wumiiBtnDiv" style="clear:both;overflow:visible;position:relative;left:0;top:0;height:28px;margin:0;padding:10px 0 0;text-shadow: none;text-indent:0;">
+    <div id="wumiiLikeBtnDiv" style="position: static; float: left; display: inline; width: 89px; height: 28px; margin: 0px 0px 0px 237px; padding: 0px; text-indent: 0px; background: url(http://static.wumii.cn/images/blogWidget/widget_buttons_skyBlue.png) 0px 0px no-repeat;" onmouseover="this.style.backgroundPosition=&#39;-89px 0&#39;;" onmouseout="this.style.backgroundPosition=&#39;0 0&#39;;">
+        <a href="http://www.wumii.com/item/1uBBfgLE" target="_blank" id="wumiiNumLikes" style="float:left;width:38px;height:20px;line-height:21px;margin:4px 0 0 4px;padding:0;border:none;background-color:#fff;color:#5a738a;letter-spacing:0;text-decoration:none;text-align:center;text-indent:0;font-size:12px;" onmouseover="this.style.fontWeight=&#39;bold&#39;;" onmouseout="this.style.fontWeight=&#39;normal&#39;;">1</a>
+        <span style="float:left;width:40px;height:29px;margin:0;padding:0;outline:none;cursor:pointer;" id="wumiiLikeBtn" hidefocus="true"></span>
+    </div>
+    <div id="wumiiRecommendBtnDiv" style="position:static;clear:none;float:left;display:inline;height:28px;margin:0;padding:0 5px;text-indent:0;">
+        <span id="wumiiRecommendBtn" hidefocus="true" style="float:left;display:inline;width:60px;height:28px;margin:0 0 0 5px;padding:0;background:url(&#39;http://static.wumii.cn/images/blogWidget/widget_buttons_skyBlue.png&#39;) no-repeat -267px 0;cursor:pointer;outline:none;" onmouseover="this.style.backgroundPosition=&#39;-328px 0&#39;;" onmouseout="this.style.backgroundPosition=&#39;-267px 0&#39;;"></span>
+        <img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/loading.gif" id="wumiiLoading" style="clear:none;display:none;height:15px;margin:7px 0 0 8px;padding:0;border:0;background:none;cursor:default;" alt="正在加载推荐文章">
+    </div>
+</div>
+<div class="wumii-related-items-div" wmode="2" style="margin: 0; border: none; padding: 0; clear: both; overflow: hidden; *zoom: 1; *position: relative;">
+    
+    
+    
+        <div class="wumii-internal" style="padding: 0; margin: 0; border: none; clear: both; display: block;">
+        <div class="wumii-widget-title" style="margin: 0; border: none; padding: 20px 0 5px; _padding-top:10px; text-indent: 0; text-align: left; font-weight: bold; color: #030B12;">您可能也喜欢：</div>
+                <div class="wumii-image-row" style="clear: both; overflow: hidden; border: none; padding: 0;margin: 0;_zoom: 1;" fromurl="http%3A%2F%2Fwww.36dsj.com%2Farchives%2F17941"><a class="wumii-image-block" hidefocus="true" title="技术贴：大数据告诉你，如何给微信公众号文章取标题？" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/18302" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/11WZapTKg.jpg?i=pIGIGq92" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/11WZapTKg.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">技术贴：大数据告诉你，如何给微信公众号文章取标题？</div>
+</a><a class="wumii-image-block" hidefocus="true" title="观点：微信数据分析铺路腾讯大数据战略" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/3140" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/Ka36g5uv.jpg?i=1czy8tDZy" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/Ka36g5uv.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">观点：微信数据分析铺路腾讯大数据战略</div>
+</a><a class="wumii-image-block" hidefocus="true" title="用大数据管理企业，HR大数据思路与腾讯实践" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/16223" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/zcknTNgV.jpg?i=a39lzA2A" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/zcknTNgV.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">用大数据管理企业，HR大数据思路与腾讯实践</div>
+</a><a class="wumii-image-block" hidefocus="true" title="ZestFinance：大数据做征信" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/17895" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/ptGh2fwZ.jpg?i=101agzLz1" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/ptGh2fwZ.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">ZestFinance：大数据做征信</div>
+</a><a class="wumii-image-block" hidefocus="true" title="你的QQ暴露了你的心——QQ大数据及其应用介绍PPT" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/18273" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/6KUuIAZq.jpg?i=CL4y6nOn" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/6KUuIAZq.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">你的QQ暴露了你的心——QQ大数据及其应用介绍PPT</div>
+</a><a class="wumii-image-block" hidefocus="true" title="腾讯、阿里、百度，大数据能力哪家强？" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/14539" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/2B4ceo9D.jpg?i=13aC0OxXW" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/2B4ceo9D.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">腾讯、阿里、百度，大数据能力哪家强？</div>
+</a><a class="wumii-image-block" hidefocus="true" title="详解：腾讯，阿里，百度，3家BAT企业“玩”大数据？" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/15054" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/Zmhk1h1N.jpg?i=15MYUlPkm" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/Zmhk1h1N.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">详解：腾讯，阿里，百度，3家BAT企业“玩”大数据？</div>
+</a><a class="wumii-image-block" hidefocus="true" title="腾讯是这样利用游戏大数据的" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/11363" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/xCd4wv5w.jpg?i=yrefun0J" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/xCd4wv5w.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">腾讯是这样利用游戏大数据的</div>
+</a><a class="wumii-image-block" hidefocus="true" title="O2O大数据闯入者：“技术公司”万科与“营销新贵”广点通" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/3965" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/kR3Dc2ps.jpg?i=1d78wEjcn" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/kR3Dc2ps.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">O2O大数据闯入者：“技术公司”万科与“营销新贵”广点通</div>
+</a><a class="wumii-image-block" hidefocus="true" title="腾讯网络干货分享：大数据在服务器运营中的应用" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E3E4FA&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/15796" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/ufiGt8Fn.jpg?i=11Fyzb66t" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/ufiGt8Fn.jpg">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 60px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #E8761E; overflow: hidden; white-space: normal; clear: both;">腾讯网络干货分享：大数据在服务器运营中的应用</div>
+</a></div>
+    </div><div class="wumii-footer" style="margin: 0px; border: none; padding: 5px 0px; clear: both; text-align: right; width: 634px;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" title="无觅关联推荐" style="font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: arial; color: rgb(187, 187, 187); border-bottom-style: none; word-wrap: normal; display: inline; cursor: pointer;">无觅关联推荐[?]</a>
+                
+        </div>
+</div></div>
+<p>转载请注明来自36大数据（36dsj.com)：<a href="http://www.36dsj.com/">36大数据</a> » <a href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据.html">重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构</a></p>		</article>
+				<div class="article-tags">
+			标签：<a href="http://www.36dsj.com/archives/tag/bigdata1" rel="tag">大数据</a><a href="http://www.36dsj.com/archives/tag/%e5%b9%bf%e7%82%b9%e9%80%9a" rel="tag">广点通</a><a href="http://www.36dsj.com/archives/tag/wechat1" rel="tag">微信</a><a href="http://www.36dsj.com/archives/tag/%e8%85%be%e8%ae%af%e5%a4%a7%e6%95%b0%e6%8d%ae" rel="tag">腾讯大数据</a>		</div>
+		<div class="postcode"><a href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/P3.png"><img class="alignnone size-full wp-image-11327" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/P3.png" alt="36大数据" width="640" height="141"></a></div>
+						<div class="relates"><h3 class="title"><strong>猜你喜欢</strong></h3><ul><li><a href="http://www.36dsj.com/archives/17069">40页PPT│社交网络发展的新动力：大数据与众包</a>2014-11-20</li><li><a href="http://www.36dsj.com/archives/16223">用大数据管理企业，HR大数据思路与腾讯实践</a>2014-11-10</li><li><a href="http://www.36dsj.com/archives/15796">腾讯网络干货分享：大数据在服务器运营中的应用</a>2014-10-31</li><li><a href="http://www.36dsj.com/archives/15054">详解：腾讯，阿里，百度，3家BAT企业“玩”大数据？</a>2014-10-21</li><li><a href="http://www.36dsj.com/archives/14539">腾讯、阿里、百度，大数据能力哪家强？</a>2014-10-13</li><li><a href="http://www.36dsj.com/archives/10773">双马大战李彦宏，大数据成BAT“新战场”</a>2014-08-04</li><li><a href="http://www.36dsj.com/archives/7475">大数据联手《你正常吗》告诉你大家怎么不正常了？</a>2014-04-24</li><li><a href="http://www.36dsj.com/archives/3965">O2O大数据闯入者：“技术公司”万科与“营销新贵”广点通</a>2013-10-22</li><li><a href="http://www.36dsj.com/archives/18326">大数据下城市计算的典型应用</a>2014-12-11</li><li><a href="http://www.36dsj.com/archives/18302">技术贴：大数据告诉你，如何给微信公众号文章取标题？</a>2014-12-11</li></ul></div>				<script type="text/javascript">
+var duoshuoQuery = {"short_name":"36dashuju","sso":{"login":"http:\/\/www.36dsj.com\/wp-login.php?action=duoshuo_login","logout":"http:\/\/www.36dsj.com\/wp-login.php?action=logout&_wpnonce=ae0c12a121"},"theme":"bluebox","stylePatch":"wordpress\/dsj"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+(function() {
+    var ds = document.createElement('script'); ds.type = 'text/javascript'; ds.async = true;
+    ds.charset = 'UTF-8';
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script><a name="comments"></a>
+
+<div class="ds-thread" data-thread-key="17941" data-author-key="1647" data-title="重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构" data-url="http://www.36dsj.com/archives/17941" id="ds-thread"><div id="ds-reset"><div class="ds-meta" style="display: none;"><a href="javascript:void(0)" class="ds-like-thread-button ds-rounded"><span class="ds-icon ds-icon-heart"></span> <span class="ds-thread-like-text">喜欢</span><span class="ds-thread-cancel-like">取消喜欢</span></a><span class="ds-like-panel"></span></div><a name="respond"></a><div class="ds-login-buttons"><p>社交帐号登录:</p><div class="ds-social-links"><ul class="ds-service-list"><li><a href="http://36dashuju.duoshuo.com/login/weibo/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-weibo">微博</a></li><li><a href="http://36dashuju.duoshuo.com/login/qq/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-qq">QQ</a></li><li><a href="http://36dashuju.duoshuo.com/login/renren/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-renren">人人</a></li><li><a href="http://36dashuju.duoshuo.com/login/douban/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-douban">豆瓣</a></li><li><a class="ds-more-services" href="javascript:void(0)">更多»</a></li></ul><ul class="ds-service-list ds-additional-services"><li><a href="http://36dashuju.duoshuo.com/login/kaixin/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-kaixin">开心</a></li><li><a href="http://36dashuju.duoshuo.com/login/netease/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-netease">网易</a></li><li><a href="http://36dashuju.duoshuo.com/login/sohu/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-sohu">搜狐</a></li><li><a href="http://36dashuju.duoshuo.com/login/baidu/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-baidu">百度</a></li><li><a href="http://36dashuju.duoshuo.com/login/google/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F17941" rel="nofollow" class="ds-service-link ds-google">谷歌</a></li></ul></div></div><div class="ds-replybox"><a class="ds-avatar" href="javascript:void(0);" onclick="return false"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/119041.jpg" alt="taotao.li"></a><form method="post"><input type="hidden" name="thread_id" value="1163062300349828283">
+<input type="hidden" name="parent_id" value="">
+<input type="hidden" name="nonce" value="548d6c4a26d9a"><div class="ds-textarea-wrapper ds-rounded-top"><textarea name="message" title="Ctrl+Enter快捷提交" placeholder="说点什么吧…"></textarea><pre class="ds-hidden-text"></pre></div><div class="ds-post-toolbar"><div class="ds-post-options ds-gradient-bg"><span class="ds-sync"></span></div><button class="ds-post-button" type="submit">发布</button><div class="ds-toolbar-buttons"><a class="ds-toolbar-button ds-add-emote" title="插入表情"></a><a class="ds-toolbar-button ds-add-image" title="插入图片"></a></div></div></form></div><div class="ds-comments-info"><div class="ds-sort"><a class="ds-order-desc ds-current">最新</a><a class="ds-order-asc">最早</a><a class="ds-order-hot">最热</a></div><ul class="ds-comments-tabs"><li class="ds-tab"><a class="ds-comments-tab-duoshuo ds-current" href="javascript:void(0);">评论</a></li><li class="ds-tab"><a class="ds-comments-tab-weibo" href="javascript:void(0);"><span class="ds-highlight">17</span>条新浪微博</a></li></ul></div><ul class="ds-comments"><li class="ds-post ds-post-placeholder">还没有评论，沙发等你来抢</li></ul><div class="ds-paginator" style="display: none;"><div class="ds-border"></div><a data-page="1" href="javascript:void(0);" class="ds-current">1</a></div><p class="ds-powered-by"><a href="http://duoshuo.com/" target="_blank" rel="nofollow">36大数据正在使用多说</a></p></div></div>
+
+<script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script>
+	<div id="ds-ssr">
+
+		
+            <ol id="commentlist">
+                            </ol>
+
+		            
+    </div>	</div>
+</div>
+<aside class="sidebar">	
+<div class="widget widget_text">			<div class="textwidget"><a href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/P2.png"><img class="alignnone size-full wp-image-11326" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/P2.png" alt="36大数据" width="300" height="140"></a></div>
+		</div><div class="widget widget_text">			<div class="textwidget"><a href="http://www.36dsj.com/archives/category/application-area/major" target="_blank"><img class="alignnone size-full wp-image-14952" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/4110.jpg" alt="马云说" width="300" height="138"></a></div>
+		</div><div class="widget d_postlist"><h3 class="title"><strong>站长推荐<a class="more" href="http://www.36dsj.com/archives/category/big-data-investment">More+</a></strong></h3><ul><li><a href="http://www.36dsj.com/archives/14462"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/186.jpg" class="thumb"></span></span><span class="text">经济学人特别报告之广告业与技术：通过数据来了解你</span><span class="muted">2014-10-11</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/4850"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/78-220x150.jpg" class="thumb"></span><span class="text">产品运营数据分析——SPSS数据分组案例</span><span class="muted">2013-12-11</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/17402"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/1522-220x150.jpg" class="thumb"></span></span><span class="text">预测未来，最忌参考过去？</span><span class="muted">2014-11-26</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/4066"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/115-220x150.jpg" class="thumb"></span><span class="text">创业投资请看：2014年最值得关注的十大IT趋势</span><span class="muted">2013-10-25</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/121"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/153(1).jpg" class="thumb"></span></span><span class="text">一位退役海军特种兵的移动互联网创业梦</span><span class="muted">2013-06-09</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/4445"><span class="thumbnail"><img src="" class="thumb"></span><span class="text">eMarketer：大数据能够展现消费者行为</span><span class="muted">2013-11-10</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/3392"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/67-140x100.jpg" class="thumb"></span><span class="text">大数据：大机遇还是大忽悠？</span><span class="muted">2013-09-15</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/8390"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/12-220x150.jpg" class="thumb"></span><span class="text">技术宅如何躲开大数据？解析人脸识别技术实现方式</span><span class="muted">2014-06-03</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/5637"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/93-220x150.jpg" class="thumb"></span><span class="text">对大数据时代的探索，犹如当年美国对西部的探险，充满许多传说和神话</span><span class="muted">2014-01-17</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/4952"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/BI-220x150.jpg" class="thumb"></span><span class="text">BI系统的应用组织思路与数据分析模式</span><span class="muted">2013-12-03</span><span class="muted">暂无评论</span></a></li>
+</ul></div><div class="widget d_postlist"><h3 class="title"><strong>相关文章<a class="more" href="http://www.36dsj.com/">More+</a></strong></h3><ul><li><a href="http://www.36dsj.com/archives/8102"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/175-220x150.jpg" class="thumb"></span><span class="text">杜子建：反对大数据，力挺小数据，看好标准化数据</span><span class="muted">2014-05-14</span><span class="muted">2条评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/1847"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/24-140x100.png" class="thumb"></span></span><span class="text">2013年各大消费电子产品厂商关于智能手表的计划调研</span><span class="muted">2013-07-07</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/9473"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/1111-220x150.jpg" class="thumb"></span><span class="text">大数据与生命科学</span><span class="muted">2014-06-30</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/12597"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/14.jpg" class="thumb"></span></span><span class="text">到底是C还是C++？关于数据/程序员的22则冷笑话#4</span><span class="muted">2014-09-01</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/5511"><span class="thumbnail"><span><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/26-220x150.jpg" class="thumb"></span></span><span class="text">透视美国大数据</span><span class="muted">2014-01-08</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/3237"><span class="thumbnail"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/72-140x100.jpg" class="thumb"></span><span class="text">当电影碰到大数据该怎么玩？</span><span class="muted">2013-09-07</span><span class="muted">暂无评论</span></a></li>
+</ul></div>		<div class="widget widget_recent_entries">		<h3 class="title"><strong>近期文章</strong></h3>		<ul>
+					<li>
+				<a href="http://www.36dsj.com/archives/18361">深挖大数据：出售你所收集的信息是个有利可图的副业</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18355">三大案例告诉你互联网新兴企业为什么需要实时流数据分析</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18326">大数据下城市计算的典型应用</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18316">得益于大数据分析，美国农场主Kip Tom年投资回报率从14%提高到了21.2%</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18302">技术贴：大数据告诉你，如何给微信公众号文章取标题？</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18298">姜奇平：2014中国互联网总结及2015年展望</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18273">你的QQ暴露了你的心——QQ大数据及其应用介绍PPT</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18265">“一片羽毛的故事”：Apache软件基金会成立15年</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18262">一个和大数据密切相关的组织——Apache软件基金会</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/18248">Cloudera今日正式登陆中国 36大数据见证其大中国区开幕庆典</a>
+						</li>
+				</ul>
+		</div></aside></section>
+<footer class="footer">
+	<div class="container">
+	<div class="item item-01">
+		<ul><li><a href="http://www.36dsj.com/about-us">关于我们</a></li>
+<li><a href="http://www.36dsj.com/contact-us">联系我们</a></li>
+<li><a href="http://www.36dsj.com/gengxin">站务公告</a></li>
+<li><a href="http://www.36dsj.com/site-fans">文章存档</a></li>
+<li><a href="http://www.36dsj.com/sitemap.html">网站地图</a></li>
+<li><a href="http://www.36dsj.com/all-tags">标签云</a></li></ul>
+	</div>
+	<div class="item item-02">
+		<p>36大数据是一个专注大数据、大数据技术、大数据应用案例和数据可视化的科技网站。讲述大数据在电子商务、网络游戏、征信、互联网金融、工/农/商业等多个领域的应用。百度大数据首席战略合作媒体，内容最权威最干货最接地气最具价值。</p><p>
+
+</p><p>备案号：京ICP备12012135号-2。版权所有，保留一切权利！ © 2014 <a href="http://www.36dsj.com/">36大数据</a> Theme</p><p>    	<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F46db1c7ab0c594c8219d3a3d68e66ff8' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/h.js" type="text/javascript"></script>
+	</p></div>
+	<div class="item item-03">
+		<img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/232.png">
+	</div>
+    </div>
+</footer>
+
+<script>
+window.jui = {
+	uri: 'http://www.36dsj.com/wp-content/themes/dsj0804',
+	roll: 0}
+</script>
+
+<p style="margin:0;padding:0;height:1px;overflow:hidden;">
+    <script type="text/javascript"><!--
+        var wumiiSitePrefix = "http://www.36dsj.com";
+        var wumiiEnableCustomPos = false;
+        var wumiiParams = "&num=8&mode=3&displayInFeed=1&version=1.0.5.7&pf=WordPress4.0.1";
+        var wumiiCategories = ["\u5e72\u8d27\u6559\u7a0b"];
+    //--></script><script type="text/javascript" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/relatedItemsWidget"></script><a href="http://www.wumii.com/widget/relatedItems" style="border:0;"><img src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/pixel.png" alt="无觅相关文章插件，快速提升流量" style="border:0;padding:0;margin:0;"></a>
+</p><script type="text/javascript" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/jquery.js"></script>
+<script type="text/javascript" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/bootstrap.js"></script>
+<script type="text/javascript" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/custom.js"></script><div class="rollto" style="display: block;"><a href="javascript:;"></a></div>
+
+<div class="wumii-popup-relatedItems" wid="right" style="overflow: visible; position: fixed; bottom: 0px; right: -401px; z-index: 2147483644; margin: 0px; padding: 0px; border: none; zoom: 1; width: 423px;">
+    <div class="wumii-popup-style" style="overflow: hidden; position: relative; z-index: 20; float: left; left: 1px; display: inline; width: 22px; margin: 15px 0 0 0;padding: 0; border: none; zoom: 1;">
+        <label class="wumii-popup-style-label" style="display: block; width: 100%; height: 92px; cursor: pointer; background: url(http://static.wumii.cn/images/widget/popup_20130905/style_related_yellow_brown_right.png) 0px 0px no-repeat;"></label>
+    </div>
+    <div class="wumii-popup-content" style="display: inline; margin: 0; border: none; float: left; padding: 0 0 0 5px; border-left: 1px solid #d0d0d0; border-top: 2px solid #327dc8; background: #fff;">
+        <ul class="wumii-popup-items" style="list-style: none; float: none; display: block; margin: 0; padding: 0; border: none;"><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px -1px 0px 0px; padding: 0px; border-style: solid none none; border-top-width: 2px; border-top-color: rgb(50, 125, 200);">
+    <a href="http://www.36dsj.com/archives/8638" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="大数据计算新贵Spark在腾讯雅虎优酷成功应用解析" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0px 0px; padding: 5px; border-right-width: 1px; border-right-style: solid; border-right-color: rgb(234, 234, 234); text-decoration: none; cursor: pointer; background-image: none; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/F6wl7BCr.jpg?i=163HRN0Dh" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/F6wl7BCr.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">大数据计算新贵Spark在腾讯雅虎优酷成功应用解析</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px -1px 0px 0px; padding: 0px; border-style: solid none none; border-top-width: 2px; border-top-color: rgb(50, 125, 200);">
+    <a href="http://www.36dsj.com/archives/5611" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="大数据挖掘读懂微信WeChat，用户抱怨点在于”流量收费“和”没手机“" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0px 0px; padding: 5px; border-right-width: 1px; border-right-style: solid; border-right-color: rgb(234, 234, 234); text-decoration: none; cursor: pointer; background-image: none; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/p21sAOTM.jpg?i=RrboFpy" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/p21sAOTM.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">大数据挖掘读懂微信WeChat，用户抱怨点在于”流量收费“和”没手机“</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px -1px 0px 0px; padding: 0px; border-style: solid none none; border-top-width: 2px; border-top-color: rgb(50, 125, 200);">
+    <a href="http://www.36dsj.com/archives/11152" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="由“阿里浪”想到的：关于大数据、人工智能与百度，关系网与腾讯" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0px 0px; padding: 5px; border-right-width: 1px; border-right-style: solid; border-right-color: rgb(234, 234, 234); text-decoration: none; cursor: pointer; background-image: none; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/iFQ7wJb9.jpg?i=GU81qusO" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/iFQ7wJb9.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">由“阿里浪”想到的：关于大数据、人工智能与百度，关系网与腾讯</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/2848" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="2013腾讯开放平台数据报告，非游戏收入增长10倍" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/JFqZfjjX.png?i=lLN87eWS" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/JFqZfjjX.png">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">2013腾讯开放平台数据报告，非游戏收入增长10倍</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/3363" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="腾讯CDC眼中的大数据时代，附英雄联盟数据分析思考" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/OXzqfKtV.jpg?i=Ju0U4gWS" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/OXzqfKtV.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">腾讯CDC眼中的大数据时代，附英雄联盟数据分析思考</span>
+    </a>
+</li></ul>
+        <p style="clear: both; margin: 0; padding: 0 3px 0 0; line-height: 16px; text-align: right;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" style="float: none; display: inline; line-height: 16px; border: none; color: #bebebe; word-wrap: normal; text-decoration: none; text-indent: 0; font-size: 12px;" title="无觅相关文章推荐">无觅关联推荐[?]</a>
+        </p>
+    </div>
+</div><div class="wumii-popup-hot" wid="right" style="overflow: visible; position: fixed; top: 120px; right: -260px; margin: 0px -24px 0px 0px; z-index: 2147483644; padding: 0px; border: none; zoom: 1; width: 284px;">
+    <div class="wumii-popup-style" style="overflow: hidden; position: relative; z-index: 20; float: left; left: 1px; margin: 15px 0 0 -24px; display: inline; width: 24px; padding: 0; border: none; zoom: 1;">
+        <label class="wumii-popup-style-label" style="display: block; width: 100%; height: 110px; background: url(&#39;http://static.wumii.cn/images/widget/popup_20130905/style_hot_yellow_brown_right.png&#39;) no-repeat; cursor: pointer;"></label>
+    </div>
+    <div class="wumii-popup-content" style="display: inline; width: 260px; margin: 0; border: none; float: left; padding: 5px 0 0 5px; border-left: 1px solid #d0d0d0; border-top: 2px solid #327dc8; border-bottom: 1px solid #d0d0d0; background: #fff;">
+        <ul class="wumii-popup-items" style="list-style: none; float: none; display: block; margin: 0; padding: 0; border: none; color: #999;"><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18273" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="你的QQ暴露了你的心——QQ大数据及其应用介绍PPT" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/6KUuIAZq.jpg?i=CL4y6nOn" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/6KUuIAZq.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">你的QQ暴露了你的心——QQ大数据及其应用介绍PPT</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18326" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="大数据下城市计算的典型应用" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/lIWkzx1I.jpg?i=hQuST7AJ" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/lIWkzx1I.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">大数据下城市计算的典型应用</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18361" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="深挖大数据：出售你所收集的信息是个有利可图的副业" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/nkYXXacf.jpg?i=cGIP9Uzg" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/nkYXXacf.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">深挖大数据：出售你所收集的信息是个有利可图的副业</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18355" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="三大案例告诉你互联网新兴企业为什么需要实时流数据分析" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/15iCJMyMr.jpg?i=s7CaF2L6" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/15iCJMyMr.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">三大案例告诉你互联网新兴企业为什么需要实时流数据分析</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18148" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="2014年中国大数据整体市场研究报告PPT：技术日渐成熟，成本逐年增高" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/FSHvdd4p.jpg?i=qzXf8I6r" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/FSHvdd4p.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">2014年中国大数据整体市场研究报告PPT：技术日渐成熟，成本逐年增高</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据.html" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/SPMVbyrw.jpg?i=1uBBfgLE" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/SPMVbyrw.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18115" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="28页PPT揭秘京东提升第三方卖家销量的“数据罗盘”，把用户变傻？" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/gqdk8Tqt.jpg?i=79bVIZuf" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/gqdk8Tqt.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">28页PPT揭秘京东提升第三方卖家销量的“数据罗盘”，把用户变傻？</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/18320" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="我只想说这是好文，一篇对大数据深度思考的文章" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/jeKIeB97.jpg?i=ryDovbs1" src="./重磅！50页PPT揭秘腾讯大数据平台与推荐应用架构   36大数据_files/jeKIeB97.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">我只想说这是好文，一篇对大数据深度思考的文章</span>
+    </a>
+</li></ul>
+        <p style="clear: both; margin: 10px 0 0; padding: 0 3px 5px 0; line-height: 16px; text-align: right;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" style="float: none; display: inline; line-height: 16px; border: none; color: #bebebe; word-wrap: normal; text-decoration: none; text-indent: 0; font-size: 12px; cursor: pointer;" title="无觅热门文章推荐">无觅关联推荐[?]</a>
+        </p>
+    </div>
+</div><div id="bdimgshare_1418554646582" class="sr-bdimgshare sr-bdimgshare-list sr-bdimgshare-16 sr-bdimgshare-black" style="height: 36px; line-height: 26px; font-size: 12px; position: absolute; top: 15013px; left: 241px; width: 630px; display: block;" data-bd-bind="1418554646582"><div class="bdimgshare-bg"></div><div class="bdimgshare-content bdsharebuttonbox bdshare-button-style0-16"><label class="bdimgshare-lbl">分享到：</label><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_qzone" data-cmd="qzone" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_weixin" data-cmd="weixin" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_tsina" data-cmd="tsina" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_tqq" data-cmd="tqq" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_renren" data-cmd="renren" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_sqq" data-cmd="sqq" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_douban" data-cmd="douban" hidefocus=""></a><a href="http://www.36dsj.com/archives/17941#" onclick="return false;" class="bds_more" data-cmd="more" hidefocus=""></a></div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><div id="hm_t_undefined" class="hm-t-container"><div class="hm-t-go-top" style="display: block;"></div></div></body></html>

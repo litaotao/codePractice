@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!-- saved from url=(0352)http://mp.weixin.qq.com/s?__biz=MjM5MzA0OTkwMA==&mid=204100331&idx=2&sn=3c6810b29a74b61cc02f0ab1bec10b72&key=79cf83ea5128c3e58fb56be2c1c0bfbaa13e9b762d21781123c1aa4fcb141810ee3005250fce5481b608d6fd9f36ecc0&ascene=1&uin=MTAzNTc2NzM4Mg%3D%3D&devicetype=webwx&version=70000001&pass_ticket=MQ6Zs%2BpHbu3kPB40KM0JW5wDZIWTT6aWmY3QX7TEe0LbGKRNXeorudFibu0sUXEm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+<script type="text/javascript">
+    var sampling = Math.random() < 0.001;
+    var page_begintime = (+new Date());
+    (sampling) && ((new Image()).src = "http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=7839&flag2=7&flag3=8&15=1000&r=" + Math.random());
+
+    var biz = "MjM5MzA0OTkwMA==";
+    var sn = "3c6810b29a74b61cc02f0ab1bec10b72";
+    var mid = "204100331" || "";
+    var idx = "2" || "" ;
+    
+    //辟谣需求
+    var is_rumor = ""*1;
+    var norumor = ""*1;
+    if (!!is_rumor&&!norumor){
+      if (!document.referrer || document.referrer.indexOf("mp.weixin.qq.com/mp/rumor") == -1){
+        location.href = "http://mp.weixin.qq.com/mp/rumor?action=info&__biz=" + biz + "&mid=" + mid + "&idx=" + idx + "&sn=" + sn + "#wechat_redirect";
+      }
+    }
+</script>
+
+        
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<link rel="shortcut icon" type="image/x-icon" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/common/favicon22c41b.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript">
+    var uin = "MTAzNTc2NzM4Mg==";
+    var key = "79cf83ea5128c3e58fb56be2c1c0bfbaa13e9b762d21781123c1aa4fcb141810ee3005250fce5481b608d6fd9f36ecc0";
+    var pass_ticket = "MQ6Zs+pHbu3kPB40KM0JW5wDZIWTT6aWmY3QX7TEe0LbGKRNXeorudFibu0sUXEm";
+</script>
+
+        <title>伯乐在线</title>
+        
+<link rel="stylesheet" type="text/css" href="./实例讲解 SQL 注入攻击_files/page_mp_article_improve233511.css">
+<style>
+     
+    </style>
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_pc22ebff.css">
+<![endif]-->
+<script type="text/javascript">
+    document.domain = "qq.com";
+</script>
+
+    <script src="./实例讲解 SQL 注入攻击_files/share224ef3.js" type="text/javascript" async="" crossorigin="true"></script><script src="./实例讲解 SQL 注入攻击_files/index23354e.js" type="text/javascript" async="" crossorigin="true"></script><style type="text/css"></style></head>
+    <body id="activity-detail" class="zh_CN ">
+        
+    <script type="text/javascript">
+        var write_sceen_time = (+new Date());
+        (sampling) && ((new Image()).src = "http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=7839&flag2=7&flag3=8&16=1000&r=" + Math.random());
+    </script>
+    
+    <div id="js_cmt_more" class="discuss_container access" style="display:none;">
+        <div class="discuss_container_inner">
+            <h2 class="rich_media_title" id="activity-name">实例讲解 SQL 注入攻击</h2>
+
+            <div class="discuss_list_wrp">
+                <div class="line_tips_wrp">
+                    <span class="line_tips">精选评论<span class="error_tips" id="js_cmt_nofans3" style="display:none">关注该公众号可参与评论</span></span>
+                </div>
+                <p class="discuss_access_tips" id="js_cmt_addbtn3" style="display:none"><a href="http://mp.weixin.qq.com/s?__biz=MjM5MzA0OTkwMA==&mid=204100331&idx=2&sn=3c6810b29a74b61cc02f0ab1bec10b72&key=79cf83ea5128c3e58fb56be2c1c0bfbaa13e9b762d21781123c1aa4fcb141810ee3005250fce5481b608d6fd9f36ecc0&ascene=1&uin=MTAzNTc2NzM4Mg%3D%3D&devicetype=webwx&version=70000001&pass_ticket=MQ6Zs%2BpHbu3kPB40KM0JW5wDZIWTT6aWmY3QX7TEe0LbGKRNXeorudFibu0sUXEm#comment">写评论<img class="icon_edit" src="./实例讲解 SQL 注入攻击_files/icon_edit227bf3.png" alt=""></a></p>
+                <ul class="discuss_list" id="js_cmt_morelist"></ul>
+            </div>
+
+            <div class="loadmore" id="js_cmt_more_loading">
+                <div class="tips_wrp">
+                    <img src="./实例讲解 SQL 注入攻击_files/icon_loading_white22c04a.gif" class="loading_icon icon_loading_white" alt="">
+                    <span class="tips">加载中</span>
+                </div>
+            </div>
+
+            <div class="loadmore with_line" id="js_cmt_more_end" style="display:none">
+                <div class="tips_wrp"><span class="tips">以上评论由公众帐号筛选后显示</span></div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="js_cmt_mine" class="discuss_container editing access" style="display:none;">
+        <div class="discuss_container_inner">
+            <h2 class="rich_media_title" id="activity-name">实例讲解 SQL 注入攻击</h2>
+            <div class="frm_textarea_box_wrp">
+                <span class="frm_textarea_box">
+                    <textarea id="js_cmt_input" class="frm_textarea" placeholder="评论将由公众帐号筛选后显示，对所有人可见。"></textarea>
+                </span>
+            </div>
+            <div class="discuss_btn_wrp"><a id="js_cmt_submit" class="btn btn_inline btn_primary btn_discuss btn_disabled" href="javascript:;">提交</a></div>
+            <div class="discuss_list_wrp" style="display:none">
+                <div class="line_tips_wrp">
+                    <span class="line_tips">我的评论</span>
+                </div>
+                <ul class="discuss_list" id="js_cmt_mylist"></ul>
+            </div>
+            <div class="wx_poptips" id="js_cmt_toast" style="display:none;">
+                <img alt="" class="icon_toast" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGoAAABqCAYAAABUIcSXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3NpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyMTUxMzkxZS1jYWVhLTRmZTMtYTY2NS0xNTRkNDJiOGQyMWIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTA3QzM2RTg3N0UwMTFFNEIzQURGMTQzNzQzMDAxQTUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTA3QzM2RTc3N0UwMTFFNEIzQURGMTQzNzQzMDAxQTUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NWMyOGVjZTMtNzllZS00ODlhLWIxZTYtYzNmM2RjNzg2YjI2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIxNTEzOTFlLWNhZWEtNGZlMy1hNjY1LTE1NGQ0MmI4ZDIxYiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pmvxj1gAAAVrSURBVHja7J15rF1TFMbXk74q1ZKHGlMkJVIhIgg1FH+YEpEQJCKmGBpThRoSs5jVVNrSQUvEEENIhGiiNf9BiERICCFIRbUiDa2qvudbOetF3Tzv7XWGffa55/uS7593977n3vO7e5+199p7v56BgQGh0tcmvAUERREUQVEERREUQVEERREUQVEERREUQVEERREUQVEERREUQVEERVAUQVEERVAUQbVYk+HdvZVG8b5F0xj4RvhouB+eCy8KrdzDJc1RtAX8ILxvx98V1GyCSkN98Cx4z/95/Wn4fj6j6tUEeN4wkFSnw1MJqj5NhBfAuwaUHREUg4lqNMmePVsHll/HFhVfe1t3FwpJI8DXCCquDrCWNN4B6Tb4M3Z98aTPmTvh0YHl18PXw29yZiKejoPvcUD6E74yFBJbVDk6Bb7K8aP/Hb4c/tRzEYIqprPhSxzlf4Uvhb/0Xoig8qnHAJ3lqPMzfDH8XZ4LEpRf2sVdA5/sqPO9Qfop70UJyn+/boaPddT5yrq7VUUvTIVJI7q74MMddXR8NB1eXcYvhBpZm0s2w72/o86HFoKvLau/pYaXzjLMdUJ6y0LwtWV9CIIaXtvA8+G9HHV03u5q+K+yH47U0NoRngPv7KjzHDwTLj0bS1BDazfJJlcnOOostC6ysnCT+q80G/sIvFVgeW09D8FPVT0uoP7VfvAD8NjA8pqmuAN+OcYAjso0RbIZ8DGB5TVNcRO8JMaHY9SXSdfa3eeANJimWBLrA7JFiZwIXye+NMUV8CcxP2SRFjXefok7NRjSGZJlWUPvw2/wtNiQirSoXWyMsR28wR7AzzYM0oXw+Y7yK+CLJGeaoqjyrJSdZJD6Ov4+z5y6NJc0Az7NUecHydIUy+v60KNyQHoM3nKI1y7YCFiq0i7uBvgER52vDdKqWn9djhY1Dn4G3n6Ecqm2rF74dvgoR53S0hQxW9RJAZAGW5bSn58QJA27dQ7uIEedjywEX5NKVxCqsY6y+qA+LxFI4+yZ6oH0trWkNan80jygtIUsc5SflgAsDXgehfdx1KkkTRE76tN+Xue2jnTU0Ru1oIbvpt30bBtKhOp5yaaRkts0lic8V1i6dPcIRx2d/l8Y8XtNNEg7OOo8bl1kmmOKnDsO88CaYzejau0hWZqiL7C83oCH4SeTHvwV2BqqsHRVztSEYOmWF80NeXZT6Hd4KflResE9vCnBOlCyGfDNAstHTVPUDWoQ1t3iW+9WNizvlhfd4aerXd+ThqiMfNR6+9LvOOro5OY5JX2H4+F7HZD+kGzlamMgldWiirQsjcwWFbjmqZJteekJLK9pisvgL6RhKvuciZiwzrWWGapfrPy30kBVcSBIrw0aD3PU0XB6cehntq7rTMf7/2iQlktDVdXJLXlg6VjmiYBn6rWSTRCH6hvJ0hQrpcGq8oidsmHpTP8t8DGO9/vcWt9qabiqPgup1yKyQwvC2tSefZ73SSpNkUJ4PlLorlHZ+446nc8f3fIyywlJhwrTuwVSjBa1ccvSxN0hjjoK5xVrYZMd9V6XbFfgBukixTwGLg8sDam3dZR/wZ6L/dJlin1en8LS+bgpFbz3Ygvzu1J1HKxYNqxGpCmaCEo12rrBorD6LRp8UbpcdR5VWhTW35KlKd6QFqjuM2XzwlpnMxTvSkuUwuG/Xlg6NtPjbT6WFimF/VG6LEvXgn8QGDjMbBukVECFwhpoS+CQatfX2Q1q6H7wENHdrfCr0lKleEB9JyxNneus+VJpsVL9TwI6W65LovWIGl3KtVJaLv7LBwYTFEERFEVQFEERFEVQFEERFEVQFEERFEVQFEERFEVQFEERFFWq/hFgADUMN4RzT6/OAAAAAElFTkSuQmCC">
+                <p class="toast_content">已评论</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="js_article" class="rich_media">
+        
+        <div id="js_top_ad_area" class="top_banner"></div>
+                
+        <div class="rich_media_inner">
+            <h2 class="rich_media_title" id="activity-name">
+                实例讲解 SQL 注入攻击 
+            </h2>
+            <div class="rich_media_meta_list">
+                                <em id="post-date" class="rich_media_meta rich_media_meta_text">2015-01-14</em>
+
+                                <a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="javascript:void(0);" id="post-user">伯乐在线</a>
+            </div>
+
+            <div id="page-content">
+                <div id="img-content">
+                    
+                                                            
+                                                            
+                    <div class="rich_media_content" id="js_content"><p>一位客户让我们针对只有他们企业员工和顾客能使用的企业内网进行渗透测试。这是安全评估的一个部分，所以尽管我们之前没有使用过SQL注入来渗透网络，但对其概念也相当熟悉了。最后我们在这项任务中大获成功，现在来回顾一下这个过程的每一步，将它记录为一个案例。</p><p><br></p><p>“SQL注入”是一种利用未过滤/未审核用户输入的攻击方法（“缓存溢出”和这个不同），意思就是让应用运行本不应该运行的SQL代码。如果应用毫无防备地创建了SQL字符串并且运行了它们，就会造成一些出人意料的结果。</p><p style="text-align:center"><img data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVUpZUabNdaIb1YxgTobZvOjRWibe2QicqDQFegtvtuJhPkwKj7YkzsnwQ/0" style="border: 0px; margin: 0px; padding: 0px; font-size: 0px; color: transparent; vertical-align: middle; width: auto !important; visibility: visible !important; height: auto !important;" class="" id="c1421236007731" data-type="jpeg" data-ratio="1" data-w="300" src="./实例讲解 SQL 注入攻击_files/0"></p><p>我们记录下了在多次错误的转折后经历的曲折过程，而一个更有经验的人会有这不同的 — 甚至更好的 — 方法。但事实上我们成功以后才明白，我们并没有完全被误导。</p><p><br></p><p>其他的SQL文章包含了更多的细节，但是这篇文章不仅展示了漏洞利用的过程，还讲述了发现漏洞的原理。</p><p><br></p><h1><span style="font-size: 20px;"><strong>目标内网</strong></span></h1><p>展现在我们眼前的是一个完整定制网站，我们之前没见过这个网站，也无权查看它的源代码：这是一次“黑盒”攻击。‘刺探’结果显示这台服务器运行在微软的IIS6上，并且是ASP.NET架构。这就暗示我们数据库是微软的SQL server：我们相信我们的技巧可以应用在任何web应用上，无论它使用的是哪种SQL 服务器。</p><p><br></p><p>登陆页有传统的用户-密码表单，但多了一个 “把我的密码邮给我”的链接；后来，这个地方被证实是整个系统陷落的关键。</p><p><br></p><p>当键入邮件地址时，系统假定邮件存在，就会在用户数据库里查询邮件地址，然后邮寄一些内容给这个地址。但我的邮件地址无法找到，所以它什么也不会发给我。</p><p><br></p><p>对于任何SQL化的表单而言，第一步测试，是输入一个带有单引号的数据：目的是看看他们是否对构造SQL的字符串进行了过滤。当把单引号作为邮件地址提交以后，我们得到了500错误（服务器错误），这意味着“有害”输入实际上是被直接用于SQL语句了。就是这了！</p><p><br></p><p>我猜测SQL代码可能是这样：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVRcNb1d5ibUH4ldrKn9IXRoTV8R4MfZr0q6Cflt8tyL581yBW6biap6hw/0" data-ratio="0.1675531914893617" data-w="376" src="./实例讲解 SQL 注入攻击_files/640" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>$EMAIL 是用户从表单提交的地址，并且这段查询在字符串末端$EMAIL上提供了引号。我们不知道字段或表的确切名字，但是我们了解他们的本质，这有助于我们做正确的猜测。</p><p><br></p><p>当我们键入steve@unixwiz.net‘ -注意这个末端的引号 – 下面是这个SQL字段的构成：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVffcpDc0HAsymIYnZVXqbbOcduWA0MtZsA7ZJlnMJmndkts8pTDt1Ug/0" data-ratio="0.16444444444444445" data-w="450" src="./实例讲解 SQL 注入攻击_files/640(1)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>当这段SQL开始执行，SQL解析器就会发现多余的引号然后中断执行，并给出语法错误的提示。这个错误如何清楚的表述给用户，基于应用内部的错误恢复规程，但一般来说都不会提示“邮件地址不存在”。这个错误响应成了死亡之门，它告诉别人用户输入没有被正确的处理，这就为应用破解留下了可乘之机。</p><p><br></p><p>这个数据呈现在WHERE的从句中，让我们以符合SQL规范的方式改变输入试试，看看会发生什么。键入anything’ OR ‘x’=‘x, 结果如下：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGV0PeRxkcAMOPE6G1Licn1vmYDvGuoVBBbNjNW5ziah0NPXcowZMGbTwuw/0" data-ratio="0.18387909319899245" data-w="397" src="./实例讲解 SQL 注入攻击_files/640(2)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>因为应用不会思考输入 – 仅仅构造字符串 - 我们使用单引号把WHERE从句的单一组成变成了双组成，’x'=‘x’从句是恒成立的，无论第一个从句是什么。（有一种更好的方式来确保“始终为真”，我们随后会接触到）。</p><p></p><p>但与每次只返回单一数据的“真实”查询不同，上面这个构造必须返回这个成员数据库的所有数据。要想知道在这种情况下应用会做什么，唯一的方法就是尝试，尝试，再尝试。我们得到了这个：</p><hr style=""><p>你的登录信息已经被邮寄到了 random.person@example.com.</p><hr style=""><p><br></p><p>我们猜测这个地址是查询到的第一条记录。这个家伙真的会在这个邮箱里收到他忘记的密码，想必他会很吃惊也会引起他的警觉。</p><p><br></p><p>我们现在知道可以根据自己的需要来篡改查询语句了，尽管对于那些看不到的部分还不够了解，但是我们注意到了在多次尝试后得到了三条不同的响应：</p><ul class=" list-paddingleft-2" style="list-style-type: disc;"><li><p>“你的登录信息已经被邮寄到了邮箱”</p></li><li><p>“我们不能识别你的邮件地址”</p></li><li><p>服务器错误</p></li></ul><p><br></p><p>前两个响应是有效的SQL，最后一个响应是无效的SQL：当猜测查询语句结构的时候，这种区别非常有用。</p><p><br></p><h1><span style="font-size: 20px;"><strong>模式字段映射</strong></span></h1><p>第一步是猜测字段名：我们合理的推测了查询包含“email address”和“password”，可能也会有“US Mail address”或者“userid”或“phone number”这样的字段。我们特别想执行 SHOW TABLE语句, 但我们并不知道表名，现在没有比较明显的办法可以拿到表名。</p><p><br></p><p>我们进行了下一步。在每次测试中，我们会用我们已知的部分加上一些特殊的构造语句。我们已经知道这个SQL的执行结果是email地址的比对，因此我们来猜测email的字段名:</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVjKhjnAuhtIsxecOXu3TUwujwKyFIITSbhfst796SkMPmauxic10mibqw/0" data-ratio="0.13188976377952755" data-w="" src="./实例讲解 SQL 注入攻击_files/640(3)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>目的是假定的查询语句的字段名（email），来试试SQL是不是有效。我不关心匹配的邮件地址是啥（我们用了个伪名’x’），’——’这个符号表示SQL注释的起始。对于去除应用末尾提供的引号，这是一个很有效的方式，我们不用在乎我们屏蔽掉的是啥。</p><p><br></p><p>如果我们得到了服务器错误，意味着SQL有不恰当的地方，并且语法错误会被抛出：更有可能是字段名有错。如果我们得到了任何有效的响应，我们就可以猜测这个字段名是正确的。这就是我们得到“email unknown”或“password was sent”响应的过程。</p><p><br></p><p>我们也可以用AND连接词代替OR:这是有意义的。在SQL的模式映射阶段，我们不需要为猜一个特定的邮件地址而烦恼，我们也不想应用随机的泛滥的给用户发“这是你的密码”的邮件 - 这不太好，有可能引起怀疑。而使用AND连接邮件地址，就会变的无效，我们就可以确保查询语句总是返回0行，永远不会生成密码提醒邮件。</p><p><br></p><p>提交上面的片段的确给了我们“邮件地址未知”的响应，现在我们知道邮件地址的确是存储在email字段名里。如果没有生效，我们可以尝试email_address或mail这样的字段名。这个过程需要相当多的猜测。</p><p><br></p><p>接下来，我们猜测其他显而易见的名字：password，user ID, name等等。每次只猜一个字段，只要响应不是“server failure”，那就意味着我们猜对了。</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVswPomcRoz2voBntjb5oGZWxUvsz1FbezAickntKTzhFvABkd0yxzDnw/0" data-ratio="0.1301518438177874" data-w="461" src="./实例讲解 SQL 注入攻击_files/640(4)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>在这个过程中，我们找到了几个正确的字段名：</p><ul class=" list-paddingleft-2" style="list-style-type: disc;"><li><p>email</p></li><li><p>passwd</p></li><li><p>login_id</p></li><li><p>full_name</p></li></ul><p><br></p><p>无疑还有更多（有一个线索是表单中的字段名），一阵挖掘后没有发现更多了。但是我们依然不知道这些字段名的表名，它们在哪找到的？</p><p><br></p><p><strong>寻找数据库表名</strong></p><p>应用的内建查询指令已经建立了表名，但是我们不知道是啥：有几个方法可以找到表名。其中一个是依靠subselect（字查询）。</p><p><br></p><p><strong>一个独立的查询</strong></p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVroicHaBYfluM7OBoJpc3iazOewt6XpiaEuaDnO0vvlNh1Ck9ryQHDsAyQ/0" data-ratio="0.1238390092879257" data-w="323" src="./实例讲解 SQL 注入攻击_files/640(5)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>返回表里记录的数量，如果表名无效，查询就会失败。我们可以建立自己的字符串来探测表名：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGV4SDnB9NPf7U6icLMYnV6xhk0leK4PbhCmibWQcaCAqYRgozgkf4ZPDaw/0" data-ratio="0.13976377952755906" data-w="" src="./实例讲解 SQL 注入攻击_files/640(6)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>我们不关心到底有多少条记录，只关心表名是不是正确。重复多次猜测以后，我们终于发现members是这个数据库里的有效表名。但它是用在这个查询里的么？所以我们需要另一个测试，使用table.field：实际查询的部分只工作在这个表中，而不是只要表存在就执行。</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVF78tpZTPpUtRBnJqLI7qG35BoEz1n6aEvZLLbtiaiaib7OibAJl3fG8Lag/0" data-ratio="0.14960629921259844" data-w="" src="./实例讲解 SQL 注入攻击_files/640(7)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>当返回“Email unknown”时，就意味着我们的SQL注入成功了，并且我们正确的猜测出了表名。这对后面的工作很重要，但是我们暂时先试试其他的方法。</p><p><br></p><p><strong>找用户账号</strong></p><p>我们对members表的结构有了一个局部的概念，但是我们仅知道一个用户名：任意用户都可能得到“Here is your password”的邮件。回想起来，我们从未得到过信息本身，只有它发送的地址。我们得再弄几个用户名，这样就能得到更多的数据。</p><p><br></p><p>首先，我们从公司网站开始找几个人：“About us”或者“Contact”页通常提供了公司成员列表。通常都包含邮件地址，即使它们没有提供这个列表也没关系，我们可以根据某些线索用我们的工具找到它们。</p><p><br></p><p>LIKE从句可以进行用户查询，允许我们在数据库里局部匹配用户名或邮件地址，每次提交如果显示“We sent your password”的信息并且邮件也真发了，就证明生效了。</p><p><br></p><p>警告：这么做拿到了邮件地址，但也真的发了邮件给对方，这有可能引起怀疑，小心使用。</p><p><br></p><p>我们可以查询email name或者full name（或者推测出来的其他信息），每次放入%通配符进行如下查询：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVOic4GOBx8s9CfDs0kws2qP6CRiaHY7LWWBqjPfDrdiaunibYPsBzenUicicw/0" data-ratio="0.12992125984251968" data-w="" src="./实例讲解 SQL 注入攻击_files/640(8)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>记住尽管可能不只有一个“Bob”，但我们只能看到一条信息：建议精炼LIKE从句。</p><p><br></p><p><strong>密码暴力破解</strong></p><p>可以肯定的是，我们能在登陆页进行密码的暴力破解，但是许多系统都针对此做了监测甚至防御。可能有的手段有操作日志，帐号锁定，或者其他能阻碍我们行动的方式，但是因为存在未过滤的输入，我们就能绕过更多的保护措施。</p><p><br></p><p>我们在构造的字符串里包含进邮箱名和密码来进行密码测试。在我们的例子中，我们用了受害者bob@example.com 并尝试了多组密码。</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVyHL6d7EvNY4icuibvttiaibIHgtgJC4qXadED0e1IO3NichnHsfZRnMiaiaQA/0" data-ratio="0.05905511811023622" data-w="" src="./实例讲解 SQL 注入攻击_files/640(9)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>这是一条很好使的SQL语句，我们不会得到服务器错误的提示，只要我们得到“your password has been mailed to you”的提示信息，就证明我们已经得到密码了。这时候受害人可能会警觉起来，但谁关心他呢，我们已经得到密码了。</p><p><br></p><p>这个过程可以使用perl脚本自动完成，然而，我们在写脚本的过程中，发现了另一种方法来破解系统。</p><p><br></p><h1><span style="font-size: 20px;"><strong>数据库不是只读的</strong></span></h1><p>迄今为止，我们没做查询数据库之外的事，尽管SELECT是只读的，但不代表SQL只能这样。SQL使用分号表示结束，如果输入没有正确过滤，就没有什么能阻止我们在字符串后构造与查询无关的指令。</p><p><br></p><p>The most drastic example is:</p><p><br></p><p>这剂猛药是这样的：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVTLkYUsWudV1Nk3ibbfQDvNYxuhClrjJTGlkfMvp9uRKZV0U4W6eMLQw/0" data-ratio="0.12691466083150985" data-w="457" src="./实例讲解 SQL 注入攻击_files/640(10)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>第一部分我们准备了一个伪造的email地址——‘X’——我们不关心查询结果返回什么：我们想要得到的只是我们自己构造的SQL指令。这次攻击删除了整个members表，这就不太好玩了。</p><p><br></p><p>这表明我们不仅仅可以切分SQL指令，而且也可以修改数据库。这是被允许的。</p><p><br></p><h1><span style="font-size: 20px;"><strong>添加新用户</strong></span></h1><p>我们已经了解了members表的局部结构，添加一条新纪录到表里视乎是一个可行的方法：如果这成功了，我们就能简单的用我们新插入的身份登陆到系统了。</p><p><br></p><p>不要太惊讶，这条SQL有点长，我们把它分行显示以便于理解，但它依然是一条语句：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGViankDaS0nGD53zxcxyoZZfecvKUvlC2SOWcfCaA8B2dAID90DiaAUAuw/0" data-ratio="0.14960629921259844" data-w="" src="./实例讲解 SQL 注入攻击_files/640(11)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>即使我们得到了正确的字段名和表名，但在成功攻击之前我们还有几件事需要了解：</p><ol class=" list-paddingleft-2" style="list-style-type: decimal;"><li><p>在web表单里，我们可能没有足够的空间键入这么多文本（尽管可以用脚本解决，但并不容易）。</p></li><li><p>web应用可能没有members表的INSERT权限。</p></li><li><p>母庸置疑，members表里肯定还有其他字段，有一些可能需要初始值，否则会引起INSERT失败。</p></li><li><p>即使我们插入了一条新纪录，应用也可能不正常运行，因为我们无法提供值的字段名会自动插入NULL。</p></li><li><p>一个正确的“member”可能额不仅仅只需要members表里的一条纪录，而还要结合其他表的信息（如，访问权限），因此只添加一个表可能不够。</p></li></ol><p><br></p><p>在这个案例里，我们遇到了问题#4或#5，我们无法确定到底是哪个—— 因为用构造好的用户名登陆进去的时候，返回了服务器错误的提示。尽管这就暗示了我们那些没有构造的字段是必须的，但我们没有办法正确处理。</p><p><br></p><p>一个可行的办法是猜测其他字段，但这是一个劳力费神的过程：尽管我们可以猜测其他“显而易见”的字段，但要想得到整个应用的组织结构图太难了。</p><p><br></p><p>我们最后尝试了其他方式。</p><p><br></p><p><strong>把密码邮给我</strong></p><p>我们意识到虽然我们无法添加新纪录到members数据库里，但我们可以修改已经存在的，这被证明是可行的。</p><p><br></p><p>从上一步得知 bob@example.com 账户在这个系统里，我们用SQL注入把数据库中的这条记录改成我们自己的email地址：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGV4zdxormaVmcwPYNeBIYLRZ239fynh5UuJkZxtX1QNAsSTk5APibmtEQ/0" data-ratio="0.16338582677165353" data-w="" src="./实例讲解 SQL 注入攻击_files/640(12)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>运行之后，我们自然得到了“we didn’t know your email address”的提示，但这在预料之中，毕竟我们用了假的email地址。UPDATE操作不会通知应用，因此它悄然执行了。</p><p><br></p><p>之后，我们使用了“I lost my password”的功能，用我们刚刚更新的email地址，一分钟后，我们收到了这封邮件：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVI2cMa6Ns5iale1E8sMUwpjuTDhIDtXmOLTR5QgfMCvWt3tGw9kDWSicw/0" data-ratio="0.18110236220472442" data-w="" src="./实例讲解 SQL 注入攻击_files/640(13)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>现在，我们要做的就是跟随标准的登录流程进入系统，这是一个高等级职员，有高级权限，比我们INSERT的用户要好。</p><p><br></p><p>我们发现这个企业内部站点内容特别多，甚至包含了一个全用户列表，我们可以合理的推出许多内网都有同样的企业Windows网络帐号，它们可能在所有地方都使用同样的密码。我们很容易就能得到任意的内网密码，并且我们找到了企业防火墙上的一个开放的PPTP协议的VPN端口，这让登录测试变得更简单。</p><p><br></p><p>我们又挑了几个帐号测试都没有成功，我们无法知道是否是“密码错误”或者“企业内部帐号是否与Windows帐号名不同”。但是我们觉得自动化工具会让这项工作更容易。</p><p><br></p><h1><span style="font-size: 20px;"><strong>其他方法</strong></span></h1><p>在这次特定的渗透中，我们得到了足够的权限，我们不需要更多了，但是还有其他方法。我们来试试我们现在想到的但不够普遍的方法。</p><p><br></p><p>我们意识到不是所有的方法都与数据库无关，我们可以来试试。</p><p><br></p><p><strong>调用xp_cmdshell</strong></p><p>微软的SQLServer支持存储过程xp_cmdshell有权限执行任意操作系统指令。如果这项功能允许web用户使用，那webserver被渗透是无法避免的。</p><p><br></p><p>迄今为止，我们做的都被限制在了web应用和数据库这个环境下，但是如果我们能执行任何操作系统指令，再厉害的服务器也禁不住渗透。xp_cmdshell通常只有极少数的管理员账户才能使用，但它也可能授权给了更低级的用户。</p><p><br></p><p><strong>绘制数据库结构</strong></p><p>在这个登录后提供了丰富功能应用上，已经没必要做更深的挖掘了，但在其他限制更多的环境下可能还不够。</p><p><br></p><p>能够系统的绘制出数据库可见结构，包含表和它们的字段结构，可能没有直接帮助。但是这为网站渗透提供了一条林萌大道。</p><p><br></p><p>从网站的其他方面收集更多有关数据结构的信息（例如，“留言板”页？“帮助论坛”等？）。不过这对应用环境依赖强，而且还得靠你准确的猜测。</p><p><br></p><p><strong>减轻危害</strong></p><p>我们认为web应用开发者通常没考虑到“有害输入”，但安全人员应该考虑到（包括坏家伙），因此这有3条方法可以使用。</p><p><br></p><p><strong>输入过滤</strong></p><p>过滤输入是非常重要的事，以确保输入不包含危险代码，无论是SQL服务器或HTM本身。首先想到的是剥掉“恶意字符”，像引号、分号或转义符号，但这是一种不太好的方式。尽管找到一些危险字符很容易，但要把他们全找出来就难了。</p><p><br></p><p>web语言本身就充满了特殊字符和奇怪的标记（包括那些表达同样字符的替代字符），所以想要努力识别出所有的“恶意字符”不太可能成功。</p><p><br></p><p>换言之，与其“移除已知的恶意数据”，不如移除“良好数据之外的所有数据”：这种区别是很重要的。在我们的例子中，邮件地址仅能包含如下字符：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGV1GPfwrB3vrbTzYscJqNic5Cu4GZhIs8XQScsGKndIaDHG3Qh1GU7L0g/0" data-ratio="0.21176470588235294" data-w="340" src="./实例讲解 SQL 注入攻击_files/640(14)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>允许不正确的字符输入是没有任何好处的，应该早点拒绝它们 - 可能会有一些错误信息 – 不仅可以阻止SQL注入，也可以捕获一些输入错误而不是把它们存入数据库。</p><p><br></p><p>某个特殊的email地址会让验证程序陷入麻烦，因为每个人对于“有效”的定义不同。由于email地址中出现了一个你没有考虑到的字符而被拒绝，那真是糗大了。</p><p><br></p><p>真正的权威是RFC 2822（比RFC822内容还多），它对于”允许使用的内容“做了一个规范的定义。这种更学术的规范希望可以接受&amp;和*（还有更多）作为有效的email地址，但其它人 - 包括作者 – 都乐于用一个合理的子集来包含更多的email地址。</p><p><br></p><p>那些采用更限制方法的人应当充分意识到没有包含这些地址会带来的后果，特别是限制有了更好的技术（预编译/执行，存储过程）来避免这些“奇怪”的字符带来的安全问题。</p><p><br></p><p>意识到“过滤输入”并不意味着仅仅是“移除引号”，因为即使一个“正规”的字符也会带来麻烦。在下面这个例子中，一个整型ID值被拿来和用户的输入作比较（数字型PIN）:</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVoKXBl8rcDtwUXTUiaOJfq6vvITkNGxicqFdBcDTwwyBPw5lDPIAE2aRQ/0" data-ratio="0.1736111111111111" data-w="432" src="./实例讲解 SQL 注入攻击_files/640(15)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>在实践中，无论如何这个方法都有诸多限制，因为能够彻底排除所有危险字符的字段实在太少了。对于“日期”或者“email地址”或者“整型”，上面的办法是有价值的，但对于真实的环境，我们不可避免地要使用其他方式来减轻危害。</p><p><br></p><p><strong>输入项编码/转义</strong></p><p>现在可以过滤电话号码和邮件地址了，但你不能通过同样的方法处理“name”字段，要不然可能会排除掉Bill O’Reilly这样的名字：对于这个字段，这里的引号是合法的输入。</p><p><br></p><p>有人就想到过滤到单引号的时候，再加上一个引号，这样就没问题了 – 但是这么干要出事啊！</p><p><br></p><p>预处理每个字符串来替换单引号：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVfypcyklkvsO0DCcg0Xoicia1KYGmKjDWEkfOYic77hVZhticp9zWib3XnTA/0" data-ratio="0.14565217391304347" data-w="460" src="./实例讲解 SQL 注入攻击_files/640(16)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>这个方法很容易出问题，因为大部分数据库都支持转码机制。像MySQL，允许输入’来替代单引号，因此如果输入 ‘; DROP TABLE users; — 时，通过两次引号来“保护”数据库，那我们将得到：</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVBbqMjbiaSUpEmUxEEmNwIwOoUR23ickVVx94vCBZxZCxcibicu3T6LMQnA/0" data-ratio="0.13385826771653545" data-w="" src="./实例讲解 SQL 注入攻击_files/640(17)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>‘’’ 是一个完整的SQL语句（只包含一个引号），通常，恶意SQL代码就会紧跟其后。不光是反斜线符号的情况：像Unicode编码，其他的编码或者解析规则都会无意中给程序员挖坑。完美的过滤的很困难的，这就是为什么许多的数据库借口语言都提供函数给你使用。当同样的内容给“string quoting”和“string parsing”处理过后，会好一些，也更安全一些。</p><p><br></p><p>比如MySQL的函数mysql_real_escape_string()和perl DBD 的 $dbh-&gt;quote($value)方法，这些方法都是必用的。</p><p><br></p><p><strong>参数绑定 (预编译语句)</strong></p><p>尽管转义是一个有用的机制，但我们任然处于“用户输入被当做SQL语句”这么一个循环里。更好的方法是：预编译，本质上所有的数据库编程接口都支持预编译。技术上来说，SQL声明语句是用问号给每个参数占位创建的 – 然后在内部表中进行编译。</p><p>预编译查询执行时是按照参数列表来的：</p><p><br></p><p>Perl中的例子</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVD7S5GbcxaLccRQJEwWZdWg6ehhq0bEAP7g08hibbTvb3HZeeuzf1pSQ/0" data-ratio="0.11614173228346457" data-w="" src="./实例讲解 SQL 注入攻击_files/640(18)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>感谢Stefan Wagner帮我写了个java实现：</p><p><br></p><p>不安全版</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVhLdFIoJ7aHRXcSlicIWRQxlk0hqXgWH1TTkcmsQkQia5q8yTQ4DadDdw/0" data-ratio="0.1062992125984252" data-w="" src="./实例讲解 SQL 注入攻击_files/640(19)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>安全版</p><p><img data-s="300,640" data-type="png" data-src="http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGVhDwibHxspK2hDpUzCNJgvfoR2VDgKRMcq4pia0ADQAtYz9S4eXCnTkgA/0" data-ratio="0.17488789237668162" data-w="446" src="./实例讲解 SQL 注入攻击_files/640(20)" style="width: auto !important; visibility: visible !important; height: auto !important;"></p><p><br></p><p>$email 是从用户表单获得的，它作为#1（第一个问号标记的地方）位置的参数传递过来，在任何情况下这条SQL声明都可以解析。引号，分号，反斜杠，SQL指令记号 – 任何字符都不会产生特殊效果，因为它们“只是数据”而已。这不会对其他东西造成破坏，因此这个应用很大程度上防范了SQL注入攻击。</p><p><br></p><p>如果预编译查询语句多次（只编译一次）执行，也会带来性能上的提升，但是与大量安全方面的巨大提升相比，这显得微不足道。这可能是我们保证web应用安全最重要的一步。</p><p><br></p><p><strong>限制数据库权限和隔离用户</strong></p><p>在这个案例中，我们观察到只有两个交互动作不在登录用户的上下文环境中：“登录”和“发密码给我”。web应用应该对数据库连接做权限的限制：对于members表只能读，并且无法操作其他表。</p><p><br></p><p>作用是即使一次“成功的”SQL注入攻击也只能得到非常有限的成功。噢，我们将不能做有授权的UPDATE请求，我们要求助于其他方法。</p><p><br></p><p>一旦web应用确定登录表单传递来的认证是有效的，它就会切换会话到一个有更多权限的用户上。</p><p><br></p><p>对任何web应用而言，不使用sa权限几乎是根本不用说的事。</p><p><br></p><p><strong>对数据库的访问采用存储过程</strong></p><p>如果数据库支持存储过程，请使用存储过程来执行数据库的访问行为，这样就不需要SQL了（假设存储过程编程正确）。</p><p><br></p><p>把查询，更新，删除等动作规则封装成一个单独的过程，就可以针对基础规则和所执行的商业规则来完成测试和归档（例如，如果客户超过了信用卡限额，“添加新记录”过程可能拒绝订单）。</p><p><br></p><p>对于简单的查询这样做可能仅仅能获得很少的好处，不过一旦操作变复杂（或者被用在更多地方），给操作一个单独的定义，功能将会变得更稳健也更容易维护。</p><p><br></p><p>注意：动态构建一个查询的存储过程是可以做到的：这么做无法防止SQL注入 – 它只不过把预编译/执行绑定到了一起，或者是把SQL语句和提供保护的变量绑定到了一起。</p><p><br></p><p><strong>隔离web服务器</strong></p><p>实施了以上所有的防御措施，仍然可能有某些地方有遗漏，导致了服务器被渗透。设计者应该在假定坏蛋已经获得了系统最高权限下来设计网络设施，然后把它的攻击对其他事情产生的影响限制在最小。</p><p><br></p><p>例如，把这台机器放置在极度限制出入的DMZ网络“内部”，这么做意味着即便取得了web服务器的完全控制也不能自动的获得对其他一切的完全访问权限。当然，这么做不能阻止所有的入侵，不过它可以使入侵变的非常困难。</p><p><br></p><p><strong>配置错误报告</strong></p><p>一些框架的错误报告包含了开发的bug信息，这不应该公开给用户。想象一下：如果完整的查询被现实出来了，并且指出了语法错误点，那要攻击该有多容易。</p><p><br></p><p>对于开发者来说这些信息是有用的，但是它应该禁止公开 – 如果可能 - 应该限制在内部用户访问。</p><p><br></p><p>注意：不是所有的数据库都采用同样的方式配置，并且不是所有的数据库都支持同样的SQL语法（“S”代表“结构化”，不是“标准的”）。例如，大多数版本的MySQL都不支持子查询，而且通常也不允许单行多条语句（multiple statements）：当你渗透网络时，实际上这些就是使问题复杂化的因素。</p><hr style=""><p><br></p><p>再强调一下，尽管我们选择了“忘记密码”链接来试试攻击，但不是因为这个功能不安全。而是几个易攻击的点之一，不要把焦点聚集在“忘记密码”上。</p><p><br></p><p>这个教学示例不准备全面覆盖SQL注入的内容，甚至都不是一个教程：它仅仅是一篇我们花了几小时做的渗透测试的记录。我们看了其他的关于SQL注入文章的讨论，但它们只给出了结果而没有给出过程。</p><p><br></p><p>但是那些结果报告需要技术背景才能看懂，并且渗透细节也是有价值的。在没有源代码的情况下，渗透人员的黑盒测试能力也是有价值的。</p><p><br></p><p>感谢 David Litchfield 和 Randal Schwartz对本文的贡献，还有Chris Mospaw的排版(© 2005 by Chris Mospaw, used with permission).</p><p><br></p><h1><span style="font-size: 20px;"><strong>其他资源</strong></span></h1><ul class=" list-paddingleft-2" style="list-style-type: disc;"><li><p>(more) Advanced SQL Injection, Chris Anley, Next Generation Security Software.</p></li><li><p>SQL Injection walkthrough, SecuriTeam</p></li><li><p>GreenSQL, an open-source database firewall that tries to protect against SQL injection errors — note; I don’t have any direct experience with this tool</p></li><li><p>“Exploits of a Mom” — Very good xkcd cartoon about SQL injection</p></li><li><p>SQL Injection Cheat Sheet — by Ferruh Mavituna</p></li><li><p>This page translated into Belorussian by Bohdan Zograf (thanks!)</p></li></ul><p><br></p><p><em><span style="color: rgb(227, 108, 9);">原文出处：Steve Friedl</span></em></p><p><em><span style="color: rgb(227, 108, 9);">译文作者：伯乐在线 - zer0Black   </span></em><em><span style="color: rgb(227, 108, 9);">校稿：蒋生武</span></em></p><p><br></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;">//////////////////////////</span><br style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; word-wrap: break-word !important;"></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;"><br style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; word-wrap: break-word !important;"></span></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;"></span></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;">1. 在这个信息爆炸的时代，人们已然被大量、快速并且简短的信息所包围。然而，我们相信：过多“快餐”式的阅读只会令人“虚胖”，缺乏实质的内涵。伯乐在线博客团队正试图以我们微薄的力量，把优秀的原创/译文分享给读者，为“快餐”添加一些“营养”元素。欢迎关注微信号【 jobbole 】<br style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; word-wrap: break-word !important;"></span></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;"><br style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; word-wrap: break-word !important;"></span></p><p style=""><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(227, 108, 9); box-sizing: border-box !important; word-wrap: break-word !important;"></span><span style="margin: 0px; padding: 0px; max-width: 100%; color: rgb(84, 141, 212); box-sizing: border-box !important; word-wrap: break-word !important;">2. 点击“阅读原文”，查看伯乐在线博客最新文章列表。</span></p><p><br></p></div>
+
+                    <script type="text/javascript">
+                        var first_sceen__time = (+new Date());
+                    </script>
+                    <link rel="stylesheet" type="text/css" href="./实例讲解 SQL 注入攻击_files/page_mp_article_improve_combo231ee1.css">
+
+                                        
+                    <div class="rich_media_tool" id="js_toobar">
+
+                                                <a class="media_tool_meta meta_primary" id="js_view_source" href="javascript:void(0);">阅读原文</a>
+                                                <div id="js_read_area" class="media_tool_meta link_primary meta_primary" style="display:none;">阅读 <span id="readNum"></span></div>
+
+                        <a style="display:none;" class="media_tool_meta meta_primary link_primary meta_praise" href="javascript:void(0);" id="like">
+                            <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum"></span>
+                        </a>
+
+                        <a id="js_report_article" class="media_tool_meta link_primary meta_extra" href="javascript:void(0);">举报</a>
+
+                    </div>
+                </div>
+
+                
+                <div id="js_bottom_ad_area"></div>
+
+                
+                <div id="js_iframetest" style="display:none;"></div>
+
+                
+                               
+            </div>
+            <div id="js_pc_qr_code" class="qr_code_pc_outer" style="display: block;">
+                <div class="qr_code_pc_inner">
+                    <div class="qr_code_pc">
+                        <img id="js_pc_qr_code_img" class="qr_code_pc_img" src="./实例讲解 SQL 注入攻击_files/qrcode">
+                        <p>微信扫一扫<br>获得更多内容</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+        <script>window.moon_map = {"a/gotoappdetail.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/gotoappdetail2318b8.js","a/ios.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/ios2318b8.js","a/android.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/android22772d.js","biz_common/utils/url/parse.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/url/parse224ef3.js","biz_common/utils/report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/report224ef3.js","biz_common/utils/cookie.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/cookie224ef3.js","appmsg/like.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/like224ef3.js","appmsg/a.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/a2318b8.js","biz_common/tmpl.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/tmpl224ef3.js","biz_common/dom/class.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/class224ef3.js","biz_wap/utils/ajax.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/ajax22589f.js","biz_common/utils/string/html.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/string/html224ef3.js","biz_common/ui/imgonepx.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/ui/imgonepx224ef3.js","biz_common/dom/attr.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/attr22f190.js","appmsg/report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/report22f190.js","appmsg/report_and_source.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/report_and_source224ef3.js","appmsg/share.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/share224ef3.js","appmsg/comment.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/comment22dbe5.js","appmsg/page_pos.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/page_pos22f190.js","appmsg/cdn_speed_report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/cdn_speed_report224ef3.js","appmsg/iframe.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/iframe23127b.js","appmsg/review_image.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/review_image224ef3.js","appmsg/outer_link.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/outer_link224ef3.js","biz_wap/jsapi/core.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/jsapi/core22589f.js","biz_wap/utils/mmversion.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/mmversion224ef3.js","biz_common/dom/event.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/event22772d.js","appmsg/async.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/async2318b8.js","biz_wap/ui/lazyload_img.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/ui/lazyload_img23354e.js","biz_common/log/jserr.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/log/jserr22589f.js","appmsg/index.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/index23354e.js"};window.moon_crossorigin = true;</script><script type="text/javascript" src="./实例讲解 SQL 注入攻击_files/moon230eaa.js" crossorigin=""></script>
+    <script id="t_cmt" type="text/html">
+        <li class="discuss_item">
+            <span class="discuss_time"><#=time#></span>
+            <div class="user_info">
+                <strong class="nickname"><#=nick_name#></strong>
+                <img class="avatar" src="<#=logo_url#>">
+            </div>
+            <div class="discuss_message">
+                <span class="discuss_status"><#=status#></span>
+                <#=content#>
+            </div>
+        </li>
+    </script>
+
+  <script id="t_ad" type="text/html">
+    <div class="rich_media_extra" id="gdt_area">
+        <# if(pos_type==0){ #>
+        <div class="line_tips_wrp">
+            <span class="line_tips">推广</span>
+        </div>
+        <# } #>
+        <div class="js_ad_link extra_link" data-type="<#=type#>" data-url="<#=url#>" data-rl="<#=rl#>"  data-aid="<#=aid#>" data-pt="<#=pt#>" data-tid="<#=traceid#>" data-gid="<#=group_id#>" data-apurl="<#=apurl#>">
+            <# if(pt==1){ #>
+            <#=hint_txt#>
+            <img class="icon_arrow_gray" src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/common/icon_arrow_gray1ef6d4.png">
+            <img class="icon_loading_white icon_after" style="display:none;" id="loading_<#=traceid#>" src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/common/icon_loading_white22c04a.gif">
+            <# }else if(pt==2){ #>
+            <img class="appmsg_banner" src="<#=image_url#>">
+            <i class="promotion_tag">活动推广</i>
+            <# }else if(pt==7){ #>
+            
+            <div class="preview_group preview_card">
+                <div class="preview_group_inner card_inner">
+                    <div class="preview_group_info">
+                        <strong class="preview_group_title2"><#=hint_txt#></strong>
+                        <div class="preview_group_desc"><#=ad_desc#></div>
+                        <img src="<#=image_url#>" alt="" class="preview_card_avatar">
+                    </div>
+                </div>                        
+            </div>
+            <# }else if(pt==100){ #>
+            <div class="preview_group">
+                <div class="preview_group_inner">
+                    <div class="preview_group_info append_btn">
+                        <strong class="preview_group_title"><#=biz_info.nick_name#></strong>
+                        <div class="preview_group_desc"><#=hint_txt#></div>
+                        <# if(!!biz_info.head_img){ #>
+                        <img src="<#=biz_info.head_img#>" alt="" class="preview_group_avatar br_radius">
+                        <# }else{ #>
+                        <img class="preview_group_avatar br_radius" src="http://mmbiz.qpic.cn/mmbiz/a5icZrUmbV8p5jb6RZ8aYfjfS2AVle8URwBt8QIu6XbGewB9wiaWYWkPwq4R7pfdsFibuLkic16UcxDSNYtB8HnC1Q/0" alt="<#=biz_info.nick_name#>">
+                        <# } #>                                 
+                    </div>
+                    <div class="preview_group_opr">
+                        <a class="btn btn_inline btn_default btn_line" href="javascript:void(0);">详情</a>
+                    </div>
+                </div>
+            </div>
+            <# }else if(pt==102){ #>
+            <div class="preview_group">
+                <div class="preview_group_inner">
+                    <div class="preview_group_info append_btn">
+                        <strong class="preview_group_title"><#=app_info.app_name#></strong>
+                        <div class="preview_group_desc"><#=hint_txt#></div>
+                        <img src="<#=app_info.icon_url#>" alt="" class="preview_group_avatar br_radius">
+                    </div>
+                    <div class="preview_group_opr">
+                        <a id="js_app_action" class="btn btn_inline btn_primary js_ad_btn btn_download" href="javascript:void(0);">下载</a>
+                    </div>
+                </div>
+            </div>
+            <# }else if(pt==101){ #>
+            <div class="preview_group preview_card">
+                <div class="preview_group_inner card_inner">                            
+                    <div class="preview_group_info append_btn">
+                        <strong class="preview_group_title"><#=app_info.app_name#></strong>
+                        <div class="preview_group_desc"><#=hint_txt#></div>
+                        <img src="<#=app_info.icon_url#>" alt="" class="preview_card_avatar">                               
+                    </div>
+                    <div class="preview_group_opr">
+                        <a href="javascript:void(0);" id="js_app_action" class="btn btn_inline btn_primary js_ad_btn">下载</a>
+                    </div>
+                </div>                        
+            </div>
+            <# }else if(pt==103||pt==104){ #>
+            <div class="preview_group obvious_app">
+                <div class="preview_group_inner">
+                    <div class="pic_app">
+                        <img src="<#=image_url#>" alt="">
+                    </div>
+                    <div class="info_app">
+                        <p class="name_app"><#=app_info.app_name#></p>
+                        <# if(pt==103){ #>
+                        <p class="profile_app"><span class="fun_exp"><#=app_info._category#></span><em>|</em><span class="compacity"><#=app_info._app_size#></span></p>
+                        <# } else if(pt==104){ #>
+                        <p class="profile_app"><span class="fun_exp"><#=app_info._app_size#></span><em>|</em><span class="compacity"><#=app_info._down_count#></span></p>
+                        <# } #>
+                        <div class="dm_app">
+                            <a href="javascript:void(0);" id="js_appdetail_action" class="ad_btn btn_download js_ad_btn">下载</a>
+                            <p class="extra_info">来自<# if(pt==103){ #>Appstore<# }else{ #>腾讯应用宝<# } #></p>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+            <# } #>
+        </div>
+    </div>
+  </script>
+  <script type="text/javascript">
+      var tid = "";
+      var aid = "";
+      var appuin = "MjM5MzA0OTkwMA==";
+
+      var source = "";
+      var scene = 75;
+      
+      var itemidx = "";
+      var nickname = "伯乐在线";
+      var ct = "1421238897";
+      var user_name = "gh_652b8e95fb31";
+      var fakeid   = "MTAzNTc2NzM4Mg==";
+      var version   = "";
+      var is_limit_user   = "0";
+      var msg_title = "实例讲解&nbsp;SQL&nbsp;注入攻击";
+      var msg_desc = "一位客户让我们针对只有他们企业员工和顾客能使用的企业内网进行渗透测试。这是安全评估的一个部分，所以尽管我们之";
+      var msg_cdn_url = "http://mmbiz.qpic.cn/mmbiz/KovAgJ2aWyY1bwrbKibhO7hicYZIico9AGViaMWvEsiaPBfToesFpqTH6icISibCMyMTrTWEYuIX3tWVPpibfq3OAiaQNyA/0";
+      var msg_link = "http://mp.weixin.qq.com/s?__biz=MjM5MzA0OTkwMA==&amp;mid=204100331&amp;idx=2&amp;sn=3c6810b29a74b61cc02f0ab1bec10b72#rd";
+      var user_uin = "1035767382"*1;
+      var msg_source_url = 'http://blog.jobbole.com/all-posts/#rd';
+      var networkType;
+      var appmsgid = '' || '204100331';
+      var comment_id = "0" * 1;
+      var svr_time = "1421756585" * 1;
+      var comment_enabled = "" * 1;
+
+      var devicetype = "webwx";
+
+      
+            seajs.use("appmsg/index.js");
+  </script>
+
+    
+
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

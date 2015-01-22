@@ -1,0 +1,927 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0051)http://www.searchtb.com/2012/04/chinese_encode.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+
+	<title>中文编码杂谈 «  搜索技术博客－淘宝</title>
+
+	<link rel="stylesheet" href="./中文编码杂谈淘宝_files/style.css" type="text/css" media="screen">
+	<link rel="pingback" href="http://www.searchtb.com/xmlrpc.php">
+        <script type="text/javascript" async="" src="./中文编码杂谈淘宝_files/ga.js"></script><script type="text/javascript" src="./中文编码杂谈淘宝_files/jquery.js"></script><style type="text/css"></style>
+	
+	<link rel="alternate" type="application/rss+xml" title="搜索技术博客－淘宝 » Feed" href="http://www.searchtb.com/feed">
+<link rel="alternate" type="application/rss+xml" title="搜索技术博客－淘宝 » 评论Feed" href="http://www.searchtb.com/comments/feed">
+<link rel="alternate" type="application/rss+xml" title="搜索技术博客－淘宝 » 中文编码杂谈评论Feed" href="http://www.searchtb.com/2012/04/chinese_encode.html/feed">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./中文编码杂谈淘宝_files/wp-syntax.css" type="text/css" media="all">
+<script type="text/javascript" src="./中文编码杂谈淘宝_files/comment-reply.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.searchtb.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.searchtb.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="基于Hadoop的分布式索引构建" href="http://www.searchtb.com/2012/04/distribute_index_build.html">
+<link rel="next" title="关于流量升高导致TIME_WAIT增加，MySQL连接大量失败的问题" href="http://www.searchtb.com/2012/05/mysql_time_wait.html">
+
+<link rel="canonical" href="./中文编码杂谈淘宝_files/中文编码杂谈淘宝.htm">
+<link rel="shortlink" href="http://www.searchtb.com/?p=1674">
+		<script type="text/javascript" src="./中文编码杂谈淘宝_files/jquery.min.js"></script>
+			<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<link rel="stylesheet" type="text/css" href="./中文编码杂谈淘宝_files/shCore.css"><link rel="stylesheet" type="text/css" href="./中文编码杂谈淘宝_files/shThemeDefault.css"><style type="text/css" id="syntaxhighlighteranchor"></style>
+</head>
+
+<body class="single single-post postid-1674 single-format-standard">
+
+	<div id="nav">
+	    <div class="container">
+	        <ul><li class=" page_item"><a href="http://www.searchtb.com/" title=""><span>Home</span></a></li><li class="page_item page-item-44"><a href="http://www.searchtb.com/%e6%ac%a2%e8%bf%8e%e5%8a%a0%e7%9b%9f"><span>欢迎加盟</span></a></li>
+<li class="page_item page-item-2"><a href="http://www.searchtb.com/about"><span>关于我们</span></a></li>
+<li class="page_item page-item-880"><a href="http://www.searchtb.com/hot"><span>热门文章</span></a></li>
+</ul>
+	    </div>
+	</div>
+
+	<div id="header" class="clear">
+	    <div class="container cheader">
+	    	<h1 id="blogtitle"><a href="http://www.searchtb.com/">搜索技术博客－淘宝</a></h1><p class="blogdesc">关注技术  关注搜索  关注淘宝</p>		</div>
+
+	</div> <!-- end of #header -->
+	<div id="navcat">
+    	<div class="container">
+    	<!--Error 4 Start -->	<ul>	<li class="cat-item cat-item-152"><a href="http://www.searchtb.com/category/graph-database" title="查看graph database下的所有文章">graph database</a>
+</li>
+	<li class="cat-item cat-item-119"><a href="http://www.searchtb.com/category/optimization" title="包含硬件比如CPU相关设置、操作系统内核和glibc、应用程序调优等方面的文章。">性能优化</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.searchtb.com/category/%e6%90%9c%e7%b4%a2%e5%bc%95%e6%93%8e" title="查看搜索引擎下的所有文章">搜索引擎</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="http://www.searchtb.com/category/%e5%89%8d%e7%ab%af%e6%8a%80%e6%9c%af" title="查看前端技术下的所有文章">前端技术</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://www.searchtb.com/category/%e6%95%b0%e6%8d%ae%e6%8c%96%e6%8e%98" title="查看数据挖掘下的所有文章">数据挖掘</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.searchtb.com/category/%e5%af%bc%e8%b4%ad%e6%90%9c%e7%b4%a2" title="查看导购搜索下的所有文章">导购搜索</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://www.searchtb.com/category/%e6%90%9c%e7%b4%a2%e5%8a%a8%e6%80%81" title="查看搜索动态下的所有文章">搜索动态</a>
+</li>
+	<li class="cat-item cat-item-76"><a href="http://www.searchtb.com/category/distributed-system" title="查看分布式技术下的所有文章">分布式技术</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://www.searchtb.com/category/uncategorized" title="查看其他下的所有文章">其他</a>
+</li>
+</ul><!--Error 4 End -->
+		</div>
+	</div>
+	<div class="clear"></div>
+
+<div id="wrapper" class="container">
+
+
+	<div id="content" class="subcontainer fleft">
+	
+		<div class="post-1674 post type-post status-publish format-standard hentry category-7 tag-gb2312gbkunicode tag-70 tag-71" id="post-1674">
+		
+			<div class="posthead">
+				<div class="maindate fleft">
+					24<br>
+				 	<span>四 </span>
+				</div>
+			
+                                <h1 class="maintitle fleft"><a href="./中文编码杂谈淘宝_files/中文编码杂谈淘宝.htm" rel="bookmark" title="Permanent Link to 中文编码杂谈">中文编码杂谈</a>
+                                <div class="clear"></div>
+                                 <span class="author">   <a href="http://www.searchtb.com/author/%e6%a1%82%e5%8d%97" title="由桂南发布" rel="author">桂南</a> </span>
+                                </h1>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="entry">
+				<h1>编码问题的例子</h1>
+<p>在windows自带的notepad（记事本）程序中输入“联通”两个字，保存后再次打开，会发现“联通”不见了，代之以“��ͨ”的乱码。这是windows平台上典型的中文编码问题。即文件保存的时候是按照ANSI编码（其实就是GB2312，后面会详细介绍）保存，打开的时候程序按照UTF-8方式对内容解释，于是就出现了乱码。避免乱码的方式很简单，在“文件”菜单中选择“打开”命令，选择保存的文件，然后选择“ANSI”编码，此时就能看到久违的“联通”两个字了。</p>
+<p>在Linux平台上如果使用cat等命令查看文件中的中文内容时，可能出现乱码。这也是编码的问题。简单的说是文件时按照A编码保存，但是cat命令按照当前Locale设定的B编码去查看，在B和A不兼容的时候就出现了乱码。</p>
+<h1>为什么写这篇文章</h1>
+<p>中文编码由于历史原因牵扯到不少标准，在不了解的时候感觉一头雾水；但其实理解编码问题并不需要你深入了解各个编码标准，只要你明白了来龙去脉，了解了关键的知识点，就能分析和解决日常开发工作中碰到的大部分编码问题。有感于我看过的资料和文章要么不够全面，要么略显枯燥，所以通过这篇文章记录下笔者在日常工作中碰到的中文编码原理相关问题，目的主要是自我总结，如果能给读者提供一些帮助那就算是意外之喜了。由于严谨的编码标准对我来说是无趣的，枯燥的，难以记忆的，本文尝试用浅显易懂的生活语言解释中文编码相关的（也可能不相关的）一些问题，这也是为什么取名杂谈的原因。本文肯定存在不规范不全面的地方，我会在参考资料里给出官方文档的链接，也欢迎读者在评论中提出更好的表达方式&amp;指出错误，不胜感激。</p>
+<p>对编码问题的理解我认为分为三个层次，第一个层次：概念，知道各个编码标准的应用场景，了解之间的差异，能分析和解决常见的一些编码问题。第二个层次：标准，掌握编码的细节，如编码范围，编码转换规则，知道这些就能自行开发编码转换工具。第三个层次，使用，了解中文的编码2进制存储，在程序开发过程中选择合理的编码并处理中文。为了避免让读者陷入编码标准的黑洞无法脱身（不相信？看看unicode的规范就明白我的意思了），同时由于编码查询&amp;转换工具等都有现成工具可以使用，本文只涉及第一个层次，不涉及第二层次，在第三层次上会做一些尝试。在本文的最后提供了相关链接供对标准细节感兴趣的同学继续学习。最后，本文不涉及具体软件的乱码问题解决，如ssh，shell，vim，screen等，这些话题留给剑豪同学专文阐述。</p>
+<h1>一切都是因为电脑不识字</h1>
+<p>电脑很聪明，可以帮我们做很多事情，最开始主要是科学计算，这也是为什么电脑别名计算机。电脑又很笨，在她的脑子里只有数字，即所有的数据在存储和运算时都要使用二进制数表示。这在最初电脑主要用来处理大量复杂的科学计算时不是什么大问题但是当电脑逐步走入普通人的生活时，情况开始变遭了。办公自动化等领域最主要的需求就是文字处理，电脑如何来表示文字呢？这个问题当然难不倒聪明的计算机科学家们，用数字来代表字符呗。这就是“编码”。</p>
+<h1>英文的终极解决方案：ASCII</h1>
+<p>每个人都可以约定自己的一套编码，只要使用方之间了解就ok了。比如说咱俩约定0×10表示a，0×11表示b。在一开始也的确是这样的，出现了各式各样的编码。这样有两个问题：1.各个编码的字符集不一样，有的多，有的少。2.相同字符的编码也不一样。你这里a是0×10.他那里a可能是0×30。于是你保存的文件他就不能直接用，必须要转换编码。随着沟通范围的扩大，采用不同编码的人们互相通信就乱套了，这就是我们常说的：鸡同鸭讲。如果要避免这种混乱，那么大家就必须使用相同的编码规则，于是美国有关的标准化组织就出台了ASCII（<strong>American Standard Code for Information Interchange</strong><strong>）</strong>编码，统一规定了英文常用符号用哪些二进制数来表示。ASCII是标准的单字节字符编码方案，用于基于文本的数据。</p>
+<p>ASCII最初是美国国家标准，供不同计算机在相互通信时用作共同遵守的西文字符编码标准，已被国际标准化组织（International Organization for Standardization, ISO）定为国际标准，称为ISO 646标准。适用于所有拉丁文字字母。ASCII 码使用指定的7 位或8 位二进制数组合来表示128 或256 种可能的字符。标准ASCII 码也叫基础ASCII码，使用7 位二进制数来表示所有的大写和小写字母，数字0 到9、标点符号， 以及在美式英语中使用的特殊控制字符。而最高位为1的另128个字符（80H—FFH）被称为“扩展ASCII”，一般用来存放英文的制表符、部分音标字符等等的一些其它符号。</p>
+<p>其中：<strong>0</strong><strong>～</strong><strong>31</strong><strong>及</strong><strong>127(</strong><strong>共</strong><strong>33</strong><strong>个</strong><strong>)</strong><strong>是控制字符或通信专用字符（其余为可显示字符），</strong>32～126(共95个)是字符(32是空格），其中48～57为0到9十个阿拉伯数字，65～90为26个大写英文字母，97～122号为26个小写英文字母，其余为一些标点符号、运算符号等。</p>
+<p><a href="./中文编码杂谈淘宝_files/ascii0.jpg"><img class="alignnone size-full wp-image-1687" src="./中文编码杂谈淘宝_files/ascii0.jpg" alt="ascii 编码表"></a></p>
+<p>现在所有使用英文的电脑终于可以用同一种编码来交流了。理解了ASCII编码，其他字母型的语言编码方案就触类旁通了。</p>
+<h1>一波三折的中文编码</h1>
+<h2>第一次尝试：GB2312</h2>
+<p>ASCII这种字符编码规则显然用来处理英文没有什么问题，它的出现极大的促进了信息在西方尤其是美国的传播和交流。但是对于中文，常用汉字就有6000以上，ASCII 单字节编码显然是不够用。为了粉碎美帝国主义通过编码限制中国人民使用电脑的无耻阴谋，中国国家标准总局发布了GB2312码即中华人民共和国国家汉字信息交换用编码，全称《信息交换用汉字编码字符集——基本集》，1981年5月1日实施，通行于大陆。GB2312字符集中除常用简体汉字字符外还包括希腊字母、日文平假名及片假名字母、俄语西里尔字母等字符，未收录繁体中文汉字和一些生僻字。&nbsp;EUC-CN可以理解为GB2312的别名，和GB2312完全相同。</p>
+<p>GB2312是基于区位码设计的，在区位码的区号和位号上分别加上A0H就得到了GB2312编码。这里第一次提到了“区位码”，我就连带把下面这几个让人摸不到头脑的XX码一锅端了吧：</p>
+<p><strong>区位码，国标码，交换码，内码，外码</strong><strong> </strong></p>
+<p><strong>区位码</strong>：就是把中文常用的符号，数字，汉字等分门别类进行编码。区位码把编码表分为94个区，每个区对应94个位，每个位置就放一个字符（汉字，符号，数字都属于字符）。这样每个字符的区号和位号组合起来就成为该汉字的区位码。区位码一般用10进制数来表示，如4907就表示49区7位，对应的字符是“学”。区位码中01-09区是符号、数字区，16-87区是汉字区，10-15和88-94是未定义的空白区。它将收录的汉字分成两级：第一级是常用汉字计3755个，置于16-55区，按汉语拼音字母/笔形顺序排列；第二级汉字是次常用汉字计3008个，置于56-87区，按部首/笔画顺序排列。在网上搜索“区位码查询系统”可以很方便的找到汉字和对应区位码转换的工具。为了避免广告嫌疑和死链，这里就不举例了。</p>
+<p><strong>国标码</strong>：&nbsp;区位码无法用于汉字通信，因为它可能与通信使用的控制码（00H~1FH）（即0~31，还记得ASCII码特殊字符的范围吗？）发生冲突。于是ISO2022规定每个汉字的区号和位号必须分别加上32（即二进制数00100000，16进制20H），得到对应的国标交换码，简称<strong>国标码，交换码</strong>，因此，“学”字的国标交换码计算为：</p>
+<pre class="brush: plain; title: ; notranslate" title="">  00110001 00000111
++ 00100000 00100000
+ -------------------
+  01010001 00100111
+</pre>
+<p>用十六进制数表示即为5127H。</p>
+<p><strong>交换码</strong>：即国标交换码的简称，等同上面说的国标码。</p>
+<p><strong>内码</strong>：由于文本中通常混合使用汉字和西文字符，汉字信息如果不予以特别标识，就会与单字节的ASCII码混淆。此问题的解决方法之一是将一个汉字看成是两个扩展ASCII码，使表示GB2312汉字的两个字节的最高位都为1。即国标码加上128（即二进制数10000000,16进制80H）这种高位为1的双字节汉字编码即为GB2312汉字的机内码，简称为内码。20H+80H=A0H。这也就是常说的在区位码的区号和位号上分别加上A0H就得到了GB2312编码的由来。</p>
+<pre class="brush: plain; title: ; notranslate" title="">  00110001&nbsp;00000111
++ 10100000 10100000
+   -------------------
+  11010001&nbsp;10100111
+</pre>
+<p>用十六进制数表示即为D1A7H。</p>
+<p><strong>外码</strong>：机外码的简称,就是汉字输入码，是为了通过键盘字符把汉字输入计算机而设计的一种编码。 英文输入时，相输入什么字符便按什么键，外码和内码一致。汉字输入时，可能要按几个键才能输入一个汉字。 汉字输入方案有成百上千个，但是这千差万别的外码输入进计算机后都会转换成统一的内码。</p>
+<p>最后总结一下上面的概念。中国国家标准总局把中文常用字符编码为94个区，每个区对应94个位，每个字符的区号和位号组合起来就是该字符的<strong>区位码</strong>, 区位码用10进制数来表示，如4907就表示49区7位，对应的字符是“学”。 由于区位码的取值范围与通信使用的控制码（00H~1FH）（即0~31）发生冲突。每个汉字的区号和位号分别加上32（即16进制20H）得到<strong>国标码，交换码。</strong>“学”的国标码为5127H。由于文本中通常混合使用汉字和西文字符，为了让汉字信息不会与单字节的ASCII码混淆，将一个汉字看成是两个扩展ASCII码，即汉字的两个字节的最高位置为1，得到的编码为GB2312汉字的<strong>内码</strong>。“学”的内码为D1A7H。无论你使用什么输入法，通过什么样的按键组合把“学”输入计算机，“学”在使用GB2312（以及兼容GB2312）编码的计算机里的内码都是D1A7H。</p>
+<h2>第二次尝试：GBK</h2>
+<p>GB2312的出现基本满足了汉字的计算机处理需要，但由于上面提到未收录繁体字和生僻字，从而不能处理人名、古汉语等方面出现的罕用字，这导致了1995年《汉字编码扩展规范》（GBK）的出现。GBK编码是GB2312编码的超集，向下完全兼容GB2312，兼容的含义是不仅字符兼容，而且相同字符的编码也相同，同时在字汇一级支持ISO/IEC10646—1和GB 13000—1的全部中、日、韩（CJK）汉字，共计20902字。GBK还收录了GB2312不包含的汉字部首符号、竖排标点符号等字符。CP936和GBK的有些许差别，绝大多数情况下可以把CP936当作GBK的别名。</p>
+<h2>第三次尝试：GB18030</h2>
+<p>GB18030编码向下兼容GBK和GB2312。GB18030收录了所有Unicode3.1中的字符，包括中国少数民族字符，GBK不支持的韩文字符等等，也可以说是世界大多民族的文字符号都被收录在内。GBK和GB2312都是双字节等宽编码，如果算上和ASCII兼容所支持的单字节，也可以理解为是单字节和双字节混合的变长编码。GB18030编码是变长编码，有单字节、双字节和四字节三种方式。</p>
+<p>其实，这三个标准并不需要死记硬背，只需要了解是根据应用需求不断扩展编码范围即可。从GB2312到GBK再到GB18030收录的字符越来越多即可。万幸的是一直是向下兼容的，也就是说一个汉字在这三个编码标准里的编码是一模一样的。这些编码的共性是变长编码，单字节ASCII兼容，对其他字符GB2312和GBK都使用双字节等宽编码，只有GB18030还有四字节编码的方式。这些编码最大的问题是2个。1.由于低字节的编码范围和ASCII有重合，所以不能根据一个字节的内容判断是中文的一部分还是一个独立的英文字符。2.如果有两个汉字编码为A1A2B1B2，存在A2B1也是一个有效汉字编码的特殊情况。这样就不能直接使用标准的字符串匹配函数来判断一个字符串里是否包含某一个汉字，而需要先判断字符边界然后才能进行字符匹配判断。</p>
+<p>最后，提一个小插曲，上面讲的都是大陆推行的汉字编码标准，使用繁体的中文社群中最常用的电脑<a href="http://baike.baidu.com/view/1712.htm" target="_blank">汉字</a><a href="http://baike.baidu.com/view/51987.htm" target="_blank">字符集</a>标准叫大五码（Big5），共收录13,060个中文字，其中有二字为重覆编码(实在是不应该)。Big5虽普及于中国的台湾、香港与澳门等繁体中文通行区，但长期以来并非当地的国家标准，而只是业界标准。倚天中文系统、Windows等主要系统的字符集都是以Big5为基准，但厂商又各自增删，衍生成多种不同版本。2003年，Big5被收录到台湾官方标准的附录当中，取得了较正式的地位。这个最新版本被称为Big5-2003。</p>
+<h1>天下归一Unicode</h1>
+<p>看了上面的多个中文编码是不是有点头晕了呢？如果把这个问题放到全世界n多个国家n多语种呢？各国和各地区自己的文字编码规则互相冲突的情况全球信息<a href="http://www.edenw.com/tech/net/switch/" target="_blank">交换</a>带来了很大的麻烦。</p>
+<p>要真正彻底解决这个问题，上面介绍的那些通过扩展ASCII修修补补的方式已经走不通了，而必须有一个全新的编码系统，这个系统要可以将中文、日文、法文、德文……等等所有的文字统一起来考虑，为每一个文字都分配一个单独的编码。于是，Unicode诞生了。Unicode（统一码、万国码、单一码）为地球上（以后会包括火星，金星，喵星等）每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。在Unicode里，所有的字符被一视同仁，汉字不再使用“两个扩展ASCII”，而是使用“1个Unicode”来表示，也就是说，所有的文字都按一个字符来处理，它们都有一个唯一的Unicode码。Unicode用数字0-0x10FFFF来映射这些字符，最多可以容纳1114112个字符，或者说有1114112个码位（码位就是可以分配给字符的数字）。</p>
+<p>提到Unicode不能不提UCS（通用字符集Universal Character Set）。UCS是由ISO制定的ISO 10646（或称ISO/IEC 10646）标准所定义的标准字符集。UCS-2用两个字节编码，UCS-4用4个字节编码。Unicode是由unicode.org制定的编码机制，ISO与unicode.org是两个不同的组织, 虽然最初制定了不同的标准; 但目标是一致的。所以自从unicode2.0开始, unicode采用了与ISO 10646-1相同的字库和字码, ISO也承诺ISO10646将不会给超出0x10FFFF的UCS-4编码赋值, 使得两者保持一致。大家简单认为UCS等同于Unicode就可以了。</p>
+<p>在Unicode中：汉字“字”对应的数字是23383。在Unicode中，我们有很多方式将数字23383表示成程序中的数据，包括：UTF-8、UTF-16、UTF-32。UTF是“UCS Transformation Format”的缩写，可以翻译成Unicode字符集转换格式，即怎样将Unicode定义的数字转换成程序数据。例如，“汉字”对应的数字是0x6c49和0x5b57，而编码的程序数据是：</p>
+<pre class="brush: plain; title: ; notranslate" title="">BYTE data_utf8[] = {0xE6, 0xB1, 0x89, 0xE5, 0xAD, 0x97}; // UTF-8编码
+WORD data_utf16[] = {0x6c49, 0x5b57}; // UTF-16编码
+DWORD data_utf32[] = {0x6c49, 0x5b57}; // UTF-32编码
+</pre>
+<p>这里用BYTE、WORD、DWORD分别表示无符号8位整数，无符号16位整数和无符号32位整数。UTF-8、UTF-16、UTF-32分别以BYTE、WORD、DWORD作为编码单位。“汉字”的UTF-8编码需要6个字节。“汉字”的UTF-16编码需要两个WORD，大小是4个字节。“汉字”的UTF-32编码需要两个DWORD，大小是8个字节。根据字节序的不同，UTF-16可以被实现为UTF-16LE或UTF-16BE，UTF-32可以被实现为UTF-32LE或UTF-32BE。</p>
+<p>下面介绍UTF-8、UTF-16、UTF-32、BOM。</p>
+<p><strong><em>UTF-8</em></strong></p>
+<p>UTF-8以字节为单位对Unicode进行编码。从Unicode到UTF-8的编码方式如下：</p>
+<table border="1">
+<tbody><tr>
+<td>Unicode编码(16进制)</td>
+<td>UTF-8 字节流(二进制)</td>
+</tr>
+<tr>
+<td>000000 – 00007F</td>
+<td>0xxxxxxx</td>
+</tr>
+<tr>
+<td>000080 – 0007FF</td>
+<td>110xxxxx 10xxxxxx</td>
+</tr>
+<tr>
+<td>000800 – 00FFFF</td>
+<td>1110xxxx 10xxxxxx 10xxxxxx</td>
+</tr>
+<tr>
+<td>010000 – 10FFFF</td>
+<td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</td>
+</tr>
+</tbody></table>
+<p>UTF-8的特点是对不同范围的字符使用不同长度的编码。对于0×00-0x7F之间的字符，UTF-8编码与ASCII编码完全相同。UTF-8编码的最大长度是4个字节。从上表可以看出，4字节模板有21个x，即可以容纳21位二进制数字。Unicode的最大码位0x10FFFF也只有21位。总结了一下规律：UTF-8的第一个字节开始的1的个数代表了总的编码字节数，后续字节都是以10开始。由上面的规则可以清晰的看出UTF-8编码克服了中文编码的两个问题。</p>
+<p>例1：“汉”字的Unicode编码是0x6C49。0x6C49在0×0800-0xFFFF之间，使用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将0x6C49写成二进制是：0110 1100 0100 1001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。</p>
+<p>例2：Unicode编码0x20C30在0×010000-0x10FFFF之间，使用用4字节模板了：11110xxx 10xxxxxx 10xxxxxx 10xxxxxx。将0x20C30写成21位二进制数字（不足21位就在前面补0）：0 0010 0000 1100 0011 0000，用这个比特流依次代替模板中的x，得到：11110000 10100000 10110000 10110000，即F0 A0 B0 B0。</p>
+<p><strong><em>UTF-16</em></strong></p>
+<p>UTF-16编码以16位无符号整数为单位。我们把Unicode编码记作U。编码规则如下：　　如果U&lt;0×10000，U的UTF-16编码就是U对应的16位无符号整数（为书写简便，下文将16位无符号整数记作WORD）。中文范围 4E00-9FBF，所以在UTF-16编码里中文2个字节编码。如果U≥0×10000，我们先计算U’=U-0×10000，然后将U’写成二进制形式：yyyy yyyy yyxx xxxx xxxx，U的UTF-16编码（二进制）就是：110110yyyyyyyyyy 110111xxxxxxxxxx。</p>
+<p><strong><em>UTF-32</em></strong></p>
+<p>UTF-32编码以32位无符号整数为单位。Unicode的UTF-32编码就是其对应的32位无符号整数。</p>
+<p><strong><em>字节序</em></strong></p>
+<p>根据字节序(对字节序不太了解的同学请参考<a href="http://en.wikipedia.org/wiki/Endianness">http://en.wikipedia.org/wiki/Endianness</a>)的不同，UTF-16可以被实现为UTF-16LE（Little Endian）或UTF-16BE（Big Endian），UTF-32可以被实现为UTF-32LE或UTF-32BE。例如：</p>
+<table border="1">
+<tbody><tr>
+<td>Unicode编码</td>
+<td>UTF-16LE</td>
+<td>UTF-16BE</td>
+<td>UTF-32LE</td>
+<td>UTF-32BE</td>
+</tr>
+<tr>
+<td>0x006C49</td>
+<td>49 6C</td>
+<td>6C 49</td>
+<td>49 6C 00 00</td>
+<td>00 00 6C 49</td>
+</tr>
+<tr>
+<td>0x020C30</td>
+<td>43 D8 30 DC</td>
+<td>D8 43 DC 30</td>
+<td>30 0C 02 00</td>
+<td>00 02 0C 30</td>
+</tr>
+</tbody></table>
+<p>那么，怎么判断字节流的字节序呢？Unicode标准建议用BOM（Byte Order Mark）来区分字节序，即在传输字节流前，先传输被作为BOM的字符”零宽无中断空格”。这个字符的编码是FEFF，而反过来的FFFE（UTF-16）和FFFE0000（UTF-32）在Unicode中都是未定义的码位，不应该出现在实际传输中。下表是各种UTF编码的BOM：</p>
+<table border="1">
+<tbody><tr>
+<td>UTF编码</td>
+<td>Byte Order Mark</td>
+</tr>
+<tr>
+<td>UTF-8</td>
+<td>EF BB BF</td>
+</tr>
+<tr>
+<td>UTF-16LE</td>
+<td>FF FE</td>
+</tr>
+<tr>
+<td>UTF-16BE</td>
+<td>FE FF</td>
+</tr>
+<tr>
+<td>UTF-32LE</td>
+<td>FF FE 00 00</td>
+</tr>
+<tr>
+<td>UTF-32BE</td>
+<td>00 00 FE FF</td>
+</tr>
+</tbody></table>
+<p>总结一下，ISO与unicode.org都敏锐的意识到只有为世界上每种语言中的每个字符设定统一并且唯一的二进制编码才能彻底解决计算机世界信息交流中编码冲突的问题。由此诞生了UCS和unicode，而这两个规范是一致的。在Unicode里，所有的字符被一视同仁，也就是说，所有的文字都按一个字符来处理，它们都有一个唯一的Unicode码。UTF-8、UTF-16、UTF-32分别定义了怎样将Unicode定义的数字转换成程序数据。UTF-8以字节为单位对Unicode进行编码，一个英文字符占1个字节，汉字占3个字节；UTF-16以16位无符号整数为单位对Unicode进行编码，中文英文都占2个字节；UTF-32以32位无符号整数为单位对Unicode进行编码，中文英文都占4个字节。可以在<a href="http://www.unicode.org/charts/unihan.html">http://www.unicode.org/charts/unihan.html</a> 查看汉字的unicode码以及UTF-8、UTF-16、UTF-32编码。</p>
+<h1>中文二进制存储</h1>
+<p>介绍了这么多的编码知识，真正的文件内容是什么样子的呢？下面我们就通过实验看看在笔者Linux机器上 “中文”这两个字在不同的编码下保存的文件内容。下面是我的实验过程，有兴趣的同学可以在自己的机器上重做一下。window平台上的情况类似这里就不赘述了。</p>
+<p>实验需要需要使用2个工具：</p>
+<ol>
+<li>od 查看文件内容：<a href="http://www.gnu.org/software/coreutils/manual/html_node/od-invocation.html">http://www.gnu.org/software/coreutils/manual/html_node/od-invocation.html</a></li>
+<li>iconv 编码转换工具：http://www.gnu.org/software/libiconv/</li>
+</ol>
+<table border="1" cellspacing="0" cellpadding="0" width="636">
+<tbody>
+<tr>
+<td width="75" valign="top">汉字</td>
+<td width="90" valign="top">Unicode（ucs-2）10进制表示</td>
+<td width="75" valign="top">Utf-8</td>
+<td width="75" valign="top">Utf-16</td>
+<td width="75" valign="top">Utf32</td>
+<td width="75" valign="top">区位码</td>
+<td width="90" valign="top">GB2312/GBK/GB18030</td>
+</tr>
+<tr>
+<td width="75" valign="top">中</td>
+<td width="90" valign="top">20013</td>
+<td width="75" valign="top">E4 B8 AD</td>
+<td width="75" valign="top">4E2D</td>
+<td width="75" valign="top">00004E2D</td>
+<td width="75" valign="top">5448</td>
+<td width="90" valign="top">D6D0</td>
+</tr>
+<tr>
+<td width="75" valign="top">文</td>
+<td width="90" valign="top">25991</td>
+<td width="75" valign="top">E6 96 87</td>
+<td width="75" valign="top">6587</td>
+<td width="75" valign="top">00006587</td>
+<td width="75" valign="top">4636</td>
+<td width="90" valign="top">CEC4</td>
+</tr>
+</tbody>
+</table>
+<p>机器环境：<br>
+os: Red Hat Enterprise Linux AS release 4<br>
+Cpu: Intel(R) Xeon(R) CPU<br>
+locale：LC_ALL=zh_CN.utf-8</p>
+<pre class="brush: plain; title: ; notranslate" title="">//生成utf8编码下的文件
+echo –n "中文" &gt; foo.utf8
+
+//检查foo的内容：
+od -t x1 foo.utf8
+0000000 e4 b8 ad e6 96 87
+
+//转换为utf16编码
+iconv -f utf-8 -t utf-16 foo.utf8 &gt; foo.utf16
+
+//查看foo.utf16内容
+od -t x1 foo.utf16
+0000000 ff fe 2d 4e 87 65
+Ff fe是BOM（还记得吗？通过BOM来字节流的字节序），其余部分的确是UTF-16LE编码的内容
+
+//转换为utf32编码
+iconv -f utf-16 -t utf-32 foo.utf16 &gt; foo.utf32
+
+//查看foo.utf32内容
+od -t x1 foo.utf32
+0000000 ff fe 00 00 2d 4e 00 00 87 65 00 00
+Ff fe是BOM，的确是UTF-32LE编码的内容
+
+//转换为gb2312编码
+iconv -f utf-8 -t gb2312 foo.txt &gt; foo.gb2312
+od -t x1 foo.gb2312
+0000000 d6 d0 ce c4
+
+//转换为GBK编码
+iconv -f utf-8 -t gbk foo.txt &gt; foo.gbk
+od -t x1 foo.gbk
+0000000 d6 d0 ce c4
+
+//转换为GB18030编码
+iconv -f utf-8 -t gb18030 foo.txt &gt; foo.gb18030
+od -t x1 foo.gb18030
+0000000 d6 d0 ce c4
+</pre>
+<h1>C语言中文处理</h1>
+<p>先明确一个概念：程序内部编码和程序外部编码。程序内部编码指的是中文字符在程序运行时在内存中的编码形式。程序外部编码则是中文字符在存储或者传输时的编码形式。程序外部编码的最直观的例子就是当把中文存储到硬盘文件中时选择的编码。</p>
+<p>根据程序内部编码和程序外部编码是否一致，C/C++的中文处理有两种常见的方式：</p>
+<ol>
+<li>内外编码相同。输入输出时不需要考虑编码转换，程序内部处理时把中文字符当做普通的2进制数据流进行处理。</li>
+<li>内外编码不同。输入输出的时候根据应用需要选择合适的编码格式进行编码转换；程序内部统一编码处理。</li>
+</ol>
+<p>方法1的优点不言而喻，由于内外统一，不需要进行转换。不足是如果不是C标准库支持的编码方式，那么字符串处理函数需要自己实现。比如说标准strlen函数不能计算中文编码&amp;UTF-8等的字符串长度，而需要根据编码标准自行实现。GBK等中文编码除了计算字符串长度的函数外，字符串匹配函数也要自己实现（原因看上文中文编码总结）。当需要支持的编码格式不断增多时，处理函数的开发和维护就需要付出更大的代价。</p>
+<p>方法2针对方法1的不足加以改进。在程序内部可以优先选择C标准库支持的编码方式，或者根据需要自己实现对某一特定编码格式的完整支持，这样任何编码都可以先转换为支持的编码，代码通用性比较好。</p>
+<p>那么C标准库对中文编码的支持如何呢？目前Linux平台一般使用GNU C library，内建了对单字节的char和宽字符wchar_t的支持。Char大家都很熟悉了，处理中文需要的wchar_t要重点介绍一下。从实现上来说在linux平台上可以认为wchar_t是4byte的int，内部存储字符的UTF32编码。由于标准库已经内建了对wchar_t比较完备的支持，如使用wcslen&nbsp;计算字符串长度，使用wcscmp进行字符串比较等等。所以比较简单的方式是使用上面的方法2，同时选择wchar_t作为内部字符的表示。做到这一点还是比较容易的，在输入输出的时候通过mbrtowc/wcrtomb&nbsp;进行单个字符的内外编码转换，以及通过mbsrtowcs/wcsrtombs&nbsp;进行字符串的内外编码转换即可。这里需要注意两点：</p>
+<ol>
+<li>代码中字符串常量的表示不同。举例说明：Char c=’a’; Wchar_t wc=L’中’;</li>
+<li>上面两组函数的转换是依赖locale设置的，即locale决定了外部编码的类型。确切的说是LC_CTYPE决定了外部编码的类型。默认情况下程序启动时使用标准“C”locale，而不是LC系列的环境变量指定的。所以需要首先调用下面的函数：setlocale (LC_ALL, “”);这样程序就使用了用户通过设置LC系列环境变量选择的Locale。</li>
+</ol>
+<p>关于locale的话题比较大，这里就不深入了，留待下一篇文章吧.</p>
+<p>上面的方法很完美，是吗？不是吗？得到这么多的好处不是无代价的，最明显的代价就是内存，任何一个字符，不管中文还是英文如果保持在wchar_t里就需要4个byte，就这一个理由就足以限制了这个方案在关注内存使用的应用场景下的使用。</p>
+<h1>Python的中文处理</h1>
+<p>对Python来说由于内建unicde的支持，所以采用输入输出的时候进行转换，内部保持unicode的方式使用是个不错的方案。<a href="http://docs.python.org/tutorial/introduction.html#unicode-strings">http://docs.python.org/tutorial/introduction.html#unicode-strings</a>这里作为起点，有兴趣的同学自学吧。</p>
+<h1>编码选择建议：</h1>
+<ol>
+<li>只有英文：毫不犹豫选择内外编码都选择ASCII，通用且存储代价小。</li>
+<li>主要存中文，对存储大小比较敏感：内外部编码根据文字使用范围选择GB2312或者GBK，自行实现使用到的字符串处理函数。</li>
+<li>通用性第一，处理简单：外部选择UTF-8，内部可以使用UTF-8或者UTF-32（即wchar_t）</li>
+</ol>
+<p>参考资料：</p>
+<p><a href="http://baike.baidu.com/view/25492.htm">http://baike.baidu.com/view/25492.htm</a></p>
+<p><a href="http://baike.baidu.com/view/25421.htm">http://baike.baidu.com/view/25421.htm</a></p>
+<p><a href="http://baike.baidu.com/view/40801.htm">http://baike.baidu.com/view/40801.htm</a></p>
+<p><a href="http://www.sac.gov.cn/SACSearch/search?channelid=160591&templet=gjcxjg_detail.jsp&searchword=STANDARD_CODE=%27GB%202312-1980%27&XZ=Q">http://www.sac.gov.cn/SACSearch/search?channelid=160591&amp;templet=gjcxjg_detail.jsp&amp;searchword=STANDARD_CODE=’GB%202312-1980′&amp;XZ=Q</a></p>
+<p><a href="http://www.sac.gov.cn/SACSearch/search?channelid=160591&templet=gjcxjg_detail.jsp&searchword=STANDARD_CODE=%27GB%2018030-2005%27&XZ=Q">http://www.sac.gov.cn/SACSearch/search?channelid=160591&amp;templet=gjcxjg_detail.jsp&amp;searchword=STANDARD_CODE=’GB%2018030-2005′&amp;XZ=Q</a></p>
+<p><a href="http://www.sac.gov.cn/SACSearch/search?channelid=160591&templet=gjcxjg_detail.jsp&searchword=STANDARD_CODE=%27GB%2013000-2010%27&XZ=Q">http://www.sac.gov.cn/SACSearch/search?channelid=160591&amp;templet=gjcxjg_detail.jsp&amp;searchword=STANDARD_CODE=’GB%2013000-2010′&amp;XZ=Q</a></p>
+<p><a href="http://www.unicode.org/standard/WhatIsUnicode.html">http://www.unicode.org/</a></p>
+<p><a href="http://www.ibm.com/developerworks/cn/linux/i18n/unicode/linuni/">http://www.ibm.com/developerworks/cn/linux/i18n/unicode/linuni/</a></p>
+<p><a href="http://www.gnu.org/software/libc/manual/html_node/index.html">http://www.gnu.org/software/libc/manual/html_node/index.html</a></p>
+<p><a href="http://www.gnu.org/software/libiconv/">http://www.gnu.org/software/libiconv/</a></p>
+			</div>
+			
+			<p class="postinfo clear">
+				<span class="category">Filed under - <a href="http://www.searchtb.com/category/%e6%90%9c%e7%b4%a2%e5%bc%95%e6%93%8e" title="查看搜索引擎中的全部文章" rel="category tag">搜索引擎</a></span> 
+				<span class="comment"><a href="http://www.searchtb.com/2012/04/chinese_encode.html#comments" title="《中文编码杂谈》上的评论">19 Comments</a> so far.</span><br>
+			</p>
+			<p class="tag">标签：<a href="http://www.searchtb.com/tag/gb2312%ef%bc%8cgbk%ef%bc%8cunicode" rel="tag">GB2312，GBK，Unicode</a>, <a href="http://www.searchtb.com/tag/%e4%b8%ad%e6%96%87%e5%a4%84%e7%90%86" rel="tag">中文处理</a>, <a href="http://www.searchtb.com/tag/%e4%b8%ad%e6%96%87%e7%bc%96%e7%a0%81" rel="tag">中文编码</a> </p>
+			<p></p>
+		</div>
+
+	
+		<div class="related">
+	<h3>相关文章</h3>
+	<ul>
+		<li><a href="http://www.searchtb.com/2014/04/neo4j-%e5%ba%95%e5%b1%82%e5%ad%98%e5%82%a8%e7%bb%93%e6%9e%84%e5%88%86%e6%9e%902.html" rel="bookmark" title="Permanent Link: neo4j 底层存储结构分析(2)">neo4j 底层存储结构分析(2)</a></li><li><a href="http://www.searchtb.com/2010/12/distributed-lock-service-in-google.html" rel="bookmark" title="Permanent Link: 解读Google分布式锁服务">解读Google分布式锁服务</a></li><li><a href="http://www.searchtb.com/2011/07/doclist-compress.html" rel="bookmark" title="Permanent Link: Doclist压缩方法简介">Doclist压缩方法简介</a></li><li><a href="http://www.searchtb.com/2010/11/protocol-buffers%e7%9a%84%e5%ba%94%e7%94%a8%e4%b8%8e%e5%88%86%e6%9e%90.html" rel="bookmark" title="Permanent Link: Protocol Buffers的应用与分析">Protocol Buffers的应用与分析</a></li> 
+        </ul>
+ 	
+ <br class="clear">
+</div>
+
+<!-- You can start editing here. -->
+<div id="comments">
+	<h2 class="mainhead">19 Responses</h2>
+
+	<span class="fleft"></span> <span class="fright"></span>
+	<br class="clear">
+
+	<ol class="commentlist">
+			<li class="comment even thread-even depth-1" id="li-comment-3447">
+		<div id="comment-3447">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/a0abd2a3004bc2bcd8fdbc2f84810cac?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">公远 on 24 四 2012</div>			
+								<p>确实挺不错哦</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3447#respond" onclick="return addComment.moveForm(&quot;comment-3447&quot;, &quot;3447&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-3456">
+		<div id="comment-3456">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/25dcc9242e5896bfcd762948afcd3a17?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">jesse on 25 四 2012</div>			
+								<p>在windows中：<br>
+打开记事本，随便输入一些文字，然后保存，<br>
+在保存对话框中，选择编码为“Unicode”，那该文件是以什么方式保存数据的？UTF8？UTF16？还是UTF32？也就是说，该文件的二进制数据中，一个汉字是以单字节为单位，还是双字节或四字节为单位保存的？</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3456#respond" onclick="return addComment.moveForm(&quot;comment-3456&quot;, &quot;3456&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+<ul class="children">
+	<li class="comment byuser comment-author-6 bypostauthor even depth-2" id="li-comment-3509">
+		<div id="comment-3509">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/e22152d9f792631b9c160630988a1679?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">桂南 on 02 五 2012</div>			
+								<p>其实，通过简单的实验就能判断了。比如说输入“联通”，文件大小为6字节，文件2进制内容为ff fe 54 80 1a 90。对照BOM和http://www.unicode.org/charts/unihan.html 就知道采用的是UTF-16LE编码。 Linux下可以用od查看二进制内容。windows下可以用ultraedit，或者notepad++（加一个HexEditor插件）</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3509#respond" onclick="return addComment.moveForm(&quot;comment-3509&quot;, &quot;3509&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-3464">
+		<div id="comment-3464">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/e6726eb9938169f7177c66b65cd5859f?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://www.p57.la/" rel="external nofollow" class="url">P57</a> on 26 四 2012</div>			
+								<p>第一次来，博客不错，收藏了！</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3464#respond" onclick="return addComment.moveForm(&quot;comment-3464&quot;, &quot;3464&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-3477">
+		<div id="comment-3477">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/4b076fb5df2f29812950fe8c525a180d?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://www.xiduoduo365.com/" rel="external nofollow" class="url">www.xiduoduo365.com</a> on 28 四 2012</div>			
+								<p>看了，有点自己的想法，想切磋切磋！</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3477#respond" onclick="return addComment.moveForm(&quot;comment-3477&quot;, &quot;3477&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-3493">
+		<div id="comment-3493">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/dbef45a77cb5770c5000e9f218a94b18?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://xn--9kr22gnbw3z/" rel="external nofollow" class="url">丫头</a> on 30 四 2012</div>			
+								<p>好详细，辛苦。<br>
+有两个问题请教，仍是围绕中文编码的选择和处理：<br>
+1. 既然gb18030支持一、二、四字节的中文字符，从长远看，内部编码使用gb18030是否好过gbk或gb2312？<br>
+2. “通用性第一”，那么如何降低 将旧系统中杂乱的内部编码统一为utf8或utf32的代价？<br>
+引申出一个编码识别和转换的问题，因为中文尤其big5转换为utf8时误差较大…那么内外部编码转换时，为了降低识别和转换过程中的误差，有没有较有效的方法可以分享下的呢。</p>
+<p>Thx <img src="./中文编码杂谈淘宝_files/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3493#respond" onclick="return addComment.moveForm(&quot;comment-3493&quot;, &quot;3493&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+<ul class="children">
+	<li class="comment byuser comment-author-6 bypostauthor even depth-2" id="li-comment-3510">
+		<div id="comment-3510">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/e22152d9f792631b9c160630988a1679?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">桂南 on 02 五 2012</div>			
+								<p>1.gb2312，gbk，gb18030我的理解不是好坏的区别，只是支持的字符集合越来越大，根据你需要处理的字符集可以对应选择。<br>
+2.iconv，sorry,我没有更好的办法:(</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3510#respond" onclick="return addComment.moveForm(&quot;comment-3510&quot;, &quot;3510&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-3494">
+		<div id="comment-3494">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/7e24f52711514d8c74cb0b932f5e2743?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://seo-king.org/" rel="external nofollow" class="url">seo外链工具</a> on 30 四 2012</div>			
+								<p>楼主的博文很精彩 好久没读到这么精彩的文章了</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3494#respond" onclick="return addComment.moveForm(&quot;comment-3494&quot;, &quot;3494&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-3495">
+		<div id="comment-3495">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/ba9280b6205a8cf62f8f6d1c81c62e14?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://tianxie2012.5d6d.com/" rel="external nofollow" class="url">天蝎座和什么座最配</a> on 30 四 2012</div>			
+								<p>祝博主5.1快乐啊</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3495#respond" onclick="return addComment.moveForm(&quot;comment-3495&quot;, &quot;3495&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-3502">
+		<div id="comment-3502">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/f6ad87113e8e70684fb443f70e75e40e?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://www.laofanke.com/hao-VkFOU7PEycA-0/" rel="external nofollow" class="url">VANS衬衫</a> on 01 五 2012</div>			
+								<p>还不错</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3502#respond" onclick="return addComment.moveForm(&quot;comment-3502&quot;, &quot;3502&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="pingback even thread-even depth-1" id="li-comment-3511">
+		<div id="comment-3511">
+		  
+			<div class="comment-author fleft">
+				 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://leaver.me/archives/455.html" rel="external nofollow" class="url">中文编码杂谈</a> on 02 五 2012</div>			
+								<p>[...] 本文来自http://www.searchtb.com/2012/04/chinese_encode.html,讲的不错。收藏分享。 [...]</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3511#respond" onclick="return addComment.moveForm(&quot;comment-3511&quot;, &quot;3511&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-3514">
+		<div id="comment-3514">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/b62bab7464b142ac6b8d22d943959e1d?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">南 靖男 on 02 五 2012</div>			
+								<p>UTF-8 部分有遗漏，没有涉及到 BOM 和大头小头的问题。</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3514#respond" onclick="return addComment.moveForm(&quot;comment-3514&quot;, &quot;3514&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+<ul class="children">
+	<li class="comment byuser comment-author-6 bypostauthor even depth-2" id="li-comment-3603">
+		<div id="comment-3603">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/e22152d9f792631b9c160630988a1679?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">桂南 on 11 五 2012</div>			
+								<p>你确定？呵呵，UTF-8是单字节编码，本身无字节序的问题。虽然也定义了BOM，参见文章：UTF-8	EF BB BF，但是实际上Linux是不用的。</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3603#respond" onclick="return addComment.moveForm(&quot;comment-3603&quot;, &quot;3603&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-3522">
+		<div id="comment-3522">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/b9e45e92ede668f9bfa0d0099e255db9?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">铁丑 on 03 五 2012</div>			
+								<p>一口气读完，写的真好</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3522#respond" onclick="return addComment.moveForm(&quot;comment-3522&quot;, &quot;3522&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-3553">
+		<div id="comment-3553">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/b5292b6b947791766dcbd43f6eafc8ea?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://wanghui.info/" rel="external nofollow" class="url">王辉</a> on 08 五 2012</div>			
+								<p>不错，学习了</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3553#respond" onclick="return addComment.moveForm(&quot;comment-3553&quot;, &quot;3553&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-3752">
+		<div id="comment-3752">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/b293b22f56e39f29bcfa74d78b5ac538?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">苏石 on 23 五 2012</div>			
+								<p>UTF-8 部分没有遗漏。GB*码是否应考虑Byte Order的问题呢？</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=3752#respond" onclick="return addComment.moveForm(&quot;comment-3752&quot;, &quot;3752&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-4530">
+		<div id="comment-4530">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/a32cb8f04679a1e3a4b6a13579b0be31?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">王进 on 08 八 2012</div>			
+								<p>想知道博主那个ascii 表， 怎么打印的！我用putty 登陆的redhat linux  用utf-8  有些特殊字符打印不了！我处理了那些（回车， 换行，制表。。。）后半段的字符就打钱不正常了，有的字符会多占屏幕的字节空间，导致对不齐了！</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=4530#respond" onclick="return addComment.moveForm(&quot;comment-4530&quot;, &quot;4530&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1" id="li-comment-18260">
+		<div id="comment-18260">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://1.gravatar.com/avatar/db4b1cfca6aacc920b5e8ea743c62fb7?s=60&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info"><a href="http://www.cnblogs.com/fengfengqingqingyangyang/" rel="external nofollow" class="url">xuebing</a> on 04 六 2013</div>			
+								<p>这个博客时淘宝的一个技术博客？？<br>
+太牛逼了，希望大神能分享一点平时的问题，让我们这些小菜鸟也有汤喝。</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=18260#respond" onclick="return addComment.moveForm(&quot;comment-18260&quot;, &quot;18260&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-18954">
+		<div id="comment-18954">
+		  
+			<div class="comment-author fleft">
+				<img alt="" src="http://0.gravatar.com/avatar/cf7e03bc213ac601e7ca1970a7322a9f?s=60&d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&r=G" class="avatar avatar-60 photo" height="60" width="60"> 
+			</div>
+			  
+			<div class="comment-info fright">
+				<div class="c_info">卡爱 on 19 六 2013</div>			
+								<p>楼主写的文章真好，基本的概念阐述的很清晰，通俗易懂，而且风格有趣，向楼主学习，膜拜</p>
+								<div class="reply fleft">
+					<a class="comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html?replytocom=18954#respond" onclick="return addComment.moveForm(&quot;comment-18954&quot;, &quot;18954&quot;, &quot;respond&quot;, &quot;1674&quot;)">回复</a>				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	 
+</li><!-- #comment-## -->
+	</ol>
+
+	<span class="fleft"></span> <span class="fright"></span>
+	<br class="clear">
+
+
+
+
+	<div id="respond">
+		<h2 class="mainhead">留言</h2>		
+		<div class="cancel-comment-reply"> <a rel="nofollow" id="cancel-comment-reply-link" href="http://www.searchtb.com/2012/04/chinese_encode.html#respond" style="display:none;">Cancel</a> </div>
+
+		<div class="res_1 fleft">
+		
+					<form action="http://www.searchtb.com/wp-comments-post.php" method="post" id="commentform">
+							
+				<p><label for="author">Name (required)</label><input type="text" title="名字" name="author" id="author" value="" size="22" tabindex="1" aria-required="true" class="tagged"></p>
+				<p><label for="email">Email (required)</label><input type="text" title="邮件地址" name="email" id="email" value="" size="22" tabindex="2" aria-required="true" class="tagged"></p>
+				<p><label for="url">URL</label><input type="text" title="博客地址" name="url" id="url" value="" size="22" tabindex="3" class="tagged"></p>
+				<p><input name="submit" type="submit" id="submit" tabindex="5" value="提交"><input type="hidden" name="comment_post_ID" value="1674" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+					</form></div>			
+			<div class="res_2 fright">
+				<p><label for="commentt">Comment</label><textarea class="fright tagged" name="comment" title="留言" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+				
+				<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="99fbd03fbd"></p>			</div>
+			<div class="clear"></div>	
+			
+	</div>
+</div>
+
+</div>
+<div id="sidebar" class="sidecontainer fright">
+
+	<div class="widgets">
+		<h2 class="mainhead">订阅</h2>
+		<p class="feed"><a href="http://www.searchtb.com/feed">Subscribe to feed <br><span>get the latest updates!</span></a></p>
+		<form method="get" id="ksearchform" action="http://www.searchtb.com/">
+			<div>
+				<input type="text" size="18" value="" name="s" id="s">
+				<input type="submit" id="ksearchsubmit" value="搜索" class="btn">
+			</div>
+			<br class="clear">
+		</form>
+	</div>
+
+	<ul>
+				<li class="widgets">		<h2 class="mainhead">最近更新</h2>		<ul>
+					<li>
+				<a href="http://www.searchtb.com/2014/11/%e4%bb%8e%e6%9c%aa%e9%99%8d%e7%ba%a7%e7%9a%84%e6%90%9c%e7%b4%a2%e6%8a%80%e6%9c%af-%e5%a4%a9%e7%8c%absku%e6%90%9c%e7%b4%a2.html" title="从未降级的搜索技术-天猫SKU搜索">从未降级的搜索技术-天猫SKU搜索</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/11/search-in-1111.html" title="从未降级的搜索技术">从未降级的搜索技术</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%978-%e6%9f%a5%e8%af%a2%e7%bb%93%e6%9e%9c%e7%9a%84%e5%a4%84%e7%90%86.html" title="4store源码解析系列(8)–查询结果的处理">4store源码解析系列(8)–查询结果的处理</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%977-%e6%9f%a5%e8%af%a2%e4%bc%98%e5%8c%96.html" title="4store源码解析系列(7)–查询优化">4store源码解析系列(7)–查询优化</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%976-%e6%9f%a5%e8%af%a2%e5%a4%84%e7%90%86%e7%bb%86%e8%8a%82.html" title="4store源码解析系列(6)–查询处理细节">4store源码解析系列(6)–查询处理细节</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%975-%e6%9f%a5%e8%af%a2%e6%b5%81%e7%a8%8b%e6%a6%82%e8%bf%b0.html" title="4store源码解析系列(5)–查询流程概述">4store源码解析系列(5)–查询流程概述</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%974-predicate%e7%bb%b4%e5%ba%a6%e7%9a%84%e5%9b%9b%e5%85%83%e7%bb%84%e5%ad%98%e5%82%a8.html" title="4store源码解析系列(4)–predicate维度的四元组存储">4store源码解析系列(4)–predicate维度的四元组存储</a>
+						</li>
+					<li>
+				<a href="http://www.searchtb.com/2014/09/4store%e6%ba%90%e7%a0%81%e8%a7%a3%e6%9e%90%e7%b3%bb%e5%88%973-model%e7%bb%b4%e5%ba%a6%e7%9a%84%e5%9b%9b%e5%85%83%e7%bb%84%e5%ad%98%e5%82%a8.html" title="4store源码解析系列(3)–model维度的四元组存储">4store源码解析系列(3)–model维度的四元组存储</a>
+						</li>
+				</ul>
+		</li><li class="widgets"><h2 class="mainhead">标签云</h2><div class="tagcloud"><a href="http://www.searchtb.com/tag/ab-test" class="tag-link-30" title="2个话题" style="font-size: 10.964705882353pt;">A/B Test</a>
+<a href="http://www.searchtb.com/tag/bts" class="tag-link-46" title="1个话题" style="font-size: 8pt;">BTS</a>
+<a href="http://www.searchtb.com/tag/c" class="tag-link-80" title="3个话题" style="font-size: 12.941176470588pt;">c++</a>
+<a href="http://www.searchtb.com/tag/cassandra" class="tag-link-20" title="1个话题" style="font-size: 8pt;">Cassandra</a>
+<a href="http://www.searchtb.com/tag/checkstyle" class="tag-link-42" title="1个话题" style="font-size: 8pt;">checkstyle</a>
+<a href="http://www.searchtb.com/tag/cppunit" class="tag-link-32" title="1个话题" style="font-size: 8pt;">CppUnit</a>
+<a href="http://www.searchtb.com/tag/google" class="tag-link-17" title="2个话题" style="font-size: 10.964705882353pt;">Google</a>
+<a href="http://www.searchtb.com/tag/gpu" class="tag-link-26" title="1个话题" style="font-size: 8pt;">GPU</a>
+<a href="http://www.searchtb.com/tag/graph-database" class="tag-link-152" title="8个话题" style="font-size: 18.705882352941pt;">graph database</a>
+<a href="http://www.searchtb.com/tag/hadoop" class="tag-link-14" title="13个话题" style="font-size: 22pt;">Hadoop</a>
+<a href="http://www.searchtb.com/tag/hbase" class="tag-link-69" title="7个话题" style="font-size: 17.882352941176pt;">hbase</a>
+<a href="http://www.searchtb.com/tag/java" class="tag-link-41" title="2个话题" style="font-size: 10.964705882353pt;">java</a>
+<a href="http://www.searchtb.com/tag/jni" class="tag-link-37" title="1个话题" style="font-size: 8pt;">JNI</a>
+<a href="http://www.searchtb.com/tag/junit" class="tag-link-33" title="1个话题" style="font-size: 8pt;">JUnit</a>
+<a href="http://www.searchtb.com/tag/leslie-lamport" class="tag-link-50" title="1个话题" style="font-size: 8pt;">Leslie Lamport</a>
+<a href="http://www.searchtb.com/tag/linux" class="tag-link-28" title="12个话题" style="font-size: 21.341176470588pt;">Linux</a>
+<a href="http://www.searchtb.com/tag/mangodb" class="tag-link-35" title="1个话题" style="font-size: 8pt;">mangodb</a>
+<a href="http://www.searchtb.com/tag/mapreduce" class="tag-link-15" title="1个话题" style="font-size: 8pt;">MapReduce</a>
+<a href="http://www.searchtb.com/tag/multivariate-test" class="tag-link-47" title="1个话题" style="font-size: 8pt;">Multivariate Test</a>
+<a href="http://www.searchtb.com/tag/mysql" class="tag-link-13" title="2个话题" style="font-size: 10.964705882353pt;">MySQL</a>
+<a href="http://www.searchtb.com/tag/neo4j" class="tag-link-153" title="8个话题" style="font-size: 18.705882352941pt;">neo4j</a>
+<a href="http://www.searchtb.com/tag/nginx" class="tag-link-73" title="3个话题" style="font-size: 12.941176470588pt;">nginx</a>
+<a href="http://www.searchtb.com/tag/nosql" class="tag-link-21" title="4个话题" style="font-size: 14.588235294118pt;">NoSQL</a>
+<a href="http://www.searchtb.com/tag/paxos" class="tag-link-125" title="2个话题" style="font-size: 10.964705882353pt;">paxos</a>
+<a href="http://www.searchtb.com/tag/php" class="tag-link-22" title="8个话题" style="font-size: 18.705882352941pt;">PHP</a>
+<a href="http://www.searchtb.com/tag/protocol-buffers" class="tag-link-16" title="3个话题" style="font-size: 12.941176470588pt;">Protocol Buffers</a>
+<a href="http://www.searchtb.com/tag/redis" class="tag-link-54" title="2个话题" style="font-size: 10.964705882353pt;">redis</a>
+<a href="http://www.searchtb.com/tag/samba" class="tag-link-34" title="1个话题" style="font-size: 8pt;">Samba</a>
+<a href="http://www.searchtb.com/tag/scrapy" class="tag-link-39" title="2个话题" style="font-size: 10.964705882353pt;">Scrapy</a>
+<a href="http://www.searchtb.com/tag/streaming" class="tag-link-29" title="2个话题" style="font-size: 10.964705882353pt;">Streaming</a>
+<a href="http://www.searchtb.com/tag/zookeeper" class="tag-link-48" title="2个话题" style="font-size: 10.964705882353pt;">zookeeper</a>
+<a href="http://www.searchtb.com/tag/%e4%b8%80%e6%b7%98" class="tag-link-19" title="5个话题" style="font-size: 15.905882352941pt;">一淘</a>
+<a href="http://www.searchtb.com/tag/%e5%88%86%e5%b8%83%e5%bc%8f%e6%8a%93%e5%8f%96" class="tag-link-40" title="2个话题" style="font-size: 10.964705882353pt;">分布式抓取</a>
+<a href="http://www.searchtb.com/tag/%e5%88%86%e5%b8%83%e5%bc%8f%e9%94%81" class="tag-link-51" title="1个话题" style="font-size: 8pt;">分布式锁</a>
+<a href="http://www.searchtb.com/tag/%e5%89%8d%e7%ab%af" class="tag-link-23" title="2个话题" style="font-size: 10.964705882353pt;">前端</a>
+<a href="http://www.searchtb.com/tag/%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95" class="tag-link-31" title="1个话题" style="font-size: 8pt;">单元测试</a>
+<a href="http://www.searchtb.com/tag/%e5%af%bc%e8%b4%ad%e6%90%9c%e7%b4%a2" class="tag-link-10" title="1个话题" style="font-size: 8pt;">导购搜索</a>
+<a href="http://www.searchtb.com/tag/%e6%80%a7%e8%83%bd" class="tag-link-24" title="1个话题" style="font-size: 8pt;">性能</a>
+<a href="http://www.searchtb.com/tag/%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96" class="tag-link-118" title="4个话题" style="font-size: 14.588235294118pt;">性能优化</a>
+<a href="http://www.searchtb.com/tag/%e6%90%9c%e7%b4%a2%e4%ba%a7%e5%93%81%e4%bc%98%e5%8c%96" class="tag-link-45" title="1个话题" style="font-size: 8pt;">搜索产品优化</a>
+<a href="http://www.searchtb.com/tag/%e6%90%9c%e7%b4%a2%e5%bc%95%e6%93%8e" class="tag-link-7" title="4个话题" style="font-size: 14.588235294118pt;">搜索引擎</a>
+<a href="http://www.searchtb.com/tag/%e7%ae%97%e6%b3%95" class="tag-link-25" title="3个话题" style="font-size: 12.941176470588pt;">算法</a>
+<a href="http://www.searchtb.com/tag/%e7%bd%91%e7%bb%9c%e7%88%ac%e8%99%ab" class="tag-link-38" title="2个话题" style="font-size: 10.964705882353pt;">网络爬虫</a>
+<a href="http://www.searchtb.com/tag/%e8%a3%85%e8%bd%bd" class="tag-link-82" title="2个话题" style="font-size: 10.964705882353pt;">装载</a>
+<a href="http://www.searchtb.com/tag/%e9%93%be%e6%8e%a5" class="tag-link-81" title="2个话题" style="font-size: 10.964705882353pt;">链接</a></div>
+</li><li class="widgets"><h2 class="mainhead">近期评论</h2><ul id="recentcomments"><li class="recentcomments">桂南发表在《<a href="http://www.searchtb.com/2014/11/search-in-1111.html#comment-118336">从未降级的搜索技术</a>》</li><li class="recentcomments">黄滚发表在《<a href="http://www.searchtb.com/2014/11/search-in-1111.html#comment-117512">从未降级的搜索技术</a>》</li><li class="recentcomments"><a href="http://baiy.cn/" rel="external nofollow" class="url">baiyang</a>发表在《<a href="http://www.searchtb.com/2012/07/mysql-cluster.html#comment-114698">MySQL Cluster集群探索与实践</a>》</li><li class="recentcomments">漠北发表在《<a href="http://www.searchtb.com/2012/07/opentsdb-monitoring-system.html#comment-104965">OpenTSDB监控系统的研究和介绍</a>》</li><li class="recentcomments">Silver Bullet发表在《<a href="http://www.searchtb.com/2013/03/x86-64_register_and_function_frame.html#comment-92917">X86-64寄存器和栈帧</a>》</li><li class="recentcomments"><a href="http://my.oschina.net/skyim" rel="external nofollow" class="url">skyim</a>发表在《<a href="http://www.searchtb.com/2010/09/mysql%e8%a1%8c%e9%94%81%e6%b7%b1%e5%85%a5%e7%a0%94%e7%a9%b6-2.html#comment-92109">MySQL行锁深入研究</a>》</li><li class="recentcomments"><a href="http://www.bokeyy.com/" rel="external nofollow" class="url">袁源</a>发表在《<a href="http://www.searchtb.com/2011/04/an-introduction-to-bigpipe.html#comment-89850">BigPipe学习研究</a>》</li><li class="recentcomments">赵铁锤发表在《<a href="http://www.searchtb.com/2012/10/introduction_to_disruptor.html#comment-81609">一种高效无锁内存队列的实现</a>》</li></ul></li><li class="widgets"><h2 class="mainhead">友情链接</h2>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.taobaodba.com/" target="_blank">淘宝DBA团队</a></li>
+<li><a href="http://ued.taobao.com/blog/" target="_blank">淘宝UED团队</a></li>
+<li><a href="http://job.taobao.com/" target="_blank">淘宝招聘</a></li>
+<li><a href="http://www.tbdata.org/" target="_blank">淘宝数据平台团队</a></li>
+<li><a href="http://rdc.taobao.com/blog/cs/" target="_blank">淘宝核心系统团队</a></li>
+<li><a href="http://rdc.taobao.com/blog/qa/" target="_blank">淘宝质量保障团队</a></li>
+<li><a href="http://www.linezing.com/blog/" title="量子统计官方博客" target="_blank">量子统计官方博客</a></li>
+
+	</ul>
+</li>
+<li class="widgets"><h2 class="mainhead">功能</h2>			<ul>
+			<li><a href="http://www.searchtb.com/wp-login.php?action=register">注册</a></li>			<li><a href="http://www.searchtb.com/wp-login.php">登录</a></li>
+			<li><a href="http://www.searchtb.com/feed" title="使用RSS 2.0订阅本站点内容">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://www.searchtb.com/comments/feed" title="使用RSS订阅本站点的所有文章的近期评论">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+									</ul>
+</li>	</ul>
+		
+</div><!--end of #sidebar -->
+	<br class="clear">
+	</div><!-- end of #wrapper -->
+
+	<div id="footer">
+		<div class="container">
+			<div class="ftext fleft">
+				搜索技术博客－淘宝 © 2014. All rights reserved. 
+			</div>
+				
+			<div class="fcred fright">
+			 	<span class="fleft">A quality product by</span> <a href="http://www.kreativethemes.com/" class="fright" id="kreativethemes">KreativeThemes</a>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	
+	
+		<script language="javascript" type="text/javascript" src="./中文编码杂谈淘宝_files/tab.js"></script>
+	<script language="javascript" type="text/javascript" src="./中文编码杂谈淘宝_files/jquery.fieldtag.min.js"></script>
+	
+	<script type="text/javascript">
+	<!--
+	jQuery(function($){
+	    //snip
+		$("#author,#url,#email,#comment").fieldtag();
+	    //snap
+	});
+	-->
+	</script>
+	<script type="text/javascript" src="./中文编码杂谈淘宝_files/shCore.js"></script>
+<script type="text/javascript" src="./中文编码杂谈淘宝_files/shBrushPlain.js"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://www.searchtb.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83c";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://www.searchtb.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.83c";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '帮助';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '无法找到Brush：';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush不能设置 html-script选项';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+        <script type="text/javascript" src="./中文编码杂谈淘宝_files/tongji.js"></script><img src="./中文编码杂谈淘宝_files/tongji.do" border="0" width="1" height="1"><noscript>&lt;a href="http://www.linezing.com"&gt;&lt;img src="http://img.tongji.linezing.com/2033179/tongji.gif"/&gt;&lt;/a&gt;</noscript>
+        <script type="text/javascript">
+          var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-18547630-1']); _gaq.push(['_setDomainName', 'none']); _gaq.push(['_setAllowLinker', true]); _gaq.push(['_trackPageview']);
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+
+
+</body></html>

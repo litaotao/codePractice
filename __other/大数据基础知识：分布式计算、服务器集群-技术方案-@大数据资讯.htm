@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0048)http://www.thebigdata.cn/JieJueFangAn/10844.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh" xmlns:wb="“http://open.weibo.com/wb”"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/wb.js" type="text/javascript" charset="utf-8"></script><style type="text/css"></style>
+<title>大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯</title>
+
+<link rel="icon" href="http://www.thebigdata.cn/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://www.thebigdata.cn/favicon.ico" type="image/x-icon">
+<meta name="description" content="大数据的数据量是非常大的，都是达到了PB的级别。在这么大的数据当中，包括了结构化数据和非结构化数据。这让大数据在存储和">
+<meta name="keywords" content="大数据">
+<link rel="canonical" href="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯.htm">
+<meta name="generator" content="iwms网站管理系统">
+<link rel="stylesheet" href="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/style.css" type="text/css">
+<script type="text/javascript" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/jquery.js"></script>
+<script type="text/javascript" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/iwms.js"></script>
+<script type="text/javascript">iwms.urlPrefix="../";</script>
+
+<script type="text/javascript" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/show.js"></script>
+<script src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/share.js"></script><script charset="UTF-8" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/bundle.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style1_24.css"><script charset="UTF-8" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/iframeWidget.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/imgshare.css?v=754091cd.css"><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=f4b44e79.css"></head>
+<body><iframe id="sina_anywhere_iframe" style="display: none;"></iframe>
+<div class="topBar">
+	<div class="twidth">
+	
+	<div style="float:right">
+		<script type="text/javascript" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/language.js"></script> <a id="StranLink" href="javascript:StranBody()" title="點擊以繁體中文方式浏覽">繁體</a>
+	</div>
+	
+	<div id="topUser">你好，游客 <a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="iwms.logPop()">登录</a>
+	<a href="http://www.thebigdata.cn/memberreg.aspx" rel="nofollow">注册</a>
+	<a href="http://www.thebigdata.cn/membernewsadd.aspx" target="_blank" rel="nofollow">发布</a><a href="http://www.thebigdata.cn/search.aspx" rel="nofollow">搜索</a>
+	</div>
+	</div>
+</div>
+<div class="twidth">
+<div id="sitehead">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<table width="100%">
+	<tbody><tr align="center"><td width="160">
+	<a href="http://www.thebigdata.cn/"><div style="border: 0;"><img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/temp_13062514228771.png" alt="" width="243" height="91" data-bd-imgshare-binded="1"></div></a>
+	</td><td>
+	<script type="text/javascript">iwms.loadAdv("http://www.thebigdata.cn/frm_adv.aspx?gid=11");</script>
+<div style="text-align: center;"><a title="我的PM2.5---全国PM2.5空气质量实时查询，独一无二的全国自建传感器+国家环保部数据" href="http://www.cstor.cn/pm25.html" target="_blank"><img style="float: right;" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/14112013092442.jpg" alt="我的PM2.5---全国PM2.5空气质量实时查询，独一无二的全国自建传感器+国家环保部数据" width="545" height="80" data-bd-imgshare-binded="1"></a></div>
+
+
+	</td>
+	</tr></tbody></table>
+</div>
+</div>
+<div id="navbar">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<a href="http://www.thebigdata.cn/" class="first">首页</a><a href="http://www.thebigdata.cn/html/c3/">热点</a><a href="http://www.thebigdata.cn/YeJieDongTai/">业界动态</a><a href="http://www.thebigdata.cn/KaiYuanJiShu/">开源技术</a><a href="http://www.thebigdata.cn/ZiLiaoXiaZai/">资料下载</a><a href="http://www.thebigdata.cn/YingYongAnLi/">应用案例</a><a href="http://www.thebigdata.cn/JieJueFangAn/" class="thisclass">技术方案</a><a href="http://www.thebigdata.cn/ShangYePingTai/">商业平台</a><a href="http://www.thebigdata.cn/SheQuDongTai/">社区动态</a><a href="http://www.thebigdata.cn/DaShuJuRuMen/">大数据入门</a><a href="http://www.thebigdata.cn/CunChu/">存储</a><a href="http://www.thebigdata.cn/YunChuangCunChu/">云创存储</a><a href="http://www.thebigdata.cn/ZhongGuoYunJiSuan/">云计算</a><a href="http://www.thebigdata.cn/PM25/"> PM2.5知识</a><a href="http://bbs.chinacloud.cn/showforum-50.aspx" target="_blank">大数据论坛</a><a href="http://www.thebigdata.cn/jspl/">技术评论</a>
+
+</div>
+</div>
+
+<div id="navsub">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<a href="http://www.thebigdata.cn/">首页</a> → <a href="http://www.thebigdata.cn/JieJueFangAn/">技术方案</a>
+</div>
+</div>
+
+<table id="middle" width="100%" cellspacing="0" cellpadding="0" style="table-layout:fixed">
+<tbody><tr valign="top"><td>
+
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<div class="moreR">
+			背景：<script type="text/javascript">WriteBg()</script><img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#EDF0F5" alt="#EDF0F5" onclick="ContentBg(&quot;#EDF0F5&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FAFBE6" alt="#FAFBE6" onclick="ContentBg(&quot;#FAFBE6&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FFF2E2" alt="#FFF2E2" onclick="ContentBg(&quot;#FFF2E2&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FDE6E0" alt="#FDE6E0" onclick="ContentBg(&quot;#FDE6E0&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#F3FFE1" alt="#F3FFE1" onclick="ContentBg(&quot;#F3FFE1&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#DAFAF3" alt="#DAFAF3" onclick="ContentBg(&quot;#DAFAF3&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#EAEAEF" alt="#EAEAEF" onclick="ContentBg(&quot;#EAEAEF&quot;)" data-bd-imgshare-binded="1"> <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FFF" alt="默认" onclick="ContentBg(&quot;&quot;)" data-bd-imgshare-binded="1"> 
+		</div>
+		<span class="tt">阅读新闻</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm" id="bodyTd">
+		<div id="printBody" style="word-break:break-all;">
+			<div style="text-align:center"><h1 class="aTitle">大数据基础知识：分布式计算、服务器集群</h1></div>
+			
+			<table width="97%" align="center">
+				<tbody><tr>
+				<td width="140">[日期：2014-06-26]</td>
+				<td align="center">来源： 虎嗅&nbsp;
+				作者：雪姬</td>
+				<td width="160" align="right">[字体：<a href="javascript:ContentSize(16)">大</a> <a href="javascript:ContentSize(0)">中</a> <a href="javascript:ContentSize(12)">小</a>]
+				</td></tr>
+			</tbody></table>
+			
+		
+			<div id="content" style="overflow-x: hidden; word-break: break-all;"><p>　　大数据的数据量是非常大的，都是达到了PB的级别。在这么大的数据当中，包括了结构化数据和非结构化数据。其中结构化数据包括了数字、符号等数据，非结构化数据包括了文本、图像、声音、视频等数据。这让大数据在存储和处理的过程当中就不能用传统的数据库关系去完成了。在大数据里面，最有价值的信息就在这里面，所以这个时候对于大数据的处理速度需求很高，只有这样才能在短时间里从复杂的数据当中获取到有价值的信息。在这么多的大数据里面，其中不单单包含了一些真实的数据，其中还有一部分虚假的数据参杂在里面。这也就是在大数据处理的时候需要将虚假的数据剔除掉，利用真实的数据来进行分析。</p>
+<p style="text-align: center;"><img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/14062609312394.jpg" alt="" width="489" height="349" data-bd-imgshare-binded="1"></p>
+<p><strong>　　大数据分析(Big Data Analysis)</strong></p>
+<p>　　大数据，表面上看就是大量复杂的数据，这些数据本身的价值并不高，但是对这些大量复杂的数据进行分析处理后，却能从中提炼出很有价值的信息。对大数据的分析，主要分为五个方面：可视化分析(Analytic Visualization)、数据挖掘算法(Date Mining Algorithms)、预测性分析能力(Predictive Analytic Capabilities)、语义引擎(Semantic Engines)和数据质量管理(Data Quality Management)。</p>
+<p>　　可视化分析是普通消费者常常可以见到的一种大数据分析结果的表现形式，比如说百度制作的“百度地图春节人口迁徙大数据”就是典型的案例之一。可视化分析将大量复杂的数据自动转化成直观形象的图表，使其能够更加容易的被普通消费者所接受和理解。</p>
+<p>　　数据挖掘算法是大数据分析的理论核心，其本质是一组根据算法事先定义好的数学公式，将收集到的数据作为参数变量带入其中，从而能够从大量复杂的数据中提取到有价值的信息。著名的“啤酒和尿布”的故事就是数据挖掘算法的经典案例。沃尔玛通过对啤酒和尿布购买数据的分析，挖掘出以前未知的两者间的联系，并利用这种联系，提升了商品的销量。亚马逊的推荐引擎和谷歌的广告系统都大量使用了数据挖掘算法。</p>
+<p>　　预测性分析能力是大数据分析最重要的应用领域。从大量复杂的数据中挖掘出规律，建立起科学的事件模型，通过将新的数据带入模型，就可以预测未来的事件走向。预测性分析能力常常被应用在金融分析和科学研究领域，用于股票预测或气象预测等。</p>
+<p>　　语义引擎是机器学习的成果之一。过去，计算机对用户输入内容的理解仅仅停留在字符阶段，不能很好的理解输入内容的意思，因此常常不能准确的了解用户的需求。通过对大量复杂的数据进行分析，让计算机从中自我学习，可以使计算机能够尽量精确的了解用户输入内容的意思，从而把握住用户的需求，提供更好的用户体验。苹果的Siri和谷歌的Google Now都采用了语义引擎。</p>
+<p>　　数据质量管理是大数据在企业领域的重要应用。为了保证大数据分析结果的准确性，需要将大数据中不真实的数据剔除掉，保留最准确的数据。这就需要建立有效的数据质量管理系统，分析收集到的大量复杂的数据，挑选出真实有效的数据。</p>
+<p style="text-align: center;"><img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/14062609322078.jpg" alt="大数据" width="446" height="243" data-bd-imgshare-binded="1"></p>
+<p><strong>　　分布式计算(Distributed Computing)</strong></p>
+<p>　　对于如何处理大数据，计算机科学界有两大方向：第一个方向是集中式计算，就是通过不断增加处理器的数量来增强单个计算机的计算能力，从而提高处理数据的速度。第二个方向是分布式计算，就是把一组计算机通过网络相互连接组成分散系统，然后将需要处理的大量数据分散成多个部分，交由分散系统内的计算机组同时计算，最后将这些计算结果合并得到最终的结果。尽管分散系统内的单个计算机的计算能力不强，但是由于每个计算机只计算一部分数据，而且是多台计算机同时计算，所以就分散系统而言，处理数据的速度会远高于单个计算机。</p>
+<p>　　过去，分布式计算理论比较复杂，技术实现比较困难，因此在处理大数据方面，集中式计算一直是主流解决方案。IBM的大型机就是集中式计算的典型硬件，很多银行和政府机构都用它处理大数据。不过，对于当时的互联网公司来说，IBM的大型机的价格过于昂贵。因此，互联网公司的把研究方向放在了可以使用在廉价计算机上的分布式计算上。</p>
+<p style="text-align: center;"><img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/14062609333408.jpg" alt="大数据" width="581" height="352" data-bd-imgshare-binded="1"></p>
+<p><strong>　　服务器集群(Server Cluster)</strong></p>
+<p>　　服务器集群是一种提升服务器整体计算能力的解决方案。它是由互相连接在一起的服务器群所组成的一个并行式或分布式系统。服务器集群中的服务器运行同一个计算任务。因此，从外部看，这群服务器表现为一台虚拟的服务器，对外提供统一的服务。</p>
+<p>　　尽管单台服务器的运算能力有限，但是将成百上千的服务器组成服务器集群后，整个系统就具备了强大的运算能力，可以支持大数据分析的运算负荷。Google，Amazon，阿里巴巴的计算中心里的服务器集群都达到了5000台服务器的规模。</p>
+<p>　　大数据的技术基础：MapReduce、Google File System和BigTable</p>
+<p>　　2003年到2004年间，Google发表了MapReduce、GFS(Google File System)和BigTable三篇技术论文，提出了一套全新的分布式计算理论。</p>
+<p>　　MapReduce是分布式计算框架，GFS(Google File System)是分布式文件系统，BigTable是基于Google File System的数据存储系统，这三大组件组成了Google的分布式计算模型。</p>
+<p>　　Google的分布式计算模型相比于传统的分布式计算模型有三大优势：首先，它简化了传统的分布式计算理论，降低了技术实现的难度，可以进行实际的应用。其次，它可以应用在廉价的计算设备上，只需增加计算设备的数量就可以提升整体的计算能力，应用成本十分低廉。最后，它被Google应用在 Google的计算中心，取得了很好的效果，有了实际应用的证明。</p>
+<p>　　后来，各家互联网公司开始利用Google的分布式计算模型搭建自己的分布式计算系统，Google的这三篇论文也就成为了大数据时代的技术核心。</p>
+<p><strong>　　主流的三大分布式计算系统：Hadoop，Spark和Storm</strong></p>
+<p>　　由于Google没有开源Google分布式计算模型的技术实现，所以其他互联网公司只能根据Google三篇技术论文中的相关原理，搭建自己的分布式计算系统。</p>
+<p>　　Yahoo的工程师Doug Cutting和Mike Cafarella在2005年合作开发了分布式计算系统Hadoop。后来，Hadoop被贡献给了Apache基金会，成为了Apache基金会的开源项目。Doug Cutting也成为Apache基金会的主席，主持Hadoop的开发工作。</p>
+<p>　　Hadoop采用MapReduce分布式计算框架，并根据GFS开发了HDFS分布式文件系统，根据BigTable开发了HBase数据存储系统。尽管和Google内部使用的分布式计算系统原理相同，但是Hadoop在运算速度上依然达不到Google论文中的标准。</p>
+<p>　　不过，Hadoop的开源特性使其成为分布式计算系统的事实上的国际标准。Yahoo，Facebook，Amazon以及国内的百度，阿里巴巴等众多互联网公司都以Hadoop为基础搭建自己的分布式计算系统。</p>
+<p>　　Spark也是Apache基金会的开源项目，它由加州大学伯克利分校的实验室开发，是另外一种重要的分布式计算系统。它在Hadoop的基础上进行了一些架构上的改良。Spark与Hadoop最大的不同点在于，Hadoop使用硬盘来存储数据，而Spark使用内存来存储数据，因此Spark可以提供超过Hadoop100倍的运算速度。但是，由于内存断电后会丢失数据，Spark不能用于处理需要长期保存的数据。</p>
+<p>　　Storm是Twitter主推的分布式计算系统，它由BackType团队开发，是Apache基金会的孵化项目。它在Hadoop的基础上提供了实时运算的特性，可以实时的处理大数据流。不同于Hadoop和Spark，Storm不进行数据的收集和存储工作，它直接通过网络实时的接受数据并且实时的处理数据，然后直接通过网络实时的传回结果。</p>
+<p>　　Hadoop，Spark和Storm是目前最重要的三大分布式计算系统，Hadoop常用于离线的复杂的大数据处理，Spark常用于离线的快速的大数据处理，而Storm常用于在线的实时的大数据处理。</p></div>
+			
+			
+			
+		</div>
+	
+		<div style="padding:0 15px">
+			<ul id="digg" class="digg">
+				<li class="digg1">7</li>
+				<li class="digg2"><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html###" onclick="iwms.diggIt(this,iwms.aId)">顶一下</a></li>
+			</ul>
+	
+			
+		</div>
+		
+		<div style="padding-right:20px;text-align:right;clear:both">
+		  <div style="width:240px;"> <wb:share-button appkey="1gyYap" addition="full" type="button" ralateuid="3292475223"><iframe src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/share_social.htm" width="312" height="62" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:share-button><br><br></div>
+		  
+		  
+		   <div style="width:500px;"> 
+		   
+		   
+<div class="bdsharebuttonbox bdshare-button-style1-24" data-bd-bind="1416990379775"><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_more" data-cmd="more"></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"@大数据资讯","tqq":"@云创存储","t163":"@云创存储","tsohu":"@云创存储"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["weixin","tsina","tqq","renren","qzone"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","tsina","tqq","renren","qzone"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+<br><br></div>
+		  
+		  
+		 <div style="width:auto;"> 
+		  
+		  
+		  
+		  
+		  
+		  
+			<a href="http://www.thebigdata.cn/JieJueFangAn/10844.html###" onmouseover="fav.disp(this)" class="fav">收藏</a>
+			<script type="text/javascript">mail.smtp=true;</script>
+			<a href="http://www.thebigdata.cn/JieJueFangAn/10844.html###" onclick="mail.disp(this)" class="mail">推荐</a>
+			<a href="javascript:doPrint()" class="print">打印</a>
+			<script type="text/javascript">editLink(10844,"Cstor")</script> |
+			录入：<a href="http://www.thebigdata.cn/memberProfile.aspx?id=14" target="_blank">Cstor</a> |
+			阅读：<span id="news_hits">1017</span> 次
+			
+		</div>
+		</div>
+		<div class="nearNews">
+			<div class="prevNews"><a href="http://www.thebigdata.cn/JieJueFangAn/10840.html">大数据分析应用如何走得更远？</a></div>
+			<div class="nextNews"><a href="http://www.thebigdata.cn/JieJueFangAn/10848.html">数据分析要避免辛普森悖论</a></div>
+		</div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	<div style="margin:0 0 3px 0;">
+	    <wb:bulkfollow uids="3292475223,2509905220,3957339731,3967699952,3965601723,2841727664,5041592143,1750765385,2509964282" height="250" type="1" width="695" count="9" color="C2D9F2,FFFFFF,0082CB,666666" titlebar="n" info="n"><iframe src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/bulkfollow.htm" width="695" height="250" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:bulkfollow>
+	</div>
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">相关新闻</span> &nbsp; &nbsp; &nbsp;
+		<a href="http://www.thebigdata.cn/tag1.aspx" target="_blank">大数据</a>&nbsp; 
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<table width="100%"><tbody><tr><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.thebigdata.cn/JieJueFangAn/12597.html" target="_blank" title="从业务驱动和技术实现角度谈腾讯大数据">从业务驱动和技术实现角度谈腾讯大</a>&nbsp; <span class="gray">(<span class="time">今 11:02</span>)</span></li>
+<li><a href="http://www.thebigdata.cn/YeJieDongTai/12594.html" target="_blank">大数据改变生活</a>&nbsp; <span class="gray">(<span class="time">今 10:33</span>)</span></li>
+<li><a href="http://www.thebigdata.cn/YingYongAnLi/12592.html" target="_blank" title="【大数据】一图秒懂领导人的工资怎么花?">【大数据】一图秒懂领导人的工资怎</a>&nbsp; <span class="gray">(<span class="time">今 10:31</span>)</span></li>
+</ul></td><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.thebigdata.cn/JieJueFangAn/12596.html" target="_blank" title="【PPT】大数据之“可用”和“有用”">【PPT】大数据之“可用”和“有用</a>&nbsp; <span class="gray">(<span class="time">今 10:54</span>)</span></li>
+<li><a href="http://www.thebigdata.cn/YingYongAnLi/12593.html" target="_blank" title="《拆婚联盟》陈意涵hold住大数据 一年内四登大荧幕">《拆婚联盟》陈意涵hold住大数据 </a>&nbsp; <span class="gray">(<span class="time">今 10:31</span>)</span></li>
+</ul></td></tr></tbody></table>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">本文评论</span>
+		 	　　<a href="http://www.thebigdata.cn/rm10844.aspx" target="_blank">查看全部评论</a> <span class="gray">(0)</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<table width="100%" style="margin:6px">
+		<tbody><tr><td width="300">
+			<form action="" name="fmRemarkSt" onsubmit="return remark.post(this);">
+			<input type="hidden" value="1" name="face">
+			表情： <img src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/b.gif" alt="表情" class="face1" style="cursor:pointer;vertical-align:middle" onclick="remark.dispFace(this)" onmouseout="remark.hideFace()" data-bd-imgshare-binded="1">
+			姓名： <input type="text" name="username" value="" maxlength="15" style="width:60px" class="inputbg" disabled="disabled">
+			<input type="checkbox" id="rmAnonymitySt" onclick="remark.anony(this)"><label for="rmAnonymitySt">匿名</label>
+			字数 <input type="text" id="bodyLen" size="3" readonly="readonly" style="border-width:0;background:transparent;vertical-align:middle" value="0">
+			<br>
+			点评：
+				<textarea name="body" cols="40" rows="4" onkeydown="remark.dispLen(this)" onkeyup="remark.handle(event,this);remark.dispLen(this)" style="width:20em;height:60px;margin:3px 0;overflow-y:auto"></textarea>
+				<br>
+		　　　<input type="checkbox" checked="checked" id="rmAgreeSt"><label for="rmAgreeSt">同意评论声明</label>
+		　　　<button type="submit" style="width:50px">发表</button>
+			</form>
+		</td><td>
+			评论声明
+			<ul style="list-style-type:square;margin:5px 0 0 1em;padding:0">
+			<li>尊重网上道德，遵守中华人民共和国的各项有关法律法规</li>
+			<li>承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>
+			<li>本站管理人员有权保留或删除其管辖留言中的任意内容</li>
+			<li>本站有权在网站内转载或引用您的评论</li>
+			<li>参与本评论即表明您已经阅读并接受上述条款</li>
+			</ul>
+		</td></tr>
+		</tbody></table>
+		<script type="text/javascript" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/remark.js"></script>
+		<script type="text/javascript">
+			remark.maxSize=200;
+			remark.minSize=2;
+			remark.sourceEle=$(document.fmRemarkSt).find("button").get(0);
+			iwms.vCode="EAD581CB";
+			iwms.user.name.length==0 ? $i("rmAnonymitySt").click() : $i("rmAnonymitySt").form.username.value=iwms.user.name;
+		</script>
+		
+		<div class="reCont" id="reContainer"></div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+</td><td width="250" valign="top">
+	
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">推荐阅读</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="dnl">
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/6570.html" target="_blank" title="大数据！你能在色情行业里做什么！"><span class="diggN">12</span>大数据！你能在色情行业里做什么</a></li>
+<li><a href="http://www.thebigdata.cn/JieJueFangAn/9437.html" target="_blank" title="一张图破解大数据，云计算，物联网和移动互联网的关系"><span class="diggN">11</span>一张图破解大数据，云计算，物联</a></li>
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/6508.html" target="_blank"><span class="diggN">9</span>大数据：大机遇还是大忽悠？</a></li>
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/8182.html" target="_blank" title="华为内部狂转的想象力惊人的好文：趣谈大数据"><span class="diggN">8</span>华为内部狂转的想象力惊人的好文</a></li>
+<li><a href="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯.htm" target="_blank" title="大数据基础知识：分布式计算、服务器集群"><span class="diggN">7</span>大数据基础知识：分布式计算、服</a></li>
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/9164.html" target="_blank" title="6个用于大数据处理分析的最好工具"><span class="diggN">7</span>6个用于大数据处理分析的最好工</a></li>
+<li><a href="http://www.thebigdata.cn/JieJueFangAn/7049.html" target="_blank" title="大数据时代 数据挖掘十大经典算法"><span class="diggN">7</span>大数据时代 数据挖掘十大经典算</a></li>
+<li><a href="http://www.thebigdata.cn/JieJueFangAn/12197.html" target="_blank" class="highlight" title="大数据专家教你用数据模型来找女朋友"><span class="diggN">6</span>大数据专家教你用数据模型来找女</a></li>
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/10786.html" target="_blank" class="highlight"><span class="diggN">6</span>解密谷歌的大数据技术</a></li>
+<li><a href="http://www.thebigdata.cn/JiShuBoKe/11848.html" target="_blank" title="一个数据挖掘大牛，用程序算法做人生选择"><span class="diggN">5</span>一个数据挖掘大牛，用程序算法做</a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	<embed src="../upload/sys/14042510054265.swf" style="width:249px; height:289px;margin:0 0 5px 0;">
+	<iframe width="250" height="750" class="share_self" frameborder="0" scrolling="no" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/index.htm"></iframe>
+	
+	
+	
+</td></tr>
+
+
+</tbody></table>
+<div id="footer">
+	<p style="text-align: center; line-height: 150%; margin-top: 7px;">版权所有:&nbsp;<a href="http://www.thebigdata.cn/" target="_blank">中国大数据</a>&nbsp;本站所转载、链接、引用及翻译的内容等，其版权属于各自合法的拥有者。<br><a href="http://www.miibeian.gov.cn/">苏ICP备11060547号-2</a> 本站创建、管理：<span style="color: #ff0000;">Gloud</span>　电子邮件： gloud#126.com ；广告服务：zhujiguangjie#163.com(用@代替#)</p>
+<script type="text/javascript">// <![CDATA[
+var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5094854'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s85.cnzz.com/stat.php%3Fid%3D5094854%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+// ]]></script><span id="cnzz_stat_icon_5094854"><a href="http://www.cnzz.com/stat/website.php?web_id=5094854" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/pic.gif" data-bd-imgshare-binded="1"></a></span><script src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/stat.php" type="text/javascript"></script><script src="./大数据基础知识：分布式计算、服务器集群-技术方案-@大数据资讯_files/core.php" charset="utf-8" type="text/javascript"></script><script type="text/javascript">iwms.aId=10844;$(function(){iwms.imgCont=$i('content');iwms.imgResize();InitContStyle();iwms.getVars();})</script>
+	
+</div>
+</div>
+
+
+<div id="bdimgshare_1416990379785" class="sr-bdimgshare sr-bdimgshare-list sr-bdimgshare-16 sr-bdimgshare-black" style="height: 36px; line-height: 26px; font-size: 12px; position: absolute; top: 1947.4375px; left: 293.484375px; width: 581px; display: none;" data-bd-bind="1416990379784"><div class="bdimgshare-bg"></div><div class="bdimgshare-content bdsharebuttonbox bdshare-button-style0-16"><label class="bdimgshare-lbl">分享到：</label><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_weixin" data-cmd="weixin" hidefocus=""></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_tsina" data-cmd="tsina" hidefocus=""></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_tqq" data-cmd="tqq" hidefocus=""></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_renren" data-cmd="renren" hidefocus=""></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_qzone" data-cmd="qzone" hidefocus=""></a><a href="http://www.thebigdata.cn/JieJueFangAn/10844.html#" onclick="return false;" class="bds_more" data-cmd="more" hidefocus=""></a></div></div><div id="pop_menu" class="menuskin" style="top: 148px; left: 313px; display: none; z-index: 100;"><div><div class="menuitems"><a href="http://www.thebigdata.cn/MeiZhouQiKan">每周期刊</a></div><div class="menuitems"><a href="http://www.thebigdata.cn/XianXiaJiaoLiu">线下交流</a></div></div></div></body></html>

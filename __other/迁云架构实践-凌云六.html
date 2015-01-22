@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://lingyun.aliyun.com/6/qianyun.html -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" class="ks-webkit537 ks-webkit ks-chrome39 ks-chrome"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./迁云架构实践-凌云六_files/analytics.js"></script><script async="" src="./迁云架构实践-凌云六_files/analytics.js"></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/cookie-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/io-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/transition-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/timer-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/promise-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/base-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/anim-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/node-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/custom-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/focusin-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/shake-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/base-min(1).js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/base-min(2).js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/event-min.js" async=""></script><script charset="utf-8" src="./迁云架构实践-凌云六_files/base-min(3).js" async=""></script>
+    <meta charset="utf-8">
+    <title>迁云架构实践-凌云六</title>
+  <meta name="data-spm" content="5176">
+  <link rel="shortcut icon" href="http://www.aliyun.com/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="./迁云架构实践-凌云六_files/saved_resource" charset="utf-8">
+    <script type="text/javascript" src="./迁云架构实践-凌云六_files/seed-min.js" charset="utf-8"></script><style type="text/css"></style>
+    <script src="./迁云架构实践-凌云六_files/jquery-1.6.2.min.js" type="text/javascript"></script>
+    <script src="./迁云架构实践-凌云六_files/index.js"></script><style>@charset "UTF-8";a,body,div,form,html,li,ol,span,ul{margin:0;padding:0;border:0;vertical-align:baseline}.ay-global-topbar{font-family:"FAE8F6F96C59ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"B8BF53";min-width:1000px;position:relative;height:28px;font-size:12px;zoom:1;background-color:#008eb7;background-color:#00a2ca;z-index:109}.ay-global-topbar .y-topbar-row{min-width:1000px;max-width:1200px;margin-left:auto;margin-right:auto;zoom:1;*width:1000px}.ay-global-topbar .y-topbar-row:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0}.ay-global-topbar .y-topbar-row .y-topbar-span3,.y-topbar-row .y-topbar-span9{float:left;display:inline;margin-right:2%;*margin-right:20px}.ay-global-topbar .y-topbar-row .y-topbar-span3{width:34.5%;*width:235px}.ay-global-topbar .y-topbar-row .y-topbar-span9{width:63.5%;*width:745px}.ay-global-topbar .y-topbar-row .y-last{margin-right:0!important}.ay-global-topbar a{height:16px;line-height:20px;margin-top:4px}.ay-global-topbar a:link,.ay-global-topbar a:visited{display:inline;color:#fff;text-decoration:none}.ay-global-topbar a:hover{text-decoration:none}.ay-global-topbar .lnk-newuser-t .lnk-newuser-title{line-height:28px}.ay-global-topbar .aliyun-logo{float:left;display:inline}.ay-global-topbar .aliyun-logo *{float:left;display:inline;cursor:pointer}.ay-global-topbar .aliyun-logo i{margin-right:4px;width:20px;height:20px;overflow:hidden;background-image:url(//gtms02.alicdn.com/tps/i2/T1wgm6FPRcXXcu5FDa-20-20.png);background-image:-webkit-image-set(url(//gtms02.alicdn.com/tps/i2/T1wgm6FPRcXXcu5FDa-20-20.png) 1x,url(//gtms03.alicdn.com/tps/i3/T1C.upFUldXXbe.mPe-40-40.png) 2x);background-image:-moz-image-set(url(//gtms02.alicdn.com/tps/i2/T1wgm6FPRcXXcu5FDa-20-20.png) 1x,url(//gtms03.alicdn.com/tps/i3/T1C.upFUldXXbe.mPe-40-40.png) 2x);background-image:-ms-image-set(url(//gtms02.alicdn.com/tps/i2/T1wgm6FPRcXXcu5FDa-20-20.png) 1x,url(//gtms03.alicdn.com/tps/i3/T1C.upFUldXXbe.mPe-40-40.png) 2x);background-image:-o-image-set(url(//gtms02.alicdn.com/tps/i2/T1wgm6FPRcXXcu5FDa-20-20.png) 1x,url(//gtms03.alicdn.com/tps/i3/T1C.upFUldXXbe.mPe-40-40.png) 2x)}.ay-global-topbar .lnk-act,.ay-global-topbar .lnk-email,.ay-global-topbar .lnk-item,.ay-global-topbar .lnk-login,.ay-global-topbar .lnk-reg,.ay-global-topbar .lnk-renewals,.ay-global-topbar .lnk-search,.ay-global-topbar .lnk-try{float:right;display:inline}.ay-global-topbar .lnk-message{float:none;display:inline;background:#f90;border-radius:5px;padding:0 9px;color:#fff!important;cursor:default!important}.ay-global-topbar .lnk-item:hover,.ay-global-topbar .lnk-login:hover,.ay-global-topbar .lnk-reg:hover,.ay-global-topbar .lnk-index:hover{color:#7ed1e8}.ay-global-topbar .has-message:link,.ay-global-topbar .has-message:visited,.ay-global-topbar .lnk-message:link,.ay-global-topbar .lnk-message:visited{background:#f90}.ay-global-topbar .has-message:hover{background:#f60}.ay-global-topbar .lnk-login,.ay-global-topbar .lnk-reg,.ay-global-topbar .lnk-index,.ay-global-topbar .lnk-user{-webkit-transition:all .3s,box-shadow 0s .1s;-moz-transition:all .3s,box-shadow 0s .1s;-ms-transition:all .3s,box-shadow 0s .1s;-o-transition:all .3s,box-shadow 0s .1s}.ay-global-topbar .aliyun-login .lnk-login-pre,.ay-global-topbar .aliyun-login .lnk-index,.ay-global-topbar .aliyun-login .lnk-reg,.ay-global-topbar .aliyun-login .li-spacing,.ay-global-topbar .aliyun-login .lnk-login{float:left}.ay-global-topbar .aliyun-login .lnk-login-pre{cursor:default}.ay-global-topbar .lnk-user{position:relative;display:-moz-inline-stack;display:inline-block;vertical-align:middle;zoom:1;min-width:100px;float:left;height:28px;line-height:28px}.ay-global-topbar .lnk-user a{line-height:16px;display:inline-block;color:#fff}.ay-global-topbar .lnk-user:hover{background:#fefefe;text-decoration:none}.ay-global-topbar .lnk-user:hover a{color:#000;text-decoration:none}.ay-global-topbar .lnk-user-selected{background:#fefefe}.ay-global-topbar .lnk-user-selected a{color:#000;text-decoration:none;cursor:pointer}.ay-global-topbar .lnk-user-selected .lnk-message{color:#fff}.ay-global-topbar .lnk-user-selected:hover,.ay-global-topbar .lnk-user-selected:link,.ay-global-topbar .lnk-user-selected:visited{background:#fefefe;-webkit-transition:box-shadow 0s;-moz-transition:box-shadow 0s;-ms-transition:box-shadow 0s;-o-transition:box-shadow 0s}.ay-global-topbar .user-list-info{height:54px}.ay-global-topbar .user-list-info-pic{float:left;width:50px;height:50px}.ay-global-topbar .user-list-info-pic a{display:block;height:38px;width:38px;margin:10px 0 0 10px}.ay-global-topbar .user-list-info-pic img{height:38px;width:38px}.ay-global-topbar .user-list-info-txt{margin-left:60px;height:50px;line-height:16px;padding-top:12px;white-space:nowrap}.ay-global-topbar .num-highlight{color:#f90}.ay-global-topbar .lnk-user .user-uid{float:none;padding-left:10px;margin-right:6px;max-width:195px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ay-global-topbar .lnk-user i{position:relative;top:-3px;border:solid 1px transparent;border-width:4px 4px 0;_border-color:#000;_filter:chroma(color=black);border-top-color:#fff;display:inline-block;margin-right:6px;margin-left:3px;-webkit-transition:all .3s;-moz-transition:all .3s;-ms-transition:all .3s;-o-transition:all .3s}.ay-global-topbar .lnk-user-selected i{border:solid 1px transparent;border-width:4px 4px 0;_border-color:#fff;_filter:chroma(color=white);border-top-color:#000;-webkit-transition:all .3s;-moz-transition:all .3s;-ms-transition:all .3s;-o-transition:all .3s}.ay-global-topbar .lnk-user-selected-ie i{border:solid 1px transparent;border-width:0 4px 4px!important;_border-color:#fff;_filter:chroma(color=white);border-bottom-color:#000!important}.ay-global-topbar .lnk-user-rotate i{transform:rotate(180deg);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg)}.ay-global-topbar .user-list{position:absolute;top:28px;height:0;overflow:hidden;background:#fefefe;border-radius:0 0 2px 2px;-webkit-box-shadow:0 3px 3px rgba(0,0,0,.1);box-shadow:0 3px 3px rgba(0,0,0,.1);filter:alpha(Opacity=95);opacity:.95;-webkit-transition:height .1s;-moz-transition:height .1s;-ms-transition:height .1s;-o-transition:height .1s}.ay-global-topbar .user-list li{background:#fefefe}.ay-global-topbar .user-list li a{color:#000;display:block;height:20px;line-height:20px;margin-top:0;padding:3px 10px;-webkit-transition:background .3s;-moz-transition:background .3s;-ms-transition:background .3s;-o-transition:background .3s}.ay-global-topbar .user-list li a:link,.ay-global-topbar .user-list li a:visited{background:#fefefe;color:#000;display:block;height:20px;line-height:20px;margin:0;padding:3px 10px}.ay-global-topbar .user-list li a:hover{background:#00a2ca;color:#fff;position:relative}.ay-global-topbar .user-list li a:hover .num-highlight{color:#fff}.ay-global-topbar .load-hide{opacity:0}.ay-global-topbar .li-spacing{float:right;display:inline;width:1px;height:14px;margin:8px 10px 0;overflow:hidden;background-color:#1aabcf}.ay-global-topbar .y-hide{display:none}.ay-global-topbar #mInstanceCount,.ay-global-topbar #mMessageCount{padding-left:4px}.ay-global-topbar #mPrepayMoney{color:#f90}.ay-global-topbar #lnk_charge{white-space:nowrap;color:#00a0c7;margin:0 10px}.ay-global-topbar .lnk-newuser-t{position:relative;display:-moz-inline-stack;display:inline-block;vertical-align:middle;zoom:1;float:right;height:28px;line-height:28px;padding:0 10px}.ay-global-topbar .aliyun-newuser-selected{background:#fefefe}.ay-global-topbar .aliyun-newuser-selected a{color:#000;text-decoration:none;cursor:pointer}.ay-global-topbar .aliyun-newuser i{position:relative;top:-3px;border:solid 1px transparent;border-width:4px 4px 0;_border-color:#000;_filter:chroma(color=black);border-top-color:#fff;display:inline-block;margin-right:6px;margin-left:3px;-webkit-transition:all .3s;-moz-transition:all .3s;-ms-transition:all .3s;-o-transition:all .3s}.ay-global-topbar .aliyun-newuser-selected i{border:solid 1px transparent;border-width:4px 4px 0;_border-color:#fff;_filter:chroma(color=white);border-top-color:#000;-webkit-transition:all .3s;-moz-transition:all .3s;-ms-transition:all .3s;-o-transition:all .3s}.ay-global-topbar .aliyun-newuser-selected-ie i{border:solid 1px transparent;border-width:0 4px 4px!important;_border-color:#fff;_filter:chroma(color=white);border-bottom-color:#000!important}.ay-global-topbar .aliyun-newuser-rotate i{transform:rotate(180deg);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg)}.ay-global-topbar .newuser-panel{position:absolute;left:-500px;top:28px;overflow:hidden;padding:0 10px;background:#fefefe;border-radius:0 0 2px 2px;-webkit-box-shadow:0 3px 3px rgba(0,0,0,.1);box-shadow:0 3px 3px rgba(0,0,0,.1);filter:alpha(Opacity=95);opacity:.95;-webkit-transition:height .1s;-moz-transition:height .1s;-ms-transition:height .1s;-o-transition:height .1s}.ay-global-topbar .newuser-panel .newuser-title{height:40px;line-height:40px;font-size:0}.ay-global-topbar .newuser-panel .newuser-title a{line-height:40px;font-size:12px;margin-right:18px;color:#000}.ay-global-topbar .newuser-panel .newuser-title a:hover{color:#00a2ca}.ay-global-topbar .newuser-panel .newuser-title a.last{margin-right:0}.ay-global-topbar .newuser-panel .newuser-content{padding:10px 0;border-top:1px dashed #919697;color:#000}.ay-global-topbar .newuser-panel .newuser-content li{list-style-type:disc;list-style-position:inside;line-height:22px}.ay-global-topbar .newuser-panel .newuser-content a{color:#000}.ay-global-topbar .newuser-panel .newuser-content a:hover{color:#00a2ca}.ay-global-topbar .lnk-item.newuser-ticket{position:relative;background:#fc0;color:#302600!important;line-height:18px;height:18px;padding:0 4px;font-size:12px;float:right;display:none}.ay-global-topbar .newuser-ticket i{position:absolute;top:4px;border:solid 1px transparent;border-width:5px 5px;_border-color:#fc0;_filter:chroma(color=black);border-left-color:#fc0;display:inline-block;margin-right:6px;margin-left:3px;right:-16px}.ay-global-topbar .lnk-search{padding:4px 7px;margin:0 0 0 10px;height:20px;overflow:hidden;-webkit-transition:background .3s;-moz-transition:background .3s;-ms-transition:background .3s;-o-transition:background .3s;*padding:8px 7px 2px;_padding:5px 7px}.ay-global-topbar .lnk-search .icon-Search1{height:20px;width:20px;overflow:hidden;display:inline-block;background-image:url(//gtms02.alicdn.com/tps/i2/T1a5O1FSBeXXcu5FDa-20-20.png)}.ay-global-topbar .lnk-search:link,.ay-global-topbar .lnk-search:visited{background:#008ab0}.ay-global-topbar .lnk-search:hover{background:#33b5d4}.ay-global-topbar .aliyun-search{position:absolute;top:28px;height:0;opacity:0;overflow:hidden;-webkit-transition:opacity .1s;-moz-transition:opacity .1s;-ms-transition:opacity .1s;-o-transition:opacity .1s}.ay-global-topbar .search-box-new{height:24px;width:244px;border:solid 2px #008ab0;background:#fff;overflow:hidden}.ay-global-topbar .aliyun-search input{float:left;display:inline;height:12px;width:212px;padding:6px 4px;border-width:0;outline:0;overflow:hidden;line-height:1}.ay-global-topbar .input-blur{color:#999}.ay-global-topbar .btn-search{float:left;display:inline;width:24px;height:24px;padding:0;border-width:0;background:#fff;overflow:hidden;margin-top:0;outline:0;cursor:pointer}.ay-global-topbar .btn-search .search-arrow{float:left;display:inline;width:0;height:0;overflow:hidden;border:solid 5px #fff;border-left-width:0;border-right-color:#ccc;margin:5px 0 0 4px;-webkit-transition:border-right-color .3s;-moz-transition:border-right-color .3s;-ms-transition:border-right-color .3s;-o-transition:border-right-color .3s}.ay-global-topbar .btn-search .search-tube{float:left;display:inline;width:5px;height:7px;overflow:hidden;border:solid 3px #ccc;border-width:0 3px 3px 0;margin-top:2px;-webkit-transition:border-color .3s;-moz-transition:border-color .3s;-ms-transition:border-color .3s;-o-transition:border-color .3s}.ay-global-topbar .btn-search:hover .search-arrow{border-right-color:#666}.ay-global-topbar .btn-search:hover .search-tube{border-color:#666}</style><script type="text/javascript" async="" id="tb-beacon-aplus" exparams="category=&amp;userid=&amp;aplus&amp;yunid=" src="./迁云架构实践-凌云六_files/aplus_v2.js"></script><script type="text/javascript" async="" src="./迁云架构实践-凌云六_files/saved_resource(1)"></script><script type="text/javascript" src="./迁云架构实践-凌云六_files/cloud_helper_config.js"></script><script type="text/javascript" src="./迁云架构实践-凌云六_files/cloud_helper_config(1).js"></script><script type="text/javascript" async="" src="./迁云架构实践-凌云六_files/index(1).js"></script></head><body data-spm="1511045"><div class="ay-global-topbar" data-spm="1"><div class="y-topbar-row"><div class="y-topbar-span3" style="height:28px"><div class="aliyun-user y-hide"><div class="lnk-user"><a class="user-uid" target="" href="http://i.aliyun.com/"></a><a class="lnk-message" style="display: none">0</a><i></i></div><div class="user-list" style="left: -500px;"><div class="user-list-info"><div class="user-list-info-pic"><a target="" href="http://i.aliyun.com/"><img id="mProfile"></a></div><div class="user-list-info-txt"><span>&nbsp;</span><br><a class="num-highlight" id="mPrepayMoney" href="http://i.aliyun.com/" target=""></a><a href="http://finance.aliyun.com/account/recharge.htm" target="" id="lnk_charge">充值</a></div></div><ul><li><a href="http://buy.aliyun.com/renew/ecs" target="">续费<span class="num-highlight" id="mInstanceCount"></span></a></li><li><a href="http://message.aliyun.com/" target="" data-spm-click="gostr=/aliyun;locaid=d201440">消息中心<span class="num-highlight" id="mMessageCount"></span></a></li><li><a href="http://finance.aliyun.com/coupon/coupon_aliyun.htm" target="">可用代金券</a></li><li><a href="https://order.aliyun.com/order?order_status=ORDER_VALID" target="_blank" data-spm-click="gostr=/aliyun;locaid=d201443">未支付订单<span class="num-highlight" id="upPayedOrderCount"></span></a></li><li><a href="http://aliyun.gein.cn/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d201443">备案系统</a></li><li><a href="http://workorder.aliyun.com/addIndex.htm" target="">提交工单</a></li><li><a target="_self" id="lnk_logout">退出</a></li></ul></div></div><div class="aliyun-login"><a class="lnk-login-pre" onlcick="return false;" href="http://lingyun.aliyun.com/6/qianyun.html#nogo">欢迎上云，</a><a id="lnk_login" data-spm-click="gostr=/aliyun;locaid=d201431" class="lnk-login" target="_self" href="https://account.aliyun.com/login/login.htm?oauth_callback=http%3A%2F%2Flingyun.aliyun.com%2F6%2Fqianyun.html"><span>请登录</span></a><span class="li-spacing"></span><a id="lnk_reg" class="lnk-reg" target="_self" href="https://account.aliyun.com/register/register.htm?oauth_callback=http%3A%2F%2Flingyun.aliyun.com%2F6%2Fqianyun.html"><span>注册</span></a> </div><span class="li-spacing" id="lnk_index_spacing" style="float:left"></span><a id="lnk_index" class="lnk-index" style="float:left" href="http://www.aliyun.com/" target="_self"><span>阿里云首页</span></a> </div><div class="y-topbar-span9 y-last"><a id="lnk_search" class="lnk-search" href="javascript:;" title="搜索" target="_self"><i class="icon-Search1"></i></a><a class="lnk-item" data-ga="顶通.万网" data-spm-click="gostr=/aliyun;locaid=d201410" href="http://www.net.cn/" title="万网" target="_blank"><span style="color:#ddcc62;" class="icon undefined"></span>&nbsp;万网</a> <span class="li-spacing"></span><a class="lnk-item" data-ga="顶通.云邮箱" data-spm-click="gostr=/aliyun;locaid=d201430" href="https://mail.aliyun.com/" title="云邮箱" target="_blank"><span style="color:#ddcc62;" class="icon undefined"></span>&nbsp;云邮箱</a> <span class="li-spacing"></span><a class="lnk-item" data-ga="顶通.试用" href="http://free.aliyun.com/?tracelog=dh" title="免费体验" target="_self"><span style="color:#ddcc62;" class="icon icon-giving"></span>&nbsp;免费体验</a> <span class="li-spacing"></span><a class="lnk-item" data-ga="顶通.备案" href="http://beian.aliyun.com/" title="备案" target="_self"><span style="color:#ddcc62;" class="icon undefined"></span>&nbsp;备案</a> <span class="li-spacing"></span><a class="lnk-item" data-ga="顶通.控制台" href="http://home.console.aliyun.com/" title="管理控制台" target="_blank"><span style="color:#ddcc62;" class="icon undefined"></span>&nbsp;管理控制台</a> <span class="li-spacing"></span><a class="lnk-item" data-ga="顶通.用户中心" href="http://i.aliyun.com/" title="用户中心" target="_self"><span style="color:#ddcc62;" class="icon undefined"></span>&nbsp;用户中心</a> <span class="li-spacing"></span><div class="aliyun-newuser"><div class="lnk-newuser-t"><a class="lnk-newuser-title" href="http://lingyun.aliyun.com/6/qianyun.html#nogo" onclick="return false;" title="新手专区"><span style="color:#ffcc00;" class="icon icon-giving"></span>&nbsp;新手专区</a><i></i></div><div class="newuser-panel" style="left: -500px;"><div class="newuser-title"><a href="http://promotion.aliyun.com/act/xszq.html" target="_blank">新手学堂</a><a href="http://free.aliyun.com/" target="_blank">免费体验</a><a href="http://promotion.aliyun.com/act/jpfw.html" class="last" target="_blank">金牌服务</a></div><ul class="newuser-content" id="NewUserContent" style="display:none"><li id="NewUserCertified"><a href="https://account.aliyun.com/profile/certify.htm">认证即享ECS1核1G￥0/半年</a></li><li id="NewUserZero"><a href=""></a></li></ul></div></div><a class="lnk-item newuser-ticket" id="LnkNewUserTip" target="blank" href="http://free.aliyun.com/" title="" style="display: inline;">ECS￥0/半年<i></i></a><div class="aliyun-search" style="opacity: 0; height: 0px;"><div class="search-box-new"><form class="frm-search" target="_self" ng-non-bindable=""><input class="txt-search input-blur" data-default="搜索" name="k" maxlength="140" value="搜索"> <button class="btn-search" type="submit"><i class="search-arrow"></i> <i class="search-tube"></i></button></form></div></div></div></div></div>
+    <style type="text/css">
+        .ly-parent-1200 {
+        font-family:'Microsoft YaHei';width:1200px;margin:0 auto;background-color:#ffffff;
+        }
+        /* top当前位置 */
+        .l-top {
+            font-size:14px;color:#333333;height:58px;line-height:58px;border-bottom:1px dashed #dbdbdb;
+        }
+            .l-top a {
+                font-size:14px;color:#00a1cb;text-decoration:underline;
+            }
+        /* 文章 */
+        .l-content {
+            padding:10px 0;
+        }
+        .l-content-left {
+            width:854px;float:left;
+        }
+        .l-article-title {
+            font-size:24px;color:#333333;text-align:center;height:68px;line-height:68px;font-weight:bold;
+        }
+        .l-article-author-share {
+            font-size:14px;color:#656565;line-height :37px;height :40px;width:100%;
+        }
+        .share-text {
+            float:left;padding:10px 0;
+        }
+        .share-img {
+            float:left;
+        }
+        .l-article-summary {
+            background-color:#EFFCFF; border:1px solid #92bec9;font-size:14px;color:#656565;padding:15px;margin:15px 0;line-height:26px;
+        }
+        .l-article-desc {
+            font-size: 14px; color: #656565; padding: 15px; margin: 15px 0; line-height: 26px;
+        }
+        .l-article-desc p {
+            margin:0;
+        }
+        .l-article-more {
+            padding-left:15px;padding-bottom: 20px;
+        }
+        /* 右边的作者介绍 */
+        .l-content-right {
+        float:right;margin-top:30px;margin-left:24px;width:20.3%;
+        }       
+        .l-tuijian-title {
+            font-size:16px;color:#666666;border-bottom:none;float:left;
+        }
+        .l-tuijian-title-blue {
+            font-size:16px;color:#438FCD;
+        }
+        .l-tuijian-title-line {
+            border-bottom:1px solid #e2e2e2;float:left;width:179px;
+        }
+        
+        .l-r-a-table {
+            border: 1px solid #D0D0D0; width: 265px;
+        }
+        .l-r-a-large-text {
+            font-size: 16px; color: #333; font-weight: bold; line-height: 30px;
+        }
+        .l-r-a-small-text {
+            font-size: 12px; color: #656565; line-height: 22px;
+        }
+        /* 右边作者的来往、微博二维码  pd需求：有的作者只有一个二维码，有的是两个 */
+        .l-r-a-codes {
+            font-size: 12px; color: #999; background-color: #fbfbfb; padding: 12px;
+        }
+        .l-author-code-no-dashed {
+            height: 69px; padding-bottom: 12px; 
+        }
+        .l-author-code-dashed {
+            height: 69px; padding: 12px 0;border-top: 1px dashed #dcdcdc;
+        }
+        .l-author-code-small-img {
+            float: left; padding: 20px 0 0 5px;
+        }
+        .l-author-code-text {
+            float: left; padding: 25px 0 0 10px;
+        }
+        /* 右边编辑推荐 和 往期推荐 */
+        .ul-article-list {
+        font-size: 14px; color: #656565; line-height: 26px; margin-left: 15px; padding-right: 0px; padding-left: 0px;padding-top:12px;
+        }
+        .ul-article-list li {
+            list-style: url(http://gtms02.alicdn.com/tps/i2/TB1IU22FVXXXXcGaXXX9vPJJFXX-9-9.png) outside;
+        }
+            .ul-article-list li a {
+                font-size:14px;color:#656565;text-decoration:none;
+            }
+        /* 底部的 关注阿里云 二维码相关 */
+        .l-bottom {
+            height:195px;border-top:1px solid #e5e5e5;font-size:12px;margin-top:20px;font-family:'Microsoft YaHei';
+        }
+            .l-bottom a {
+                color:#00a1cb;text-decoration:underline;font-size:12px;
+            }
+
+        .l-bottom-title {
+            font-size:14px; color:#000;padding:30px 0 15px 0;
+        }
+        .l-twocode-div {
+            border: 1px solid #e4e4e4;width: 270px;margin-right: 25px;padding:5px 0; float: left;
+        }
+       
+        .l-twocode-text-title {
+            font-size:12px;color:#999;
+        }       
+      .l-twocode-text-title2{font-size:12px;color:#333;}
+    </style>   
+
+  <script type="text/javascript">
+(function (d) {
+var t=d.createElement("script");t.type="text/javascript";t.async=true;t.id="tb-beacon-aplus";
+t.setAttribute("exparams","category=&userid=&aplus&yunid=");
+t.src=("https:"==d.location.protocol?"https://s":"http://a")+".tbcdn.cn/s/aplus_v2.js";
+d.getElementsByTagName("head")[0].appendChild(t);
+})(document);
+</script>
+
+    <div style="background-color:#ffffff;">
+    <div class="ly-parent-1200">
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tbody><tr>
+                <td>
+                    <div class="l-top">
+                      <span>当前位置：<a href="http://lingyun.aliyun.com/" target="_blank">凌云首页</a> &gt; 技术专题</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="l-content">
+                        <div class="l-content-left">
+                            
+                                
+	                              <div class="l-article-title">迁云架构实践</div>
+	                            
+                              
+                            <div class="l-article-author-share">
+                              <table width="100%" cellspacing="0" cellpadding="0" style="padding-left: 15px; padding-right: 3px;font-
+
+size:14px;color:#656565;">
+                                    <tbody><tr>
+                                        <td style="width: 22%;">作者：
+	                                                                      王宇德，张文生    
+	                                                                    
+                                        </td>
+                                        <td style="width: 22%;">发布时间：
+	                                                                          2014-12-05    
+	                                                                        
+                                        </td>
+                                        <td style="width: 20%;">阅读数：465</td>
+                                        <td style="text-align: right;">分享到：</td>
+                                        <td style="text-align: right; width: 132px;">
+                                            <a id="shareLW" href="javascript:void(0);" target="_blank" title="分享到来往">
+                                                <img src="./迁云架构实践-凌云六_files/TB1nia4GXXXXXXlXpXXWXvcGpXX-36-37.png" width="36" height="37" border="0"></a>
+                                            <a id="shareWeibo" href="javascript:void(0);" target="_blank" title="分享到新浪微博">
+                                                <img src="./迁云架构实践-凌云六_files/TB1JMK4GXXXXXXyXFXXWXvcGpXX-36-37.png" width="36" height="37" border="0"></a>
+                                            <a id="shareTQQ" href="javascript:void(0);" target="_blank" title="分享到腾讯微博">
+                                                <img src="./迁云架构实践-凌云六_files/TB1.Su6GXXXXXbpXXXXWXvcGpXX-36-37.png" width="36" height="37" border="0"></a>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+
+                            </div>
+                            
+                                 <div class="l-article-summary">Gartner的IT专家预测出了2015年的十大信息科技趋势，这些趋势被认为会在未来三年内对行业产生重大影响，其中之一就是“网络规模IT”，即越来越多的公司会建造类似亚马逊、Google和Facebook的应用和架构。这将使网络规模IT成为商用的硬件平台，使得新模式、云优化和软件定义方法成为主流。对于大部分企业级客户来说，可以结合自己的业务场景选择合适的技术架构来实现整体IT系统的互联网化设计。本文对IT互联网化带来的技术挑战与应对之道、迁云架构设计与实现进行了详解。</div>   
+	                                                    
+                            <div class="l-article-desc">
+                              
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;云计算作为信息技术领域的一种创新应用模式，自其诞生以来一直备受关注。由于其具备低成本、弹性、易用、高可靠性、按需服务等特点，近年来被看作是新一代信息技术变革和商业模式变革的核心。互联网、游戏、物联网等新兴行业纷纷积极拥抱云计算，对大部分企业用户来说，受限于传统IT技术架构的束缚，往往缺乏迁移到云计算的动力和技术实现参考。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style=" font-weight:bold;   color;color:#00a1cb;   font-size:16; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;传统IT架构的技术特点和面临的问题</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;企业中最核心的系统通常是数据库管理系统，用以满足实时交易和分析的需求。传统的单机数据库采用“向上扩展”（Scale-Up）思路但这种方式一般只能够支持几个TB 数据的存储和处理，远不能满足实际需求。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;为了达到高性能和更大数据存储容量的要求，采用集群设计的OLTP系统逐步成为主流。如图1所示，常见的企业数据库集群如Oracle RAC通常采用Share-Everything（Share-Disk）模式。数据库服务器之间共享资源，例如磁盘、缓存等。当性能不能满足需求时，要依靠升级数据库服务器（一般采用小型机）的CPU、内存和磁盘，来达到提升单节点数据库服务性能的目的。另外，可以增加数据库服务器的节点数，依靠多节点并行和负载均衡来达到提升性能和系统整体可用性的效果。但当数据库服务器节点数量增大时，节点之间的通信将成为瓶颈，而且处理各个节点对数据的访问控制将受制于事务处理的一致性要求。从实际案例来看，4节点以上的RAC非常少见。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1cAu2GVXXXXXaXFXXeDYn0XXX-636-452.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另外，根据摩尔定律，处理器的性能约每隔18个月便会增加一倍，而DRAM的性能大约每10年才会增加一倍，使得处理器和内存的性能形成剪刀差。虽然处理器的性能在快速提升，但由于磁盘的机械转速与磁臂的寻道时间的限制，磁盘存储性能提升缓慢，硬盘的IOPS性能近10年基本没有太大提升（HDD磁盘的转速一直在7200-15000RPM)，基于HDD的磁盘阵列存储越来越成为集中式存储架构的性能瓶颈，而全闪存阵列受限于高昂的成本和擦写寿命还远达不到大规模商用的要求。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;因此，IOE的集中存储（Share-Everything）方式存在性能、容量与扩展性的局限，同时成本居高不下。而互联网化带来的高并发，大数据的处理要求，x86和开源数据库技术的飞速发展， NoSQL、Hadoop等分布式系统技术的逐渐成熟，互联网化带来的高并发、大数据的处理要求，使得系统架构开始从集中式的Scale-up架构向分布式的Scale-Out架构发展。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style=" font-weight:bold;   color;color:#00a1cb;   font-size:16; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IT互联网化带来的技术挑战与应对之道</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gartner的IT专家预测出了2015年的十大信息科技趋势，这些趋势被认为会在未来三年对行业产生重大影响，其中之一就是“网络规模IT”，即越来越多的公司会建造类似亚马逊、Google和Facebook的应用和架构。这将使网络规模IT成为商用的硬件平台，使得新模式、云优化和软件定义方法成为主流。开发和操作的协同是向网络规模IT发展的第一步。但传统的IT系统在向互联网化方向转型时，通常需要面对以下几个技术挑战。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 性能。用户体验是影响转化率的重要因素，据统计如果4秒钟打不开网站，将有60%的顾客会流失，糟糕体验将导致大量的客户选择放弃或从竞争对手处购买服务。如何在高并发访问的情况下保证系统的低延迟响应，以提升用户体验。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 伸缩性。互联网/移动互联网用户的访问行为是动态的，在一些特殊的热点引爆后，流量能够通常达到平时的10倍甚至几十倍以上。如何快速响应业务爆发时的资源开销需求，提供无差别的用户体验。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 容错与最大可用性。互联网应用系统基于分布式计算架构部署，基于大量的x86服务器和通用网络设备。而机器一定会坏，当机器数量到一定规模时，小概率事件就成为常态，当硬件出现故障时应该如何自动化处理，人一定会在开发中写出Bug，怎么进行系统的损害控制。如何基于单机QPS和并发数对服务端和客户端进行限流，实现动态流量分配，识别服务之间的依赖链路风险和系统重要功能点依赖，评估最大可能的风险点，分布式系统最大可用性故障检测，对故障模块进行隔离，对未完成事物进行Rollback，通过牺牲非关键功能通过优雅降级保证核心功能可用。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 容量管理。系统性能一定会到达瓶颈，如何进行更科学的容量评估和扩容，自动计算前端请求与后端机器数量的对应关系，对软硬件容量需求进行预测。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 服务化。如何将业务逻辑功能抽象成一个个原子服务，对服务进行封装和组合，并基于分布式系统环境部署，以实现更灵活的业务逻辑和流程。如何从业务视角厘清这些服务的关系，对大规模分布式系统中的单条服务调用链进行跟踪与展现，并能够及时发现服务调用异常。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 低成本。随着系统的演进性能指标不断发生变化，如何保证以最低成本满足特定访问量的要求。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 自动化运维管理。不断发展的大规模系统需要不断维护、快速迭代和优化。如何应对从一台到上千台甚至上万台服务器的运维量变，通过自动化工具和流程管理大规模软硬件集群，对系统进行快速部署、升级、扩容和维护。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;随着业务的快速发展，淘宝技术架构经历从最初的LAMP架构，到IOE架构，再到分布式架构，最后到现在的云计算平台架构这一变化过程在不断解决上面的技术问题。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style=" font-weight:bold;   color;color:#00a1cb;   font-size:16; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;淘宝技术架构变迁</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自2003年创立以来的，淘宝业务发展非常迅速，几乎是每年以100%的速度在成长。创立之初，为了快速上线，抢占市场，选择了当时流行的LAMP架构，用PHP作为网站开发语言， Linux作为操作系统，Apache作为Web服务器，MySQL为数据库，用了三个月不到的时间淘宝就上线了。当时整个网站应用服务器大概10台左右，MySQL数据库采用了读写分离、一主两备的部署方式。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2004年在淘宝业务发展的推动下，我们参考电信运营商、银行等的一些企业解决方案，将LAMP架构改造为Oracle+IBM小型机的数据库架构和EMC存储方式（图2）。虽然方案成本昂贵，但性能非常好。同时，随着网站流量的增加，系统显得有些不堪重负。当时最担心的问题是网站流量如果持续增加，交易量持续增加，网站的系统架构怎么设计？如何选择数据库？如何选择缓存？如何构建业务系统？……后来参考eBay的互联网设计架构，设计了一个Java的技术方案，并使用了非常多的Java开源产品。例如，选择当时比较流行的JBoss，作为应用服务器；选择一个开源的IOC容器Spring，来管理业务类；封装了一个数据库访问工具IBatis，作为数据库和Java类的Object-Reletionship映射工具。另外，对于商品搜索功能，采用自己开发的ISearch搜索引擎来取代在Oracle数据库中进行搜索，降低数据库服务器的压力。做法比较简单，每天晚上全量将Oracle小型机的数据dump出来，Build成ISearch的索引，当时商品量也不大，一台普通配置的服务器，基本上可以将所有的索引都放进去，没做切分，直接做了一个对等集群。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1qhq7GVXXXXcHXXXXb.oU6VXX-969-624.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从2006年开始，淘宝为了改善用户体验，开始建立自己的CDN站点，由于淘宝的主要流量来源于各种商品图片、商品描述等静态数据，自建CDN可以使这些资源离用户更近，提升用户访问速度，改善用户浏览网站的体验。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2007年，淘宝全年的交易额超过400亿元，平均近1亿多一天，每天有100多万笔交易被创建。当时面对的几个主要问题是：一些系统的流量非常大，如商品详情等，如果直接访问数据库，会导致数据库压力非常大；如用户信息，访问一个页面，都需要查询买家信息、卖家信息、显示出买家的信用、卖家的服务星级等。此时，淘宝采用分布式缓存TDBM（Tair的前身）将这些热点静态数据缓存在内存中，提高访问性能。另外，将自己研发的分布式文件系统TFS部署在多台x86服务器上，取代商业的NAS存储设备来存储淘宝的各种文件信息，如商品图片、商品描述信息、交易快照信息，来达到降低成本和提高整体系统的容量和性能的目的，同时可以实现更灵活的扩展性。第一期上线大概200台TFS服务器。另外，将ISearch搜索引擎改为分布式架构，支持水平扩展，部署了48个节点。图3展示了这一架构思路。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1TcWWGVXXXXXgaXXX8Q.9PFXX-933-620.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2008年初，为了解决Oracle数据库集中式架构的瓶颈问题（连接数限制、I/O性能），将系统进行了拆分，按照用户域、商品域、交易域、店铺域等业务领域进行拆分，建立了20多个业务中心，如商品中心、用户中心、交易中心等。所有有用户访问需求的系统，必须使用业务中心提供的远程接口来访问，不能够直接访问底层的MySQL数据库，通过HSF这种远程通信方式来调用业务中心的服务接口，业务系统之间则通过Notify消息中间件异步方式完成调用。图4是淘宝的分布式架构图。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1ltOPGVXXXXcFXFXXx8D1ZpXX-739-623.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从2010年开始，淘宝网重点着眼于统一架构体系，从整体系统层面考虑开发效率、运维标准化、高性能、高可扩展性、高可用、低成本方面的要求，底层的基础架构统一采用了阿里云计算平台（图5），使用了SLB、ECS、RDS、OSS、ONS、CDN等阿里云计算服务，并通过阿里云服务提供的高可用特性，实现双机房容灾和异地机房单元化部署，为淘宝业务提供稳定、高效和易于维护的基础架构支撑。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB13c55GVXXXXbOXpXXi1UNJVXX-676-454.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在从IOE架构最终向云计算平台技术架构转移的过程中，主要面临以下几个技术挑战。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 可用性：脱离小型机和高端存储的高冗余机制，采用基于PC服务器的分布式架构的云计算平台能否做到高可用。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 一致性：Oracle基于RAC和共享存储实现的物理级别一致性，基于RDS for MySQL能否达到同样的效果。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 高性能：高端存储的I/O能力很强，基于PC服务器的RDS能否提供同样甚至更高的I/O处理能力，MySQL和Oracle对SQL的处理性能是否相同。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;■ 扩展性：业务逻辑如何拆分，如何服务化，数据分多少库分多少表，什么维度分，后期二次拆分如何更方便等。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于阿里云计算平台，通过采用合适的技术策略和最佳实践，包括：应用无状态，有效使用缓存（浏览器缓存、反向代理缓存、页面缓存、局部页面缓存、对象缓存和读写分离），服务原子化，数据库分割，异步解决性能问题，最小化事物单元，适当放弃一致性。以及自动化监控/运维手段包括监控预警、配置统一管理，基础服务器监控，URL监控，网络监控，模块间调用监控，智能分析监控，综合故障管理平台，容量管理。可以很好地解决以上问题，从而达到整体系统的高可扩展性、更低的成本、更高的性能和可用性的实现效果。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style=" font-weight:bold;   color;color:#00a1cb;   font-size:16; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;迁云架构最佳实践</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;淘宝的技术架构是一个伴随业务逐渐发展而逐步演进的过程，中间沉淀了很多宝贵的架构最佳实践。对于大部分企业级客户来说，可以结合自己的业务场景选择合适的技术架构来实现整体IT系统的互联网化设计。不同应用场景下的迁云架构，包括文件存储、应用服务、OLTP数据库、OLAP数据库。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于文件存储方式，可以直接用OSS取代EMC存储实现海量数据文件的存储，OSS存储最大容量可以达40PB，同时由于OSS是分布式存储方式，可以通过多个节点的并行读写显著提高数据访问性能。对于大文件，还可以通过Multipart Upload的方式，将大文件分块并行传输与存储，实现高性能。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于应用服务，可通过SLB+多台ECS实例组合取代IBM小型机（图6），也可以根据不同应用类型，直接基于ACE、ONS、OpenSearch等阿里云中间件云服务部署。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1mrS3GVXXXXX3XFXXAP_6VFXX-1305-569.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OLTP应用的迁移相对复杂。目前阿里云的RDS实例最高是48GB内存，14000IOPS，1TB的存储容量（SSD存储），支持MySQL和SQL Server。这个配置作为单数据库服务器来使用可以满足很多场景的数据库应用需求，可直接取代大部分场景下的IBM小型机+Oracle数据库+EMC存储。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于性能要求更高的应用，可考虑引入开放缓存服务OCS，将部分查询数据加载至分布式缓存中，减少RDS的数据查询次数，提升系统的数据查询并发效率和降低响应时间，如图7所示。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1Q.y9GVXXXXX1XXXXpOQFUpXX-518-540.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于读的请求远大于写请求的场景，可以考虑用多个RDS数据库，采用分布式方式实现读写分离，写交易主要发生在主库，读请求访问备库，可以根据需求对读库进行扩展，以实现整体请求性能的提升。图8是带只读实例扩展的迁云架构。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB16TK7GVXXXXaVXXXXdwreJXXX-886-602.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于数据规模较大的数据库表，可以通过水平切分的方式，将数据分布在多个RDS实例上，通过并行的分布式数据库操作来实现性能和容量的提升。图9是带数据拆分的迁云架构。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1Lv01GFXXXXXwaXXX2m9qRXXX-831-614.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总的来说，通过迁移到RDS、引入数据缓存、分库分表、读写分离等多种方式可以用Scale-Out方式取代原有的IOE架构，并且获得更好的性能和扩展性。图10中是迁云架构演进过程。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1ff91GVXXXXcqXFXXlBrC1XXX-1074-613.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于OLAP应用，可采用ODPS+OTS+RDS/ADS的解决方案取代小型机+Oracle DB+OLAP+RAC+EMC存储解决方案，如图11所示。总体来看，迁云的通用架构方案如图12所示，针对具体业务系统的迁云方案还需要根据实际情况进行分析和合理选择。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1C3TSGFXXXXccaXXXMPRCMFXX-606-607.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    	<p style="padding:5px 0 3px 0;text-align:center;"><img src="./迁云架构实践-凌云六_files/TB1vxW9GVXXXXaoXXXXLT6WZpXX-742-602.jpg" border="0" style="max-width:500px;"></p>
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style=" font-weight:bold;   color;color:#00a1cb;   font-size:16; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                	                                                    <p style="  ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过采用不同的迁云架构实现方案，用户可以根据不同的实现场景要求，将传统的IT系统迁移到云端。通过云产品架构最佳实践，使阿里云产品组合发挥最大效用，让用户充分享受云计算带来的弹性、低成本、稳定、安全和易用等价值收益。</p>                                                    
+                                                                                                    <div style="clear:both;line-height:10px;">&nbsp;</div>
+                                                                                                                            
+                            </div>
+                            <div class="l-article-more">
+                                <a href="http://lingyun.aliyun.com/" target="_blank">
+                                    <img src="./迁云架构实践-凌云六_files/TB19L47FVXXXXcFaXXXWya8FpXX-142-30.png" border="0">
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="l-content-right">
+                            <!--table形式的作者简介1-->
+                            <table class="l-r-a-table" cellspacing="0" cellpadding="0">
+                                <tbody><tr style="padding: 15px;">
+                                    <td style="padding: 15px 0 0 15px;">
+                                        <div class="l-r-a-large-text">
+                                            
+	                                          王宇德    
+	                                                           
+                                        </div>
+                                        <div class="l-r-a-small-text" style="vertical-align:bottom;">
+                                            &nbsp;&nbsp;&nbsp;
+	                                          阿里云计算架构师，负责云计算专业服务，包括基于阿里云计算平台架构与技术方案的咨询、设计    
+	                                          
+                                        </div>
+                                    </td>
+                                    <td style="padding: 15px 15px 0 10px;width:110px;">
+                                        
+                                             <img src="./迁云架构实践-凌云六_files/TB1RIq3GVXXXXXFXFXXLr4z0XXX-183-200.png" width="110" height="130" border="0">
+                                        
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 0 15px 15px 15px;">
+                                        <div class="l-r-a-small-text">
+                                            
+	                                          和迁移。曾任甲骨文公司企业架构师，主要服务于金融、电信、政府等行业客户。    
+	                                          
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <!--作者的二维码-->
+                                        <div class="l-r-a-codes">
+                                            
+                                                                                                                                       
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                           <!--table形式的作者简介2-->
+                          <table class="l-r-a-table" cellspacing="0" cellpadding="0" style="margin-top:25px;">
+                                <tbody><tr style="padding: 15px;">
+                                    <td style="padding: 15px 0 0 15px;">
+                                        <div class="l-r-a-large-text">
+                                            
+	                                          张文生    
+	                                                           
+                                        </div>
+                                        <div class="l-r-a-small-text" style="vertical-align:bottom;">
+                                            &nbsp;&nbsp;&nbsp;
+	                                          阿里云计算架构师，负责云计算解决方案的咨询和架构设计。曾任华为技术有限公司系统架构师，    
+	                                          
+                                        </div>
+                                    </td>
+                                    <td style="padding: 15px 15px 0 10px;width:110px;">
+                                        
+                                             <img src="./迁云架构实践-凌云六_files/TB13vu5GVXXXXaVXpXXvCym8FXX-126-177.png" width="110" height="130" border="0">
+                                        
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 0 15px 15px 15px;">
+                                        <div class="l-r-a-small-text">
+                                            
+	                                          大数据架构师，多年IT从业经验，主要服务于电信、政府等行业客户。长期参与支撑电信行业BI方面技术方案咨询，行业内各类系统架构设计工作。具备丰富的行业实战经验和复杂系统设计经验。    
+	                                          
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <!--作者的二维码-->
+                                        <div class="l-r-a-codes">
+                                            
+                                                                                                                                       
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+
+                            <table style="margin-top: 25px;" cellspacing="0" cellpadding="0">
+                                <tbody><tr>
+                                    <td>
+                                        <div class="l-tuijian-title"><span class="l-tuijian-title-blue">编辑</span>推荐</div>
+                                        <div class="l-tuijian-title-line">
+                                            &nbsp;
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <ul class="ul-article-list">
+                                            
+                                                                                                   <li><a href="http://lingyun.aliyun.com/6/yunxi.html" target="_blank">云栖小镇----阿里特色的云计算生态系统</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/6/double11.html" target="_blank">刘振飞：做云计算比保障双十一要难得多</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/6/kongzhi.html" target="_blank">困知，勉行----阿里云服务观</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/6/gamedata.html" target="_blank">云上游戏数据分析实践</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/6/sls.html" target="_blank">SLS：海量日志数据管理利器</a></li>
+                                                                                            
+                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                            <table style="margin-top: 25px;" cellspacing="0" cellpadding="0">
+                                <tbody><tr>
+                                    <td>
+                                        <div class="l-tuijian-title"><span class="l-tuijian-title-blue">往期</span>推荐</div>
+                                        <div class="l-tuijian-title-line">
+                                            &nbsp;
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <ul class="ul-article-list">
+                                            
+                                                                                                   <li><a href="http://lingyun.aliyun.com/cont/cloud-11.html?spm=5176.383405.0.0.JE6zpx" target="_blank">“双11”电商狂欢背后的云计算</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/cont/coocaa.html?spm=5176.383405.0.0.1iJbiZ" target="_blank">传统消费电子产业升级，从云开始----酷开网IT架构变革之路</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/4/flying.html" target="_blank">不期而遇的飞天之路</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/4/tech-odps-share.html" target="_blank">ODPS跨集群迁移与数据同步经验分享</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/5/team.html" target="_blank">小团队拥有大能量 三十个年轻人的创业故事</a></li>
+                                                                                                   <li><a href="http://lingyun.aliyun.com/5/jointforce.html" target="_blank">JointForce的故事：如何在“云”上化解痛点？</a></li>
+                                                                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+
+        </tbody></table>
+    </div>
+    <!--底部关注阿里云-->
+    <div class="l-bottom">
+        <div style="width: 1200px; margin: 0 auto; padding-bottom: 32px;">
+            <div class="l-bottom-title">关注阿里云</div>
+            <div>
+                <div class="l-twocode-div">
+                    <table cellspacing="0" cellpadding="0">
+                        <tbody><tr>
+                            <td style="padding: 0 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB1RZi0GXXXXXcrXFXXU_TBVVXX-279-279.png" width="69" height="69" border="0"></td>
+                            <td style="padding-right: 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB1nia4GXXXXXXlXpXXWXvcGpXX-36-37.png" width="26" height="26" border="0"></td>
+                            <td style="padding-left: 5px;">
+                                <span class="l-twocode-text-title">阿里云来往</span>
+                                <span class="l-twocode-text-title">关注阿里云</span>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+                <div class="l-twocode-div">
+                    <table cellspacing="0" cellpadding="0">
+                        <tbody><tr>
+                            <td style="padding: 0 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB11bW0GXXXXXXeXpXXR3nKZVXX-320-319.png" width="69" height="69" border="0"></td>
+                            <td style="padding-right: 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB1JMK4GXXXXXXyXFXXWXvcGpXX-36-37.png" width="26" height="26" border="0"></td>
+                            <td style="padding-left: 5px;">
+                                <span class="l-twocode-text-title">阿里云微博</span>
+                                <span class="l-twocode-text-title">关注阿里云</span>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+                <div class="l-twocode-div">
+                    <table cellspacing="0" cellpadding="0">
+                        <tbody><tr>
+                            <td style="padding: 0 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB1.uvLFVXXXXXYaXXXpEi01XXX-319-319.png" width="69" height="69" border="0"></td>
+                            <td style="padding-right: 5px;">
+                                <img src="./迁云架构实践-凌云六_files/TB1mra4GXXXXXccXXXXWXvcGpXX-36-37.png" width="26" height="26" border="0"></td>
+                            <td>
+                                <span class="l-twocode-text-title">阿里云微信</span>
+                                <span class="l-twocode-text-title">关注阿里云</span>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!--footer-->
+  	<script type="text/javascript" src="./迁云架构实践-凌云六_files/index.html"></script>
+
+
+
+<!--footer-->
+<div class="copyright-100 knight-footer" data-spm="100">
+    <div data-spm="25" class="y-row copyright">
+        <p class="big">
+            
+                <a href="http://www.aliyun.com/about" target="_blank">关于我们</a>
+            
+                <a href="http://www.aliyun.com/law" target="_blank">法律声明</a>
+            
+                <a href="http://www.aliyun.com/links" target="_blank">友情链接</a>
+            
+        </p>
+        <p>
+            
+                <a href="http://www.alibabagroup.com/cn/global/home" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8001">阿里巴巴集团</a>
+            
+                <a href="http://www.taobao.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8002">淘宝网</a>
+            
+                <a href="http://www.tmall.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8003">天猫</a>
+            
+                <a href="http://ju.taobao.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8004">聚划算</a>
+            
+                <a href="http://www.aliexpress.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8005">全球速卖通</a>
+            
+                <a href="http://www.alibaba.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8006">阿里巴巴国际交易市场</a>
+            
+                <a href="http://www.1688.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8007">1688</a>
+            
+                <a href="http://www.alimama.com/index.htm" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8008">阿里妈妈</a>
+            
+                <a href="http://www.alitrip.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8009">阿里旅行・去啊</a>
+            
+                <a href="http://www.aliyun.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8010">阿里云计算</a>
+            
+                <a href="http://www.yunos.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8011">YunOS</a>
+            
+                <a href="http://aliqin.tmall.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8012">阿里通信</a>
+            
+                <a href="http://www.net.cn/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8013">万网</a>
+            
+                <a href="http://www.autonavi.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8014">高德</a>
+            
+                <a href="http://www.uc.cn/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8015">优视</a>
+            
+                <a href="http://www.umeng.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8016">友盟</a>
+            
+                <a href="https://kanbox.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8017">酷盘</a>
+            
+                <a href="http://www.xiami.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8018">虾米</a>
+            
+                <a href="http://www.ttpod.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8019">天天动听</a>
+            
+                <a href="http://www.laiwang.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8020">来往</a>
+            
+                <a href="https://www.alipay.com/" target="_blank" data-spm-click="gostr=/aliyun;locaid=d8021">支付宝</a>
+            
+        </p>
+        <p>
+			© 2009-2014 Aliyun.com 版权所有 ICP证：浙B2-20080101
+		</p>
+		<p>
+			<a href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&id=33010800001867" class="img img-1" target="_blank" data-spm-click="gostr=/aliyun;locaid=d3338"></a>
+			<a href="http://www.aliyun.com/djcp" class="img img-2" target="_blank"></a>
+		</p>
+    </div>
+</div>
+
+
+<script src="./迁云架构实践-凌云六_files/0yg.js"></script>
+
+<script type="text/javascript" src="./迁云架构实践-凌云六_files/saved_resource(2)"></script>
+<script type="text/javascript" src="./迁云架构实践-凌云六_files/saved_resource(3)"></script>
+
+<script type="text/javascript" src="./迁云架构实践-凌云六_files/saved_resource(4)" charset="utf-8"></script>
+<!--[if lte IE 7]><script src="//static.aliyun.com/js/www-knight/dpl/iconfont-ie7.js?v=1417931450"></script><![endif]-->
+
+<script type="text/javascript">
+function __googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
+}
+(function(){
+  var url = window.location.href;
+  if(url.match(/source\=multilingual/)){
+    document.cookie = '__source_multilingual=true; domain=aliyun.com;path=/;';
+  }
+  var cookie = document.cookie;
+  if(cookie.match(/__source_multilingual\=true/)){
+    render();
+  }
+  function render(){
+    setTimeout(function(){
+        var script = document.createElement('script');
+        script.type = "text/javascript";
+        script.src = "//translate.google.com/translate_a/element.js?cb=__googleTranslateElementInit";
+        document.body.appendChild(script);
+    },1000);
+  }
+})();
+</script>    <script>
+jQuery.getJSON('http://promotion.aliyun.com/counter/read.htm?u=1511045&d=lingyun.aliyun.com&cback=?',{},function(rs){
+  var count=rs.data||0;
+  var dom=$('.l-article-author-share tr:eq(0) td:eq(2)');
+  if(count){
+    dom.text('阅读数：'+ count); 
+  }else{
+    dom.text('');
+  }
+});
+</script>    
+    <!--分享的js-->
+    
+    <script type="text/javascript">
+        /*  文章的分享 */
+        KISSY.use("node,dom,event", function (S, Node, DOM, Event) {
+
+           var title = DOM.text(".l-article-title"),  //文章标题    
+                summay = DOM.text(".l-article-summary"), //文章简介
+                domPic = '', //img 标签
+                picUrl = '', //img 标签的src值                    
+                shareCon = '#凌云第六期#' + title + '――' + summay,
+                shareTxt =  (shareCon.length > 120 ? shareCon.slice(0, 120) + '…' : shareCon) + ' @阿里云';
+
+            //来往分享
+            Event.delegate(document, 'click', '#shareLW', function (e) {
+                var url = 'http://www.laiwang.com/stream/shareToLaiwang.htm?content='
+                        + encodeURIComponent(shareTxt)
+                        + '&url=' + encodeURIComponent(window.location.href)
+                        + '&image=' + encodeURIComponent(picUrl);
+                window.open(url, '_blank');
+                e.preventDefault();
+            });
+
+            //新浪微博分享
+            Event.delegate(document, 'click', '#shareWeibo', function (e) {
+                var url = 'http://service.weibo.com/share/share.php?url='
+                        + encodeURIComponent(window.location.href)
+                        + '&title=' + encodeURIComponent(shareTxt)
+                        + '&pic=' + encodeURIComponent(picUrl)
+                        + '&appkey=3131597879'
+                        + '&sudaref=www.aliyun.com';
+                window.open(url, '_blank');
+                e.preventDefault();
+            });
+            //腾讯微博分享
+            Event.delegate(document, 'click', '#shareTQQ', function (e) {
+                var url = 'http://share.v.t.qq.com/index.php?c=share&a=index'
+                       + '&title=' + encodeURIComponent(shareTxt)
+                       + '&url=' + encodeURIComponent(window.location.href)
+                       + '&pic=' + encodeURIComponent(picUrl)
+                       + '&appkey='
+                       + '&site=www.aliyun.com';
+                window.open(url, '_blank');
+                e.preventDefault();
+            });
+
+            
+        });
+    </script>
+<img src="./迁云架构实践-凌云六_files/stat.htm" style="width:1px;height:1px;border:0;">
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><img height="0" width="0" src="http://googleads.g.doubleclick.net/pagead/viewthroughconversion/977293844/?value=0&amp;label=BPPnCOT7oQUQlKSB0gM&amp;guid=ON&amp;script=0" style="left: -9999px; border-style: none; position: absolute; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;"><img height="0" width="0" src="http://googleads.g.doubleclick.net/pagead/viewthroughconversion/977293844/?value=0&amp;label=BPPnCOT7oQUQlKSB0gM&amp;guid=ON&amp;script=0" style="left: -9999px; border-style: none; position: absolute; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 0px 0px;"></body></html>

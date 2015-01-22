@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://segmentfault.com/blog/defshine/1190000002422929 -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta property="qc:admins" content="15317273575564615446375">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, maximum-scale=1, user-scalable=no">
+<meta name="alexaVerifyID" content="LkzCRJ7rPEUwt6fVey2vhxiw1vQ">
+<title>使用Python写一个小小的项目监控 - SegmentFault</title>
+
+<meta name="description" content="在公司里做的一个接口系统，主要是对接第三方的系统接口，所以，这个系统里会和很多其他公司的项目交互。随之而来一个很蛋疼的问题，这么多公司的接口，不同公司接口的稳定性差别很大，访问量大的时候，有的不怎...">
+
+    <meta name="keywords" content="在公司里做的一个接口系统，主要是对接第三方的系统接口，所以，这个系统里会和很多其他公司的项目交互。随之而来一个很蛋疼的问题，这么多公司的接口，不同公司接口的稳定性差别很大，访问量大的时候，有的不怎...">
+
+<link rel="search" type="application/opensearchdescription+xml" href="http://segmentfault.com/opensearch.xml" title="SegmentFault">
+<link rel="shortcut icon" href="http://static.segmentfault.com/global/img/favicon.30f7204d.ico">
+<link rel="apple-touch-icon" href="http://static.segmentfault.com/global/img/touch-icon.c78b1075.png">
+<meta name="userId" value="" id="SFUserId">
+<meta name="userId" value="" id="SFUserRank">
+
+<link rel="alternate" type="application/atom+xml" title="SegmentFault 最新问题" href="http://segmentfault.com/feeds/questions">
+<link rel="alternate" type="application/atom+xml" title="SegmentFault 最新文章" href="http://segmentfault.com/feeds/blogs">
+
+
+
+    <link rel="stylesheet" href="http://static.segmentfault.com/build/global/css/global.1f1c03c8.css">
+    <link rel="stylesheet" href="http://static.segmentfault.com/build/blog/css/blog_all.2395b817.css">
+    <link rel="stylesheet" href="http://static.segmentfault.com/build/global/css/responsive.c32897da.css">
+
+<!--[if lt IE 9]>
+    <link rel="stylesheet" href="//static.segmentfault.com/global/css/ie.css?" />
+    <script src="//static.segmentfault.com/global/js/html5shiv.js?"></script>
+    <script src="//static.segmentfault.com/global/js/respond.js?"></script>
+<![endif]-->
+
+<style type="text/css"></style></head>
+<body class="blog-post">
+<!--[if lt IE 9]>
+    <div class="alert alert-danger topframe" role="alert">你的浏览器实在<strong>太太太太太太旧了</strong>，放学别走，升级完浏览器再说 <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+
+<div class="alert alert-warning topframe hide wechatalert" role="alert"><a href="http://mp.weixin.qq.com/s?__biz=MjM5NTEwMTAwNg==&mid=200888459&idx=1&sn=118fc858a6ead227a1a7f5211e73cd2d#rd">关注微信公众帐号</a><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button></div>
+
+<div class="global-nav">
+    <nav class="container nav">
+        <div class="dropdown m-menu">
+            <a href="javascript:void(0);" id="dLabel" class="visible-xs-block m-toptools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-align-justify"></span>
+                <span class="mobile-menu__unreadpoint"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/">问答</a></li>
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/blogs">文章</a></li>
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/events">活动</a></li>
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/tags">标签</a></li>
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/users">榜单</a></li>
+                <li class="mobile-menu__item"><a href="http://segmentfault.com/sites">子站</a></li>
+                            </ul>
+        </div>
+
+        <h1 class="logo"><a href="http://segmentfault.com/">SegmentFault</a></h1>
+
+                <a href="http://segmentfault.com/user/login" class="visible-xs-block pull-right m-ask m-toptools"><span class="glyphicon glyphicon-log-in"></span></a>
+        
+        <form action="http://segmentfault.com/search" class="header-search pull-left hidden-sm hidden-xs">
+            <button type="submit" class="btn btn-link"><span class="sr-only">搜索</span><span class="glyphicon glyphicon-search"></span></button>
+            <input id="searchBox" name="q" type="text" placeholder="输入关键字搜索" class="form-control" value="">
+        </form>
+
+        <ul class="menu list-inline pull-left hidden-xs">
+            <li class="menu__item"><a href="http://segmentfault.com/">问答</a></li>
+            <li class="menu__item"><a href="http://segmentfault.com/blogs">文章</a></li>
+            <li class="menu__item"><a href="http://segmentfault.com/events">活动</a></li>
+            <li class="menu__item"><a href="http://segmentfault.com/tags">标签</a></li>
+            <li class="menu__item"><a href="http://segmentfault.com/users">榜单</a></li>
+            <li class="menu__item dropdown hoverDropdown">
+                <a data-toggle="dropdown" href="http://segmentfault.com/sites" class="more dropdownBtn">
+                    ···<span class="sr-only">更多</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://segmentfault.com/sites">子站</a></li>
+                                    </ul>
+            </li>
+        </ul>
+
+        <ul class="opts pull-right list-inline hidden-xs">
+                    <li class="opts__item"> 无需注册 <a id="sfLogin" href="http://segmentfault.com/user/login" class="SFLogin em ml10" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Button&#39;, &#39;Click&#39;, &#39;Login&#39;]);">直接登录</a></li>
+                    </ul>
+    </nav>
+</div>
+
+<div class="wrap">
+
+    <div class="post-topheader">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <ol class="breadcrumb">
+                        <li><a href="http://segmentfault.com/blogs">文章</a></li>
+                        <li><a href="http://segmentfault.com/blog/defshine">defshine</a></li>
+                        <li class="active">文章详情</li>
+                    </ol>
+                    <h1 class="h3 title" id="articleTitle" data-id="1190000002422929"><a href="./使用Python写一个小小的项目监控 - SegmentFault_files/使用Python写一个小小的项目监控 - SegmentFault.html"> 使用Python写一个小小的项目监控</a></h1>
+                    <div class="author" data-username="defshine" data-userslug="defshine" data-useravatar="http://static.segmentfault.com/global/img/user-128.png?14.3.24.1">
+                        <a href="http://segmentfault.com/u/defshine" class="mr5"><img class="avatar-24 mr10" src="./使用Python写一个小小的项目监控 - SegmentFault_files/user-128.png" alt="defshine"><strong>defshine</strong></a> <strong class="text-black mr10">33</strong>
+                        2014年12月13日 发布
+                                                                    </div>
+                </div>
+                <div class="col-md-3">
+                    <ul class="widget-action--ver list-unstyled">
+                        <li>
+                                                                                            <button type="button" class="btn btn-success btn-sm" data-id="1190000002422929" id="sideLike">推荐</button>
+                                                                                        <strong id="sideLiked">2</strong> 推荐
+                        </li>
+                        <li>
+                                                                                            <button type="button" id="sideBookmark" class="btn btn-default btn-sm" data-id="1190000002422929" data-type="article">收藏</button>
+                                                                                        <strong id="sideBookmarked">4</strong> 收藏，<strong class="no-stress">661</strong> 浏览
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div><!-- end .post-topheader -->
+
+    <div class="container mt30">
+        <div class="row">
+            <div class="col-xs-12 col-md-9 main">
+                <div class="article fmt">
+                    
+<p>在公司里做的一个接口系统，主要是对接第三方的系统接口，所以，这个系统里会和很多其他公司的项目交互。随之而来一个很蛋疼的问题，这么多公司的接口，不同公司接口的稳定性差别很大，访问量大的时候，有的不怎么行的接口就各种出错了。<br>
+这个接口系统刚刚开发不久，整个系统中，处于比较边缘的位置，不像其他项目，有日志库，还有短信告警，一旦出问题，很多情况下都是用户反馈回来，所以，我的想法是，拿起python，为这个项目写一个监控。如果在调用某个第三方接口的过程中，大量出错了，说明这个接口有有问题了，就可以更快的采取措施。<br>
+项目的也是有日志库的，所有的info，error日志都是每隔一分钟扫描入库，日志库是用的mysql，表里有几个特别重要的字段：</p>
+
+<blockquote>
+  <p>level  日志级别<br>
+  message 日志内容<br>
+  file_name Java代码文件<br>
+  log_time  日志时间</p>
+</blockquote>
+
+<p>有日志库，就不用自己去线上环境扫日志分析了，直接从日志库入手。由于日志库在线上时每隔1分钟扫，那我就去日志库每隔2分钟扫一次，如果扫到有一定数量的error日志就报警，如果只有一两条错误就可以无视了，也就是短时间爆发大量错误日志，就可以断定系统有问题了。报警方式就用发送邮件，所以，需要做下面几件事情：<br>
+1. 操作MySql。<br>
+2. 发送邮件。<br>
+3. 定时任务。<br>
+4. 日志。<br>
+5. 运行脚本。</p>
+
+<p>明确了以上几件事情，就可以动手了。</p>
+
+<h2 id="articleHeader0">操作数据库</h2>
+
+<p>使用MySQLdb这个驱动，直接操作数据库，主要就是查询操作。<br>
+获取数据库的连接：</p>
+
+<pre><span class="widget-clipboard" style="display: none;"></span><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_con</span><span class="hljs-params">()</span>:</span>
+    host = <span class="hljs-string">"127.0.0.1"</span>
+    port = <span class="hljs-number">3306</span>
+    logsdb = <span class="hljs-string">"logsdb"</span>
+    user = <span class="hljs-string">"root"</span>
+    password = <span class="hljs-string">"never tell you"</span>
+    con = MySQLdb.connect(host=host, user=user, passwd=password, db=logsdb, port=port, charset=<span class="hljs-string">"utf8"</span>)
+    <span class="hljs-keyword">return</span> con
+</code></pre>
+
+<p>从日志库里获取数据，获取当前时间之前2分钟的数据，首先，根据当前时间进行计算一下时间。之前，计算有问题，现在已经修改，谢谢一楼wade305朋友指正～</p>
+
+<pre><span class="widget-clipboard"></span><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_time</span><span class="hljs-params">()</span>:</span>
+
+    now = time.mktime(datetime.now().timetuple())-<span class="hljs-number">60</span>*<span class="hljs-number">2</span>
+    result = time.strftime(<span class="hljs-string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(now))
+    <span class="hljs-keyword">return</span> result
+
+</code></pre>
+
+<p>然后，根据时间和日志级别去日志库查询数据</p>
+
+<pre><span class="widget-clipboard" style="display: none;"></span><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span><span class="hljs-params">()</span>:</span>
+    select_time = calculate_time()
+    logger.info(<span class="hljs-string">"select time:"</span>+select_time)
+    sql = <span class="hljs-string">"select file_name,message from logsdb.app_logs_record "</span> \
+          <span class="hljs-string">"where log_time &gt;"</span>+<span class="hljs-string">"'"</span>+select_time+<span class="hljs-string">"'"</span> \
+          <span class="hljs-string">"and level="</span>+<span class="hljs-string">"'ERROR'"</span> \
+          <span class="hljs-string">"order by log_time desc"</span>
+    conn = get_con()
+
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    <span class="hljs-keyword">return</span> results
+</code></pre>
+
+<h2 id="articleHeader1">发送邮件</h2>
+
+<p>使用python发送邮件比较简单，使用标准库smtplib就可以<br>
+这里使用163邮箱进行发送，你可以使用其他邮箱或者企业邮箱都行，不过host和port要设置正确。</p>
+
+<pre><span class="widget-clipboard" style="display: none;"></span><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_email</span><span class="hljs-params">(content)</span>:</span>
+
+    sender = <span class="hljs-string">"sender_monitor@163.com"</span>
+    receiver = [<span class="hljs-string">"rec01@163.com"</span>, <span class="hljs-string">"rec02@163.com"</span>]
+    host = <span class="hljs-string">'smtp.163.com'</span>
+    port = <span class="hljs-number">465</span>
+    msg = MIMEText(content)
+    msg[<span class="hljs-string">'From'</span>] = <span class="hljs-string">"sender_monitor@163.com"</span>
+    msg[<span class="hljs-string">'To'</span>] = <span class="hljs-string">"rec01@163.com,rec02@163.com"</span>
+    msg[<span class="hljs-string">'Subject'</span>] = <span class="hljs-string">"system error warning"</span>
+
+    <span class="hljs-keyword">try</span>:
+        smtp = smtplib.SMTP_SSL(host, port)
+        smtp.login(sender, <span class="hljs-string">'123456'</span>)
+        smtp.sendmail(sender, receiver, msg.as_string())
+        logger.info(<span class="hljs-string">"send email success"</span>)
+    <span class="hljs-keyword">except</span> Exception, e:
+        logger.error(e)
+</code></pre>
+
+<h2 id="articleHeader2">定时任务</h2>
+
+<p>使用一个单独的线程，每2分钟扫描一次，如果ERROR级别的日志条数超过5条，就发邮件通知。</p>
+
+<pre><span class="widget-clipboard" style="display: none;"></span><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">task</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">True</span>:
+        logger.info(<span class="hljs-string">"monitor running"</span>)
+
+        results = get_data()
+        <span class="hljs-keyword">if</span> results <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">None</span> <span class="hljs-keyword">and</span> len(results) &gt; <span class="hljs-number">5</span>:
+            content = <span class="hljs-string">"recharge error："</span>
+            logger.info(<span class="hljs-string">"a lot of error,so send mail"</span>)
+            <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> results:
+                content += r[<span class="hljs-number">1</span>]+<span class="hljs-string">'\n'</span>
+            send_email(content)
+        sleep(<span class="hljs-number">2</span>*<span class="hljs-number">60</span>)
+</code></pre>
+
+<h2 id="articleHeader3">日志</h2>
+
+<p>为这个小小的脚本配置一下日志log.py，让日志可以输出到文件和控制台中。</p>
+
+<pre><span class="widget-clipboard"></span><code class="python"><span class="hljs-comment"># coding=utf-8</span>
+<span class="hljs-keyword">import</span> logging
+
+logger = logging.getLogger(<span class="hljs-string">'mylogger'</span>)
+logger.setLevel(logging.DEBUG)
+
+fh = logging.FileHandler(<span class="hljs-string">'monitor.log'</span>)
+fh.setLevel(logging.INFO)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+formatter = logging.Formatter(<span class="hljs-string">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span>)
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+
+logger.addHandler(fh)
+logger.addHandler(ch)
+</code></pre>
+
+<p>所以，最后，这个监控小程序就是这样的app_monitor.py</p>
+
+<pre><span class="widget-clipboard" style="display: none;"></span><code class="python"><span class="hljs-comment"># coding=utf-8</span>
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> MySQLdb
+<span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> smtplib
+<span class="hljs-keyword">from</span> email.mime.text <span class="hljs-keyword">import</span> MIMEText
+<span class="hljs-keyword">from</span> log <span class="hljs-keyword">import</span> logger
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_con</span><span class="hljs-params">()</span>:</span>
+    host = <span class="hljs-string">"127.0.0.1"</span>
+    port = <span class="hljs-number">3306</span>
+    logsdb = <span class="hljs-string">"logsdb"</span>
+    user = <span class="hljs-string">"root"</span>
+    password = <span class="hljs-string">"never tell you"</span>
+    con = MySQLdb.connect(host=host, user=user, passwd=password, db=logsdb, port=port, charset=<span class="hljs-string">"utf8"</span>)
+    <span class="hljs-keyword">return</span> con
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_time</span><span class="hljs-params">()</span>:</span>
+
+    now = time.mktime(datetime.now().timetuple())-<span class="hljs-number">60</span>*<span class="hljs-number">2</span>
+    result = time.strftime(<span class="hljs-string">'%Y-%m-%d %H:%M:%S'</span>, time.localtime(now))
+    <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span><span class="hljs-params">()</span>:</span>
+    select_time = calculate_time()
+    logger.info(<span class="hljs-string">"select time:"</span>+select_time)
+    sql = <span class="hljs-string">"select file_name,message from logsdb.app_logs_record "</span> \
+          <span class="hljs-string">"where log_time &gt;"</span>+<span class="hljs-string">"'"</span>+select_time+<span class="hljs-string">"'"</span> \
+          <span class="hljs-string">"and level="</span>+<span class="hljs-string">"'ERROR'"</span> \
+          <span class="hljs-string">"order by log_time desc"</span>
+    conn = get_con()
+
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    results = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    <span class="hljs-keyword">return</span> results
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_email</span><span class="hljs-params">(content)</span>:</span>
+
+    sender = <span class="hljs-string">"sender_monitor@163.com"</span>
+    receiver = [<span class="hljs-string">"rec01@163.com"</span>, <span class="hljs-string">"rec02@163.com"</span>]
+    host = <span class="hljs-string">'smtp.163.com'</span>
+    port = <span class="hljs-number">465</span>
+    msg = MIMEText(content)
+    msg[<span class="hljs-string">'From'</span>] = <span class="hljs-string">"sender_monitor@163.com"</span>
+    msg[<span class="hljs-string">'To'</span>] = <span class="hljs-string">"rec01@163.com,rec02@163.com"</span>
+    msg[<span class="hljs-string">'Subject'</span>] = <span class="hljs-string">"system error warning"</span>
+
+    <span class="hljs-keyword">try</span>:
+        smtp = smtplib.SMTP_SSL(host, port)
+        smtp.login(sender, <span class="hljs-string">'123456'</span>)
+        smtp.sendmail(sender, receiver, msg.as_string())
+        logger.info(<span class="hljs-string">"send email success"</span>)
+    <span class="hljs-keyword">except</span> Exception, e:
+        logger.error(e)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">task</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">True</span>:
+        logger.info(<span class="hljs-string">"monitor running"</span>)
+        results = get_data()
+        <span class="hljs-keyword">if</span> results <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">None</span> <span class="hljs-keyword">and</span> len(results) &gt; <span class="hljs-number">5</span>:
+            content = <span class="hljs-string">"recharge error："</span>
+            logger.info(<span class="hljs-string">"a lot of error,so send mail"</span>)
+            <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> results:
+                content += r[<span class="hljs-number">1</span>]+<span class="hljs-string">'\n'</span>
+            send_email(content)
+        time.sleep(<span class="hljs-number">2</span>*<span class="hljs-number">60</span>)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_monitor</span><span class="hljs-params">()</span>:</span>
+    monitor = threading.Thread(target=task)
+    monitor.start()
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    run_monitor()
+</code></pre>
+
+<h2 id="articleHeader4">运行脚本</h2>
+
+<p>脚本在服务器上运行，使用supervisor进行管理。<br>
+在服务器（centos6）上安装supervisor，然后在/etc/supervisor.conf中加入一下配置</p>
+
+<pre><span class="widget-clipboard"></span><code class="bash">[program:app-monitor]
+command = python /root/monitor/app_monitor.py
+directory = /root/monitor
+user = root
+</code></pre>
+
+<p>然后在终端中运行supervisord启动supervisor。<br>
+在终端中运行supervisorctl，进入shell，运行status查看脚本的运行状态。</p>
+
+<h2 id="articleHeader5">总结</h2>
+
+<p>这个小监控思路很清晰，还可以继续修改，比如：监控特定的接口，发送短信通知等等。<br>
+因为有日志库，就少了去线上正式环境扫描日志的麻烦，所以，如果没有日志库，就要自己上线上环境扫描，在正式线上环境一定要小心哇～</p>
+
+                </div>
+
+                                                
+                <div class="clearfix">
+
+                    <ul class="taglist--inline pull-left">
+                                                <li class="tagPopup"><a class="tag" href="http://segmentfault.com/t/python/blogs" data-toggle="popover" data-img="http://sfault-avatar.b0.upaiyun.com/378/252/3782524817-1040000000089534_huge100" data-placement="top" data-original-title="python" data-id="1040000000089534">python</a></li>
+                                                <li class="tagPopup"><a class="tag" href="http://segmentfault.com/t/monitor/blogs" data-toggle="popover" data-img="" data-placement="top" data-original-title="monitor" data-id="1040000000344716">monitor</a></li>
+                                            </ul>
+
+                    <ul class="pull-right article-operation list-inline">
+                        <li><a href="http://segmentfault.com/blog/defshine/1190000002422929#911" data-toggle="modal" data-target="#911" data-type="article" data-id="1190000002422929" data-typetext="文章">举报</a></li>
+                                                                                                                                                                                    </ul>
+                </div>
+
+                <div class="text-center">
+                                                        <button type="button" id="mainLike" data-id="1190000002422929" class="btn btn-success mr10">
+                        2 推荐
+                    </button>
+                                    
+                                    <button type="button" id="mainBookmark" data-type="article" data-id="1190000002422929" class="btn btn-default ">
+                        收藏
+                    </button>
+                                </div>
+
+                <ul class="list-unstyled text-muted mt30">
+                                                            <li class="mt5">下一篇：<a href="http://segmentfault.com/blog/defshine/1190000002455750">2014总结</a></li>
+                                    </ul>
+
+                <h2 class="h4 post-title">讨论区</h2>
+                
+<ul class="widget-comments" id="comment-1190000002422929" data-id="1190000002422929"><li class="widget-comments__item hover-show " id="1050000002426650">    <div class="votes widget-vote">        <button class="like " data-id="1050000002426650" type="button" data-do="like" data-type="comment"></button><span class="count">&nbsp;</span>    </div>    <div class="comment-content wordbreak">                <div class="content fmt"><p>计算当前时间之前2分钟的地方貌似有问题，比如 当前时间19:01，正确应该是18:59，按你那个函数算出来的就是19:59. 分钟的变化会带来小时的变化，直接当前时间戳-120再转成时间字符串就ok了应该。</p>
+</div><textarea name="text" id="" cols="30" rows="10" class="editTextarea form-control mb20 hidden">计算当前时间之前2分钟的地方貌似有问题，比如 当前时间19:01，正确应该是18:59，按你那个函数算出来的就是19:59. 分钟的变化会带来小时的变化，直接当前时间戳-120再转成时间字符串就ok了应该。</textarea>        <p class="comment-meta">            <a href="http://segmentfault.com/c/1050000002426650" class="text-muted">#1</a>&nbsp;<a href="http://segmentfault.com/u/wade305" class="commentUser" data-userid="1030000002426628" data-username="wade305" data-userslug="wade305" data-useravatar="http://static.segmentfault.com/global/img/user-40.png?14.3.24.1"><strong>wade305</strong></a> · <span class="createdDate">2014年12月16日</span>                        · <a href="http://segmentfault.com/blog/defshine/1190000002422929#" class="commentReply" data-userid="1030000002426628" data-id="1050000002426650" data-username="wade305">回复</a>                        <span class="pull-right commentTools hover-show-obj">                                <a href="http://segmentfault.com/blog/defshine/1190000002422929#911" class="ml10" data-toggle="modal" data-target="#911" data-type="comment" data-id="1050000002426650" data-typetext="评论" data-placement="top" title="举报">举报</a>            </span>        </p>    </div></li><li class="widget-comments__item hover-show " id="1050000002427415">    <div class="votes widget-vote">        <button class="like " data-id="1050000002427415" type="button" data-do="like" data-type="comment"></button><span class="count">&nbsp;</span>    </div>    <div class="comment-content wordbreak">        <span>回复 <a href="http://segmentfault.com/u/wade305">wade305</a>：</span>        <div class="content fmt"><p>嗯啊  谢谢  是我疏忽了～</p>
+</div><textarea name="text" id="" cols="30" rows="10" class="editTextarea form-control mb20 hidden">嗯啊  谢谢  是我疏忽了～</textarea>        <p class="comment-meta">            <a href="http://segmentfault.com/c/1050000002427415" class="text-muted">#2</a>&nbsp;<a href="http://segmentfault.com/u/defshine" class="commentUser" data-userid="1030000002398727" data-username="defshine" data-userslug="defshine" data-useravatar="http://static.segmentfault.com/global/img/user-40.png?14.3.24.1"><strong>defshine</strong></a> · <span class="createdDate">2014年12月16日</span>                        · <a href="http://segmentfault.com/blog/defshine/1190000002422929#" class="commentReply" data-userid="1030000002398727" data-id="1050000002427415" data-username="defshine">回复</a>                        <span class="pull-right commentTools hover-show-obj">                                <a href="http://segmentfault.com/blog/defshine/1190000002422929#911" class="ml10" data-toggle="modal" data-target="#911" data-type="comment" data-id="1050000002427415" data-typetext="评论" data-placement="top" title="举报">举报</a>            </span>        </p>    </div></li><li class="widget-comments__item hover-show " id="1050000002428323">    <div class="votes widget-vote">        <button class="like " data-id="1050000002428323" type="button" data-do="like" data-type="comment"></button><span class="count">&nbsp;</span>    </div>    <div class="comment-content wordbreak">                <div class="content fmt"><p>写的很详细，学习了，，</p>
+</div><textarea name="text" id="" cols="30" rows="10" class="editTextarea form-control mb20 hidden">写的很详细，学习了，，</textarea>        <p class="comment-meta">            <a href="http://segmentfault.com/c/1050000002428323" class="text-muted">#3</a>&nbsp;<a href="http://segmentfault.com/u/hack2014" class="commentUser" data-userid="1030000000798841" data-username="独自等待" data-userslug="hack2014" data-useravatar="http://sfault-avatar.b0.upaiyun.com/407/620/4076206286-5463194fc41dc_medium40"><strong>独自等待</strong></a> · <span class="createdDate">2014年12月16日</span>                        · <a href="http://segmentfault.com/blog/defshine/1190000002422929#" class="commentReply" data-userid="1030000000798841" data-id="1050000002428323" data-username="独自等待">回复</a>                        <span class="pull-right commentTools hover-show-obj">                                <a href="http://segmentfault.com/blog/defshine/1190000002422929#911" class="ml10" data-toggle="modal" data-target="#911" data-type="comment" data-id="1050000002428323" data-typetext="评论" data-placement="top" title="举报">举报</a>            </span>        </p>    </div></li>
+            <li class="widget-comments__form row">
+            <div class="col-md-10 col-xs-12">
+                            请先 <a class="commentLogin" href="javascript:void(0);">登录</a> 后评论
+            
+    </div></li><!-- /.widget-comments__form -->
+    </ul><!-- /.widget-comments -->
+
+
+
+                                    <div class="widget-welcome mt20 mb20 hidden-xs">
+    <div class="row">
+        <div class="col-sm-9">
+            <h2 class="title h4">欢迎来到最专业的开发者社区</h2>
+            <p class="mb0">终于被你注意到了 ^_^，如果你觉得这个社区还不错，记得了加入我们哦</p>
+        </div>
+        <div class="col-sm-3 text-right join-wide">
+            <a href="http://segmentfault.com/user/login" class="SFLogin btn btn-block btn-primary">立即加入</a>
+        </div>
+    </div>
+</div>
+
+                
+            </div><!-- /.main -->
+
+
+            <div class="col-xs-12 col-md-3 side">
+                <div class="sfad-sidebar">
+    <div class="sfad-item" data-adn="ad-981179" id="adid-981179">
+    <button class="close" type="button" aria-hidden="true">×</button>
+</div>
+
+</div>
+
+
+                                    <aside class="widget-welcome">
+    <h2 class="h4 title">最专业的开发者社区</h2>
+    <p>最前沿的技术问答，最纯粹的技术切磋。让你不知不觉中开拓眼界，提高技能，认识更多朋友。</p>
+    <ul class="list-unstyled">
+        <li><a href="http://segmentfault.com/user/oauth/google" class="3rdLogin btn btn-default btn-block btn-sn-google"><span class="icon-sn-google"></span> Google 账号登录</a></li>
+        <li><a href="http://segmentfault.com/user/oauth/weibo" class="3rdLogin btn btn-default btn-block btn-sn-weibo"><span class="icon-sn-weibo"></span> 微博账号登录</a></li>
+    </ul>
+</aside>
+
+                
+                
+                <div class="widget-box no-border">
+                    <h2 class="h4 widget-box__title">相似文章</h2>
+                    <ul class="widget-links list-unstyled" id="relatedArtiles" data-id="1190000002422929">
+                    <li class="widget-links__item"><a href="http://segmentfault.com/blog/defshine/1190000002455750">2014总结</a><small class="text-muted">1 收藏，145 浏览</small></li><li class="widget-links__item"><a href="http://segmentfault.com/blog/taowen/1190000000743699">告警相关资料</a><small class="text-muted">76 浏览</small></li><li class="widget-links__item"><a href="http://segmentfault.com/blog/timger/1190000000604780">python项目用sphinx文档生成</a><small class="text-muted">260 浏览</small></li><li class="widget-links__item"><a href="http://segmentfault.com/blog/tadeyeyedeyeye/1190000000458722">创建cocos2d项目</a><small class="text-muted">778 浏览</small></li><li class="widget-links__item"><a href="http://segmentfault.com/blog/sugr_dev/1190000000636636">autossh 的正确用法</a><small class="text-muted">319 浏览</small></li></ul>
+                </div>
+
+
+
+                <div class="widget-share sharer-0" data-text="使用Python写一个小小的项目监控" style="display: block;">分享 <ul id="share" data-title="" class="sn-inline"><li data-network="weibo"><a href="javascript:void(0);" class="entypo-weibo icon-sn-weibo share-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至新浪微博">新浪微博</a></li><li data-network="wechart"><a href="javascript:void(0);" class="entypo-wechart icon-sn-wechat share-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至微信">微信</a></li><li data-network="twitter"><a href="javascript:void(0);" class="entypo-twitter icon-sn-twitter share-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至 Twitter">Twitter</a></li><li data-network="renren"><a href="javascript:void(0);" class="entypo-renren icon-sn-renren share-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至人人网">人人网</a></li><li data-network="tqq"><a href="javascript:void(0);" class="entypo-tqq icon-sn-tqq share-5" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至腾讯微博">腾讯微博</a></li><li data-network="douban"><a href="javascript:void(0);" class="entypo-douban icon-sn-douban share-6" data-toggle="tooltip" data-placement="top" title="" data-original-title="分享至豆瓣">豆瓣</a></li></ul></div>
+
+
+            <div class="panel panel-default widget-outline fixed" style="width: 247px;"><div class="panel-heading" id="hideOutline">目录结构<span class="text-muted pull-right caret"></span></div><div class="panel-body"><ul id="articleIndex"><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader0">操作数据库</a></li><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader1">发送邮件</a></li><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader2">定时任务</a></li><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader3">日志</a></li><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader4">运行脚本</a></li><li><a href="http://segmentfault.com/blog/defshine/1190000002422929#articleHeader5">总结</a></li></ul></div></div></div><!-- /.side -->
+        </div>
+    </div>
+</div>
+
+<div id="shareToWeiboModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">分享</h4>
+            </div>
+            <div class="modal-body">
+                <p class="sfModal-content">
+                    分享到微博？
+                </p>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default dont-likeweibo" data-dismiss="modal">取消并且不再弹出</button>
+                <a href="" id="shareLink" class="btn btn-primary done-btn" target="_blank" onclick="$(&#39;#shareToWeiboModal&#39;).modal(&#39;hide&#39;)">分享</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="911" class="modal widget-911">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">举报<span class="type-911">问题</span></h4>
+            </div>
+            <div class="modal-body">
+                <p><strong class="required">举报理由：</strong></p>
+                <div id="reportDescription">
+                <div class="radio-911 radio all">
+                    <label>
+                        <input type="radio" name="descRadio" value="垃圾广告">
+                        垃圾广告
+                    </label>
+                </div>
+                <div class="radio-911 radio all">
+                    <label>
+                        <input type="radio" name="descRadio" value="带有人身攻击、辱骂、仇恨等违反条款的内容">
+                        带有人身攻击、辱骂、仇恨等违反条款的内容
+                    </label>
+                </div>
+                <div class="radio-911 radio question-only">
+                    <label>
+                        <input type="radio" name="descRadio" value="与已有问题重复">
+                        与已有问题重复
+                    </label>
+                </div>
+                <div class="radio-911 radio question-only">
+                    <label>
+                        <input type="radio" name="descRadio" value="内容质量差，或不适合在本网站出现">
+                        内容质量差，或不适合在本网站出现
+                    </label>
+                </div>
+                <div class="radio-911 radio answer-only">
+                    <label>
+                        <input type="radio" name="descRadio" value="答非所问，不符合答题要求">
+                        答非所问，不符合答题要求
+                    </label>
+                </div>
+                <div class="radio-911 radio all" id="btwRadio">
+                    <label>
+                        <input type="radio" name="descRadio" value="">
+                        其他原因（请补充说明）
+                    </label>
+                </div>
+                <div class="hide btw">
+                    <p class="mt20"><strong>补充说明：</strong></p>
+                    <textarea class="form-control" rows="3" autocomplete="false" id="911Desc"></textarea>
+                </div>
+                                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="911Submit" class="btn btn-primary">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<footer id="footer">
+<div class="container">
+    <div class="row hidden-xs">
+        <dl class="col-sm-2 site-link">
+            <dt>网站相关</dt>
+            <dd><a href="http://segmentfault.com/about">关于我们</a></dd>
+            <dd><a href="http://segmentfault.com/tos">服务条款</a></dd>
+            <dd><a href="http://segmentfault.com/faq">帮助中心</a></dd>
+            <dd><a href="http://segmentfault.com/repu">声望与权限</a></dd>
+            <dd><a href="http://segmentfault.com/markdown">编辑器语法</a></dd>
+            <dd><a href="http://weekly.segmentfault.com/">每周精选</a></dd>
+        </dl>
+        <dl class="col-sm-2 site-link">
+            <dt>联系合作</dt>
+            <dd><a href="http://segmentfault.com/contact">联系我们</a></dd>
+            <dd><a href="http://segmentfault.com/hiring">加入我们</a></dd>
+            <dd><a href="http://segmentfault.com/link">合作伙伴</a></dd>
+            <dd><a href="http://segmentfault.com/press">媒体报道</a></dd>
+            <dd><a href="http://0x.segmentfault.com/">建议反馈</a></dd>
+            <dd><a href="http://pan.baidu.com/share/link?shareid=604288&uk=839272106" target="_blank">Logo 下载</a></dd>
+        </dl>
+        <dl class="col-sm-2 site-link">
+            <dt>常用链接</dt>
+            <dd><a href="http://segmentfault.com/feeds">问答订阅</a></dd>
+            <dd><a href="http://segmentfault.com/feeds/blogs">文章订阅</a></dd>
+            <dd><a href="http://mirrors.segmentfault.com/" target="_blank">文档镜像</a></dd>
+            <dd><a href="http://segmentfault.com/events?category=4">黑客马拉松</a></dd>
+            <dd><a href="http://zs.segmentfault.com/" target="_blank">一起涨姿势</a></dd>
+            <dd><a href="http://namebeta.com/" target="_blank">域名搜索注册</a></dd>
+        </dl>
+        <dl class="col-sm-2 site-link">
+            <dt>关注我们</dt>
+            <dd><a href="http://twitter.com/segment_fault" target="_blank">Twitter</a></dd>
+            <dd><a href="http://page.renren.com/699146294" target="_blank">人人网</a></dd>
+            <dd><a href="http://weibo.com/segmentfault" target="_blank">新浪微博</a></dd>
+            <dd><a href="http://t.qq.com/segmentfault" target="_blank">腾讯微博</a></dd>
+            <dd><a href="http://blog.segmentfault.com/devblog" target="_blank">开发日志</a></dd>
+        </dl>
+        <dl class="col-sm-4 site-link" id="license">
+            <dt>内容许可</dt>
+            <dd>除特别说明外，用户内容均采用 <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/cn/">知识共享署名-相同方式共享 3.0 中国大陆许可协议</a> 进行许可</dd>
+            <dd>本站由 <a target="_blank" href="http://qingcloud.com/">青云 QingCloud</a> 提供云计算服务<br><a target="_blank" href="https://www.upyun.com/?utm_source=segmentfault&utm_medium=link&utm_campaign=upyun&md=segmentfault">又拍云</a> 提供 CDN 存储服务</dd>
+        </dl>
+    </div>
+    <div class="copyright">
+        Copyright © 2011-2014 SegmentFault. 当前呈现版本 <a href="http://status.segmentfault.com/">14.11.22</a><br><a href="http://www.miibeian.gov.cn/" rel="nofollow">京 ICP 备 12004937 号</a>, 京公网安备 110108008332 号
+    </div>
+</div>
+</footer>
+
+<div id="roundAndRound" class="widget-loading">加载中</div>
+<div id="fixedTools" class="hidden-xs hidden-sm">
+  <a id="backtop" class="border-bottom" href="http://segmentfault.com/blog/defshine/1190000002422929#">回顶部</a>
+  <div class="qrcodeWraper">
+    <a><span class="glyphicon glyphicon-qrcode"></span></a>
+    <img id="qrcode" class="border" src="./使用Python写一个小小的项目监控 - SegmentFault_files/sf-wechat.27acd26c.png">
+  </div>
+</div>
+
+<div class="hidden-xs hidden-sm misc-santa hide" style="right: 80px;">
+  <img src="./使用Python写一个小小的项目监控 - SegmentFault_files/santa.646d37d2.gif" style="width: 70px;">
+</div>
+
+<script src="./使用Python写一个小小的项目监控 - SegmentFault_files/hm.js"></script><script async="" src="./使用Python写一个小小的项目监控 - SegmentFault_files/analytics.js"></script><script id="loginModal" type="text/template">
+<div class="login-modal">
+    <p class="text-muted">第三方账号登录</p>
+    <div class="widget-login">
+        <a href="/user/oauth/google" class="btn btn-default btn-sn-google"><span class="icon-sn-google"></span> Google 账号</a>
+        <a href="/user/oauth/github" class="btn btn-default btn-sn-github"><span class="icon-sn-github"></span> Github 账号</a>
+        <a href="/user/oauth/weibo" class="btn btn-default btn-sn-weibo"><span class="icon-sn-weibo"></span> 新浪微博账号</a>
+        <a href="/user/oauth/qq" class="btn btn-default btn-sn-qq"><span class="icon-sn-qq"></span> QQ 账号</a>
+        <button type="button" class="btn btn-default btn-sn-more" id="loginShowMore">更多</button>
+    </div>
+    <div id="loginMore" class="widget-login hide mt5">
+        <a class="btn btn-default btn-sn-twitter" href="/user/oauth/twitter">Twitter</a>
+        <a class="btn btn-default btn-sn-facebook" href="/user/oauth/facebook">Facebook</a>
+        <a class="btn btn-default btn-sn-renren" href="/user/oauth/renren">人人网</a>
+        <a class="btn btn-default btn-sn-douban" href="/user/oauth/douban">豆瓣</a>
+        <a class="btn btn-default btn-sn-tqq" href="/user/oauth/tqq">腾讯微博</a>
+    </div>
+
+    <hr>
+    <p class="text-muted">本站账号登录</p>
+
+    <form id="user" action="/api/user?do=login" method="POST" role="form" class="login_form clearfix row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="loginRremember" class="">Email</label>
+                <input type="email" class="form-control" name="mail" placeholder="hello@segmentfault.com">
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input tabIndex='-1' name="remember" type="checkbox" value="1" checked> 记住登录状态</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="loginPassword" class="">密码</label>
+                <input type="password" class="form-control" name="password" placeholder="密码">
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">登录</button>
+            </div>
+        </div>
+    </form>
+    <div class="text-center text-muted">
+        <a href="/user/register" class="mr5">注册账号</a> &middot; <a href="/user/forgot" class="ml5">找回密码</a>
+    </div>
+</div>
+</script>
+
+
+<script>
+    (function (w) {
+        w.SF = {
+            staticUrl: "//static.segmentfault.com",
+        };
+        w.SF.token = (function () {
+    var _l6X0w = '3'//'MHG'
++''///*'p'*/'p'
++'09'//'x7A'
++//'SdD'
+'81'+'n'//'n'
++//'7P7'
+'3'+/* '7C'//'7C' */''+''///*'U2'*/'U2'
++'e'//'ppF'
++//'t'
+'a1'+'0'//'yK'
++//'z'
+'4'+'f'//'46y'
++/* '07G'//'07G' */''+'7'//'GYi'
++//'no'
+'0ad'+//'w8g'
+'09'+//'PZ'
+'091'+/* 'M0W'//'M0W' */''+//'Qly'
+'c'+//'AU'
+'f'+'95'//'DEb'
++'e3'//'ykD'
++'c0'//'ju'
++'0c9'//'VsW'
+, _SbnlF = [[5,6]];
+
+    for (var i = 0; i < _SbnlF.length; i ++) {
+        _l6X0w = _l6X0w.substring(0, _SbnlF[i][0]) + _l6X0w.substring(_SbnlF[i][1]);
+    }
+
+    return _l6X0w;
+})();
+    })(window);
+</script>
+
+    <script src="./使用Python写一个小小的项目监控 - SegmentFault_files/assets.ce4fe392.js"></script>
+    <script src="./使用Python写一个小小的项目监控 - SegmentFault_files/post.63f4f5.js"></script>
+
+
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-918487-8']);
+  _gaq.push(['_trackPageview']);
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-918487-8', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e23800c454aa573c0ccb16b52665ac26";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script src="http://cbjs.baidu.com/js/m.js"></script>
+<script>
+  BAIDU_CLB_fillSlotAsync('981183','adid-981183');
+  BAIDU_CLB_fillSlotAsync('981184','adid-981184');
+  BAIDU_CLB_fillSlotAsync('981694','adid-981694');
+  BAIDU_CLB_fillSlotAsync('981179','adid-981179');
+</script>
+
+
+
+<div id="atwho-container"></div><div id="global-zeroclipboard-html-bridge" class="global-zeroclipboard-container" style="position: absolute; left: 0px; top: -9999px; width: 1px; height: 1px; z-index: 999999999;"><object id="global-zeroclipboard-flash-bridge" name="global-zeroclipboard-flash-bridge" width="100%" height="100%" type="application/x-shockwave-flash" data="http://static.segmentfault.com/3rd/zeroclipboard/dist/ZeroClipboard.swf?noCache=1420305331762"><param name="allowScriptAccess" value="always"><param name="allowNetworking" value="all"><param name="menu" value="false"><param name="wmode" value="transparent"><param name="flashvars" value="trustedOrigins=segmentfault.com%2C%2F%2Fsegmentfault.com%2Chttp%3A%2F%2Fsegmentfault.com&amp;swfObjectId=global-zeroclipboard-flash-bridge"></object></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

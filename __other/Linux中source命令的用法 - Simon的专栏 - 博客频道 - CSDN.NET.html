@@ -1,0 +1,863 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0058)http://blog.csdn.net/simon_dong618/article/details/1581132 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" async="" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ga.js"></script><script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/repoAddr.js" charset="utf-8"></script><style type="text/css"></style>
+
+    <script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/tracking.js" charset="utf-8"></script>  
+
+    <script id="allmobilize" charset="utf-8" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/allmobilize.min.js"></script><style type="text/css"></style>
+ <meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://blog.csdn.net/simon_dong618/article/details/1581132#">
+
+    <title>Linux中source命令的用法 - Simon的专栏
+        - 博客频道 - CSDN.NET</title>
+    
+    <meta name="description" content="source命令：source命令也称为“点命令”，也就是一个点符号（.）。source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录。用法： source filename 或 . filenamesource命令除了上述的用途之外，还有一个另外一个用途。在对编译系统核心时常常需要输入一长串的命令，如：make mrpropermake men">
+    <script src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+       
+        <link rel="stylesheet" href="http://static.csdn.net/public/common/toolbar/css/index.css">
+        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/style.css">
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/simon_dong618/rss/list">
+    <link rel="shortcut icon" href="http://csdnimg.cn/public/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/default.css">
+ 
+
+
+<script src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/share.js"></script><script type="text/javascript" charset="utf-8" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/main.js"></script><link href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/bdsstyle.css" rel="stylesheet" type="text/css"><link rel="stylesheet" type="text/css" href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/style(1).css"><script charset="utf-8" async="" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/sm.min.js"></script><link rel="stylesheet" type="text/css" href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/style(2).css"><script src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/logger.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+<body><iframe frameborder="0" style="display: none;"></iframe>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/html.js" type="text/javascript"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://blog.csdn.net/?ref=toolbar_logo" target="_blank" class="img blog-icon"></a></div>          <div class="pull-right login-wrap ">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display: none;" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"><div class="icon-hasnotes" style="display: none;"></div></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note" style="display: none;">                      <div class="box"><div class="notifications notice_list_con curr">  <div class="menu_title">    <span class="title"><a href="http://msg.csdn.net/" target="_blank" class="read_all">全部设为已读</a><a href="http://msg.csdn.net/" target="_blank" class="go_all">查看所有通知</a></span>  </div>  <div class="loading"></div>  <div class="empty">暂没有新通知</div>  <div class="notice_content"></div></div><div class="notifications detail_con" style="display: none">  <div class="menu_title">    <span class="title">      <a class="go_back" href="javascript:void 0;">返回通知列表</a>      <a class="notifications_page_none nextnote" href="javascript:void 0;">下一条</a>      <a class="notifications_page prvnote" href="javascript:void 0;">上一条</a>    </span>  </div>  <div class="notice_content"></div></div><div class="error"></div></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/2_datayes.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/2_datayes.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname">datayes</a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-right "><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/simon_dong618">Simon的专栏</a></h2>
+            <h3></h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+                <li id="btnContents"><a href="http://blog.csdn.net/simon_dong618?viewmode=contents"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_mulu&#39;])">
+                    <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/simon_dong618?viewmode=list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_zhaiyao&#39;])">
+                    <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/simon_dong618/rss/list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_RSS&#39;])">
+                    <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "simon_dong618";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/simon_dong618";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "datayes";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod="popu_3"> 
+
+<a href="http://bbs.csdn.net/topics/390812950?page=5#post-398523062" target="_blank">
+<font color="blue">博客专家福利
+</font></a>
+&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/390936728" target="_blank">
+<font color="red">C币兑换礼品剧透</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/41079173" target="_blank">
+<font color="blue">10月推荐文章汇总
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/390935186" target="_blank">
+<font color="red">加入“技术热心人”，赢丰厚奖品
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+</div>                        </div>
+                        
+
+  
+<link href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/comment1.css" type="text/css" rel="stylesheet">
+<link href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/style1.css" type="text/css" rel="stylesheet">
+<script language="JavaScript" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/jquery.cookie.js"></script>
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/main(1).js"></script>
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET.html">
+        Linux中source命令的用法
+        </a></span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/simon_dong618/article/category/297095" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_fenlei&#39;]);">Linux命令及脚本</a> 
+        </span>
+    <span class="link_postdate">2007-04-24 16:54</span>
+    <span class="link_view" title="阅读次数">40238人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_pinglun&#39;])">评论</a>(14)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shoucang&#39;]);collectArticle(&#39;Linux中source命令的用法&#39;,&#39;1581132&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_jubao&#39;]);report(1581132,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://www.csdn.net/tag/linux" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">linux</a><a href="http://www.csdn.net/tag/command" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">command</a><a href="http://www.csdn.net/tag/shell" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">shell</a></div>
+
+  
+    
+<div id="article_content" class="article_content">
+<p>source命令：</p>
+<p>source命令也称为“点命令”，也就是一个点符号（.）。source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录。</p>
+<p>用法：&nbsp;</p>
+<p>source filename 或 . filename</p>
+<p>source命令除了上述的用途之外，还有一个另外一个用途。在对编译系统核心时常常需要输入一长串的命令，如：</p>
+<p>make mrproper</p>
+<p>make menuconfig</p>
+<p>make dep</p>
+<p>make clean</p>
+<p>make bzImage</p>
+<p>…………</p>
+<p>如果把这些命令做成一个文件，让它自动顺序执行，对于需要多次反复编译系统核心的用户来说会很方便，而用source命令就可以做到这一点，它的作用就是把一个文件的内容当成shell来执行，先在linux的源代码目录下（如/usr/src/linux-2.4.20）建立一个文件，如make_command，在其中输入一下内容：</p>
+<p>make mrproper &amp;&amp;</p>
+<p>make menuconfig &amp;&amp;</p>
+<p>make dep &amp;&amp;</p>
+<p>make clean &amp;&amp;</p>
+<p>make bzImage &amp;&amp;</p>
+<p>make modules &amp;&amp;</p>
+<p>make modules_install &amp;&amp;</p>
+<p>cp arch/i386/boot/bzImage /boot/vmlinuz_new &amp;&amp;</p>
+<p>cp System.map /boot &amp;&amp;</p>
+<p>vi /etc/lilo.conf &amp;&amp;</p>
+<p>lilo -v</p>
+<p>文件建立好之后，每次编译核心的时候，只需要在/usr/src/linux-2.4.20下输入：</p>
+<p>source make_command</p>
+<p>即可，如果你用的不是lilo来引导系统，可以把最后两行去掉，配置自己的引导程序来引导内核。</p>
+<p>顺便补充一点，&amp;&amp;命令表示顺序执行由它连接的命令，但是只有它之前的命令成功执行完成了之后才可以继续执行它后面的命令。</p>
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+<div class="bdsharebuttonbox bdshare-button-style0-16" style="float: right;" data-bd-bind="1417320314437">
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" style="background-position:0 -52px !important"></a>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" style="background-position:0 -104px !important"></a>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博" style="background-position:0 -260px !important"></a>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_renren" data-cmd="renren" title="分享到人人网" style="background-position:0 -208px !important"></a>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" class="bds_weixin" data-cmd="weixin" title="分享到微信" style="background-position:0 -1612px !important"></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+<!--192.168.100.35-->
+<ul class="article_next_prev">
+            <li class="next_article"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;]);location.href=&#39;/simon_dong618/article/details/1583168&#39;;">下一篇</span><a href="http://blog.csdn.net/simon_dong618/article/details/1583168" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;])">C++中的命名空间</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+
+</div>
+      <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/linux" target="_blank" class="blog-tage-red">linux</a> 
+                <a href="http://www.csdn.net/tag/%E6%BA%90%E4%BB%A3%E7%A0%81" target="_blank" class="blog-tage-red">源代码</a> 
+                <a href="http://www.csdn.net/tag/command" target="_blank" class="blog-tage-red">command</a> 
+                <a href="http://www.csdn.net/tag/%E5%86%85%E6%A0%B8" target="_blank" class="blog-tage-red">内核</a> 
+                <a href="http://www.csdn.net/tag/shell" target="_blank" class="blog-tage-red">shell</a> 
+        </dd>
+    </dl> 
+
+
+<dl class="blog-ass-articl tracking-ad" data-mod="popu_36" id="res-relatived"> 
+     <dt><span>猜你在找</span></dt>    
+<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/Ping_Fani07/article/details/8954677" title="VMware使用1 ---怎样减少磁盘空间消耗（加图增补版）" strategy="CFRecommendAlgorithm" target="_blank">VMware使用1 ---怎样减少磁盘空间消耗（加图增补版）</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/u011290399/article/details/10363881" title="Android之內置、外置SDCard" strategy="CFRecommendAlgorithm" target="_blank">Android之內置、外置SDCard</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/rosenluo/article/details/40891245" title="分享45个android实例源码，很好很强大.收藏吧！！！" strategy="CFRecommendAlgorithm" target="_blank">分享45个android实例源码，很好很强大.收藏吧！！！</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/kkdelta/article/details/39454303" title="LVS配置NAT模式简单示例" strategy="CFRecommendAlgorithm" target="_blank">LVS配置NAT模式简单示例</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/guang_jing/article/details/32911595" title="C++学习笔记31，指向引用的指针（3）" strategy="CFRecommendAlgorithm" target="_blank">C++学习笔记31，指向引用的指针（3）</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/sheismylife/article/details/8160806" title="KVM 虚拟机删除" strategy="CFRecommendAlgorithm" target="_blank">KVM 虚拟机删除</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/dj0379/article/details/4336262" title="跨平台开源BMP图像格式操作库——“伪”libbmp" strategy="CFRecommendAlgorithm" target="_blank">跨平台开源BMP图像格式操作库——“伪”libbmp</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/laigood12345/article/details/7292249" title="spring mvc注入配置文件里的属性" strategy="CFRecommendAlgorithm" target="_blank">spring mvc注入配置文件里的属性</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/lf565631829/article/details/8808506" title="windows下配置Sublime Text 2开发Nodejs" strategy="CFRecommendAlgorithm" target="_blank">windows下配置Sublime Text 2开发Nodejs</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="http://blog.csdn.net/guggy/article/details/8136325" title="静态库和动态库里的全局变量（或类的静态成员变量）共享和独立的问题" strategy="CFRecommendAlgorithm" target="_blank">静态库和动态库里的全局变量（或类的静态成员变量）共享和独立的问题</a></dd></dl>
+
+<script type="text/javascript">
+    var searchtitletags = 'Linux中source命令的用法' + ',' + 'linux,源代码,command,内核,shell';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 10,
+        size: 10,
+        appendTo: '#res-relatived',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    </div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_3313883"><dt class="comment_head" floor="13">13楼 <span class="user"><a class="username" href="http://blog.csdn.net/keroro520" target="_blank">keroro520</a> <span class="ptime">2013-12-22 10:10发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="3313883" username="keroro520"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/keroro520" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_keroro520.jpg" width="40" height="40"></a></dd><dd class="comment_body">LZ，source 一个shell文件和直接执行一个shell文件结果不同，为什么？</dd><dl class="comment_item comment_reply" id="comment_item_3313885"><dt class="comment_head" floor="13">Re: <span class="user"><a class="username" href="http://blog.csdn.net/keroro520" target="_blank">keroro520</a> <span class="ptime">2013-12-22 10:12发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="3313885" username="keroro520"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/keroro520" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_keroro520.jpg" width="40" height="40"></a></dd><dd class="comment_body">回复keroro520：哦我知道了，source是直接在当前shell里面执行的。</dd></dl></dl><dl class="comment_item comment_topic" id="comment_item_3285577"><dt class="comment_head" floor="12">12楼 <span class="user"><a class="username" href="http://blog.csdn.net/hyxlm" target="_blank">hyxlm</a> <span class="ptime">2013-12-13 11:37发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="3285577" username="hyxlm"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/hyxlm" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_hyxlm.jpg" width="40" height="40"></a></dd><dd class="comment_body">谢谢楼主~</dd></dl><dl class="comment_item comment_topic" id="comment_item_3162581"><dt class="comment_head" floor="11">11楼 <span class="user"><a class="username" href="http://blog.csdn.net/u012858244" target="_blank">放牛童</a> <span class="ptime">2013-11-18 10:41发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="3162581" username="u012858244"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/u012858244" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_u012858244.jpg" width="40" height="40"></a></dd><dd class="comment_body">谢谢楼主的培训</dd></dl><dl class="comment_item comment_topic" id="comment_item_2962485"><dt class="comment_head" floor="10">10楼 <span class="user"><a class="username" href="http://blog.csdn.net/gfbgl" target="_blank">不错的了</a> <span class="ptime">2013-10-07 09:23发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2962485" username="gfbgl"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/gfbgl" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_gfbgl.jpg" width="40" height="40"></a></dd><dd class="comment_body">赞一个</dd></dl><dl class="comment_item comment_topic" id="comment_item_2858375"><dt class="comment_head" floor="9">9楼 <span class="user"><a class="username" href="http://blog.csdn.net/twlkyao" target="_blank">twlkyao</a> <span class="ptime">2013-08-26 09:38发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2858375" username="twlkyao"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/twlkyao" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_twlkyao.jpg" width="40" height="40"></a></dd><dd class="comment_body">写的不错</dd></dl><dl class="comment_item comment_topic" id="comment_item_1833358"><dt class="comment_head" floor="8">8楼 <span class="user"><a class="username" href="http://blog.csdn.net/Adam_boy" target="_blank">Adam_boy</a> <span class="ptime">2011-07-03 10:17发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1833358" username="Adam_boy"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/Adam_boy" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_adam_boy.jpg" width="40" height="40"></a></dd><dd class="comment_body">学习了，适合像我这样的菜鸟。<br>嘿嘿</dd></dl><dl class="comment_item comment_topic" id="comment_item_1800087"><dt class="comment_head" floor="7">7楼 <span class="user"><a class="username" href="http://blog.csdn.net/lyglary" target="_blank">lyglary</a> <span class="ptime">2011-06-17 10:47发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1800087" username="lyglary"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/lyglary" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_lyglary.jpg" width="40" height="40"></a></dd><dd class="comment_body">这个写的灰常不错，适合入门级的菜鸟</dd></dl><dl class="comment_item comment_topic" id="comment_item_1682267"><dt class="comment_head" floor="6">6楼 <span class="user"><a class="username" href="http://blog.csdn.net/ameyume" target="_blank">ameyume</a> <span class="ptime">2011-05-26 02:15发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1682267" username="ameyume"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/ameyume" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_ameyume.jpg" width="40" height="40"></a></dd><dd class="comment_body">[e01]我就是经常忘记执行source操作使之生效。</dd></dl><dl class="comment_item comment_topic" id="comment_item_1674199"><dt class="comment_head" floor="5">5楼 <span class="user"><a class="username" href="http://blog.csdn.net/honghuzhilangzixin" target="_blank">honghuzhilangzixin</a> <span class="ptime">2011-05-18 13:23发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1674199" username="honghuzhilangzixin"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/honghuzhilangzixin" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_honghuzhilangzixin.jpg" width="40" height="40"></a></dd><dd class="comment_body">学习了[e04]</dd></dl><dl class="comment_item comment_topic" id="comment_item_1625334"><dt class="comment_head" floor="4">4楼 <span class="user"><a class="username" href="http://blog.csdn.net/bencharluo" target="_blank">bencharluo</a> <span class="ptime">2011-03-28 09:52发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1625334" username="bencharluo"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/bencharluo" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_bencharluo.jpg" width="40" height="40"></a></dd><dd class="comment_body">多谢。学习了</dd></dl><dl class="comment_item comment_topic" id="comment_item_1526493"><dt class="comment_head" floor="3">3楼 <span class="user"><a class="username" href="http://blog.csdn.net/heshan521521" target="_blank">heshan521521</a> <span class="ptime">2010-11-05 19:30发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1526493" username="heshan521521"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/heshan521521" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_heshan521521.jpg" width="40" height="40"></a></dd><dd class="comment_body">学习了...</dd></dl><dl class="comment_item comment_topic" id="comment_item_1413135"><dt class="comment_head" floor="2">2楼 <span class="user"><a class="username" href="http://blog.csdn.net/%E5%8C%BF%E5%90%8D%E7%94%A8%E6%88%B7" target="_blank">匿名用户</a> <span class="ptime">2010-06-10 14:45发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1413135" username="匿名用户"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/%E5%8C%BF%E5%90%8D%E7%94%A8%E6%88%B7" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_匿名用户.jpg" width="40" height="40"></a></dd><dd class="comment_body">[e03]</dd></dl><dl class="comment_item comment_topic" id="comment_item_971148"><dt class="comment_head" floor="1">1楼 <span class="user"><a class="username" href="http://blog.csdn.net/uuuuuuu" target="_blank">uuuuuuu</a> <span class="ptime">2008-12-05 08:59发表</span>  <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="971148" username="uuuuuuu"> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/uuuuuuu" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/3_uuuuuuu.jpg" width="40" height="40"></a></dd><dd class="comment_body">good</dd></dl><div class="clear"></div></div>
+    <div id="comment_bar" style="display: none;">
+    </div>
+    <div id="comment_form"><a name="commentbox"></a><a name="reply"></a><a name="quote"></a><form action="http://blog.csdn.net/simon_dong618/comment/submit?id=1581132" method="post" onsubmit="return subform(this);"><div class="commentform"><div class="panel_head">发表评论</div><ul><li class="left">用 户 名：</li><li class="right">datayes</li></ul><ul><li class="left">评论内容：</li><li class="right" style="position:relative;"><div id="ubbtools"><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#insertcode" code="code"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/code.gif" border="0" alt="插入代码" title="插入代码"></a></div><div id="lang_list" style="position: absolute; top: 28px; left: 0px; display: none;"><a class="long_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#html">HTML/XML</a><a class="long_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#objc">objective-c</a><a class="zhong_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#delphi">Delphi</a><a class="zhong_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#ruby">Ruby</a><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#php">PHP</a><a class="duan_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#csharp">C#</a><a style=" border-right: none;" class="duan_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#cpp">C++</a><a style=" border-bottom:none;" class="long_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#javascript">JavaScript</a><a style=" border-bottom:none;" class="long_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#vb">Visual Basic</a><a style=" border-bottom:none;" class="zhong_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#python">Python</a><a style=" border-bottom:none;" class="zhong_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#java">Java</a><a style="border-bottom:none;" class="duan_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#css">CSS</a><a style="border-bottom:none;" class="duan_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#sql">SQL</a><a style="border:none;" class="duan_name" href="http://blog.csdn.net/simon_dong618/article/details/1581132#plain">其它</a></div><textarea class="comment_content" name="comment_content" id="comment_content" style="width: 400px; height: 200px;"></textarea></li></ul><ul><input type="hidden" id="comment_replyId" name="comment_replyId"><input type="hidden" id="comment_userId" name="comment_userId" value="521203"><input type="hidden" id="commentId" name="commentId" value=""><input type="submit" class="comment_btn" value="提交">&nbsp;&nbsp;<span id="tip_comment" style="color: Red; display: none;"></span></ul></div></form></div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '1581132';
+    var commentscount = 14;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top" style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop" style="display: none;" title="返回顶部" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_huidaodingbu&#39;])">         
+         <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);
+        
+        /*
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+        */
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone" target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace" target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });
+        },200);  
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }    
+
+</script>
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/simon_dong618" target="_blank">
+    <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/1_simon_dong618.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/simon_dong618" class="user_name" target="_blank">simon_dong618</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_guanzhu&#39;])"></a>
+
+ <a href="javascript:void(0);" class="letter" title="[发私信]" onclick="window.open(&#39;http://msg.csdn.net/letters/model?receiver=simon_dong618&#39;,&#39;_blank&#39;,&#39;height=350,width=700&#39;);_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_sixin&#39;])"></a>  
+</div>
+<div id="blog_medal">
+                <div id="bms_box">
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>104989次</span></li>
+    <li>积分：<span>888</span> </li>    
+    <li>等级： <span style="position:relative;display:inline-block;z-index:1">
+            <img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/blog3.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：888 </div>
+        </span>  </li>
+    <li>排名：<span>千里之外</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>17篇</span></li>
+    <li>转载：<span>4篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>21条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script>
+<div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297099" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">C++学习笔记</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297098" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">C语言学习笔记</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297097" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux内核编译</a><span>(0)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297095" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux命令及脚本</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/298205" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux系统管理</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297096" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux编程</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/simon_dong618/article/category/297392" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">生活札记</a><span>(1)</span>
+            </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list"><li><a href="http://blog.csdn.net/simon_dong618/article/month/2013/09">2013年09月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/simon_dong618/article/month/2013/07">2013年07月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/simon_dong618/article/month/2008/04">2008年04月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/simon_dong618/article/month/2007/08">2007年08月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/simon_dong618/article/month/2007/05">2007年05月</a><span>(3)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/simon_dong618/article/month/2007/04">2007年04月</a><span>(9)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET.html" title="Linux中source命令的用法">Linux中source命令的用法</a><span>(40233)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1587511" title="Linux中rename命令的用法">Linux中rename命令的用法</a><span>(15985)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/2237171" title="Linux下获取文件大小的方法">Linux下获取文件大小的方法</a><span>(9386)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1604739" title="Linux中临时文件创建函数mkstemp的用法">Linux中临时文件创建函数mkstemp的用法</a><span>(7095)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1591498" title="Linux中chkconfig命令">Linux中chkconfig命令</a><span>(6003)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/2276187" title="C语言中的rename函数">C语言中的rename函数</a><span>(5398)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1588472" title="使用Linux安装光盘修复GRUB">使用Linux安装光盘修复GRUB</a><span>(3495)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1587032" title="RedHat Linux中挂载NTFS文件系统">RedHat Linux中挂载NTFS文件系统</a><span>(1919)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/11674279" title="Linux脚本中用户自定义终止符-EOF">Linux脚本中用户自定义终止符-EOF</a><span>(1880)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1587536" title="chmod命令的用法">chmod命令的用法</a><span>(1288)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET.html" title="Linux中source命令的用法">Linux中source命令的用法</a><span>(14)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/2237171" title="Linux下获取文件大小的方法">Linux下获取文件大小的方法</a><span>(5)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1591498" title="Linux中chkconfig命令">Linux中chkconfig命令</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1587511" title="Linux中rename命令的用法">Linux中rename命令的用法</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/9664527" title="Freescale iMX53平台UBoot中启动参数说明（一）">Freescale iMX53平台UBoot中启动参数说明（一）</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/9665143" title="Freescale iMX53平台UBoot中启动参数说明（二）">Freescale iMX53平台UBoot中启动参数说明（二）</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/2276187" title="C语言中的rename函数">C语言中的rename函数</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/9665785" title="Freescale iMX53平台UBoot中启动参数说明（三）">Freescale iMX53平台UBoot中启动参数说明（三）</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/11674279" title="Linux脚本中用户自定义终止符-EOF">Linux脚本中用户自定义终止符-EOF</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/simon_dong618/article/details/1733823" title="关于memset使用的一点小插曲">关于memset使用的一点小插曲</a><span>(0)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/keroro520" class="user_name">keroro520</a>:
+@keroro520:哦我知道了，source是直接在当前shell里面执行的。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/keroro520" class="user_name">keroro520</a>:
+LZ，source 一个shell文件和直接执行一个shell文件结果不同，为什么？
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/hyxlm" class="user_name">hyxlm</a>:
+谢谢楼主~
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/u012858244" class="user_name">放牛童</a>:
+谢谢楼主的培训
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/gfbgl" class="user_name">不错的了</a>:
+赞一个
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/1581132#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/twlkyao" class="user_name">twlkyao</a>:
+写的不错
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/2238633#comments">用fopen判断文件和文件夹的一种方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/zjy3186511" class="user_name">scriptkids</a>:
+linux下是可以打开文件夹的。。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/2237171#comments">Linux下获取文件大小的方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/lingyun322" class="user_name">蒋宏光</a>:
+很感谢，可以看出您的技术好而且文章写的和很好，一个大二学生在此表达我的敬意，以后在学习中遇到问题还会...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/2237171#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/Adam_boy" class="user_name">Adam_boy</a>:
+学习了，适合像我这样的菜鸟。嘿嘿
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/simon_dong618/article/details/2237171#comments">Linux中source命令的用法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/lyglary" class="user_name">lyglary</a>:
+这个写的灰常不错，适合入门级的菜鸟
+    </p>
+    </li>
+</ul>
+</div>
+
+
+<div id="custom_column_977647" class="panel">
+<ul class="panel_head"><span>Linux</span></ul>
+<ul class="panel_body">
+<ul><li><a href="http://www.linux-ntfs.org/" target="_blank">Linux NTFS</a></li><li><a href="http://www.rpmfind.net/" target="_blank">Linux RPM查找网站</a></li></ul>
+</ul>
+</div>
+
+<div id="custom_column_977648" class="panel">
+<ul class="panel_head"><span>常用链接</span></ul>
+<ul class="panel_body">
+<ul><li><a href="http://www.appinn.com/" target="_blank">小众软件</a></li></ul>
+</ul>
+</div>    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/cnick.js"></script>
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/showblogmedal.ashx"></script>
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/JavaScript1.js"></script><link rel="stylesheet" type="text/css" href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/notify.js"></script>
+
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/msg.popup.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/count.js"></script><iframe src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/logs.html" frameborder="0" width="0" height="0"></iframe>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+    </div>
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/toolbar.js"></script>
+     <!--new top-->
+   
+    <link href="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ask_float_block.css" type="text/css" rel="stylesheet">
+    <script language="JavaScript" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/wmd.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/showdown.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/prettify.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Linux中source命令的用法 - Simon的专栏 - 博客频道 - CSDN.NET_files/ask_float_block.js"></script>
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><a id="com-ask-float-block" title="提问按钮" style="top:351px"></a><a id="com-quick-reply" title="快速回复" style="top:392px"></a><a id="com-d-top-a" style="top: 433px; display: inline;" title="返回顶部" onclick=""></a><div class="pop_edit ask_first comm_ask_first" style="display: none;"><h3>提问</h3><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" nodetype="close" class="close">×</a> <div class="context"> <form id="form" nodetype="form-popup" class="form"><div class="askFirst_desc"><span class="afd_p">CSDN 问答是一个真诚、认真、有活力的技术社区。</span><br><span class="afd_p">我们很愿意帮助您，希望您提出的每一个问题都能得到解答，同时也希望您知道，一个好的问题</span><br><span class="afd_p">更容易得到好的答案<span>&nbsp;&nbsp;</span><a href="http://ask.csdn.net/help?#rule12" target="_blank">怎样提出一个好的问题？</a></span><br><span class="afd_p">提问时应遵循认真、简洁、明确、规范的原则</span><br><span class="afd_p">• 首先确定您是否需要使用悬赏提问；</span><br><span class="afd_p">• 问题中没必要出现“大神帮帮忙”、“教授救救我”之类与技术问题无关的信息，及时采纳最佳答案就是对回答人的最好认可；</span><br><span class="afd_p">• 问题标题要有明确而有价值的信息，“有人遇到过这种情况吗？帮忙进来看看”这种标题只会降低您的问题被回答的概率；</span><br><span class="afd_p">• “求代码”类的问题请您悬赏提问，我们乐于将其看成一种交易。</span><br><br><span class="afd_p">问答频道并不欢迎这种问题</span><br><span class="afd_p">• 和已有问题完全重复的问题，为避免重复，提问前请先进行搜索；</span><br><span class="afd_p">• 招聘 / 求职、交易 / 合作、寻人 / 征友；</span><br><span class="afd_p">• 无明确答案的调查类问题。如苹果和谷歌，大家更欣赏谁？</span><br><span class="afd_p">想学会更好的提问，请查看<span>&nbsp;</span><a href="http://ask.csdn.net/help" target="_blank">问答频道提问规范</a></span></div><div class="askFirst_se"><span>提问前请搜索</span></div><div class="search_div"><input id="askInput" type="text" placeholder="输入问题，查看是否存在相似的问题"></div></form> </div> <div class="success"></div></div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" type="text" style="font-size:14px;" placeholder="输入问题，查看是否存在相似的问题"></div><div class="second_se">问题描述：</div> <div id="wmd-button-bar"><ul class="wmd-button-row"><li class="wmd-button wmd-bold-button" title="Strong &lt;strong&gt; Ctrl+B" style="background-position: 0px 0px;"></li><li class="wmd-button wmd-italic-button" title="Emphasis &lt;em&gt; Ctrl+I" style="background-position: -20px 0px;"></li><li class="wmd-spacer wmd-spacer1"></li><li class="wmd-button wmd-link-button" title="Hyperlink &lt;a&gt; Ctrl+L" style="background-position: -40px 0px;"></li><li class="wmd-button wmd-quote-button" title="Blockquote &lt;blockquote&gt; Ctrl+Q" style="background-position: -60px 0px;"></li><li class="wmd-button wmd-code-button" title="Code Sample &lt;pre&gt;&lt;code&gt; Ctrl+K" style="background-position: -80px 0px;"></li><li class="wmd-button wmd-image-button" title="Image &lt;img&gt; Ctrl+G" style="background-position: -100px 0px;"></li><li class="wmd-spacer wmd-spacer2"></li><li class="wmd-button wmd-olist-button" title="Numbered List &lt;ol&gt; Ctrl+O" style="background-position: -120px 0px;"></li><li class="wmd-button wmd-ulist-button" title="Bulleted List &lt;ul&gt; Ctrl+U" style="background-position: -140px 0px;"></li><li class="wmd-button wmd-heading-button" title="Heading &lt;h1&gt;/&lt;h2&gt; Ctrl+H" style="background-position: -160px 0px;"></li><li class="wmd-button wmd-hr-button" title="Horizontal Rule &lt;hr&gt; Ctrl+R" style="background-position: -180px 0px;"></li><li class="wmd-spacer wmd-spacer3"></li><li class="wmd-button wmd-undo-button" title="Undo - Ctrl+Z" style="background-position: -200px -20px;"></li><li class="wmd-button wmd-redo-button" title="Redo - Ctrl+Shift+Z" style="background-position: -220px -20px;"></li><li class="wmd-button wmd-help-button" style="background-position: -240px 0px;"><a href="http://ask.csdn.net/pages/markdown" target="_blank" title="WMD website"></a></li><li class="wmd-button wmd-at-button" title="Shift+@" style="background-position: -260px 0px;"></li></ul></div> <div id="previw-button"></div> <textarea id="wmd-input" rows="8"></textarea><div class="grippie" style="margin-right: 0px;"></div> <div id="wmd-preview" class="wmd-preview"></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input type="hidden" name="txtSearchTags"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" nodetype="cancel" class="cancel">取消</a><a href="http://blog.csdn.net/simon_dong618/article/details/1581132#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

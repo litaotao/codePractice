@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://www.36dsj.com/archives/20255 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<title>搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT） | 36大数据</title>
+<link rel="alternate" type="application/rss+xml" title="36大数据 » 搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）评论Feed" href="http://www.36dsj.com/archives/20255/feed">
+<link rel="stylesheet" id="main-css" href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/style.css" type="text/css" media="all">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.36dsj.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.36dsj.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="互联网公司机器学习数据挖掘类的职位面试主要考察哪些？" href="http://www.36dsj.com/archives/20291">
+<link rel="next" title="阿里数据平台事业部副总裁卜鹰：未来大数据一定是基于社会化的方式来搞的" href="http://www.36dsj.com/archives/20302">
+<link rel="canonical" href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据.html">
+<link rel="shortlink" href="http://www.36dsj.com/?p=20255">
+<style>a:hover, a:focus,.post-like.actived,.excerpt h2 a:hover,.user-welcome strong,.article-title a:hover,#comments b,.text-muted a:hover,.relates a:hover,.archives .item:hover h3,.linkcat h2,.sticky a:hover,.article-content a:hover,.widget_links li a:hover,.d_postlist li a:hover .text, .d_newtagpost li a:hover h2,.article-meta a:hover{color:#FF6600;}.btn,.article-tags a,.search-form .btn,.widget_tags_inner a:hover:hover,.focusmo a:hover h4,.tagslist .tagname:hover,.excerpt .more a,.pagination ul > .active > a, .pagination ul > .active > span,.widget .title .more,.navbar,.nav li ul > li > a:hover{background-color:#FF6600;}.title strong, .widget .title{border-bottom-color:#FF6600;}#submit{background: #FF6600;border-right: 2px solid #FF6600;border-bottom: 2px solid #FF6600;}.nav li.current-menu-item > a, .nav li.current-menu-parent > a, .nav li.current_page_item > a, .nav li.current-post-ancestor > a,.nav li a:focus,.nav li a:hover, .nav li:hover > a,.nav li ul{background-color:#EC5F00}</style><meta name="keywords" content="大数据, 推荐系统, 搜狐新闻客户端, 算法, 干货教程">
+<meta name="description" content="2014年12月12-14日，2014中国大数据技术大会暨第二届CCF大数据学术会议在北京新云南皇冠假日酒店圆满落幕。在会上，搜狐移动研发部经理刘佳为大家分享了">
+<link rel="shortcut icon" href="http://www.36dsj.com/favicon.ico">
+<!--[if lt IE 9]><script src="http://www.36dsj.com/wp-content/themes/dsj0804/js/html5.js"></script><![endif]-->
+<script charset="utf-8" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/s.js"></script><script type="text/javascript" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/related_items_v2"></script><style type="text/css"></style><script type="text/javascript" async="" charset="UTF-8" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/embed.js"></script><link type="text/css" rel="stylesheet" href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/embed.bluebox.css"><script type="text/javascript" id="wumiiData" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/hot"></script><script src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"><style>html #hm_t_undefined .hm-t-go-top {position:fixed;right:2px;bottom:2px;z-index:99998;cursor:pointer;width:40px;height:37px!important;text-align:center;white-space:normal;font-size:14px;line-height:17px;padding-top:3px;color:#fff;background:#404040;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAAAXCAYAAABH92JbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowMjgwMTE3NDA3MjA2ODExODA4M0UyNDA4ODdDRTZBQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBQjc5RkRFNkI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBQjc5RkRFNUI5ODMxMUUzQkZGNDhENEJFQjM2OTcyRiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDI4MDExNzQwNzIwNjgxMTgwODNFMjQwODg3Q0U2QUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5HPYM5AAACC0lEQVR42uyZTSgEYRjH90NoqaVcpDblvKW2XOSkNh8H5Yac9sBBDqQokiJKSMpNTi5OPo6Ktsgu67JcUHIXWfK1u3b8Xx6Zxuzu+64dM83uv34zNfu8b8/8Z+d5P8YqSZLFJNLsRmyWvIRMKgVD4AhEwA3YAV0pzGwEqyAEwmAddIICHe7FqhnsdQM14FxKLj+ooFiGE2ykiD8GVbJ4I1ELAnTmasMODnAhpVcIFIMicMgRH6Z4IxnUAh4pP3Zu5TVpUOLXDJgWiB8wkEF9IK7IL07X05oUFLjpZ4JXQQOYYwfzafJcoDjVPqw43KE4lWtUTF+AQ8eBqQSsgTaO2E0apJ7URrdCDZOM62hQJfBzGmShOD+1+2XSiYaJ7utkkBsEgEewnYfauZUmzWmU6DuY0sEgLzgArgzbu6i992cu/1WclqXsa1iHIt0DYlnKP0b9fRZu5pWdZs7dWXqa7B80+s//oF5aMSjflGqBPq5BQnFtVv4UmGHjIPEH96PAZ6C5kVMwf6daPzbFKnqCqvx9Bk/yFjSBFTMvcL+1DerAmUA/p9Rm1+y7AHJdgnqwx9EHm1s0gKtc2CpR6gE00/ZHMm3RKxbJlf0kNb2BDrCk8hsbDdvBay5tuiUTGxL7waTs2iLw0YTR9BLZQRwDUVqwjuTS9q3VRB8C1OQUnM6UqdXX/IcADn0IMADs2AqDOPSutQAAAABJRU5ErkJggg==) no-repeat -42px center #666;*background-image:url(http://ecma.bdimg.com/holmes/t-popup-icons-png8.png);_position:absolute;_top:expression(eval(document.documentElement.scrollTop+(document.documentElement.clientHeight||document.body.clientHeight)-this.offsetHeight-2));}</style><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/imgshare.css?v=c0974f99.css"></head>
+<body class="single single-post postid-20255 single-format-standard" style="">
+<section class="container">
+<header class="header">
+	<div class="topbar">
+		<div class="pull-right">
+			<a class="feed-wechat" rel="external nofollow" href="javascript:;" title="" data-content="&lt;img src=&#39;http://www.36dsj.com/wp-content/uploads/2014/07/qrcode_for_gh_8efec1177972_258.png&#39;&gt;" data-original-title="关注”dashuju36“">关注微信</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://weibo.com/36dsj" title="关注微博" target="_blank">微博</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://t.qq.com/youx18" title="关注腾讯微博" target="_blank">腾讯微博</a>&nbsp; | &nbsp;<a class="" rel="external nofollow" href="http://www.36dsj.com/feed" title="Feed订阅" target="_blank">RSS订阅</a>
+		</div>
+		36大数据祝大家圣诞快乐，新年新气象。QQ群：80958753	</div>
+
+	<div class="logo"><a href="http://www.36dsj.com/" title="36大数据 | 关注大数据和大数据应用_大数据第一科技网">36大数据</a></div>	<a href="http://www.36dsj.com/tougao" class="btn pull-right btn-tougao">我要投稿</a>
+	<form method="get" class="search-form" action="http://www.36dsj.com/">
+		<input class="form-control" name="s" type="text" placeholder="输入关键字" x-webkit-speech=""><input class="btn" type="submit" value="搜索">
+	</form>
+	
+
+	<div class="navbar">
+		<div class="container">
+		<ul class="nav"><li id="menu-item-2389" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-2389"><a href="http://www.36dsj.com/">首页</a></li>
+<li id="menu-item-2390" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-2390"><a href="http://www.36dsj.com/archives/category/bigdata">大数据动向</a>
+<ul class="sub-menu">
+	<li id="menu-item-3583" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3583"><a href="http://www.36dsj.com/archives/category/bigdata/baike">大数据百科</a></li>
+	<li id="menu-item-3586" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3586"><a href="http://www.36dsj.com/archives/category/bigdata/large-enterprise-data">大数据企业</a></li>
+	<li id="menu-item-3587" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3587"><a href="http://www.36dsj.com/archives/category/bigdata/big-data-products">大数据产品</a></li>
+	<li id="menu-item-10510" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10510"><a href="http://www.36dsj.com/archives/category/large-data-tools/das">大数据存储</a></li>
+	<li id="menu-item-11969" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11969"><a href="http://www.36dsj.com/archives/category/bigdata/technology">大数据技术</a></li>
+	<li id="menu-item-10501" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10501"><a href="http://www.36dsj.com/archives/category/bigdata/bi-2">商业智能</a></li>
+	<li id="menu-item-10502" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10502"><a href="http://www.36dsj.com/archives/category/bigdata/cloudcomputing">云计算</a></li>
+	<li id="menu-item-10505" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10505"><a href="http://www.36dsj.com/archives/category/large-data-tools/hadoop">Hadoop</a></li>
+</ul>
+</li>
+<li id="menu-item-10483" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10483"><a href="http://www.36dsj.com/archives/category/application-area">大数据应用</a>
+<ul class="sub-menu">
+	<li id="menu-item-10484" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10484"><a href="http://www.36dsj.com/archives/category/application-area/large-medical-data">大数据医疗</a></li>
+	<li id="menu-item-10487" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10487"><a href="http://www.36dsj.com/archives/category/application-area/marketing-application-area">大数据营销</a></li>
+	<li id="menu-item-10489" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10489"><a href="http://www.36dsj.com/archives/category/application-area/application-of-case">应用案例</a></li>
+	<li id="menu-item-10490" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10490"><a href="http://www.36dsj.com/archives/category/application-area/ec">电子商务</a></li>
+	<li id="menu-item-10491" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10491"><a href="http://www.36dsj.com/archives/category/data-analysi/the-game-data">游戏数据</a></li>
+	<li id="menu-item-10500" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10500"><a href="http://www.36dsj.com/archives/category/qita/the-latest-technology-products/wearable-devices">可穿戴设备</a></li>
+</ul>
+</li>
+<li id="menu-item-11975" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-11975"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization">数据可视化</a>
+<ul class="sub-menu">
+	<li id="menu-item-11976" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11976"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/infographic">信息图</a></li>
+	<li id="menu-item-12748" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12748"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/big-data-video">视频</a></li>
+	<li id="menu-item-11978" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11978"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/data-weekly">数据周刊</a></li>
+	<li id="menu-item-11979" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11979"><a href="http://www.36dsj.com/archives/category/data-analysi/data-interpretation">有图有真相</a></li>
+</ul>
+</li>
+<li id="menu-item-10495" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10495"><a href="http://www.36dsj.com/archives/category/data-analysi">数据分析</a>
+<ul class="sub-menu">
+	<li id="menu-item-10496" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10496"><a href="http://www.36dsj.com/archives/category/data-analysi/data-report">数据报告</a></li>
+	<li id="menu-item-10497" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10497"><a href="http://www.36dsj.com/archives/category/data-analysi/datamining">数据挖掘</a></li>
+	<li id="menu-item-10498" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10498"><a href="http://www.36dsj.com/archives/category/data-analysi/user-research">用户研究</a></li>
+	<li id="menu-item-10499" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10499"><a href="http://www.36dsj.com/archives/category/data-analysi/web-analytics">网站分析</a></li>
+</ul>
+</li>
+<li id="menu-item-10512" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-10512"><a href="http://www.36dsj.com/archives/category/big-data-investment">投资并购</a>
+<ul class="sub-menu">
+	<li id="menu-item-10492" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10492"><a href="http://www.36dsj.com/archives/category/global-vision">全球视野</a></li>
+	<li id="menu-item-10493" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10493"><a href="http://www.36dsj.com/archives/category/analysis/foreign-media-reports">外媒报道</a></li>
+	<li id="menu-item-11970" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11970"><a href="http://www.36dsj.com/archives/category/data-analysi/trend-observation">趋势观察</a></li>
+</ul>
+</li>
+<li id="menu-item-13809" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-13809"><a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/ganhuo">干货教程</a></li>
+<li id="menu-item-17278" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17278"><a href="http://www.36dsj.com/qiye">企业专区</a></li>
+</ul>		<div class="navbar-r">
+					<a href="http://www.36dsj.com/wp-login.php">注册</a>
+			<a class="item" href="http://www.36dsj.com/wp-login.php?action=register"><span class="glyphicon glyphicon-user"></span> 登录</a>
+				</div>
+		</div>
+	</div>
+</header><div class="content-wrap">
+	<div class="content">
+				<header class="article-header">
+			<h1 class="article-title"><a href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据.html">搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）</a></h1>
+			<ul class="article-meta">
+								<li><span class="glyphicon glyphicon-user"></span> Optimus Prime</li>
+				<li><span class="glyphicon glyphicon-time"></span> 2015-01-05 8:10:54</li>
+				<li><span class="glyphicon glyphicon-list-alt"></span> <a href="http://www.36dsj.com/archives/category/bigdata/data-visualization/ganhuo" rel="category tag">干货教程</a></li>
+				<li><span class="glyphicon glyphicon-comment"></span> 评论(0)</li>
+				<li class="bdshare"><div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1420644256383"><a href="http://www.36dsj.com/archives/20255#" class="bds_more" data-cmd="more"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_tqf" data-cmd="tqf" title="分享到腾讯朋友"></a><a href="http://www.36dsj.com/archives/20255#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a></div></li>
+			</ul>
+		</header>
+				<article class="article-content">
+			<p>2014年12月12-14日，2014中国大数据技术大会暨第二届CCF大数据学术会议在北京新云南皇冠假日酒店圆满落幕。在会上，搜狐移动研发部经理刘佳为大家分享了《基于全网内容的新闻客户端推荐系统》的经验，并对针对新闻客户端遇到的内容分类质量识别图文、视频、音频、游戏、数据稀疏、内容冷启动、用户冷启动、噪音处理：三俗内容等棘手问题的处理方式展开演讲。</p>
+<p><span style="color: #ff0000;"><strong>要点：</strong></span></p>
+<p><span style="color: #ff6600;"><strong>搜狐移动端新闻推荐的两个特点：</strong></span></p>
+<ul>
+<li><strong>广告系统</strong>。广告系统，搜狐追求转化率、辅助指标ROI、用户效果。</li>
+<li><strong>搜索系统</strong>。搜索引擎中，追求对内容理解、内容爬取、文本关键词主题提取、文本分类、主题分类、内容索引、垃圾过滤、page rank、反作弊等等。</li>
+</ul>
+<p>随后，刘佳介绍新闻推荐系统中三俗内容的处理方式，他说：“推荐系统出现三俗内容，可以提高18%-20%的转化率，虽然可以暂时提高点击率，但是对用户的粘性有很大的影响。我们会<strong>通用户阅读分布、用户属性分布统计性和精细化的分类进行筛选三俗内容。整体处理后，转化率下降到15%，推荐总量提升20%，用户使用频次也有20%的提升。</strong>”</p>
+<p><span style="color: #ff6600;"><strong>搜狐新闻客户端目前内容来源：</strong></span></p>
+<p style="padding-left: 30px;">• 自媒体约17000家 10到15万/每天<br>
+• 机构媒体+搜狐集团 10到15万/每天<br>
+• 短视频 300万<br>
+• 搜狗内容50万/每天 去重后约 7万/每天<br>
+• 搜狗微信公众号 2万/每天</p>
+<p><span style="color: #ff6600;"><strong>新闻入库过程：</strong></span></p>
+<p><strong>1、内容同步、抽取</strong>（每日100万资讯内容，过滤垃圾信HTML标签、广告、页<br>
+面重复内容保留）</p>
+<p><strong>2、基于正文内容特征生成全局ID</strong>（基于正文内容过滤重复，海明哈希。同步到各CMS生成全局ID）</p>
+<p><strong>3、基于标题、摘要、关键词生成cluster ID</strong> （基于标题及摘要关键词生成cluster Id；决定cluster score；根据版权、合作关系、来源质量、发布时间选择代表文章）</p>
+<p><strong><span style="color: #ff6600;">用户建模：</span></strong></p>
+<p><strong>1、与内容分类对应；</strong></p>
+<p><strong>2、分为长期短期两套体系；</strong></p>
+<ul>
+<li>长期：用户半年阅读行为、更新周期3天</li>
+<li>短期：用户最近两天阅读行为、更新周期10秒</li>
+</ul>
+<p><strong>3、用户阅读历史</strong></p>
+<p>详细PPT：</p>
+<p><img class="alignnone size-full wp-image-20256" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/115.jpg" alt="搜狐新闻客户端" width="640" height="476" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20257" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/217.jpg" alt="搜狐新闻客户端" width="640" height="477" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20258" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/316.jpg" alt="搜狐新闻客户端" width="640" height="479" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20259" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/415.jpg" alt="搜狐新闻客户端" width="640" height="473" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20260" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/57.jpg" alt="搜狐新闻客户端" width="640" height="475" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20261" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/64.jpg" alt="搜狐新闻客户端" width="640" height="477" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20262" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/74.jpg" alt="搜狐新闻客户端" width="641" height="476" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20263" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/82.jpg" alt="搜狐新闻客户端" width="640" height="473" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20264" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/92.jpg" alt="搜狐新闻客户端" width="640" height="479" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20265" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/103.jpg" alt="搜狐新闻客户端" width="640" height="478" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20266" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/116.jpg" alt="搜狐新闻客户端" width="640" height="476" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20267" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/124.jpg" alt="搜狐新闻客户端" width="640" height="474" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20268" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/133.jpg" alt="搜狐新闻客户端" width="640" height="473" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20269" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/143.jpg" alt="搜狐新闻客户端" width="640" height="478" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20270" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/153.jpg" alt="搜狐新闻客户端" width="640" height="478" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20271" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/163.jpg" alt="搜狐新闻客户端" width="640" height="474" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20272" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/173.jpg" alt="搜狐新闻客户端" width="640" height="474" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20273" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/184.jpg" alt="搜狐新闻客户端" width="640" height="479" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20274" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/194.jpg" alt="搜狐新闻客户端" width="640" height="479" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20275" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/204.jpg" alt="搜狐新闻客户端" width="640" height="478" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20276" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/218.jpg" alt="搜狐新闻客户端" width="640" height="476" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20277" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/223.jpg" alt="搜狐新闻客户端" width="640" height="479" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20278" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/234.jpg" alt="搜狐新闻客户端" width="640" height="477" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20279" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/243.jpg" alt="搜狐新闻客户端" width="640" height="477" data-tag="bdshare" data-bd-imgshare-binded="1"> <img class="alignnone size-full wp-image-20280" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/254.jpg" alt="搜狐新闻客户端" width="640" height="474" data-tag="bdshare" data-bd-imgshare-binded="1"></p>
+<p>End.</p>
+<p>&nbsp;</p>
+<div class="wumii-hook"><div class="wumii-related-items-div" wmode="2" style="margin: 0; border: none; padding: 0; clear: both; overflow: hidden; *zoom: 1; *position: relative;">
+    
+    
+    
+        <div class="wumii-internal" style="padding: 0; margin: 0; border: none; clear: both; display: block;">
+        <div class="wumii-widget-title" style="margin: 0; border: none; padding: 20px 0 5px; _padding-top:10px; text-indent: 0; text-align: left; font-weight: bold; color: #E68F2C;">可能感兴趣的内容</div>
+                <div class="wumii-image-row" style="clear: both; overflow: hidden; border: none; padding: 0;margin: 0;_zoom: 1;" fromurl="http%3A%2F%2Fwww.36dsj.com%2Farchives%2F20255"><a class="wumii-image-block" hidefocus="true" title="默多克的新闻集团经营大数据3年，如今开始用来赚钱" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E8E8E8&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/19897" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/AfeX37Ki.jpg?i=Sc46rVI5" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/AfeX37Ki.jpg" data-tag="bdshare" data-bd-imgshare-binded="1">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 75px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #208DFA; overflow: hidden; white-space: normal; clear: both;">默多克的新闻集团经营大数据3年，如今开始用来赚钱</div>
+</a><a class="wumii-image-block" hidefocus="true" title="数据新闻实践经验谈 2.0：可视化工具、人才、优势谈" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E8E8E8&#39;" style="display: block; float: left; text-decoration: none; border-bottom-style: none; cursor: pointer; position: relative; margin: 5px 0px 0px -1px; padding: 5px; text-align: left; outline: none; border-left-width: 1px !important; border-left-style: solid !important; border-left-color: rgb(235, 236, 237) !important; background-image: none;" href="http://www.36dsj.com/archives/20432" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/I8xOdGes.jpg?i=l0egO7V" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/I8xOdGes.jpg" data-tag="bdshare" data-bd-imgshare-binded="1">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 75px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #208DFA; overflow: hidden; white-space: normal; clear: both;">数据新闻实践经验谈 2.0：可视化工具、人才、优势谈</div>
+</a><a class="wumii-image-block" hidefocus="true" title="45页PPT|大数据环境下实现一个O2O通用推荐引擎的实践" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E8E8E8&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/19766" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/KMGy8jMO.jpg?i=dJYbwDKe" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/KMGy8jMO.jpg" data-tag="bdshare" data-bd-imgshare-binded="1">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 75px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #208DFA; overflow: hidden; white-space: normal; clear: both;">45页PPT|大数据环境下实现一个O2O通用推荐引擎的实践</div>
+</a><a class="wumii-image-block" hidefocus="true" title="技术篇：微博推荐引擎体系结构简述" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E8E8E8&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/19256" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/yELCtFCX.png?i=FJYxLMyE" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/yELCtFCX.png" data-tag="bdshare" data-bd-imgshare-binded="1">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 75px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #208DFA; overflow: hidden; white-space: normal; clear: both;">技术篇：微博推荐引擎体系结构简述</div>
+</a><a class="wumii-image-block" hidefocus="true" title="西太平洋银行：用大数据提升产品推荐接受度达50%" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#E8E8E8&#39;" style="display: block; float: left; text-decoration: none; border-bottom: none; cursor: pointer; position: relative; margin: 5px 0 0 -1px; padding: 5px; text-align: left; outline: none; background-image: none; border-left: 1px solid #EBECED !important;" href="http://www.36dsj.com/archives/19758" redirecturl="">
+    <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 114px; height: 114px; margin: 0 0 5px; padding: 0; border: 1px solid #EBECED;">
+        <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 108px; height: 108px; clip: rect(0px 108px 108px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/mDqL0aG4.jpg?i=igUdAOWI" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/mDqL0aG4.jpg" data-tag="bdshare" data-bd-imgshare-binded="1">
+    </span>
+    <div class="wumii-image-title" style="width: 116px; height: 75px; margin: 3px 0 0 0; padding: 0; text-indent: 0; text-align: left; border: none; font: 12px/15px arial; color: #208DFA; overflow: hidden; white-space: normal; clear: both;">西太平洋银行：用大数据提升产品推荐接受度达50%</div>
+</a></div>
+    </div><div class="wumii-footer" style="margin: 0px; border: none; padding: 5px 0px; clear: both; text-align: right; width: 634px;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" title="无觅关联推荐" style="font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: arial; color: rgb(187, 187, 187); border-bottom-style: none; word-wrap: normal; display: inline; cursor: pointer;">无觅关联推荐[?]</a>
+                
+        </div>
+</div></div>
+<p style="margin:0;padding:0;height:1px;overflow:hidden;">
+    <script type="text/javascript"><!--
+        var wumiiSitePrefix = "http://www.36dsj.com";
+        var wumiiEnableCustomPos = false;
+        var wumiiParams = "&#038;num=8&#038;mode=3&#038;displayInFeed=1&#038;version=1.0.5.7&#038;pf=WordPress4.1";
+        var wumiiCategories = ["\u5e72\u8d27\u6559\u7a0b"];
+    //--></script><script type="text/javascript" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/relatedItemsWidget"></script><a href="http://www.wumii.com/widget/relatedItems" style="border:0;"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/pixel.png" alt="无觅相关文章插件，快速提升流量" style="border:0;padding:0;margin:0;" data-tag="bdshare" data-bd-imgshare-binded="1"></a></p>
+<p>转载请注明来自36大数据（36dsj.com)：<a href="http://www.36dsj.com/">36大数据</a> » <a href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据.html">搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）</a></p>		</article>
+				<div class="article-tags">
+			标签：<a href="http://www.36dsj.com/archives/tag/bigdata1" rel="tag">大数据</a><a href="http://www.36dsj.com/archives/tag/%e6%8e%a8%e8%8d%90%e7%b3%bb%e7%bb%9f" rel="tag">推荐系统</a><a href="http://www.36dsj.com/archives/tag/%e6%90%9c%e7%8b%90%e6%96%b0%e9%97%bb%e5%ae%a2%e6%88%b7%e7%ab%af" rel="tag">搜狐新闻客户端</a><a href="http://www.36dsj.com/archives/tag/%e7%ae%97%e6%b3%95" rel="tag">算法</a>		</div>
+		<div class="postcode"><a href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/P3.png"><img class="alignnone size-full wp-image-11327" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/P3.png" alt="36大数据" width="640" height="141"></a></div>
+						<div class="relates"><h3 class="title"><strong>猜你喜欢</strong></h3><ul><li><a href="http://www.36dsj.com/archives/20291">互联网公司机器学习数据挖掘类的职位面试主要考察哪些？</a>2015-01-05</li><li><a href="http://www.36dsj.com/archives/20131">如何快速备战面试中算法？</a>2015-01-04</li><li><a href="http://www.36dsj.com/archives/19932">深度学习算法的几个难点</a>2014-12-31</li><li><a href="http://www.36dsj.com/archives/19822">数据收集业务的两难困境</a>2014-12-30</li><li><a href="http://www.36dsj.com/archives/19724">2014年最炙手可热的25项技能 数据人才需求排名第一</a>2014-12-29</li><li><a href="http://www.36dsj.com/archives/19285">深度学习系列：解密最接近人脑的智能学习机器——深度学习及并行化实现（四）</a>2014-12-24</li><li><a href="http://www.36dsj.com/archives/19256">技术篇：微博推荐引擎体系结构简述</a>2014-12-24</li><li><a href="http://www.36dsj.com/archives/19272">好莱坞用PreAct追踪观众行为大数据 为电影上映宣传做决策依据</a>2014-12-23</li><li><a href="http://www.36dsj.com/archives/18817">“平台化”算法组是在舍近求远，而且并不可行</a>2014-12-22</li><li><a href="http://www.36dsj.com/archives/18821">重磅推荐：大数据工程师飞林沙的年终总结&amp;算法数据的思考</a>2014-12-22</li></ul></div>				<script type="text/javascript">
+var duoshuoQuery = {"short_name":"36dashuju","sso":{"login":"http:\/\/www.36dsj.com\/wp-login.php?action=duoshuo_login","logout":"http:\/\/www.36dsj.com\/wp-login.php?action=logout&_wpnonce=7bc1522096"},"theme":"bluebox","stylePatch":"wordpress\/dsj"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+(function() {
+    var ds = document.createElement('script'); ds.type = 'text/javascript'; ds.async = true;
+    ds.charset = 'UTF-8';
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script><a name="comments"></a>
+
+<div class="ds-thread" data-thread-key="20255" data-author-key="1647" data-title="搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）" data-url="http://www.36dsj.com/archives/20255" id="ds-thread"><div id="ds-reset"><div class="ds-meta" style="display: none;"><a href="javascript:void(0)" class="ds-like-thread-button ds-rounded"><span class="ds-icon ds-icon-heart"></span> <span class="ds-thread-like-text">喜欢</span><span class="ds-thread-cancel-like">取消喜欢</span></a><span class="ds-like-panel"></span></div><a name="respond"></a><div class="ds-login-buttons"><p>社交帐号登录:</p><div class="ds-social-links"><ul class="ds-service-list"><li><a href="http://36dashuju.duoshuo.com/login/weibo/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-weibo">微博</a></li><li><a href="http://36dashuju.duoshuo.com/login/qq/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-qq">QQ</a></li><li><a href="http://36dashuju.duoshuo.com/login/renren/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-renren">人人</a></li><li><a href="http://36dashuju.duoshuo.com/login/douban/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-douban">豆瓣</a></li><li><a class="ds-more-services" href="javascript:void(0)">更多»</a></li></ul><ul class="ds-service-list ds-additional-services"><li><a href="http://36dashuju.duoshuo.com/login/kaixin/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-kaixin">开心</a></li><li><a href="http://36dashuju.duoshuo.com/login/netease/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-netease">网易</a></li><li><a href="http://36dashuju.duoshuo.com/login/sohu/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-sohu">搜狐</a></li><li><a href="http://36dashuju.duoshuo.com/login/baidu/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-baidu">百度</a></li><li><a href="http://36dashuju.duoshuo.com/login/google/?sso=1&redirect_uri=http%3A%2F%2Fwww.36dsj.com%2Fwp-login.php%3Faction%3Dduoshuo_login%26redirect_to%3Dhttp%253A%252F%252Fwww.36dsj.com%252Farchives%252F20255" rel="nofollow" class="ds-service-link ds-google">谷歌</a></li></ul></div></div><div class="ds-replybox"><a class="ds-avatar" href="javascript:void(0);" onclick="return false"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/119041.jpg" alt="taotao.li"></a><form method="post"><input type="hidden" name="thread_id" value="1163062300349828564">
+<input type="hidden" name="parent_id" value="">
+<input type="hidden" name="nonce" value="54ad4f8c2a359"><div class="ds-textarea-wrapper ds-rounded-top"><textarea name="message" title="Ctrl+Enter快捷提交" placeholder="说点什么吧…"></textarea><pre class="ds-hidden-text"></pre></div><div class="ds-post-toolbar"><div class="ds-post-options ds-gradient-bg"><span class="ds-sync"></span></div><button class="ds-post-button" type="submit">发布</button><div class="ds-toolbar-buttons"><a class="ds-toolbar-button ds-add-emote" title="插入表情"></a><a class="ds-toolbar-button ds-add-image" title="插入图片"></a></div></div></form></div><div class="ds-comments-info"><div class="ds-sort"><a class="ds-order-desc ds-current">最新</a><a class="ds-order-asc">最早</a><a class="ds-order-hot">最热</a></div><ul class="ds-comments-tabs"><li class="ds-tab"><a class="ds-comments-tab-duoshuo ds-current" href="javascript:void(0);">评论</a></li><li class="ds-tab"><a class="ds-comments-tab-weibo" href="javascript:void(0);"><span class="ds-highlight">5</span>条新浪微博</a></li></ul></div><ul class="ds-comments"><li class="ds-post ds-post-placeholder">还没有评论，沙发等你来抢</li></ul><div class="ds-paginator" style="display: none;"><div class="ds-border"></div><a data-page="1" href="javascript:void(0);" class="ds-current">1</a></div><p class="ds-powered-by"><a href="http://duoshuo.com/" target="_blank" rel="nofollow">36大数据正在使用多说</a></p></div></div>
+
+<script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script>
+	<div id="ds-ssr">
+
+		
+            <ol id="commentlist">
+                            </ol>
+
+		            
+    </div>	</div>
+</div>
+<aside class="sidebar">	
+<div class="widget widget_text">			<div class="textwidget"><a href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/P2.png"><img class="alignnone size-full wp-image-11326" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/P2.png" alt="36大数据" width="300" height="140"></a></div>
+		</div><div class="widget widget_text">			<div class="textwidget"><a href="http://www.36dsj.com/archives/category/application-area/major" target="_blank"><img class="alignnone size-full wp-image-14952" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/4110.jpg" alt="马云说" width="300" height="138"></a></div>
+		</div><div class="widget d_postlist"><h3 class="title"><strong>站长推荐<a class="more" href="http://www.36dsj.com/archives/category/big-data-investment">More+</a></strong></h3><ul><li><a href="http://www.36dsj.com/archives/16488"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/11/209-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/209-220x150.jpg" style="display: inline;"></span></span><span class="text">以《英雄联盟》为例，阐述游戏运营商背后的大数据支撑体系</span><span class="muted">2014-11-14</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/3365"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/20130124101701234585-140x100.jpg" class="thumb"></span><span class="text">移动互联网如何让大数据“落地”，有哪些产品实例？</span><span class="muted">2013-09-12</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/16170"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/11/86-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/86-220x150.jpg" style="display: inline;"></span></span><span class="text">大数据社会的十三大具体应用场景</span><span class="muted">2014-11-07</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/4972"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/ipad-gaming-220x150.jpg" class="thumb"></span><span class="text">昆仑游戏内部资料：游戏价值和数据分析新思路</span><span class="muted">2013-12-02</span><span class="muted">3条评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/11717"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/08/3144-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/3144-220x150.jpg" style="display: inline;"></span></span><span class="text">大数据打开医疗信息化之门</span><span class="muted">2014-08-19</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/16647"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/11/246-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/246-220x150.jpg" style="display: inline;"></span></span><span class="text">放眼全球，盘点国外非常有潜力的云计算和大数据公司</span><span class="muted">2014-11-17</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/13456"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/09/295.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/295.jpg" style="display: inline;"></span></span><span class="text">数字收据的未来在于实现交易数据与收据的关联</span><span class="muted">2014-09-22</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/3553"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/201-140x100.jpg" class="thumb"></span><span class="text">阿里巴巴算法、数据工程师笔试题选解</span><span class="muted">2013-09-25</span><span class="muted">11条评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/12279"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/08/1102-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/1102-220x150.jpg" style="display: inline;"></span></span><span class="text">NSA内部搜索系统曝光：可查询全球通讯数据</span><span class="muted">2014-08-26</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/15244"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/10/3214-220x150.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/3214-220x150.jpg" style="display: inline;"></span></span><span class="text">大数据龙头企业Splunk在成立上海研发中心</span><span class="muted">2014-10-23</span><span class="muted">暂无评论</span></a></li>
+</ul></div><div class="widget d_postlist"><h3 class="title"><strong>相关文章<a class="more" href="http://www.36dsj.com/">More+</a></strong></h3><ul><li><a href="http://www.36dsj.com/archives/912"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2013/06/2334-140x98.png" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/2334-140x98.png" style="display: inline;"></span></span><span class="text">数据挖掘公司Dataminr融资3000万美元</span><span class="muted">2013-06-18</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/5026"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/103-220x150.jpg" class="thumb"></span><span class="text">你需要知道，这6家公司利用数据统治了所在行业</span><span class="muted">2013-12-09</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/9507"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/881-220x150.png" class="thumb"></span><span class="text">基于云计算的数字营销公司 IgnitionOne B轮融资 2000万美元，软银领投</span><span class="muted">2014-06-30</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/10548"><span class="thumbnail"><img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/712-220x150.jpg" class="thumb"></span><span class="text">R的数据分析制霸以及企业级应用盘点</span><span class="muted">2014-07-31</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/1330"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2013/06/41-140x98.png" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/41-140x98.png" style="display: inline;"></span></span><span class="text">数字遗忘：大数据与个人隐私保护 ——读《删除》</span><span class="muted">2013-06-26</span><span class="muted">暂无评论</span></a></li>
+<li><a href="http://www.36dsj.com/archives/18536"><span class="thumbnail"><span><img data-original="http://www.36dsj.com/wp-content/uploads/2014/12/716.jpg" class="thumb" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/716.jpg" style="display: inline;"></span></span><span class="text">从诺兰电影《星际穿越》读懂大数据的未知世界</span><span class="muted">2014-12-16</span><span class="muted">暂无评论</span></a></li>
+</ul></div>		<div class="widget widget_recent_entries">		<h3 class="title"><strong>近期文章</strong></h3>		<ul>
+					<li>
+				<a href="http://www.36dsj.com/archives/20521">Facebook收购语音识别初创公司Wit.ai</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20512">在寒冷的天气里 谈谈大数据如何提高天气预报的准确性</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20491">数据之美，美国2014年度18张最佳信息图</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20487">去哪儿网彭笑玫：600亿交易额背后的大数据三级跳</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20483">数据科学家可能成为2015年最热门职业</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20467">可视化的价值与应用</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20462">就算用户、数据在手，互联网银行也摆脱不了监管的枷锁</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20457">大数据，怎么搞？</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20448">微信红包之CBA实践PPT——移动互联网海量访问系统设计</a>
+						</li>
+					<li>
+				<a href="http://www.36dsj.com/archives/20432">数据新闻实践经验谈 2.0：可视化工具、人才、优势谈</a>
+						</li>
+				</ul>
+		</div></aside></section>
+<footer class="footer">
+	<div class="container">
+	<div class="item item-01">
+		<ul><li><a href="http://www.36dsj.com/about-us">关于我们</a></li>
+<li><a href="http://www.36dsj.com/contact-us">联系我们</a></li>
+<li><a href="http://www.36dsj.com/gengxin">站务公告</a></li>
+<li><a href="http://www.36dsj.com/sitemap.html">网站地图</a></li>
+<li><a href="http://www.36dsj.com/all-tags">标签云</a></li></ul>
+	</div>
+	<div class="item item-02">
+		<p>36大数据是一个专注大数据、大数据技术、大数据应用案例和数据可视化的科技网站。讲述大数据在电子商务、网络游戏、征信、互联网金融、工/农/商业等多个领域的应用。百度大数据首席战略合作媒体，内容最权威最干货最接地气最具价值。</p><p>
+
+</p><p>备案号：京ICP备12012135号-2。版权所有，保留一切权利！ © 2014 <a href="http://www.36dsj.com/">36大数据</a> Theme</p><p>    	<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F46db1c7ab0c594c8219d3a3d68e66ff8' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/h.js" type="text/javascript"></script>
+	</p></div>
+	<div class="item item-03">
+		<img src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/232.png">
+	</div>
+    </div>
+</footer><div class="wumii-popup-relatedItems" wid="right" style="overflow: visible; position: fixed; bottom: 0px; right: 0px; z-index: 2147483644; margin: 0px; padding: 0px; border: none; zoom: 1; width: 423px;">
+    <div class="wumii-popup-style" style="overflow: hidden; position: relative; z-index: 20; float: left; left: 1px; display: inline; width: 22px; margin: 15px 0 0 0;padding: 0; border: none; zoom: 1;">
+        <label class="wumii-popup-style-label" style="display: block; width: 100%; height: 92px; cursor: pointer; background: url(http://static.wumii.cn/images/widget/popup_20130905/style_related_yellow_brown_right.png) -23px 0px no-repeat;"></label>
+    </div>
+    <div class="wumii-popup-content" style="display: inline; margin: 0; border: none; float: left; padding: 0 0 0 5px; border-left: 1px solid #d0d0d0; border-top: 2px solid #327dc8; background: #fff;">
+        <ul class="wumii-popup-items" style="list-style: none; float: none; display: block; margin: 0; padding: 0; border: none;"><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/11728" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="大数据系统需要的是什么？" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/Vt5drruq.jpg?i=qy5lMnXR" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/Vt5drruq.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">大数据系统需要的是什么？</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/10861" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="探寻微博背后的大数据原理：微博推荐算法简述" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/kW3a5x4b.png?i=EjY7tlwU" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/kW3a5x4b.png">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">探寻微博背后的大数据原理：微博推荐算法简述</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/18821" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="重磅推荐：大数据工程师飞林沙的年终总结&amp;算法数据的思考" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/py9rNKoC.jpg?i=2bJyx8Y4" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/py9rNKoC.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">重磅推荐：大数据工程师飞林沙的年终总结&amp;算法数据的思考</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/16917" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="关于推荐系统中的特征工程" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/6HvNqjJV.jpg?i=PO4bYt6j" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/6HvNqjJV.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">关于推荐系统中的特征工程</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: -2px 0 0 0; margin-right: -1px; padding: 0; border: none; border-top: 2px solid #327dc8;">
+    <a href="http://www.36dsj.com/archives/18842" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="网站更懂读者：戳中开发者痛点的文章推荐算法" style="display: block; position: relative; width: 80px; height: auto; margin: 5px 0 0; padding: 5px; border-right: 1px solid #eaeaea; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 78px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2; background: #fff;">
+            <img class="wumii-image" onload="wumiiImageResize(this);" onerror="wumiiImageError(this);" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: 2px; width: 72px; height: 72px; clip: rect(0px 72px 72px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/2fYn38.jpg?i=22w58Lfn" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/2fYn38.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 45px; color: #535353; font: 12px/15px arial; text-indent: 0; cursor: pointer; white-space: normal;">网站更懂读者：戳中开发者痛点的文章推荐算法</span>
+    </a>
+</li></ul>
+        <p style="clear: both; margin: 0; padding: 0 3px 0 0; line-height: 16px; text-align: right;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" style="float: none; display: inline; line-height: 16px; border: none; color: #bebebe; word-wrap: normal; text-decoration: none; text-indent: 0; font-size: 12px;" title="无觅相关文章推荐">无觅关联推荐[?]</a>
+        </p>
+    </div>
+</div>
+
+<script>
+window.jui = {
+	uri: 'http://www.36dsj.com/wp-content/themes/dsj0804',
+	roll: 0}
+</script>
+<script type="text/javascript" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/jquery.js"></script>
+<script type="text/javascript" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/bootstrap.js"></script>
+<script type="text/javascript" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/custom.js"></script><div class="rollto" style="display: block;"><a href="javascript:;"></a></div>
+
+<div class="wumii-popup-hot" wid="right" style="overflow: visible; position: fixed; top: 120px; right: -260px; margin: 0px -24px 0px 0px; z-index: 2147483644; padding: 0px; border: none; zoom: 1; width: 284px;">
+    <div class="wumii-popup-style" style="overflow: hidden; position: relative; z-index: 20; float: left; left: 1px; margin: 15px 0 0 -24px; display: inline; width: 24px; padding: 0; border: none; zoom: 1;">
+        <label class="wumii-popup-style-label" style="display: block; width: 100%; height: 110px; background: url(&#39;http://static.wumii.cn/images/widget/popup_20130905/style_hot_yellow_brown_right.png&#39;) no-repeat; cursor: pointer;"></label>
+    </div>
+    <div class="wumii-popup-content" style="display: inline; width: 260px; margin: 0; border: none; float: left; padding: 5px 0 0 5px; border-left: 1px solid #d0d0d0; border-top: 2px solid #327dc8; border-bottom: 1px solid #d0d0d0; background: #fff;">
+        <ul class="wumii-popup-items" style="list-style: none; float: none; display: block; margin: 0; padding: 0; border: none; color: #999;"><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/20382" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="一文读懂机器学习，大数据/自然语言处理/算法全有了……" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/18aBNnBts.jpg?i=Y96I9rnm" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/18aBNnBts.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">一文读懂机器学习，大数据/自然语言处理/算法全有了……</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/20491" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="数据之美，美国2014年度18张最佳信息图" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/rR7L7BMR.jpg?i=JfQ4Mhuw" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/rR7L7BMR.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">数据之美，美国2014年度18张最佳信息图</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/20432" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="数据新闻实践经验谈 2.0：可视化工具、人才、优势谈" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/I8xOdGes.jpg?i=l0egO7V" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/I8xOdGes.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">数据新闻实践经验谈 2.0：可视化工具、人才、优势谈</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/19522" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="13个可实现超棒数据可视化效果的Javascript框架" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/7x8gQM1U.jpg?i=l3XnQMgU" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/7x8gQM1U.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">13个可实现超棒数据可视化效果的Javascript框架</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="http://www.36dsj.com/archives/20467" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="可视化的价值与应用" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/14YOhh6GS.jpg?i=IlxIaqzh" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/14YOhh6GS.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">可视化的价值与应用</span>
+    </a>
+</li><li class="wumii-popup-item" style="list-style: none; float: left; display: inline; width: auto; height: auto; margin: 0; padding: 0; border: none; border: none;">
+    <a href="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据.html" class="wumii-image-block" hidefocus="focus" onmouseout="this.style.backgroundColor=&#39;&#39;" onmouseover="this.style.backgroundColor=&#39;#c3e1fa&#39;" title="搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）" style="display: block; width: 120px; height: auto; margin: 0; padding: 5px; background: none; text-decoration: none; cursor: pointer;" redirecturl="">
+        <span class="wumii-image-clip" style="overflow: hidden; position: relative; display: block; width: 118px; height: 78px; margin: 0 0 5px; padding: 0; border: 1px solid #d2d2d2;">
+            <img class="wumii-image" style="position: absolute; margin: 0px; padding: 0px; border: none; left: 2px; top: -18px; width: 112px; height: 112px; clip: rect(20px 112px 92px 0px); visibility: visible; background: none;" image-url="http://static.wumii.cn/site_images/ti/B04AA3PO.jpg?i=cQpdfn15" src="./搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）   36大数据_files/B04AA3PO.jpg">
+        </span>
+        <span class="wumii-image-title" style="overflow: hidden; display: block; width: 100%; height: 30px; margin: 0; padding: 0; color: #535353; font: 12px/15px arial; text-indent: 0; text-align: left; cursor: pointer;">搜狐新闻客户端的背后大数据技术原理——推荐系统（PPT）</span>
+    </a>
+</li></ul>
+        <p style="clear: both; margin: 10px 0 0; padding: 0 3px 5px 0; line-height: 16px; text-align: right;">
+            <a href="http://www.wumii.com/widget/relatedItems" target="_blank" style="float: none; display: inline; line-height: 16px; border: none; color: #bebebe; word-wrap: normal; text-decoration: none; text-indent: 0; font-size: 12px; cursor: pointer;" title="无觅热门文章推荐">无觅关联推荐[?]</a>
+        </p>
+    </div>
+</div><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><div id="bdimgshare_1420644256395" class="sr-bdimgshare sr-bdimgshare-list sr-bdimgshare-16 sr-bdimgshare-black" style="height: 36px; line-height: 26px; font-size: 12px; position: absolute; top: 4372px; left: 209px; width: 638px; display: none;" data-bd-bind="1420644256394"><div class="bdimgshare-bg"></div><div class="bdimgshare-content bdsharebuttonbox bdshare-button-style0-16"><label class="bdimgshare-lbl">分享到：</label><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_qzone" data-cmd="qzone" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_weixin" data-cmd="weixin" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_tsina" data-cmd="tsina" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_tqq" data-cmd="tqq" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_renren" data-cmd="renren" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_sqq" data-cmd="sqq" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_douban" data-cmd="douban" hidefocus=""></a><a href="http://www.36dsj.com/archives/20255#" onclick="return false;" class="bds_more" data-cmd="more" hidefocus=""></a></div></div><div id="hm_t_undefined" class="hm-t-container"><div class="hm-t-go-top" style="display: block;"></div></div></body></html>

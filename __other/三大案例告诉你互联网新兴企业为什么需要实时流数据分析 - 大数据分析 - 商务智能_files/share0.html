@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0437)http://img.techtarget.com.cn/weibo/share0.html?url=http%3A//www.searchbi.com.cn/showcontent_86660.htm&title=%u3010%u4E09%u5927%u6848%u4F8B%u544A%u8BC9%u4F60%u4E92%u8054%u7F51%u65B0%u5174%u4F01%u4E1A%u4E3A%u4EC0%u4E48%u9700%u8981%u5B9E%u65F6%u6D41%u6570%u636E%u5206%u6790%u3011&pic=http%3A//img.techtarget.com.cn/bi/article/2014/12/10173747_9986.png%7C%7Chttp%3A//img.techtarget.com.cn/bi/article/2014/12/10173826_4517.jpg&t=1418559139402 -->
+<html xmlns:wb="http://open.weibo.com/wb"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>TT中国微博分享</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="wb.js" type="text/javascript" charset="utf-8"></script><style type="text/css"></style><script charset="UTF-8" src="query"></script>
+    <style type="text/css">
+        img.icon
+        {
+            border: medium none;
+            height: 32px;
+            width: 32px;
+        }
+    </style>
+</head>
+<body style="margin: 5px;">
+    <script type="text/javascript">
+        function QueryString(item) {
+            var sValue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"))
+            return sValue ? sValue[1] : sValue
+        }
+    </script>
+    <a hidefocus="true" href="http://img.techtarget.com.cn/weibo/share0.html?url=http%3A//www.searchbi.com.cn/showcontent_86660.htm&title=%u3010%u4E09%u5927%u6848%u4F8B%u544A%u8BC9%u4F60%u4E92%u8054%u7F51%u65B0%u5174%u4F01%u4E1A%u4E3A%u4EC0%u4E48%u9700%u8981%u5B9E%u65F6%u6D41%u6570%u636E%u5206%u6790%u3011&pic=http%3A//img.techtarget.com.cn/bi/article/2014/12/10173747_9986.png%7C%7Chttp%3A//img.techtarget.com.cn/bi/article/2014/12/10173826_4517.jpg&t=1418559139402#" onclick="share0();return false;" title="分享到微博">
+        <img alt="" class="icon" src="transparent.gif" style="background: url(http://img.t.sinajs.cn/t35/appstyle/opent/images/app/btn_trans.gif?id=201104131414) 0px 0px no-repeat scroll transparent;">
+    </a>
+    <script type="text/javascript" charset="utf-8">
+        if (QueryString("icon") == "gray") { $("img.icon").css({ background: 'url("images/sinashare.png") no-repeat scroll 0 0 transparent', height: "30px", width: "30px" }); }
+        else $("img.icon").css({ background: 'url("http://img.t.sinajs.cn/t35/appstyle/opent/images/app/btn_trans.gif?id=201104131414") no-repeat scroll 0 0 transparent' });
+        function share0() {
+            var _w = 32, _h = 32;
+            var site = unescape(QueryString("url")).match(/search([a-z]*).com.cn/i);
+            var conf = getwbid(site);
+            var param = {
+                //url: conf.ak ? unescape(QueryString("url")) : 'http://www.techtarget.com.cn/',
+                url: unescape(QueryString("url")),
+                type: QueryString("style") == "s" ? '3' : '1',
+                count: '', /**是否显示分享数，1显示(可选)*/
+                appkey: conf.ak || '424519446', /**您申请的应用appkey,显示分享来源(可选)*/
+                //title: (conf.ak ? "" : unescape(QueryString("url"))) + " " + unescape(QueryString("title")) + "。来自于TechTarget中国", /**分享的文字内容(可选，默认为所在页面的title)*/
+                title: unescape(QueryString("title")), /**分享的文字内容(可选，默认为所在页面的title)*/
+                pic: unescape(QueryString("pic")), /**分享图片的路径(可选)*/
+                ralateUid: conf.wbid, /**关联用户的UID，分享微博会@该用户(可选)*/
+                language: 'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                dpc: 1
+            }
+
+            var temp = [];
+            for (var p in param) {
+                temp.push(p + '=' + encodeURIComponent(param[p] || ''))
+            }
+            var url = "http://service.weibo.com/share/share.php?searchPic=false&" + temp.join('&');
+            window.open(url, "", "width=642,height=368");
+            //document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://service.weibo.com/staticjs/weiboshare.html?searchPic=false&' + temp.join('&') + '" width="' + _w + '" height="' + _h + '"></iframe>')
+        }
+        function getwbid(site) {
+            var wbid = "1684793947";
+            var ak = '';
+            if (site && site.length == 2)
+                switch (site[1].toLowerCase()) {
+                case "cloudcomputing": wbid = 1679416922; ak = "2274670749"; break;
+                case "virtual": wbid = 1679379971; ak = "227782863"; break;
+                case "bi": wbid = 2685263633; break;
+                case "cio": wbid = 1679402765; ak = "1416725727"; break;
+                case "database": wbid = 1679367883; ak = "2314511217"; break;
+                case "storage": wbid = 1679374001; ak = "3046610063"; break;
+                case "sv": wbid = 1679373257; ak = "1255846622"; break;
+                case "datacenter": wbid = 1679418382; ak = "3036348463"; break;
+                case "networking": wbid = 1679363973; break;
+                case "security": wbid = 1679366863; ak = "1208116543"; break;
+                case "soa": wbid = 1679362424; break;
+                case "smb": wbid = 1809476093; break;
+            }
+            return { wbid: wbid, ak: ak };
+        }
+    </script>
+
+
+</body></html>

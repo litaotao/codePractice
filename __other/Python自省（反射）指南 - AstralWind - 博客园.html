@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0059)http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./Python自省（反射）指南 - AstralWind - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery1709733203931245953_1418134746987&adModuleId=2&content=Python%E8%87%AA%E7%9C%81%EF%BC%88%E5%8F%8D%E5%B0%84%EF%BC%89%E6%8C%87%E5%8D%97&_=1418134747140"></script>
+
+<title>Python自省（反射）指南 - AstralWind - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./Python自省（反射）指南 - AstralWind - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./Python自省（反射）指南 - AstralWind - 博客园_files/bundle-Custom.css">
+<link type="text/css" rel="stylesheet" href="./Python自省（反射）指南 - AstralWind - 博客园_files/64145.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/huxi/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/huxi/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/huxi/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./Python自省（反射）指南 - AstralWind - 博客园_files/gpt.js"></script><script src="./Python自省（反射）指南 - AstralWind - 博客园_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">var currentBlogApp = 'huxi', cb_enable_mathjax=false;</script>
+<script src="./Python自省（反射）指南 - AstralWind - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_54.js"></script></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/huxi/"><img id="blogLogo" src="./Python自省（反射）指南 - AstralWind - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/huxi/">AstralWind</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/huxi/">首页</a></li>
+<li></li>
+<li></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/huxi/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/huxi/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./Python自省（反射）指南 - AstralWind - 博客园_files/Python自省（反射）指南 - AstralWind - 博客园.html">Python自省（反射）指南</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><blockquote>
+<p>在笔者，也就是我的概念里，自省和反射是一回事，当然其实我并不十分确定一定以及肯定，所以如果这确实是两个不同的概念的话，还请多多指教 ：） 转载请注明作者、出处并附上原文链接，多谢！<br>update 2011-3-10: 更正函数的func_globals属性含义。&nbsp; </p>
+</blockquote>
+<p>首先通过一个例子来看一下本文中可能用到的对象和相关概念。</p>
+<div><div id="highlighter_214196" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py comments">#coding: UTF-8</code></div><div class="line number2 index1 alt1"><code class="py keyword">import</code> <code class="py plain">sys </code><code class="py comments">#&nbsp; 模块，sys指向这个模块对象</code></div><div class="line number3 index2 alt2"><code class="py keyword">import</code> <code class="py plain">inspect</code></div><div class="line number4 index3 alt1"><code class="py keyword">def</code> <code class="py plain">foo(): </code><code class="py keyword">pass</code> <code class="py comments"># 函数，foo指向这个函数对象</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="py keyword">class</code> <code class="py plain">Cat(</code><code class="py functions">object</code><code class="py plain">): </code><code class="py comments"># 类，Cat指向这个类对象</code></div><div class="line number7 index6 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">def</code> <code class="py plain">__init__(</code><code class="py color1">self</code><code class="py plain">, name</code><code class="py keyword">=</code><code class="py string">'kitty'</code><code class="py plain">):</code></div><div class="line number8 index7 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py color1">self</code><code class="py plain">.name </code><code class="py keyword">=</code> <code class="py plain">name</code></div><div class="line number9 index8 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">def</code> <code class="py plain">sayHi(</code><code class="py color1">self</code><code class="py plain">): </code><code class="py comments">#&nbsp; 实例方法，sayHi指向这个方法对象，使用类或实例.sayHi访问</code></div><div class="line number10 index9 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py color1">self</code><code class="py plain">.name, </code><code class="py string">'says Hi!'</code> <code class="py comments"># 访问名为name的字段，使用实例.name访问</code></div><div class="line number11 index10 alt2">&nbsp;</div><div class="line number12 index11 alt1"><code class="py plain">cat </code><code class="py keyword">=</code> <code class="py plain">Cat() </code><code class="py comments"># cat是Cat类的实例对象</code></div><div class="line number13 index12 alt2">&nbsp;</div><div class="line number14 index13 alt1"><code class="py functions">print</code> <code class="py plain">Cat.sayHi </code><code class="py comments"># 使用类名访问实例方法时，方法是未绑定的(unbound)</code></div><div class="line number15 index14 alt2"><code class="py functions">print</code> <code class="py plain">cat.sayHi </code><code class="py comments"># 使用实例访问实例方法时，方法是绑定的(bound)</code></div></div></td></tr></tbody></table></div></div>
+<p>有时候我们会碰到这样的需求，需要执行对象的某个方法，或是需要对对象的某个字段赋值，而方法名或是字段名在编码代码时并不能确定，需要通过参数传递字符串的形式输入。举个具体的例子：当我们需要实现一个通用的DBM框架时，可能需要对数据对象的字段赋值，但我们无法预知用到这个框架的数据对象都有些什么字段，换言之，我们在写框架的时候需要通过某种机制访问未知的属性。</p>
+<p>这个机制被称为反射（反过来让对象告诉我们他是什么），或是自省（让对象自己告诉我们他是什么，好吧我承认括号里是我瞎掰的- -#），用于实现在运行时获取未知对象的信息。反射是个很吓唬人的名词，听起来高深莫测，在一般的编程语言里反射相对其他概念来说稍显复杂，一般来说都是作为高级主题来讲；但在Python中反射非常简单，用起来几乎感觉不到与其他的代码有区别，使用反射获取到的函数和方法可以像平常一样加上括号直接调用，获取到类后可以直接构造实例；不过获取到的字段不能直接赋值，因为拿到的其实是另一个指向同一个地方的引用，赋值只能改变当前的这个引用而已。</p>
+<h2>1. 访问对象的属性</h2>
+<p>以下列出了几个内建方法，可以用来检查或是访问对象的属性。这些方法可以用于任意对象而不仅仅是例子中的Cat实例对象；Python中一切都是对象。</p>
+<div><div id="highlighter_955964" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py plain">cat </code><code class="py keyword">=</code> <code class="py plain">Cat(</code><code class="py string">'kitty'</code><code class="py plain">)</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">cat.name </code><code class="py comments"># 访问实例属性</code></div><div class="line number4 index3 alt1"><code class="py plain">cat.sayHi() </code><code class="py comments"># 调用实例方法</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="py functions">print</code> <code class="py functions">dir</code><code class="py plain">(cat) </code><code class="py comments"># 获取实例的属性名，以列表形式返回</code></div><div class="line number7 index6 alt2"><code class="py keyword">if</code> <code class="py functions">hasattr</code><code class="py plain">(cat, </code><code class="py string">'name'</code><code class="py plain">): </code><code class="py comments"># 检查实例是否有这个属性</code></div><div class="line number8 index7 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">setattr</code><code class="py plain">(cat, </code><code class="py string">'name'</code><code class="py plain">, </code><code class="py string">'tiger'</code><code class="py plain">) </code><code class="py comments"># same as: a.name = 'tiger'</code></div><div class="line number9 index8 alt2"><code class="py functions">print</code> <code class="py functions">getattr</code><code class="py plain">(cat, </code><code class="py string">'name'</code><code class="py plain">) </code><code class="py comments"># same as: print a.name</code></div><div class="line number10 index9 alt1">&nbsp;</div><div class="line number11 index10 alt2"><code class="py functions">getattr</code><code class="py plain">(cat, </code><code class="py string">'sayHi'</code><code class="py plain">)() </code><code class="py comments"># same as: cat.sayHi()</code></div></div></td></tr></tbody></table></div></div>
+<ul>
+<li><strong>dir([obj]):</strong> 
+    <br>调用这个方法将返回包含obj大多数属性名的列表（会有一些特殊的属性不包含在内）。obj的默认值是当前的模块对象。 </li>
+<li><strong>hasattr(obj, attr): 
+      <br></strong>这个方法用于检查obj是否有一个名为attr的值的属性，返回一个布尔值。 </li>
+<li><strong>getattr(obj, attr): 
+      <br></strong>调用这个方法将返回obj中名为attr值的属性的值，例如如果attr为'bar'，则返回obj.bar。 </li>
+<li><strong>setattr(obj, attr, val):</strong> 
+    <br>调用这个方法将给obj的名为attr的值的属性赋值为val。例如如果attr为'bar'，则相当于obj.bar = val。 </li>
+</ul>
+<h2>2. 访问对象的元数据</h2>
+<p>当你对一个你构造的对象使用dir()时，可能会发现列表中的很多属性并不是你定义的。这些属性一般保存了对象的元数据，比如类的__name__属性保存了类名。大部分这些属性都可以修改，不过改动它们意义并不是很大；修改其中某些属性如function.func_code还可能导致很难发现的问题，所以改改name什么的就好了，其他的属性不要在不了解后果的情况下修改。</p>
+<p>接下来列出特定对象的一些特殊属性。另外，Python的文档中有提到部分属性不一定会一直提供，下文中将以红色的星号<strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>标记，使用前你可以先打开解释器确认一下。</p>
+<h3>2.0. 准备工作：确定对象的类型</h3>
+<p>在types模块中定义了全部的Python内置类型，结合内置方法isinstance()就可以确定对象的具体类型了。</p>
+<ul>
+<li><strong>isinstance(object, classinfo):</strong> 
+    <br>检查object是不是classinfo中列举出的类型，返回布尔值。classinfo可以是一个具体的类型，也可以是多个类型的元组或列表。 </li>
+</ul>
+<p>types模块中仅仅定义了类型，而inspect模块中封装了很多检查类型的方法，比直接使用types模块更为轻松，所以这里不给出关于types的更多介绍，如有需要可以直接查看types模块的文档说明。本文第3节中介绍了inspect模块。</p>
+<h3>2.1. 模块(module)</h3>
+<ul>
+<li>__doc__: 文档字符串。如果模块没有文档，这个值是None。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__name__: 始终是定义时的模块名；即使你使用import .. as 为它取了别名，或是赋值给了另一个变量名。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__dict__: 包含了模块里可用的属性名-属性的字典；也就是可以使用模块名.属性名访问的对象。 </li>
+<li>__file__: 包含了该模块的文件路径。需要注意的是内建的模块没有这个属性，访问它会抛出异常！ </li>
+</ul>
+<div><div id="highlighter_374070" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">import</code> <code class="py plain">fnmatch as m</code></div><div class="line number2 index1 alt1"><code class="py functions">print</code> <code class="py plain">m.__doc__.splitlines()[</code><code class="py value">0</code><code class="py plain">] </code><code class="py comments"># Filename matching with shell patterns.</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">m.__name__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># fnmatch</code></div><div class="line number4 index3 alt1"><code class="py functions">print</code> <code class="py plain">m.__file__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># /usr/lib/python2.6/fnmatch.pyc</code></div><div class="line number5 index4 alt2"><code class="py functions">print</code> <code class="py plain">m.__dict__.items()[</code><code class="py value">0</code><code class="py plain">]&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># ('fnmatchcase', &lt;function&gt;)&lt;/function&gt;</code></div></div></td></tr></tbody></table></div></div>
+<h3>2.2. 类(class)</h3>
+<ul>
+<li>__doc__: 文档字符串。如果类没有文档，这个值是None。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__name__: 始终是定义时的类名。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__dict__: 包含了类里可用的属性名-属性的字典；也就是可以使用类名.属性名访问的对象。 </li>
+<li>__module__: 包含该类的定义的模块名；需要注意，是字符串形式的模块名而不是模块对象。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__bases__: 直接父类对象的元组；但不包含继承树更上层的其他类，比如父类的父类。 </li>
+</ul>
+<div><div id="highlighter_633293" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py functions">print</code> <code class="py plain">Cat.__doc__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># None</code></div><div class="line number2 index1 alt1"><code class="py functions">print</code> <code class="py plain">Cat.__name__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># Cat</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">Cat.__module__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># __main__</code></div><div class="line number4 index3 alt1"><code class="py functions">print</code> <code class="py plain">Cat.__bases__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># (&lt;type&gt;,)</code></div><div class="line number5 index4 alt2"><code class="py functions">print</code> <code class="py plain">Cat.__dict__&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># {'__module__': '__main__', ...}&lt;/type&gt;</code></div></div></td></tr></tbody></table></div></div>
+<h3>2.3. 实例(instance)</h3>
+<p>实例是指类实例化以后的对象。</p>
+<ul>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__dict__: 包含了可用的属性名-属性字典。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__class__: 该实例的类对象。对于类Cat，cat.__class__ == Cat 为 True。 </li>
+</ul>
+<div><div id="highlighter_130650" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py functions">print</code> <code class="py plain">cat.__dict__</code></div><div class="line number2 index1 alt1"><code class="py functions">print</code> <code class="py plain">cat.__class__</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">cat.__class__ </code><code class="py keyword">=</code><code class="py keyword">=</code> <code class="py plain">Cat </code><code class="py comments"># True</code></div></div></td></tr></tbody></table></div></div>
+<h3>2.4. 内建函数和方法(built-in functions and methods)</h3>
+<p>根据定义，内建的(built-in)模块是指使用C写的模块，可以通过sys模块的builtin_module_names字段查看都有哪些模块是内建的。这些模块中的函数和方法可以使用的属性比较少，不过一般也不需要在代码中查看它们的信息。</p>
+<ul>
+<li>__doc__: 函数或方法的文档。 </li>
+<li>__name__: 函数或方法定义时的名字。 </li>
+<li>__self__: 仅方法可用，如果是绑定的(bound)，则指向调用该方法的类（如果是类方法）或实例（如果是实例方法），否则为None。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__module__: 函数或方法所在的模块名。 </li>
+</ul>
+<h3>2.5. 函数(function)</h3>
+<p>这里特指非内建的函数。注意，在类中使用def定义的是方法，方法与函数虽然有相似的行为，但它们是不同的概念。</p>
+<ul>
+<li>__doc__: 函数的文档；另外也可以用属性名func_doc。 </li>
+<li>__name__: 函数定义时的函数名；另外也可以用属性名func_name。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__module__: 包含该函数定义的模块名；同样注意，是模块名而不是模块对象。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__dict__: 函数的可用属性；另外也可以用属性名func_dict。 
+    <br>不要忘了函数也是对象，可以使用函数.属性名访问属性（赋值时如果属性不存在将新增一个），或使用内置函数has/get/setattr()访问。不过，在函数中保存属性的意义并不大。 </li>
+<li>func_defaults: 这个属性保存了函数的参数默认值元组；因为默认值总是靠后的参数才有，所以不使用字典的形式也是可以与参数对应上的。 </li>
+<li>func_code: 这个属性指向一个该函数对应的code对象，code对象中定义了其他的一些特殊属性，将在下文中另外介绍。 </li>
+<li>func_globals: 这个属性指向定义函数时的全局命名空间。</li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>func_closure: 这个属性仅当函数是一个闭包时有效，指向一个保存了所引用到的外部函数的变量cell的元组，如果该函数不是一个内部函数，则始终为None。这个属性也是只读的。 </li>
+</ul>
+<p>下面的代码演示了func_closure：</p>
+<div><div id="highlighter_466407" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py comments">#coding: UTF-8</code></div><div class="line number2 index1 alt1"><code class="py keyword">def</code> <code class="py plain">foo():</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py plain">n </code><code class="py keyword">=</code> <code class="py value">1</code></div><div class="line number4 index3 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">def</code> <code class="py plain">bar():</code></div><div class="line number5 index4 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">n </code><code class="py comments"># 引用非全局的外部变量n，构造一个闭包</code></div><div class="line number6 index5 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py plain">n </code><code class="py keyword">=</code> <code class="py value">2</code></div><div class="line number7 index6 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">return</code> <code class="py plain">bar</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="py plain">closure </code><code class="py keyword">=</code> <code class="py plain">foo()</code></div><div class="line number10 index9 alt1"><code class="py functions">print</code> <code class="py plain">closure.func_closure</code></div><div class="line number11 index10 alt2"><code class="py comments"># 使用dir()得知cell对象有一个cell_contents属性可以获得值</code></div><div class="line number12 index11 alt1"><code class="py functions">print</code> <code class="py plain">closure.func_closure[</code><code class="py value">0</code><code class="py plain">].cell_contents </code><code class="py comments"># 2</code></div></div></td></tr></tbody></table></div></div>
+<p>由这个例子可以看到，遇到未知的对象使用dir()是一个很好的主意 ：）</p>
+<h3>2.6. 方法(method)</h3>
+<p>方法虽然不是函数，但可以理解为在函数外面加了一层外壳；拿到方法里实际的函数以后，就可以使用2.5节的属性了。</p>
+<ul>
+<li>__doc__: 与函数相同。 </li>
+<li>__name__: 与函数相同。 </li>
+<li><strong><span style="color: #ff0000;" color="#ff0000">*</span></strong>__module__: 与函数相同。 </li>
+<li>im_func: 使用这个属性可以拿到方法里实际的函数对象的引用。另外如果是2.6以上的版本，还可以使用属性名__func__。 </li>
+<li>im_self: 如果是绑定的(bound)，则指向调用该方法的类（如果是类方法）或实例（如果是实例方法），否则为None。如果是2.6以上的版本，还可以使用属性名__self__。 </li>
+<li>im_class: 实际调用该方法的类，或实际调用该方法的实例的类。注意不是方法的定义所在的类，如果有继承关系的话。 </li>
+</ul>
+<div><div id="highlighter_566310" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py plain">im </code><code class="py keyword">=</code> <code class="py plain">cat.sayHi</code></div><div class="line number2 index1 alt1"><code class="py functions">print</code> <code class="py plain">im.im_func</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">im.im_self </code><code class="py comments"># cat</code></div><div class="line number4 index3 alt1"><code class="py functions">print</code> <code class="py plain">im.im_class </code><code class="py comments"># Cat</code></div></div></td></tr></tbody></table></div></div>
+
+<p>这里讨论的是一般的实例方法，另外还有两种特殊的方法分别是类方法(classmethod)和静态方法(staticmethod)。类方法还是方法，不过因为需要使用类名调用，所以他始终是绑定的；而静态方法可以看成是在类的命名空间里的函数（需要使用类名调用的函数），它只能使用函数的属性，不能使用方法的属性。</p>
+<h3>2.7. 生成器(generator)</h3>
+<p>生成器是调用一个生成器函数(generator function)返回的对象，多用于集合对象的迭代。</p>
+<ul>
+<li>__iter__: 仅仅是一个可迭代的标记。 </li>
+<li>gi_code: 生成器对应的code对象。 </li>
+<li>gi_frame: 生成器对应的frame对象。 </li>
+<li>gi_running: 生成器函数是否在执行。生成器函数在yield以后、执行yield的下一行代码前处于frozen状态，此时这个属性的值为0。 </li>
+<li>next|close|send|throw: 这是几个可调用的方法，并不包含元数据信息，如何使用可以查看生成器的相关文档。 </li>
+</ul>
+<div><div id="highlighter_119683" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">def</code> <code class="py plain">gen():</code></div><div class="line number2 index1 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">for</code> <code class="py plain">n </code><code class="py keyword">in</code> <code class="py functions">xrange</code><code class="py plain">(</code><code class="py value">5</code><code class="py plain">):</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">yield</code> <code class="py plain">n</code></div><div class="line number4 index3 alt1"><code class="py plain">g </code><code class="py keyword">=</code> <code class="py plain">gen()</code></div><div class="line number5 index4 alt2"><code class="py functions">print</code> <code class="py plain">g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># &lt;generator object gen at 0x...&gt;</code></div><div class="line number6 index5 alt1"><code class="py functions">print</code> <code class="py plain">g.gi_code&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># &lt;code object gen at 0x...&gt;</code></div><div class="line number7 index6 alt2"><code class="py functions">print</code> <code class="py plain">g.gi_frame&nbsp;&nbsp;&nbsp; </code><code class="py comments"># &lt;frame object at 0x...&gt;</code></div><div class="line number8 index7 alt1"><code class="py functions">print</code> <code class="py plain">g.gi_running&nbsp; </code><code class="py comments"># 0</code></div><div class="line number9 index8 alt2"><code class="py functions">print</code> <code class="py plain">g.</code><code class="py functions">next</code><code class="py plain">()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># 0</code></div><div class="line number10 index9 alt1"><code class="py functions">print</code> <code class="py plain">g.</code><code class="py functions">next</code><code class="py plain">()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># 1</code></div><div class="line number11 index10 alt2"><code class="py keyword">for</code> <code class="py plain">n </code><code class="py keyword">in</code> <code class="py plain">g:</code></div><div class="line number12 index11 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">n,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># 2 3 4</code></div></div></td></tr></tbody></table></div></div>
+<p>接下来讨论的是几个不常用到的内置对象类型。这些类型在正常的编码过程中应该很少接触，除非你正在自己实现一个解释器或开发环境之类。所以这里只列出一部分属性，如果需要一份完整的属性表或想进一步了解，可以查看文末列出的参考文档。</p>
+<h3>2.8. 代码块(code)</h3>
+<p>代码块可以由类源代码、函数源代码或是一个简单的语句代码编译得到。这里我们只考虑它指代一个函数时的情况；2.5节中我们曾提到可以使用函数的func_code属性获取到它。code的属性全部是只读的。</p>
+<ul>
+<li>co_argcount: 普通参数的总数，不包括*参数和**参数。 </li>
+<li>co_names: 所有的参数名（包括*参数和**参数）和局部变量名的元组。 </li>
+<li>co_varnames: 所有的局部变量名的元组。 </li>
+<li>co_filename: 源代码所在的文件名。 </li>
+<li>co_flags:&nbsp; 这是一个数值，每一个二进制位都包含了特定信息。较关注的是0b100(0x4)和0b1000(0x8)，如果co_flags &amp; 0b100 != 0，说明使用了*args参数；如果co_flags &amp; 0b1000 != 0，说明使用了**kwargs参数。另外，如果co_flags &amp; 0b100000(0x20) != 0，则说明这是一个生成器函数(generator function)。 </li>
+</ul>
+<div><div id="highlighter_973383" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py plain">co </code><code class="py keyword">=</code> <code class="py plain">cat.sayHi.func_code</code></div><div class="line number2 index1 alt1"><code class="py functions">print</code> <code class="py plain">co.co_argcount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># 1</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">co.co_names&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># ('name',)</code></div><div class="line number4 index3 alt1"><code class="py functions">print</code> <code class="py plain">co.co_varnames&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># ('self',)</code></div><div class="line number5 index4 alt2"><code class="py functions">print</code> <code class="py plain">co.co_flags &amp; </code><code class="py value">0b100</code>&nbsp;&nbsp; <code class="py comments"># 0</code></div></div></td></tr></tbody></table></div></div>
+<h3>2.9. 栈帧(frame)</h3>
+<p>栈帧表示程序运行时函数调用栈中的某一帧。函数没有属性可以获取它，因为它在函数调用时才会产生，而生成器则是由函数调用返回的，所以有属性指向栈帧。想要获得某个函数相关的栈帧，则必须在调用这个函数且这个函数尚未返回时获取。你可以使用sys模块的_getframe()函数、或inspect模块的currentframe()函数获取当前栈帧。这里列出来的属性全部是只读的。</p>
+<ul>
+<li>f_back: 调用栈的前一帧。 </li>
+<li>f_code: 栈帧对应的code对象。 </li>
+<li>f_locals: 用在当前栈帧时与内建函数locals()相同，但你可以先获取其他帧然后使用这个属性获取那个帧的locals()。 </li>
+<li>f_globals: 用在当前栈帧时与内建函数globals()相同，但你可以先获取其他帧……。 </li>
+</ul>
+<div><div id="highlighter_485736" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">def</code> <code class="py plain">add(x, y</code><code class="py keyword">=</code><code class="py value">1</code><code class="py plain">):</code></div><div class="line number2 index1 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py plain">f </code><code class="py keyword">=</code> <code class="py plain">inspect.currentframe()</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">f.f_locals&nbsp;&nbsp;&nbsp; </code><code class="py comments"># same as locals()</code></div><div class="line number4 index3 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">f.f_back&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># &lt;frame object at 0x...&gt;</code></div><div class="line number5 index4 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">return</code> <code class="py plain">x</code><code class="py keyword">+</code><code class="py plain">y</code></div><div class="line number6 index5 alt1"><code class="py plain">add(</code><code class="py value">2</code><code class="py plain">)</code></div></div></td></tr></tbody></table></div></div>
+<h3>2.10. 追踪(traceback)</h3>
+<p>追踪是在出现异常时用于回溯的对象，与栈帧相反。由于异常时才会构建，而异常未捕获时会一直向外层栈帧抛出，所以需要使用try才能见到这个对象。你可以使用sys模块的exc_info()函数获得它，这个函数返回一个元组，元素分别是异常类型、异常对象、追踪。traceback的属性全部是只读的。</p>
+<ul>
+<li>tb_next: 追踪的下一个追踪对象。 </li>
+<li>tb_frame: 当前追踪对应的栈帧。 </li>
+<li>tb_lineno: 当前追踪的行号。 </li>
+</ul>
+<div><div id="highlighter_71097" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">def</code> <code class="py plain">div(x, y):</code></div><div class="line number2 index1 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">try</code><code class="py plain">:</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">return</code> <code class="py plain">x</code><code class="py keyword">/</code><code class="py plain">y</code></div><div class="line number4 index3 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">except</code><code class="py plain">:</code></div><div class="line number5 index4 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py plain">tb </code><code class="py keyword">=</code> <code class="py plain">sys.exc_info()[</code><code class="py value">2</code><code class="py plain">]&nbsp; </code><code class="py comments"># return (exc_type, exc_value, traceback)</code></div><div class="line number6 index5 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">tb</code></div><div class="line number7 index6 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">tb.tb_lineno&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="py comments"># "return x/y" 的行号</code></div><div class="line number8 index7 alt1"><code class="py plain">div(</code><code class="py value">1</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">)</code></div></div></td></tr></tbody></table></div></div>
+<h2>3. 使用inspect模块</h2>
+<p>inspect模块提供了一系列函数用于帮助使用自省。下面仅列出较常用的一些函数，想获得全部的函数资料可以查看inspect模块的文档。</p>
+<h3>3.1. 检查对象类型</h3>
+<ul>
+<li><strong>is{module|class|function|method|builtin}(obj): 
+      <br></strong>检查对象是否为模块、类、函数、方法、内建函数或方法。 </li>
+<li><strong>isroutine(obj): 
+      <br></strong>用于检查对象是否为函数、方法、内建函数或方法等等可调用类型。用这个方法会比多个is*()更方便，不过它的实现仍然是用了多个is*()。 
+    <br>
+<div><div id="highlighter_175779" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py plain">im </code><code class="py keyword">=</code> <code class="py plain">cat.sayHi</code></div><div class="line number2 index1 alt1"><code class="py keyword">if</code> <code class="py plain">inspect.isroutine(im):</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py plain">im()</code></div></div></td></tr></tbody></table></div></div>
+<br>对于实现了__call__的类实例，这个方法会返回False。如果目的是只要可以直接调用就需要是True的话，不妨使用<strong>isinstance(obj, collections.Callable)</strong>这种形式。我也不知道为什么Callable会在collections模块中，抱歉！我猜大概是因为collections模块中包含了很多其他的ABC(Abstract Base Class)的缘故吧：） </li>
+</ul>
+<h3>3.2. 获取对象信息</h3>
+<ul>
+<li><strong>getmembers(object[, predicate]):</strong> 
+    <br>这个方法是dir()的扩展版，它会将dir()找到的名字对应的属性一并返回，形如[(name, value), ...]。另外，predicate是一个方法的引用，如果指定，则应当接受value作为参数并返回一个布尔值，如果为False，相应的属性将不会返回。使用is*作为第二个参数可以过滤出指定类型的属性。 </li>
+<li><strong>getmodule(object):</strong> 
+    <br>还在为第2节中的__module__属性只返回字符串而遗憾吗？这个方法一定可以满足你，它返回object的定义所在的模块对象。 </li>
+<li><strong>get{file|sourcefile}(object):</strong> 
+    <br>获取object的定义所在的模块的文件名|源代码文件名（如果没有则返回None）。用于内建的对象（内建模块、类、函数、方法）上时会抛出TypeError异常。 </li>
+<li><strong>get{source|sourcelines}(object):</strong> 
+    <br>获取object的定义的源代码，以字符串|字符串列表返回。代码无法访问时会抛出IOError异常。只能用于module/class/function/method/code/frame/traceack对象。 </li>
+<li><strong>getargspec(func): 
+      <br></strong>仅用于方法，获取方法声明的参数，返回元组，分别是(普通参数名的列表, *参数名, **参数名, 默认值元组)。如果没有值，将是空列表和3个None。如果是2.6以上版本，将返回一个命名元组(Named Tuple)，即除了索引外还可以使用属性名访问元组中的元素。&nbsp; <br>
+<div><div id="highlighter_791792" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">def</code> <code class="py plain">add(x, y</code><code class="py keyword">=</code><code class="py value">1</code><code class="py plain">, </code><code class="py keyword">*</code><code class="py plain">z):</code></div><div class="line number2 index1 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">return</code> <code class="py plain">x </code><code class="py keyword">+</code> <code class="py plain">y </code><code class="py keyword">+</code> <code class="py functions">sum</code><code class="py plain">(z)</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">inspect.getargspec(add)</code></div><div class="line number4 index3 alt1"><code class="py comments">#ArgSpec(args=['x', 'y'], varargs='z', keywords=None, defaults=(1,))</code></div></div></td></tr></tbody></table></div></div>
+</li>
+<li><strong>getargvalues(frame): 
+      <br></strong>仅用于栈帧，获取栈帧中保存的该次函数调用的参数值，返回元组，分别是(普通参数名的列表, *参数名, **参数名, 帧的locals())。如果是2.6以上版本，将返回一个命名元组(Named Tuple)，即除了索引外还可以使用属性名访问元组中的元素。 
+    <br>
+<div><div id="highlighter_218717" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py keyword">def</code> <code class="py plain">add(x, y</code><code class="py keyword">=</code><code class="py value">1</code><code class="py plain">, </code><code class="py keyword">*</code><code class="py plain">z):</code></div><div class="line number2 index1 alt1"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py functions">print</code> <code class="py plain">inspect.getargvalues(inspect.currentframe())</code></div><div class="line number3 index2 alt2"><code class="py spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="py keyword">return</code> <code class="py plain">x </code><code class="py keyword">+</code> <code class="py plain">y </code><code class="py keyword">+</code> <code class="py functions">sum</code><code class="py plain">(z)</code></div><div class="line number4 index3 alt1"><code class="py plain">add(</code><code class="py value">2</code><code class="py plain">)</code></div><div class="line number5 index4 alt2"><code class="py comments">#ArgInfo(args=['x', 'y'], varargs='z', keywords=None, locals={'y': 1, 'x': 2, 'z': ()})</code></div></div></td></tr></tbody></table></div></div>
+</li>
+<li><strong>getcallargs(func[, *args][, **kwds]): 
+      <br></strong>返回使用args和kwds调用该方法时各参数对应的值的字典。这个方法仅在2.7版本中才有。 </li>
+<li><strong>getmro(cls): 
+      <br></strong>返回一个类型元组，查找类属性时按照这个元组中的顺序。如果是新式类，与cls.__mro__结果一样。但旧式类没有__mro__这个属性，直接使用这个属性会报异常，所以这个方法还是有它的价值的。 
+    <br>
+<div><div id="highlighter_603043" class="syntaxhighlighter  py"><div class="toolbar"><span><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="py functions">print</code> <code class="py plain">inspect.getmro(Cat)</code></div><div class="line number2 index1 alt1"><code class="py comments">#(&lt;class '__main__.Cat'&gt;, &lt;type 'object'&gt;)</code></div><div class="line number3 index2 alt2"><code class="py functions">print</code> <code class="py plain">Cat.__mro__</code></div><div class="line number4 index3 alt1"><code class="py comments">#(&lt;class '__main__.Cat'&gt;, &lt;type 'object'&gt;)</code></div><div class="line number5 index4 alt2"><code class="py keyword">class</code> <code class="py plain">Dog: </code><code class="py keyword">pass</code></div><div class="line number6 index5 alt1"><code class="py functions">print</code> <code class="py plain">inspect.getmro(Dog)</code></div><div class="line number7 index6 alt2"><code class="py comments">#(&lt;class __main__.Dog at 0x...&gt;,)</code></div><div class="line number8 index7 alt1"><code class="py functions">print</code> <code class="py plain">Dog.__mro__ </code><code class="py comments"># AttributeError</code></div></div></td></tr></tbody></table></div></div>
+</li>
+<li><strong>currentframe(): 
+      <br></strong>返回当前的栈帧对象。 </li>
+</ul>
+<p>其他的操作frame和traceback的函数请查阅inspect模块的文档，用的比较少，这里就不多介绍了。</p>
+<p><span style="color: #ff0000;" color="#ff0000">&lt;全文完&gt;</span> 
+  <br>参考资料： 
+  <br>1. <a target="_blank" href="http://docs.python.org/reference/datamodel.html#the-standard-type-hierarchy">The standard type hierarchy</a>[官方文档][英文] 
+  <br>2. <a target="_blank" href="http://docs.python.org/library/inspect.html#module-inspect">inspect — Inspect live objects</a>[官方文档][英文]</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/huxi/category/251137.html">Python</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(1924317,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/AstralWind" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Python自省（反射）指南 - AstralWind - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/huxi/" target="_blank"><img src="./Python自省（反射）指南 - AstralWind - 博客园_files/u103487.jpg" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/huxi/">AstralWind</a><br>
+<a href="http://home.cnblogs.com/u/huxi/followees">关注 - 1</a><br>
+<a href="http://home.cnblogs.com/u/huxi/followers">粉丝 - 208</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(1924317,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">9</span>
+    </div>
+	<div class="buryit" onclick="votePost(1924317,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/huxi/archive/2010/12/19/1910425.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/huxi/archive/2010/12/19/1910425.html" title="发布于2010-12-19 11:27">为什么我们用Python？</a><br><a href="http://www.cnblogs.com/huxi/archive/2011/03/01/1967600.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/huxi/archive/2011/03/01/1967600.html" title="发布于2011-03-01 01:15">Python装饰器与面向切面编程</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2011-01-02 23:12</span> <a href="http://www.cnblogs.com/huxi/">AstralWind</a> 阅读(<span id="post_view_count">26649</span>) 评论(<span id="post_comment_count">8</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=1924317" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" onclick="AddToWz(1924317);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=64145,cb_entryId=1924317,cb_blogApp=currentBlogApp,cb_blogUserGuid='e63d8b8b-02e7-de11-ba8f-001cf0cd104b',cb_entryCreatedDate='2011/1/2 23:12:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2002420" class="layer">#1楼</a><a name="2002420" id="comment_anchor_2002420"></a>  <span class="comment_date">2011-01-02 23:53</span> <a id="a_comment_author_2002420" href="http://www.cnblogs.com/1000/" target="_blank">币须网</a> <a href="http://msg.cnblogs.com/msg/send/%e5%b8%81%e9%a1%bb%e7%bd%91" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2002420" class="blog_comment_body">有条理，比较系统，不错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2002420,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2002420,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2002420_avatar" style="display:none;">http://pic.cnitblog.com/face/104509/20140612134509.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2014134" class="layer">#2楼</a><a name="2014134" id="comment_anchor_2014134"></a>  <span class="comment_date">2011-01-19 11:30</span> <a id="a_comment_author_2014134" href="http://www.cnblogs.com/onm123/" target="_blank">onm</a> <a href="http://msg.cnblogs.com/msg/send/onm" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2014134" class="blog_comment_body">哈，发现博主的文章不错，支持一下。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2014134,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2014134,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2038570" class="layer">#3楼</a><a name="2038570" id="comment_anchor_2038570"></a>  <span class="comment_date">2011-03-04 14:46</span> <a id="a_comment_author_2038570" href="http://www.cnblogs.com/greatghoul/" target="_blank">greatghoul</a> <a href="http://msg.cnblogs.com/msg/send/greatghoul" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2038570" class="blog_comment_body">原来python的自省里面有这么多东西，以前了解真是冰山一角呀。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2038570,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2038570,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2038570_avatar" style="display:none;">http://pic.cnitblog.com/face/u84648.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2119359" class="layer">#4楼</a><a name="2119359" id="comment_anchor_2119359"></a>  <span class="comment_date">2011-06-08 08:53</span> <a id="ctl00_CommentList_NameLink_3" href="http://www.cnitblog.com/r.aspx?url=http://fgb.motd.org" rel="nofllow" target="_blank">binsook[未注册用户]</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2119359" class="blog_comment_body">博主的博文真是牛得一B。领悟了很多</div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2163318" class="layer">#5楼</a><a name="2163318" id="comment_anchor_2163318"></a>  <span class="comment_date">2011-07-28 16:34</span> <a id="a_comment_author_2163318" href="http://home.cnblogs.com/u/207955/" target="_blank">styshoo1986</a> <a href="http://msg.cnblogs.com/msg/send/styshoo1986" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2163318" class="blog_comment_body">现在才看到这个文章，真的长见识了，现在正在学这个。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2163318,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2163318,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2304225" class="layer">#6楼</a><a name="2304225" id="comment_anchor_2304225"></a>  <span class="comment_date">2012-02-07 21:56</span> <a id="ctl00_CommentList_NameLink_5" target="_blank">感谢博主[未注册用户]</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2304225" class="blog_comment_body">就是这篇文章例子太少了。很多概念理解不了。</div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2585144" class="layer">#7楼</a><a name="2585144" id="comment_anchor_2585144"></a>  <span class="comment_date">2012-12-24 15:14</span> <a id="a_comment_author_2585144" href="http://home.cnblogs.com/u/319960/" target="_blank">Honghe</a> <a href="http://msg.cnblogs.com/msg/send/Honghe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2585144" class="blog_comment_body"><fieldset class="comment_quote"><legend>引用</legend># 使用dir()得知cell对象有一个cell_contents属性可以获得值<br>print closure.func_closure[0].cell_contents # 2</fieldset><br>这个怎么dir的，Python 2对闭包支持不是很好</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2585144,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2585144,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#2585202" class="layer">#8楼</a><a name="2585202" id="comment_anchor_2585202"></a><span id="comment-maxId" style="display:none;">2585202</span><span id="comment-maxDate" style="display:none;">2012/12/24 15:52:30</span>  <span class="comment_date">2012-12-24 15:52</span> <a id="a_comment_author_2585202" href="http://home.cnblogs.com/u/319960/" target="_blank">Honghe</a> <a href="http://msg.cnblogs.com/msg/send/Honghe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2585202" class="blog_comment_body">Python中 一般方法 静态方法 类方法有点乱，感觉是先前没设计好，后来修补的</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2585202,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2585202,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/510537/" target="_blank">微软起诉盗版其软件的个人</a><br> ·  <a href="http://news.cnblogs.com/n/510536/" target="_blank">苹果公司将在日本建立大型研发中心</a><br> ·  <a href="http://news.cnblogs.com/n/510535/" target="_blank">苹果招聘奢侈品行业店员迎接Apple Watch</a><br> ·  <a href="http://news.cnblogs.com/n/510534/" target="_blank">智能手表让手表行业的发展提速了</a><br> ·  <a href="http://news.cnblogs.com/n/510533/" target="_blank">微软的用户要成为 Google 的用户？</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/510356/" target="_blank">为什么社交网络中数据翻页技术复杂</a><br> ·  <a href="http://kb.cnblogs.com/page/510354/" target="_blank">案例分析：基于消息的分布式架构</a><br> ·  <a href="http://kb.cnblogs.com/page/506621/" target="_blank">你的数据库危机四伏</a><br> ·  <a href="http://kb.cnblogs.com/page/510192/" target="_blank">《星际穿越》科学解析</a><br> ·  <a href="http://kb.cnblogs.com/page/510190/" target="_blank">《星际穿越》初解析：一部空前绝后的史诗科学巨作</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2010/12/01&#39;);return false;">&lt;</a></td><td align="center">2011年1月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2011/02/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">26</td><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td class="CalWeekendDay" align="center">1</td></tr><tr><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/huxi/archive/2011/01/02.html"><u>2</u></a></td><td align="center">3</td><td align="center">4</td><td align="center">5</td><td align="center">6</td><td align="center">7</td><td class="CalWeekendDay" align="center">8</td></tr><tr><td class="CalWeekendDay" align="center">9</td><td align="center">10</td><td align="center">11</td><td align="center">12</td><td align="center">13</td><td align="center">14</td><td class="CalWeekendDay" align="center">15</td></tr><tr><td class="CalWeekendDay" align="center">16</td><td align="center">17</td><td align="center">18</td><td align="center">19</td><td align="center">20</td><td align="center">21</td><td class="CalWeekendDay" align="center">22</td></tr><tr><td class="CalWeekendDay" align="center">23</td><td align="center">24</td><td align="center">25</td><td align="center">26</td><td align="center">27</td><td align="center">28</td><td class="CalWeekendDay" align="center">29</td></tr><tr><td class="CalWeekendDay" align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/huxi/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/huxi/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/huxi/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/huxi/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/huxi/tag/" title="我的博客的标签列表">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="http://www.cnblogs.com/huxi/archive/2011/01/02/1924317.html#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div>
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/huxi/tag/Java/">Java</a>(3)</li><li><a href="http://www.cnblogs.com/huxi/tag/JDK/">JDK</a>(1)</li><li><a href="http://www.cnblogs.com/huxi/tag/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">动态代理</a>(1)</li><li><a href="http://www.cnblogs.com/huxi/tag/%E6%98%A0%E5%B0%84/">映射</a>(1)</li><li><a href="http://www.cnblogs.com/huxi/tag/Calendar/">Calendar</a>(1)</li><li><a href="http://www.cnblogs.com/huxi/tag/Hibernate/">Hibernate</a>(1)</li>
+</ul>
+</div>
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/huxi/category/223281.html">Java(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/huxi/category/223282.html">Java web(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/huxi/category/223280.html">Other(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/huxi/category/251137.html">Python(13)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/huxi/category/251138.html">随笔(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/huxi/category/223562.html">学习笔记(3)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catListPostArchive">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/huxi/archive/2011/07.html">2011年7月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/huxi/archive/2011/06.html">2011年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/huxi/archive/2011/03.html">2011年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/huxi/archive/2011/01.html">2011年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/huxi/archive/2010/12.html">2010年12月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/huxi/archive/2010/07.html">2010年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/huxi/archive/2010/06.html">2010年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/huxi/archive/2009/12.html">2009年12月 (6)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/huxi/archive/2009/12/13/1623190.html#3079578">1. Re:使用自定义主题让Windows Live Writer在本地预览语法高亮效果</a></li>
+    <li class="recent_comment_body">博主，我也想问如何把把代码设置成折叠的形式</li>
+    <li class="recent_comment_author">--兰幽</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/huxi/archive/2010/12/05/1897271.html#3077420">2. Re:Python字符编码详解</a></li>
+    <li class="recent_comment_body">写的真不错, 学习了</li>
+    <li class="recent_comment_author">--reyleon</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/huxi/archive/2011/07/14/2106863.html#3050774">3. Re:Python函数式编程指南（四）：生成器</a></li>
+    <li class="recent_comment_body">好文！</li>
+    <li class="recent_comment_author">--windcarp</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/huxi/archive/2010/12/05/1897271.html#3049417">4. Re:Python字符编码详解</a></li>
+    <li class="recent_comment_body">非常好。</li>
+    <li class="recent_comment_author">--唔知叫咩名</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/huxi/archive/2010/12/05/1897271.html#3048820">5. Re:Python字符编码详解</a></li>
+    <li class="recent_comment_body">写的好 ！！！</li>
+    <li class="recent_comment_author">--迷信自己的迷信</li>
+</ul>
+</div>
+</div>
+</div><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/huxi/archive/2010/07/04/1771073.html">1. Python正则表达式指南(226296)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2010/12/05/1897271.html">2. Python字符编码详解(42607)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2010/06/26/1765808.html">3. Python线程指南(40947)</a></li><li><a href="./Python自省（反射）指南 - AstralWind - 博客园_files/Python自省（反射）指南 - AstralWind - 博客园.html">4. Python自省（反射）指南(26649)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2011/03/01/1967600.html">5. Python装饰器与面向切面编程(26431)</a></li></ul></div>
+</div>
+</div><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/huxi/archive/2010/07/04/1771073.html">1. Python正则表达式指南(58)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2011/03/01/1967600.html">2. Python装饰器与面向切面编程(33)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2010/12/05/1897271.html">3. Python字符编码详解(31)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2010/06/26/1765808.html">4. Python线程指南(22)</a></li><li><a href="http://www.cnblogs.com/huxi/archive/2009/12/22/1629909.html">5. 继承自java.util.Calendar的200年农历(19)</a></li></ul></div>
+</div>
+</div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2014 AstralWind
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<iframe src="./Python自省（反射）指南 - AstralWind - 博客园_files/container.html" style="visibility: hidden; display: none;"></iframe><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://www.cnblogs.com/tannerBG/p/4054627.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery17012482426036149263_1420429227697&adModuleId=2&content=Shell+%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E7%BB%93%E6%9E%84%E6%B1%87%E6%80%BB&_=1420429228732"></script><script type="text/javascript" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/encoder.js"></script>
+
+<title>Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/bundle-elf.css">
+<link type="text/css" rel="stylesheet" href="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/144151.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/tannerBG/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/tannerBG/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/tannerBG/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/gpt.js"></script><script src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">var currentBlogApp = 'tannerBG', cb_enable_mathjax=true;</script>
+<script src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/share.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_55.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/slide_share.css?v=c5bd12e0.css"></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<meta name="baidu-site-verification" content="QoO5IbXR8i">
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/tannerBG/"><img id="blogLogo" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/tannerBG/">TannerBG</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/tannerBG/">首页</a></li>
+<li><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/TannerBG">联系</a></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/tannerBG/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/tannerBG/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+<!--done-->
+随笔- 33&nbsp;
+文章- 2&nbsp;
+评论- 1&nbsp;
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园.htm">Shell 编程基础之基本语法结构汇总</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><h2>一、条件语句</h2>
+<ul>
+<li>简单条件
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">if</span> [ condition ]; <span style="color: #0000ff;">then</span><span style="color: #000000;">
+    # 当 condition 成立时，执行内容；
+</span><span style="color: #0000ff;">fi</span>  # 将 <span style="color: #0000ff;">if</span> 反过来写，<span style="color: #0000ff;">fi</span> 结束 <span style="color: #0000ff;">if</span> 之意</pre>
+</div>
+</li>
+<li>
+<p><span style="line-height: 1.5;">复杂条件</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">if</span> [ condition ]; <span style="color: #0000ff;">then</span><span style="color: #000000;">
+    # 当 condition 成立时，执行内容；
+</span><span style="color: #0000ff;">else</span><span style="color: #000000;">
+    # 当 condition 成立时，执行内容；
+</span><span style="color: #0000ff;">fi</span></pre>
+</div>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">if</span> [ condition1 ]; <span style="color: #0000ff;">then</span><span style="color: #000000;">
+    # 当 condition1 成立时，执行内容；
+</span><span style="color: #0000ff;">elif</span> [ condition2 ]; <span style="color: #0000ff;">then</span><span style="color: #000000;">
+    # 当 condition2 成立时，执行内容；
+</span><span style="color: #0000ff;">else</span><span style="color: #000000;">
+    # 当 condition1 与 condition2 均不成立时，执行内容；
+</span><span style="color: #0000ff;">fi</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</li>
+</ul>
+<h2>二、循环语句</h2>
+<ul>
+<li>FOR<br>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">for</span> var <span style="color: #0000ff;">in</span><span style="color: #000000;"> con1 con2 con3 ...
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    # 执行内容
+</span><span style="color: #0000ff;">done</span></pre>
+</div>
+<p><span style="color: #ff0000;">Note</span>: con1,con2,con3 为一字符串列表，以空格分隔</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">for</span> var <span style="color: #0000ff;">in</span><span style="color: #000000;"> {min..max}
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    # 执行内容
+</span><span style="color: #0000ff;">done</span></pre>
+</div>
+<p><span style="color: #ff0000;">Note</span>：min 为叫小数，max 为较大数，步阶为1。</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">for</span><span style="color: #000000;"> (( 初始值; 限制值; 步阶 ))
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    # 执行内容
+</span><span style="color: #0000ff;">done</span></pre>
+</div>
+</li>
+<li>WHILE<br>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">while</span><span style="color: #000000;"> [ condition ]  # 当 condition 条件成立时，就进行循环，直到条件不成立停止
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    #</span>执行内容</pre>
+<pre><span style="color: #0000ff;">done</span></pre>
+</div>
+</li>
+<li>
+<p>UNTIL</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">until</span><span style="color: #000000;"> [ condition ]  # 和while相反，当 condition 条件成立时，就终止回圈， 否则就持续进行回圈的程序段
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    #</span>执行内容</pre>
+<pre><span style="color: #0000ff;">done</span>&nbsp;</pre>
+</div>
+</li>
+</ul>
+<h2>三、选择语句</h2>
+<ul>
+<li>CASE<br>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">case</span>  $变量 <span style="color: #0000ff;">in</span>
+  <span style="color: #800000;">"</span><span style="color: #800000;">第一个变量内容</span><span style="color: #800000;">"</span><span style="color: #000000;">)   # 每个变量内容建议用双引号括起来，关键字则为小括号 )
+    # 执行内容
+    ;;              # 每个类别结尾使用两个连续的分号来处理！
+  </span><span style="color: #800000;">"</span><span style="color: #800000;">第二个变量内容</span><span style="color: #800000;">"</span><span style="color: #000000;">)
+    # 执行内容
+    ;;
+  </span>*)                # 最后一个变量内容都会用 *<span style="color: #000000;"> 来代表所有其他值，但不包含第一个变量内容与第二个变量内容的其他程序运行段
+    # 执行内容
+    ;;
+</span><span style="color: #0000ff;">esac</span>                # 最终的以反写的 case 结尾&nbsp;</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+</li>
+<li>SELECT<br>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">select</span> 变量 <span style="color: #0000ff;">in</span><span style="color: #000000;"> con1 con2 con3    # 自动列出 con1，con2，con3 的选择菜单
+</span><span style="color: #0000ff;">do</span><span style="color: #000000;">
+    #执行内容
+break    # select本身就是一个循环，break是当选择后，就跳出循环
+</span><span style="color: #0000ff;">done</span></pre>
+</div>
+<p><span style="color: #ff0000;">Note</span>：select 是 bash 的一种扩展，自动 read 输入的选择序列，并把选择传给变量</p>
+</li>
+</ul></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/tannerBG/category/624316.html">Linux</a>, <a href="http://www.cnblogs.com/tannerBG/category/624294.html">Shell</a></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/tannerBG/tag/Linux/">Linux</a>, <a href="http://www.cnblogs.com/tannerBG/tag/Shell/">Shell</a></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(4054627,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/TannerBG" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/tannerBG/" target="_blank"><img src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/tannerBG/">TannerBG</a><br>
+<a href="http://home.cnblogs.com/u/tannerBG/followees">关注 - 0</a><br>
+<a href="http://home.cnblogs.com/u/tannerBG/followers">粉丝 - 2</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(4054627,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+	<div class="buryit" onclick="votePost(4054627,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/tannerBG/p/4054366.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/tannerBG/p/4054366.html" title="发布于2014-10-27 15:48">Shell 编程基础之注意技巧</a><br><a href="http://www.cnblogs.com/tannerBG/p/4056020.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/tannerBG/p/4056020.html" title="发布于2014-10-28 09:41">Shell 编程基础之 If 练习</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2014-10-27 18:04</span> <a href="http://www.cnblogs.com/tannerBG/">TannerBG</a> 阅读(<span id="post_view_count">7</span>) 评论(<span id="post_comment_count">0</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=4054627" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/tannerBG/p/4054627.html#" onclick="AddToWz(4054627);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=144151,cb_entryId=4054627,cb_blogApp=currentBlogApp,cb_blogUserGuid='08ee9a2d-e38a-e211-90a7-f6db9189f8ef',cb_entryCreatedDate='2014/10/27 18:04:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/tannerBG/p/4054627.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/tannerBG/p/4054627.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/512426/" target="_blank">富士康员工泄露苹果iPad Pro工程样机图</a><br> ·  <a href="http://news.cnblogs.com/n/512425/" target="_blank">王健：游城</a><br> ·  <a href="http://news.cnblogs.com/n/512424/" target="_blank">美国科罗拉多大学：调查显示64%的人会删除经常发无聊信息的好友</a><br> ·  <a href="http://news.cnblogs.com/n/512423/" target="_blank">不甘愿代工的富士康 想成为第二个京东</a><br> ·  <a href="http://news.cnblogs.com/n/512422/" target="_blank">强大的前苏联 实拍俄罗斯直升机坟场</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/512391/" target="_blank">响应式设计的现状与趋势</a><br> ·  <a href="http://kb.cnblogs.com/page/512250/" target="_blank">从0到100——知乎架构变迁史</a><br> ·  <a href="http://kb.cnblogs.com/page/511888/" target="_blank">动效设计的物理法则</a><br> ·  <a href="http://kb.cnblogs.com/page/511895/" target="_blank">证券创新之翼——阿里金融云</a><br> ·  <a href="http://kb.cnblogs.com/page/511716/" target="_blank">手机淘宝构架演化实践</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=c76ae2e31934ad9fea54bc3bcd7e6df9" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 20px 20px;"></a><div id="_document_write_ajax_div" style="width: 230px; height: 320px"><img id="_document_write_ajax_div_img" src="http://www.bijint.com/assets/pict/jp/240x320/1142.jpg?_=1420429320221"></div><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/tannerBG/">TannerBG</a><br>园龄：<a href="http://home.cnblogs.com/u/tannerBG/" title="入园时间：2013-03-12">1年9个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/tannerBG/followers/">2</a><br>关注：<a href="http://home.cnblogs.com/u/tannerBG/followees/">0</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;08ee9a2d-e38a-e211-90a7-f6db9189f8ef&#39;)">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2014/12/01&#39;);return false;">&lt;</a></td><td align="center">2015年1月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2015/02/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td class="CalWeekendDay" align="center">3</td></tr><tr><td class="CalWeekendDay" align="center">4</td><td class="CalTodayDay" align="center">5</td><td align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center">9</td><td class="CalWeekendDay" align="center">10</td></tr><tr><td class="CalWeekendDay" align="center">11</td><td align="center">12</td><td align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td class="CalWeekendDay" align="center">17</td></tr><tr><td class="CalWeekendDay" align="center">18</td><td align="center">19</td><td align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td class="CalWeekendDay" align="center">24</td></tr><tr><td class="CalWeekendDay" align="center">25</td><td align="center">26</td><td align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalWeekendDay" align="center">31</td></tr><tr><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<div class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+
+
+<div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/tannerBG/p/4086383.html">1. MySQL 存储过程基本函数</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4079191.html">2. MySQL 存储过程游标</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4079074.html">3. MySQL 存储过程控制语句</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/3170750.html">4. MySQL 存储过程</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4070552.html">5. Shell 编程基础之 &amp;&amp; 与 ||</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4065333.html">6. Shell 编程基础之 [ 与 [[ 的异同</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4064331.html">7. Linux 任务控制</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4063291.html">8. Linux chkconfig 命令详解</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4062652.html">9. Linux crontab 定时任务命令详解</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4060180.html">10. Shell 编程基础之括号的作用</a></li>
+</ul>
+</div>
+
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/tannerBG/category/625572.html">Command(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/tannerBG/category/619746.html">Database(7)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/tannerBG/category/593932.html">DevOps(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/tannerBG/category/587076.html">Hadoop(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/tannerBG/category/464980.html">J2EE Java(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/tannerBG/category/624316.html">Linux(15)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/tannerBG/category/619747.html">MongoDB(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/tannerBG/category/494644.html">MySQL(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/tannerBG/category/624294.html">Shell(14)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/tannerBG/p/3844833.html">1. Azkaban 2.5.0 job type 插件安装(147)</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/3835952.html">2. Azkaban 2.5.0 搭建(138)</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/4026308.html">3. MongoDB 入门之基础 DCL(83)</a></li><li><a href="http://www.cnblogs.com/tannerBG/archive/2013/03/29/2988026.html">4. Ubuntu 手动安装JDK1.7(65)</a></li><li><a href="http://www.cnblogs.com/tannerBG/p/3834093.html">5. keytool创建Keystore和Trustsotre文件(41)</a></li></ul></div>
+</div>
+</div><div id="topdigg_posts_wrap" style="display: none;">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"></div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2015 TannerBG
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<!-- Baidu Share JavaScript Based Code -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":["weixin","tieba","douban","bdhome","qq","hi","baidu","t163","youdao","sdo","qingbiji","mail","kanshou","copy","print"],"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"8","bdPos":"right","bdTop":"50"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- Baidu Share JavaScript Code End-->
+
+
+
+<!-- GoStats JavaScript Based Code -->
+<script type="text/javascript" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/counter.js"></script><script language="javascript">var _go_js="1.0";</script><script language="javascript1.1">_go_js="1.1";</script><script language="javascript1.2">_go_js="1.2";</script><script language="javascript1.3">_go_js="1.3";</script><script language="javascript1.4">_go_js="1.4";</script><script language="javascript1.5">_go_js="1.5";</script><script language="javascript1.6">_go_js="1.6";</script><script language="javascript1.7">_go_js="1.7";</script><script language="javascript1.8">_go_js="1.8";</script><script language="javascript1.9">_go_js="1.9";</script><script language="javascript"></script>
+<script type="text/javascript">_gos='c4.gostats.cn';_goa=391582;
+_got=2;_goi=87;_gol='第三方流量统计';_GoStatsRun();</script><a target="_blank" href="http://gostats.cn/" title="第三方流量统计"><img id="_go_render_39158265" alt="第三方流量统计" title="第三方流量统计" border="0" style="border-width:0px;width:88px;height:31px" width="88" height="31" src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/count"></a>
+<noscript>&lt;a target="_blank" title="第三方流量统计" 
+href="http://gostats.cn"&gt;&lt;img alt="第三方流量统计" 
+src="http://c4.gostats.cn/bin/count/a_391582/t_2/i_87/counter.png" 
+style="border-width:0" /&gt;&lt;/a&gt;</noscript>
+<!-- End GoStats JavaScript Based Code -->
+
+<!-- Baidu JavaScript Based Code -->
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc76ae2e31934ad9fea54bc3bcd7e6df9' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/h.js" type="text/javascript"></script><iframe src="./Shell 编程基础之基本语法结构汇总 - TannerBG - 博客园_files/container.htm" style="visibility: hidden; display: none;"></iframe>
+<!-- Baidu JavaScript Code End -->
+<!--PageEndHtml Block End-->
+
+
+<div class="bdshare-slide-button-box bdshare-slide-style-r8" style="top: 50px; width: 0px; z-index: 99999; right: 0px;" data-bd-bind="1420429229470"><a href="http://www.cnblogs.com/tannerBG/p/4054627.html#" onclick="return false;" class="bdshare-slide-button" style="left: -24px;"></a><div class="bdshare-slide-list-box" style="width: 0px; display: none;"><div class="bdshare-slide-top">分享到</div><div class="bdshare-slide-list"><ul class="bdshare-slide-list-ul" style="width: 116px;"></ul></div><div class="bdshare-slide-bottom" style="width: 116px;"><a href="http://www.cnblogs.com/tannerBG/p/4054627.html#" onclick="return false;" class="slide-more" data-cmd="more">更多...</a></div></div></div></body></html>

@@ -1,0 +1,2364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0059)http://www.infoq.com/cn/articles/web-api-design-methodology -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Web API设计方法论</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./Web API设计方法论_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./Web API设计方法论_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./Web API设计方法论_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn3.infoqstatic.com/favicon.ico?20150106-0126" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn3.infoqstatic.com/apple-touch-icon.png?20150106-0126">
+
+        <link rel="stylesheet" href="./Web API设计方法论_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./Web API设计方法论_files/ga.js"></script><script async="" type="text/javascript" src="./Web API设计方法论_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./Web API设计方法论_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+       
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+
+	
+    
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(t){function e(e,n,a){t&&t(e,n,a),a||(a={});for(var c=u(e),f=c.length,s=i(a,o,r),p=0;f>p;p++)c[p].apply(s,n);return s}function a(t,e){f[t]=u(t).concat(e)}function u(t){return f[t]||[]}function c(){return n(e)}var f={};return{on:a,emit:e,create:c,listeners:u,_events:f}}function r(){return{}}var o="nr@context",i=t("gos");e.exports=n()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):(o[t]||(o[t]=[]),void o[t].push(e))}var r=t("ee").create(),o={};e.exports=n,n.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=l.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&c&&c.body){l.proto="https"===p.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=c.createElement("script");e.src=l.proto+t.agent,c.body.appendChild(e)}}function r(){"complete"===c.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),u=window,c=u.document,f="addEventListener",s="attachEvent",p=(""+location).split("?")[0],l=e.exports={offset:i(),origin:p,features:{}};c[f]?(c[f]("DOMContentLoaded",o,!1),u[f]("load",n,!1)):(c[s]("onreadystatechange",r),u[s]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}]},{},["G9z0Bl"]);</script><script type="text/javascript" src="./Web API设计方法论_files/forum.js"></script>
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+    <meta property="og:image" content="https://www.infoq.com/resource/articles/web-api-design-methodology/zh/smallimage/logo-webapi.jpg">
+
+<meta property="og:title" content="Web API设计方法论 ">
+<meta property="og:description" content="本文简要地概述了由Richardson和Amundsen合著的《REST风格的Web API》一书中所介绍的设计方法论。">
+<meta property="og:site_name" content="InfoQ">
+	<link rel="image_src" href="./Web API设计方法论_files/logo-webapi.jpg">
+	<meta name="keywords" content="web api design methodology,语言 &amp; 开发,Web API,API,设计,">
+	<meta name="description" content="本文简要地概述了由Richardson和Amundsen合著的《REST风格的Web API》一书中所介绍的设计方法论。">
+	<meta name="tprox" content="1421120640000">
+
+    
+    
+    	
+	    
+	        <script type="text/javascript">
+	            $(function() {
+	                var box = $('.related_sponsors.visible.stacked');
+	                if (box.length === 0) {
+	                    return;
+	                }
+	                var nextSibling = $(box).next();
+	                
+	                if ($('#lowerFullwidthVCR').length === 0) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                if (blockElement(nextSibling)) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                while (!blockElement($(nextSibling).next())) {
+	                        nextSibling = $(nextSibling).next();
+	                        if (firstLowerThanSecond(nextSibling, box)) {
+	                            return;
+	                        }
+	                }
+	                moveLowerInThePage(box);
+	
+	                function blockElement(elem) {
+	                    if ($(elem).prop('tagName') === 'BLOCKQUOTE'
+	                        || $(elem).prop('tagName') === 'IMG'
+	                        || $(elem).prop('tagName') === 'PRE'
+	                        || ($(elem).prop('tagName') === 'P' && $(elem).children().length === 1 && $(elem).children('img').length === 1)) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function firstLowerThanSecond(elem1, elem2) {
+	                    var elem1BottomYCoordinate = $(elem1).offset().top + $(elem1).height()
+	                    var elem2BottomYCoordinate = $(elem2).offset().top + $(elem2).height();
+	                    if (elem1BottomYCoordinate > elem2BottomYCoordinate) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function moveLowerInThePage(box) {
+	                    if ($('#lowerFullwidthVCR').length !== 0) {
+	                        $('#lowerFullwidthVCR').replaceWith(box);
+	                    }
+	                    $(box).removeClass('stacked');
+	                }
+	            });
+	        </script>
+	    
+    
+
+        
+        
+			<link rel="image_src" href="http://cdn4.infoqstatic.com/styles/i/logo-big.jpg?20150106-0126">
+			<meta property="og:image" content="http://cdn3.infoqstatic.com/styles/i/logo-big.jpg?20150106-0126">
+		
+    <script src="./Web API设计方法论_files/share.js"></script><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_55.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./Web API设计方法论_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./Web API设计方法论_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./Web API设计方法论_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="dAfBiySAyWA9WuXw">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./Web API设计方法论_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十二月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/minibooks/architect-201501">架构师（2015年1月）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./Web API设计方法论_files/cover201501-100.png" alt="" border="0">
+							<span id="developmentHDSummary">本期内容推荐：解读2014之云计算篇：有一种态度叫做“拥抱”（上）；解读2014之iOS篇：拥抱变化；解读2014之Docker篇：才气、运气、勇气；SDN落地的实践与思考：带着问题找方案，别管定义啦；Swift编程语言；手机淘宝构架演化实践；手机QQ的移动化实践之路；物联网传输协议MQTT；从信息安全看未来物联网发展；赵海峰：大数据决定互联网金融未来。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/minibooks/architect-201501">架构师（2015年1月）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./Web API设计方法论_files/cover201501-100.png" alt="" border="0">
+							<span id="architecture-designHDSummary">本期内容推荐：解读2014之云计算篇：有一种态度叫做“拥抱”（上）；解读2014之iOS篇：拥抱变化；解读2014之Docker篇：才气、运气、勇气；SDN落地的实践与思考：带着问题找方案，别管定义啦；Swift编程语言；手机淘宝构架演化实践；手机QQ的移动化实践之路；物联网传输协议MQTT；从信息安全看未来物联网发展；赵海峰：大数据决定互联网金融未来。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/minibooks/architect-201501">架构师（2015年1月）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./Web API设计方法论_files/cover201501-100(1).png" alt="" border="0">
+							<span id="process-practicesHDSummary">本期内容推荐：解读2014之云计算篇：有一种态度叫做“拥抱”（上）；解读2014之iOS篇：拥抱变化；解读2014之Docker篇：才气、运气、勇气；SDN落地的实践与思考：带着问题找方案，别管定义啦；Swift编程语言；手机淘宝构架演化实践；手机QQ的移动化实践之路；物联网传输协议MQTT；从信息安全看未来物联网发展；赵海峰：大数据决定互联网金融未来。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/minibooks/architect-201501">架构师（2015年1月）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./Web API设计方法论_files/cover201501-100.png" alt="" border="0">
+							<span id="operations-infrastructureHDSummary">本期内容推荐：解读2014之云计算篇：有一种态度叫做“拥抱”（上）；解读2014之iOS篇：拥抱变化；解读2014之Docker篇：才气、运气、勇气；SDN落地的实践与思考：带着问题找方案，别管定义啦；Swift编程语言；手机淘宝构架演化实践；手机QQ的移动化实践之路；物联网传输协议MQTT；从信息安全看未来物联网发展；赵海峰：大数据决定互联网金融未来。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/minibooks/architect-201501">架构师（2015年1月）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./Web API设计方法论_files/cover201501-100.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">本期内容推荐：解读2014之云计算篇：有一种态度叫做“拥抱”（上）；解读2014之iOS篇：拥抱变化；解读2014之Docker篇：才气、运气、勇气；SDN落地的实践与思考：带着问题找方案，别管定义啦；Swift编程语言；手机淘宝构架演化实践；手机QQ的移动化实践之路；物联网传输协议MQTT；从信息安全看未来物联网发展；赵海峰：大数据决定互联网金融未来。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn4.infoqstatic.com/images/ads/banners/qcon/cn/2015/20150104_banner.jpg?20150106-0126" usemap="#qconmap" style="margin-top:-25px;">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://2015.qconbeijing.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://www.archsummit.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>
+	<li><a href="http://www.infoq.com/cn/qcon/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="QCon">QCon</a></li>
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/articles?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="文章">文章</a>
+                
+		
+		<span class="last">Web API设计方法论</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+        <h1 class="general with_pic">
+            Web API设计方法论
+            <span class="article_image_title">
+                <img border="0" alt="" src="./Web API设计方法论_files/logo-webapi.jpg">
+            </span>
+        </h1>
+	<span class="author_general">
+		作者
+		
+			
+		
+		<a href="http://www.infoq.com/cn/author/Mike-Amundsen" class="editorlink f_taxonomyEditor">
+Mike Amundsen</a>
+
+        
+			
+				
+			
+        	，译者
+        	<strong><a href="http://www.infoq.com/cn/author/%E5%90%B4%E6%B5%B7%E6%98%9F" class="editorlink f_taxonomyTranslator">
+吴海星</a>
+</strong>
+        
+        发布于
+        2015年1月12日
+        <em>|</em> 
+        
+	<a id="noOfComments" title="" href="http://www.infoq.com/cn/articles/web-api-design-methodology#theCommentsSection" class="comments_like">
+		
+	        <span class="comments_counts">
+	        	<span class="nr">
+	        		1
+	        	</span>
+	        </span>
+			讨论
+	    
+	    
+	</a></span>
+
+   	
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1421252571578">
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="Bookmarks.bookmarkContent(&#39;articles&#39;, &#39;web-api-design-methodology&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+			
+	<div class="clear"></div>
+<div class="article_page_left text_content_container">
+	
+			
+	<div class="text_info text_info_article">
+		
+			
+	       	<p><i>为</i><i>Web</i><i>设计、实现和维护</i><i>API</i><i>不仅仅是一项挑战；对很多公司来说，这是一项势在必行的任务。</i><a href="http://www.infoq.com/articles/web-apis-from-start-to-finish">本系列</a><i> </i><i>将带领读者走过一段旅程，从为</i><i>API</i><i>确定业务用例到设计方法论，解决实现难题，并从长远的角度看待在</i><i>Web</i><i>上维护公共</i><i>API</i><i>。沿途将会有对有影响力的人物的访谈，甚至还有</i><i>API</i><i>及相关主题的推荐阅读清单。</i></p>
+
+<p><i>这篇</i><i> InfoQ</i><i>文章是</i><b><i> Web API</i></b><b><i>从开始到结束</i></b><i>系列文章中的一篇。你可以在</i><a href="http://www.infoq.com/feed/web-apis-from-start-to-finish">这里</a><i>进行订阅，以便能在有新文章发布时收到通知。</i></p>
+
+<p>设计Web API不止是URL、HTTP状态码、头信息和有效负载。设计的过程--基本上是为了你的API“观察和感受” -- 这非常重要，并且值得你付出努力。本文简要概括了一种同时发挥HTTP和Web两者优势的API设计方法论。并且它不仅对HTTP有效。如果有时你还需要通过WebSockets、XMPP、MQTT等实现同样的服务，大部分API设计的结果同样可用。可以让未来支持多种协议更容易实现和维护。</p>
+			<div class="clear"></div>
+	        
+	            
+
+
+
+
+
+
+
+
+
+    <div class="related_sponsors visible stacked">
+        
+        
+                       
+            <div class="gray_section_related only1 fullWidth">
+	            <div class="related_editorial sponsored only1">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3123,&quot;title&quot;:&quot;华为资深技术专家打造的Netty高端教程，干货来约！&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3123&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                华为资深技术专家打造的Netty高端教程，干货来约！
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3128,&quot;title&quot;:&quot;Docker周报、深入浅出Docker、源码解读，2015必读。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3128&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                Docker周报、深入浅出Docker、源码解读，2015必读。
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3127,&quot;title&quot;:&quot;阿里合伙人程立：大数据时代的金融技术变革&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3127&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                阿里合伙人程立：大数据时代的金融技术变革
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3125,&quot;title&quot;:&quot;DevOps的概念与实践，InfoQ迷你书&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3125&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                DevOps的概念与实践，InfoQ迷你书
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3124,&quot;title&quot;:&quot;CoreOS实战，etcd详解，不可错过的学习资料。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3124&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                CoreOS实战，etcd详解，不可错过的学习资料。
+	                            </a>
+	                        </h3>
+	                    
+	                    
+	                    
+	                        
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+            </div>
+        
+        
+        
+        
+        <div class="clear"></div>
+    </div>
+
+	        
+	        
+
+<h2>优秀的设计超越了URL、状态码、头信息和有效负载</h2>
+
+<p>一般来说， Web API设计指南的重点是通用的功能特性，比如URL设计，正确使用状态码、方法、头信息之类的HTTP功能特性，以及持有序列化的对象或对象图的有效负载设计。这些都是重要的实现细节，但不太算得上API设计。并且正是API的设计--服务的基本功能特性的表达和描述方式--为Web API的成功和可用性做出了重要贡献。</p>
+
+<p>一个优秀的设计过程或方法论定义了一组一致的、可重复的步骤集，可以在将一个服务器端服务组件输出为一个可访问的、有用的Web API时使用。那就是说，一个清晰的方法论可以由开发人员、设计师和软件架构师共享，以便在整个实现周期内帮助大家协同活动。一个成熟的方法论还可以随着时间的发展，随着每个团队不断发现改善和精简过程的方式而得到精炼，却不会对实现细节产生不利的影响。实际上，当<i>实现细节</i>和<i>设计过程</i>两者都有清晰的定义并相互分离时，实现细节的改变（比如采用哪个平台、OS、框架和UI样式）可以独立于设计过程。</p>
+
+<h2>API设计七步法</h2>
+
+<p>接下来我们要对Richardson和Amundsen合著的《<a href="http://restfulwebapis.com/">REST风格的Web API</a>》一书中所介绍的设计方法论做简要地概述。因为篇幅所限，我们不能深入探讨这一过程中的每一步骤，但这篇文章可以让你有个大概的认识。另外，读者可以用这篇概述作为指南，根据自己组织的技能和目标开发一个独有的Web API设计过程。</p>
+	        
+	        
+	            <div id="lowerFullwidthVCR"></div>
+	        
+	       	
+
+<p><i>说明：是的，</i><i>7</i><i>步看起来有点儿多。实际上清单中有</i><i>5</i><i>个步骤属于设计，额外还有两个条目是实现和发布。最后这两个设计过程之外的步骤是为了提供一个从头到尾的体验。</i></p>
+
+<p>你应该计划好根据需要重新迭代这些步骤。通过步骤2（绘制状态图）意识到在步骤1（列出所有组成部分）有更多工作要做。当你接近于写代码（步骤6）时，可能会发现第5步（创建语义档案）中漏了一些东西。关键是用这个过程暴露尽可能多的细节，并愿意回退一步或者两步，把前面漏掉的补上。迭代是构建更加完整的服务画面以及澄清如何将它暴露给客户端程序的关键。</p>
+
+<h3>步骤1 : 列出所有组成部分</h3>
+
+<p>第一步是列出客户端程序可能要从我们的服务中获取的，或要放到我们的服务中的所有数据片段。我们将这些称为语义描述符。语义是指它们处理数据在应用程序中的含义，描述符是指它们描述了在应用程序自身中发生了什么。注意，这里的视点是客户端，不是服务器端。将API设计成客户端使用的东西很重要。</p>
+
+<p>比如说，在一个简单的待办事项列表应用中，你可能会找到下面这些语义描述符：</p>
+
+<ul>
+	<li>id : 系统中每条记录的唯一标识符</li>
+	<li>title : 每个待办事项的标题</li>
+	<li>dateDue : 待办事项应该完成的日期</li>
+	<li>complete : 一个是/否标记，表明待办事项是否已经完成了。</li>
+</ul>
+
+<p>在一个功能完备的应用程序中，可能还会有很多语义描述符，涉及待办事项的分类（工作、家庭、园艺等），用户信息（用于多用户的实现）等等。不过为了突出过程本身，我们会保持它的简单性。</p>
+
+<h3>步骤2 : 绘制状态图</h3>
+
+<p>下一步是根据建议的API绘制出状态图。图中的每个框都表示一种可能的表示--一个包含在步骤1中确定的一或多个语义描述符的文档。你可以用箭头表示从一个框到下一个的转变--从一个状态到下一个状态。这些转变是由协议请求触发的。</p>
+
+<p>在每次变化中还不用急着指明用哪个协议方法。只要标明变化是安全的（比如HTTP GET），还是不安全/非幂等的（比如HTTP.POST），或者不安全/幂等的（PUT）。</p>
+
+<p><i>说明：幂等动作是指重复执行时不会有无法预料的副作用。比如</i><i>HTTP </i><a href="https://tools.ietf.org/html/rfc7231#section-4.3.4">PUT</a><i> </i><i>，因为规范说服务器应该用客户端传来的状态值替换目标资源的已有值，所以说它是幂等的。而</i><i> HTTP </i><a href="https://tools.ietf.org/html/rfc7231#section-4.3.3">POST</a><i> </i><i>是非幂等的，因为规范指出提交的值应该是追加到已有资源集合上的，而不是替换。</i></p>
+
+<p>在这个案例中，我们这个简单的待办事项服务的客户端应用程序可能需要访问可用条目的清单，能过滤这个清单，能查看单个条目，并且能将条目标记为已完成。这些动作中很多都用状态值在客户端和服务器之间传递数据。比如add-item 动作允许客户端传递状态值title和dueDate。下面是一个说明那些动作的状态图。</p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102002.png" width="400"></p>
+
+<p>这个状态图中展示的这些动作（也在下面列出来了）也是语义描述符-- 它们描述了这个服务的语义<i>动作</i>。</p>
+
+<ul>
+	<li>read-list</li>
+	<li>filter-list</li>
+	<li>read-item</li>
+	<li>create-item</li>
+	<li>mark-complete</li>
+</ul>
+
+<p>在你做这个状态图的过程中，你可能会发现自己漏掉了客户端真正想要或需要的动作或数据项。这是退回到步骤1的机会，添加一些新的描述符，并/或者在步骤2中改进状态图。</p>
+
+<p>在你重新迭代过这两步之后，你应该对客户端跟服务交互所需的所有数据点和动作有了好的认识和想法。</p>
+
+<h3>步骤 3 : 调和魔法字符串</h3>
+
+<p>下一步是调和服务接口中的所有“魔法字符串”。“魔法字符串” 全是描述符的名称--它们没有内在的含义，只是表示客户端跟你的服务通讯时将要访问的动作或数据元素。调和这些描述符名称的意思是指采用源自下面这些地方的，知名度更高的公共名称：</p>
+
+<ul>
+	<li><a href="http://schema.org/">Schema.org</a></li>
+	<li><a href="http://microformats.org/">microformats.org</a></li>
+	<li><a href="http://dublincore.org/documents/dces/">Dublin Core</a></li>
+	<li><a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">IANA Link Relation Values</a></li>
+</ul>
+
+<p>这些全是明确定义的、共享的名称库。当你服务接口使用来自这些源头的名称时，开发人员很可能之前见过并知道它们是什么意思。这可以提高API的可用性。</p>
+
+<p><i>说明：尽管在服务接口上使用共享名称是个好主意，但在内部实现里可以不用（比如数据库里的数据域名称）。服务自身可以毫不困难地将公共接口名称映射为内部存储名称。</i></p>
+
+<p>以待办事项服务为例，除了一个语义描述符- create-item，我能找到所有可接受的已有名称。为此我根据<a href="https://tools.ietf.org/html/rfc5988">Web Linking RFC5988</a>中的规则创建了一个具有唯一性的URI。在给接口描述符选择知名的名称时需要折中。它们极少能跟你的内部数据存储元素完美匹配，不过那没关系。</p>
+
+<p>这里是我的结果：</p>
+
+<ul>
+	<li>id -&gt; <a href="http://purl.org/dc/elements/1.1/identifier">来自Dublin Core的identifier </a></li>
+	<li>title - <a href="https://schema.org/name">来自Schema.org的name</a></li>
+	<li>dueDate -&gt; <a href="https://schema.org/scheduledtime">来自Schema.org的scheduledTime</a></li>
+	<li>complete -&gt; <a href="https://schema.org/status">来自Schema.org的status</a></li>
+	<li>read-list -&gt; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">来自IANA Link Relation Values的collection</a></li>
+	<li>filter-list -&gt; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">来自IANA Link Relation Values的search</a></li>
+	<li>read-item -&gt; <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">来自IANA Link Relation Values的item </a></li>
+	<li>create-item -&gt;用RFC5988的http://mamund.com/rels/create-item</li>
+	<li>mark-complete - <a href="http://www.iana.org/assignments/link-relations/link-relations.xhtml">来自IANA Link Relation Values的edit</a></li>
+</ul>
+
+<p>经过名称调和，我的状态图变成了下面这样：</p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102003.jpg" width="400"></p>
+
+<h3>步骤 4 : 选一个媒体类型</h3>
+
+<p>API设计过程的下一步是选一个媒体类型，用来在客户端和服务器端之间传递消息。Web的特点之一是数据是通过统一的接口作为标准化文档传输的。选择同时支持数据描述符（比如"identifier"、"status"等）和动作描述符（比如"search"、"edit"等）的媒体类型很重要。有相当多可用的格式。</p>
+
+<p>在我写这篇文章时，一些顶尖的超媒体格式是 (排名不分先后)：</p>
+
+<ul>
+	<li>超文本标记语言 (<a href="http://www.w3.org/tr/html5/">HTML</a>)</li>
+	<li>超文本应用程序语言(<a href="http://stateless.co/hal_specification.html">HAL</a>)</li>
+	<li>Collection+JSON (<a href="http://amundsen.com/media-types/collection/">Cj</a>)</li>
+	<li><a href="https://github.com/kevinswiber/siren/blob/master/readme.md">Siren</a></li>
+	<li><a href="http://jsonapi.org/">JSON-API</a></li>
+	<li>交换表达式的统一基础 (<a href="http://g.mamund.com/uber">UBER</a>)</li>
+</ul>
+
+<p>让所选择的媒体类型适用于你的目标协议也很重要。大多数开发人员喜欢用<a href="https://tools.ietf.org/html/rfc7230">HTTP</a> 协议做服务接口。然而<a href="https://tools.ietf.org/html/rfc6455">WebSockets</a>、<a href="http://xmpp.org/rfcs/rfc6120.html">XMPP</a>、<a href="http://public.dhe.ibm.com/software/dw/webservices/ws-mqtt/mqtt-v3r1.html">MQTT</a>和<a href="https://tools.ietf.org/html/rfc7252">CoAP</a> 也会用--特别是对于高速、短消息、端到端的实现。</p>
+
+<p>在这个例子中，我会以HTML为消息格式，并采用HTTP协议。HTML有所有数据描述符所需的支持(&lt;UL&gt;用于列表， &lt;LI&gt;用于条目， &lt;SPAN&gt;用于数据元素)。它也有足够的动作描述符支持 (&lt;A&gt;用于安全链接， &lt;FORM method="get"&gt;用于安全转变， &lt;FORM method="post"&gt;用于非安全转变）。</p>
+
+<p><i>注意：在这个状态图中， </i><i>“</i><i>编辑</i><i>”</i><i>动作是幂等的（比如</i><i>HTTP PUT</i><i>），并且</i><i>HTML</i><i>仍然没有对</i><i>PUT</i><i>的原生支持。在这个例子中，我会添加一个域来将</i><i>HTML</i><i>的</i><i>POST</i><i>做成幂等的。</i></p>
+
+<p>好了，现在我可以基于那个状态图创建一些样例表示来“试试”这个接口了。对我们的例子而言，只有两个表示要渲染：“待办事项列表”和“待办事项条目”表示：</p>
+
+<p><b>图</b><b>1 </b><b>：用</b><b>HTML</b><b>表示待办事项列表集合</b></p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102004.jpg" width="500"></p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102005.jpg" width="500"></p>
+
+<p><b>图2</b><b> </b><b>：用</b><b>HTML</b><b>表示待办事项条目</b></p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102006.jpg" width="500"></p>
+
+<p>记住，在你做状态图的表示样例时，可能会发现之前的步骤中有所遗漏（比如漏掉描述符，动作描述符中有幂等之类的变化等）。那也没关系。现在就是解决所有这些问题的时机-- 在你把这个设计变成代码之前。</p>
+
+<p>等你对表示完全满意之后，在开始写代码之前还有一个步骤--创建语义档案。</p>
+
+<h3>步骤 5 : 创建语义档案</h3>
+
+<p>语义档案是一个文档，其中列出了设计中的所有描述符，包括对开发人员构建客户端和服务器端实现有帮助的所有细节。这个档案是一个实现<i>指南</i>，不是实现描述。这个差别很重要。</p>
+
+<h5>服务描述符的格式</h5>
+
+<p>服务描述文档格式已经出现了相当长一段时间了，并且当你想给已有的服务实现生产代码或文档时很方便。确实有很多种格式。</p>
+
+<p>在我写这篇文章时，顶级竞争者有：</p>
+
+<ul>
+	<li>Web服务定义语言(<a href="http://www.w3.org/tr/wsdl">WSDL</a>)</li>
+	<li>原子服务描述(<a href="https://tools.ietf.org/html/rfc5023#section-8">AtomSvc</a>)</li>
+	<li>Web应用程序描述语言(<a href="http://www.w3.org/submission/wadl/">WADL</a>)</li>
+	<li><a href="https://github.com/apiaryio/api-blueprint/blob/master/api%2520blueprint%2520specification.md">Blueprint</a></li>
+	<li><a href="https://github.com/wordnik/swagger-spec/blob/master/readme.md">Swagger</a></li>
+	<li>REST风格的应用程序建模语言(<a href="http://raml.org/spec.html">RAML</a>)</li>
+</ul>
+
+<h5>档案的格式</h5>
+
+<p>现在只有几种档案格式。我们推荐下面两种：</p>
+
+<ul>
+	<li>应用级语义档案 (<a href="http://tools.ietf.org/html/draft-amundsen-richardson-foster-alps-00">ALPS</a>)</li>
+	<li><a href="http://www.w3.org/tr/json-ld/">JSON-LD</a> + <a href="http://www.hydra-cg.com/">Hydra</a></li>
+</ul>
+
+<p>这两个都比较新。JSON-LD规范在2014年早期达成了W3C推荐状态。Hydra仍是一个非官方草案（本文写成时还是），有一个活跃的开发者社区。ALPS仍处于IETF的早期草案阶段。</p>
+
+<p>因为档案文档的理念是要描述一个问题空间的现实生活方面（不只是那一空间中的单一实现），所以其格式跟典型的描述格式十分不同：</p>
+
+<p><b>图</b><b>3 : ALPS</b><b>格式的待办事项列表语义档案</b></p>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102007.jpg" width="500"></p>
+
+<p>你会注意到，这个文档就像一个基本的词汇表，包含了待办事项服务接口中所有可能的数据值和动作--就是这个理念。同意遵循这个档案的服务可以自行决定它们的协议、消息格式甚至URL。同意接受这个档案的客户端将会构建为可以识别，如果合适的话，启用这个文档中的描述符。</p>
+
+<p>这种格式也很适合生成人类可读的文档，分析相似的档案，追踪哪个档案用得最广泛，甚至生成状态图。但那是另外一篇文章的课题了。</p>
+
+<p>现在你有完整的已调和名称的描述符清单，已标记的状态图，以及一个语义档案文档，可以开始准备编码实现样例服务器和客户端了。</p>
+
+<h3>步骤 6 : 写代码</h3>
+
+<p>到了这一步，你应该可以将设计文档（状态图和语义档案）交给服务器和客户端程序的开发人员了，让他们开始做具体的实现。</p>
+
+<p>HTTP服务器应该实现在第2步中创建的状态图，并且来自客户端的请求应该触发正确的状态转变。服务发送的每个表示都应该用第3步中选好的格式，并且应该包含一个第4步中创建的指向一个档案的链接。响应中应该包含相应的超媒体控件，实现了在状态图中显示、并在档案文档中描述的动作。客户端和服务器端开发人员在这时可以创建相对独立的实现，并用测试验证其是否遵守了状态图和档案。</p>
+
+<p>有了稳定的可运行代码，还有一步要做：发布。</p>
+
+<h3>步骤 7 : 发布你的API</h3>
+
+<p>Web API应该至少发布一个总能给客户端响应的URL -- 即便是在遥远的将来。我将其称为“看板URL” --每个人都知道的。发布档案文档也是个好主意，服务的新实现可以在响应中链接它。你还可以发布人类可读的文档、教程等，以帮助开发人员理解和使用你的服务。</p>
+
+<p>做好这个之后，你应该有了一个设计良好的、稳定的、可访问的服务运行起来了，随时可以用。</p>
+
+<h2>总结</h2>
+
+<p>本文讨论了为Web设计API的一组步骤。重点是让数据和动作描述正确，并以机器可读的方式记录它们，以便让人类开发人员即便不直接接触也能轻松为这个设计实现客户端和服务器端。</p>
+
+<p>这些步骤是：</p>
+
+<ol>
+	<li>列出所有组成部分<br>
+	收集客户端跟服务交互所需的所有数据元素。</li>
+	<li>绘制状态图<br>
+	记录服务提供的所有动作（状态变化）</li>
+	<li>调和魔法字符串<br>
+	整理你的公开接口以符合（尽可能）知名的名称</li>
+	<li>选择媒体类型<br>
+	评审消息格式，找到跟目标协议的服务转变最贴近的那个。</li>
+	<li>创建语义档案<br>
+	编写一个档案文档，定义服务中用的所有描述符。</li>
+	<li>写代码<br>
+	跟客户端和服务器端开发人员分享档案文档，并开始写代码测试跟档案/状态图的一致性，并在有必要时进行调整。</li>
+	<li>发布你的API<br>
+	发布你的"看板URL"和档案文档，以便其他人可以用他们创建新的服务以及/或者客户端程序。</li>
+</ol>
+
+<p>在你的设计过程中，你可能会发现有遗漏的元素，需要重做某些步骤，以及要做一些折中的决定。这在设计过程中出现得越早越好。将来开发人员要求用新的格式和协议实现时，你还有可能用这个API设计。</p>
+
+<p>最后，这个方法论只是为Web API设计过程创建一种可靠、可重复、一致的设计过程的一种可能方式。在你做这个例子时，可能会发现插入一些额外的步骤，或者缩减一些会更好用，并且-- 当然 -- 消息格式和协议决策在不同案例中可能也会发生变化。</p>
+
+<p>希望这篇文章能给你一些启发，让你知道如何给自己的组织以及/或者团队创建一个最佳的API设计方法论。</p>
+
+<h2>关于作者</h2>
+
+<p><img _href="img://null" _p="true" src="./Web API设计方法论_files/0102008.jpg" style="float: left; margin-right: 10px"> <b>Mike Amundsen</b> 是Layer 7科技的首席API架构师，帮助人们为Web创建优秀的API。国际知名作者和讲师，Mike 在欧美四处旅行，就分布式网络架构、Web应用程序开发、云计算和其他题目提供咨询和演讲。他的名下有十多本书。</p>
+
+<div style="clear:both">&nbsp;</div>
+
+<p><i>为</i><i>Web</i><i>设计、实现和维护</i><i>API</i><i>不仅仅是一项挑战；对很多公司来说，这是一项势在必行的任务。</i><a href="http://www.infoq.com/articles/web-apis-from-start-to-finish">本系列</a><i> </i><i>将带领读者走过一段旅程，从为</i><i>API</i><i>确定业务用例到设计方法论，解决实现难题，并从长远的角度看待在</i><i>Web</i><i>上维护公共</i><i>API</i><i>。沿途将会有对有影响力的人物的访谈，甚至还有</i><i>API</i><i>及相关主题的推荐阅读清单。</i></p>
+
+<p><i>这篇</i><i> InfoQ</i><i>文章是</i><b><i> Web API</i></b><b><i>从开始到结束</i></b><i>系列文章中的一篇。你可以在</i><a href="http://www.infoq.com/feed/web-apis-from-start-to-finish">这里</a><i>进行订阅，以便能在有新文章发布时收到通知。</i></p>
+
+<p><strong>查看英文原文：</strong><a href="http://www.infoq.com/articles/web-api-design-methodology">A Web API Design Methodology</a></p>
+
+<hr>
+<p>感谢<a href="http://www.infoq.com/cn/author/%E5%B4%94%E5%BA%B7">崔康</a>对本文的审校。</p>
+
+<p>给InfoQ中文站投稿或者参与内容翻译工作，请邮件至<a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a>。也欢迎大家通过新浪微博（<a href="http://www.weibo.com/infoqchina">@InfoQ</a>）或者腾讯微博（<a href="http://t.qq.com/infoqchina">@InfoQ</a>）关注我们，并与我们的编辑和其他读者朋友交流。</p>
+
+	       	
+       	
+		<div class="clear"></div>
+				
+		<div style="margin-bottom:5px">【QCon北京2015大会】把握趋势，邀请国内外顶级专家，设计涵盖大数据、云计算、移动开发、技术创业、前端和敏捷等热点领域的18个专题，IT领域的技术盛宴。<a href="http://qconbeijing.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/WebAPI" name="WebAPI" id="6,966">Web API</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Design" name="Design" id="859">设计</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/API" name="API" id="4,815">API</a></li>
+			</ul>							
+		</div>
+      
+		
+		
+		
+			
+			
+
+
+
+
+
+
+
+
+<div class="related_sponsors relEdRelRes" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended only1" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/09/heroku-http-design-guide?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">Heroku的HTTP API设计指南</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2013/10/gotober-do-dont-webapi?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">GOTO Berlin: Web API设计原则</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2013/10/level-up-rest-web-api-hypermedia?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">通过超媒体升级REST Web API</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2015/01/storage-system-design?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">存储系统设计中的二八定律</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/10/designing-systems-testability?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">针对易测试性的系统设计</a></h3></div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "686,2407,-1000,-1000", "title": "Web API设计方法论", "contentPath": "/articles/web-api-design-methodology", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": 'web-api-design-methodology',
+            "uriMapping": 'articles'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || researchExists) {
+                $('.related_sponsors.relEdRelRes').show(); // show the big related box
+            }
+
+            // in case all three available, leave now
+            if (recommendedExists) {
+            	$(grayBox).show(); // show the gray box for vcr and recommendations
+                return;
+            }
+        });
+</script>
+<div class="clear"></div>
+		
+		
+
+		<div class="clear"></div>
+				
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=40778;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./Web API设计方法论_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./Web API设计方法论_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./Web API设计方法论_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+            
+
+                <div class="comment_title lvl0" id="com118215">
+
+                    <a href="http://www.infoq.com/cn/articles/web-api-design-methodology#anch118215" title="">
+                        <strong>RSS无效</strong>
+                        <span>
+                            by
+                            Ji Dean
+                            Posted
+                            <span class="treeRelativeTime">14小时前</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+    </div>
+
+    <div class="all_comments">
+        
+            
+                <div class="answers" id="ans118215">
+                    <a name="anch118215"></a>
+                    
+                    <p>
+                        <b class="title">RSS无效</b>
+                        <span>
+                            <span class="bodyRelativeTime">14小时前</span>
+                            by
+                            <q>Ji Dean</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        "本系列" 的连接无效？RSS无效？会翻译整个系列的文章么，貌似现在只有这一篇
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1421202580202">
+                    <input type="hidden" name="createdOn" value="2015年1月13日">
+                    <input type="hidden" name="isNotificationOn" value="true">
+                </div>
+            
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+	<script type="application/javascript">
+		// used for most popular tracking codes
+		var pageForWidget = 'article';
+	</script>
+    
+
+
+
+
+
+
+
+<div id="mostPopularSection" class="news_in_tabs" style="display: block;">
+	<!-- the tabs -->
+	<ul class="tabs">
+		
+			<li><div class="tab_title">热点内容</div></li>
+			<li><a href="javascript:;" class="current">10天</a></li>
+			<li><a href="javascript:;">40天</a></li>
+			<li><a href="javascript:;">近6个月</a></li>
+				
+	</ul>
+	<!-- tab "panes" -->
+	<div class="panes">
+	<div style="display: block;"><h3 class="h3news" <!--pageviews:3610="" publication="" date:="" 2015-01-05--="">
+<a href="http://www.infoq.com/cn/news/2015/01/xiaomi-mIos-os-exposure?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Android开发周报：小米MIOS操作系统曝光 </a><a href="http://www.infoq.com/cn/news/2015/01/xiaomi-mIos-os-exposure?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:2714="" publication="" date:="" 2015-01-09--="">
+<a href="http://www.infoq.com/cn/articles/2014-review-docker?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">解读2014之Docker篇：才气、勇气、运气</a><a href="http://www.infoq.com/cn/articles/2014-review-docker?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2570="" publication="" date:="" 2015-01-05--="">
+<a href="http://www.infoq.com/cn/news/2015/01/stack-overflow-label-analysis?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">通过Stack Overflow标签分析编程语言新趋势 </a><a href="http://www.infoq.com/cn/news/2015/01/stack-overflow-label-analysis?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2188="" publication="" date:="" 2015-01-10--="">
+<a href="http://www.infoq.com/cn/news/2015/01/google-android-performance?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Google的Android性能模式</a><a href="http://www.infoq.com/cn/news/2015/01/google-android-performance?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2091="" publication="" date:="" 2015-01-06--="">
+<a href="http://www.infoq.com/cn/news/2014/12/Java10EnhancedGenerics?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">解密Java增强的泛型</a><a href="http://www.infoq.com/cn/news/2014/12/Java10EnhancedGenerics?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:1953="" publication="" date:="" 2015-01-07--="">
+<a href="http://www.infoq.com/cn/news/2015/01/storage-system-design?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">存储系统设计中的二八定律</a></h3><h3 class="h3articles" <!--pageviews:1874="" publication="" date:="" 2015-01-06--="">
+<a href="http://www.infoq.com/cn/articles/interpretation-of-2014-ios-part-embrace-change?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">解读2014之iOS篇：拥抱变化 </a></h3><h3 class="h3articles" <!--pageviews:1646="" publication="" date:="" 2015-01-07--="">
+<a href="http://www.infoq.com/cn/articles/map-sql-nosql?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">如何高效地将SQL数据映射到NoSQL存储系统中</a><a href="http://www.infoq.com/cn/articles/map-sql-nosql?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:1423="" publication="" date:="" 2015-01-11--="">
+<a href="http://www.infoq.com/cn/news/2015/01/javascript-2014-review?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">2014年JavaScript回顾</a></h3><h3 class="h3news" <!--pageviews:1341="" publication="" date:="" 2015-01-10--="">
+<a href="http://www.infoq.com/cn/news/2015/01/modern-distributed-apps?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Docker周报：现代化的分布式应用正成为主流</a></h3></div><div style="display: none;"><h3 class="h3news" <!--pageviews:19292="" publication="" date:="" 2014-12-31--="">
+<a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">从0到100——知乎架构变迁史</a><a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:16536="" publication="" date:="" 2014-12-15--="">
+<a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">颠覆式前端UI开发框架：React</a><a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">21</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:7464="" publication="" date:="" 2014-12-28--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201412?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年12月）</a></h3><h3 class="h3articles" <!--pageviews:6763="" publication="" date:="" 2015-01-04--="">
+<a href="http://www.infoq.com/cn/articles/netty-million-level-push-service-design-points?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Netty系列之Netty百万级推送服务设计要点</a><a href="http://www.infoq.com/cn/articles/netty-million-level-push-service-design-points?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">16</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:6331="" publication="" date:="" 2014-12-25--="">
+<a href="http://www.infoq.com/cn/articles/android-5.0-technology-trend?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Android 5.0 技术新趋势</a></h3><h3 class="h3articles" <!--pageviews:5392="" publication="" date:="" 2014-12-13--="">
+<a href="http://www.infoq.com/cn/articles/nosql-performance-test?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">NoSQL性能测试白皮书</a><a href="http://www.infoq.com/cn/articles/nosql-performance-test?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4644="" publication="" date:="" 2014-12-28--="">
+<a href="http://www.infoq.com/cn/news/2014/12/no-more-js-architecture?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">不需要更多JS框架了</a><a href="http://www.infoq.com/cn/news/2014/12/no-more-js-architecture?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4504="" publication="" date:="" 2015-01-04--="">
+<a href="http://www.infoq.com/cn/news/2015/01/java-date-format-with-caution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">慎用Java日期格式化</a><a href="http://www.infoq.com/cn/news/2015/01/java-date-format-with-caution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">7</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4136="" publication="" date:="" 2014-12-07--="">
+<a href="http://www.infoq.com/cn/news/2014/12/node.js-split-branch-iojs?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Node.js也分裂，核心开发者创建分支io.js</a></h3><h3 class="h3news" <!--pageviews:4110="" publication="" date:="" 2014-12-22--="">
+<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">手机淘宝构架演化实践</a><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3></div><div style="display: none;"><h3 class="h3articles" <!--pageviews:33048="" publication="" date:="" 2014-07-31--="">
+<a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">深入浅出Docker（一）：Docker核心技术预览</a><a href="http://www.infoq.com/cn/articles/docker-core-technology-preview?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">11</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:25433="" publication="" date:="" 2014-09-20--="">
+<a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">阿里巴巴上市背后的技术力量</a><a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:19535="" publication="" date:="" 2014-07-22--="">
+<a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">几种线程池的实现算法分析</a><a href="http://www.infoq.com/cn/articles/thread-pool-algorithm-realization?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:19305="" publication="" date:="" 2014-09-26--="">
+<a href="http://www.infoq.com/cn/minibooks/alibaba-techman?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">阿里巴巴上市背后的技术力量</a></h3><h3 class="h3news" <!--pageviews:19292="" publication="" date:="" 2014-12-31--="">
+<a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">从0到100——知乎架构变迁史</a><a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:18687="" publication="" date:="" 2014-09-25--="">
+<a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Docker源码分析（一）：Docker架构</a><a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:17764="" publication="" date:="" 2014-08-18--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201408?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年8月刊）</a></h3><h3 class="h3articles" <!--pageviews:16536="" publication="" date:="" 2014-12-15--="">
+<a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">颠覆式前端UI开发框架：React</a><a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">21</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:16493="" publication="" date:="" 2014-10-15--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201410?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年10月）</a></h3><h3 class="h3minibooks" <!--pageviews:15367="" publication="" date:="" 2014-09-12--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201409?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年9月刊）</a></h3></div></div>
+	<div class="clear"></div>
+</div>
+    <div class="banner_type3" id="id_300x250_banner_top">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+        </script>
+    </div>  
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="minibooks">
+				<a title="架构师（2015年1月）" href="http://www.infoq.com/cn/minibooks/architect-201501">
+					架构师（2015年1月）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/InfoQ%E4%B8%AD%E6%96%87%E7%AB%99" class="editorlink" title="InfoQ中文站">
+InfoQ中文站</a>
+
+				1月14日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="架构师（2015年1月）" href="http://www.infoq.com/cn/minibooks/architect-201501">
+				<img border="0" alt="" src="./Web API设计方法论_files/cover201501-100.png">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Docker网络详解及pipework源码解读与实践 " href="http://www.infoq.com/cn/articles/docker-network-and-pipework-open-source-explanation-practice">
+					Docker网络详解及pipework源码解读与实践 
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%86%AF%E6%98%8E%E6%8C%AF" class="editorlink" title="冯明振">
+冯明振</a>
+
+				1月14日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Docker网络详解及pipework源码解读与实践 " href="http://www.infoq.com/cn/articles/docker-network-and-pipework-open-source-explanation-practice">
+				<img border="0" alt="" src="./Web API设计方法论_files/logo123.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top" style="display: none;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="精益建造" href="http://www.infoq.com/cn/presentations/lean-construction">
+					精益建造
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Kevin-Goldsmith" class="editorlink" title="Kevin Goldsmith">
+Kevin Goldsmith</a>
+
+				1月14日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="精益建造" href="http://www.infoq.com/cn/presentations/lean-construction">
+				<img border="0" alt="" src="./Web API设计方法论_files/kevin_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="解读2014之云计算篇：有一种态度叫做“拥抱”（下）" href="http://www.infoq.com/cn/articles/2014-review-cloud-part2">
+					解读2014之云计算篇：有一种态度叫做“拥抱”（下）
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%B4%94%E5%BA%B7" class="editorlink" title="崔康">
+崔康</a>
+
+				1月14日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="解读2014之云计算篇：有一种态度叫做“拥抱”（下）" href="http://www.infoq.com/cn/articles/2014-review-cloud-part2">
+				<img border="0" alt="" src="./Web API设计方法论_files/2014could.jpeg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件" href="http://www.infoq.com/cn/articles/git-Cleaner">
+					使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Jonathan-Allen" class="editorlink" title="Jonathan Allen">
+Jonathan Allen</a>
+
+				1月13日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件" href="http://www.infoq.com/cn/articles/git-Cleaner">
+				<img border="0" alt="" src="./Web API设计方法论_files/l.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="清风谈豆瓣CODE、Git与工程师文化" href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">
+					清风谈豆瓣CODE、Git与工程师文化
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%B8%85%E9%A3%8E" class="editorlink" title="清风">
+清风</a>
+
+				1月13日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="清风谈豆瓣CODE、Git与工程师文化" href="http://www.infoq.com/cn/interviews/qingfeng-talk-douban-code-git-and-engineer-culture">
+				<img border="0" alt="" src="./Web API设计方法论_files/qingfeng_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+	<script type="application/javascript">
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function (event) {
+//				console.log('Slot has been rendered:' + event);
+//				console.log(event);
+				// only treat textlinks
+				if (event.slot.j.indexOf('textlink') != -1) {
+					if (!event.isEmpty) {
+						$('.sponsored_links_section').css('display', 'block'); // International site
+						$('.sponsored_links_section_i18n').css('display', 'block'); // all but the international site
+					}
+				}
+			});
+		});
+	</script>
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2');  });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3');  });
+		 		</script>
+		 	</div>
+ 		</div>
+
+    <script type="text/javascript">
+    	$($('.banner_type3').get(1)).css('display','none');
+    </script>
+</div>
+
+
+
+
+
+
+
+
+<div class="newsletter ">
+	<h3>InfoQ每周精要</h3>
+	<p>
+		通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。
+		<span id="floatingNewsletterEmailSuccess" style="color:green;"></span>
+		<span id="floatingNewsletterEmailError" style="color:red;"></span>
+	</p>
+	<div class="click2view">
+		<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+			<img src="./Web API设计方法论_files/click2view_zh.png" alt="" border="0">
+		</a>
+	</div>
+	<div class="clear"></div>
+	<form name="floatingNewsletterForm" id="floatingNewsletteForm" action="http://www.infoq.com/cn/articles/web-api-design-methodology#" onsubmit="floatingNewsletter.saveSubscription(); return false;">
+		<fieldset>
+			<input type="text" class="input_text" id="floatingNewsletterEmail" name="floatingNewsletterEmail" value="您的邮箱" onclick="floatingNewsletter.clearEmailText();" onblur="floatingNewsletter.resetEmailText();">
+			<input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return floatingNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+		</fieldset>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	var floatingNewsletter = new Newsletter('您的邮箱', 'floatingNewsletterEmail', 'floatingNewsletterForm', 'floatingNewsletterEmailError', 'floatingNewsletterEmailSuccess');
+</script>
+
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./Web API设计方法论_files/infoqcn.js"></script>
+
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"applicationID":"5528250","applicationTime":76,"beacon":"beacon-1.newrelic.com","queueTime":0,"licenseKey":"bfafe6a5f6","transactionName":"YAFWMEEAW0RUVk1cCllLfjdjTlRFQVxaWQBES0cMXBYbXUZF","agent":"js-agent.newrelic.com\/nr-476.min.js","errorBeacon":"bam.nr-data.net"}</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/minibooks/architect-201501" title="架构师（2015年1月）">架构师（2015年1月）</a></p><p><a href="http://www.infoq.com/cn/articles/docker-network-and-pipework-open-source-explanation-practice" title="Docker网络详解及pipework源码解读与实践 ">Docker网络详解及pipework源码解读与实践 </a></p><p><a href="http://www.infoq.com/cn/presentations/lean-construction" title="精益建造">精益建造</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/minibooks/architect-201501" title="架构师（2015年1月）">架构师（2015年1月）</a></p><p><a href="http://www.infoq.com/cn/articles/docker-network-and-pipework-open-source-explanation-practice" title="Docker网络详解及pipework源码解读与实践 ">Docker网络详解及pipework源码解读与实践 </a></p><p><a href="http://www.infoq.com/cn/presentations/lean-construction" title="精益建造">精益建造</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/minibooks/architect-201501" title="架构师（2015年1月）">架构师（2015年1月）</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/negative-emotions-teams" title="处理团队中的消极情绪">处理团队中的消极情绪</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/scaled-scaling-agile-brussels" title="Andreas Schliep问答：关于ScALeD——大规模敏捷和精益开发">Andreas Schliep问答：关于ScALeD——大规模敏捷和精益开发</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/minibooks/architect-201501" title="架构师（2015年1月）">架构师（2015年1月）</a></p><p><a href="http://www.infoq.com/cn/articles/2014-review-cloud-part2" title="解读2014之云计算篇：有一种态度叫做“拥抱”（下）">解读2014之云计算篇：有一种态度叫做“拥抱”（下）</a></p><p><a href="http://www.infoq.com/cn/articles/git-Cleaner" title="使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件">使用Roberto Tyley的BFG Repo-Cleaner移除git库中的二进制文件</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/minibooks/architect-201501" title="架构师（2015年1月）">架构师（2015年1月）</a></p><p><a href="http://www.infoq.com/cn/articles/2014-review-cloud-part2" title="解读2014之云计算篇：有一种态度叫做“拥抱”（下）">解读2014之云计算篇：有一种态度叫做“拥抱”（下）</a></p><p><a href="http://www.infoq.com/cn/news/2015/01/microservices-current-state" title="微服务现状综述">微服务现状综述</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" title="东京 2015年4月 21">东京 2015年4月 21</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年8月24-28日">里约 2015年8月24-28日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./Web API设计方法论_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/articles/web-api-design-methodology#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+	<li><a href="http://www.openiotcon.com/"><strong>物联网大会</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/articles/:http://www.infoq.com/cn/coderally/?utm_source=infoq"><strong>Code Rally 编程拉力赛</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./Web API设计方法论_files/engine.js" type="text/javascript"></script>
+            <script src="./Web API设计方法论_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./Web API设计方法论_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/web-api-design-methodology#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  $.getScript("/scripts/__hd.ifq?hdt=dAfBiySAyWA9WuXw");
+  
+</script>
+
+    <script src="./Web API设计方法论_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="./Web API设计方法论_files/h.js" type="text/javascript"></script><iframe src="./Web API设计方法论_files/container.html" style="visibility: hidden; display: none;"></iframe>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "Web API设计方法论";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn3.infoqstatic.com/scripts/lib/browser-update-org/update.js?20150106-0126");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S2 -->
+<script type="text/javascript" src="./Web API设计方法论_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><script src="./Web API设计方法论_files/nr-476.min.js"></script><script type="text/javascript" src="./Web API设计方法论_files/bfafe6a5f6"></script></body></html>

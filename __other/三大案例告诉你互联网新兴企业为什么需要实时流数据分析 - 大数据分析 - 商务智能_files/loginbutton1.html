@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0082)http://img.techtarget.com.cn/weibo/loginbutton1.html?domainame=www.searchbi.com.cn -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>TT中国微博登录</title>
+<script charset="UTF-8" src="query(1)"></script><script charset="UTF-8" src="bundle.js"></script><style type="text/css"></style><script charset="UTF-8" src="loginButton.js"></script><link href="loginButton.css" type="text/css" rel="stylesheet"></head>
+<body style="margin: 5px;"><iframe id="sina_anywhere_iframe" style="display: none;"></iframe>
+    <span id="wb_connect_btn"><div class="WB_loginButton WB_widgets"><a href="javascript:void(0);"><img src="loginButton_18.png"></a></div></span>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script src="wb.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+    //js接收地址栏参数
+    function QueryString(item) {
+        var sValue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"))
+        return sValue ? sValue[1] : sValue
+    }
+    $("#wb_connect_btn a").live("click", function () {
+        $(this).attr("target", "_blank");
+    });
+    var pwin = window.parent;
+    WB2.anyWhere(function (W) {
+        W.widget.connectButton({
+            id: "wb_connect_btn",
+            type: "4,3",
+            callback: {
+                login: function (o) {	//登录后的回调函数
+                    pwin.wbname = o.screen_name;
+                    if (pwin.wbname) {
+                        $(pwin.document).find("#wb_pub").attr("checked", "checked");
+                        $(pwin.document).find("#wb_checkbox").show();
+                        if (!$(pwin.document).find("#CurUser").text()) $(pwin.document).find("#useCur").show();
+                        $(pwin.document).find("#p_Logion").slideUp(pwin.AutoHeight);
+                    }
+                    else {
+                        $(pwin.document).find("#wb_checkbox").hide();
+//                        $(pwin.document).find("#useCur").hide();
+//                        $(pwin.document).find("#p_Logion").slideDown(pwin.AutoHeight);
+                    }
+                },
+                logout: function () {	//退出后的回调函数
+                    pwin.wbname = "";
+                    $(pwin.document).find("#wb_checkbox").hide();
+                }
+            }
+        });
+    });
+</script>
+
+</body></html>

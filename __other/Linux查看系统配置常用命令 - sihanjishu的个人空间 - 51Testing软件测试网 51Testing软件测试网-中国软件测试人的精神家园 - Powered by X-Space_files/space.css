@@ -1,0 +1,434 @@
+/*
+X-Space 默认样式表
+该样式表包含于任何个人空间页面文件中，作为默认样式存在
+(C) 2001-2006 Comsenz Inc.
+http://www.supesite.com
+*/
+
+* { word-break: break-all; }
+
+a { text-decoration: none;}
+	a:hover {text-decoration: underline;}
+
+/*管理按钮*/
+.xspace-manage { display: none; float: right !important; background: #627D90 !important; color: #FFF !important; text-decoration: none !important; font-size: 12px !important; font-weight: normal !important; line-height: 20px !important; height: 17px !important; overflow: hidden; padding: 0 3px; }
+h3 .xspace-manage { margin-top: 0.5em; }
+.showmnglink .xspace-manage { display: block; !important; }
+/*AJAX div*/
+.xspace-ajaxmsg { position: fixed; right: 0; top: 0; background: red; color: #FFF; line-height: 2em; padding: 0 20px; }
+	* html .xspace-ajaxmsg { position: absolute; top: expression(( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) + 'px'); }
+.xspace-ajaxdiv { position:absolute; padding: 5px; border: 1px solid #BBB; background: #FCFFEF; text-align: left; }
+	.xspace-ajaxdiv h5 { line-height: 24px; font-size: 1em; margin: 0; }
+		.xspace-ajaxdiv h5 a { float: right; font-weight: normal; }
+	.xspace-ajaxcontent { background: #FFF; border: 1px solid #EEE; }
+		.xspace-ajaxcontent form { margin: 0; }
+/*提示信息*/
+.xspace-noticemsg { border: 1px solid #EEE; margin: 10px auto; padding: 2em 1em; text-align: center; }
+
+/*默认布局*/
+#content { zoom: 1; overflow: hidden; }
+/*Layout_1 左侧导航*/
+.xspace-layout1 #sideleft { float:left; width: 25%; }
+.xspace-layout1 .mainarea-side { float: right; width: 71%; }
+.xspace-layout1 div.mainarea-side { margin-left: 0!important; display: inline; }
+/*Layout_2 右侧导航*/
+.xspace-layout2 #sideright { float: right; width: 25%; }
+.xspace-layout2 .mainarea-side { float: left; width: 71%; }
+/*Layout_3 三列*/
+.xspace-layout3 #sideleft { float:left; width: 25%; }
+.xspace-layout3 #sideright { float:right; width: 25%; }
+.xspace-layout3 .mainarea-side { float: left; width: 46%; }
+
+/*图片样式*/
+.xspace-imgstyle { background: #F9F9F9; border: 1px solid #CCC; padding: 4px; }
+/*侧边模块*/
+.xspace-sideblock { margin-bottom: 5px; clear: both; }
+.xspace-blocktitle { margin: 0; }
+	.xspace-blocktitle .more { float: right; }
+
+.xspace-smalltxt { color: #999; font-weight: normal; }
+	p.xspace-smalltxt { margin: 0.3em 0; }
+
+/*信息查看数 评论数 好评分*/
+.xspace-itemdata { text-align: right; padding: 2px; }
+
+/*Space名称*/
+#xspace-spacename { padding: 40px 0 0 10px; height: 100px; he\ight: 60px; overflow: hidden; }
+	#xspace-spacename .xspace-manage { float: left !important; margin: 0 3px 0 0; }
+	#xspace-spacename strong { font-size: 1.4em; }
+	/*复制URL、添加收藏夹*/
+	#xspace-spacename p { margin: 0; clear: both; }
+		#xspace-spacename p a { display: block; width: 14px; height: 14px; overflow: hidden; background: url(../images/base/icon_copy.gif) no-repeat 0 2px; float: left; text-indent: -9999px; }
+			#xspace-spacename p a.xspace-add2fav { background-image: url(../images/base/icon_add.gif); }
+
+/*导航*/
+#xspace-menu { list-style: none; margin: 0; padding: 0; zoom: 1; overflow: hidden; }
+	#xspace-menu li { float: left; margin: 0 0.5em; }
+
+/*用户头像*/
+#xspace-avatar { text-align: center; padding-top: 5px; }
+	#xspace-avatar img { max-width: 150px; max-height: 200px; width: expression(this.width > 150 && this.height < this.width ? 150: true); height: expression(this.height > 150 ? 150: true); margin: 0 auto; }
+	#xspace-avatar p { margin:6px 14px 4px 10px; font-weight: bold; line-height: 20px; }
+	#xspace-avatar .xspace-selfintro {text-align:left;font-weight: normal;margin-bottom:12px}
+
+/*日历*/
+#xspace-calendar td { font-size: 10px; }
+	#xspace-calendar .xspace-week td { font-size: 12px; }
+
+/*用户菜单/Space快速导航*/
+#xspace-action, #xspace-guide { list-style: none; margin: 0; padding: 0; line-height: 160%; zoom: 1; overflow: hidden; }
+	#xspace-action, #xspace-guide { margin: 0.5em 0; }
+		#xspace-action li, #xspace-guide li { float: left; }
+	#xspace-action a { margin: 0 0.5em; padding-left: 1.5em; background: url(../images/base/icon_ctrl.gif) no-repeat 0; white-space: nowrap; }
+		/*带有Icon的链接*/
+		#xspace-action a.xspace-addfriend { background: url(../images/base/icon_add_fri.gif) no-repeat 0; }
+		#xspace-action a.xspace-sendpm { background: url(../images/base/icon_sendm.gif) no-repeat 0; }
+		#xspace-action a.xspace-profile { background: url(../images/base/icon_profile.gif) no-repeat 0; }
+		#xspace-action a.xspace-message { background: url(../images/base/icon_bbs.gif) no-repeat 0; }
+		#xspace-guide a.xspace-spacehome { background: url(../images/base/icon_user.gif) no-repeat 0; }
+		#xspace-guide a.xspace-ctrlpannel { background: url(../images/base/icon_ctrl.gif) no-repeat 0; }
+		#xspace-guide a.xspace-sitehome { background: url(../images/base/icon_home.gif) no-repeat 0; }
+		#xspace-guide a.xspace-bbs { background: url(../images/base/icon_bbs.gif) no-repeat 0; }
+
+/*日历*/
+#xspace-calendar { text-align: center; }
+	#xspace-calendar a { font-weight: bold; }
+	#xspace-calendar .xspace-datenav a { font-weight: normal; text-decoration: none; }
+
+/*列表*/
+.xspace-list, .xspace-list2col { list-style: none; line-height: 1.6em; margin: 0.5em 0; padding: 0; zoom: 1; overflow: hidden; }
+	.xspace-list li, .xspace-list2col li { padding-left: 1.5em; background-image: url(../images/base/icon_list.gif); background-repeat: no-repeat; background-position: 0.5em 0.6em; margin-bottom: 5px; }
+	/*Logo列表*/
+	li.xspace-logo { background: none; padding: 0; text-align: center; }
+		li.xspace-logo img { max-width: 88px; max-height: 31px; width: expression(this.width > 88 && this.height < this.width ? 88: true); height: expression(this.height > 31 ? 31: true); }
+	/*图片列表*/
+	li.xspace-imagelist { float: left; text-align: center; padding: 4px; background-image: none; width: 130px; height: 150px; w\idth: 120px; he\ight: 140px; line-height: 120px; font-size: 108px; overflow: hidden; margin: 0 3px 5px 3px; }
+		li.xspace-imagelist img { border: none; max-width: 120px; max-height: 120px; width: expression(this.width > 120 && this.height < this.width ? 120: true); height: expression(this.height > 120 ? 120: true); vertical-align: middle; font-size: 1px; }
+		li.xspace-imagelist p { margin: 0; font-size: 12px; line-height: 20px; height: 20px; white-space: nowrap; overflow: hidden; }
+	
+	/*小图片列表*/
+	li.xspace-avatarlist { float: left; padding: 4px; width: 58px; height: 73px; w\idth: 48px; he\ight: 63px; margin: 2px; text-align: center; overflow: hidden; }
+		li.xspace-avatarlist img { width: 48px; height: 48px; border: none; }
+		li.xspace-avatarlist p { margin: -5px 0 0 !important; margin: 0; }
+	/*两列列表*/
+	.xspace-list2col li { padding: 0; float: left; width: 49.9%; text-indent: 1.5em; height: 1.6em; overflow: hidden; }
+	
+/*搜索*/
+#xspace-search { margin: 10px 5px; padding: 0; }
+	#xspace-searchkey { width: 9em; }
+
+/*公告*/
+#announcement { margin: 1em 0; border: 1px solid #EEE; padding: 0.5em; line-height: 1.6em; }
+
+
+.xspace-addentry { float: right; margin: 5px 5px 0 0; line-height: 20px; background: url(../images/base/icon_add.gif) no-repeat 100% 3px; padding-right: 15px; }
+	.xspace-addentry a { color: #090 !important; font-weight: bold; }
+
+/*Tab选项卡*/
+/*.xspace-listtabline { margin: 0; height: 1px; color: #CCC; border-style: solid; border-color: #FFF #FFF #CCC; border-width: 1px 0; height: 0; padding-top: 24px; }
+	 * html .xspace-listtabline { margin-top: 18px; }  *+html .xspace-listtabline { margin-top: 18px; }
+.xspace-listtab { margin: 0; padding: 0; list-style: none; height: 26px; overflow: hidden; position: absolute; width: 500px; }
+	.xspace-listtab li { float: left; margin-left: 6px; border: 1px solid #CCC; }
+		.xspace-listtab a { float: left; padding: 0 1em; text-decoration: none; height: 24px; line-height: 24px; background-color: #EEE; }
+	.xspace-listtab li.xspace-active { border-bottom-color: #FFF; }
+		.xspace-listtab li.xspace-active a { background-color: transparent; font-weight: bold; }
+	.xspace-sublist { padding-right: 20px !important; background-image: url(../images/base/icon_dropmenu.gif); background-repeat: no-repeat; background-position: 100% 50%; }
+		.xspace-listtab a:hover { background-color: red; }*/
+
+	.xspace-sublistitem { display: none; position: absolute; opacity: 0.95; filter: alpha(opacity=95); }
+			.xspace-sublistitem ul { margin: 0; padding: 8px 5px; list-style: none; background: #FFF; border: 1px solid #BBB; }
+				.xspace-sublistitem li { border-bottom: 1px solid #EEE; padding: 5px 0; }
+.xspace-listtab { display: block; margin: 3px 0; padding: 5px 10px; list-style: none; border-bottom: 1px solid #D4D4D4; border-top: 1px solid #FFF; }
+	.xspace-listtab li { display: inline; margin-right: 5px; padding: 5px 10px; border: solid #D4D4D4; border-width: 1px 1px 0; }
+		.xspace-listtab li.xspace-active { border-bottom: 1px solid #FFF; font-weight: bold; }
+			.xspace-listtab li.xspace-sublist { padding-right: 20px !important; background-image: url(../images/base/icon_dropmenu.gif); background-repeat: no-repeat; background-position: 100% 50%; cursor: pointer; }
+			.xspace-listtab li a { }
+
+
+/*项目列表*/
+.xspace-itemlist { margin: 0.5em 0; padding: 0; list-style: none; line-height: 1.5em; }
+	.xspace-itemlist li { border-bottom: 1px solid #EEE; padding-bottom: 0.4em; margin-bottom: 0.4em; zoom: 1; overflow: hidden; }
+	.xspace-itemlist p, h4.xspace-entrytitle { margin: 0.2em 0; }
+		h4.xspace-entrytitle { font-size: 1.2em; margin: 0.3em 0; }
+			h4.xspace-entrytitle img { font-size: 1px; }
+	/*日志列表*/
+	li.xspace-loglist { border: none; }
+		li.xspace-loglist h4.xspace-entrytitle { background-color: #EEE; line-height: 2em; padding-left: 0.2em; }
+	/*图片列表*/
+	li.xspace-coverlist p, li.xspace-coverlist h4.xspace-entrytitle { margin-left: 130px; }
+		li.xspace-coverlist h4.xspace-entrytitle strong { float: left; margin-left: -130px; display: table; }
+			li.xspace-coverlist h4.xspace-entrytitle strong a { display: table-cell!important; display: block; width: 110px; height: 110px; text-align: center; vertical-align: middle; line-height: 96px; font-size: 96px; }
+				* html li.xspace-coverlist h4.xspace-entrytitle strong a { overflow: hidden; }
+				.xspace-imgcover { max-width: 100px; max-height: 100px; width: expression(this.width>100 && this.height < this.width ? 100: true); height: expression(this.height>100 ? 100: true); vertical-align: middle; border: none; font-size: 10px; }
+				@media all and (min-width: 0px){ .xspace-imgcover { width: 100px; height: 100px; } } /*for Opera Only*/
+	/*影音列表*/
+	li.xspace-videolist .xspace-movieplay { float: right; margin: 5px 5px 0 0; padding-right: 10px; background: url(../images/base/icon_arrow_play.gif) no-repeat 100% 3px; }
+		li.xspace-videolist p, li.xspace-videolist h4.xspace-entrytitle { margin-left: 130px; }
+			li.xspace-videolist h4.xspace-entrytitle strong { float: left; margin-left: -130px; display: table; }
+				li.xspace-videolist h4.xspace-entrytitle strong a { display: table-cell!important; display: block; width: 110px; height: 85px; text-align: center; vertical-align: middle; line-height: 73px; font-size: 73px; }
+					* html li.xspace-videolist h4.xspace-entrytitle strong a { overflow: hidden; }
+					.xspace-videocover { max-width: 100px; max-height: 75px; width: expression(this.width>100 && this.height/this.width < 0.75 ? 100: true); height: expression(this.height>75 ? 75: true); vertical-align: middle; border: none; font-size: 10px; }
+					@media all and (min-width: 0px){ .xspace-videocover { width: 100px; height: 75px; } } /*for Opera Only*/
+				li.xspace-videolist h4 a.flash, li.xspace-videolist h4 a.media, li.xspace-videolist h4 a.real { padding-left: 18px; background-repeat: no-repeat; background-image: url(../images/base/video_types.gif); }
+					li.xspace-videolist h4 a.flash { background-position: 0 0; }
+					li.xspace-videolist h4 a.media { background-position: 0 -46px; }
+					li.xspace-videolist h4 a.real { background-position: 0 -92px; }
+	/*商品列表*/
+	li.xspace-goodslist .xspace-price { float: right; margin: 5px 5px 0 0; }
+		li.xspace-goodslist .xspace-price strong { color: #090; padding: 0 3px; }
+	li.xspace-goodslist p, li.xspace-goodslist h4.xspace-entrytitle { margin-left: 90px; }
+		.xspace-goodsimg { width: 80px; height: 80px; w\idth: 70px; he\ight: 70px; float: left; margin-left: -90px; }
+	/*文件列表*/
+	li.xspace-filelist { border: none; }
+		li.xspace-filelist h4.xspace-entrytitle { line-height: 2em; padding-left: 0.2em; }
+	/*书签列表*/
+	li.xspace-linklist { border: none; }
+		li.xspace-linklist h4.xspace-entrytitle { line-height: 2em; padding-left: 0.2em; }
+	/*圈子列表*/
+	li.xspace-grouplist .xspace-joingroup { float: right; margin: 5px 5px 0 0; padding-right: 15px; background: url(../images/base/icon_add_fri.gif) no-repeat 100% 3px; }
+		li.xspace-grouplist p, li.xspace-grouplist h4.xspace-entrytitle { margin-left: 130px; }
+			li.xspace-grouplist h4.xspace-entrytitle strong { float: left; margin-left: -130px; display: table; }
+				li.xspace-grouplist h4.xspace-entrytitle strong a { display: table-cell!important; display: block; width: 110px; height: 110px; text-align: center; vertical-align: middle; line-height: 96px; font-size: 96px; }
+					* html li.xspace-grouplist h4.xspace-entrytitle strong a { overflow: hidden; }
+					.xspace-grouplogo { max-width: 100px; max-height: 100px; width: expression(this.width>100 && this.height < this.width ? 100: true); height: expression(this.height>100 ? 100: true); vertical-align: middle; border: none; font-size: 10px; }
+					@media all and (min-width: 0px){ .xspace-grouplogo { width: 100px; height: 100px; } } /*for Opera Only*/
+	/*好友列表*/
+	li.xspace-friendlist p, li.xspace-friendlist h4.xspace-entrytitle { margin-left: 70px; }
+		li.xspace-friendlist h4.xspace-entrytitle { font-size: 1.3em; margin-top: 10px; }
+		.xspace-friendavatar { width: 58px; height: 58px; w\idth: 48px; he\ight: 48px; float: left; margin-left: -70px; }
+
+/*文章详细信息*/
+h1.xspace-title { font-size: 1.2em; background: #EEE; padding-left: 0.2em; line-height: 2em; }
+.xspace-itemmessage { margin: 0 auto; margin-top: 0.5em; margin-bottom: 0.5em; width: 99%; overflow: auto; overflow-y: hidden; line-height: 1.8em; }
+	.xspace-itemmessage * { line-height: normal; }
+		.xspace-itemmessage p, .xspace-itemmessage div { line-height: 1.8em !important; margin: 10px 0; }
+			.xspace-itemmessage p *, .xspace-itemmessage div * { line-height: normal !important; }
+		.xspace-itemmessage a { text-decoration: underline; }
+		.xspace-itemmessage ul, .xspace-itemmessage ol { margin: 0 0 0 3em; padding: 0; }
+			.xspace-itemmessage li a { padding-left: 0; background-image: none; }
+a.xspace-showflash, a.xspace-showvideo { background: url(../images/base/file_flash.gif) no-repeat 0 0; padding-left: 1.5em; text-decoration: none; }
+	a.xspace-showvideo { background: url(../images/base/file_video.gif) no-repeat 0 0; }
+.xspace-itemmessage img { max-width: 400px; width: expression(this.width > 400 ? 400: true); }
+	.xspace-imginlog p { margin: 0.3em 0 1em 0; }
+	kbd { font: 1em Arial, Helvetica, sans-serif; }
+#xspace-showmessage kbd.showflash, #xspace-showmessage kbd.showvideo, #xspace-showmessage kbd.showreal { text-decoration: underline; cursor: pointer; }
+
+/*图片显示页面*/
+.xspace-imagebox { border: 1px solid #EEE; text-align: center; margin-bottom: 5px; padding: 0.3em; }
+	#xspace-imgnavbar { border-bottom: 1px solid #EEE; text-align: left; line-height: 2em; padding: 0 0.5em; }
+	#xspace-imgshowbox { display: table; width: 400px; height: 400px; margin: 0 auto; line-height: 400px; font-size: 400px; overflow-x: hidden; }
+		#xspace-imgshowbox a { display: table-cell; width: 400px; height: 400px; vertical-align: middle; }
+			#xspace-showimg { border: none; max-width: 400px; max-height: 400px; width: expression(this.width > 400 && this.height < this.width ? 400: true); height: expression(this.height > 400 ? 400: true); vertical-align: middle; }
+/*播放列表*/
+.xspace-flashlist { border-top: 1px solid #EEE; text-align:left; margin-top: 0.5em; }
+	.xspace-flashlist h5 { margin: 1em 0.3em; font-size: 1em; border-bottom: 1px solid #EEE; }
+			
+/* 页面图片列表 */
+#xspace-itempiclist { text-align:center; margin: 10px auto; padding: 0; list-style: none; }
+	#xspace-itempiclist li { display: inline; }
+		#xspace-itempiclist img { opacity:0.5; filter: alpha(opacity=50); cursor: pointer; margin: 0 5px; }
+			#xspace-itempiclist .xspace-reelScrollButton img { border: none; margin: 1px; }
+			#xspace-itempiclist .xspace-on .xspace-reelScrollButton img { border:1px solid #CCC; margin: 0; }
+				#xspace-itempiclist .xspace-on .xspace-reelScrollButton:hover img { border-color:#039; }
+	/*上*/
+	.xspace-on .xspace-reelScrollUpButton img { background: url(../images/base/img_ctrl_up.gif) no-repeat center center; }
+	/*下*/
+	.xspace-on .xspace-reelScrollDownButton img { background: url(../images/base/img_ctrl_down.gif) no-repeat center center; }
+	/*左*/
+	.xspace-on .xspace-reelScrollLeftButton img { background: url(../images/base/img_ctrl_left.gif) no-repeat center center; }
+	/*右*/
+	.xspace-on .xspace-reelScrollRightButton img { background: url(../images/base/img_ctrl_right.gif) no-repeat center center; }
+
+/*文件显示页面*/
+#xspace-filebaseinfo { width: 99%; overflow: hidden; }
+	#xspace-filebaseinfo li { float: left; width: 49.9%; border-bottom: 1px solid #EEE; }
+
+	.xspace-filedown { overflow: hidden; zoom: 1; }
+		.xspace-filedown div { float: left; width: 50%; }
+
+/*商品显示页面*/
+.xspace-goodsinfo { margin-bottom: 1em; zoom: 1; overflow: hidden; }
+	#xspace-goodspic { width: 200px; height: 200px; w\idth: 190px; he\ight: 190px; float: left; }
+		#xspace-goodspic img { border: none; width: 190px; height: 190px; }
+	/*卖家信息*/
+	#xspace-ownerinfo { border: 1px solid #EEE; padding: 10px; float: left; margin-top: 205px; margin-left: -200px; width: 200px; w\idth: 178px; zoom :1; overflow: hidden; }
+	/*价格信息*/
+	#xspace-goodsprice { margin: 0 0 0 210px; text-align: center; padding-top: 30px; height: 200px; he\ight: 170px; }
+		#xspace-goodsprice p { margin: 0.5em 0; }
+			#xspace-goodsprice  strong { font-size: 2em; color: #F90; }
+			#xspace-goodsprice a { display: block; text-indent: -9999px; width: 119px; height: 37px; overflow: hidden; background-position: 0 0; margin: auto; background-image: url(../images/base/btn_buy_b.gif); background-repeat: no-repeat; }
+				#xspace-goodsprice a:hover { background-position: 0 -50px !important; }
+				#xspace-goodsprice a.xspace-auction { background-image: url(../images/base/btn_auction_b.gif); }
+	/*商品基本信息*/
+	#xspace-goodsbaseinfo { margin-left: 210px; }
+		#xspace-goodsbaseinfo li { border-bottom: 1px solid #EEE; }
+	/*收藏按钮*/
+	.xspace-goodsinfo .xspace-send2fav { margin-left: 210px; }
+		.xspace-goodsinfo .xspace-send2fav a { display: block; width: 127px; height: 36px; margin: 10px auto; text-indent: -9999px; background: url(../images/base/btn_collect.gif) no-repeat; overflow: hidden; }
+
+/*出价记录*/
+	#xspace-aplist table { text-align: center; }
+	#xspace-aplist th, #xspace-aplist td { border-bottom: 1px solid #EEE; }
+		#xspace-aplist .xspace-darkrow { background: #F9F9F9; }
+	#xspace-aplist .xspace-ontop td { background: #EEE; }
+
+/*属性列表*/
+.xspace-propertylist { list-style: none; margin: 0; padding: 0; }
+	.xspace-propertylist li { padding: 0.3em 0; }
+
+/*信息正文中的模块*/
+.xspace-msgmodule { margin: 2em 0; }
+	.xspace-msgmodule h5 { margin: 0.3em 0; font-size: 1em; border-bottom: 1px solid #EEE; }
+
+/*自定义字段*/
+.xspace-addoninfo { border: 1px solid #EEE; padding: 10px; margin: 1em 0; }
+
+/*TarckBack*/
+	#xspace-tburl li strong { float: left; width: 3em; }
+
+/*文章底部链接*/
+.xspace-itemlinks { margin: 0; padding: 0.3em 0; }
+	.xspace-itemlinks a, .xspace-itemlinks em { padding-right:0.4em; margin-right: 0.2em; border-right: 1px solid #EEE; font-style: normal; }
+		.xspace-rategood { color: #F90; } .xspace-ratebad { color: #999; }
+
+/*TAG*/
+.xspace-itemtag { margin: 1em 0; padding: 0.4em 7em 0.4em 3.5em; line-height: 1.5em; font-weight: bold; text-indent: -2.4em; border: 1px solid #EEE; }
+	.xspace-itemtag a { font-weight: normal; padding-left: 0.5em; }
+
+/*评论列表*/
+#xspace-itemreply { margin: 1em 0; overflow: hidden; width: 99.5%; }
+	#xspace-itemreply dl { margin: 0; padding: 5px 5px 5px 70px; }
+		#xspace-itemreply dt { border-bottom: 1px solid #DDD; margin-bottom: 0.5em; }
+			#xspace-itemreply img.xspace-signavatar { padding: 4px; width: 48px; height: 48px; position: absolute; margin-left: -65px; }
+			#xspace-itemreply dt span.xspace-rate { position: absolute; width: 56px; font-size: 1.3em; font-weight: bold; text-align: center; margin-left: -65px; margin-top: 60px; }
+			#xspace-itemreply dt a.xspace-del, #xspace-itemreply dt a.xspace-quote { float: right; margin-left: 5px; padding-left: 13px; background-position: 0 1px; background-repeat: no-repeat; }
+				#xspace-itemreply dt a.xspace-del { background-image: url(../images/base/icon_del.gif); }
+				#xspace-itemreply dt a.xspace-quote { background-image: url(../images/base/icon_bbs.gif); }
+		#xspace-itemreply dd { margin: 0; line-height: 1.8em; width: 100%; overflow: auto; overflow-y: hidden; padding-bottom: 1em; }
+			#xspace-itemreply dd * { line-height: normal; }
+				#xspace-itemreply dd p, #xspace-itemreply dd div { line-height: 1.8em !important; margin: 10px 0; }
+					#xspace-itemreply dd p *, #xspace-itemreply dd div * { line-height: normal !important; }
+				#xspace-itemreply dd a { text-decoration: underline; }
+			#xspace-itemreply dd img { max-width: 400px; width: expression(this.width > 400 ? 400: true); }
+		#xspace-itemreply dd blockquote, #xspace-itemreply dd div.xspace-quote, #xspace-itemreply dd div.xspace-guestbookreply { margin: 10px 10px 10px 20px; padding: 6px 10px; border: solid #EEE; border-width: 1px 1px 1px 3px; }
+
+/*发表评论*/
+#xspace-itemform { width: 350px; margin: 1em auto; }
+	#xspace-itemform fieldset { border: 1px solid #EEE; padding: 1em; margin: 0; }
+		#xspace-itemform legend { font-size: 1.2em; font-weight: bold; line-height: 2em; }
+		#xspace-itemform p { margin: 0.3em 0; }
+		#xspace-commentmsg { width: 280px; height: 8em; vertical-align: text-top; }
+		#xspace-btncomment { margin-left: 2.5em; }
+			#xspace-seccodeline * { vertical-align: middle; }
+		#xspace-imgseccode { cursor: pointer; }
+		/*#xspace-rates { height: 2em; }
+			#xspace-rates label { float: left; line-height: 24px; margin-right: 5px; }
+			#xspace-rates a { float: left; background: #EEE; color: #000; text-decoration: none; width: 20px; height: 20px; text-align: center; line-height: 20px; margin: 0 2px; opacity: 0.2; filter: alpha(opacity=20); }
+				#xspace-rates a:hover { opacity: 1; filter: alpha(opacity=100); }
+				.xspace-rates-5 #xspace-rate-5, .xspace-rates-3 #xspace-rate-3, .xspace-rates-1 #xspace-rate-1, .xspace-rates0 #xspace-rate0, .xspace-rates1 #xspace-rate1, .xspace-rates3 #xspace-rate3, .xspace-rates5 #xspace-rate5 { font-weight: bold; opacity: 1; filter: alpha(opacity=100); }
+		*/
+		#xspace-rates { text-align: center; height: 50px; background: #FFF; }
+		#xspace-rates-bg { width: 210px; height: 30px; margin: 0 auto 5px; background: url(../images/base/rate_star.gif); }
+			#xspace-rates-star { height: 30px; background: url(../images/base/rate_star.gif) 0 -30px; margin: 0 auto 0 0; }
+			#xspace-rates-a { height: 30px; margin-top: -30px; }
+			#xspace-rates a { float: left; text-align: left; width: 30px; height: 30px; text-indent: -999px; overflow: hidden; background-color: transparent !important; }
+			.xspace-rates-5 { width: 30px; }
+			.xspace-rates-3 { width: 60px; }
+			.xspace-rates-1 { width: 90px; }
+			.xspace-rates0 { width: 120px; }
+			.xspace-rates1 { width: 150px; }
+			.xspace-rates3 { width: 180px; }
+			.xspace-rates5 { width: 210px; }
+		
+		#xspace-smilies { display: block; width: 235px; margin-left: 2.2em; height: 24px; overflow: hidden; }
+			#xspace-smilies img { cursor: pointer; }
+			.xspace-moresmilies { float: right; cursor: pointer; line-height: 22px; margin-right: 10px; }
+
+/* 分页 */
+.xspace-page { float: right; margin: 5px 5px 0 0; }
+	.xspace-page a, .xspace-page span { float: left; display: inline; text-decoration: none; margin-right: 3px; line-height: 20px; padding: 0 5px; border: 1px solid; border-color: #CEE3EA #90AAB4 #90AAB4 #CEE3EA; background: #F5FBFF; }
+		span.xspace-totlerecord, span.xspace-totlepages { color: #090; }
+			span.xspace-totlerecord { margin-right: 0; border-right: none; }
+		span.xspace-current { background: #F90; border-color: #0A0 #060 #060 #0A0; color: #FFF; font-weight: bold; }
+
+/*页脚*/
+#xspace-footer { text-align : center; margin: 1em 0 0 0; }
+	#xspace-footer p { margin: 0.3em 0; }
+	#xspace-copyright { font: 10px Verdana, Arial, Helvetica, sans-serif; margin: 0; padding-bottom: 2em; }
+		#xspace-copyright strong { color: #036; font-weight:bold; }
+		#xspace-copyright em { color: #FF9900; font-weight:bold; font-style: normal; }
+
+/* 顶部 Tool Bar */
+#toolbarshowbtn { position: fixed !important; position: absolute; left: 0; top: 0; display: block; width: 50px; height: 43px; background: transparent url(../images/base/toolbar_showbtn.gif) no-repeat left top; opacity: 0.4; filter: alpha(opacity=40); }
+	#toolbarshowbtn a { display: block; width: 100%; height: 100%; text-indent: -9999px; }
+#toolbarframe { position: fixed !important; position: absolute; display: none; left: 0; top: 0; height: 30px; width: 100%; }
+	#toolbarframe iframe { width: 100%; height: 30px; background: transparent; }
+
+/*网站公告*/
+#xspace-sitemsg { border: 1px solid #A3A2B3; border-right-color: #333; border-bottom-color: #333; background: #EEF0F6; width: 180px; position: fixed !important; position: absolute; right: 10px; bottom: -180px; text-align: left; }
+	#xspace-sitemsg span.xspace-close { float: right; display: block; width: 30px; height: 22px; text-indent: -9999px; background: url(../images/base/btn_close.gif) no-repeat center center; overflow: hidden;cursor:pointer; }
+	#xspace-sitemsg h6 { line-height: 24px; height: 22px; overflow: hidden; margin: 0; font-size: 12px; padding-left: 8px; background: url(../images/base/toolbar_bg.gif) repeat-x 0 0; }
+	#xspace-sitemsg div { margin: 2px; border: 1px solid #A3A2B3; border-right-color: #FFF; border-bottom-color: #FFF; padding: 5px 5px 0 5px; min-height: 160px; height: auto !important; height: 160px; line-height: 1.6em; }
+	#xspace-sitemsg p { margin: 5px 0; background: url(../images/base/dotline_h.gif) repeat-x bottom; }
+		#xspace-sitemsg p.xspace-more { background: none; text-align: center; margin: 0; height: 22px; }
+			#xspace-sitemsg p.xspace-more a { display: block; margin: 0 4px 0 auto; background: url(../images/base/toolbar_bg.gif) repeat-x 0 0; border: 1px solid #A3A2B3; width: 50px; height: 16px; font-size: 11px; line-height: 16px; overflow: hidden; }
+				#xspace-sitemsg p.xspace-more a:hover { text-decoration: none; }
+	#xspace-sitemsg * { color: #333; }
+
+/* 个人资料 */
+.xspace-xcard { margin-bottom: 2em; }
+	.xspace-xcard .xspace-propertylist { overflow: hidden; zoom: 1; } .xspace-xcard .xspace-propertylist li { float: left; width: 50%; }
+
+/* 留言回复 */
+.xspace-gestbookreply { border: 1px solid #EEEEEE; padding: 0.2em; }
+
+/*ScrollBar*/
+.xspace-itemmessage, #xspace-itemreply dd {
+	scrollbar-arrow-color: #333;
+	scrollbar-face-color: ;
+	scrollbar-darkshadow-color: #CCC;
+	scrollbar-highlight-color: ;
+	scrollbar-3dlight-color: #CCC;
+	scrollbar-shadow-color: ;
+	scrollbar-track-color: #FFF;
+}
+
+/* 播放器 **/
+.xspace-mediaframe {
+	width: 360px;
+	background: #E7E7E7 url(../images/base/music/mediaframe_bg.jpg) repeat-x 0 0;
+	margin: 0 auto;
+	border: 1px solid #C9C9C9;
+	padding: 10px;
+	w\idth: 340px;
+}
+.xspace-spacevideo {
+	height: 220px;
+	background: #000;
+	text-align: center;
+}
+.xspace-musictitle {
+	height: 1.5em;
+}
+.xspace-musictitle marquee {
+	position:relative;
+	top:3px;
+}
+.xspace-musiccontrol table {
+	margin: 6px 0;
+}
+#xspace-mmList {
+	text-align: left;
+	height: 125px;
+	overflow:auto;
+	background: #FFF;
+	border-top: 1px solid #C9C9C9;
+	border-right: 1px solid #EAEAEA;
+	border-bottom: 1px solid #EAEAEA;
+	border-left: 1px solid #C9C9C9;
+}
+
+body { font: 12px Arial, Helvetica, sans-serif;}
+input, textarea, select, button { font: 1em Arial, Helvetica, sans-serif; }
+
+.xspace-spacecp { float: right; font-weight: bold; color: #090 !important; background: url(../images/base/icon_ctrl.gif) no-repeat right; padding-right: 15px; }

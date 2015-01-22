@@ -1,0 +1,10 @@
+var IMG_URL="http://img.ny1988.com/",
+    UPLOAD_URL="http://upload.ny1988.com/",
+    APP_URL="http://app.ny1988.com/",
+    WWW_URL="http://www.ny1988.com/",
+    SPACE_URL="http://space.ny1988.com/",
+    COOKIE_PRE="nv1988ct_",
+    COOKIE_DOMAIN=".ny1988.com",
+    COOKIE_PATH="/",
+    SINA_APPKEY="3972269122",
+    QQ_SOURCEID="1000033";

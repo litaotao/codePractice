@@ -1,0 +1,2017 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0133)http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>手机淘宝构架演化实践</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./手机淘宝构架演化实践_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./手机淘宝构架演化实践_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./手机淘宝构架演化实践_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn2.infoqstatic.com/favicon.ico?20141218-0126" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn2.infoqstatic.com/apple-touch-icon.png?20141218-0126">
+
+        <link rel="stylesheet" href="./手机淘宝构架演化实践_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" async="" src="./手机淘宝构架演化实践_files/ga.js"></script><script async="" type="text/javascript" src="./手机淘宝构架演化实践_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script><style type="text/css"></style>
+        <script type="text/javascript" src="./手机淘宝构架演化实践_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=false;
+        </script>
+        
+       
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()])</script>
+	
+    <script type="text/javascript" src="./手机淘宝构架演化实践_files/forum.js"></script>
+	<meta name="keywords" content="taobao app evolution,运维 &amp; 基础架构,架构 &amp; 设计,语言 &amp; 开发,业务架构,全球架构师峰会,移动,">
+	<meta name="description" content="2014年12月19日~20日，ArchSummit北京2014大会顺利举行。“移动互联网，随时随地”是非常火爆的一个专题。阿里无线事业部技术负责人庄卓然（花名南天）任出品人。来自阿里无线事业部的高级专家李敏（花名心石）分享了《手机淘宝架构演化实践》。">
+	<meta name="tprox" content="1419304320000">
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+<meta property="og:title" content="手机淘宝构架演化实践 ">
+<meta property="og:description" content="2014年12月19日~20日，ArchSummit北京2014大会顺利举行。“移动互联网，随时随地”是非常火爆的一个专题。阿里无线事业部技术负责人庄卓然（花名南天）任出品人。来自阿里无线事业部的高级专家李敏（花名心石）分享了《手机淘宝架构演化实践》。">
+<meta property="og:site_name" content="InfoQ">
+
+
+        
+        
+			<link rel="image_src" href="http://cdn1.infoqstatic.com/styles/i/logo-big.jpg?20141218-0126">
+			<meta property="og:image" content="http://cdn2.infoqstatic.com/styles/i/logo-big.jpg?20141218-0126">
+		
+    <script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_55.js"></script><script src="./手机淘宝构架演化实践_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=89a7173d.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./手机淘宝构架演化实践_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./手机淘宝构架演化实践_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh" title="" target="_blank"><img src="./手机淘宝构架演化实践_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="bXXmMMnUdRSnceBH">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="login_btn" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="return false;" title="Login">
+			<span>登录</span>
+		</a>
+	</div>
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./手机淘宝构架演化实践_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 十一月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0" class="">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0" style="left: -999em;">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/presentations/how-to-build-a-mobile-personal-asset-management-app">如何打造移动端的个人资产管理APP</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./手机淘宝构架演化实践_files/lizhiguo_100.jpg" alt="" border="0">
+							<span id="developmentHDSummary">知名移动应用案例分析：最为国内最早的个人记账理财APP，挖财迄今用户已近9000万，旗下产品服务包括挖财记账理财，挖财钱管家，挖财信用卡管家等App，以及国内最大的白领理财社区挖财社区，挖财先后获得IDG、鼎晖和启明创投将近3000万美金的A轮投资。从记账工具到理财服务平台和个人资产管理平台，挖财是如何在技术创新和服务拓展上一步步探索的，李治国先生将对此做深入解读。	</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/presentations/how-to-build-a-mobile-personal-asset-management-app">如何打造移动端的个人资产管理APP</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./手机淘宝构架演化实践_files/lizhiguo_100.jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">知名移动应用案例分析：最为国内最早的个人记账理财APP，挖财迄今用户已近9000万，旗下产品服务包括挖财记账理财，挖财钱管家，挖财信用卡管家等App，以及国内最大的白领理财社区挖财社区，挖财先后获得IDG、鼎晖和启明创投将近3000万美金的A轮投资。从记账工具到理财服务平台和个人资产管理平台，挖财是如何在技术创新和服务拓展上一步步探索的，李治国先生将对此做深入解读。	</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/arm-enterprise-applications">使用ARM进行企业级应用程序开发</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./手机淘宝构架演化实践_files/logo2.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">为了充分利用现有的代码及基于组件的架构，需要对企业级应用程序开发进行良好的标准化。Mark为读者展现了一种能够将企业级应用程序模式清晰化的策略。作者</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/jesus-rodriguez-mobile-data-management">从MDM到MDM：从管理设备到管理应用再到管理数据</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./手机淘宝构架演化实践_files/logo.jpg" alt="" border="0">
+							<span id="operations-infrastructureHDSummary">移动业务管理（Mobile operations management，MOM）如今对于现代化的企业来讲是具有顶级优先级的事情。第一代的MOM解决方案围绕着移动设备和应用的管理，组织机构很快意识到有效的企业级移动基础设施需要解决一个更为困难的问题：管理和保护移动业务数据。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/arm-enterprise-applications">使用ARM进行企业级应用程序开发</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./手机淘宝构架演化实践_files/logo2(1).jpg" alt="" border="0">
+							<span id="enterprise-architectHDSummary">为了充分利用现有的代码及基于组件的架构，需要对企业级应用程序开发进行良好的标准化。Mark为读者展现了一种能够将企业级应用程序模式清晰化的策略。作者</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn1.infoqstatic.com/images/ads/banners/qcon/cn/2014/20141111_banner.jpg?20141218-0126" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://bj2014.archsummit.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://2015.qconbeijing.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>	
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    <div class="all_topics" style="float: right;"><a style="color:#106CB6; text-shadow:1px 1px 1px #A7A7A7; margin-right:20px; font-size:14px;" href="http://www.infoq.com/cn/coderally/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=CodeRally_clk" target="_blank">马上参加Code Rally</a></div>
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/news?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="新闻">新闻</a>
+                
+		
+		<span class="last">手机淘宝构架演化实践</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+<h1 class="general">手机淘宝构架演化实践</h1>
+<span class="author_general">
+    作者
+    
+        
+    
+    <a href="http://www.infoq.com/cn/author/%E8%87%A7%E7%A7%80%E6%B6%9B" class="editorlink f_taxonomyEditor">
+臧秀涛</a>
+
+    
+    发布于
+    2014年12月22日
+    <em>|</em>
+    
+<a id="noOfComments" title="" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#theCommentsSection" class="comments_like">
+		
+	    
+	        <span class="comments_counts">
+	        	<span class="nr">
+					讨论
+	        	</span>
+	        </span>
+	    
+	</a></span>
+
+
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1419338376405">
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="Bookmarks.bookmarkContent(&#39;news&#39;, &#39;2014/12/taobao-app-evolution&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+
+<div class="clear"></div>
+<div class="article_page_left news_container text_content_container">
+			
+	<div class="text_info">
+   		<p class="p1"><span class="s1">2014年12月19日~20日，<a href="http://bj2014.archsummit.com/"><span class="s2">ArchSummit北京2014大会</span></a>顺利举行。<a href="http://bj2014.archsummit.com/node/558"><span class="s2">“移动互联网，随时随地”</span></a>是非常火爆的一个专题。阿里无线事业部技术负责人<a href="http://bj2014.archsummit.com/user/779"><span class="s2">庄卓然</span></a>（花名南天）任出品人。来自阿里无线事业部的高级专家<a href="http://bj2014.archsummit.com/user/833"><span class="s2">李敏</span></a>（花名心石，微博：<a href="http://weibo.com/allbluez">@allblue_华丽地低调</a> ）分享了《手机淘宝架构演化实践》（<a href="http://pan.baidu.com/s/1dDozRrz">幻灯片下载</a>）。</span></p>
+
+<p class="p1"><span class="s1">李敏主要负责淘宝无线客户端和无线网站基础服务、购物主链路的架构、研发方面的工作。从09年开始参与手机淘宝研发团队的组建和线上产品研发，先后负责过无线部门的社区、会员、营销、交易等多条产品线的技术工作，构建和发展了阿里无线技术体系中包括交易链路、百亿级别高性能API网关、WebApp平台等多个重要技术产品，经历和见证了阿里巴巴无线从开始之初到成为日活上亿级别电商应用技术变迁和积累。</span></p>
+
+<p class="p1"><span class="s1">本文即根据李敏的演讲整理而成。</span></p>
+
+<h1 class="p2"><span class="s1"><b>发展阶段</b></span></h1>
+
+<p class="p1"><span class="s1">从2009年开始，DAU从100万增长到超过1亿，面临的问题、包括研发支撑所需要解决的事情各不相同。在用户量和业务复杂度的线性递增下，架构也进行了相应的演进。如下图所示，具体可以分为四个阶段：</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/1.png" width="500"></p>
+
+<ul class="ul1">
+	<li class="li1"><span class="s1">第一阶段，手淘的前身WAP网站，业务初立、变化快，需要快速发布，采取HTML模板和单一应用，最大程度满足快速发布和修改的需要；甚至不需要改动后端的业务代码，在前面的模板上做一些修改就可以了。</span></li>
+	<li class="li1"><span class="s1">第二阶段，DAU的快速增长，WAP/Android/iOS多个平台的业务起来了，需要在多个平台上进行快速的业务复制和业务管控，统一API网关出现。</span></li>
+	<li class="li1"><span class="s1">第三阶段，DAU进一步增长，线上系统越来越多，业务的多样性需求更多的体现出来，基于HTML5的一整套解决方案上线，更多的HTML5和Native混合的业务形态，API网关进行进一步优化和扩展，更方便的接入方式。</span></li>
+	<li class="li1"><span class="s1">第四阶段，当DAU达到100M的时候，全集团的业务都需要在手淘透出，API网关被部署到更多的IDC机房，如何更有体系化的进行有效的研发、接入更多业务、并进行更有效的业务监控，需要更加体系化的架构治理。</span></li>
+</ul>
+
+<h1 class="p2"><span class="s1"><b>API网关</b></span></h1>
+
+<p class="p1"><span class="s1">做WAP的时候没有所谓的API网关，为什么要用API网关呢？</span></p>
+
+<p class="p1"><span class="s1">随着应用数量的增多，每个应用分别暴露的API出口很多，修改的话逻辑很复杂，这时候应该引入一个统一的网关。</span></p>
+
+<p class="p1"><span class="s1">但随着DAU的增长，API网关会成为一个单点。开发团队在中间做了很多技术和架构上的努力，主要有几个关键点。一是后端接入很多应用，其实API网关只是通路，理论上不存在调用的上限，只要内存够大，包括网卡的流量够的话都可以上来。二是有必要的机制做到宽阔的调用网关。还有一点，当后端业务要经过API网关时，其实现在业界很多都是典型的RPC的模式，RPC的模式有一个绕不开的问题，就是可能要设定一些东西，这时后端服务跟API会有一定程度上的耦合。现阶段要接入服务，后端服务器随时都会变化，不可能后端服务变化的时候都对API做相应的发布，这是不现实的。所以有一套自己的RPC机制，解除了这种强类型的约束。</span></p>
+
+<p class="p1"><span class="s1">此外，可以在网关上附加很多功能，比如安全、审计，还有一些日志、审查等。</span></p>
+
+<p class="p1"><span class="s1">到了现在这个阶段，要进行异地部署，很多IDC，这样的话引入API网关很可能会带来问题。包括今年的双11或者是双12，要在多个异地机房支撑手机淘宝的业务，会有很多API网关。</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/2.png" width="500"></p>
+
+<p class="p1"><span class="s1">比如说像APP可以在中心网关上面询问，应该去哪个真正的API网关。然后中心API网关会告诉它结果，它再连接到所在地的API网关上，然后再向后端API发起调用，所有API的服务网关都受管控中心统一管控。比如说增加一些新的功能，上线一些新的API，包括一些引流、切换，这些指令都会在管理平台上向各个API网关发送。</span></p>
+
+<h1 class="p2"><span class="s1"><b>手机端</b></span></h1>
+
+<h2 class="p3"><span class="s1"><b>1.Bundle</b></span></h2>
+
+<p class="p1"><span class="s1">去年下半年，开发团队对整个手机淘宝的架构做了比较大的调整，如下图所示，左侧是运行时的架构分布，右侧是工程代码级别的分布。在运行的时候，其他的业务团队提供的都是一个个的业务Bundle，这是可部署的单元，包括UI、服务和标准中间件的调用代码，下面有一个总线程，负责管理和开发好统一的UI服务，包括消息服务的总线。再下面是运行容器，上面跑的的是所有的Bundle的东西，对应运行时的东西，右侧是真正在开发时候的结构。比如说聚划算，它要开发它的业务，就做一个单独的工程，然后去开发；它只用开发自己的，开发到差不多的时候，就将其代码打成一个Bundle提供过来，然后一起打包发出去。</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/3.png" width="500"></p>
+
+<h2 class="p3"><span class="s1"><b>2.WebApp</b></span></h2>
+
+<p class="p1"><span class="s1">下图是现在手机淘宝上关于HTML5的整体框架图。手机淘宝上的方案大致分为两部分，中间那一部分是手机淘宝自己开发的HTML5的运行容器，它负责在上面跑各种各样的WebApp，在线上有一个统一发布管理系统，它可能对性能进行检测，包括CDN是否符合规格，HTML本身有没有异常等情况，经过这些必要的检测，包括审查之后，它统一发到CDN上。容器本身其实也会接受运行时的信息，容器接收到这两边的指令之后，它自己会做一些更新配置，也可能会装载运行，从线上系统下发新的WebApp。此外，还可以运行WebApp或者是做URL的导航拦截，甚至做一些交互。</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/4.png" width="500"></p>
+
+<h2 class="p3"><span class="s1"><b>3.PackageApp</b></span></h2>
+
+<p class="p1"><span class="s1">这是今年新的建设，整个系统是基于前面整个体系来做的，称之为PackageApp。</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/5.png" width="500"></p>
+
+<p class="p1"><span class="s1">这个跟前面最大的区别就是让用户感知不到前面同步下载的过程，大概的做法是：把HTML5以及WebApp在发版之前先做一些预知放到客户端里面，前面会做两件事情，首先按照原来的逻辑运行，其次就是在右侧的蓝图里面，它会去做一些UI的拦截，发现用户点击的icon进去之后，整个URL是符合用户规范的，它会启动检测机制去检查线上是不是有新的版本需要下载，如果有的话会启动异步更新模块，从CDN上拉取新的WebApp版本，否则会走到原来的地方，最后既不影响用户去使用WebApp，又能把自己最新的版本更新到所期望的版本，这由统一的管理平台去发布。</span></p>
+
+<p class="p1"><span class="s1">在方案设计之初，还思考了三个方面，首先它是标准的URL，在点击进去之后是导航的URL，对于前端工程师来说，他设计研发WebApp跟客户端或者是线上跟HTML5的网站是一致的。其次，手机淘宝自己的容器，制定了自己的规范，在底层的容器上面可以实现手淘定义的规范。第三，“不同网络、全量、差量更新”，这点很重要，在移动互联网场景下，到底要发起几条链接拉取资源，在WIFI下怎么拉取资源，其实都是不一样的。在不同网络下面，对策都不太一样。</span></p>
+
+<p class="p1"><span class="s1">下面是采用PackageApp后业务模块LoadTime对比图：</span></p>
+
+<p><img _href="img://null" _p="true" src="./手机淘宝构架演化实践_files/6.png" width="500"></p>
+
+<h1 class="p2"><span class="s1"><b>支撑体系</b></span></h1>
+
+<p class="p1"><span class="s1">除了前面介绍的内容，比较大的电商App，还需要一个很完备的支撑体系。如果没有的话，在线上运行的情况是不可感知的。手淘在不同的维度也做了很多支撑的工具。</span></p>
+
+<h2 class="p3"><span class="s1"><b>1.研发支撑</b></span></h2>
+
+<p class="p1"><span class="s1">在研发支撑上面，像传统的Reivew代码，特别是做客户端的同学几乎都会做统一的UI库，大家会设计模板，比较典型的，会有所谓的日常预发、线上染色等等。它的集群数量跟能够进来的用户是很有限的，通过这个环境来确认所开发的代码发布到线上可能会有什么问题。一套代码经过预发之后再发布到线上去，最后有一个染色环境，比如说用户打电话反馈遇到的问题，比如说下单下不了或者是搜索无结果，这时会有一个染色集群，把用户定位到染色集群上面，对用户专门进行一些分析，现在还没有做到直接在用户机器上做调试，但是用户到了染色集群上面，整个调用的链路会剥离出来，比较好分析用户到底发生了什么事情。</span></p>
+
+<h2 class="p3"><span class="s1"><b>2.测试支撑</b></span></h2>
+
+<p class="p1"><span class="s1">App的测试很重要，除了比较常规的单元功能测试，还有很重要的像稳定性跟性能，以及自动化这些都是很重要的。像手机淘宝差不多是一个月左右的时间可能会迭代一个版本。比如说新的功能开发会不会影响到老的功能，智能化测试很重要，可能分成两部分，一部分是线上所有的API，包括业务逻辑是不是正常。另一部分是新写的代码会不会有问题，因为前面架设了统一的API网关，所以会在网关这个层面做很多自动化的调用回归，构造很多正常用户的数据去测试线上API系统的返回值，包括一些异常是不是正常，来保证线上业务逻辑的正常。在客户端这一侧，则会做很多自动脚本的回归，保障整个客户端新做的代码跟原来相比没有什么问题。另外还引入了比较多的静态代码扫描，保证不会出现低级问题。</span></p>
+
+<h2 class="p3"><span class="s1"><b>3.运维支撑</b></span></h2>
+
+<p class="p1"><span class="s1">移动App的运维支撑跟线上不太一样。除了常见的性能跟稳定性分析，还有针对App的业务监控跟舆情监控。舆情监控这个应该是移动App所特有的环节，大家通过市场去分发，很多用户会发评论，iOS特别明显，有人说好，有人说不好，安卓更复杂，特别是国内有大大小小非常多的应用市场，不一而足。所以怎么对舆情做一个有效的监控，既能通过舆情监控，快速收集问题，也能做一些梳理分析，找到产品或者是性能方面的提升点。</span></p>
+
+<h2 class="p3"><span class="s1"><b>4.发布支撑</b></span></h2>
+
+<p class="p1"><span class="s1">发布支撑，其实也是在大的App上面才会出现的，针对一个人群的发布。传统的直接是发到市场上，大家都收到了。而手淘现在有很多内部灰度和外部灰度正式发布，可能有一些内测版本只发给阿里巴巴集团内部员工，这可以通过自己做的发布系统来支撑，有比较灵活的发布策略调整：可以圈定一批用户，也可以选定一个区域，甚至可以用后台数据做合理的设置给特定的版本推送特定升级的版本。</span></p>
+
+<p class="p1"><span class="s1">如果App发到用户手上，结果发生了致命的问题，怎么办呢？其实有两种方法修复线上的问题，第一个是直接替换，另外就是更小维度的补丁，现在在安卓上做的比较多。</span></p>
+
+<p class="p1"><span class="s1">李敏还分享了一个案例，在上半年有一次大促的时候发生了一个问题，零点就要促销了，版本可能是前天刚发布给用户的，那怎么办呢？如果是替换的话也可以做到，但是下载数据量非常大，刚发布不久对用户影响比较大，所以选择了用补丁修复，主要是类似于替换，用JAVA开发的应该知道，主要是用类替换的方式做的。在iOS上也有一些方案，不过还在尝试当中。</span></p>
+
+<h1 class="p2"><span class="s1"><b>客户端监控</b></span></h1>
+
+<p class="p1"><span class="s1">可以在分钟级别确定用户调用某个操作的成功次数、失败次数和失败率，实现对业务可用性的监控。</span></p>
+
+<h1 class="p2"><span class="s1"><b>舆情平台</b></span></h1>
+
+<p class="p1"><span class="s1">舆情平台是移动App所独有的。要获取信息，会从用户手机淘宝自己填的反馈，利用市场和微博，实时抓取，然后把内容聚合起来，进行热门词归类，筛选出一些热门的标签话题做一些智能分类，分类之后大致知道到底是支付、详情、退款出现了什么问题，确定问题的重点之后，可以直接联系用户，甚至去跟踪用户，根据这些问题去修复线上的紧急问题或者是改善产品，这就是在线上实际使用的舆情平台。通过热门词的分类排名，就可以知道某一个版本在某一个阶段最重要的问题是什么，还扩展了用户集中反馈。</span></p>
+
+<p class="p1"><span class="s1">比如举办一个抢红包的活动，这个活动出现了什么问题，大量的用户重复反馈这个问题，就可以把热门的话题聚集起来。另外还可以通过舆情平台确定某个技术的改造是否成功。</span></p>
+
+<p class="p1"><span class="s1">舆情平台早期主要用于收集一些信息，后来发现把舆情收集起来做一些大数据分析，可以得出很多自动化的结论，甚至可以验证研发的结果是好是坏。</span></p>
+
+<p class="p1"><span class="s1">演讲的视频会在制作完成后发布到我们的网站上，敬请期待。</span></p>
+
+        <div style="margin-bottom:5px">【QCon北京2015大会】把握趋势，邀请国内外顶级专家，设计涵盖大数据、云计算、移动开发、技术创业、前端和敏捷等热点领域的18个专题，IT领域的技术盛宴。<a href="http://qconbeijing.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/operations-infrastructure" name="operations-infrastructure" id="6,823"><b>运维 &amp; 基础架构</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture-design" name="architecture-design" id="6,821"><b>架构 &amp; 设计</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/business_architecture" name="business_architecture" id="1,170">业务架构</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/mobile" name="mobile" id="849">移动</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/InternationalArchitectSummit" name="InternationalArchitectSummit" id="7,280">全球架构师峰会</a></li>
+			</ul>							
+		</div>
+		<div class="clear"></div>
+		
+		
+		
+		
+		
+	   	
+
+
+
+
+
+
+
+
+<div class="related_sponsors wholething" style="display: block;">
+	<div class="gray_section_related only1">
+	    <div class="related_editorial recommended">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        </div>
+	    </div>
+	    
+	        
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                    
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3010,&quot;title&quot;:&quot; AWS云中创建和管理多用户环境的方法，方便将AWS用于教学和测试环境。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3010&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click">
+	                                 AWS云中创建和管理多用户环境的方法，方便将AWS用于教学和测试环境。
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3012,&quot;title&quot;:&quot;白皮书介绍了几种存储使用案例，讲解了如何同时使用多种 AWS 云存储选项。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3012&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click">
+	                                白皮书介绍了几种存储使用案例，讲解了如何同时使用多种 AWS 云存储选项。
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entryeventRegistration f_vcrbottom" jsh="{&quot;id&quot;:3085,&quot;title&quot;:&quot;云平台技术全景剖析（12月19日 北京）&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3085&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click">
+	                                云平台技术全景剖析（12月19日 北京）
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:2799,&quot;title&quot;:&quot;视频：如何在云平台上实现高可用应用设计？&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=2799&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click" target="_blank">
+	                                视频：如何在云平台上实现高可用应用设计？
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3007,&quot;title&quot;:&quot;发现日志对于安全的价值，以及如何使用 AWS CloudTrail满足合规性要求。&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3007&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_news_click">
+	                                发现日志对于安全的价值，以及如何使用 AWS CloudTrail满足合规性要求。
+	                            </a>
+	                        </h3>
+	                    
+	                    
+	                    
+	                        
+	                        
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+	        
+        </div>
+        
+            <div class="paid_section only2last">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6046&t=f" target="_blank">
+                        <img src="./手机淘宝构架演化实践_files/100x50.jpg" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">Windows Azure专区上线，全面了解云服务</font><a href="http://www.infoq.com/infoq/url.action?i=6013&t=f" target="_blank"><font face="Verdana">精彩呈现</font></a>！</p>
+
+                </div>
+            </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "2811,253,317,-1000,-1000", "title": "手机淘宝构架演化实践", "contentPath": "/news/2014/12/taobao-app-evolution", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_news_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": '2014/12/taobao-app-evolution',
+            "uriMapping": 'news'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script><iframe src="./手机淘宝构架演化实践_files/container.html" style="visibility: hidden; display: none;"></iframe>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var vcrColumn = $('.gray_section_related > .related_editorial.sponsored');
+            var vcrExists = $(vcrColumn).length === 1;
+            var sponsorshipColumn = $('.related_sponsors > .paid_section')
+            var sponsorshipExists = $(sponsorshipColumn).length === 1;
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || vcrExists || sponsorshipExists || researchExists) {
+                $('.related_sponsors.wholething').show(); // show the big related box
+            }
+			
+            if(recommendedExists || vcrExists){
+            	$('.gray_section_related').show(); // show the gray box for vcr and recommendations
+            }
+            
+            // in case all three available, leave now
+            if (recommendedExists && vcrExists && sponsorshipExists) {
+                return;
+            }
+            // in case only two of them available
+            if (recommendedExists && vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only2');
+                $(vcrColumn).addClass('only2last');
+                $(grayBox).addClass('only2 fullWidth');                
+            } else if (recommendedExists && sponsorshipExists && !vcrExists) {
+                $(recommendedColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            } else if (vcrExists && sponsorshipExists && !recommendedExists) {
+                $(vcrColumn).addClass('only2');
+                $(sponsorshipColumn).addClass('only2last');
+                $(grayBox).addClass('only1');
+            }
+            // in case only one is available
+            else if (recommendedExists && !vcrExists && !sponsorshipExists) {
+                $(recommendedColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (vcrExists && !recommendedExists && !sponsorshipExists) {
+                $(vcrColumn).addClass('only1');
+                $(grayBox).addClass('only1 fullWidth');
+            } else if (sponsorshipExists && !recommendedExists && !vcrExists) {
+                $(sponsorshipColumn).addClass('only1');
+            }
+            // in case none is available, do not display upper border for the research category if any
+            else if (researchExists) {
+                $(researchRow).addClass('only1');
+            }
+        });
+</script>
+<div class="clear"></div>
+
+		<div class="clear"></div>
+
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=40637;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=false;
+var threadWatched=false;
+
+
+var forumNotificationDefault=false;
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./手机淘宝构架演化实践_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./手机淘宝构架演化实践_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./手机淘宝构架演化实践_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+    </div>
+
+    <div class="all_comments">
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+			
+	<div class="clear"></div>
+</div>
+		
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="如何打造移动端的个人资产管理APP" href="http://www.infoq.com/cn/presentations/how-to-build-a-mobile-personal-asset-management-app">
+					如何打造移动端的个人资产管理APP
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%9D%8E%E6%B2%BB%E5%9B%BD" class="editorlink" title="李治国">
+李治国</a>
+
+				12月22日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="如何打造移动端的个人资产管理APP" href="http://www.infoq.com/cn/presentations/how-to-build-a-mobile-personal-asset-management-app">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/lizhiguo_100(1).jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="使用ARM进行企业级应用程序开发" href="http://www.infoq.com/cn/articles/arm-enterprise-applications">
+					使用ARM进行企业级应用程序开发
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Mark-Collins~Cope" class="editorlink" title="Mark Collins-Cope">
+Mark Collins-Cope</a>
+
+				12月22日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="使用ARM进行企业级应用程序开发" href="http://www.infoq.com/cn/articles/arm-enterprise-applications">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/logo2.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="豌豆荚研发的五个方面	" href="http://www.infoq.com/cn/interviews/five-aspects-of-research-and-development-of-wandoujia">
+					豌豆荚研发的五个方面	
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E4%B8%81%E5%90%89%E6%98%8C" class="editorlink" title="丁吉昌">
+丁吉昌</a>
+
+				12月19日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="豌豆荚研发的五个方面	" href="http://www.infoq.com/cn/interviews/five-aspects-of-research-and-development-of-wandoujia">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/dingjichang_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="度量和改进软件开发的工作效率" href="http://www.infoq.com/cn/articles/measure-improve-productivity">
+					度量和改进软件开发的工作效率
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Ben-Linders" class="editorlink" title="Ben Linders">
+Ben Linders</a>
+
+				12月19日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="度量和改进软件开发的工作效率" href="http://www.infoq.com/cn/articles/measure-improve-productivity">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/ShowCover.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="基于PXC的MySQL高可用架构探索" href="http://www.infoq.com/cn/presentations/mysql-high-availability-architecture-exploration-based-on-pxc">
+					基于PXC的MySQL高可用架构探索
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%91%A8%E5%BD%A6%E4%BC%9F" class="editorlink" title="周彦伟">
+周彦伟</a>
+
+				12月19日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="基于PXC的MySQL高可用架构探索" href="http://www.infoq.com/cn/presentations/mysql-high-availability-architecture-exploration-based-on-pxc">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/zhouyanwei_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="架构的相似性是怎么来的？" href="http://www.infoq.com/cn/interviews/how-the-similarity-of-architecture-come">
+					架构的相似性是怎么来的？
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E7%8E%8B%E9%A3%93" class="editorlink" title="王飓">
+王飓</a>
+
+				12月18日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="架构的相似性是怎么来的？" href="http://www.infoq.com/cn/interviews/how-the-similarity-of-architecture-come">
+				<img border="0" alt="" src="./手机淘宝构架演化实践_files/wangju_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+	<script type="application/javascript">
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function (event) {
+//				console.log('Slot has been rendered:' + event);
+//				console.log(event);
+				// only treat textlinks
+				if (event.slot.j.indexOf('textlink') != -1) {
+					if (!event.isEmpty) {
+						$('.sponsored_links_section').css('display', 'block'); // International site
+						$('.sponsored_links_section_i18n').css('display', 'block'); // all but the international site
+					}
+				}
+			});
+		});
+	</script>
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2');  });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3');  });
+		 		</script>
+		 	</div>
+ 		</div>
+
+</div>
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./手机淘宝构架演化实践_files/infoqcn.js"></script>
+
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.async=true;e.src="https://js-agent.newrelic.com/nr-100.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrf2","beacon-1.newrelic.com","bfafe6a5f6",5582901,"YAFWMEEAW0RUVk1cCllLfjdjTltSQkYWRg1YExoOQBE=",0,76,new Date().getTime()])</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2014/12/qq-mobile-practice" title="手机QQ的移动化实践之路">手机QQ的移动化实践之路</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/git-vulnerability-osx-windows" title="Git和Mercurial在OS X和Windows上现严重漏洞">Git和Mercurial在OS X和Windows上现严重漏洞</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/rubymotion3" title="RubyMotion 3发布，支持Android和WatchKit">RubyMotion 3发布，支持Android和WatchKit</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2014/12/qq-mobile-practice" title="手机QQ的移动化实践之路">手机QQ的移动化实践之路</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/git-vulnerability-osx-windows" title="Git和Mercurial在OS X和Windows上现严重漏洞">Git和Mercurial在OS X和Windows上现严重漏洞</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/oracle-java-jar-package" title="Oracle开始从Java运行时中移除JAR包">Oracle开始从Java运行时中移除JAR包</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2014/12/qq-mobile-practice" title="手机QQ的移动化实践之路">手机QQ的移动化实践之路</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/git-vulnerability-osx-windows" title="Git和Mercurial在OS X和Windows上现严重漏洞">Git和Mercurial在OS X和Windows上现严重漏洞</a></p><p><a href="http://www.infoq.com/cn/articles/arm-enterprise-applications" title="使用ARM进行企业级应用程序开发">使用ARM进行企业级应用程序开发</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/news/2014/12/qq-mobile-practice" title="手机QQ的移动化实践之路">手机QQ的移动化实践之路</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/git-vulnerability-osx-windows" title="Git和Mercurial在OS X和Windows上现严重漏洞">Git和Mercurial在OS X和Windows上现严重漏洞</a></p><p><a href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution" title="手机淘宝构架演化实践">手机淘宝构架演化实践</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2014/12/qq-mobile-practice" title="手机QQ的移动化实践之路">手机QQ的移动化实践之路</a></p><p><a href="http://www.infoq.com/cn/articles/arm-enterprise-applications" title="使用ARM进行企业级应用程序开发">使用ARM进行企业级应用程序开发</a></p><p><a href="http://www.infoq.com/cn/articles/measure-improve-productivity" title="度量和改进软件开发的工作效率">度量和改进软件开发的工作效率</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+			
+				<li class="l5"><a href="http://www.infoq.com/cn/reginit.action" title="创建账号">创建账号</a></li>
+				<li class="l6"><a class="login_btn_footer" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="return false;" title="登录">登录</a></li>
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" title="东京 2015年4月 21">东京 2015年4月 21</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年8月24-28日">里约 2015年8月24-28日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./手机淘宝构架演化实践_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/zones/ibm/"><strong>IBM</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/chinaitevents"><strong>技术社区活动日历</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/baidu-salon/"><strong>百度技术沙龙</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/qclub" target="_blank"><strong>线下活动：QClub</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+	<li><a href="http://www.openiotcon.com/"><strong>物联网大会</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/news/2014/12/:http://www.infoq.com/cn/coderally/?utm_source=infoq"><strong>Code Rally 编程拉力赛</strong></a></li>
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2014 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./手机淘宝构架演化实践_files/engine.js" type="text/javascript"></script>
+            <script src="./手机淘宝构架演化实践_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./手机淘宝构架演化实践_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/news/2014/12/taobao-app-evolution?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  _gaq.push(['_trackPageview']);
+  var view = CookieManager.readCookie('homepage_list');
+  _gaq.push(['_setCustomVar', 2, 'Grid vs list view', ((typeof view !== 'undefined' && view)) ? 'List' : 'Grid', 3]);
+  
+  
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  $.getScript("/scripts/__hd.ifq?hdt=bXXmMMnUdRSnceBH");
+  
+</script>
+
+    <script src="./手机淘宝构架演化实践_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="./手机淘宝构架演化实践_files/h.js" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('2WSsfhNy1A85yHe2FTEAZjMZb2AAWRJh');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "手机淘宝构架演化实践";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn2.infoqstatic.com/scripts/lib/browser-update-org/update.js?20141218-0126");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S1 -->
+<script type="text/javascript" async="" src="./手机淘宝构架演化实践_files/nr-100.js"></script><script type="text/javascript" src="./手机淘宝构架演化实践_files/update.js"></script><embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"><script type="text/javascript" async="" src="./手机淘宝构架演化实践_files/nr-100.js"></script></body></html>
