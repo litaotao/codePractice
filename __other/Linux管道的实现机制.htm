@@ -1,0 +1,427 @@
+
+<!-- saved from url=(0044)http://oss.org.cn/kernel-book/ch07/7.1.1.htm -->
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:st1="urn:schemas-microsoft-com:office:smarttags" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<meta name="ProgId" content="Word.Document">
+<meta name="Generator" content="Microsoft Word 11">
+<meta name="Originator" content="Microsoft Word 11">
+<link rel="File-List" href="http://oss.org.cn/kernel-book/ch07/7.1.1.files/filelist.xml">
+<link rel="Edit-Time-Data" href="http://oss.org.cn/kernel-book/ch07/7.1.1.files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title> Linux管道的实现机制</title>
+<style type="text/css"></style></head><body lang="ZH-CN" style="tab-interval:21.0pt;text-justify-trim:punctuation"><o:smarttagtype namespaceuri="urn:schemas-microsoft-com:office:smarttags" name="chsdate" downloadurl="">
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>CLJ</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>CLJ</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>2</o:TotalTime>
+  <o:Created>2007-08-15T08:33:00Z</o:Created>
+  <o:LastSaved>2007-08-15T08:33:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>231</o:Words>
+  <o:Characters>1318</o:Characters>
+  <o:Lines>10</o:Lines>
+  <o:Paragraphs>3</o:Paragraphs>
+  <o:CharactersWithSpaces>1546</o:CharactersWithSpaces>
+  <o:Version>11.5606</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:PunctuationKerning/>
+  <w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:AdjustLineHeightInTable/>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if !mso]><object
+ classid="clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D" id=ieooui></object>
+<style>
+st1\:*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-alt:SimSun;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;
+	mso-font-charset:134;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:3 135135232 16 0 262145 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	mso-pagination:none;
+	font-size:10.5pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:宋体;
+	mso-font-kerning:1.0pt;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+ /* Page Definitions */
+ @page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	mso-header-margin:42.55pt;
+	mso-footer-margin:49.6pt;
+	mso-paper-source:0;
+	layout-grid:15.6pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:1753233944;
+	mso-list-type:simple;
+	mso-list-template-ids:1937021516;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:·;
+	mso-level-tab-stop:21.25pt;
+	mso-level-number-position:left;
+	margin-left:21.25pt;
+	text-indent:-21.25pt;
+	font-family:宋体;
+	mso-hansi-font-family:Wingdings;}
+@list l1
+	{mso-list-id:1860004187;
+	mso-list-type:simple;
+	mso-list-template-ids:1937021516;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:·;
+	mso-level-tab-stop:21.25pt;
+	mso-level-number-position:left;
+	margin-left:21.25pt;
+	text-indent:-21.25pt;
+	font-family:宋体;
+	mso-hansi-font-family:Wingdings;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:普通表格;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+
+
+
+
+<div class="Section1" style="layout-grid:15.6pt">
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><st1:chsdate year="1899" month="12" day="30" islunardate="False" isrocdate="False" w:st="on"><b style="mso-bidi-font-weight:
+ normal"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+ color:black;mso-font-kerning:0pt">7.1.1</span></b></st1:chsdate><b style="mso-bidi-font-weight:normal"><span lang="EN-US" style="font-family:宋体;
+mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">
+Linux</span></b><b style="mso-bidi-font-weight:normal"><span style="font-family:
+宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">管道的实现机制<span lang="EN-US"><o:p></o:p></span></span></b></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;text-indent:24.0pt;
+mso-layout-grid-align:none;text-autospace:none"><span style="font-family:宋体;
+mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">在<span lang="EN-US">Linux</span>中，管道是一种使用非常频繁的通信机制。从本质上说，管道也是一种文件，但它又和一般的文件有所不同，管道可以克服使用文件进行通信的两个问题，具体表现为：<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="margin-left:21.25pt;text-align:left;
+text-indent:-21.25pt;mso-list:l0 level1 lfo2;tab-stops:list 21.25pt;mso-layout-grid-align:
+none;text-autospace:none"><!--[if !supportLists]--><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:Wingdings;mso-bidi-font-family:
+宋体;color:black;mso-font-kerning:0pt"><span style="mso-list:Ignore">·<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">限制管道的大小。实际上，管道是一个固定大小的缓冲区。在<span lang="EN-US">Linux</span>中，该缓冲区的大小为<span lang="EN-US">1</span>页，即<span lang="EN-US">4K</span>字节，使得它的大小<span class="GramE">不象</span>文件那样不加检验地增长。使用单个固定缓冲区也会带来问题，比如在写管道时可能变满，当这种情况发生时，随后对管道的<span lang="EN-US">write()</span>调用将默认地被阻塞，等待某些数据被读取，以便腾出足够的空间供<span lang="EN-US">write()</span>调用写。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="margin-left:21.25pt;text-align:left;
+text-indent:-21.25pt;mso-list:l1 level1 lfo1;tab-stops:list 21.25pt;mso-layout-grid-align:
+none;text-autospace:none"><!--[if !supportLists]--><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:Wingdings;mso-bidi-font-family:
+宋体;color:black;mso-font-kerning:0pt"><span style="mso-list:Ignore">·<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">读取进程也可能工作得比<span class="GramE">写进程</span>快。当所有当前进程数据已被读取时，管道变空。当这种情况发生时，一个随后的<span lang="EN-US">read()</span>调用将默认地被阻塞，等待某些数据被写入，这解决了<span lang="EN-US">read()</span>调用返回文件结束的问题。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;text-indent:24.0pt;
+mso-layout-grid-align:none;text-autospace:none"><b style="mso-bidi-font-weight:
+normal"><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">注意</span></b><span style="font-family:宋体;
+mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">：从管道读数据是一次性操作，数据一旦被读，它就从管道中被抛弃，释放空间以便写更多的数据。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><b style="mso-bidi-font-weight:normal"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">1. </span></b><b style="mso-bidi-font-weight:
+normal"><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">管道的结构<span lang="EN-US"><o:p></o:p></span></span></b></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">在<span lang="EN-US"> Linux </span>中，管道的实现并没有使用专门的数据结构，而是借助了文件系统的<span lang="EN-US">file</span>结构和<span lang="EN-US">VFS</span>的索引节点<span lang="EN-US">inode</span>。通过将两个<span lang="EN-US"> file </span>结构指向同一个临时的<span lang="EN-US"> VFS </span>索引节点，而这个<span lang="EN-US"> VFS </span>索引节点又指向一个物理页面而实现的。如图<span lang="EN-US"> 7.1</span>所示。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp; </span><o:p></o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><!--[if gte vml 1]><v:shapetype id="_x0000_t75"
+ coordsize="21600,21600" o:spt="75" o:preferrelative="t" path="m@4@5l@4@11@9@11@9@5xe"
+ filled="f" stroked="f">
+ <v:stroke joinstyle="miter"/>
+ <v:formulas>
+  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+  <v:f eqn="sum @0 1 0"/>
+  <v:f eqn="sum 0 0 @1"/>
+  <v:f eqn="prod @2 1 2"/>
+  <v:f eqn="prod @3 21600 pixelWidth"/>
+  <v:f eqn="prod @3 21600 pixelHeight"/>
+  <v:f eqn="sum @0 0 1"/>
+  <v:f eqn="prod @6 1 2"/>
+  <v:f eqn="prod @7 21600 pixelWidth"/>
+  <v:f eqn="sum @8 21600 0"/>
+  <v:f eqn="prod @7 21600 pixelHeight"/>
+  <v:f eqn="sum @10 21600 0"/>
+ </v:formulas>
+ <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:shapetype><v:shape id="_x0000_s1026" type="#_x0000_t75" style='position:absolute;
+ left:0;text-align:left;margin-left:138.9pt;margin-top:10.55pt;width:352.25pt;
+ height:280.8pt;z-index:1'>
+ <v:imagedata src="7.1.1.files/image001.png" o:title="图7-1  管道结构示意图"/>
+</v:shape><![endif]--><!--[if !vml]--><span style="mso-ignore:vglayout">
+
+<table cellpadding="0" cellspacing="0" align="left">
+ <tbody><tr>
+  <td width="185" height="14"></td>
+ </tr>
+ <tr>
+  <td></td>
+  <td><img width="470" height="374" src="./Linux管道的实现机制_files/image002.gif" v:shapes="_x0000_s1026"></td>
+ </tr>
+</tbody></table>
+
+</span><!--[endif]--><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<br style="mso-ignore:vglayout" clear="ALL">
+
+<p class="MsoNormal" align="center" style="text-align:center;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;
+mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">图<span lang="EN-US">7.1<span style="mso-spacerun:yes">&nbsp; </span></span>管道结构示意图<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;text-indent:31.5pt;
+mso-char-indent-count:3.0;mso-layout-grid-align:none;text-autospace:none"><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">图<span lang="EN-US">7.1</span>中有两个<span lang="EN-US"> file </span>数据结构，但它们定义文件操作例程地址是不同的，其中一个是向管道中写入数据的例程地址，而另一个是从管道中读出数据的例程地址。这样，用户程序的系统调用仍然是通常的文件操作，而内核却利用这种<b style="mso-bidi-font-weight:normal">抽象机制</b>实现了管道这一特殊操作。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><b style="mso-bidi-font-weight:normal"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">2.</span></b><b style="mso-bidi-font-weight:
+normal"><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">管道的读写<span lang="EN-US"><o:p></o:p></span></span></b></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">管道实现的源代码在<span lang="EN-US">fs/pipe.c</span>中，在<span lang="EN-US">pipe.c</span>中有很多函数，其中有两个函数比较重要，即<span class="GramE">管道读函数</span><span lang="EN-US">pipe_read()</span>和管道写函数<span lang="EN-US">pipe_wrtie()</span>。管道写函数通过将字节复制到<span lang="EN-US"> VFS </span>索引节点指向的物理内存而写入数据，而<span class="GramE">管道读函数</span>则通过复制物理内存中的字节而读出数据。当然，内核必须利用一定的机制同步对管道的访问，为此，内核使用了锁、等待队列和信号。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span class="GramE"><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;
+color:black;mso-font-kerning:0pt">当写进程</span></span><span style="font-family:
+宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">向管道中写入时，它利用标准的库函数<span lang="EN-US">write()</span>，系统根据库函数传递的文件描述符，可找到该文件的<span lang="EN-US"> file </span>结构。<span lang="EN-US">file </span>结构中指定了用来进行写操作的函数（即写入函数）地址，于是，内核调用该函数完成写操作。写入函数在向内存中写入数据之前，必须首先检查<span lang="EN-US"> VFS </span>索引节点中的信息，同时满足如下条件时，才能进行实际的内存复制工作：<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span lang="EN-US" style="mso-ascii-font-family:宋体;color:black;mso-font-kerning:0pt">·</span><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">内存中有足够的空间可容纳所有要写入的数据；<span lang="EN-US"> <o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span lang="EN-US" style="mso-ascii-font-family:宋体;color:black;mso-font-kerning:0pt">·</span><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">内存没有被读程序锁定。<span lang="EN-US"> <o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><o:p>&nbsp;</o:p></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;text-indent:24.0pt;
+mso-layout-grid-align:none;text-autospace:none"><span style="font-family:宋体;
+mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">如果同时满足上述条件，写入函数首先锁定内存，然后从<span class="GramE">写进程</span>的地址空间中复制数据到内存。否则，写入进程就休眠在<span lang="EN-US"> VFS </span>索引节点的等待队列中，接下来，内核将调用调度程序，而调度程序会选择其他进程运行。写入进程实际处于可中断的等待状态，当内存中有足够的空间可以容纳写入数据，或内存被解锁时，读取进程会唤醒写入进程，这时，写入进程将接收到信号。当数据写入内存之后，内存被解锁，而所有休眠在索引节点的读取进程会被唤醒。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;
+mso-font-kerning:0pt">管道的读取过程和写入过程类似。但是，进程可以在没有数据或内存被锁定时立即返回错误信息，而不是阻塞该进程，这依赖于文件或管道的打开模式。反之，进程可以休眠在索引节点的等待队列中等待写入进程写入数据。当所有的进程完成了管道操作之后，管道的索引节点被丢弃，而共享数据页也被释放。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal" align="left" style="text-align:left;mso-layout-grid-align:
+none;text-autospace:none"><span lang="EN-US" style="font-family:宋体;mso-hansi-font-family:
+&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span></span><span style="font-family:
+宋体;mso-hansi-font-family:&quot;Times New Roman&quot;;color:black;mso-font-kerning:0pt">因为管道的实现涉及很多文件的操作<span lang="EN-US">,</span>因此<span lang="EN-US">,</span>当读者学完有关文件系统的内容后来读<span lang="EN-US">pipe.c</span>中的代码，你会觉得并不难理解。<span lang="EN-US"><o:p></o:p></span></span></p>
+
+<p class="MsoNormal"><span lang="EN-US"><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+
+
+
+</o:smarttagtype></body></html>

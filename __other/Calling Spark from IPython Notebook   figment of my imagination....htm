@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://www.abisen.com/spark-from-ipython-notebook.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="./Calling Spark from IPython Notebook   figment of my imagination..._files/css" rel="stylesheet" type="text/css">
+
+<title> Calling Spark from IPython Notebook | figment of my imagination... </title>
+<link rel="stylesheet" href="./Calling Spark from IPython Notebook   figment of my imagination..._files/style.css" type="text/css">
+<link rel="stylesheet" href="./Calling Spark from IPython Notebook   figment of my imagination..._files/pygments.css" type="text/css">
+<link rel="stylesheet" href="./Calling Spark from IPython Notebook   figment of my imagination..._files/font-awesome.css" type="text/css">
+<style type="text/css"></style><script type="text/javascript" async="" src="./Calling Spark from IPython Notebook   figment of my imagination..._files/ga.js"></script><script type="text/javascript" async="" src="./Calling Spark from IPython Notebook   figment of my imagination..._files/embed.js"></script></head>
+<body data-twttr-rendered="true">
+<div class="container">
+<div class="navigation">
+<ul>
+<li><a href="http://www.abisen.com/index.html">Blog</a> </li>
+<li><a href="http://www.abisen.com/archives.html">Archive</a> </li>
+<li><a href="http://www.abisen.com/tags.html">Tags</a> </li>
+</ul>
+</div>
+<div class="separator"></div>
+<div class="body">
+<h1 class="title"> Calling Spark from IPython Notebook</h1>
+<p class="date"> Thu 03 April 2014 </p>
+<p>Another note to self: Apache Spark is a powerful platform for data analysis and adds a great deal of oomph to PyData ecosystem with it's Python integration. I really like the fact that it's very easy to configure (<a class="reference external" href="http://spark.apache.org/docs/latest/quick-start.html">QuickStart</a>) both on a cluster or locally in standalone mode.</p>
+<p>Here are the instructions on how to instantiate Spark from the IPython notebook bypassing the need to call <strong>pyspark</strong> shell script.</p>
+<p>The advantage of using this method is that you don't necessarily have to instantiate spark unless you would like to use it from your session. Additionally if you are like me it's possible that you have multiple instances of python installed on your laptop (Anaconda, Virtualenv etc.) and you can call spark from any of those instances.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c"># Set the path for spark installation</span>
+<span class="c"># this is the path where you have built spark using sbt/sbt assembly</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'SPARK_HOME'</span><span class="p">]</span><span class="o">=</span><span class="s">"/home/abisen/opt/spark"</span>
+
+<span class="c"># Append to PYTHONPATH so that pyspark could be found</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"/home/abisen/opt/spark/python/"</span><span class="p">)</span>
+
+
+<span class="c"># Now we are ready to import Spark Modules</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkContext</span>
+    <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkConf</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">"Error importing Spark Modules"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<p>Once the modules are loaded successfully. You can now proceed as you would with your spark code. Once you instantiate <tt class="docutils literal">SparkContext</tt> the spark subsystem should fire up in the background and you should be able to access the web-console at <tt class="docutils literal"><span class="pre">http://&lt;local-ip&gt;:4040</span></tt></p>
+<div class="highlight"><pre><span class="c"># Optionally configure Spark Settings</span>
+<span class="n">conf</span><span class="o">=</span><span class="n">SparkConf</span><span class="p">()</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">"spark.executor.memory"</span><span class="p">,</span> <span class="s">"1g"</span><span class="p">)</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">"spark.cores.max"</span><span class="p">,</span> <span class="s">"2"</span><span class="p">)</span>
+<span class="n">conf</span><span class="o">.</span><span class="n">setAppName</span><span class="p">(</span><span class="s">"My App"</span><span class="p">)</span>
+
+<span class="c">## Initialize SparkContext</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="s">'local'</span><span class="p">,</span> <span class="n">conf</span><span class="o">=</span><span class="n">conf</span><span class="p">)</span>
+</pre></div>
+<div class="twitter">
+<iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" src="./Calling Spark from IPython Notebook   figment of my imagination..._files/tweet_button.b68aed79dd9ad79554bcd8c9141c94c8.en.htm" class="twitter-share-button twitter-tweet-button twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 115px; height: 20px;"></iframe>
+<script id="twitter-wjs" src="./Calling Spark from IPython Notebook   figment of my imagination..._files/widgets.js"></script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<p class="tags">This entry was tagged as
+<a href="http://www.abisen.com/tag/python.html">python</a>
+<a href="http://www.abisen.com/tag/ipython.html">ipython</a>
+<a href="http://www.abisen.com/tag/notebook.html">notebook</a>
+<a href="http://www.abisen.com/tag/spark.html">spark</a>
+</p>
+<div id="disqus_thread"><iframe id="dsq-2" data-disqus-uid="2" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Calling Spark from IPython Notebook   figment of my imagination..._files/saved_resource.htm" style="width: 100% !important; border: none !important; overflow: hidden !important; height: 0px !important;"></iframe></div>
+<script type="text/javascript">var disqus_shortname='abisen';(function(){var dsq=document.createElement('script');dsq.type='text/javascript';dsq.async=true;dsq.src='http://'+disqus_shortname+'.disqus.com/embed.js';(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(dsq);})();</script>
+<noscript>Please enable JavaScript to view the &lt;a href="http://disqus.com/?ref_noscript"&gt;comments powered by Disqus.&lt;/a&gt;</noscript>
+<a href="http://disqus.com/" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<div class="footer">
+<p>© Copyright <script language="JavaScript">var date=new Date();document.write(date.getFullYear());</script>2015 by Anand Bisen</p>
+<p> Powered by <a href="http://pypi.python.org/pypi/pelican/" target="_blank">Pelican</a>.
+</p>
+<p>
+</p><div class="social" style="font-size: 27px;">
+<ul>
+<script language="JavaScript">u='';s='';document.write('<a href=\"mailto:'+u+'@'+s+'\" target=\"_blank\">');</script><a href="mailto:@" target="_blank">
+<li><i class="icon-envelope icon-large"></i> </li>
+</a>
+<a href="http://twitter.com/abisen" target="_blank"> <li> <i class="icon-twitter-sign icon-large"> </i></li> </a>
+<a href="http://www.linkedin.com/in/abisen"><li><i class="icon-linkedin-sign icon-large"></i></li></a>
+<a href="" target="_blank"> <li> <i class="icon-github-sign icon-large"></i> </li> </a>
+<a href="http://www.abisen.com/feeds/all.rss.xml" rel="alternate" title="Recent Blog Posts"><li> <i class="icon-rss icon-large"></i> </li></a>
+</ul>
+</div>
+<p></p>
+</div> </div>
+<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-35333868-1']);_gaq.push(['_trackPageview']);(function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src=('https:'==document.location.protocol?'https://ssl':'http://www')+'.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();</script>
+<script>//<![CDATA[
+(function(){var d=encodeURIComponent,f=window,g=document,h="documentElement",k="length",l="prototype",m="body",p="&",s="&ci=",t=",",u="?",v="Content-Type",w="Microsoft.XMLHTTP",x="Msxml2.XMLHTTP",y="POST",z="application/x-www-form-urlencoded",A="img",B="input",C="load",D="oh=",E="on",F="pagespeed_url_hash",G="url=";f.pagespeed=f.pagespeed||{};var H=f.pagespeed,I=function(a,b,c){this.c=a;this.e=b;this.d=c;this.b=this.f();this.a={}};I[l].f=function(){return{height:f.innerHeight||g[h].clientHeight||g[m].clientHeight,width:f.innerWidth||g[h].clientWidth||g[m].clientWidth}};I[l].g=function(a){a=a.getBoundingClientRect();return{top:a.top+(void 0!==f.pageYOffset?f.pageYOffset:(g[h]||g[m].parentNode||g[m]).scrollTop),left:a.left+(void 0!==f.pageXOffset?f.pageXOffset:(g[h]||g[m].parentNode||g[m]).scrollLeft)}};I[l].h=function(a){if(0>=a.offsetWidth&&0>=a.offsetHeight)return!1;a=this.g(a);var b=a.top.toString()+t+a.left.toString();if(this.a.hasOwnProperty(b))return!1;this.a[b]=!0;return a.top<=this.b.height&&a.left<=this.b.width};I[l].i=function(a){var b;if(f.XMLHttpRequest)b=new XMLHttpRequest;else if(f.ActiveXObject)try{b=new ActiveXObject(x)}catch(c){try{b=new ActiveXObject(w)}catch(e){}}if(!b)return!1;b.open(y,this.c+(-1==this.c.indexOf(u)?u:p)+G+d(this.e));b.setRequestHeader(v,z);b.send(a);return!0};I[l].k=function(){for(var a=[A,B],b=[],c={},e=0;e<a[k];++e)for(var q=g.getElementsByTagName(a[e]),n=0;n<q[k];++n){var r=q[n].getAttribute(F);r&&(q[n].getBoundingClientRect&&this.h(q[n]))&&!(r in c)&&(b.push(r),c[r]=!0)}if(0!=b[k]){a=D+this.d;a+=s+d(b[0]);for(e=1;e<b[k];++e){c=t+d(b[e]);if(131072<a[k]+c[k])break;a+=c}H.criticalImagesBeaconData=a;this.i(a)}};H.j=function(a,b,c){if(a.addEventListener)a.addEventListener(b,c,!1);else if(a.attachEvent)a.attachEvent(E+b,c);else{var e=a[E+b];a[E+b]=function(){c.call(this);e&&e.call(this)}}};H.l=function(a,b,c){var e=new I(a,b,c);H.j(f,C,function(){f.setTimeout(function(){e.k()},0)})};H.criticalImagesBeaconInit=H.l;})();pagespeed.criticalImagesBeaconInit('/mod_pagespeed_beacon','http://www.abisen.com/spark-from-ipython-notebook.html','eLK4J0ZIEJ');
+//]]></script>
+
+</body></html>

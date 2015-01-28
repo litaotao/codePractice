@@ -1,0 +1,1080 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0084)http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>How-to: Use IPython Notebook with Apache Spark | Cloudera Engineering Blog</title>
+
+<meta name="keywords" content="hadoop, hadoop training, cloudera, hadoop tutorial, hadoop certification, apache hadoop, hadoop download, big data, open source">
+<meta name="description" content="">
+
+<meta name="msvalidate.01" content="8857B9071A02F989DE3F8BEE557BB584">
+
+<link rel="search" type="application/opensearchdescription+xml" href="http://blog.cloudera.com/assets/opensearch.xml" title="Cloudera">
+
+<meta property="og:title" content="How-to: Use IPython Notebook with Apache Spark">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/">
+<meta property="og:site_name" content="Cloudera Developer Blog">
+
+
+<link rel="icon" href="http://blog.cloudera.com/wp-content/themes/solutionset/assets/favicon.ico" type="image/x-icon"> 
+<link rel="stylesheet" media="all" type="text/css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/960.css">
+<link rel="stylesheet" media="all" type="text/css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/reset.css">
+<link rel="stylesheet" media="all" type="text/css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/all.css">
+<link rel="stylesheet" media="all" type="text/css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/wp.css"> 
+
+<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="http://blog.cloudera.com/wp-content/themes/solutionset/assets/css/ie6.css?20120605" media="screen"/><![endif]-->
+<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="http://blog.cloudera.com/wp-content/themes/solutionset/assets/css/ie6-7.css?20120605" media="screen"/><![endif]-->
+<!--[if lt IE 9]><link rel="stylesheet" type="text/css" href="http://blog.cloudera.com/wp-content/themes/solutionset/assets/css/ie.css?20120605" media="screen"/><![endif]-->
+
+<script type="text/javascript" async="" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/ga.js"></script><script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/modernizr-2.6.1.min.js"></script><style type="text/css"></style>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/mootools-1.2.4-yui.js"></script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/mootools-1.2.4.4-more-yui.js"></script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/jquery-1.6.2.min.js"></script>
+<script type="text/javascript"> jQuery.noConflict(); </script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/global.js"></script>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "ur-aa86c136-1042-b30d-950-dd905bb179a0", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+
+
+<link rel="pingback" href="http://blog.cloudera.com/xmlrpc.php">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » Feed" href="http://blog.cloudera.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » Comments Feed" href="http://blog.cloudera.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Cloudera Engineering Blog » How-to: Use IPython Notebook with Apache Spark Comments Feed" href="http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/feed/">
+<link rel="stylesheet" id="prettify-gc-syntax-highlighter-css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/prettify.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-classic-css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/classic.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/monaco.css" type="text/css" media="all">
+<link rel="stylesheet" id="cptchStylesheet-css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/style_wp_before_3.8.css" type="text/css" media="all">
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/jquery.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.6.6","is_admin":"0","ajaxurl":"https:\/\/blog.cloudera.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};;
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/crayon.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.cloudera.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.cloudera.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="New in CDH 5.1: HDFS Read Caching" href="http://blog.cloudera.com/blog/2014/08/new-in-cdh-5-1-hdfs-read-caching/">
+<link rel="next" title="Apache Hadoop 2.5.0 is Released" href="http://blog.cloudera.com/blog/2014/08/apache-hadoop-2-5-0-is-released/">
+<meta name="generator" content="WordPress 3.3.2">
+<link rel="canonical" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog.htm">
+<link rel="shortlink" href="http://blog.cloudera.com/?p=27041">
+
+
+<script type="text/javascript">
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-2275969-16']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+</script>
+
+
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/getAllAppDefault.esi"></script><script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/checkOAuth.esi"></script><link rel="stylesheet" type="text/css" href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/buttons.1be8af3324f0d6a3f57225413b0da78b.css"><style type="text/css" id="ki-jhk-jk"></style><style type="text/css" id="ki-jhk-jb"></style></head>
+<body class="single single-post postid-27041 single-format-standard devcenter" data-twttr-rendered="true" style="overflow-x: hidden;"><iframe id="twttrHubFrameSecure" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" name="twttrHubFrameSecure" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/hub.495aa91f8927e5f490215e98e950746c(1).htm" style="position: absolute; top: -9999em; width: 10px; height: 10px;"></iframe><iframe id="twttrHubFrame" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" name="twttrHubFrame" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/hub.495aa91f8927e5f490215e98e950746c.htm" style="position: absolute; top: -9999em; width: 10px; height: 10px;"></iframe><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" style="padding-bottom: 0px; padding-right: 0px; display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxLoadedContent" class="" style="width: 0px; height: 0px; overflow: hidden;"></div><div id="cboxLoadingOverlay" class=""></div><div id="cboxLoadingGraphic" class=""></div><div id="cboxTitle" class=""></div><div id="cboxCurrent" class=""></div><div id="cboxNext" class=""></div><div id="cboxPrevious" class=""></div><div id="cboxSlideshow" class=""></div><div id="cboxClose" class=""></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div></div>
+			
+		
+			
+	<header id="site-head">
+<nav class="properties">
+            <div class="container">
+                <ul>
+                    <!--<li><a href="http://www.cloudera.com">Cloudera.com</a></li>-->
+                     <!--<li><a href="http://university.cloudera.com">Cloudera University</a></li>
+                   <li><a href="${config.LINK_CCP}/display/DOC/Documentation">Documentation</a></li>-->
+                    <li><a id="support_home_page" href="http://cloudera.com/content/support/en/home.html" class="active">Support</a></li>
+                    <li><a href="http://cloudera.com/content/dev-center/en/home.html">Developers</a></li>
+                  <!--<li><a href="http://cloudera.com/content/cloudera/en/partners.html">PARTNERS</a></li>-->
+                   
+                </ul>
+                <ul class="user">
+                    <li>
+                       <!--<a id="signinLink" class="hidden" href="https://clouderapkb.echolane.cs3.force.com/idp/login?app=0spQ00000004CD5">Sign In</a>-->
+<a id="signinLink" class="hidden" href="https://cloudera.secure.force.com/">Sign In</a>
+                    </li>
+                    <li><a id="registerLink" class="hidden" href="http://cloudera.com/content/support/en/user-registration.html">Register</a></li>
+                    <li><a href="http://cloudera.com/content/cloudera/en/about/contact-us.html">Contact Us</a></li>
+                    <li><a href="http://cloudera.com/content/support/en/downloads.html">Downloads</a></li>
+                    <li>
+                        <div id="dropdownAction" class="dropdown" style="display:none">
+                            <a id="lnkDropdowntoogle" data-toggle="dropdown" class="dropdown-toggle" href="http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/#">
+
+                            </a>
+                            <ul aria-labelledby="dropdownMenu" tole="menu" class="dropdown-menu">
+                                <li><a href="http://cloudera.com/content/support/en/edit-user-profile.html" id="editProfileLink" tabindex="-1">Edit Profile</a></li>
+                                <li class="divider"></li>
+                                <li>
+                                <a id="logoutLink" tabindex="-1" href="http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/#">Logout</a>
+                                
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-fix"></div>
+        </nav>
+<!--</div>-->
+
+<div class="wrapper">
+    <div class="bg-fix"></div>
+    <h1 class="logo">
+        <a href="http://cloudera.com/content/cloudera/en/home.html">Cloudera</a>
+    </h1>
+
+<nav class="site">
+        <ul>
+    <li class="">
+ <a href="http://community.cloudera.com/" data-link="external">Community</a>
+</li>
+<li class="">
+ <a href="http://cloudera.com/content/support/en/documentation.html" data-link="external">Documentation</a>
+</li>
+ <li class="">
+                    <a href="http://cloudera.com/content/support/en/downloads.html" data-link="external">Downloads</a>
+   </li>
+     <li class="">
+                    <a href="http://university.cloudera.com/" data-link="external">Training</a>
+     </li>
+<li class="">
+                    <a href="http://blog.cloudera.com/" data-link="external" class="active">Blogs</a>
+                    <nav class="subnav menu"> <nav><ul>
+<li><a href="http://vision.cloudera.com/">Cloudera Vision</a></li>
+<!--<li><a href="http://blog.cloudera.com/blog">Developer Blog</a></li>-->
+</ul>
+</nav> </nav>
+</li>
+            
+        </ul>
+    </nav>
+
+
+    <div class="form-holder">
+		
+	    <form action="http://cloudera.com/content/cloudera/en/search.html" id="site-search" method="get" novalidate=""> 
+	        <label for="q" class="visuallyhidden">Search</label> 
+	        <input type="search" name="q" id="q" placeholder="Search"><i class="icon-search"></i> 
+	    </form>
+    </div>
+    </div><!--</div>-->
+        </header>
+				
+	<div role="main" class="main">
+		<div class="wrapper">
+			<section class="two-col">
+
+	
+<aside class="left-col">
+
+				<nav>
+			<ul class=" ">
+			
+								
+							<li class="">
+				<a href="http://www.cloudera.com/content/cloudera/en/why-cloudera/hadoop-and-big-data.html" title="Hadoop &amp; Big Data" class="" target="_blank">
+					Hadoop &amp; Big Data				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://www.cloudera.com/content/cloudera/en/why-cloudera/our-customers.html" title="Our Customers" class="" target="_blank">
+					Our Customers				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://www.cloudera.com/content/cloudera/en/why-cloudera/faqs.html" title="FAQs" class="" target="_blank">
+					FAQs				</a>
+
+							</li>
+			
+					<li class="current">
+				<a href="http://blog.cloudera.com/blog/" title="Blog" class="blog">
+					Blog				</a>
+
+									<ul>
+									<li class="">
+				<a href="http://blog.cloudera.com/blog/category/accumulo/" title="Accumulo (1)" class="">
+					Accumulo (1)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/avro/" title="Avro (16)" class="">
+					Avro (16)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/bigtop/" title="Bigtop (6)" class="">
+					Bigtop (6)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/books/" title="Books (11)" class="">
+					Books (11)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/careers/" title="Careers (14)" class="">
+					Careers (14)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/cdh/" title="CDH (149)" class="">
+					CDH (149)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/cloud-2/" title="Cloud (18)" class="">
+					Cloud (18)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/cloudera-labs/" title="Cloudera Labs (3)" class="">
+					Cloudera Labs (3)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/cloudera-life/" title="Cloudera Life (6)" class="">
+					Cloudera Life (6)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/cloudera-manager/" title="Cloudera Manager (71)" class="">
+					Cloudera Manager (71)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/community/" title="Community (204)" class="">
+					Community (204)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/data-ingestion/" title="Data Ingestion (20)" class="">
+					Data Ingestion (20)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/data-science/" title="Data Science (33)" class="">
+					Data Science (33)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/events/" title="Events (45)" class="">
+					Events (45)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/flume/" title="Flume (21)" class="">
+					Flume (21)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/general/" title="General (333)" class="">
+					General (333)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/graph-processing/" title="Graph Processing (3)" class="">
+					Graph Processing (3)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/guest/" title="Guest (93)" class="">
+					Guest (93)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hadoop/" title="Hadoop (329)" class="">
+					Hadoop (329)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hardware/" title="Hardware (6)" class="">
+					Hardware (6)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hbase/" title="HBase (133)" class="">
+					HBase (133)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hdfs/" title="HDFS (50)" class="">
+					HDFS (50)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hive/" title="Hive (70)" class="">
+					Hive (70)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/how-to/" title="How-to (71)" class="">
+					How-to (71)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/hue/" title="Hue (33)" class="">
+					Hue (33)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/impala/" title="Impala (80)" class="">
+					Impala (80)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/kafka/" title="Kafka (5)" class="">
+					Kafka (5)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/kite-sdk/" title="Kite SDK (16)" class="">
+					Kite SDK (16)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/mahout-2/" title="Mahout (5)" class="">
+					Mahout (5)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/mapreduce/" title="MapReduce (73)" class="">
+					MapReduce (73)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/meet-the-engineer/" title="Meet The Engineer (22)" class="">
+					Meet The Engineer (22)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/oozie/" title="Oozie (26)" class="">
+					Oozie (26)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/ops/" title="Ops And DevOps (22)" class="">
+					Ops And DevOps (22)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/parquet-2/" title="Parquet (12)" class="">
+					Parquet (12)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/performance/" title="Performance (12)" class="">
+					Performance (12)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/pig/" title="Pig (36)" class="">
+					Pig (36)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/project-rhino/" title="Project Rhino (5)" class="">
+					Project Rhino (5)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/quickstart-vm/" title="QuickStart VM (5)" class="">
+					QuickStart VM (5)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/search/" title="Search (23)" class="">
+					Search (23)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/security-2/" title="Security (29)" class="">
+					Security (29)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/sentry/" title="Sentry (1)" class="">
+					Sentry (1)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/spark/" title="Spark (31)" class="">
+					Spark (31)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/sqoop/" title="Sqoop (24)" class="">
+					Sqoop (24)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/support/" title="Support (5)" class="">
+					Support (5)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/testing/" title="Testing (8)" class="">
+					Testing (8)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/this-month-in-the-ecosystem/" title="This Month In The Ecosystem (14)" class="">
+					This Month In The Ecosystem (14)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/tools/" title="Tools (8)" class="">
+					Tools (8)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/training-2/" title="Training (45)" class="">
+					Training (45)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/use-case/" title="Use Case (67)" class="">
+					Use Case (67)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/whirr/" title="Whirr (6)" class="">
+					Whirr (6)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/yarn/" title="YARN (15)" class="">
+					YARN (15)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/blog/category/zookeeper/" title="ZooKeeper (24)" class="">
+					ZooKeeper (24)				</a>
+
+							</li>
+			
+					<li class="">
+				<a href="http://blog.cloudera.com/archive/" title="Archives by Month" class="">
+					Archives by Month				</a>
+
+							</li>
+			
+							</ul>
+							</li>
+			
+						
+			    
+			
+				<div style="clear:both"></div>
+			</ul>
+			</nav>
+			<div class="menu-special">
+				<ul>
+							
+				
+				
+		
+				
+		
+				
+				
+				
+				
+
+		
+					</ul>
+			</div>
+			
+</aside>
+
+
+<section>
+			<h1 class="heading ">How-to: Use IPython Notebook with Apache Spark</h1>
+			
+			<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/widgets.js"></script>
+			
+			<ul class="post-info">
+				<li>by <a href="http://blog.cloudera.com/blog/author/laserson/" title="Posts by Uri Laserson (@laserson)" rel="author">Uri Laserson (@laserson)</a></li>
+				<li>August 14, 2014</li>
+				<li class="comment"><a href="http://blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/#comments">17 comments</a></li>
+				
+			</ul>
+			
+			<div class="text-block">
+				<p><strong>IPython Notebook and Spark’s Python API are a powerful combination for data science.</strong></p>
+<p>The developers of <a href="http://spark.apache.org/">Apache Spark</a> have given thoughtful consideration to Python as a language of choice for data analysis. They have developed the <a href="http://spark.apache.org/docs/latest/api/python/index.html">PySpark API</a> for working with RDDs in Python, and further support using the powerful IPythonshell instead of the builtin Python REPL.</p>
+<p>The developers of <a href="https://github.com/ipython/ipython">IPython</a> have invested considerable effort in building the <a href="http://ipython.org/notebook.html">IPython Notebook</a>, a system inspired by Mathematica that allows you to create “executable documents.” IPython Notebooks can integrate formatted text (Markdown), executable code (Python), mathematical formulae (LaTeX), and graphics/visualizations (<a href="http://matplotlib.org/">matplotlib</a>) into a single document that captures the flow of an exploration and can be exported as a formatted report or an executable script. Below are a few pieces on why IPython Notebooks can improve your productivity:</p>
+<ul>
+<li><a href="http://pgbovine.net/ipython-notebook-first-impressions.htm">Why IPython Notebook will improve your workflow</a></li>
+<li><a href="http://ged.msu.edu/papers/2012-diginorm/">A scientific paper by Titus Brown demonstrating data/figure reproducibility by sharing an IPython Notebook</a></li>
+<li><a href="https://github.com/ipython/ipython/wiki/A-gallery-of-interesting-IPython-Notebooks">A gallery of interesting IPython Notebooks</a></li>
+</ul>
+<p>Here I will describe how to set up IPython Notebook to work smoothly with PySpark, allowing a data scientist to document the history of her exploration while taking advantage of the scalability of Spark and Apache Hadoop.</p>
+<h2>Software Prerequisites</h2>
+<ul>
+<li><strong>IPython</strong>: I used IPython 1.x, since I’m running Python 2.6 on CentOS 6. This required me to install a few extra dependencies, like <a href="http://jinja.pocoo.org/docs/">Jinja2</a>, <a href="http://zeromq.org/">ZeroMQ</a>, <a href="https://github.com/zeromq/pyzmq">pyzmq</a>, and <a href="http://www.tornadoweb.org/en/stable/">Tornado</a>, to allow the notebook functionality, as detailed in the IPython docs. :These requirements are only for the node on which IPython Notebook (and therefore the PySpark driver) will be running.</li>
+<li><strong>PySpark</strong>: I used the CDH-installed PySpark (1.x) running through YARN-client mode, which is our recommended method on CDH 5.1. It’s easy to use a custom Spark (or any commit from the repo) through YARN as well. Finally, this will also work with Spark standalone mode.</li>
+</ul>
+<h2>IPython Configuration</h2>
+<p>This installation workflow loosely follows the one contributed by Fernando Perez <a href="http://nbviewer.ipython.org/gist/fperez/6384491/00-Setup-IPython-PySpark.ipynb">here</a>. This should be performed on the machine where the IPython Notebook will be executed, typically one of the Hadoop nodes.</p>
+<p>First create an IPython profile for use with PySpark.</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b76db608575537" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">ipython profile create pyspark</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b76db608575537-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b76db608575537-1"><span class="crayon-e">ipython </span><span class="crayon-e">profile </span><span class="crayon-e">create </span><span class="crayon-v">pyspark</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p></p>
+<p>This should have created the profile directory <code>~/.ipython/profile_pyspark/</code>. Edit the file <code>~/.ipython/profile_pyspark/ipython_notebook_config.py</code> to have:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b76f1493047779" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">c = get_config()
+
+c.NotebookApp.ip = '*'
+c.NotebookApp.open_browser = False
+c.NotebookApp.port = 8880 # or whatever you want; be aware of conflicts with CDH</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b76f1493047779-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b76f1493047779-2">2</div><div class="crayon-num" data-line="crayon-54c83176b76f1493047779-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b76f1493047779-4">4</div><div class="crayon-num" data-line="crayon-54c83176b76f1493047779-5">5</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b76f1493047779-1"><span class="crayon-v">c</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">get_config</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b76f1493047779-2">&nbsp;</div><div class="crayon-line" id="crayon-54c83176b76f1493047779-3"><span class="crayon-v">c</span><span class="crayon-sy">.</span><span class="crayon-v">NotebookApp</span><span class="crayon-sy">.</span><span class="crayon-v">ip</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'*'</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b76f1493047779-4"><span class="crayon-v">c</span><span class="crayon-sy">.</span><span class="crayon-v">NotebookApp</span><span class="crayon-sy">.</span><span class="crayon-v">open_browser</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-t">False</span></div><div class="crayon-line" id="crayon-54c83176b76f1493047779-5"><span class="crayon-v">c</span><span class="crayon-sy">.</span><span class="crayon-v">NotebookApp</span><span class="crayon-sy">.</span><span class="crayon-v">port</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-cn">8880</span><span class="crayon-h"> </span><span class="crayon-p"># or whatever you want; be aware of conflicts with CDH</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0016 seconds] -->
+<p></p>
+<p>If you want a password prompt as well, first generate a password for the notebook app:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b76fb728566651" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">python -c 'from IPython.lib import passwd; print passwd()' &gt; ~/.ipython/profile_pyspark/nbpasswd.txt</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b76fb728566651-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b76fb728566651-1"><span class="crayon-v">python</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-i">c</span><span class="crayon-h"> </span><span class="crayon-s">'from IPython.lib import passwd; print passwd()'</span><span class="crayon-h"> </span><span class="crayon-o">&gt;</span><span class="crayon-h"> </span><span class="crayon-o">~</span><span class="crayon-o">/</span><span class="crayon-sy">.</span><span class="crayon-v">ipython</span><span class="crayon-o">/</span><span class="crayon-v">profile_pyspark</span><span class="crayon-o">/</span><span class="crayon-v">nbpasswd</span><span class="crayon-sy">.</span><span class="crayon-v">txt</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0009 seconds] -->
+<p></p>
+<p>and set the following in the same <code>.../ipython_notebook_config.py</code> file you just edited:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b7705280621174" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">PWDFILE='~/.ipython/profile_pyspark/nbpasswd.txt'
+c.NotebookApp.password = open(PWDFILE).read().strip()</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b7705280621174-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b7705280621174-2">2</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b7705280621174-1"><span class="crayon-v">PWDFILE</span><span class="crayon-o">=</span><span class="crayon-s">'~/.ipython/profile_pyspark/nbpasswd.txt'</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b7705280621174-2"><span class="crayon-v">c</span><span class="crayon-sy">.</span><span class="crayon-v">NotebookApp</span><span class="crayon-sy">.</span><span class="crayon-v">password</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">open</span><span class="crayon-sy">(</span><span class="crayon-v">PWDFILE</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">read</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">strip</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0011 seconds] -->
+<p></p>
+<p>Finally, create the file <code>~/.ipython/profile_pyspark/startup/00-pyspark-setup.py</code> with the following contents:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b770d263306798" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">import os
+import sys
+
+spark_home = os.environ.get('SPARK_HOME', None)
+  if not spark_home:
+      raise ValueError('SPARK_HOME environment variable is not set')
+sys.path.insert(0, os.path.join(spark_home, 'python'))
+  sys.path.insert(0, os.path.join(spark_home, 'python/lib/py4j-0.8.1-src.zip'))
+execfile(os.path.join(spark_home, 'python/pyspark/shell.py'))</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b770d263306798-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b770d263306798-2">2</div><div class="crayon-num" data-line="crayon-54c83176b770d263306798-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b770d263306798-4">4</div><div class="crayon-num" data-line="crayon-54c83176b770d263306798-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b770d263306798-6">6</div><div class="crayon-num" data-line="crayon-54c83176b770d263306798-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b770d263306798-8">8</div><div class="crayon-num" data-line="crayon-54c83176b770d263306798-9">9</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b770d263306798-1"><span class="crayon-e">import </span><span class="crayon-e">os</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b770d263306798-2"><span class="crayon-e">import </span><span class="crayon-e">sys</span></div><div class="crayon-line" id="crayon-54c83176b770d263306798-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b770d263306798-4"><span class="crayon-v">spark_home</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">os</span><span class="crayon-sy">.</span><span class="crayon-v">environ</span><span class="crayon-sy">.</span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-s">'SPARK_HOME'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">None</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-54c83176b770d263306798-5"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-st">not</span><span class="crayon-h"> </span><span class="crayon-v">spark_home</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b770d263306798-6"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">raise </span><span class="crayon-e">ValueError</span><span class="crayon-sy">(</span><span class="crayon-s">'SPARK_HOME environment variable is not set'</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-54c83176b770d263306798-7"><span class="crayon-v">sys</span><span class="crayon-sy">.</span><span class="crayon-v">path</span><span class="crayon-sy">.</span><span class="crayon-e">insert</span><span class="crayon-sy">(</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">os</span><span class="crayon-sy">.</span><span class="crayon-v">path</span><span class="crayon-sy">.</span><span class="crayon-e">join</span><span class="crayon-sy">(</span><span class="crayon-v">spark_home</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">'python'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b770d263306798-8"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-v">sys</span><span class="crayon-sy">.</span><span class="crayon-v">path</span><span class="crayon-sy">.</span><span class="crayon-e">insert</span><span class="crayon-sy">(</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">os</span><span class="crayon-sy">.</span><span class="crayon-v">path</span><span class="crayon-sy">.</span><span class="crayon-e">join</span><span class="crayon-sy">(</span><span class="crayon-v">spark_home</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">'python/lib/py4j-0.8.1-src.zip'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-54c83176b770d263306798-9"><span class="crayon-e">execfile</span><span class="crayon-sy">(</span><span class="crayon-v">os</span><span class="crayon-sy">.</span><span class="crayon-v">path</span><span class="crayon-sy">.</span><span class="crayon-e">join</span><span class="crayon-sy">(</span><span class="crayon-v">spark_home</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">'python/pyspark/shell.py'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0034 seconds] -->
+<p></p>
+<h2>Starting IPython Notebook with PySpark</h2>
+<p>IPython Notebook should be run on a machine from which PySpark would be run on, typically one of the Hadoop nodes.</p>
+<p>First, make sure the following environment variables are set:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b7717693630464" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;"># for the CDH-installed Spark
+export SPARK_HOME='/opt/cloudera/parcels/CDH/lib/spark'
+
+# this is where you specify all the options you would normally add after bin/pyspark
+  export PYSPARK_SUBMIT_ARGS='--master yarn --deploy-mode client --num-executors 24 --executor-memory 10g --executor-cores 5'</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b7717693630464-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b7717693630464-2">2</div><div class="crayon-num" data-line="crayon-54c83176b7717693630464-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-54c83176b7717693630464-4">4</div><div class="crayon-num" data-line="crayon-54c83176b7717693630464-5">5</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b7717693630464-1"><span class="crayon-p"># for the CDH-installed Spark</span></div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b7717693630464-2"><span class="crayon-e">export </span><span class="crayon-v">SPARK_HOME</span><span class="crayon-o">=</span><span class="crayon-s">'/opt/cloudera/parcels/CDH/lib/spark'</span></div><div class="crayon-line" id="crayon-54c83176b7717693630464-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-54c83176b7717693630464-4"><span class="crayon-p"># this is where you specify all the options you would normally add after bin/pyspark</span></div><div class="crayon-line" id="crayon-54c83176b7717693630464-5"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">export </span><span class="crayon-v">PYSPARK_SUBMIT_ARGS</span><span class="crayon-o">=</span><span class="crayon-s">'--master yarn --deploy-mode client --num-executors 24 --executor-memory 10g --executor-cores 5'</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0008 seconds] -->
+<p></p>
+<p>Note that you must set whatever other environment variables you want to get Spark running the way you desire. For example, the settings above are consistent with running the CDH-installed Spark in YARN-client mode. If you wanted to run your own custom Spark, you could build it, put the JAR on HDFS, set the <code>SPARK_JAR</code> environment variable, along with any other necessary parameters. For example, see <a href="https://gist.github.com/laserson/1d1185b412b41057810b">here</a> for running a custom Spark on YARN.</p>
+<p>Finally, decide from what directory to run the IPython Notebook. This directory will contain the <code>.ipynb</code> files that represent the different notebooks that can be served. See the IPython docs for more information. From this directory, execute:</p>
+<p></p><!-- Crayon Syntax Highlighter v2.6.6 -->
+
+		<div id="crayon-54c83176b7722376352696" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" no-popup minimize scroll-mouseover" style="max-width: 620px; margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">ipython notebook --profile=pyspark</textarea></div>
+			<div class="crayon-main" style="max-height: 500px; max-width: 620px; position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table" style="margin-left: -19px;">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="hide">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-54c83176b7722376352696-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-54c83176b7722376352696-1"><span class="crayon-e">ipython </span><span class="crayon-v">notebook</span><span class="crayon-h"> </span><span class="crayon-o">--</span><span class="crayon-v">profile</span><span class="crayon-o">=</span><span class="crayon-v">pyspark</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0005 seconds] -->
+<p></p>
+<p>Note that if you just want to serve the notebooks without initializing Spark, you can start IPython Notebook using a profile that does not execute the <code>shell.py</code> script in the startup file.</p>
+<h2>Example Session</h2>
+<p>At this point, the IPython Notebook server should be running. Point your browser to <code>http://my.host.com:8880/</code>, which should open up the main access point to the available notebooks. This should look something like this:</p>
+<p align="Center"><a href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/ipython.png"><img title="ipython" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/ipython.png" alt="" width="620" height="266"></a></p>
+<p>This will show the list of possible <code>.ipynb</code> files to serve. If it is empty (because this is the first time you’re running it) you can create a new notebook, which will also create a new <code>.ipynb</code> file. As an example, here is a screenshot from a session that uses PySpark to analyze the GDELT event data set:</p>
+<p align="center"><a href="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/ipython-f21.png"><img title="ipython-f2" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/ipython-f21.png" alt="" width="620" height="409"></a></p>
+<p>The full <code>.ipynb</code> file can be obtained as a GitHub <a href="https://gist.github.com/laserson/7d7eec22a4c83837826e">gist</a>.</p>
+<p>The notebook itself can be viewed (but not executed) using the public <a href="http://nbviewer.ipython.org/gist/laserson/7d7eec22a4c83837826e">IPython Notebook Viewer</a>.</p>
+<p><em>Uri Laserson (@laserson) is a data scientist at Cloudera.</em></p>
+
+				<div class="social-buttons">
+<span class="st_facebook_large" displaytext="Facebook" st_processed="yes"><span style="text-decoration:none;color:#000000;display:inline-block;cursor:pointer;" class="stButton"><span class="stLarge" style="background-image: url(http://w.sharethis.com/images/facebook_32.png);"></span></span></span>
+<span class="st_twitter_large" displaytext="Tweet" st_processed="yes"><span style="text-decoration:none;color:#000000;display:inline-block;cursor:pointer;" class="stButton"><span class="stLarge" style="background-image: url(http://w.sharethis.com/images/twitter_32.png);"></span></span></span>
+<span class="st_linkedin_large" displaytext="LinkedIn" st_processed="yes"><span style="text-decoration:none;color:#000000;display:inline-block;cursor:pointer;" class="stButton"><span class="stLarge" style="background-image: url(http://w.sharethis.com/images/linkedin_32.png);"></span></span></span>
+<span class="st_googleplus_large" displaytext="Google +" st_processed="yes"><span style="text-decoration:none;color:#000000;display:inline-block;cursor:pointer;" class="stButton"><span class="stLarge" style="background-image: url(http://w.sharethis.com/images/googleplus_32.png);"></span></span></span>
+<span class="st_email_large" displaytext="Email" st_processed="yes"><span style="text-decoration:none;color:#000000;display:inline-block;cursor:pointer;" class="stButton"><span class="stLarge" style="background-image: url(http://w.sharethis.com/images/email_32.png);"></span></span></span>
+				</div>
+			</div>
+
+			<div class="grid_2" style="margin:0">
+  <div class="comments comments-2">
+    <div class="field-under">
+      <h4>Filed under:</h4>
+      <ul class="post-categories">
+	<li><a href="http://blog.cloudera.com/blog/category/how-to/" title="View all posts in How-to" rel="category tag">How-to</a></li>
+	<li><a href="http://blog.cloudera.com/blog/category/spark/" title="View all posts in Spark" rel="category tag">Spark</a></li></ul>  	</div>
+  	
+  <a name="comments"></a>
+  <div class="comments-head">
+    <strong>17 Responses</strong>
+   
+  </div>
+  <ul class="comments-list">
+  	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Steve Anton</a> /
+			August 14, 2014 / 12:06 PM		</em>
+		<p>Great post! I’m trying to follow along, but it seems like my Spark Context gets launched in local mode. Does this happen to you as well? I’m running PySpark 0.9.0 on CDH 5.0.</p>
+	</li>
+<ul class="children">
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Uri Laserson (@laserson)</a> /
+			August 14, 2014 / 1:29 PM		</em>
+		<p>Thanks, Steve!  I have not experienced that problem, but Spark configuration can be tricky.  I would suggest moving this to the spark-user mailing list.  Separately, the SparkContext gets instantiated when the shell.py script is run in the 00_pyspark_startup.py file that you’ve created.  It’s influenced by the PYSPARK_SUBMIT_ARGS argument, which perhaps is not being set correctly?</p>
+	</li>
+
+</ul>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Nam</a> /
+			August 14, 2014 / 8:51 PM		</em>
+		<p>Thanks for the great post! I tried it for my own use. However, I was wondering if it is possible to let multiple users access Spark via ipython notebook.. It seems we cannot run multiple ipynb servers at the same time due to SparkContext restriction, right? Then, is it ok to let multiple ipynb sessions running on the same ipynb server?</p>
+	</li>
+<ul class="children">
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Uri Laserson (@laserson)</a> /
+			August 15, 2014 / 12:15 AM		</em>
+		<p>I am pretty sure you can run multiple servers.  They just have to be on different ports.  I am also pretty sure that one server can serve multiple IPython Notebooks at the same time.  If I understand correctly, every notebook that is opened will start an IPython kernel, with its own SparkContext.  The only issue is whether you can run multiple SparkContexts at the same time.  This is definitely possible if you’re using YARN.  Standalone mode is probably a problem, as I believe it will take all the resources on the cluster.</p>
+	</li>
+
+</ul>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Nam</a> /
+			August 17, 2014 / 11:35 AM		</em>
+		<p>@Uri: I have Spark in standalone mode cluster, and that’s why I can only have 1 SparkContext at a time. Your reference is so helpful, I will try YARN soon. Thanks! </p>
+<p>@Steve: you may want to try launching the ipynb server using the following:</p>
+<p>IPYTHON_OPTS=”notebook –pylab inline –profile pyspark” /path/to/pyspark –master </p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="http://www.linkedin.com/in/harisekhon">Hari Sekhon</a> /
+			August 22, 2014 / 8:53 AM		</em>
+		<p>Funny timing, I wrote a python script to handle PySpark integrated IPython Notebook setup for my users just 2 weeks back.</p>
+<p>A couple points looking at this blog post today:</p>
+<p>1. It seems to be executing in LOCAL mode rather than YARN mode<br>
+2. –master doesn’t seem to work in PYSPARK_SUBMIT_ARGS, although it does as an arg to pyspark (using 1.0.2)</p>
+<p>You can clone the git repo below and run ‘ipython-notebook-pyspark.py’ to try:</p>
+<p><a href="https://github.com/harisekhon/toolbox" rel="nofollow">https://github.com/harisekhon/toolbox</a></p>
+<p>Regards,</p>
+<p>Hari Sekhon</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="http://www.linkedin.com/in/harisekhon">Hari Sekhon</a> /
+			August 22, 2014 / 9:32 AM		</em>
+		<p>Ah, I see looking back at the comments I’m not the only person that has found this. If calling pyspark beware it resets PYSPARK_SUBMIT_ARGS=”".</p>
+<p>Nam – yes you can have multiple, I wrote the script above to give each of my users their own PySpark integrated IPython Notebook – with a password they define at prompt the first time they run the script. It writes the configs and they can see the IP and port to connect to in the output (the script tries to figure out the IP of the interface with default gateway so it’s not reporting <a href="http://0.0.0.0:8888/" rel="nofollow">http://0.0.0.0:8888</a>)</p>
+<p>The script also supports MASTER and PYSPARK_SUBMIT_ARGS environment variables so you can override the options for local vs standalone vs yarn mode or num executors / memory / cpu cores.</p>
+<p>It’s about 7 secs slower to initially start on YARN due to initializing and connecting to a new Application Master. After that it’s about the same for successive requests.</p>
+<p>I also found a library issue with python not finding pyspark library on cluster nodes. You probably won’t notice if you’re only running on a single node sandbox vm. I written a fix/workaround for that into the script using SPARK_YARN_USER_ENV as well as a few other pathing things like YARN_CONF_DIR and globbing of available py4j-*-src.zip since that will probably change on you.</p>
+<p>I’d recommend just running that script to handle the setup, otherwise it’s quite tedious and tricky to get right…</p>
+<p>Regards,</p>
+<p>Hari Sekhon</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="http://www.linkedin.com/in/harisekhon">Hari Sekhon</a> /
+			August 22, 2014 / 9:34 AM		</em>
+		<p>To be clear that YARN vs LOCAL mode and PYSPARK_SUBMIT_ARGS issue was solved for me by not calling pyspark and using the script I wrote to handle all the setup, tweaks and fixes.</p>
+<p>Regards,</p>
+<p>Hari Sekhon.</p>
+	</li>
+<ul class="children">
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Uri Laserson (@laserson)</a> /
+			August 22, 2014 / 10:59 AM		</em>
+		<p>Note that in my formulation, you do NOT call <code>pyspark</code>.  Rather, you call the regular <code>ipython</code> executable with the pyspark profile.  This should make sure the <code>PYSPARK_SUBMIT_ARGS</code> is treated correctly.</p>
+	</li>
+
+</ul>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Nischal (@nischalhp)</a> /
+			October 06, 2014 / 10:58 PM		</em>
+		<p>I am trying to set this up but then i am not able to use SparkContext at all. When i start the ipython notebook is there something i need to look for. </p>
+<p>Any help would be appreciated.</p>
+	</li>
+<ul class="children">
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Uri Laserson (@laserson)</a> /
+			October 07, 2014 / 12:17 AM		</em>
+		<p>Would you mind following up on this on the Spark users mailing list?  Also, it would be helpful if you gave more details about what specific errors you’re getting.</p>
+	</li>
+
+</ul>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Nischal (@nischalhp)</a> /
+			October 06, 2014 / 10:59 PM		</em>
+		<p>Also I am running a standalone version of Spark.</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Arindam Paul</a> /
+			October 07, 2014 / 8:39 PM		</em>
+		<p>@NISCHALHP: Which version of Python are you using ? is it 3.4 ?</p>
+<p>if so, you need to change the print (it should have ‘()’), as shown below,<br>
+python -c ‘from IPython.lib import passwd; print (passwd())’ &gt; ~/.ipython/profile_pyspark/nbpasswd.txt</p>
+<p>Also check which version of py4j you have in your $SPARK_HOME<br>
+python/lib/py4j-0.8.1-src.zip</p>
+<p>You may have python/lib/py4j-0.8.2.1-src.zip</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">allxone</a> /
+			October 21, 2014 / 10:35 PM		</em>
+		<p>I’m running Spark in Yarn client mode on a secure CDH 5.2. Any suggestion to let the notebook use Kerberos to authenticate with Yarn? Would be great also being able to impersonate Kerberos authenticated remote users.</p>
+<p>Regards,<br>
+Stefano</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="">Lukas</a> /
+			November 20, 2014 / 9:43 AM		</em>
+		<p>Thank you very much for posting this. I am a great fan of the ipython notebook and this will proof to increase the capabilities in our team a lot.<br>
+I actually went ahead and python 2.7 in my user directory to be able to run the latest version of ipython.<br>
+Some notes on the blog post: there is a typo in the configuration script: NoteBook instead of Notebook, also the indentation in the start script is a bit off.</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="http://www.dattamsha.com/">praveen</a> /
+			November 21, 2014 / 3:57 AM		</em>
+		<p>What is the difference between the above procedure and the below command. The command starts a notebook and creates a spark context.</p>
+<p>IPYTHON_OPTS=”notebook –pylab inline” ./bin/pyspark</p>
+	</li>
+
+	<li>
+		<em class="comment-date">
+			<a rel="nofollow" href="http://datafireball.com/">Bin Wang</a> /
+			December 28, 2014 / 11:04 AM		</em>
+		<p>Thanks for this great post Uri, I have one question related to the environment. My cluster is redhat6.5 where python2.6 comes as default. Does that mean that I have to use iPython1.X so it is compatible with Python2.6… I am wondering if there is an easy way to use the latest Anaconda Python which is 2.7, does that mean I also have to install Anaconda Python on every node and make it the default python interpreter(I have a feeling it will totally screw up the existing environment)?</p>
+	</li>
+
+  </ul>
+  <a name="leave-comment"></a>
+  <form action="http://blog.cloudera.com/wp-comments-post.php" method="POST">
+  	<div class="comment-form">
+  		<h4>Leave a comment</h4>
+  		<div class="row">
+  			<input type="text" value="" class="txt" name="author">
+  			<label>Name <span>required</span></label>
+  		</div>
+  		<div class="row">
+  			<input type="text" value="" class="txt" name="email">
+  			<label class="published">Email <span>required</span> <em>(will not be published)</em></label>
+  		</div>
+  		<div class="row">
+  			<input type="text" value="" class="txt" name="url">
+  			<label>Website</label>
+  		</div>
+  		<div class="row">
+  			<textarea rows="10" cols="30" class="area" name="comment"></textarea>
+  			<label>Comment</label>
+  		</div>
+  		<fieldset>
+  			<input type="button" value="Leave Comment" class="btn cta">
+  		</fieldset>
+  	</div>
+  	<input type="hidden" name="comment_post_ID" value="27041" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+  	<p class="cptch_block"><label>Prove you're human!<span class="required"> *</span></label><br>		<input type="hidden" name="cptch_result" value="J/s=">
+		<input type="hidden" name="cptch_time" value="1422406006">
+		<input type="hidden" value="Version: 2.4">
+		2 × four =  <input id="cptch_input" type="text" autocomplete="off" name="cptch_number" value="" maxlength="2" size="2" aria-required="true" required="required" style="margin-bottom:0;display:inline;font-size: 12px;width: 40px;">	</p>  </form>
+</div></div></section>
+
+
+
+
+<!-- Google Code for New Remarketing Pixel -->
+<!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1035979479;
+var google_conversion_label = "xel9CJ-P0QMQ15X_7QM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/conversion.js">
+</script><iframe name="google_conversion_frame" title="Google conversion frame" width="0" height="0" src="about:blank" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 300px 13px;">&lt;img height="1" width="1" border="0" alt="" src="http://googleads.g.doubleclick.net/pagead/viewthroughconversion/1035979479/?frame=0&amp;random=1422406015176&amp;cv=7&amp;fst=1422406015176&amp;num=1&amp;fmt=1&amp;label=xel9CJ-P0QMQ15X_7QM&amp;guid=ON&amp;u_h=1080&amp;u_w=1920&amp;u_ah=1040&amp;u_aw=1920&amp;u_cd=24&amp;u_his=1&amp;u_tz=480&amp;u_java=true&amp;u_nplug=36&amp;u_nmime=84&amp;frm=0&amp;url=http%3A//blog.cloudera.com/blog/2014/08/how-to-use-ipython-notebook-with-apache-spark/&amp;vis=1" /&gt;</iframe>
+
+<noscript>
+&lt;div style="display:inline;"&gt; &lt;img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1035979479/?value=0&amp;label=xel9CJ-P0QMQ15X_7QM&amp;guid=ON&amp;script=0"/&gt; &lt;/div&gt;
+</noscript>
+</section>
+<span class="bg-fix"></span>
+</div>
+</div>
+<footer id="global-footer">
+<div class="footerContent parbase">
+<footer>
+  <div class="wrapper">
+    <div class="bg-fix"></div>
+    <nav>
+      <ul>
+        <li class="section"><a href="http://www.cloudera.com/content/cloudera/en/products-and-services.html">Products</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/products/cloudera-enterprise.html">Cloudera Enterprise</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/products-and-services/cloudera-express.html">Cloudera Express</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/products-and-services/cloudera-enterprise/cloudera-manager.html">Cloudera Manager</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/products-and-services/cdh.html">CDH</a></li>
+        <li><a href="http://www.cloudera.com/content/support/en/downloads.html">All Downloads</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/products-and-services/professional-services.html">Professional Services</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/training.html">Training</a></li>
+      </ul>
+      <ul>
+        <li class="section"><a href="http://www.cloudera.com/content/cloudera/en/solutions.html">Solutions</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/solutions/enterprise-solutions.html">Enterprise Solutions</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/solutions/partner.html">Partner Solutions</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/solutions/industries.html">Industry Solutions</a></li>
+      </ul>
+      <ul>
+        <li class="section"><a href="http://www.cloudera.com/content/cloudera/en/partners.html">Partners</a></li>
+        <li class="section"><a href="http://www.cloudera.com/content/cloudera/en/resources/library.html">Resource Library</a></li>
+        <li class="section"><a href="https://ccp.cloudera.com/display/SUPPORT/Get+Support">Support</a></li>
+      </ul>
+      <ul>
+        <li class="section"><a href="http://www.cloudera.com/content/cloudera/en/about.html">About</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/hadoop-and-big-data.html">Hadoop &amp; Big Data</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/management.html">Management Team</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/board.html">Board</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/events.html">Events</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/press-center.html">Press Center</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/careers.html">Careers</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/about/contact-form.html">Contact Us</a></li>
+        <li><a href="http://www.cloudera.com/content/cloudera/en/subscription-center.html">Subscription Center</a></li>
+      </ul>
+      <div class="locale-and-social" style="float:right">
+        <div>
+          <div class="locale-and-social">
+            <div class="locale">
+              <select onchange="this.options[this.selectedIndex].value &amp;&amp; (window.location = this.options[this.selectedIndex].value);" class="site-language">
+                <option value="http://www.cloudera.com" name="English">English</option>
+                <option value="http://www.cloudera.co.jp/">Japanese</option>
+              </select>
+            </div>
+            <div class="social"><span class="follow">Follow us:</span><span class="share">Share:<i class="icon-share"></i></span>
+              <ul>
+                <li><a class="linkedIn" target="_blank" href="http://www.linkedin.com/company/cloudera">LinkedIn</a></li>
+                <li><a class="twitter" target="_blank" href="http://twitter.com/cloudera">Twitter</a></li>
+                <li><a class="facebook" target="_blank" href="http://www.facebook.com/cloudera">Facebook</a></li>
+                <li><a class="youtube" target="_blank" href="http://www.youtube.com/user/clouderahadoop">YouTube</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <nav class="global-footer"><span class="logo"><a>Cloudera</a></span>
+      <address>
+      <span>Cloudera, Inc.</span> <span><a target="_blank" href="http://www.google.com/maps?q=1001+Page+Mill+Rd,+Palo+Alto,+CA+94306">1001 Page Mill Road Bldg 2</a></span> <span>Palo Alto, CA 94304</span>
+      </address>
+      <address>
+      <span><a href="http://www.cloudera.com/">www.cloudera.com</a></span> <span>US: 1-888-789-1488</span> <span>Intl: 1-650-362-0488</span>
+      </address>
+      <div class="copyright"><span><span class="piped">©2014 Cloudera, Inc. All rights reserved</span><span class="piped"><a href="http://www.cloudera.com/content/cloudera/en/terms-of-service.html">Terms &amp; Conditions</a></span><a href="http://www.cloudera.com/content/cloudera/en/privacy-policy.html">Privacy Policy</a></span> <span>Hadoop and the Hadoop elephant logo are trademarks of the <a target="_blank" href="http://www.apache.org/">Apache Software Foundation</a>.</span></div>
+    </nav>
+  </div>
+</footer>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/prettify.js"></script>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/launch.js"></script>
+<div class="modal" style="display:none">
+  <div id="password-required">
+    <div class="inner"> </div>
+  </div>
+</div>
+<div class="tooltip" style="display:none">
+</div>
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/2160.js"></script>
+<script type="text/javascript">var _kiq = _kiq || [];</script> 
+<script type="text/javascript" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/2Sr.js" async=""></script>
+</div></footer><iframe id="stSegmentFrame" name="stSegmentFrame" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/getSegment.htm" frameborder="0" scrolling="no" width="0px" height="0px" style="display:none;"></iframe><div id="stwrapper" class="stwrapper stwrapper5x" style="display: none;"><iframe allowtransparency="true" id="stLframe" class="stLframe" name="stLframe" frameborder="0" scrolling="no" src="./How-to  Use IPython Notebook with Apache Spark   Cloudera Engineering Blog_files/index.7cee3eeebe3c7231a6332934086cc761.htm"></iframe></div><div id="stOverlay" onclick="javascript:stWidget.closeWidget();"></div></body></html>
