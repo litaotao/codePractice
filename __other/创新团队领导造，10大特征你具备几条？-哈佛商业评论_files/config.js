@@ -1,1 +1,0 @@
-var IMG_URL="http://img.hbrchina.org/",UPLOAD_URL="http://upload.hbrchina.org/",APP_URL="http://app.hbrchina.org/",WWW_URL="http://www.hbrchina.org/",SPACE_URL="http://space.hbrchina.org/",COOKIE_PRE="cmstop_",COOKIE_DOMAIN=".hbrchina.org",COOKIE_PATH="/",SINA_APPKEY="3972269122",QQ_SOURCEID="1000033";

@@ -1,4 +1,4 @@
-var editor_change_ask_o_domain = "";
+﻿var editor_change_ask_o_domain = "";
 function editor_change_ask_o(str){
   var editor = $( document ).data('editor_all');
   //editor.render(document.getElementById('editor_all'));
@@ -39,7 +39,7 @@ function editor_change_ask_o(str){
             "<textarea id='editor_all' rows='8'></textarea>"+
             "<div class='div_tags clearfix'><div id='divSearchTags' class='tags_con'>"+
             "<input type='text'/></div><input type='hidden' name='txtSearchTags'/></div>"+
-            "<div id='ask2_tagRecomm_div' class='drt_tagRecomm'><span class='drt_tit'>推荐标签：</span></div></div>"+
+            "<div id='ask2_tagRecomm_div' class='drt_tagRecomm tracking-ad' data-mod='popu_73'><span class='drt_tit'>推荐标签：</span></div></div>"+
             "<div class='success'><div class='left_area'><input id='chk_cb' type='checkbox'/><span class='wyxs'>我要悬赏</span><input id='cb_num'  class='cb_num' readonly='true'/>"+
             "<span class='phib_rii'><span> 币</span></span></div><a href='#' nodeType='cancel' class='cancel'>取消</a><a href='#' nodeType='ok' class='ok'>发布</a></div></div>";
 
@@ -302,13 +302,14 @@ function editor_change_ask_o(str){
                 $(" .comm_ask_second #askInputSecond").val("");
                 $(" .comm_ask_second #wmd-input").val("");
                 $(" .comm_ask_second span.tag").remove();
-                $(" .comm_ask_second  #ask2_tagRecomm_div label").remove();
+                //$(" .comm_ask_second  #ask2_tagRecomm_div label").remove();
+                $(" .comm_ask_second  #ask2_tagRecomm_div a").remove();
                 $(".comm_ask_second #chk_cb").attr("checked",false);
                 $(".comm_ask_second #cb_num").attr("readonly",true);
                 $(" .comm_ask_second #cb_num").val("");
                 $(" .comm_ask_second #wmd-preview").empty();
                 $(" .comm_ask_second [name='txtSearchTags']").val("");
-                /*  $(" .comm_ask_second #wmd-preview").css("display","none");
+                /*$(" .comm_ask_second #wmd-preview").css("display","none");
                  $(" .comm_ask_second #wmd-input").css("display","block");*/
 
 
@@ -737,7 +738,8 @@ function editor_change_ask_o(str){
                     if (obj!=null && obj.length > 0) {
                         var $dataContainer = $( ".comm_ask_second #ask2_tagRecomm_div");
                         $dataContainer.html("<span class=\"drt_tit\">推荐标签：</span>");
-                        var tpl = "<label class=\"se_key\">{0}</label>";
+                        //var tpl = "<label class=\"se_key\">{0}</label>";
+                        var tpl = "<a href=\"#\" class=\"se_key\">{0}</a>";
 
                         var items = obj;
                         for (var i = 0; i < items.length; i++){
@@ -749,6 +751,9 @@ function editor_change_ask_o(str){
                                 break;
                             }
                         }
+                        try {
+                            window['trackingAd']($dataContainer);
+                        } catch (ex) {}
                         $(".comm_ask_second .se_key").each(function(i,item){
                             var _item = $(item);
                             _item.bind("click", function(){
@@ -787,6 +792,7 @@ function editor_change_ask_o(str){
 
                                 var newTags = oTagStr == "" ? tagName : oTagStr + "," + tagName;
                                 cTagsObj.val(newTags);
+                                return false;
                             });
                         });
                     }
@@ -897,7 +903,7 @@ function editor_change_ask_o(str){
                     if ($(subinput).val() != "") {
                         tags_array = $(subinput).val().split(",");
                     }
-                    var re=/[^0-9a-z\u4e00-\u9fa5\-+#]+/;
+                    var re=/[^0-9a-zA-Z\u4e00-\u9fa5\-+#]+/;
                     var re2 = /\-$/;
                     var re3 = /^\-/;
                     var str_arr = tagInput.value.split(re);
@@ -960,7 +966,7 @@ function editor_change_ask_o(str){
                         if ($(subinput).val() != "") {
                             tags_array = $(subinput).val().split(",");
                         }
-                        var re=/[^0-9a-z\u4e00-\u9fa5\-+#]+/;
+                        var re=/[^0-9a-zA-Z\u4e00-\u9fa5\-+#]+/;
                         var re2 = /\-$/;
                         var re3 = /^\-/;
                         var str_arr = tagInput.value.split(re);
@@ -1059,7 +1065,9 @@ function editor_change_ask_o(str){
 
                 if (target.title =="删除标签")
                 {
-
+                    if ($(subinput).val() != "") {
+                        tags_array = $(subinput).val().split(",");
+                    }
                     var cur_str = target.parentNode.children[0].innerHTML;
                     tags_array = remove_in_arr(tags_array,cur_str);
                     $(subinput).val(tags_array.join(','));

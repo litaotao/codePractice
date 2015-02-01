@@ -1,1 +1,0 @@
-var json_q={"s_sh600570":[41.75,41.75,0.00,0.00]};Stockkeywordprice(code_list);

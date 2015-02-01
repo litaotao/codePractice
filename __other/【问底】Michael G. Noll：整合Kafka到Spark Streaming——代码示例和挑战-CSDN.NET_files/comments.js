@@ -206,6 +206,9 @@
             </dl>\
             </div>';
             $('.topreply').replaceWith(topTpl);
+            var lEl = '<div id="l_a_pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);"></div>' +
+                      '<div id="l_a_popup_mask" style="display: none;position: absolute;width: 100%;height: 100%;background: #000;z-index: 9999;left: 0px;top: 0px;opacity: 0.3;filter: alpha(opacity=30);"></div>';
+            $("body").append(lEl);
         },
 
         /*
@@ -1135,17 +1138,61 @@
          *
          */
         showLoginBox:function () {
-            //在csdn域下，支持异步登录，否则，跳到登录页
-            if(!ISCSDNDOMAIN){
-                window.location.href="https://passport.csdn.net/account/login";
-            }
-            var that = this;
-            csdn.showLogin(function (data) {
-                data = data.data;
-                var userName = data.userName || csdn.getCookie('UserName');
-                currUser.username = userName;
-                that.setLogin(userName)
-            });
+          //使用iframe重新实现该登录功能。
+          //为登录窗口嵌入irame
+          document.domain = "csdn.net";
+          var $logpop = $("#l_a_pop_win");
+          $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+          //设置灰色遮罩层的透明度和高宽
+          var $mask = $('#l_a_popup_mask');
+          $mask.css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+          });
+          //弹出灰色遮罩
+          $mask.css("display","block");
+          //设置登录窗口DIV页面居中
+          $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window
+            ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+          } );
+          //显示登录弹窗
+          setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+              opacity: 1
+            } );
+          }, 200 );
+          //绑定事件，当出现弹窗后，点击灰色遮罩区域，弹窗消失
+          $mask.unbind("click");
+          $mask.bind("click", function(){
+            $mask.hide();
+            var $clopop = $("#pop_win");
+            //$("#common_ask_div_sc").css("display","none");
+            $logpop.css( {
+              opacity: 0
+            } );
+            setTimeout( function () {
+              $logpop.hide();
+            }, 350 );
+            return false;
+          });
+
+
+
+//            //在csdn域下，支持异步登录，否则，跳到登录页
+//            if(!ISCSDNDOMAIN){
+//                window.location.href="https://passport.csdn.net/account/login";
+//            }
+//            var that = this;
+//            csdn.showLogin(function (data) {
+//                data = data.data;
+//                var userName = data.userName || csdn.getCookie('UserName');
+//                currUser.username = userName;
+//                that.setLogin(userName)
+//            });
         },
 
         /*

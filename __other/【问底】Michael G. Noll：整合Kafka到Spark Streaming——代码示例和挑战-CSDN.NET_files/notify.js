@@ -481,7 +481,7 @@ var getCookie =function (objName){//获取指定名称的cookie的值
       $('.box', this.Dom.wrap).append('\
 <div class="notifications notice_list_con curr">\
   <div class="menu_title">\
-    <span class="title"><a href="//msg.csdn.net/letters" target="_blank" class="read_all">查看所有私信</a><a href="//msg.csdn.net" target="_blank" class="go_all">查看所有通知</a></span>\
+    <span class="title"><a href="http://msg.csdn.net/letters" target="_blank" class="read_all">查看所有私信</a><a href="http://msg.csdn.net" target="_blank" class="go_all">查看所有通知</a></span>\
   </div>\
   <div class="loading"></div>\
   <div class="empty">暂没有新通知</div>\

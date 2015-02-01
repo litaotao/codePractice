@@ -84,7 +84,7 @@ $.getScript(protocol + '//csdnimg.cn/public/common/tag-suggest-pop/js/main.js?'+
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();// + ";domain=.csdn.net;path=/";
   }
   var HTMLEncode =function(str) {
       var s = "";
@@ -289,6 +289,7 @@ $.getScript(protocol + '//csdnimg.cn/public/common/tag-suggest-pop/js/main.js?'+
                       <dd> <a href="http://download.csdn.net?ref=toolbar" target="_blank">下载</a></dd>\
                       <dd><a href="http://ask.csdn.net?ref=toolbar" target="_blank">技术问答</a></dd>\
                       <dd><a href="http://geek.csdn.net?ref=toolbar" target="_blank">极客头条</a></dd>\
+                      <dd> <a href="http://hero.csdn.net?ref=toolbar" target="_blank">英雄会</a></dd>\
                     </dl>\
                   </div>\
                   <div class="detail">\
@@ -296,8 +297,9 @@ $.getScript(protocol + '//csdnimg.cn/public/common/tag-suggest-pop/js/main.js?'+
                       <dt>\
                         <h5>服务</h5>\
                       </dt>\
+                      <dd> <a href="http://job.csdn.net?ref=toolbar" target="_blank">招聘<img src="//csdnimg.cn/public/common/toolbar/images/new.gif" style="margin-top: -26px;"></a></dd>\
+                      <dd> <a href="http://edu.csdn.net?ref=toolbar" target="_blank">学院<img src="//csdnimg.cn/public/common/toolbar/images/new.gif" style="margin-top: -26px;"></a></dd>\
                       <dd> <a href="https://code.csdn.net?ref=toolbar" target="_blank">CODE</a></dd>\
-                      <dd> <a href="http://hero.csdn.net?ref=toolbar" target="_blank">英雄会</a></dd>\
                       <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>\
                       <dd> <a href="http://www.csto.com?ref=toolbar" target="_blank">CSTO</a></dd>\
                       <dd> <a href="http://mall.csdn.net?ref=toolbar" target="_blank">C币兑换<img src="//csdnimg.cn/public/common/toolbar/images/new.gif" style="margin-top: -26px;"></a></dd>\
@@ -323,13 +325,13 @@ $.getScript(protocol + '//csdnimg.cn/public/common/tag-suggest-pop/js/main.js?'+
   var newTag = true;
   if (newTag) {
     var hasNew = getCookie("csdn_has_new_product");
-    if (hasNew == "1")
+    if (hasNew == "2")
       $("#chasnew123").hide();
     else {
-      $("#cappsarea123")[0].onmouseover = function () {
-        setCookie("csdn_has_new_product", "1");
+      $("#cappsarea123").one("mouseover", function () {
+        setCookie("csdn_has_new_product", "2");
         $("#chasnew123").hide();
-      };
+      });
     }
   }
 })();
