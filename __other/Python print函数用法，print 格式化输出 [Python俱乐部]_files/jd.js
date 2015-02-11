@@ -1,0 +1,1 @@
+document.write(' <ul> <li> <a href="http://go.truevue.org/http://sale.jd.com/act/o1Cgej0n8mA.html" target="_blank">京东家电价格服务大升级，30天包退</a> </li> <li> <a href="http://go.truevue.org/http://sale.jd.com/act/f0Z1RP7zYdnhevu.html" target="_blank">京东极速达北京支持货到付款</a> </li> </ul> ')
