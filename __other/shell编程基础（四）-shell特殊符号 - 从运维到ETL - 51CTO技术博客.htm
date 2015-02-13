@@ -1,0 +1,1521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)http://fuwenchao.blog.51cto.com/6008712/1351058 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<script async="" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/analytics.js"></script><script async="" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/analytics.js"></script><script id="allmobilize" charset="utf-8" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/allmobilize.min.js"></script><style type="text/css"></style><style type="text/css"></style><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://fuwenchao.blog.51cto.com/#">
+
+
+<title>shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客</title>
+<meta name="description" content="目录符号总览：...1输出/输入重导向：...1#井号(comments).1~帐户的home目录...1;分号(Commandseparator).1;;连续分号(Terminator).1.点(dot).2‘string’单引号(singlequote)2“string”双引号(doublequote)2,逗..">
+<meta name="keywords" content="command,特殊符号,forward,double,惊叹号">
+<meta http-equiv="Cache-Control" content="private">
+<!--<base href="http://fuwenchao.blog.51cto.com/">--><base href=".">
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/def.js"></script>
+<script language="javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/message.js" type="text/javascript"></script>
+<script language="javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/user_comment.js" type="text/javascript"></script>
+<script language="javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/base2.js" type="text/javascript"></script>
+<script language="javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/dialog_utf8.js" type="text/javascript"></script>
+<link href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/32.css" rel="stylesheet" type="text/css">
+<link rel="alternate" href="http://fuwenchao.blog.51cto.com/rss.php?uid=6008712" type="application/rss+xml" title="RSS 2.0">
+<link rel="edituri" type="application/rsd+xml" title="rsd" href="http://fuwenchao.blog.51cto.com/xmlrpc.php?rsd=1">
+<link href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/header_master_top.css" rel="stylesheet" type="text/css">
+<link href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.mainNav li a{display:inline-block}
+</style>
+<script>
+var myid = "2628841";
+function add_flink(){
+	if(myid==""){
+
+        var refurlk = "http://fuwenchao.blog.51cto.com/6008712/1351058";
+
+				//commentSubmit("",refurlk);
+				location.href="http://home.51cto.com/index.php?reback="+encodeURIComponent(encodeURIComponent(refurlk));
+				
+				return false;
+	}else{
+		var mtk = "71219af436f6322795fbe07e3095b763";
+      		var url='/mod/edit_flink.php?type=addflink&uid=6008712&flink=http://fuwenchao.blog.51cto.com&mtk='+mtk;
+		var ajax = InitAjax1();
+		ajax.open("GET", url, true);
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				/*if(myid == 5290427){
+					alert(ajax.responseText);
+				}*/
+				if(ajax.responseText==""){
+					alert("添加成功。");
+				}
+				if(ajax.responseText=="1"){
+				alert("链接指向自己。");
+				}
+				if(ajax.responseText=="2"){
+				alert("友情链接已存在。")
+				}
+				if(ajax.responseText=="4"){
+					alert("验证已过期。")
+					}
+			}
+		}
+		ajax.send(null);
+	}
+
+
+
+}
+function sendmessage(){
+
+	var refurlk = "http://fuwenchao.blog.51cto.com/6008712/1351058";
+
+	if(myid){
+		return true;
+	}else{
+		commentSubmit("",refurlk);
+		return false;
+	}
+}
+function copylink(ourl){
+	if(!ourl){
+		var clipBoardContent = "http://fuwenchao.blog.51cto.com";
+	}else{
+		var clipBoardContent = ourl;
+	}
+	window.clipboardData.setData("Text",clipBoardContent);
+	alert("复制成功!");
+	return false;
+}
+function correctPNG() {
+if (document.getElementById('blog_touxian'))
+{
+var img = document.getElementById('blog_touxian');
+      var imgName = img.src.toUpperCase()
+      var imgID = (img.id) ? "id='" + img.id + "' " : ""
+      var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+      var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+      var imgStyle = "display:inline-block;" + img.style.cssText
+      if (img.align == "left") imgStyle = "float:left;" + imgStyle
+      if (img.align == "right") imgStyle = "float:right;" + imgStyle
+      if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+      var strNewHTML = "<span " + imgID + imgClass + imgTitle
+         + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+         + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+         + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" ;
+      img.outerHTML = strNewHTML;
+}
+}
+//window.attachEvent("onload", correctPNG);
+window.onload=correctPNG;
+
+function copy(){
+var text=document.getElementById("txtUser").value;
+if(copy2Clipboard(text)!=false){ 
+alert("复制成功了！ "); 
+} 
+}
+function copy2Clipboard(txt){ 
+if(window.clipboardData){ 
+window.clipboardData.clearData(); 
+window.clipboardData.setData("Text",txt); 
+}else if(navigator.userAgent.indexOf("Opera")!=-1){ 
+window.location=txt; 
+}else if(window.netscape){ 
+try{ 
+netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); 
+} 
+catch(e){ 
+alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。"); 
+return false; 
+} 
+var clip=Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard); 
+if(!clip)return; 
+var trans=Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable); 
+if(!trans)return; 
+trans.addDataFlavor('text/unicode'); 
+var str=new Object(); 
+var len=new Object(); 
+var str=Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString); 
+var copytext=txt;str.data=copytext; 
+trans.setTransferData("text/unicode",str,copytext.length*2); 
+var clipid=Components.interfaces.nsIClipboard; 
+if(!clip)return false; 
+clip.setData(trans,null,clipid.kGlobalClipboard); 
+return true;
+} 
+}
+
+function mod_close(){
+  document.getElementById('mod_tg').style.display="none";
+}
+
+function match_invite(uid) {
+    var url='/mod/match_invite.php';
+	var ajax = InitAjax();
+    var re = 'uid=' + uid;
+	ajax.open("POST", url, true);
+    ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send(re);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            if(ajax.responseText == 1){
+                alert("邀请信息已经发送成功。");
+            } else if(ajax.responseText=="-1"){
+                alert("邀请失败，请稍候再试。");
+            } else if(ajax.responseText=="2"){
+                alert("该用户已经报名了。")
+            }
+        }
+    }
+}
+
+</script>
+<style type="text/css">
+/*
+.artContent img {max-width:450px !important;}
+.showContent img{max-width:650px!important;}
+*/
+
+.artContent img{max-width: 450px; width:expression(this.width > 450 ? "450px" : this.width)}
+/*
+.showContent img{max-width: 450px; width:expression(this.width > 650 ? "650px" : this.width)}
+*/
+
+
+</style>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/share.js"></script><script charset="utf-8" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/sm.min.js" async=""></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style1_32.css"></head>
+
+<body>
+
+<div id="home_top">
+<div class="top_nav" style="width:990px;">
+<div class="left" style="margin-top:10px; width:440px;"><a href="http://blog.51cto.com/" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/head_blog_sibebar_logo.gif" align="absmiddle" style="margin-top:-4px;"></a><a target="_blank" href="http://www.51cto.com/">51CTO首页</a><img height="25" align="absmiddle" width="16" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://blog.51cto.com/" target="_blank">51CTO博客</a><img height="25" align="absmiddle" width="16" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;"><a href="http://2638841.blog.51cto.com/">我的博客</a><img height="25" align="absmiddle" width="16" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/top_bg_xian.gif" style="margin-top:-4px;">
+
+<a target="_blank" href="http://blog.51cto.com/search.php">搜索</a>
+<a href="javascript:void(0);" style="color:#FF0000; text-decoration:underline; display:none" id="showMessagerDim">每日博报</a>
+</div>
+
+<div class="right" style="width:550px;">
+<div class="more"><img height="16" align="absmiddle" width="27" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/top_shequ.gif">社区：<a target="_blank" href="http://edu.51cto.com/">学院</a><a target="_blank" href="http://bbs.51cto.com/">论坛</a><a target="_blank" href="http://blog.51cto.com/">博客</a><a target="_blank" href="http://down.51cto.com/">下载</a><a href="javascript:viod(0);" onmouseout="popupClose()" onmouseover="show(3,this)">更多<img align="absmiddle" style="padding-left: 4px;" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/nav_ico1.gif"></a>            </div>            <span id="login_status"><div class="login2"><div style="float:right; padding-top:8px;"><a href="http://home.51cto.com/index.php?s=/space/2628841" style="float:left;margin-top:-1px;text-decoration: none;" target="_self">h4x0rbreeze</a><span id="msg_view" style="display:inline; margin-left:5px;"><a target="_blank" href="http://home.51cto.com/index.php?s=/Notify/index" style="color:#CC0000;">消息(7)</a><a target="_blank" href="http://home.51cto.com/apps/favorite/index.php?s=/Index/index">收藏</a></span><a href="http://home.51cto.com/index.php?s=/Index/logout/reback/http%253A%252F%252Ffuwenchao.blog.51cto.com%252F6008712%252F1351058" target="_self" style="text-decoration:none">[退出]</a></div><div style="float:right;">	<a href="http://home.51cto.com/index.php?s=/space/2628841" target="_self" style="text-decoration:none;">		<img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar.php" align="absmiddle" width="24" height="24" style="border: 2px solid #D5D5D5; margin-top:2px;">	</a></div></div></span>                </div>    </div></div>
+
+
+
+<div class="subMenu3" id="s3" onmouseover="popupNoClose()" onmouseout="popupClose()">
+<ul>
+<li><a href="http://home.51cto.com/" target="_blank">家园</a></li>
+<li><a href="http://edu.51cto.com/" target="_blank">学院</a></li>
+<li><a href="http://blog.51cto.com/" target="_blank">博客</a></li>
+<li><a href="http://bbs.51cto.com/" target="_blank">论坛</a></li>
+<li><a href="http://down.51cto.com/" target="_blank">下载</a></li>
+
+<li><a href="http://selftest.51cto.com/" target="_blank">自测</a></li>
+<li><a href="http://doctor.51cto.com/" target="_blank">门诊</a></li>
+<li><a href="http://blog.51cto.com/newsletter/" target="_blank">周刊</a></li>
+<li><a href="http://book.51cto.com/" target="_blank">读书</a></li>
+<li><a href="http://g.51cto.com/" target="_blank">技术圈</a></li>
+</ul>
+</div>
+<!--简导航end-->
+
+
+
+<div class="headerBox">
+<div class="header">
+<div class="header_l">
+<div class="logo_blogname">
+
+
+
+<div class="blogName">
+<a href="http://fuwenchao.blog.51cto.com/"><h1>从运维到ETL</h1></a>
+</div>
+</div><!--logo_blogname end-->
+<div class="blogLink">
+
+<a href="http://fuwenchao.blog.51cto.com/">http://fuwenchao.blog.51cto.com</a> <input id="txtUser" type="hidden" size="32" value="http://fuwenchao.blog.51cto.com">   <a href="javascript:void(0);" onclick="copy();">【复制】</a> <a href="http://fuwenchao.blog.51cto.com/rss.php?uid=6008712" target="_blank"></a><a href="http://fuwenchao.blog.51cto.com/rss.php?uid=6008712" target="_blank">【订阅】</a>
+
+</div>
+
+
+
+<div class="editBrowse">
+<a class="edit" href="http://2638841.blog.51cto.com/main.php">编辑</a><a class="browse" href="http://fuwenchao.blog.51cto.com/#">浏览</a>
+</div>
+
+<div id="mod_tg" class="newmb" style="width:170px;height:20px;padding:15px 0 0 10px; text-align:left;font-size:12px;background:url(http://blog.51cto.com/images/long_msg.gif) no-repeat;color:#666;position:absolute;top:-10px;left:209px;z-index:9999">
+	<a href="http://down.51cto.com/data/1904076" target="_blank" style="color:#666;">
+	<em style="background:none;color:#f00" title="《51CTO博客月刊》总第8期">《51CTO博客月刊》总第8期</em></a>
+	<img onclick="mod_close();" style="position:absolute;top:8px;left:148px; cursor:pointer" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/msgClose.gif" alt="关闭">
+</div>
+
+
+</div><!--header_l end-->
+<div class="header_r">
+<div class="blogInfo"><span><a href="http://fuwenchao.blog.51cto.com/6008712/o" title="察看pianzif所有原创文章">原创</a>:99</span><span><a href="http://fuwenchao.blog.51cto.com/6008712/t" title="察看pianzif所有翻译文章">翻译</a>:0</span><span><a href="http://fuwenchao.blog.51cto.com/6008712/c" title="察看pianzif所有转载文章">转载</a>:130</span></div>
+<div class="blogNav"><a href="http://fuwenchao.blog.51cto.com/">博 客</a>|<a href="http://home.51cto.com/apps/photo/index.php?s=/Index/photos/uid/6008712">图库</a>|<a href="http://fuwenchao.blog.51cto.com/addblog.php">写博文</a>|<a href="http://blog.51cto.com/user_index.php">管理博客</a>|<a href="http://51ctoblog.blog.51cto.com/all/26414/4" target="_blank">帮 助</a></div>
+</div>
+</div>
+<!--header end-->
+</div><!--headerBox end-->
+<div class="mainNav">
+<span class="mainNavT"></span>
+<ul>
+<li><a href="http://fuwenchao.blog.51cto.com/">首页</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-13">linux命令</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-3">Linux系统管理</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-15">Linux系统性能分析</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-6">shell生产脚本</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-2">mysql专题</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-19">oracle专题</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-14">SQL/DB/工具杂谈</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-1">集群</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-8">java</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-10">tomcat</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-18">windows</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-12">windows批处理脚本</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-11">虚拟化</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-16">OS/硬件理论</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-17">Linux编程</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-9">防火墙</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-21">服务器架设</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-20">性能测试</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-5">工作心得</a></li>|<li><a href="http://fuwenchao.blog.51cto.com/6008712/d-7">其他</a></li>
+</ul>
+<span class="mainNavB"></span>
+</div>
+<!--mainNav end-->
+
+<script type="text/javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<!--[if IE 6]>
+  <script type="text/javascript" src="http://images.watchstor.com/newhomes/png.js"></script>
+  <script>
+    DD_belatedPNG.fix('img,input,ul,li, .get-box, div, .add, .sub, .ui-slider-handle, .footer-chopper');
+  </script>
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/fck_editorarea.css">
+<script type="text/javascript" charset="gbk" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/shCores.js"></script>
+<link rel="stylesheet" type="text/css" href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/shCoreDefault.css">
+<script type="text/javascript" charset="gbk" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/uparse.js"></script>
+<script type="text/javascript">
+	uParse('.showContent');
+	$(function(){
+		//SyntaxHighlighter.config.clipboardSwf = 'http://bbs.51cto.com/plugins/syntaxhighlighter/scripts/clipboard.swf'; 
+		//为了在编辑器之外能展示高亮代码
+		SyntaxHighlighter.highlight();
+	}); 
+</script>
+<script type="text/javascript">
+/**
+ * 回复评论需要用的js
+ * 2012-5-14
+ * by:chengtao
+ */
+ jQuery(function(){
+	blogpost.init();//初始化博客回复功能
+ })
+ /**
+  * 处理博文评论功能优化
+  */
+ blogpost={
+	abstruct_list:null,
+	init:function(){
+		blogpost.bind();//绑定一些时间
+		this.abstruct_list=new Array();//初始化保存评论信息的数组
+	},
+	/**
+	 * 博客回复需要绑定的一些事件
+	 */
+	bind:function(){
+		/**
+		 * 点击回复的事件
+		 */
+		jQuery('.repost').live('click',function(){
+			blogpost.repost(jQuery(this).attr('user_name'),jQuery(this).attr('parentid'));
+			return false;
+		});
+		/**
+		 * 点击楼层进行翻页且找到锚点
+		 */
+		jQuery('.anchor_page').live('click',function(){
+			var parentid = $(this).attr('parentid');
+			var tid=$(this).attr('tid');
+			$.get('/comments.php?tid='+tid+'&parentid='+parentid,function(data){
+				$('#artcomment').html(data);
+				window.location.hash=''+parentid;
+			})
+			return false;
+		}),
+		jQuery('.anchor_page').live('mouseover',function(){
+			var parentid = $(this).attr('parentid');
+			if(!blogpost.abstruct_list[parentid]){
+				var this_t = $(this);
+				$.get('/comments.php?cid='+parentid,function(data,textStatus){
+					blogpost.abstruct_list[parentid]=data;
+					this_t.attr('title',this_t.text()+':'+ blogpost.abstruct_list[parentid]);
+				});
+			}else{
+				$(this).attr('title',$(this).text()+':'+blogpost.abstruct_list[parentid]);
+			}
+		})
+	},
+	/**
+	 * @param user_name 用户名
+	 * @param parentid  父评论id
+	 */
+	repost:function(user_name,parentid){
+		window.location.hash='comment';
+		jQuery('#parentid').val(parentid);
+		jQuery('#commentcontent').val('回复 '+user_name+":\n").focus();
+		if(!$.browser.mozilla){
+			var elem = jQuery('#commentcontent')[0];		
+			var caretPos = elem.value.length;
+			if (elem.createTextRange) {
+				var range = elem.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			}else{
+				elem.setSelectionRange(caretPos, caretPos);	
+			}
+		}
+	},
+	/**
+	 * 发送完毕之后清理表单数据 不是ajax可能用不到
+	 */
+	clean:function(){
+		
+	}
+ }
+</script>
+<script type="text/javascript">
+jQuery(function(){
+	var anchor = document.location.hash;
+	var comment_id=anchor.split('#')[1];
+	if(!isNaN(parseInt(comment_id))){//是整形
+		jQuery.get('/comments.php?tid=1351058&parentid='+comment_id,function(data){
+			jQuery('#artcomment').html(data);
+			window.location.hash=''+comment_id;
+		})
+	}
+});
+</script>
+
+
+
+<script type="text/javascript">
+jQuery(function() {
+	jQuery('#favourdiv').mouseover(function(){
+		if(jQuery(this).attr('className') == 'support01')
+		{
+			jQuery(this).attr('className', "support02");
+			jQuery(this).html('+1人');
+			jQuery(this).attr('title', "赞一个，我支持TA");
+		}
+		else if(jQuery(this).attr('className') == 'support03')
+		{
+			jQuery(this).attr('title', "你已经赞了这篇博文！");
+		}
+		
+	});
+	jQuery('#favourdiv').mouseout(function(){
+		if(jQuery(this).attr('className') == 'support02')
+		{
+			jQuery(this).attr('className', "support01");
+			jQuery(this).html("0人");
+		}
+	});
+	jQuery('.blog_match_yq').click(function(){
+		var wind_uid = '2628841';
+		if(!wind_uid){
+			alert("请先登录！");
+			return false;
+		}
+		jQuery.ajax({
+			   type: "POST",
+			   url:"/contest2012/index.php?mod=sendmsg",
+			   dataType: "html",
+			   data: "vuid=" + 6008712,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("查无此人！");
+						return false;
+					}else if(data == 1){
+						alert("请先登录！");
+						return false;
+					}else if(data == 2){
+						alert("不能邀请自己！");
+						return false;
+					}else if(data == 22){  
+						alert("邀请信息已发出！");
+						return false;
+					}
+			   }
+		  });
+	});
+	jQuery('#favourdiv').click(function(){
+			jQuery.ajax({
+			   type: "POST",
+			   url:"/mod/favour.php",
+			   dataType: "html",
+			   data: "tid=" + 1351058,
+			   success: function(data) {
+					if(data == 0)
+					{
+						alert("您还未登录或者已过期，请重新登录");
+						location.href = "http://home.51cto.com/index.php?reback=http%253A%252F%252Ffuwenchao.blog.51cto.com%252F6008712%252F1351058";
+						return false;
+					}
+					else if(data == '-1')
+					{
+						alert("参数传递错误！");
+						return false;
+					}
+					else if(data == '-2')
+					{
+						alert("该博文已被删除或者不存在！");
+						return false;
+					}
+					else if(data == '-3')
+					{
+						alert("您已经赞过了！");
+						return false;
+					}
+					else if(data == '-4')
+					{
+						alert("赞操作失败！");
+						return false;
+					}
+					else
+					{  
+						//alert("操作成功，你已经赞了这篇博文！");
+						jQuery('#favourdiv').attr('className', "support03");
+
+						var num = 0 + 1 + "人";
+						jQuery('#favourdiv').html(num);
+						jQuery('#favourer').html(data);
+						return false;
+					}
+			   }
+		  });
+	});
+	//Jaydar http://blog.51cto.com/js/header.php?uid=blogdb[uid]&tid=tid
+	jQuery.post('/js/header.php',{uid:6008712,tid:1351058},function(data){
+		jQuery('#readNum').html(data[0]);
+		jQuery('#cmtNum').html(data[1]);
+	},'json');
+	
+
+})
+
+jQuery(function(){
+	jQuery('#darid').bind('click',function(){
+		if(confirm("你确定删除此篇文章？")){
+			jQuery.ajax({
+				'type':'post',
+				'url':'user_index.php?action=delarticle',
+				'data':{'job':'del', 'selid':'1351058', 'mhash':''},
+				'dataType':'html',
+				'success':function(res){
+					if('ok' == res){
+						location.href="http://2638841.blog.51cto.com";
+					}
+				
+				}
+			});
+		}
+	});
+});
+</script>
+
+
+
+
+<style type="text/css">
+.m_sharelinks{ 
+	line-height:30px; 
+	text-align:left; 
+	padding-left:20px; 
+	//background:url(http://img1.51cto.com/images/share/ico_lb.gif) no-repeat left center;
+	float:left; 
+	width:600px; 
+	height:30px;
+}
+.m_sharelinks a{ margin-left:10px;}
+.m_sharebtn{ height:50px; width:726px; margin:0 auto;}
+.m_sharebtn01{width:520px; float:left;}
+.weibo_51cto{ background:url(http://img1.51cto.com/images/share/ico_mweibo.gif) no-repeat center center; display:block; width:33px; height:33px; float:left; margin:3px 3px 0 0;cursor:pointer;}
+.shareMored {
+    line-height: 30px;
+	float:right; 
+	text-align:right; 
+	width:100px; 
+	height:30px;
+}
+
+.showContent {
+	margin:20px 15px 8px;
+}
+.userImage img {
+    text-align: center;
+	border:0;
+	padding:0;
+}
+.photo_links{ line-height:30px; padding-top:5px; font-size:13px;width:170px; margin:0 auto;}
+.photo_links_blue{ text-align:center;}
+.photo_links_blue a:link,.photo_links_blue a:visited,.photo_links_blue a:hover,.photo_links_blue a:active{ color:#015F91; text-decoration: underline;}
+.photo_links_red{ text-align:left;}
+.photo_links_red a:link,.photo_links_red a:visited,.photo_links_red a:hover,.photo_links_red a:active{ color:#fc4343; text-decoration:underline;}
+.photo_links_red02{ text-align:center;}
+
+.vlist{ margin:10px 10px; height:65px;}
+.vlist img{ float:left; margin-right:10px;}
+.vlist dl{ text-align:left;}
+.vlist dl dt{ height:40px;line-height: 20px; overflow:hidden; padding-top:5px;}
+.vlist dl dt,.vlist dl dt a{ color:#262626;}
+.vlist dl dd,.vlist dl dd a{ color:#777;}
+
+.video-icon{
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left:31px;
+    position: absolute;
+    top:22px;
+    width: 25px;
+    z-index: 10;
+}
+
+.ipadFload{ position:fixed; width:136px; height:194px; background:url("http://bbs.51cto.com/images/IPad-bg.png") left top no-repeat #fff; font-family:"微软雅黑"; padding-left:18px;}
+.ipadClose{ text-align:right; font-size:14px; line-height:20px;}
+.ipadImg{ padding-top:38px;}
+.ipadImg img{ width:105px; height:105px;}
+.iPadair2{ font-size:12px;}
+.iPadair2 a{ color:#659b01; text-decoration:none; background:url("http://bbs.51cto.com/images/51CTO-IPAD-BOTTOM.png") right center no-repeat; display:block; line-height:30px;}
+
+</style>
+<script language="JavaScript" type="text/javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/group.js"></script>
+<div id="add_sys_type_div" style="width:600px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+<div id="add_sys_type_dvs" style="width:550px;border:1px #58B0DD solid; background-color:#FFF; position:absolute;left:30%;top:300px;display:none;z-index:255"></div>
+	
+
+
+
+<div class="blogMain">
+<div class="blogLeft">
+
+
+<div class="box moduleUser">
+<div class="title">
+<h2><strong>pianzif</strong> 的BLOG  </h2>
+</div>
+<div class="modCon">
+
+<div class="userImage" style="margin: 10px auto 5px;text-align: center;width: 130px;border: 1px solid #D4D4D4;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td valign="middle" align="center" height="130"><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/userface.php"></script><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(1).php" id="userface"></td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="photo_links">
+</div>
+
+
+
+
+
+
+
+
+
+<div class="crumbs">
+<a href="http://home.51cto.com/index.php?s=/space/6008712#message" class="writeMessage" target="_blank">写留言</a><a href="http://edu.51cto.com/" class="inCircle" target="_blank">去学院学习</a><a href="http://home.51cto.com/index.php?s=/Notify/write/uid/6008712" class="message" target="_blank">发消息</a>
+ <a href="http://fuwenchao.blog.51cto.com/" onclick="add_flink(6008712);return false" class="joinLinks">加友情链接</a><a href="http://home.51cto.com/index.php?s=/space/6008712" class="joinFriends" target="_blank">进家园 加好友</a>
+</div>
+
+<div style="width:239px;height:64px;display:none;">
+
+
+<div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">2012年度IT博客大赛<br><a target="_blank" href="http://blog.51cto.com/contest2012/#top10000" style="color:#F00; text-decoration:underline;">十大杰出IT博客诞生</a></p></div>
+<div style="float:right;"><a target="_blank" href="http://blog.51cto.com/contest2012/"><img width="57" height="27" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/blog_match_endlook.jpg" style="margin:23px 20px 0 0;"></a></div>
+<!-- <div style="float:left;"><p style="padding:15px 0 0 28px; line-height:20px;">星光评委正在评选<br><a target="_blank" href="http://blog.51cto.com/contest2012/index.php?mod=userlist_sec" style="color:#F00; text-decoration:underline;">2012年度IT博客大赛50强</a></p></div>
+<div style="float:right;"><img class="blog_match_yq" width="57" height="27" src="http://img1.51cto.com/images/blog_match_invite.jpg" style="margin:23px 20px 0 0;"></div> -->
+
+
+
+<div class="clear"></div>
+</div>
+
+
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+<div class="title">
+<h2>博客统计信息</h2>
+</div>
+<div class="modCon">
+<p>
+<span class="infoListHead"></span>
+用户名：pianzif<br>
+文章数：229<br>
+评论数：16<br>
+访问量：30453<br>
+<a href="http://home.51cto.com/index.php?s=/Account/credit" target="_blank">无忧币</a>：3615<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客积分</a>：1608<br>
+<a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank">博客等级</a>：6<br>
+注册日期：2012-09-16<br>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/blogno1countdown.php"></script> 
+</p>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="infoList box">
+	<div class="title">
+		<h2 class="fl">热门专题</h2>
+		<a target="_blank" class="fr" href="http://blog.51cto.com/zt">更多&gt;&gt;</a>
+	</div>
+	<div class="modCon" style="height: 88px;">
+
+	
+		<div class="vlist">
+		  <a href="http://blog.51cto.com/zt/652" target="_blank"><img width="63" height="63" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/wKiom1S9-x7Dr6HEAAAnqgNiZjs267.jpg"></a>
+		<dl>
+		<dt>
+		  <a href="http://blog.51cto.com/zt/652" target="_blank" title="Windows  Server 2012 R2 Hyper-V配置与管理详解">Windows  Server 2012 R2 Hyper-V配置与管理详解</a></dt>
+		<dd>阅读量：4192</dd>
+		</dl>
+		</div>
+		
+		
+	</div>
+	<span class="modBot"></span>
+</div>
+
+
+<div class="hotArt box">
+<div class="title">
+<h2>热门文章</h2>
+</div>
+<div class="modCon">
+<ul>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1336629">Kernel panic – not sy..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1335792"> os::commit_memory() fa..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1347228">mysql导入数据load data ..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1392525">Linux  创建用户，分配权限</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1331822">linux重启后mysql数据库..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1344437">问题：Cannot find /usr/..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1360038">/dev/sdxx is apparently..</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1335516">mysql数据库show tables ..</a></li>
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+<div class="search box">
+<div class="title"><h2>搜索BLOG文章</h2></div>
+<div class="modCon">
+<form method="post" action="http://fuwenchao.blog.51cto.com/search.php?" tabindex="99">
+<input type="hidden" name="step" value="2">
+<input type="hidden" name="authorid" value="6008712">
+<input type="hidden" name="sch_area" value="S">
+<input type="text" value="" name="keyword" class="searchInput">
+<input type="submit" value="搜 索" class="searchBtn">
+</form>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="box recentGuests">
+<div class="title">
+<h2>最近访客</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://2638841.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(2).php"></a>
+<p><a href="http://2638841.blog.51cto.com/">h4x0r..</a></p>
+
+</li><li><a href="http://7037218.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(3).php"></a>
+<p><a href="http://7037218.blog.51cto.com/">C_Hector</a></p>
+
+</li><li><a href="http://1903254.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(4).php"></a>
+<p><a href="http://1903254.blog.51cto.com/">5jisuan</a></p>
+
+</li><li><a href="http://yanruohan.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(5).php"></a>
+<p><a href="http://yanruohan.blog.51cto.com/">妙曼</a></p>
+
+</li><li><a href="http://9705816.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(6).php"></a>
+<p><a href="http://9705816.blog.51cto.com/">天夕</a></p>
+
+</li><li><a href="http://wgkgood.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(7).php"></a>
+<p><a href="http://wgkgood.blog.51cto.com/">wgkgood</a></p>
+
+</li><li><a href="http://2485730.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(8).php"></a>
+<p><a href="http://2485730.blog.51cto.com/">lingx..</a></p>
+
+</li><li><a href="http://324703.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(9).php"></a>
+<p><a href="http://324703.blog.51cto.com/">天使无罪</a></p>
+
+</li><li><a href="http://6897800.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(10).php"></a>
+<p><a href="http://6897800.blog.51cto.com/">chenl..</a></p>
+
+</li><li><a href="http://311816.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(11).php"></a>
+<p><a href="http://311816.blog.51cto.com/">fzhye</a></p>
+
+</li><li><a href="http://2391839.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(12).php"></a>
+<p><a href="http://2391839.blog.51cto.com/">hy06yh</a></p>
+
+</li><li><a href="http://7250365.blog.51cto.com/"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/avatar(13).php"></a>
+<p><a href="http://7250365.blog.51cto.com/">xiaop..</a></p>
+
+</li></ul>
+<span class="clear"></span>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="newComments box">
+<div class="title">
+<h2>最新评论 
+
+</h2>
+
+
+
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://fuwenchao.blog.51cto.com/" class="operlink" target="_blank"><b>pianzif</b></a>：<a href="http://fuwenchao.blog.51cto.com/6008712/1336629" target="_blank">回复 nixus: 呵呵，不好意思，现..</a></li>
+
+<li><a href="http://nixus.blog.51cto.com/" class="operlink" target="_blank"><b>nixus</b></a>：<a href="http://fuwenchao.blog.51cto.com/6008712/1336629" target="_blank">博主大哥，您在吗？ 我遇到了和您..</a></li>
+
+<li><a href="http://fuwenchao.blog.51cto.com/" class="operlink" target="_blank"><b>pianzif</b></a>：<a href="http://fuwenchao.blog.51cto.com/6008712/1341155" target="_blank">很多不理解的地方看我的新博客http:..</a></li>
+
+
+</ul>
+</div>
+<span class="modBot"></span>
+</div>
+
+
+<div class="hotBlogArt box">
+<div class="title">
+  <h2 class="fl">51CTO推荐博文</h2>
+  <a href="http://blog.51cto.com/artcommend" class="fr">更多&gt;&gt;</a></div>
+<div class="modCon">
+<ul>
+<li><a href="http://dl528888.blog.51cto.com/2382721/1613764" title="docker高级应用之动态绑定卷组" target="_blank">docker高级应用之动态绑定卷组</a></li>
+<li><a href="http://rdsrv.blog.51cto.com/2996778/1613708" title="Horizon View 6-创建共享虚拟桌面池⑸" target="_blank">Horizon View 6-创建共享虚拟桌面..</a></li>
+<li><a href="http://sohudrgon.blog.51cto.com/3088108/1613872" title="KVM虚拟化技术之virt-manager使用及KVM虚拟化平台网络模型介绍" target="_blank">KVM虚拟化技术之virt-manager使用..</a></li>
+<li><a href="http://bbotte.blog.51cto.com/6205307/1613571" title="logstash日志收集分析系统elasticsearch&amp;kibana" target="_blank">logstash日志收集分析系统elastic..</a></li>
+<li><a href="http://chenguang.blog.51cto.com/350944/1613732" title="DHCP 日志分析" target="_blank">DHCP 日志分析</a></li>
+<li><a href="http://qiaomiao.blog.51cto.com/484197/1613794" title="一次基于ssh的sftp服务器被攻击实记" target="_blank">一次基于ssh的sftp服务器被攻击实记</a></li>
+<li><a href="http://horse87.blog.51cto.com/2633686/1613349" title="修改Exchange2010 OWA登录时的企业logo" target="_blank">修改Exchange2010 OWA登录时的企..</a></li>
+<li><a href="http://stephen1991.blog.51cto.com/8959108/1607780" title="项目案例分析一：客户端无法拿到WSUS补丁" target="_blank">项目案例分析一：客户端无法拿到W..</a></li>
+<li><a href="http://hostslinux.blog.51cto.com/8819775/1613387" title="实战Nginx负载均衡高冗余高可用WEB架构" target="_blank">实战Nginx负载均衡高冗余高可用WE..</a></li>
+<li><a href="http://gaowenlong.blog.51cto.com/451336/1613015" title="Windows Azure+Windows+Linux多环境下Tomcat服务的安装及配置集合" target="_blank">Windows Azure+Windows+Linux多环..</a></li>
+<li><a href="http://lixiaosong.blog.51cto.com/705126/1609261" title="通过组策略批量开启终端Powershell远程管理" target="_blank">通过组策略批量开启终端Powershel..</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+<div class="friendLink box">
+<div class="title">
+  <h2>友情链接</h2>
+</div>
+<div class="modCon">
+<ul>
+
+<li><a href="http://edu.51cto.com/" title="IT精品课程" target="_blank">IT精品课程</a></li>
+
+<li><a href="http://lxsym.blog.51cto.com/" title="Richard Shen运维/架构" target="_blank">Richard Shen运维/..</a></li>
+
+<li><a href="http://netslyz.blog.51cto.com/" title="往者不谏，来者可追" target="_blank">往者不谏，来者可追</a></li>
+
+<li><a href="http://heyiyi.blog.51cto.com/" title="yiyi" target="_blank">yiyi</a></li>
+
+<li><a href="http://lavasoft.blog.51cto.com/" title="熔  岩" target="_blank">熔  岩</a></li>
+
+<li><a href="http://ks0101.blog.51cto.com/" title="KS0101" target="_blank">KS0101</a></li>
+
+<li><a href="http://litaotao.blog.51cto.com/" title="技术之路---桀" target="_blank">技术之路---桀</a></li>
+
+<li><a href="http://leonarding.blog.51cto.com/" title="刘盛分享技术~成就梦想" target="_blank">刘盛分享技术~成就..</a></li>
+
+<li><a href="http://alanwu.blog.51cto.com/" title="存储之道" target="_blank">存储之道</a></li>
+
+<li><a href="http://929044991.blog.51cto.com/" title="无双城" target="_blank">无双城</a></li>
+
+<li><a href="http://huqianhao.blog.51cto.com/" title="胡千好" target="_blank">胡千好</a></li>
+
+<li><a href="http://gaoming.blog.51cto.com/" title="高明" target="_blank">高明</a></li>
+
+<li><a href="http://tonyping.blog.51cto.com/" title="老李_Tony" target="_blank">老李_Tony</a></li>
+
+<li><a href="http://infohacker.blog.51cto.com/" title="成鹏致远" target="_blank">成鹏致远</a></li>
+
+<li><a href="http://linuxora.blog.51cto.com/" title="linux运维QQ群87298838" target="_blank">linux运维QQ群8729..</a></li>
+
+<li><a href="http://2364821.blog.51cto.com/" title="吕布天下" target="_blank">吕布天下</a></li>
+
+<li><a href="http://jiangzhi2013.blog.51cto.com/" title="每天进步一点点" target="_blank">每天进步一点点</a></li>
+
+<li><a href="http://wgkgood.blog.51cto.com/" title="吴光科-专注自动化运维" target="_blank">吴光科-专注自动化..</a></li>
+
+<li><a href="http://manual.blog.51cto.com/" title="丁丁历险" target="_blank">丁丁历险</a> <img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/tubiao3.gif" alt="本周内更新"></li>
+
+<li><a href="http://opsmysql.blog.51cto.com/" title="-&gt;" target="_blank">-&gt;</a></li>
+
+<li><a href="http://babyhe.blog.51cto.com/" title="小何贝贝的技术空间" target="_blank">小何贝贝的技术空间</a></li>
+
+<li><a href="http://lgdvsehome.blog.51cto.com/" title="Focus on the database" target="_blank">Focus on the data..</a></li>
+
+<li><a href="http://4457553.blog.51cto.com/" title="IT工作实战" target="_blank">IT工作实战</a></li>
+
+<li><a href="http://genuinecx.blog.51cto.com/" title="尘风随影的天空" target="_blank">尘风随影的天空</a></li>
+
+<li><a href="http://cuimk.blog.51cto.com/" title="Tuesday" target="_blank">崔明坤</a></li>
+
+<li><a href="http://rfyiamcool.blog.51cto.com/" title="峰云，就她了。" target="_blank">峰云，就她了。</a></li>
+
+<li><a href="http://xjsunjie.blog.51cto.com/" title="滴水穿石" target="_blank">滴水穿石</a></li>
+
+<li><a href="http://bearlovecat.blog.51cto.com/" title="猫熊的幸福生活" target="_blank">猫熊的幸福生活</a></li>
+
+<li><a href="http://johnwang.blog.51cto.com/" title="转身离开-王军" target="_blank">转身离开-王军</a></li>
+
+<li><a href="http://jxwpx.blog.51cto.com/" title="云计算与大数据_jxwpx" target="_blank">云计算与大数据_jxwpx</a></li>
+
+<li><a href="http://mageedu.blog.51cto.com/" title="马哥教育" target="_blank">马哥教育</a></li>
+
+<li><a href="http://sunshyfangtian.blog.51cto.com/" title="一树清劲" target="_blank">一树清劲</a></li>
+
+<li><a href="http://wolfword.blog.51cto.com/" title="好好活着" target="_blank">好好活着</a></li>
+
+<li><a href="http://oldboy.blog.51cto.com/" title="老男孩linux运维" target="_blank">老男孩linux运维</a> <img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/tubiao2.gif" alt="三日内更新"></li>
+
+<li><a href="http://hcymysql.blog.51cto.com/" title="贺春旸的技术专栏" target="_blank">贺春旸的技术专栏</a></li>
+
+<li><a href="http://linux008.blog.51cto.com/" title="linux运维" target="_blank">linux运维</a></li>
+
+<li><a href="http://sndapk.blog.51cto.com/" title="notepad" target="_blank">notepad</a></li>
+
+<li><a href="http://chenguang.blog.51cto.com/" title="李晨光原创技术博客" target="_blank">李晨光原创技术博客</a> <img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/tubiao2.gif" alt="三日内更新"></li>
+
+<li><a href="http://freeze.blog.51cto.com/" title="夜的博客" target="_blank">夜的博客</a></li>
+
+<li><a href="http://chenhao6.blog.51cto.com/" title="▁▁技术控ヽ" target="_blank">▁▁技术控ヽ</a></li>
+
+<li><a href="http://ixdba.blog.51cto.com/" title="技术成就梦想" target="_blank">南非蚂蚁</a></li>
+
+<li><a href="http://andrewyu.blog.51cto.com/" title="抚琴煮酒" target="_blank">抚琴煮酒</a></li>
+
+<li><a href="http://freeloda.blog.51cto.com/" title="Share your knowledge …" target="_blank">Share your knowle..</a></li>
+
+<li><a href="http://51ctoblog.blog.51cto.com/" title="51CTO博客开发" target="_blank">51CTO博客开发</a></li>
+
+</ul>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div>
+
+
+
+</div>
+<!--left end-->
+
+<script type="text/javascript">
+    var favor_url = "http://fuwenchao.blog.51cto.com/6008712/1351058";
+    var favor_title = "shell编程基础（四）-shell特殊符号";
+    var favor_fuid = "6008712";
+</script>
+<script type="text/javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/favorbox.js"></script>
+<div class="blogRight">
+
+
+	<div class="box edu-col-a" style="display:none;">
+		<div class="title">的视频课程
+
+        </div>
+		<div class="vbox" style="">
+
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+
+
+	<div class="box edu-col-b" style="width:100%;">
+		<div class="title"><a target="_blank" href="http://edu.51cto.com/index.php?do=search&m=index&q=command?edu_recommend_adid=91">相关视频课程</a>
+
+            <a href="http://edu.51cto.com/index.php?do=search&m=index&q=command?edu_recommend_adid=91" target="_blank" style="float:right;">更多</a>
+
+		</div>
+		<div class="vbox" style="">
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-1770.html?edu_recommend_adid=91" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/wKioL1PHfkqBmiJKAADMLXgh5T8381.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-1770.html?edu_recommend_adid=91" target="_blank" title="如何进行MFC数据库编程视频教程">如何进行MFC数据库编程视频教程(共13课时)</a></dt>
+					<dd>3799人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-1770.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-3129.html?edu_recommend_adid=91" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/wKioL1TdXXLTla1tAACSXcmDYAg697.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-3129.html?edu_recommend_adid=91" target="_blank" title="THinkPHP 3.2 版本从小白到精通之路">THinkPHP 3.2 版本从小白到精通之路(共10课时)</a></dt>
+					<dd>人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-3129.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+		
+			<div class="vlist video-icon" style="margin: 2px 8px;"> 
+				<a href="http://edu.51cto.com/course/course_id-3122.html?edu_recommend_adid=91" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/wKiom1Tca87iGwNQAAT3nhpZEaM801.jpg" height="63" width="86"></a>
+				<dl>
+					<dt> <a href="http://edu.51cto.com/course/course_id-3122.html?edu_recommend_adid=91" target="_blank" title="华为HCNP/HNDP中级系列课程之HCNP交换技术">华为HCNP/HNDP中级系列课程之HCNP交换技术(共9课时)</a></dt>
+					<dd>人学习</dd>
+				</dl>
+				<a class="i_video" href="http://edu.51cto.com/course/course_id-3122.html?edu_recommend_adid=91" target="_blank"></a>
+			</div>
+			
+			<div class="clear hr10"></div>
+		</div>
+	</div>
+	<p style="clear:both;"></p>
+	<style type="text/css">
+.vlist {
+    float: left;
+    padding: 2px 0 0 10px;
+    width: 218px;
+	
+}
+.vlist img {
+    float: left;
+    margin-right: 10px;
+}
+.vlist dl {
+    float: left;
+    text-align: left;
+    width: 122px;
+}
+.vlist dl dt {
+    height: 44px;
+    overflow: hidden;
+    padding-top: 5px;
+}
+.vlist dl dt, .vlist dl dt a {
+    color: #262626;
+}
+.vlist dl dd, .vlist dl dd a {
+    color: #777777;
+}
+.vbox_tit {
+    border-bottom: 1px solid #B3D0E6;
+    color: #666666;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: left;
+}
+.video-icon {
+    position: relative;
+}
+.video-icon a.i_video {
+    background: url("http://www.51cto.com/images/homepage/Images/eduplay.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 25px;
+    left: 41px;
+    position: absolute;
+    top: 22px;
+    width: 25px;
+    z-index: 10;
+}
+.vbox2 .vlist1{margin:0;}
+.edu-col-a{ float:left;margin-right:6px;}
+.edu-col-b{ float:left;}
+	</style><!--modCon end-->
+
+
+
+	<div class="artShow box" style="margin-top:5px;">
+   	  <div class="share" id="share">
+
+    <div class="shareItem">
+		<div class="m_sharelinks"><a target="_blank" href="" style="color:red;"></a><a target="_blank" href="" style="color:blue;"></a><a target="_blank" href="" style="color:blue;"></a></div>
+		<p class="shareMored"><a href="http://fuwenchao.blog.51cto.com/all/6008712">博主的更多文章&gt;&gt;</a></p>
+	</div>
+      </div>
+       <div class="modCon">
+   	  <div class="showBox" style="margin:0 0 10px;">
+      <div class="line_hd_r"></div>
+      <div class="art_tj">
+
+      </div>
+
+ 
+    		<div class="showHead">
+    		  <div class="showTitleBOx" style="text-align:center">
+              <div class="showTitle">
+
+	 		<img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/artType02.jpg">
+
+
+    		    shell编程基础（四）-shell特殊符号
+                </div>
+  		    </div>
+   		    <span class="artTime">2014-01-12 22:10:40</span></div><!--showHead end-->
+    <div class="showTags">标签：<a href="http://blog.51cto.com/tag-command.html" target="_blank" class="operlink">command</a> <a href="http://blog.51cto.com/tag-%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7.html" target="_blank" class="operlink">特殊符号</a> <a href="http://blog.51cto.com/tag-forward.html" target="_blank" class="operlink">forward</a> <a href="http://blog.51cto.com/tag-double.html" target="_blank" class="operlink">double</a> <a href="http://blog.51cto.com/tag-%E6%83%8A%E5%8F%B9%E5%8F%B7.html" target="_blank" class="operlink">惊叹号</a>
+
+	</div>
+
+
+            <!--正文 begin-->
+    		<div class="showContent">
+    		  <p><span style="font-family:&#39;宋体&#39;;">目录</span></p><p><a><span style="font-family:&#39;宋体&#39;;">符号总览：</span><span style="color:#000;">... </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;">输出/</span><span style="font-family:&#39;宋体&#39;;">输入重导向：</span><span style="color:#000;">... </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;"># </span><span style="font-family:&#39;宋体&#39;;">井号 (comments)</span><span style="color:#000;">. </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;">~ </span><span style="font-family:&#39;宋体&#39;;">帐户的 home </span><span style="font-family:&#39;宋体&#39;;">目录</span><span style="color:#000;">... </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;">; </span><span style="font-family:&#39;宋体&#39;;">分号 (Command separator)</span><span style="color:#000;">. </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;">;; </span><span style="font-family:&#39;宋体&#39;;">连续分号 (Terminator)</span><span style="color:#000;">. </span><span style="color:#000;">1</span></a></p><p><a><span style="font-family:&#39;宋体&#39;;">. </span><span style="font-family:&#39;宋体&#39;;">点 (dot)</span><span style="color:#000;">. </span><span style="color:#000;">2</span></a></p><p><a>‘string’ <span style="font-family:&#39;宋体&#39;;">单引号</span> (single quote)<span style="color:#000;">2</span></a></p><p><a>“string” <span style="font-family:&#39;宋体&#39;;">双引号</span> (double quote)<span style="color:#000;">2</span></a></p><p><a>, <span style="font-family:&#39;宋体&#39;;">逗点</span> (comma)<span style="color:#000;">2</span></a></p><p><a>/ <span style="font-family:&#39;宋体&#39;;">斜线</span> (forward slash)<span style="color:#000;">2</span></a></p><p><a>\ <span style="font-family:&#39;宋体&#39;;">倒斜线</span> (escape)<span style="color:#000;">2</span></a></p><p><a>| <span style="font-family:&#39;宋体&#39;;">管道</span> (pipeline)<span style="color:#000;">3</span></a></p><p><a>! <span style="font-family:&#39;宋体&#39;;">惊叹号</span>(negate or reverse)<span style="color:#000;">3</span></a></p><p><a>: <span style="font-family:&#39;宋体&#39;;">冒号</span><span style="color:#000;">... </span><span style="color:#000;">3</span></a></p><p><a>? <span style="font-family:&#39;宋体&#39;;">问号</span> (wild card)<span style="color:#000;">3</span></a></p><p><a>* <span style="font-family:&#39;宋体&#39;;">星号</span> (wild card)<span style="color:#000;">3</span></a></p><p><a>** <span style="font-family:&#39;宋体&#39;;">次方运算</span><span style="color:#000;">... </span><span style="color:#000;">4</span></a></p><p><a>$ <span style="font-family:&#39;宋体&#39;;">钱号</span>(dollar sign)<span style="color:#000;">4</span></a></p><p><a>${} <span style="font-family:&#39;宋体&#39;;">变量的正规表达式</span><span style="color:#000;">... </span><span style="color:#000;">4</span></a></p><p><a>$*<span style="color:#000;">. </span><span style="color:#000;">4</span></a></p><p><a>$#<span style="color:#000;">. </span><span style="color:#000;">5</span></a></p><p><a>$? <span style="font-family:&#39;宋体&#39;;">状态值</span> (status variable)<span style="color:#000;">5</span></a></p><p><a>() <span style="font-family:&#39;宋体&#39;;">指令群组</span> (command group)<span style="color:#000;">5</span></a></p><p><a>(())<span style="color:#000;">5</span></a></p><p><a>[[]]<span style="color:#000;">5</span></a></p><p><a>/ <span style="font-family:&#39;宋体&#39;;">单字边界</span><span style="color:#000;">... </span><span style="color:#000;">6</span></a></p><p><a>+ <span style="font-family:&#39;宋体&#39;;">加号</span> (plus)<span style="color:#000;">6</span></a></p><p><a>- <span style="font-family:&#39;宋体&#39;;">减号</span> (dash)<span style="color:#000;">6</span></a></p><p><a>% <span style="font-family:&#39;宋体&#39;;">除法</span> (Modulo)<span style="color:#000;">6</span></a></p><p><a>= <span style="font-family:&#39;宋体&#39;;">等号</span> (Equals)<span style="color:#000;">6</span></a></p><p><a>== <span style="font-family:&#39;宋体&#39;;">等号</span> (Equals)<span style="color:#000;">6</span></a></p><p><a></a></p><h1><span style="font-family:&#39;宋体&#39;;">符号总览：</span></h1><p style="margin-top:5px;margin-bottom:5px;"><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"># &nbsp; ; &nbsp;;; . &nbsp;, &nbsp;/ &nbsp;/ &nbsp; &nbsp;‘string’ | &nbsp; &nbsp; ! &nbsp;$ ${} &nbsp;$? &nbsp;$$ &nbsp;$* &nbsp; “string”* &nbsp;** &nbsp; ? &nbsp;: ^ &nbsp;$# &nbsp;$@ &nbsp;`command` &nbsp;{} &nbsp;[] &nbsp; &nbsp;[[]] &nbsp; () &nbsp;(()) &nbsp; || &nbsp; &amp;&amp; &nbsp; {xx,yy,zz,…}~ &nbsp;~+ &nbsp; ~- &nbsp; &amp; &nbsp; / &nbsp; + &nbsp; – &nbsp; %= &nbsp; == &nbsp; !=</span></p><p style="margin-bottom:0;"><a><span style="font-size:29px;">输出/输入重导向：</span></a><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"><br>&gt; &gt;&gt; &lt; &lt;&lt; : &gt; &amp;&gt; 2&amp;&gt; 2&lt;&gt;&gt;&amp; &gt;&amp;2</span></p><p style="margin-top:5px;margin-bottom:5px;"><br></p><p style="margin-top:5px;margin-bottom:5px;"><span style="font-size:14px;color:#333333;background-color:#ffffff;">详解：</span></p><p style="margin-bottom:0;"><a><span style="font-size:29px;"># </span></a><span style="font-size:29px;">井号 (comments)</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">这几乎是个满场都有的符号。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"><br>#!/bin/bash<br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">井号也常出现在一行的开头，或者位于完整指令之后，这类情况表示符号后面的是注解文字，不会被执行。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"><br># This line is comments.<br>echo “a = $a” # a = 0<br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">由于这个特性，当临时不想执行某行指令时，只需在该行开头加上</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> # </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">就行了。这常用在撰写过程中。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"><br>#echo “a = $a” # a = 0<br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">如果被用在指令中，或者引号双引号括住的话，或者在倒斜线的后面，那他就变成一般符号，不具上述的特殊功能。</span></p><p style="margin-top:5px;margin-bottom:5px;"><a><span style="font-size:29px;">~ </span></a><span style="font-size:29px;">帐户的 home 目录</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">算是个常见的符号，代表使用者的</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> home </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">目录：</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">cd ~</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">；也可以直接在符号后加上某帐户的名称：</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">cd~user</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">或者当成是路径的一部份：</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">~/bin</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">；</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">~+ </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">当前的工作目录，这个符号代表当前的工作目录，她和内建指令</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> pwd </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">的作用是相同的。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># echo ~+/var/log</span><br><span style="background-color:#ffffff;">~- </span></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">上次的工作目录，这个符号代表上次的工作目录。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># echo ~-/etc/httpd/logs</span></span></p><p style="margin-top:5px;margin-bottom:5px;"><a><span style="font-size:29px;">; </span></a><span style="font-size:29px;">分号 (Command separator)</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">在</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> shell </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">中，担任</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">连续指令</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">功能的符号就是</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">分号</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-size:14px;color:#333333;background-color:#ffffff;">。譬如以下的例子：</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">cd ~/backup; mkdir startup ; cp ~/.* startup/.</span></p><p style="margin-top:5px;margin-bottom:5px;"><a><span style="font-size:29px;">;; </span></a><span style="font-size:29px;">连续分号 (Terminator)</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">专用在</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> case </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">的选项，担任</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> Terminator </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">的角色。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">case “$fop” inhelp) echo “Usage: Command -help-version filename” ;;version) echo “version 0.1″ ;;esac</span></span></p><p style="margin-top:5px;margin-bottom:5px;"><a><span style="font-size:29px;">. </span></a><span style="font-size:29px;">点 (dot)</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">在</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> shell </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">中，使用者应该都清楚，一个</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> dot </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">代表当前目录，两个</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> dot </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">代表上层目录。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">CDPATH=.:~:/home:/home/web:/var:/usr/local</span><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">在上行</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> CDPATH </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">的设定中，等号后的</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> dot </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">代表的就是当前目录的意思。</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:14px;color:#333333;background-color:#ffffff;">如果档案名称以</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> dot </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">开头，该档案就属特殊档案，用</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> ls </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">指令必须加上</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> -a </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">选项才会显示。除此之外，在</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> regular expression </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">中，一个</span><span style="font-size:14px;font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> dot </span><span style="font-size:14px;color:#333333;background-color:#ffffff;">代表匹配一个字元。</span></p><p><a><span style="font-size:29px;">‘string’ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">单引号</span><span style="font-size:29px;"> (single quote)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">被单引号用括住的内容，将被视为单一字串。在引号内的代表变数的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">$</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号，没有作用，也就是说，他被视为一般符号处理，防止任何变量替换。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">heyyou=homeecho ‘$heyyou’ # We get $heyyou</span></span></p><p><a><span style="font-size:29px;">“string” </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">双引号</span><span style="font-size:29px;"> (double quote)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">被双引号用括住的内容，将被视为单一字串。它防止通配符扩展，但允许变量扩展。这点与单引数的处理方式不同。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">heyyou=homeecho “$heyyou” # We get home</span><br></span><span style="font-size:29px;">`command` </span><span style="font-size:29px;font-family:&#39;宋体&#39;;">倒引号</span><span style="font-size:29px;"> (backticks)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在前面的单双引号，括住的是字串，但如果该字串是一列命令列，会怎样？答案是不会执行。要处理这种情况，我们得用倒单引号来做。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">fdv=`date +%F`echo “Today $fdv”</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在倒引号内的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> date +%F </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">会被视为指令，执行的结果会带入</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> fdv </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">变数中。</span></p><p><a><span style="font-size:29px;">, </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">逗点</span><span style="font-size:29px;"> (comma)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个符号常运用在运算当中当做</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">区隔</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">用途。如下例</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">#!/bin/bashlet “t1 = ((a = 5 + 3, b = 7 – 1, c =15 / 3))”echo “t1 = $t1, a = $a, b = $b”</span></span></p><p><a><span style="font-size:29px;">/ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">斜线</span><span style="font-size:29px;"> (forward slash)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在路径表示时，代表目录。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">cd /etc/rc.dcd ../..cd /</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">通常单一的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> / </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> root</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">根目录的意思；在四则运算中，代表除法的符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">let “num1 = ((a = 10 / 2, b = 25 / 5))”</span></span></p><p><a><span style="font-size:29px;">\ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">倒斜线</span><span style="font-size:29px;"> (escape)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在交互模式下的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元，有几个作用；放在指令前，有取消</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> aliases </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的作用；放在特殊符号前，则该特殊符号的作用消失；放在指令的最末端，表示指令连接下一行。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># type rm</span><br><span style="background-color:#ffffff;">rm is aliased to `rm -i’</span><br><span style="background-color:#ffffff;"># \rm .\*.log</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上例，我在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> rm </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令前加上</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元，作用是暂时取消别名的功能，将</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> rm </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令还原。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># bkdir=/home</span><br><span style="background-color:#ffffff;"># echo “Backup dir, \$bkdir = $bkdir”</span><br><span style="background-color:#ffffff;">Backup dir, $bkdir = /home</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上例</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> echo </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">内的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">\$bkdir</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">将</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $ </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">变数的功能取消了，因此，会输出</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $bkdir</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，而第二个</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">$bkdir </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">则会输出变数的内容</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> /home</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span></p><p><a><span style="font-size:29px;">| </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">管道</span><span style="font-size:29px;"> (pipeline)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">pipeline </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> UNIX</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">系统，基础且重要的观念。连结上个指令的标准输出，做为下个指令的标准输入。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">who | wc -l</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">善用这个观念，对精简</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">有相当的帮助。</span></p><p><a><span style="font-size:29px;">! </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">惊叹号</span><span style="font-size:29px;">(negate or reverse)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">通常它代表反逻辑的作用，譬如条件侦测中，用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> != </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">来代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">不等于</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">if [ "$?" != 0 ]thenecho “Executeserror”exit 1fi</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在规则表达式中她担任</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">反逻辑</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的角色</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">ls a[!0-9]</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上例，代表显示除了</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">a0, a1 …. a9 </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这几个文件的其他文件。</span></p><p><a><span style="font-size:29px;">: </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">冒号</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> bash </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">中，这是一个内建指令：</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">什么事都不干</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，但返回状态值</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> 0</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">:</span><br><span style="background-color:#ffffff;">echo $? # </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">回应为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> 0</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">: &gt; f.$$</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上面这一行，相当于</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> cat /dev/null &gt; f.$$</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。不仅写法简短了，而且执行效率也好上许多。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">有时，也会出现以下这类的用法</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">: ${HOSTNAME?} ${USER?} ${MAIL?}</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这行的作用是，检查这些环境变数是否已设置，没有设置的将会以标准错误显示错误讯息。像这种检查如果使用类似</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> test </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">或</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> if </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这类的做法，基本上也可以处理，但都比不上上例的简洁与效率。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">除了上述之外，还有一个地方必须使用冒号</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">PATH=$PATH:$HOME/fbin:$HOME/fperl:/usr/local/mozilla</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在使用者自己的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">HOME </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">目录下的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">.bash_profile </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">或任何功能相似的档案中，设定关于</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">路径</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的场合中，我们都使用冒号，来做区隔。</span></p><p><a><span style="font-size:29px;">? </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">问号</span><span style="font-size:29px;"> (wild card)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在文件名扩展</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">(Filename expansion)</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上扮演的角色是匹配一个任意的字元，但不包含</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> null </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># ls a?a1</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">善用她的特点，可以做比较精确的档名匹配。</span></p><p><a><span style="font-size:29px;">* </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">星号</span><span style="font-size:29px;"> (wild card)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">相当常用的符号。在文件名扩展</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">(Filename expansion)</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上，她用来代表任何字元，包含</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> null </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># ls a*a a1 access_log</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在运算时，它则代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">乘法</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">let “fmult=2*3″</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">除了内建指令</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> let</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，还有一个关于运算的指令</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> expr</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，星号在这里也担任</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">乘法</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的角色。不过在使用上得小心，他的前面必须加上</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元。</span></p><p><a><span style="font-size:29px;">** </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">次方运算</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">两个星号在运算时代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">次方</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的意思。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">let “sus=2**3″echo “sus = $sus” # sus = 8</span></span></p><p><a><span style="font-size:29px;">$ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">钱号</span><span style="font-size:29px;">(dollar sign)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">变量替换</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">(Variable Substitution)</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的代表符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">vrs=123echo “vrs = $vrs” # vrs = 123</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">另外，在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> Regular Expressions </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">里被定义为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">行</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的最末端</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> (end-of-line)</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。这个常用在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> grep</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">、</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">sed</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">、</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">awk </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">以及</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> vim(vi) </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">当中。</span></p><p><a><span style="font-size:29px;">${} </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">变量的正规表达式</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">bash </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">对</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> ${} </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">定义了不少用法。以下是取自线上说明的表列</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">${parameter:-word} ${parameter:=word}${parameter:?word} ${parameter:+word} ${parameter:offset}${parameter:offset:length} ${!prefix*} ${#parameter} ${parameter#word}${parameter##word} ${parameter%word} ${parameter%%word}${parameter/pattern/string} ${parameter//pattern/string}</span></span></p><h1><a>$*</a></h1><p><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">$*</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">引用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的执行引用变量，引用参数的算法与一般指令相同，指令本身为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">0</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，其后为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">1</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，然后依此类推。引用变量的代表方式如下：</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">$0, $1, $2, $3, $4, $5, $6, $7, $8, $9, ${10},${11}…..</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">个位数的，可直接使用数字，但两位数以上，则必须使用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> {} </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号来括住。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">$* </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">则是代表所有引用变量的符号。使用时，得视情况加上双引号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">echo “$*”</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">还有一个与</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $* </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">具有相同作用的符号，但效用与处理方式略为不同的符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><br></span><span style="font-size:29px;">$@</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">$@ </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">与</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $* </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">具有相同作用的符号，不过她们两者有一个不同点。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $* </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">将所有的引用变量视为一个整体。但符号</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> $@ </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">则仍旧保留每个引用变量的区段观念。</span></p><p><a><span style="font-size:29px;">$#</span></a><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这也是与引用变量相关的符号，她的作用是告诉你，引用变量的总数量是多少。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">echo “$#”</span></span></p><p><a><span style="font-size:29px;">$? </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">状态值</span><span style="font-size:29px;"> (status variable)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">一般来说，</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">UNIX(linux) </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">系统的进程以执行系统调用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">exit() </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">来结束的。这个回传值就是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">status</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">值。回传给父进程，用来检查子进程的执行状态。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">一般指令程序倘若执行成功，其回传值为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> 0</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">；失败为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> 1</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">tar cvfz dfbackup.tar.gz /home/user &gt;/dev/nullecho “$?”$$</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">由于进程的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">ID</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">是唯一的，所以在同一个时间，不可能有重复性的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> PID</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。有时，</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">会需要产生临时文件，用来存放必要的资料。而此</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">亦有可能在同一时间被使用者们使用。在这种情况下，固定文件名在写法上就显的不可靠。唯有产生动态文件名，才能符合需要。符号</span><span style="font-size:29px;">$$</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">或许可以符合这种需求。它代表当前</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">shell </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> PID</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span></p><p><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">echo“$HOSTNAME, $USER, $MAIL” &gt; ftmp.$$</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">使用它来作为文件名的一部份，可以避免在同一时间，产生相同文件名的覆盖现象。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">ps: </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">基本上，系统会回收执行完毕的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> PID</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，然后再次依需要分配使用。所以</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">即使临时文件是使用动态档名的写法，如果</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> script </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">执行完毕后仍不加以清除，会产生其他问题。</span></p><p><br></p><p><a><span style="font-size:29px;">() </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">指令群组</span><span style="font-size:29px;"> (command group)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">用括号将一串连续指令括起来，这种用法对</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> shell </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">来说，称为指令群组。如下面的例子：</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">(cd ~ ; vcgh=`pwd` ; echo $vcgh)</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">，指令群组有一个特性，</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">shell</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">会以产生</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> subshell</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">来执行这组指令。因此，在其中所定义的变数，仅作用于指令群组本身。我们来看个例子</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># cat ftmp-01#!/bin/basha=fsh(a=incg ; echo -e“/n $a /n”)echo $a# ./ftmp-01incgfsh</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">除了上述的指令群组，括号也用在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> array </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">变数的定义上；另外也应用在其他可能需要加上</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元才能使用的场合，如运算式。</span></p><p><br></p><p><a><span style="font-size:29px;">(())</span></a><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这组符号的作用与</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> let </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令相似，用在算数运算上，是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> bash </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的内建功能。所以，在执行效率上会比使用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> let </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令要好许多。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">#!/bin/bash(( a = 10 ))echo -e “inital value, a= $a/n”(( a++ ))echo “after a++, a = $a”</span></span></p><p><a><span style="font-size:29px;">[[]]</span></a><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这组符号与先前的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> [] </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号，基本上作用相同，但她允许在其中直接使用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> || </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">与</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> &amp;&amp; </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">逻辑等符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">#!/bin/bashread akif [[ $ak &gt; 5 || $ak &lt; 9]]thenecho $akfi || </span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">逻辑符号</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个会时常看到，代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> or </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">逻辑的符号。</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">&amp;&amp; </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">逻辑符号</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个也会常看到，代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> and </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">逻辑的符号。</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">&amp; </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">后台工作</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">单一个</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">&amp; </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号，且放在完整指令列的最后端，即表示将该指令列放入后台中工作。</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> tar cvfz data.tar.gz data &gt; /dev/null &amp;</span></p><p><a><span style="font-size:29px;">/ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">单字边界</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这组符号在规则表达式中，被定义为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">边界</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的意思。譬如，当我们想找寻</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> the </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个单字时，如果我们用</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">grep the FileA</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">你将会发现，像</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> there </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这类的单字，也会被当成是匹配的单字。因为</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> the </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">正巧是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">there </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的一部份。如果我们要必免这种情况，就得加上</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">边界</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的符号</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">grep ‘/’ FileA</span></span></p><p><br></p><p><a><span style="font-size:29px;">+ </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">加号</span><span style="font-size:29px;"> (plus)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在运算式中，她用来表示</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">加法</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">expr 1 + 2 + 3</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">此外在规则表达式中，用来表示</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">很多个</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的前面字元的意思。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;"># grep ’10/+9′ fileB109100910000910000931010009#</span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个符号在使用时，前面必须加上</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> escape </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">字元。</span></p><p><a><span style="font-size:29px;">- </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">减号</span><span style="font-size:29px;"> (dash)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在运算式中，她用来表示</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">减法</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">expr 10 – 2</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">此外也是系统指令的选项符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">ls -expr 10 – 2</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> GNU </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令中，如果单独使用</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">– </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号，不加任何该加的文件名称时，代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">标准输入</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的意思。这是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> GNU </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令的共通选项。譬如下例</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">tar xpvf -</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这里的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> – </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">符号，既代表从标准输入读取资料。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">不过，在</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> cd </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">指令中则比较特别</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">cd -</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这代表变更工作目录到</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">上一次</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">工作目录。</span></p><p><a><span style="font-size:29px;">% </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">除法</span><span style="font-size:29px;"> (Modulo)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">在运算式中，用来表示</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">除法</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">”</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">expr 10 % 2</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">此外，也被运用在关于变量的规则表达式当中的下列</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">${parameter%word}${parameter%%word}</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">一个</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> % </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">表示最短的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> word</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">匹配，两个表示最长的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> word </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">匹配。</span></p><p><a><span style="font-size:29px;">= </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">等号</span><span style="font-size:29px;"> (Equals)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">常在设定变数时看到的符号。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">vara=123echo ” vara = $vara”</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">或者像是</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> PATH </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的设定，甚至应用在运算或判断式等此类用途上。</span></p><p><a><span style="font-size:29px;">== </span></a><span style="font-size:29px;font-family:&#39;宋体&#39;;">等号</span><span style="font-size:29px;"> (Equals)</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">常在条件判断式中看到，代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">等于</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的意思。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">if [ $vara == $varb ]</span><br><span style="background-color:#ffffff;">…</span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">下略</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-size:29px;">!= </span><span style="font-size:29px;font-family:&#39;宋体&#39;;">不等于</span><span style="font-family:verdana, sans-serif;color:#333333;"><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">常在条件判断式中看到，代表</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">不等于</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">的意思。</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><span style="background-color:#ffffff;">if [ $vara != $varb ]</span><br><span style="background-color:#ffffff;">…</span></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">下略</span><span style="font-family:verdana, sans-serif;color:#333333;"><br><br><span style="background-color:#ffffff;">^</span><br></span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">这个符号在规则表达式中，代表行的</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;"> “</span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">开头</span><span style="font-family:verdana, sans-serif;color:#333333;background-color:#ffffff;">” </span><span style="font-family:&#39;宋体&#39;;color:#333333;background-color:#ffffff;">位置。</span></p><p><br></p>
+    		</div><!--正文 end-->
+<script type="text/javascript">
+	var kevent = 'onabort|onblur|onchange|onclick|ondblclick|onerror|onfocus|onkeydown|onkeypress|onkeyup|onload|onmousedown|onmousemove|onmouseout|onmouseover|onmouseup|onreset|onresize|onselect|onsubmit|onunload';
+	var aevent = kevent.split('|');
+
+	jQuery('.showContent img').each(function(){
+		var nimg = this;
+		jQuery.each(aevent, function(i, n){
+			if (n!='onload') {
+				jQuery(nimg).attr(n, '');
+			} else {
+				if (jQuery(nimg).attr(n) != 'if(this.width>650) this.width=650;') {
+					jQuery(nimg).attr(n, '');
+				}
+			}
+		});
+	});
+</script>
+<script type="text/javascript" charset="utf-8">
+var encodetitle = encodeURI('一篇很棒的博文分享给大家：《shell编程基础（四）-shell特殊符号》');
+
+function show51share(){
+
+	window.open('http://t.51cto.com/index.php?m=share&url=http://fuwenchao.blog.51cto.com/6008712/1351058&type=l&count=&relateUid=&appkey=3843950324&title=' + encodetitle);
+}
+</script>		
+<div class="m_sharebtn clear">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tbody><tr>
+		<td width="11%" height="43" align="center" valign="middle"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/ssk.png" alt="分享至"></td>
+		<td width="77%" align="left" valign="top">
+<!-- 			
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>
+var bds_config = {'wbUid':1706976420};
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false, 'bdPic':'http://blog.51cto.com/attachment/201305/173413310.jpg',"bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+ -->
+
+<div class="bdsharebuttonbox bdshare-button-style1-32" data-bd-bind="1423820501084"><a href="http://fuwenchao.blog.51cto.com/#" class="bds_more" data-cmd="more"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_mshare" data-cmd="mshare" title="分享到一键分享"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_bdhome" data-cmd="bdhome" title="分享到百度新首页"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_bdysc" data-cmd="bdysc" title="分享到百度云收藏"></a><a href="http://fuwenchao.blog.51cto.com/#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"2065779340"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"http://blog.51cto.com/img/blog_down0731.jpg","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+	<!-- Baidu Button END --></td>
+		<td width="12%" align="right" valign="middle"><a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/favorite_add_small.gif" border="0" alt="一键收藏，随时查看，分享好友！"></a></td>
+	  </tr>
+	</tbody></table>
+
+</div>			
+    		<div class="showBottom">
+            <!--<div class="reviews"><span class="fl" style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer"></a>
+
+            </span><div id="favourdiv" class="support01">0人</div>
+              <span class="fl">了这篇文章</span></div>-->
+              <table width="720" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td align="right"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/icon01.png" width="15" height="16"> <span style="cursor:pointer;"><a onclick="openFavoulist();" id="favourer"></a></span></td>
+    <td width="70" align="left"><div style="line-height:28px;" id="favourdiv" class="support01">0人</div></td>
+    <td width="60" align="left">了这篇文章</td>
+  </tr>
+</tbody></table>
+
+	<br><div class="ml10"><b>附件下载：</b><br>　　<a aid="41638" href="javascript:;" class="dialog_link"><img border="0" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/plusfile.gif">shellteshufuhao</a></div>
+	
+
+
+
+
+            <div class="showType">类别：<a href="http://fuwenchao.blog.51cto.com/6008712/d-6" class="operlink">shell生产脚本</a>┆阅读(<span id="readNum">41</span>)┆评论(<span id="cmtNum">0</span>)
+
+┆
+<a href="http://fuwenchao.blog.51cto.com/">返回博主首页</a>┆<a href="http://blog.51cto.com/">返回博客首页</a></div>
+            <div class="prevNext">
+
+			上一篇 <a href="http://fuwenchao.blog.51cto.com/6008712/1351001" class="operlink" title="linux shell实现随机数多种方法（date,random,uuid)">linux shell实现随机数多种方法（date,random,..</a>
+
+
+			下一篇 <a href="http://fuwenchao.blog.51cto.com/6008712/1351065" class="operlink" title="shell编程中的expr、let详解">shell编程中的expr、let详解</a>
+
+
+            </div>
+
+            </div>
+
+	  </div><!--showBottom end-->
+      </div><!--modCon-->
+    <span class="modBot"></span>
+    </div><!--artShow end-->
+    <span class="blank"></span>
+	
+	<div class="relatedArt box">
+<a href="http://wot.51cto.com/2015operation/tickets.html" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/wKioL1TBvmzCg_hWAADPqwMqb4Y740.jpg"></a>
+</div>
+	
+
+
+    <div class="relatedArt box">
+    <div class="title" name="zhuanti" id="zhuanti"><h2>相关文章</h2></div>
+    <div class="modCon">
+<ul>
+
+<li><a href="http://notebook.blog.51cto.com/7310880/1262813" title=" 图文解释XCode常用快捷键的使用" target="_blank"> 图文解释XCode常用快捷键的使用</a></li>
+
+
+<li><a href="http://gxjluck.blog.51cto.com/1211751/1302848" title="shell中一些特殊符号的含义简介" target="_blank">shell中一些特殊符号的含义简介</a></li>
+
+
+<li><a href="http://feihan21.blog.51cto.com/1364153/997746" title="Linux crontab 命令 定时执行" target="_blank">Linux crontab 命令 定时执行</a></li>
+
+
+<li><a href="http://zhaoguohui.blog.51cto.com/3923573/1250787" title="auto mount iso  " target="_blank">auto mount iso  </a></li>
+
+
+<li><a href="http://leonkuo.blog.51cto.com/3133504/659102" title="Linux Command - grep" target="_blank">Linux Command - grep</a></li>
+
+
+<li><a href="http://idaydayup.blog.51cto.com/764870/739772" title="bash: groupadd: command not found 错误解决方法" target="_blank">bash: groupadd: command not found 错误解..</a></li>
+
+
+<li><a href="http://hubertguo.blog.51cto.com/2358769/911861" title="Design Pattern学习笔记 --- Command(命令)模式" target="_blank">Design Pattern学习笔记 --- Command(命令)模式</a></li>
+
+
+<li><a href="http://shenzhenchufa.blog.51cto.com/730213/242609" title="command设计模式" target="_blank">command设计模式</a></li>
+
+
+
+</ul>
+
+
+
+<span class="blank6"></span>
+</div><!--modCon end-->
+<span class="modBot"></span>
+</div><!--相关文章 end-->
+
+
+<div class="artComm box">
+    <div class="title"><a name="replay"></a><h2>文章评论</h2></div>
+    <div class="modCon" id="artcomment">
+		<div>  &nbsp;</div><div>  &nbsp;</div>
+    </div><!--modCon-->
+        <span class="modBot"></span>
+</div><!--commBox end-->
+<a href="" id="com_top_top"></a>
+<form action="http://fuwenchao.blog.51cto.com/comment.php?" method="post" name="form1" id="form1" onsubmit="return commentSubmit(this,&quot;&quot;);">
+<span class="blank1"></span>
+<div class="box writeComm" style="min-height:30px;">
+<a name="comment"></a>
+<input type="hidden" name="action" value="comment">
+<input id="commenttid" type="hidden" name="tid" value="1351058">
+<input type="hidden" name="com_count_ajax" id="com_count_ajax" value="1">
+
+ <div class="title">
+	<h2 class="fl">发表评论&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+	<span class="fl"><a class="mred" target="_blank" href="http://www.95px.com/courses/list236Index.shtml">计算机网络管理员（国家职业资格一级高级技师）认证培训</a></span>
+	<style type="text/css">
+		a.mred:link{ color:#ff0000; text-decoration:underline;}
+		a.mred:visited{color:#ff0000;}
+		a.mred:hover{color:#ff0000;}
+		a.mred:active{color:#ff0000;}
+	</style>
+</div>
+ <div class="modCon">
+
+ <div class="commForm">
+<dl>
+<dt>昵&nbsp;&nbsp;称：</dt>
+<dd>
+
+<input type="text" id="commentusername" name="username" disabled="" value="h4x0rbreeze" class="commInput">
+
+
+</dd>
+</dl>
+
+<dl id="indexhidden">
+<dt>主&nbsp;&nbsp;页：</dt>
+<dd><input type="text" value="http://2638841.blog.51cto.com" class="commInput" id="commentindex" name="index" disabled="disabled"></dd>
+</dl>
+
+
+
+<dl id="commentyanzheng">
+
+
+<dt>验证码：</dt>
+<dd><input class="code" type="text" value="" id="commentauthnum" name="authnum" onclick="displaysecunum();">
+
+  <img width="78" class="fl" height="29" id="secunum" onclick="refimg()" style="display:none;"><p class="fl"><span style="display:none;" id="spanfont">点击图片可刷新验证码</span><span style="display:inline;" id="clickfont">请点击后输入验证码</span><span class="pl5"><a href="http://51ctoblog.blog.51cto.com/26414/5591" target="_blank" style="text-decoration: underline;">博客过2级，无需填写验证码</a></span></p></dd>
+</dl>
+<dl>
+<dt>内&nbsp;&nbsp;容：</dt>
+<dd>
+<textarea class="writeCommCon f12" id="commentcontent" name="content"></textarea>
+</dd>
+</dl>
+</div>
+<div class="writeCommBot">
+  <input type="hidden" name="parentid" value="" id="parentid">
+  <input class="commBtn fl" name="submit" type="button" id="commentsubmit" value="" onclick="commentSubmitend2()">
+
+  <p class="fl"><input class="fl" type="checkbox" name="favour" id="favour" checked="checked" value="1"><span class="fl">同时赞一个</span></p>
+
+</div>
+<span class="blank"></span>
+
+</div><!--modCon-->
+<span class="modBot"></span>
+</div>
+</form>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/count.js"></script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/count.php"></script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/countuser2.php"></script>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2283d46608159c3b39fc9f1178809c21' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=2283d46608159c3b39fc9f1178809c21" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 20px 20px;"></a>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57622524-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</div>
+<iframe id="iframe1" name="iframe1" width="0" height="0"></iframe>
+<!--发表评论 end-->
+</div>
+</div>
+<div id="f_close_box" style="width:150px; height:300px; position:fixed; top:42%;left:0; z-index:100; _position:absolute; _margin-top: 0; _top:expression(documentElement.scrollTop+(documentElement.clientHeight-this.offsetHeight)/2+50);">
+
+	<img src="http://img1.blog.51cto.com/image/ad/down-wx.jpg" border="0" usemap="#Map1" width="0" height="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;">
+    <map name="Map1" id="Map1">
+      <area shape="rect" coords="124,7,143,25" href="javascript:void(0);" onclick="document.getElementById(&#39;f_close_box&#39;).style.display=&#39;none&#39;;">
+    </map>
+    
+</div>
+<script language="javascript">
+	function refimg(){
+		var randval = Math.random();
+		document.getElementById("secunum").src="/seccode.php?rnum="+randval;
+	}
+	function displaysecunum()
+	{
+		var displaystr = document.getElementById("secunum").style.display;
+		if(displaystr == 'none')
+		{
+			refimg();
+			document.getElementById("clickfont").style.display = 'none';
+			document.getElementById("secunum").style.display = 'inline';
+			document.getElementById("spanfont").style.display = 'inline';
+		}
+	}
+
+	function showMsn(){
+		document.getElementById("c02").style.display = "none";
+		document.getElementById("c01").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+	function showBBS(){
+		document.getElementById("c01").style.display = "none";
+		document.getElementById("c02").style.display = "block";
+		document.getElementById("share").style.height = "83px";
+		document.getElementById("share").style.background = "none";
+	}
+
+	//资源页面，分享按钮
+	function copyShareUrl(title){
+
+		if (window.clipboardData){
+
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				copy = "推荐：" + title + "http://fuwenchao.blog.51cto.com/6008712/1351058";
+				var alertText = "复制成功，你可以粘贴到MSN或QQ中发给好友。";
+			}
+			else
+			{
+				copy = "[url=" + "http://fuwenchao.blog.51cto.com/6008712/1351058" + "][u]" + title + "[/u][/url]";
+				var alertText = "复制成功，你可以粘贴到论坛分享给坛友。";
+			}
+			window.clipboardData.clearData();
+			window.clipboardData.setData("Text", copy);
+			alert(alertText);
+		}
+		else if (window.netscape){
+			alert("您使用的浏览器不支持此复制功能，请使用Ctrl+C或鼠标右键。");
+			if(document.getElementById("c01").style.display == 'block')
+			{
+				document.getElementById("shareTextQM").value = "推荐：" + title + "http://fuwenchao.blog.51cto.com/6008712/1351058";
+				document.getElementById("shareTextQM").select();
+			}
+			else
+			{
+				document.getElementById("shareTextBBS").value = "[url=" + "http://fuwenchao.blog.51cto.com/6008712/1351058" + "][u]" + title + "[/u][/url]";
+                document.getElementById("shareTextBBS").select();
+			}
+		}
+		return false;
+	}
+	function select_login(){
+		document.getElementById('fixed').style.display='';
+	}
+	function commentcheck()
+	{
+		if(document.form1.content.value == "")
+		{
+			alert("评论内容为空!");
+			document.form1.content.focus();
+			return false;
+		}
+	}
+	function changename(){
+
+	var memberid=0;
+	memberid="8";
+
+	if(document.getElementById('commentniming').checked){
+		document.getElementById('commentusername').disabled=false;
+		document.getElementById('commentusername').value='';
+		document.getElementById("indexhidden").style.display="none";
+		document.getElementById("commentindex").value='';
+		document.getElementById("commentyanzheng").style.display="";
+	}else{
+		document.getElementById('commentusername').disabled=true;
+		document.getElementById('commentusername').value="h4x0rbreeze";
+		document.getElementById("indexhidden").style.display="";
+		document.getElementById("commentindex").value="http://2638841.blog.51cto.com";
+		if(memberid>8)
+		{
+			document.getElementById("commentyanzheng").style.display="none";
+		}
+	}
+	}
+	function openFavoulist()
+	{
+		window.open ('http://blog.51cto.com/mod/favourlist.php?tid=1351058','newwindow','height=300,width=500,top=400,left=400,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no,z-look=yes');
+	}
+
+	var e_zti = document.getElementById('zti');//有专题锚点
+	var maodian = window.location.href;//锚点
+	if (e_zti) {
+		//e_zti.href= (/[#]+/.test(maodian)) ? maodian : maodian + "#zhuanti";
+	}
+</script>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery-1.7.1.min.js"></script>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery.cookie.js"></script>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery.messager.js"></script>
+<link href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/blog_top.css" rel="stylesheet" type="text/css">
+<script src="http://blog.51cto.com/js/blog_top_list.php" type="text/javascript" language="javascript"></script>
+<style>
+.backToTop {
+    display: none;
+	WIDTH: 45px;
+	height:45px;
+	BOTTOM: 20px;
+     position: fixed;
+    _position: absolute;
+    right: 140px;
+    bottom: 10px;
+    _bottom: "auto";
+    cursor: pointer;
+    opacity: .6;
+    filter: Alpha(opacity=60);
+	text-indent:-9999px;
+}
+.tops { background:url(/images/topq.jpg) no-repeat center center; }
+</style>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "返回顶部", backToTopEle = $('<div class="backToTop tops"></div>').appendTo($("body"))
+        .text(backToTopTxt).attr("title", backToTopTxt).click(function() {
+            $("html, body").animate({ scrollTop: 0 }, 520);
+    }), backToTopFun = function() {
+        var st = $(document).scrollTop(), winh = $(window).height();
+        (st > 0)? backToTopEle.show(): backToTopEle.hide();    
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            backToTopEle.css("top", st + winh - 60);    
+        }
+    };
+    $(window).bind("scroll", backToTopFun);
+    $(function() { backToTopFun(); });
+})();
+</script><div class="backToTop tops" title="返回顶部" style="display: block;">返回顶部</div>
+
+<link type="text/css" href="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+<script type="text/javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/jquery-ui-1.8.21.custom.min.js"></script>
+<script type="text/javascript" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/down.js"></script>	
+	<!-- ui-dialog -->
+	<form action="http://fuwenchao.blog.51cto.com/ext/down_att.php" id="down_form" method="post">
+	
+	</form>
+
+
+
+
+
+
+<div class="clear"></div>
+<!-- <script>
+jQuery(function(){
+	var html= "<div id=\"sogou_se_tgbar\" style=\"text-align:center;margin:0px auto 2px auto;clear:both;background:url(http://home.51cto.com/public/images/notice/sogou_se_tgbar_bg_final1.gif) repeat-x;width:950px;color:#000;font-size:13px;height:36px;z-index:21474836471\"><div style=\"float:left;cursor:pointer;width:910px;text-align:center;border-left:solid #efbf00 1px;height:32px; line-height:32px;txt-align:center;\"><span style=\"\">	<a href=\"http://51ctoblog.blog.51cto.com/26414/1093282\">【新年祝福征集】51CTO社区年底嘉年华活动正在征集博主祝福语，祝福以红包的形式随机的赠送给访问51CTO的网友 点此送祝福>></a></span></div><div onclick=\"document.getElementById('sogou_se_tgbar').style.display = 'none';\" style=\"float:right;width:20px;cursor:pointer;height:28px;padding:4px 8px 0px 8px;border-right:solid #efbf00 1px\"><img style=\"border:none;margin:4px 0px 0px 0px;\" src=\"http://home.51cto.com/public/images/notice/sogou_se_tgbar_close_final1.gif\"></div></div>"
+	jQuery('body').prepend(html);
+})
+</script> -->
+
+<div id="footer">
+  <div id="innerFooter">
+	<center>
+		<small>
+			Copyright By 51CTO.COM 版权所有<br><br>
+			<a href="http://blog.51cto.com/" target="_blank"><img src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/copyright.jpg"></a>
+	  </small>
+	</center>
+  </div>
+</div>
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/index.php" charset="utf-8"></script>
+<div style="display:none">
+<script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/count.js"></script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/count(1).php"></script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/countuser2.php"></script>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2283d46608159c3b39fc9f1178809c21' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/h.js" type="text/javascript"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57622524-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</div>
+<iframe frameborder="0" scrolling="no" width="0" height="0" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/pageview.htm"></iframe>
+</div>
+<div style="display:none;"><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/stat.php" language="JavaScript"></script><script src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=4274540" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./shell编程基础（四）-shell特殊符号 - 从运维到ETL - 51CTO技术博客_files/pic.gif"></a><div>
+<script src="http://blog.51cto.com/js/poptop.js"></script>
+
+
+
+</div></div><div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog" style="display: none; z-index: 1000; outline: 0px;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span class="ui-dialog-title" id="ui-dialog-title-dialog">附件下载</span><a href="http://fuwenchao.blog.51cto.com/#" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span class="ui-icon ui-icon-closethick">close</span></a></div><div id="dialog" class="di ui-dialog-content ui-widget-content">
+		请输入验证码：<br>
+		<input type="text" id="input_code" name="input_code" style="width:80px;height:23px;" value="">
+		<img width="78" title="单击更换验证码！" height="29" style="display: inline;float: left;" id="imgcode" class="fl" src="">
+		<input type="hidden" name="aid" id="aid" value="">
+	</div><div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button">确认</button></div></div></div></body></html>
