@@ -1,0 +1,658 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0036)http://carolli.iteye.com/blog/909559 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>SQL基础语法(全--5) -  - ITeye技术网站</title>
+    <meta name="description" content="--删除数据库 drop database [数据库名]  go --创建数据库 create database [数据库名]  go --打开数据库 use 数据库名  go --创建表 create table [表名] ( [列名] [数据类型] identity(增长种子,增长量) primary key（是否主键）（是否为空）, ) go --删除表 drop table [表名]  go ...">
+    <meta name="keywords" content="SQL, C, C++, C#, Go SQL基础语法(全--5)">
+    <link rel="shortcut icon" href="http://carolli.iteye.com/images/favicon.ico" type="image/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="http://carolli.iteye.com/open_search.xml" title="ITeye">
+    <link href="http://carolli.iteye.com/rss" rel="alternate" title="" type="application/rss+xml">
+    <link href="./SQL基础语法(全--5) - - ITeye技术网站_files/blog.css" media="screen" rel="stylesheet" type="text/css">
+<link href="./SQL基础语法(全--5) - - ITeye技术网站_files/blue.css" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="./SQL基础语法(全--5) - - ITeye技术网站_files/ga.js"></script><script src="./SQL基础语法(全--5) - - ITeye技术网站_files/application.js" type="text/javascript"></script><style type="text/css"></style>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="./SQL基础语法(全--5) - - ITeye技术网站_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="./SQL基础语法(全--5) - - ITeye技术网站_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="./SQL基础语法(全--5) - - ITeye技术网站_files/hotkey.js" type="text/javascript"></script>
+  <script src="./SQL基础语法(全--5) - - ITeye技术网站_files/code_favorites.js" type="text/javascript"></script>
+<script src="./SQL基础语法(全--5) - - ITeye技术网站_files/weiboshare.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="header">
+      <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+  <a href="http://carolli.iteye.com/blog/909559#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>
+  <div class="quick_menu" style="display:none;">
+    <a target="_blank" href="http://job.iteye.com/iteye">招聘</a>
+    <a href="http://www.iteye.com/search">搜索</a>
+  </div>
+</div>
+
+      <div id="user_nav">
+      <a href="http://carolli.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://carolli.iteye.com/login">登录</a>
+    <a href="http://carolli.iteye.com/signup" class="nobg">注册</a>
+  </div>
+
+    </div>
+
+    <div id="page">
+      <div id="branding" class="clearfix">
+        <div id="blog_name">
+          <h1><a href="http://carolli.iteye.com/">carolli</a></h1>
+        </div>
+        <div id="fd"></div>
+        <div id="blog_navbar">
+          <ul>
+            <li class="blog_navbar_for"><a href="http://carolli.iteye.com/"><strong>博客</strong></a></li>
+            <li><a href="http://carolli.iteye.com/weibo">微博</a></li>
+            <li><a href="http://carolli.iteye.com/album">相册</a></li>
+            <li><a href="http://carolli.iteye.com/link">收藏</a></li>
+            <li><a href="http://carolli.iteye.com/blog/guest_book">留言</a></li>
+            <li><a href="http://carolli.iteye.com/blog/profile">关于我</a></li>
+          </ul>
+    
+          <div class="search">
+            <form action="http://carolli.iteye.com/blog/search" method="get">
+              <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text" value="">
+              <input class="submit_search" type="submit" value="">
+            </form>
+          </div> 
+          <div id="fd"></div>         
+        </div>
+      </div>
+      
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="h-entry" style="display:none">
+  <a href="http://carolli.iteye.com/" class="p-author" target="_blank">carolli</a>
+</div>
+
+
+<div class="blog_main">
+  <div class="blog_title">
+    <h3>
+      <a href="./SQL基础语法(全--5) - - ITeye技术网站_files/SQL基础语法(全--5) - - ITeye技术网站.html">SQL基础语法(全--5)</a>
+      <em class="actions">      </em>
+    </h3>
+    <ul class="blog_categories"><strong>博客分类：</strong> <li><a href="http://carolli.iteye.com/category/143675">sqlServer</a></li> </ul>
+        <div class="news_tag"><a href="http://www.iteye.com/blogs/tag/SQL">SQL</a><a href="http://www.iteye.com/blogs/tag/C">C</a><a href="http://www.iteye.com/blogs/tag/C++">C++</a><a href="http://www.iteye.com/blogs/tag/C%23">C#</a><a href="http://www.iteye.com/blogs/tag/Go">Go</a>&nbsp;</div>
+  </div>
+
+  <div id="blog_content" class="blog_content">
+    --删除数据库
+<br>drop database [数据库名] 
+<br>go
+<br>
+<br>--创建数据库
+<br>create database [数据库名] 
+<br>go
+<br>
+<br>--打开数据库
+<br>use 数据库名 
+<br>go
+<br>
+<br>--创建表
+<br>create table [表名]
+<br>(
+<br>[列名] [数据类型] identity(增长种子,增长量) primary key（是否主键）（是否为空）,
+<br>)
+<br>go
+<br>
+<br>--删除表
+<br>drop table [表名] 
+<br>go
+<br>
+<br>--查找指定表中所有记录
+<br>select * from [表名]
+<br>
+<br>--添加一条记录
+<br>insert into [表名] [列名] values [值]
+<br>
+<br>--添加多行记录1
+<br>insert into[表名] [列名] 
+<br>select [列名] from [数据来源表]
+<br>
+<br>--添加多行记录2
+<br>insert into[表名] [列名] 
+<br>select [值],[值] union
+<br>select [值],[值] 
+<br>
+<br>--用一个表中满足条件的记录生成另外一个新的表
+<br>select * into [表1] from [表2]
+<br>
+<br>--删除记录1
+<br>delete from [表名] where [条件]
+<br>
+<br>--删除记录2
+<br>truncate table [表名]
+<br>
+<br>--给表中增加一个列
+<br>alter table [表名] add [新增列名] [数据类型]
+<br>
+<br>--更新
+<br>update [表名] set [列名] = [更新值] where [条件]
+<br>
+<br>--查询所有记录的所有列的值
+<br>select * from [表名]
+<br>
+<br>--where子句(条件)
+<br>select * from [表名] where [条件]
+<br>
+<br>--as对列重命名
+<br>select [原列名] as [新列名] from [表名]&nbsp;&nbsp; --方法一
+<br>select [原列名] [新列名] from [表名]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --方法二
+<br>
+<br>--列的合并
+<br>--方法1
+<br>select [列名1] + ',' + [列名2] as [新列名] from [表名]&nbsp; 
+<br>--方法2
+<br>select [新列名] = [列名1] + ',' + [列名2] from [表名]&nbsp;&nbsp; 
+<br>
+<br>--查询有NULL值的记录
+<br>select * from [表名] where [列名] is null
+<br>
+<br>--查询空字符串
+<br>select * from [表名] where [列名] = ''
+<br>
+<br>--常量列
+<br>select [列名,新列名] =[赋值] from [表名]
+<br>
+<br>--显示表中前n条记录
+<br>select top&nbsp; [n] * from [表名]
+<br>
+<br>--显示表中百分之n的记录
+<br>select top [n] percent * from [表名]
+<br>
+<br>--排序
+<br>--升序
+<br>select * from [表名] order by [列名]
+<br>
+<br>--降序
+<br>select * from [表名] order by [列名] desc
+<br>
+<br>--同时按照两个列排升序
+<br>select * from [表名] order by [列名1,列名2]
+<br>
+<br>--sql函数
+<br>--返回长度的函数len
+<br>select len('字符串')
+<br>
+<br>--返回字符串前n个字符的函数
+<br>select left('字符串',n)
+<br>
+<br>--返回字符串后n个字符的函数
+<br>select right('字符串',n)
+<br>
+<br>--替换字符串中的某个字符的函数
+<br>select replace('字符串','字符串中被替换的字符','替换后的字符')
+<br>
+<br>--替换字符串中的指定位置n指定长度x的字符的函数
+<br>select stuff('字符串',n,x,'替换后的字符')
+<br>
+<br>--取当前系统信息的函数
+<br>select getdate()
+<br>
+<br>--将指定的数值添加到指定的日期部分后的日期的函数
+<br>select dateadd(指定的日期,添加的日期,getdate())
+<br>
+<br>--转换数据类型的函数
+<br>select convert(要转换的数据类型,'被转换的数据类型的值')
+<br>
+<br>--多表联查
+<br>select [表名一.表名一中的列名],[表二.表二中的列名]
+<br>from [表名一],[表名二]
+<br>where [条件] 如（表名一.列名（与表二的列名相符） = 表名二.列名（与表一的列名相符））]
+<br>
+<br>--内连接
+<br>select [表名一.表名一中的列名],[表二.表二中的列名]
+<br>from [表1]，
+<br>inner join [表2]
+<br>on （表名一.列名（与表二的列名相符） = 表名二.列名（与表一的列名相符））
+<br>
+<br>--三表联查
+<br>select [表1.表1中的列],[表2.表2中的列],[表3.表3中的列]
+<br>from [表1]
+<br>inner join [表1中的列]
+<br>on （表名1.列名（与表2的列名相符） = 表名2.列名（与表1的列名相符））
+<br>inner join 表2中的列
+<br>on （表名2.列名（与表3的列名相符） = 表名3.列名（与表2的列名相符））
+<br>
+<br>
+<br>
+<br>--查询值1到值2之间的值（所有的列）
+<br>select * from users
+<br>where age between 值1 and 值2
+<br>
+<br>--查询某列指定的几个值（所有的列）
+<br>select * from users
+<br>where&nbsp; in 列名 ('值1','值2','值3')
+<br>
+<br>--查询某列指定的几个值之外的所有值（所有的列）
+<br>select * from users
+<br>where nickname not in ('值1','值2','值3')
+<br>
+<br>--查询某列中含有n的字符的所有值
+<br>select * from users
+<br>where 列名 like '%n%'
+<br>
+<br>--查询某列出字段值为null的记录
+<br>select * from users
+<br>where 列名 is not null
+<br>
+<br>--查询某列出字段值为空字符串的记录
+<br>select * from users
+<br>where 列名 = ''
+<br>
+<br>--统计某表中有多少男性用户
+<br>select count(*) as 男性用户数量 from 表名 where sex&lt;&gt;'女'
+<br>
+<br>--查找最大值
+<br>select max(列名) as 最大值 from 表名
+<br>
+<br>--查找最小值
+<br>select min(列名) as 最小值 from 表名
+<br>
+<br>--计算平均值
+<br>select avg(列名) as 平均值 from 表名
+<br>
+<br>--计算总和
+<br>select sum(列名) as 总和 from 表名
+<br>
+<br>--多表联查
+<br>--用where条件做
+<br>select 表名1.列名,表名2.列名
+<br>from 表名1,表名2
+<br>where 条件（两表ID相等）
+<br>
+<br>--用内连接做
+<br>select 表名1.列名,表名2.列名
+<br>from 表名1 inner join 表名2
+<br>on 条件（两表ID相等）
+<br>
+<br>--左外连接&nbsp;&nbsp; ---左边的可以为空 右边的不可以
+<br>select&nbsp; 表名1.列名,表名2.列名
+<br>from 表名1 left join 表名2
+<br>on 条件（两表ID相等）
+<br>
+<br>--右外连接&nbsp;&nbsp; ---右边的可以为空 左边的不可以
+<br>select 表名1.列名,表名2.列名
+<br>from 表名1 right join 表名2
+<br>on 条件（两表ID相等）
+<br>
+<br>--交叉连接
+<br>select 表名1.列名,表名2.列名
+<br>from 表名1 cross join 表名2 
+<br>where&nbsp; 条件（两表ID相等） 
+<br>
+<br>--三表联查
+<br>select 表1.值1,表2.值2,表3.值3
+<br>from 表1
+<br>inner join 表2
+<br>on 条件（两表ID相等）
+<br>inner join 表3
+<br>on 条件（两表ID相等）
+<br>
+<br>--group by
+<br>--统计编号为10001的学员所有考试的平均分
+<br>select sid,avg(mark)as 平均分
+<br>from score
+<br>group by sid
+<br>
+<br>--统计每一门课程的平均分
+<br>select cid,avg(mark)as 平均分
+<br>from score
+<br>group by cid
+<br>
+<br>--显示学生姓名和考试平均分
+<br>select u.nickname,avg(s.mark)as 平均分
+<br>from users as u
+<br>inner join score as s
+<br>on u.id=s.sid
+<br>group by u.nickname
+<br>
+<br>--显示科目名称和科目平均分
+<br>select c.cname,avg(s.mark)as 平均分
+<br>from course as c
+<br>inner join score as s
+<br>on c.id=s.cid
+<br>group by c.cname
+<br>
+<br>--显示平均分大于60分的学生姓名，科目名称，平均分
+<br>select c.cname,avg(s.mark)as 平均分
+<br>from course as c
+<br>inner join score as s
+<br>on c.id=s.cid
+<br>group by c.cname
+<br>having avg(s.mark)&gt;60
+<br>
+<br>and:只有两个条件都为true，整个表达式的结果才为true
+<br>or：只要有一个条件为true，整个表达式的结果就为true
+<br>not：条件为true，表达式结果为false；条件为false，表达式结果为true
+<br>
+<br>
+<br>常用语法
+<br>
+<br>select * from YuanGong
+<br>
+<br>select len('天下乌贼')
+<br>
+<br>select name,len(name) from YuanGong
+<br>
+<br>select upper(name) from YuanGong
+<br>where ID = 10
+<br>
+<br>select lower('TIANXIA') as '大写转小写'
+<br>
+<br>
+<br>rtrim((ltrim('&nbsp; wo&nbsp; '))
+<br>
+<br>select right(name,2) from YuanGong
+<br>select left(name,1) from YuanGong
+<br>
+<br>select replace('他们好我也好，他们坏我也坏','他们','它')
+<br>
+<br>select stuff('我是中国人',3,2,'美国')
+<br>
+<br>
+<br>select getdate()
+<br>
+<br>select name,getdate() as '当前时间'from yuangong
+<br>
+<br>select dateadd(yy,4,getdate())
+<br>
+<br>select datediff(hh,'2008-10-24','2009-1-1')
+<br>
+<br>select datename(dw,'2008-10-24') as '星期'
+<br>
+<br>select datepart(hh,getdate())
+<br>
+<br>select sqrt(7)
+<br>
+  </div>
+
+  
+
+  
+  
+  <iframe src="about:blank" scrolling="no" width="0" height="0" frameborder="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 468px 60px;"></iframe>
+  
+  <div id="bottoms" class="clearfix">
+    
+    <div id="share_weibo">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="./SQL基础语法(全--5) - - ITeye技术网站_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="./SQL基础语法(全--5) - - ITeye技术网站_files/tec.jpg"></a>
+    </div>
+  </div>
+
+  <div class="blog_nav">
+    <div class="pre_next">
+      <a href="http://carolli.iteye.com/blog/909560" class="next" title="T_Sql补充">T_Sql补充</a>
+      |
+      <a href="http://carolli.iteye.com/blog/909558" class="pre" title="SqlServer基础1">SqlServer基础1</a>
+    </div>
+  </div>
+  <div class="blog_bottom">
+    <ul>
+      <li>2011-02-18 05:37</li>
+      <li>浏览 648</li>
+      <li><a href="http://carolli.iteye.com/blog/909559#comments">评论(0)</a></li>
+      
+      
+      <li>分类:<a href="http://www.iteye.com/blogs/category/database">数据库</a></li>      
+      <li class="last"><a href="http://www.iteye.com/wiki/blog/909559" target="_blank" class="more">相关推荐</a></li>
+    </ul>
+  </div>
+
+  <div class="blog_comment">
+    <h5>评论</h5>
+    <a id="comments" name="comments"></a>
+    
+    
+    
+  </div>
+
+  <div class="blog_comment">
+    <h5>发表评论</h5>
+            <p style="text-align:center; margin-top:30px;margin-bottom:0px;"><a href="http://carolli.iteye.com/login" style="background-color:white;"> <img src="./SQL基础语法(全--5) - - ITeye技术网站_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"></a><a href="http://carolli.iteye.com/login">  您还没有登录,请您登录后再发表评论 </a></p>
+      </div>
+</div>
+
+
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+  $$('#main .blog_content pre[name=code]').each(function(pre, index){ // blog content
+    var post_id = 909559;
+    var location = window.location;
+    source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+    pre.writeAttribute('codeable_id', post_id);
+    pre.writeAttribute('codeable_type', "Blog");
+    pre.writeAttribute('source_url', source_url);
+    pre.writeAttribute('pre_index', index);
+    pre.writeAttribute('title', 'SQL基础语法(全--5)');
+  });
+
+  fix_image_size($$('div.blog_content img'), 700);
+
+  function processComment() {
+    $$('#main .blog_comment > div').each(function(comment){// comment
+      var post_id = comment.id.substr(2);
+      $$("#"+comment.id+" pre[name=code]").each(function(pre, index){
+        var location = window.location;
+        source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+        source_url += "#" + comment.id;
+        pre.writeAttribute('codeable_id', post_id);
+        pre.writeAttribute('codeable_type', "BlogComment");
+        pre.writeAttribute('source_url', source_url);
+        pre.writeAttribute('pre_index', index);
+        pre.writeAttribute('title', 'SQL基础语法(全--5)');
+      });
+    });
+  }
+
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'BlogComment'},
+      onSuccess:function(response){editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+
+  code_favorites_init();
+  processComment();
+  new WeiboShare({share_buttons: $('share_weibo'), img_scope: $('blog_content')});
+</script>
+
+
+
+
+        </div>
+
+        <div id="local">
+          <div class="local_top"></div>
+          <div id="blog_owner">
+  <div id="blog_owner_logo"><a href="http://carolli.iteye.com/"><img alt="carolli的博客" class="logo" src="./SQL基础语法(全--5) - - ITeye技术网站_files/0f755eae-6a95-3705-b318-5e4eafc5277b.jpg" title="carolli的博客: " width=""></a></div>
+  <div id="blog_owner_name">carolli</div>
+</div>
+
+          <div id="blog_actions">
+            <ul>
+              <li>浏览: 41581 次</li>
+              <li>性别: <img alt="Icon_minigender_2" src="./SQL基础语法(全--5) - - ITeye技术网站_files/icon_minigender_2.gif" title="女"></li>
+              <li>来自: 西安</li>
+              <li><img src="./SQL基础语法(全--5) - - ITeye技术网站_files/offline.gif"></li>
+              
+            </ul>
+          </div>
+          <div id="user_visits" class="clearfix">
+            <h5>最近访客 <span style="font-weight:normal;font-size:12px;padding-left:30px;"><a href="http://carolli.iteye.com/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://zt201411212651.iteye.com/" target="_blank"><img alt="小猪乖乖0616的博客" class="logo" src="./SQL基础语法(全--5) - - ITeye技术网站_files/user-logo-thumb.gif" title="小猪乖乖0616的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://zt201411212651.iteye.com/" target="_blank" title="小猪乖乖0616">小猪乖乖0616</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://dylinshi126.iteye.com/" target="_blank"><img alt="dylinshi126的博客" class="logo" src="./SQL基础语法(全--5) - - ITeye技术网站_files/user-logo-thumb.gif" title="dylinshi126的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://dylinshi126.iteye.com/" target="_blank" title="dylinshi126">dylinshi126</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://daming999.iteye.com/" target="_blank"><img alt="daming999的博客" class="logo" src="./SQL基础语法(全--5) - - ITeye技术网站_files/user-logo-thumb.gif" title="daming999的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://daming999.iteye.com/" target="_blank" title="daming999">daming999</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://1759914271.iteye.com/" target="_blank"><img alt="因为武的博客" class="logo" src="./SQL基础语法(全--5) - - ITeye技术网站_files/user-logo-thumb.gif" title="因为武的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://1759914271.iteye.com/" target="_blank" title="因为武">因为武</a></div>
+              </div>
+            
+          </div>
+
+          
+
+                      <div id="blog_menu">
+              <h5>文章分类</h5>
+              <ul>
+                <li><a href="http://carolli.iteye.com/">全部博客 (74)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143670">c#编程 (4)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143671">javase (8)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143672">jsp (4)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143673">js (4)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143674">javaWeb (3)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143675">sqlServer (8)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143676">ssh (18)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143677">asp.net (1)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143678">.net (3)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143679">c#Others (0)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143680">javaOthers (0)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/143681">others (0)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/187903">2011_11_11_fj (5)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/202732">freemark (5)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/215967">链接 (1)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/216207">php (2)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/220700">develop tools help (1)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/254357">操作系统 (1)</a></li>
+                
+                  <li><a href="http://carolli.iteye.com/category/285107">php服务器环境 (5)</a></li>
+                
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>社区版块</h5>
+              <ul>
+                <li><a href="http://carolli.iteye.com/blog/news">我的资讯</a> (0)</li>
+                <li>
+                  <a href="http://carolli.iteye.com/blog/post">我的论坛</a> (0)
+                </li>
+                <li><a href="http://carolli.iteye.com/blog/answered_problems">我的问答</a> (0)</li>
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>存档分类</h5>
+              <ul>
+                
+                  <li><a href="http://carolli.iteye.com/blog/monthblog/2013-07">2013-07</a> (5)</li>
+                
+                  <li><a href="http://carolli.iteye.com/blog/monthblog/2012-11">2012-11</a> (1)</li>
+                
+                  <li><a href="http://carolli.iteye.com/blog/monthblog/2012-08">2012-08</a> (1)</li>
+                
+                <li><a href="http://carolli.iteye.com/blog/monthblog_more">更多存档...</a></li>
+              </ul>
+            </div>
+            
+            
+
+            <div id="guest_books">
+              <h5>最新评论</h5>
+              <ul>
+                
+                <li>
+                  <a href="http://carolli.iteye.com/" target="_blank" title="carolli">carolli</a>： 
+                  huangyunbin 写道但是我的项目中没有配置-vm C: ...<br>
+                  <a href="http://carolli.iteye.com/blog/1508679#bc2287716">eclipse maven plugin 安装设置</a>
+                </li>
+                
+                <li>
+                  <a href="http://huangyunbin.iteye.com/" target="_blank" title="huangyunbin">huangyunbin</a>： 
+                  但是我的项目中没有配置-vm C: %JAVA_HOME%\b ...<br>
+                  <a href="http://carolli.iteye.com/blog/1508679#bc2269263">eclipse maven plugin 安装设置</a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="local_bottom"></div>
+          
+        </div>
+      </div>
+
+      <div id="footer" class="clearfix">
+        <div id="copyright">
+          <hr>
+          声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br>
+          © 2003-2015 ITeye.com.   All rights reserved.  [ 京ICP证110151号  京公网安备110105010620 ]
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="./SQL基础语法(全--5) - - ITeye技术网站_files/saved_resource" width="0" height="0">
+
+<script src="./SQL基础语法(全--5) - - ITeye技术网站_files/tracking.js" type="text/javascript"></script>
+
+    
+    
+  
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>
