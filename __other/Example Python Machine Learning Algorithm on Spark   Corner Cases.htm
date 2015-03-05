@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/ -->
+<html lang="en"><!--<![endif]--><!--
+	generated 2 seconds ago
+	generated in 0.485 seconds
+	served from batcache in 0.002 seconds
+	expires in 298 seconds
+--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Example Python Machine Learning Algorithm on Spark | Corner Cases</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/style.css">
+<link rel="pingback" href="https://cornercases.wordpress.com/xmlrpc.php">
+<meta name="google-site-verification" content="Mm54mXekguo90f2JM8kRdT_cBzDAvqJSzgJZArGdBgs">
+<link rel="alternate" type="application/rss+xml" title="Corner Cases » Feed" href="https://cornercases.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Corner Cases » Comments Feed" href="https://cornercases.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Corner Cases » Example Python Machine Learning Algorithm on Spark Comments Feed" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/feed/">
+<script type="text/javascript">
+/* <![CDATA[ */
+function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
+/* ]]> */
+</script><style type="text/css"></style>
+<link rel="stylesheet" id="all-css-0" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, please try again with a valid email address."};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource(1)"></script>
+<link rel="stylesheet" id="all-css-0" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/style(1).css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://cornercases.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="More Literally" href="https://cornercases.wordpress.com/2013/08/24/more-literally/">
+<link rel="next" title="Brilliant Semaphores" href="https://cornercases.wordpress.com/2013/11/06/brilliant-semaphores/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/Example Python Machine Learning Algorithm on Spark   Corner Cases.htm">
+<link rel="shortlink" href="http://wp.me/p1hEjc-1tr">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&url=https%3A%2F%2Fcornercases.wordpress.com%2F2013%2F10%2F23%2Fexample-python-machine-learning-algorithm-on-spark%2F&for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&url=https%3A%2F%2Fcornercases.wordpress.com%2F2013%2F10%2F23%2Fexample-python-machine-learning-algorithm-on-spark%2F&for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Example Python Machine Learning Algorithm on Spark">
+<meta property="og:url" content="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/">
+<meta property="og:description" content="Combining software frameworks that do machine learning with ones that do parallel cluster computing is tricky. Because the tools are always changing, you want these tasks to be decoupled, but not s...">
+<meta property="article:published_time" content="2013-10-23T16:56:29+00:00">
+<meta property="article:modified_time" content="2013-10-23T17:04:55+00:00">
+<meta property="article:author" content="https://www.facebook.com/profile.php?id=840620511">
+<meta property="og:site_name" content="Corner Cases">
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg">
+<meta name="twitter:site" content="@wordpressdotcom">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
+<link rel="openid.server" href="https://cornercases.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://cornercases.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://cornercases.wordpress.com/osd.xml" title="Corner Cases">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wordpress.com/opensearch.xml" title="WordPress.com">
+<meta name="application-name" content="Corner Cases"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Language, Philosophy, Machines"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://cornercases.wordpress.com/feed/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="Example Python Machine Learning Algorithm on Spark | Corner Cases on WordPress.com">
+<meta name="description" content="Combining software frameworks that do machine learning with ones that do parallel cluster computing is tricky. Because the tools are always changing, you want these tasks to be decoupled, but not so decoupled that it&#39;s hard to put them together. Inevitably there will be some glue code in the middle. What follows is an example…">
+
+<script type="text/javascript" src="https://partner.googleadservices.com/gampad/google_service.js">
+</script>
+<script type="text/javascript">
+if ( typeof GS_googleAddAdSenseService == 'function' ) { GS_googleAddAdSenseService("ca-pub-3443918307802676"); }
+if ( typeof GS_googleEnableAllServices == 'function' ) { GS_googleEnableAllServices() };
+</script>
+<script type="text/javascript" src="https://c.amazon-adsystem.com/aax2/amzn_ads.js"></script>
+<script type="text/javascript">
+try { amznads.getAds("3033","300x250"); } catch(e) { /* ignore */ }
+</script>
+<script type="text/javascript">
+var amznKeys = amznads.getKeys();
+if (typeof amznKeys != "undefined" && amznKeys != "") { for (var i =0; i < amznKeys.length; i++) { var key = amznKeys[i]; GA_googleAddAttr("amzn", key);} }
+document.close();
+</script>
+<script type="text/javascript">
+if ( typeof GA_googleAddSlot == 'function' ) { GA_googleAddSlot("ca-pub-3443918307802676", "wpcom_below_post"); }
+</script>
+<script type="text/javascript">
+if ( typeof GA_googleFetchAds == 'function' ) { GA_googleFetchAds(); }
+</script>
+
+<script type="text/javascript">
+var wpcom_ads = { bid: 18982862, pt: 'permalink', wa: 0, as: 0, domain: 'cornercases.wordpress.com', url: 'https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/', gid: '', };
+</script>
+<link rel="stylesheet" type="text/css" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/shCore.css"><link rel="stylesheet" type="text/css" href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/shThemeDefault.css"><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script type="text/javascript">
+	window.google_analytics_uacct = "UA-52447-2";
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-52447-2']);
+	_gaq.push(['_setDomainName', 'wordpress.com']);
+	_gaq.push(['_initData']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})();
+</script><script type="text/javascript" async="" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/ga.js"></script>
+</head>
+
+<body class="single single-post postid-5669 single-format-standard mp6 customizer-styles-applied single-author highlander-enabled highlander-light">
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="branding" role="banner">
+								<div id="site-title">
+					<span>
+						<a href="https://cornercases.wordpress.com/" title="Corner Cases" rel="home">Corner Cases</a>
+					</span>
+				</div>
+				<div id="site-description">Language, Philosophy, Machines</div>
+
+										<a class="home-link" href="https://cornercases.wordpress.com/" title="Corner Cases" rel="home">
+							<img src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/path.jpg" width="940" height="198" alt="">
+						</a>
+								</div><!-- #branding -->
+
+			<div id="access" role="navigation">
+			  				<div class="skip-link screen-reader-text"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#content" title="Skip to content">Skip to content</a></div>
+								<div class="menu"><ul><li><a href="https://cornercases.wordpress.com/">Home</a></li><li class="page_item page-item-2"><a href="https://cornercases.wordpress.com/about/">About</a></li></ul></div>
+			</div><!-- #access -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+
+	<div id="main">
+
+		<div id="container">
+			<div id="content" role="main">
+
+			
+
+				<div id="nav-above" class="navigation">
+					<div class="nav-previous"><a href="https://cornercases.wordpress.com/2013/08/24/more-literally/" rel="prev"><span class="meta-nav">←</span> More Literally</a></div>
+					<div class="nav-next"><a href="https://cornercases.wordpress.com/2013/11/06/brilliant-semaphores/" rel="next">Brilliant Semaphores <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-above -->
+
+				<div id="post-5669" class="post-5669 post type-post status-publish format-standard hentry category-those-that-have-just-broken-the-flower-vase tag-python tag-scikit-learn tag-spark">
+											<h2 class="entry-title"><a href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/Example Python Machine Learning Algorithm on Spark   Corner Cases.htm" rel="bookmark">Example Python Machine Learning Algorithm on&nbsp;Spark</a></h2>					
+					<div class="entry-meta">
+													<span class="meta-prep meta-prep-author">Posted on</span> <a href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/Example Python Machine Learning Algorithm on Spark   Corner Cases.htm" title="8:56 am" rel="bookmark"><span class="entry-date">October 23, 2013</span></a>							<span class="by-author"><span class="sep">by</span> <span class="author vcard"><a class="url fn n" href="https://cornercases.wordpress.com/author/billmcn/" title="View all posts by W.P. McNeill" rel="author">W.P. McNeill</a></span> </span>											</div><!-- .entry-meta -->
+
+					<div class="entry-content">
+						<p><span style="font-size:16px;line-height:1.5;">Combining software frameworks that do machine learning with ones that do parallel cluster computing is tricky. Because the tools are always changing, you want these tasks to be decoupled, but not so decoupled that it’s hard to put them together. Inevitably there will be some glue code in the middle. What follows is an example of glue that runs&nbsp;Python’s&nbsp;<a href="http://scikit-learn.org/">scikit-learn</a>&nbsp;code in a&nbsp;&nbsp;<a href="http://spark.incubator.apache.org/">Spark</a>&nbsp;parallel environment.</span></p>
+<p>Built on top of Python’s&nbsp;<a href="http://www.scipy.org/">SciPy</a>&nbsp;scientific computing module, scikit-learn contains implementations of a broad range of machine learning algorithms along with helpful utilities for generating datasets, performing evaluations, working with standard corpora, and so forth. It is well-documented and relatively easy to use. Scikit-learn has support for running work in parallel on multiple cores of single machine, but no support for distributing work across a cluster.</p>
+<p>Spark is a successor to <a href="http://hadoop.apache.org/">Hadoop</a> that takes the Map/Reduce paradigm back to its functional programming roots. Instead of writing Map and Reduce Java classes as you would in Hadoop, you apply anonymous map and reduce functions to a distributed data set, allowing you to focus on the data transformations you are interested in while minimizing boilerplate. Spark is implemented in Scala, but has support for other languages such as Java, Python and Ruby.</p>
+<p><a style="font-size:16px;line-height:1.5;" href="https://gist.github.com/wpm/6454814">Here is a program</a><span style="font-size:16px;line-height:1.5;"> that puts these two things together to run a basic boosting task in Spark.</span></p>
+<div><div id="highlighter_224375" class="syntaxhighlighter  python"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div><div class="line number23 index22 alt2">23</div><div class="line number24 index23 alt1">24</div><div class="line number25 index24 alt2">25</div><div class="line number26 index25 alt1">26</div><div class="line number27 index26 alt2">27</div><div class="line number28 index27 alt1">28</div><div class="line number29 index28 alt2">29</div><div class="line number30 index29 alt1">30</div><div class="line number31 index30 alt2">31</div><div class="line number32 index31 alt1">32</div><div class="line number33 index32 alt2">33</div><div class="line number34 index33 alt1">34</div><div class="line number35 index34 alt2">35</div><div class="line number36 index35 alt1">36</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python keyword">from</code> <code class="python plain">pyspark </code><code class="python keyword">import</code> <code class="python plain">SparkContext</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="python keyword">import</code> <code class="python plain">numpy as np</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="python keyword">from</code> <code class="python plain">sklearn.cross_validation </code><code class="python keyword">import</code> <code class="python plain">train_test_split, Bootstrap</code></div><div class="line number6 index5 alt1"><code class="python keyword">from</code> <code class="python plain">sklearn.datasets </code><code class="python keyword">import</code> <code class="python plain">make_classification</code></div><div class="line number7 index6 alt2"><code class="python keyword">from</code> <code class="python plain">sklearn.metrics </code><code class="python keyword">import</code> <code class="python plain">accuracy_score</code></div><div class="line number8 index7 alt1"><code class="python keyword">from</code> <code class="python plain">sklearn.tree </code><code class="python keyword">import</code> <code class="python plain">DecisionTreeClassifier</code></div><div class="line number9 index8 alt2">&nbsp;</div><div class="line number10 index9 alt1"><code class="python keyword">def</code> <code class="python plain">run(sc):</code></div><div class="line number11 index10 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">def</code> <code class="python plain">zero_matrix(n, m):</code></div><div class="line number12 index11 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python plain">np.zeros(n</code><code class="python keyword">*</code><code class="python plain">m, dtype </code><code class="python keyword">=</code> <code class="python functions">int</code><code class="python plain">).reshape(n, m)</code></div><div class="line number13 index12 alt2">&nbsp;</div><div class="line number14 index13 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">def</code> <code class="python plain">vote_increment(y_est):</code></div><div class="line number15 index14 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">increment </code><code class="python keyword">=</code> <code class="python plain">zero_matrix(y_est.size, n_ys)</code></div><div class="line number16 index15 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">increment[np.arange(y_est.size), y_est] </code><code class="python keyword">=</code> <code class="python value">1</code></div><div class="line number17 index16 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python plain">increment </code><code class="python comments"># test point x class matrix with 1s marking the estimator prediction</code></div><div class="line number18 index17 alt1">&nbsp;</div><div class="line number19 index18 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">X, y </code><code class="python keyword">=</code> <code class="python plain">make_classification()</code></div><div class="line number20 index19 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">X_train, X_test, y_train, y_test </code><code class="python keyword">=</code> <code class="python plain">train_test_split(X, y)</code></div><div class="line number21 index20 alt2">&nbsp;</div><div class="line number22 index21 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">n_test </code><code class="python keyword">=</code> <code class="python plain">X_test.shape[</code><code class="python value">0</code><code class="python plain">]</code></div><div class="line number23 index22 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">n_ys </code><code class="python keyword">=</code> <code class="python plain">np.unique(y_train).size</code></div><div class="line number24 index23 alt1">&nbsp;</div><div class="line number25 index24 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">model </code><code class="python keyword">=</code> <code class="python plain">DecisionTreeClassifier()</code></div><div class="line number26 index25 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python comments"># Partition the training data into random sub-samples with replacement.</code></div><div class="line number27 index26 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">samples </code><code class="python keyword">=</code> <code class="python plain">sc.parallelize(Bootstrap(y.size))</code></div><div class="line number28 index27 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python comments"># Train a model for each sub-sample and apply it to the test data.</code></div><div class="line number29 index28 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">vote_tally </code><code class="python keyword">=</code> <code class="python plain">samples.</code><code class="python functions">map</code><code class="python plain">(</code><code class="python keyword">lambda</code> <code class="python plain">(index, _):</code></div><div class="line number30 index29 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">model.fit(X[index], y[index]).predict(X_test)</code></div><div class="line number31 index30 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">).</code><code class="python functions">map</code><code class="python plain">(vote_increment).fold(zero_matrix(n_test, n_ys), np.add) </code><code class="python comments"># Take the learner majority vote.</code></div><div class="line number32 index31 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">y_estimate_vote </code><code class="python keyword">=</code> <code class="python plain">np.argmax(vote_tally, axis </code><code class="python keyword">=</code> <code class="python value">1</code><code class="python plain">)</code></div><div class="line number33 index32 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python plain">accuracy_score(y_test, y_estimate_vote)</code></div><div class="line number34 index33 alt1">&nbsp;</div><div class="line number35 index34 alt2"><code class="python keyword">if</code> <code class="python plain">__name__ </code><code class="python keyword">=</code><code class="python keyword">=</code> <code class="python string">'__main__'</code><code class="python plain">:</code></div><div class="line number36 index35 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python functions">print</code> <code class="python plain">run(SparkContext(</code><code class="python string">"local"</code><code class="python plain">, </code><code class="python string">"Boost"</code><code class="python plain">))</code></div></div></td></tr></tbody></table></div></div>
+<p><code>spark_parallel_boost.py</code> randomly generates test and training data sets (lines 19-20), randomly selects subsets of the training set with replacement (line 27), uses the Spark framework to train an ensemble of decision trees with these subsets and apply them to the test set (line 30), then takes the ensemble majority vote and uses it to calculate a test prediction accuracy (lines 31-33). To see this script in action, <a title="Getting the Spark Demo to Work" href="https://cornercases.wordpress.com/2013/08/07/getting-the-spark-demo-to-work/">set up Spark</a> on your machine, then run it using the <a href="http://spark.incubator.apache.org/docs/latest/python-programming-guide.html"><code>pyspark</code></a> script that comes with the Spark distribution. It will generate a bunch of logger output followed by an accuracy score between 0 and 1.</p>
+<p>Since the inputs are random, the accuracy results don’t mean anything. Also the code is all being run on your local machine. (That’s what the “local” argument to the <code>SparkContext</code> constructor in line 36 means.) Nevertheless, this can serve as a template for applications that do real learning on a cluster and illustrates both the advantages and frustrations of combining these two tools. The advantage is that the machine learning part itself is extremely simple: all the heavy lifting is done for you in line 30. The frustration is that although scikit-learn already implements various parallelizable techniques (boosting, cross validation, decision forests), it only does so for a single machine, so you have to write Spark versions yourself. (Note how here the most complicated part of the code is the part that takes the majority vote among the learners.) Still, it’s probably easier to roll your own ensemble techniques in Python than in Java Map and Reduce classes, so this is a good place to start.</p>
+
+<div class="wpcnt">
+<div class="wpa">
+<a class="wpa-about" href="http://wordpress.com/about-these-ads/" rel="nofollow">About these ads</a>
+<script type="text/javascript">
+		var wpcom_adclk_hovering = false;
+		var wpcom_adclk_recorded = false;
+		var wpcom_adclk_theme = "Twenty Ten";
+		var wpcom_adclk_slot = "wpcom_below_post";
+		var wpcom_adclk_network = ( typeof wpcom_adclk_network === "undefined" ) ? "" : wpcom_adclk_network ;
+
+		jQuery(document).ready( function() {
+			function wpcom_adclk_hover_yes() { wpcom_adclk_hovering = true; }
+			function wpcom_adclk_hover_no() { wpcom_adclk_hovering = false; }
+			jQuery(".wpa").click(wpcom_adclk_click);
+			jQuery(".wpa iframe").hover( wpcom_adclk_hover_yes, wpcom_adclk_hover_no );
+			jQuery(".wpa object").hover( wpcom_adclk_hover_yes, wpcom_adclk_hover_no );
+
+			jQuery(window).blur( function() {
+				if ( wpcom_adclk_hovering ) { wpcom_adclk_click(); }
+			});
+		});
+
+		function wpcom_adclk_impression() {
+			var stat_gif = document.location.protocol + "//pixel.wp.com/g.gif?v=wpcom-no-pv";
+			stat_gif += "&x_ads_imp_theme=" + wpcom_adclk_theme;
+			stat_gif += "&x_ads_imp_placement="+wpcom_adclk_slot;
+			stat_gif += "&x_ads_imp_network=" + wpcom_adclk_network;
+			stat_gif += "&x_ads_imp_theme_network="+wpcom_adclk_theme+"_"+wpcom_adclk_network;
+			new Image().src = stat_gif + "&baba=" + Math.random();
+			return true;
+		}
+
+		function wpcom_adclk_click() {
+			if (wpcom_adclk_recorded) { return true; } // no double counting
+			var stat_gif = document.location.protocol + "//pixel.wp.com/g.gif?v=wpcom-no-pv";
+			stat_gif += "&x_ads_click_theme=" + wpcom_adclk_theme;
+			stat_gif += "&x_ads_click_placement="+wpcom_adclk_slot;
+			stat_gif += "&x_ads_click_network=" + wpcom_adclk_network;
+			stat_gif += "&x_ads_click_theme_network="+wpcom_adclk_theme+"_"+wpcom_adclk_network;
+
+			new Image().src = stat_gif + "&baba=" + Math.random();
+			wpcom_adclk_recorded = true;
+			var now=new Date(); var end=now.getTime()+250;
+			while(true){now=new Date();if(now.getTime()>end){break;}}
+			return true;
+		}
+	
+if ( typeof GA_googleAddAttr == 'function' ) {
+GA_googleAddAttr("AdOpt", "1");
+GA_googleAddAttr("Origin", "extsearch");
+GA_googleAddAttr("LangId", "1");
+GA_googleAddAttr("Domain", "cornercases.wordpress.com");
+GA_googleAddAttr("BlogId", "18982862");
+GA_googleAddAttr("PageURL", "https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/");
+GA_googleAddAttr("Autotag", "technology");
+GA_googleAddAttr("Tag", "those-that-have-just-broken-the-flower-vase");
+GA_googleAddAttr("Tag", "python");
+GA_googleAddAttr("Tag", "scikit-learn");
+GA_googleAddAttr("Tag", "spark");
+GA_googleAddAttr("theme_bg", "ffffff");
+GA_googleAddAttr("theme_text", "333333");
+GA_googleAddAttr("theme_link", "0066cc");
+GA_googleAddAttr("theme_border", "cccccc");
+GA_googleAddAttr("theme_url", "ff4b33");
+GA_googleAddAdSensePageAttr("google_page_url", "https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/");
+GA_googleFillSlot("wpcom_below_post");
+}
+</script>
+</div>
+</div>
+
+<script type="text/javascript">
+jQuery( window ).load( function() {
+    if ( jQuery(".wpa script[src*='virool.com']").length > 0 || jQuery(".wpa script[src*='shareth.ru']").length > 0 || jQuery(".wpa iframe[src*='boomvideo.tv']").length > 0 || jQuery(".wpa iframe[src*='viewablemedia.net']").length > 0 || jQuery(".wpa .sharethrough-placement").length > 0 ) {
+        jQuery( '.wpa' ).css( 'width', '400px' );
+    }
+setTimeout(function(){if(typeof GS_googleAddAdSenseService !== 'function'){new Image().src=document.location.protocol+"//pixel.wp.com/g.gif?v=wpcom-no-pv&x_noads=adblock&baba="+Math.random()}},100);
+} );
+</script>
+
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-email share-service-visible"><a rel="nofollow" class="share-email sd-button share-icon" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?share=email&nb=1" title="Click to email this to a friend"><span>Email</span></a></li><li class="share-facebook"><a rel="nofollow" class="share-facebook sd-button share-icon" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?share=facebook&nb=1" title="Share on Facebook" id="sharing-facebook-5669"><span>Facebook<span class="share-count">3</span></span></a></li><li class="share-twitter"><a rel="nofollow" class="share-twitter sd-button share-icon" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?share=twitter&nb=1" title="Click to share on Twitter" id="sharing-twitter-5669"><span>Twitter<span class="share-count">57</span></span></a></li><li class="share-google-plus-1"><a rel="nofollow" class="share-google-plus-1 sd-button share-icon" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?share=google-plus-1&nb=1" title="Click to share on Google+" id="sharing-google-5669"><span>Google</span></a></li><li class="share-end"></li></ul></div></div></div><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-18982862-5669-54cb0d5a0d8f3" data-src="//widgets.wp.com/likes/#blog_id=18982862&amp;post_id=5669&amp;origin=cornercases.wordpress.com&amp;obj_id=18982862-5669-54cb0d5a0d8f3" data-name="like-post-frame-18982862-5669-54cb0d5a0d8f3"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-18982862-5669-54cb0d5a0d8f3" height="55px" width="100%" frameborder="0" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource(7).htm"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="6016" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://cornercases.wordpress.com/2014/09/17/importing-scikit-learn-models-into-java/" title="Importing scikit-learn Models into Java
+
+Currently scikit-learn is the best general purpose machine learning package. It is part of the Scientific Python family of tools, built on top of the Numeric Python matrix processing engine. The code is readable, documentation extensive, and the package is popular, so there’s plenty of help available on Stack Overflow…" rel="nofollow" data-origin="5669" data-position="0">Importing scikit-learn Models into Java</a></span><span class="jp-relatedposts-post-context">In "Innumerable ones"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="5609" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://cornercases.wordpress.com/2013/08/07/getting-the-spark-demo-to-work/" title="Getting the Spark Demo to Work
+
+Spark is an open-source cluster computing system that provides primitives for in-memory computing and thus for certain tasks may be superior to a system like Hadoop, which has to keep going back and forth to disk. Spark is written in Scala and is, at the time of this writing, in…" rel="nofollow" data-origin="5669" data-position="1">Getting the Spark Demo to Work</a></span><span class="jp-relatedposts-post-context">In "Those that have just broken the flower vase"</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="3358" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://cornercases.wordpress.com/2012/04/26/seeing-the-bars-of-the-hadoop-cage/" title="Seeing the Bars of the Hadoop Cage
+
+Recently I was giving @trochee a tour of a project he&#39;s been hired to work on. It&#39;s a Hadoop pipeline that does very sophisticated things with gargantuan amounts of data. @trochee hasn&#39;t used Hadoop before, but he is an experienced enough programmer to know how to make an asset out…" rel="nofollow" data-origin="5669" data-position="2">Seeing the Bars of the Hadoop Cage</a></span><span class="jp-relatedposts-post-context">In "Those that have just broken the flower vase"</span></p></div></div></div>											</div><!-- .entry-content -->
+
+
+					<div class="entry-utility">
+												This entry was posted in <a href="https://cornercases.wordpress.com/category/those-that-have-just-broken-the-flower-vase/" rel="category tag">Those that have just broken the flower vase</a> and tagged <a href="https://cornercases.wordpress.com/tag/python/" rel="tag">Python</a>, <a href="https://cornercases.wordpress.com/tag/scikit-learn/" rel="tag">scikit-learn</a>, <a href="https://cornercases.wordpress.com/tag/spark/" rel="tag">Spark</a>. Bookmark the <a href="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/Example Python Machine Learning Algorithm on Spark   Corner Cases.htm" title="Permalink to Example Python Machine Learning Algorithm on Spark" rel="bookmark">permalink</a>.											</div><!-- .entry-utility -->
+				</div><!-- #post-## -->
+
+				<div id="nav-below" class="navigation">
+					<div class="nav-previous"><a href="https://cornercases.wordpress.com/2013/08/24/more-literally/" rel="prev"><span class="meta-nav">←</span> More Literally</a></div>
+					<div class="nav-next"><a href="https://cornercases.wordpress.com/2013/11/06/brilliant-semaphores/" rel="next">Brilliant Semaphores <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-below -->
+
+				
+			<div id="comments">
+
+
+			<h3 id="comments-title">6 Responses to <em>Example Python Machine Learning Algorithm on&nbsp;Spark</em></h3>
+
+
+			<ol class="commentlist">
+					<li class="comment byuser comment-author-catherinebreslin even thread-even depth-1 highlander-comment" id="li-comment-497">
+		<div id="comment-497">
+			<div class="comment-author vcard">
+				<img alt="" src="https://1.gravatar.com/avatar/aa167e1668cdc551bb7beab175ac0ae5?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn"><a href="http://mycomputerdoesntlisten.wordpress.com/" rel="external nofollow" class="url">catherinebreslin</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-497">
+				October 26, 2013 at 9:23 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Interesting – I’ve just been playing at implementing ensembles in Python with scikit-learn, but haven’t come across spark for the parallelisation. Will have to try it out!</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=497#respond" onclick="return addComment.moveForm( &quot;comment-497&quot;, &quot;497&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to catherinebreslin">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-534">
+		<div id="comment-534">
+			<div class="comment-author vcard">
+				<img alt="" src="https://2.gravatar.com/avatar/eac6c82e23cbbbce4dae0fd0602e7d49?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn"><a href="http://gravatar.com/idosht" rel="external nofollow" class="url">idosht</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-534">
+				December 18, 2013 at 10:58 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Very Interesting – sklearn with spark and I tried this example on IPython notebook – I think these 3 will make life much easier <span class="wp-smiley wp-emoji wp-emoji-smile" title=":)">:)</span></p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=534#respond" onclick="return addComment.moveForm( &quot;comment-534&quot;, &quot;534&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to idosht">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-717">
+		<div id="comment-717">
+			<div class="comment-author vcard">
+				<img alt="" src="https://0.gravatar.com/avatar/c5f4c5f541a6006b7a8529b547ec69cb?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn"><a href="https://plus.google.com/+MajidalDosari" rel="external nofollow" class="url">Majid al-Dosari</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-717">
+				June 27, 2014 at 6:31 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>spark in not a successor to “hadoop”. what do you mean by hadoop? you probably wanted to say spark is a successor to mapreduce.</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=717#respond" onclick="return addComment.moveForm( &quot;comment-717&quot;, &quot;717&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to Majid al-Dosari">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-billmcn bypostauthor odd alt depth-2 highlander-comment" id="li-comment-718">
+		<div id="comment-718">
+			<div class="comment-author vcard">
+				<img alt="" src="https://2.gravatar.com/avatar/8c82898ff7f2247a7fc0c1e224b4b3de?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn"><a href="https://cornercases.wordpress.com/" rel="external nofollow" class="url">W.P. McNeill</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-718">
+				June 27, 2014 at 7:10 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I’m using Hadoop equivalently to MapReduce. You’re right: MapReduce is the idea, Hadoop is an implementation, but it’s default implementation for anyone who doesn’t work at Google so you can see how I’d make the equivalence.</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=718#respond" onclick="return addComment.moveForm( &quot;comment-718&quot;, &quot;718&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to W.P. McNeill">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-730">
+		<div id="comment-730">
+			<div class="comment-author vcard">
+				<img alt="" src="https://2.gravatar.com/avatar/e6e4ded0d8d249ce88ec702f2866496f?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn">T.E</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-730">
+				July 8, 2014 at 12:56 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for the example; I don’t suppose you’ve been able to retrieve the tree instances for later use?  I had previously used Apache Pig’s python UDFs to train a bunch of Random Forests and persisted the models by pickling the model and returning it to pig as a chararray; is there an effective way to do this with spark?</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=730#respond" onclick="return addComment.moveForm( &quot;comment-730&quot;, &quot;730&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to T.E">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-868">
+		<div id="comment-868">
+			<div class="comment-author vcard">
+				<img alt="" src="https://0.gravatar.com/avatar/c17b66e8932725bbeb3e5fcfc942b780?s=40&d=identicon&r=G" class="avatar avatar-40" height="40" width="40">				<cite class="fn">MJ</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-868">
+				December 1, 2014 at 5:23 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Thanks for the example. While I am starting with pyspark, I wondered how to translate your code to use real data set from a file.<br>
+I started with this :</p>
+<p>import numpy as np<br>
+import pandas as pd<br>
+from sklearn import cross_validation<br>
+from sklearn.cluster import KMeans</p>
+<p>inputDf = pd.read_csv(“auto.csv”, sep=’\t’, \<br>
+names=[‘mpg’,’cylinders’,’displace’,’hp’,’weight’,’accel’,’year’,’origin’])<br>
+import patsy<br>
+formula = ‘origin ~ mpg + cylinders + displace + hp + accel + C(year)’<br>
+y, X = patsy.dmatrices(formula, data=inputDf)#, return_type=’dataframe’)<br>
+X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.2)<br>
+algoModel = KMeans(n_clusters=3)<br>
+samples = sc.parallelize(cross_validation.Bootstrap(len(y)))<br>
+model = samples.map( lambda (index, _): algoModel.fit(X_train[index], y_train[index]).predict(X_test) )<br>
+Predict = model.predict(X_test)</p>
+<p>Here I have two questions :<br>
+– Is there an easy way to compare predicted and true values from y_test?<br>
+– I would like to parallelize the data without bootstraping or at least without raplacement. is it possible?</p>
+<p>Thanks a lot</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/?replytocom=868#respond" onclick="return addComment.moveForm( &quot;comment-868&quot;, &quot;868&quot;, &quot;respond&quot;, &quot;5669&quot; )" aria-label="Reply to MJ">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+			</ol>
+
+
+	
+
+								<div id="respond" class="comment-respond js">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="https://cornercases.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																										
+
+
+												<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="09de4b0dd4"><input type="hidden" name="_wp_http_referer" value="/2013/10/23/example-python-machine-learning-algorithm-on-spark/">
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; -webkit-transition: none; transition: none; height: 0px !important; min-height: 0px !important; font-family: Arial, Helvetica, Tahoma, Verdana, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 24px; width: 618px;" class="autosizejs "></textarea><textarea id="comment" name="comment" title="Enter your comment here..." placeholder="Enter your comment here..." style="height: 44px; overflow: hidden; word-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource.htm" width="24" height="24" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon&forcedefault=y&r=G" alt="Gravatar" width="25" class="no-grav">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text" value=""></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/wplogo.png" alt="WordPress.com Logo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon&forcedefault=y&r=G" alt="Twitter picture" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon&forcedefault=y&r=G" alt="Facebook photo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon&forcedefault=y&r=G" alt="Google+ photo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+	
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p></div>
+
+												<p class="form-submit" style="display: none;">
+							<input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="5669" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="b397e9aea3"></p>
+<input type="hidden" name="genseq" value="1422593370">
+<p style="display: none;"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1422593396619"></form>
+							</div><!-- #respond -->
+			<div style="clear: both"></div>
+</div><!-- #comments -->
+
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+
+		<div id="primary" class="widget-area" role="complementary">
+						<ul class="xoxo">
+
+<li id="search-2" class="widget-container widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://cornercases.wordpress.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s">
+					<input type="submit" id="searchsubmit" value="Search">
+				</div>
+			</form></li>		<li id="recent-posts-2" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+					<li>
+				<a href="https://cornercases.wordpress.com/2015/01/21/visible/">Visible</a>
+						</li>
+					<li>
+				<a href="https://cornercases.wordpress.com/2015/01/21/top-five-suspended-4ths/">Top Five Suspended&nbsp;4ths</a>
+						</li>
+					<li>
+				<a href="https://cornercases.wordpress.com/2015/01/14/tales-from-the-day-after-tomorrow/">Tales from The Day After&nbsp;Tomorrow</a>
+						</li>
+					<li>
+				<a href="https://cornercases.wordpress.com/2015/01/01/urquhart-o-reffic/">Urquhart-o-reffic!</a>
+						</li>
+					<li>
+				<a href="https://cornercases.wordpress.com/2014/12/23/life-lives-you/">Life Lives You</a>
+						</li>
+				</ul>
+		</li><li id="categories-2" class="widget-container widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-30231138"><a href="https://cornercases.wordpress.com/category/belonging-to-the-emperor/">Belonging to the emperor</a>
+</li>
+	<li class="cat-item cat-item-16497634"><a href="https://cornercases.wordpress.com/category/embalmed-ones/">Embalmed ones</a>
+</li>
+	<li class="cat-item cat-item-5506"><a href="https://cornercases.wordpress.com/category/etcetera/">Etcetera</a>
+</li>
+	<li class="cat-item cat-item-3030433"><a href="https://cornercases.wordpress.com/category/fabulous-ones/">Fabulous ones</a>
+</li>
+	<li class="cat-item cat-item-49593853"><a href="https://cornercases.wordpress.com/category/included-in-this-classification/">Included in this classification</a>
+</li>
+	<li class="cat-item cat-item-16498144"><a href="https://cornercases.wordpress.com/category/innumerable-ones/">Innumerable ones</a>
+</li>
+	<li class="cat-item cat-item-439265"><a href="https://cornercases.wordpress.com/category/mermaids/">Mermaids</a>
+</li>
+	<li class="cat-item cat-item-930836"><a href="https://cornercases.wordpress.com/category/stray-dogs/">Stray dogs</a>
+</li>
+	<li class="cat-item cat-item-4341275"><a href="https://cornercases.wordpress.com/category/suckling-pigs/">Suckling pigs</a>
+</li>
+	<li class="cat-item cat-item-50350841"><a href="https://cornercases.wordpress.com/category/those-drawn-with-a-very-fine-camel%e2%80%99s-hair-brush/">Those drawn with a very fine camel’s-hair brush</a>
+</li>
+	<li class="cat-item cat-item-16497734"><a href="https://cornercases.wordpress.com/category/those-that-are-trained/">Those that are trained</a>
+</li>
+	<li class="cat-item cat-item-78964241"><a href="https://cornercases.wordpress.com/category/those-that-at-a-distance-resemble-flies/">Those that at a distance resemble flies</a>
+</li>
+	<li class="cat-item cat-item-53092495"><a href="https://cornercases.wordpress.com/category/those-that-have-just-broken-the-flower-vase/">Those that have just broken the flower vase</a>
+</li>
+	<li class="cat-item cat-item-16497975"><a href="https://cornercases.wordpress.com/category/those-that-tremble-as-if-they-were-mad/">Those that tremble as if they were mad</a>
+</li>
+		</ul>
+</li><li id="linkcat-1356" class="widget-container widget_links"><h3 class="widget-title">Blogroll</h3>
+	<ul class="xoxo blogroll">
+<li><a href="http://bcomposes.wordpress.com/" title="Jason Baldridge’s blog: computational lingusitics, programming (Scala, Java, Python, R), and random acts of skepticism">Bcomposes</a></li>
+<li><a href="http://www.databonanza.com/">Data Bonanza</a></li>
+<li><a href="http://weblogs.swarthmore.edu/burke/">Easily Distracted</a></li>
+<li><a href="http://kristinaleepodesva.com/">Kristina Lee Podesva</a></li>
+<li><a href="http://languagelog.ldc.upenn.edu/nll/">Language Log</a></li>
+<li><a href="http://mathbabe.org/">mathbabe</a></li>
+<li><a href="http://tenser.typepad.com/">Tenser, said the Tensor</a></li>
+<li><a href="http://trochee.net/">Trochaisms</a></li>
+
+	</ul>
+</li>
+<li id="meta-2" class="widget-container widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+			<li><a href="https://en.wordpress.com/signup/?ref=wplogin">Register</a></li>			<li><a href="https://cornercases.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://cornercases.wordpress.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://cornercases.wordpress.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="http://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
+</li>			</ul>
+		</div><!-- #primary .widget-area -->
+
+	</div><!-- #main -->
+
+	<div id="footer" role="contentinfo">
+		<div id="colophon">
+
+
+
+			<div id="site-info">
+				<a href="https://cornercases.wordpress.com/" title="Corner Cases" rel="home">
+					Corner Cases				</a>
+			</div><!-- #site-info -->
+
+			<div id="site-generator">
+				<a href="https://wordpress.com/themes/twentyten/" title="Learn more about this theme">The Twenty Ten Theme</a>.				<a href="https://wordpress.com/?ref=footer_website">Create a free website or blog at WordPress.com</a>.
+			</div><!-- #site-generator -->
+
+		</div><!-- #colophon -->
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<!-- wpcom_wp_footer -->
+<script type="text/javascript" src="https://0.gravatar.com/js/gprofiles.js?ver=201505x"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/wpgroho.js"></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-aa167e1668cdc551bb7beab175ac0ae5">
+	</div>
+	<div class="grofile-hash-map-eac6c82e23cbbbce4dae0fd0602e7d49">
+	</div>
+	<div class="grofile-hash-map-c5f4c5f541a6006b7a8529b547ec69cb">
+	</div>
+	<div class="grofile-hash-map-8c82898ff7f2247a7fc0c1e224b4b3de">
+	</div>
+	<div class="grofile-hash-map-e6e4ded0d8d249ce88ec702f2866496f">
+	</div>
+	<div class="grofile-hash-map-c17b66e8932725bbeb3e5fcfc942b780">
+	</div>
+	</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/cornercases.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/cornercases.wordpress.com\/wp-login.php?action=logout&_wpnonce=2073d9c48d","homeURL":"https:\/\/cornercases.wordpress.com\/","postID":"5669","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"0","userIsLoggedIn":"","isJetpack":"0"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource(2)"></script>
+
+	<div id="bit" class="loggedout-follow-normal" style="bottom: -294px;">
+		<a class="bsub" href="javascript:void(0)"><span id="bsub-text">Follow</span></a>
+		<div id="bitsubscribe">
+
+					<h3><label for="loggedout-follow-field">Follow “Corner Cases”</label></h3>
+
+			<form action="https://subscribe.wordpress.com/" method="post" accept-charset="utf-8" id="loggedout-follow">
+			<p>Get every new post delivered to your Inbox.</p>
+
+			<p id="loggedout-follow-error" style="display: none;"></p>
+
+						<p class="bit-follow-count">Join 254 other followers</p>
+			<p><input type="email" name="email" value="Enter your email address" onfocus="this.value=(this.value==&quot;Enter your email address&quot;) ? &quot;&quot; : this.value;" onblur="this.value=(this.value==&quot;&quot;) ? &quot;Enter your email address&quot; : this.value;" id="loggedout-follow-field"></p>
+
+			<input type="hidden" name="action" value="subscribe">
+			<input type="hidden" name="blog_id" value="18982862">
+			<input type="hidden" name="source" value="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/">
+			<input type="hidden" name="sub-type" value="loggedout-follow">
+
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="8ad4b983ff"><input type="hidden" name="_wp_http_referer" value="/2013/10/23/example-python-machine-learning-algorithm-on-spark/">
+			<p id="bsub-subscribe-button"><input type="submit" value="Sign me up"></p>
+			</form>
+					<div id="bsub-credit"><a href="https://wordpress.com/?ref=lof">Build a website with WordPress.com</a></div>
+		</div><!-- #bitsubscribe -->
+	</div><!-- #bit -->
+
+	<script type="text/javascript">
+		WPCOM_sharing_counts = {"https:\/\/cornercases.wordpress.com\/2013\/10\/23\/example-python-machine-learning-algorithm-on-spark\/":5669}	</script>
+	
+		<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-google-plus-1' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomgoogle-plus-1', 'menubar=1,resizable=1,width=480,height=550' );
+				return false;
+			});
+		});
+		</script>
+				<iframe src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/master.htm" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		<script type="text/javascript">
+		//<![CDATA[
+			var jetpackLikesWidgetQueue = [];
+			var jetpackLikesWidgetBatch = [];
+			var jetpackLikesMasterReady = false;
+
+			function JetpackLikespostMessage( message, target ) {
+				if ( "string" === typeof message ){
+					try{
+						message = JSON.parse( message );
+					}
+					catch(e) {
+						return;
+					}
+				}
+
+				pm( {
+					target: target,
+					type: 'likesMessage',
+					data: message,
+					origin: '*'
+				} );
+			}
+
+			function JetpackLikesBatchHandler() {
+				var requests = [];
+				jQuery( 'div.jetpack-likes-widget-unloaded' ).each( function( i ) {
+					if ( jetpackLikesWidgetBatch.indexOf( this.id ) > -1 )
+						return;
+					jetpackLikesWidgetBatch.push( this.id );
+					var regex = /like-(post|comment)-wrapper-(\d+)-(\d+)-(\w+)/;
+					var match = regex.exec( this.id );
+					if ( ! match || match.length != 5 )
+						return;
+
+					var info = {
+						blog_id: match[2],
+						width:   this.width
+					};
+
+					if ( 'post' == match[1] ) {
+						info.post_id = match[3];
+					} else if ( 'comment' == match[1] ) {
+						info.comment_id = match[3];
+					}
+
+					info.obj_id = match[4];
+
+					requests.push( info );
+				});
+
+				if ( requests.length > 0 ) {
+					JetpackLikespostMessage( { event: 'initialBatch', requests: requests }, window.frames['likes-master'] );
+				}
+			}
+
+			function JetpackLikesMessageListener( event ) {
+				if ( "undefined" == typeof event.event )
+					return;
+
+				if ( 'masterReady' == event.event ) {
+					jQuery( document ).ready( function() {
+						jetpackLikesMasterReady = true;
+
+						var stylesData = {
+								event: 'injectStyles'
+						};
+
+						if ( jQuery( 'iframe.admin-bar-likes-widget' ).length > 0 ) {
+							JetpackLikespostMessage( { event: 'adminBarEnabled' }, window.frames[ 'likes-master' ] );
+
+							stylesData.adminBarStyles = {
+								background: jQuery( '#wpadminbar .quicklinks li#wp-admin-bar-wpl-like > a' ).css( 'background' ),
+								isRtl: ( 'rtl' == jQuery( '#wpadminbar' ).css( 'direction' ) )
+							};
+						}
+
+						if ( !window.addEventListener )
+							jQuery( '#wp-admin-bar-admin-bar-likes-widget' ).hide();
+
+						stylesData.textStyles = {
+							color: jQuery( '.sd-text-color').css( 'color' ),
+							fontFamily: jQuery( '.sd-text-color' ).css( 'font-family' ),
+							fontSize: jQuery( '.sd-text-color' ).css( 'font-size' ),
+							direction: jQuery( '.sd-text-color' ).css( 'direction' ),
+							fontWeight: jQuery( '.sd-text-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-text-color' ).css( 'font-style' ),
+							textDecoration: jQuery( '.sd-text-color' ).css('text-decoration')
+						};
+
+						stylesData.linkStyles = {
+							color: jQuery( '.sd-link-color' ).css('color'),
+							fontFamily: jQuery( '.sd-link-color' ).css('font-family'),
+							fontSize: jQuery( '.sd-link-color' ).css('font-size'),
+							textDecoration: jQuery( '.sd-link-color' ).css('text-decoration'),
+							fontWeight: jQuery( '.sd-link-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-link-color' ).css( 'font-style' )
+						};
+
+						JetpackLikespostMessage( stylesData, window.frames[ 'likes-master' ] );
+
+						JetpackLikesBatchHandler();
+
+						jQuery( document ).on( 'inview', 'div.jetpack-likes-widget-unloaded', function() {
+							jetpackLikesWidgetQueue.push( this.id );
+						});
+					});
+				}
+
+				if ( 'showLikeWidget' == event.event ) {
+					jQuery( '#' + event.id + ' .post-likes-widget-placeholder'  ).fadeOut( 'fast', function() {
+						jQuery( '#' + event.id + ' .post-likes-widget' ).fadeIn( 'fast', function() {
+							JetpackLikespostMessage( { event: 'likeWidgetDisplayed', blog_id: event.blog_id, post_id: event.post_id, obj_id: event.obj_id }, window.frames['likes-master'] );
+						});
+					});
+				}
+
+				if ( 'clickReblogFlair' == event.event ) {
+					wpcom_reblog.toggle_reblog_box_flair( event.obj_id );
+				}
+
+				if ( 'showOtherGravatars' == event.event ) {
+					var $container = jQuery( '#likes-other-gravatars' );
+					var $list = $container.find( 'ul' );
+
+					$container.hide();
+					$list.html( '' );
+
+					$container.find( '.likes-text span' ).text( event.total );
+
+					jQuery.each( event.likers, function( i, liker ) {
+						$list.append( '<li class="' + liker.css_class + '"><a href="' + liker.profile_URL + '" class="wpl-liker" rel="nofollow" target="_parent"><img src="' + liker.avatar_URL + '" alt="' + liker.name + '" width="30" height="30" style="padding-right: 3px;" /></a></li>');
+					} );
+
+					var offset = jQuery( "[name='" + event.parent + "']" ).offset();
+
+					$container.css( 'left', offset.left + event.position.left - 10 + 'px' );
+					$container.css( 'top', offset.top + event.position.top - 33 + 'px' );
+
+					var rowLength = Math.floor( event.width / 37 );
+					var height = ( Math.ceil( event.likers.length / rowLength ) * 37 ) + 13;
+					if ( height > 204 ) {
+						height = 204;
+					}
+
+					$container.css( 'height', height + 'px' );
+					$container.css( 'width', rowLength * 37 - 7 + 'px' );
+
+					$list.css( 'width', rowLength * 37 + 'px' );
+
+					$container.fadeIn( 'slow' );
+
+					var scrollbarWidth = $list[0].offsetWidth - $list[0].clientWidth;
+					if ( scrollbarWidth > 0 ) {
+						$container.width( $container.width() + scrollbarWidth );
+						$list.width( $list.width() + scrollbarWidth );
+					}
+				}
+			}
+
+			pm.bind( 'likesMessage', function(e) { JetpackLikesMessageListener(e); } );
+
+			jQuery( document ).click( function( e ) {
+				var $container = jQuery( '#likes-other-gravatars' );
+
+				if ( $container.has( e.target ).length === 0 ) {
+					$container.fadeOut( 'slow' );
+				}
+			});
+
+			function JetpackLikesWidgetQueueHandler() {
+				var wrapperID;
+				if ( ! jetpackLikesMasterReady ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+					return;
+				}
+
+				if ( jetpackLikesWidgetQueue.length > 0 ) {
+					// We may have a widget that needs creating now
+					var found = false;
+					while( jetpackLikesWidgetQueue.length > 0 ) {
+						// Grab the first member of the queue that isn't already loading.
+						wrapperID = jetpackLikesWidgetQueue.splice( 0, 1 )[0];
+						if ( jQuery( '#' + wrapperID ).hasClass( 'jetpack-likes-widget-unloaded' ) ) {
+							found = true;
+							break;
+						}
+					}
+					if ( ! found ) {
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				} else if ( jQuery( 'div.jetpack-likes-widget-unloaded' ).length > 0 ) {
+					// Grab any unloaded widgets for a batch request
+					JetpackLikesBatchHandler();
+
+					// Get the next unloaded widget
+					wrapperID = jQuery( 'div.jetpack-likes-widget-unloaded' ).first()[0].id;
+					if ( ! wrapperID ) {
+						// Everything is currently loaded
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				}
+
+				if ( 'undefined' === typeof wrapperID ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+					return;
+				}
+
+				var $wrapper = jQuery( '#' + wrapperID );
+				$wrapper.find( 'iframe' ).remove();
+
+				if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='22px' width='68px' frameBorder='0' scrolling='no' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				} else {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='55px' width='100%' frameBorder='0' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				}
+
+				$wrapper.removeClass( 'jetpack-likes-widget-unloaded' ).addClass( 'jetpack-likes-widget-loading' );
+
+				$wrapper.find( 'iframe' ).load( function( e ) {
+					var $iframe = jQuery( e.target );
+					$wrapper.removeClass( 'jetpack-likes-widget-loading' ).addClass( 'jetpack-likes-widget-loaded' );
+
+					JetpackLikespostMessage( { event: 'loadLikeWidget', name: $iframe.attr( 'name' ), width: $iframe.width() }, window.frames[ 'likes-master' ] );
+
+					if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+						$wrapper.find( 'iframe' ).Jetpack( 'resizeable' );
+					}
+				});
+				setTimeout( JetpackLikesWidgetQueueHandler, 250 );
+			}
+			JetpackLikesWidgetQueueHandler();
+		//]]>
+		</script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/form.js"></script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource(3)"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://s0.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://s0.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?m=1363304414g&amp;ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var JetpackEmojiSettings = {"base_url":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/emoji\/twemoji\/"};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/saved_resource(4)"></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/w.js" type="text/javascript" async="" defer=""></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'18982862','blog_tz':'-8','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'18982862','v':'wpcom','tz':'-8','user_id':'0','post':'5669','subd':'cornercases'}]);
+_stq.push(['extra', {'crypt':'UE5XaGUuOTlwaD85flAmcm1mcmZsaDhkV11YdWtpP0NsWnVkPS9sL0ViLndld3B3Tkl8YmRCSmtFZUVGd1czWm0mOWFuaVh1eC5bVUlHTGxWLFVFamExZ1BNNnlGamE9Und4TUhZKz9DcixRTH5uZUp8c1NLUm4uT0Z6Ln5PLENzMVUlYkMlTk9uMW9WR3otSGlKdnclNl9Cc3NGRFFHNj1DZDJLemolNUdaSlhJUHMldGhdJWF1T0YwQk9ieS8wVzFbJkVoLXxCPyVnJlFxXTFMQ2QvQ1tuM1FNRm0teXRBNllEflZUUjFqaWw9d3RwfE9DU0NLdDJtTDR0amMvRCtXRz89XVVNP2Z+fmYvdWpVc2w9LWZnaVVIalBoRmhWSTc2b0xiPTc4OF1iTGY='}]);
+_stq.push([ 'clickTrackerInit', '18982862', '5669' ]);
+	</script>
+<noscript>&lt;img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /&gt;</noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+<div id="sharing_email" style="display: none;">
+		<form action="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/Example Python Machine Learning Algorithm on Spark   Corner Cases.htm" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="">
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="">
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="">
+
+			
+			<div class="recaptcha" id="sharing_recaptcha"></div><input type="hidden" name="recaptcha_public_key" id="recaptcha_public_key" value="6LcYW8MSAAAAADBAuEH9yaPcF7lWh11Iq62ZKtoo">
+			<img style="float: right; display: none" class="loading" src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/loading.gif" alt="loading" width="16" height="16">
+			<input type="submit" value="Send Email" class="sharing_send">
+			<a href="https://cornercases.wordpress.com/2013/10/23/example-python-machine-learning-algorithm-on-spark/#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div><img src="./Example Python Machine Learning Algorithm on Spark   Corner Cases_files/g.gif" id="wpstats"></body></html>

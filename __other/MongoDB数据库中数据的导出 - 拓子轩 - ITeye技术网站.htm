@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0039)http://tuozixuan.iteye.com/blog/1321994 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站</title>
+    <meta name="description" content="   1. 在mongodb安装目录的bin目录下有一个数据导出工具：mongoexport.exe，我们可以打开一个命令窗口，切换到该目录下并执行mongoexport，就可以看到使用该工具的很多参数说明。      假设mongodb的安装目录为D:\program\mongodb，那么可以通过以下方式了解导出工具的使用：  &gt;d:  &gt;D:\program\mongodb\bin  ...">
+    <meta name="keywords" content="Mongodb, nosql, 数据库, 数据, 导出 MongoDB数据库中数据的导出">
+    <link rel="shortcut icon" href="http://tuozixuan.iteye.com/images/favicon.ico" type="image/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="http://tuozixuan.iteye.com/open_search.xml" title="ITeye">
+    <link href="http://tuozixuan.iteye.com/rss" rel="alternate" title="拓子轩" type="application/rss+xml">
+    <link href="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/blog.css" media="screen" rel="stylesheet" type="text/css">
+<link href="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/orange.css" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/ga.js"></script><script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/application.js" type="text/javascript"></script><style type="text/css"></style>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/hotkey.js" type="text/javascript"></script>
+  <script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/code_favorites.js" type="text/javascript"></script>
+<script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/weiboshare.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="header">
+      <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+  <a href="http://tuozixuan.iteye.com/blog/1321994#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>
+  <div class="quick_menu" style="display:none;">
+    <a target="_blank" href="http://job.iteye.com/iteye">招聘</a>
+    <a href="http://www.iteye.com/search">搜索</a>
+  </div>
+</div>
+
+      <div id="user_nav">
+      <a href="http://tuozixuan.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://tuozixuan.iteye.com/login">登录</a>
+    <a href="http://tuozixuan.iteye.com/signup" class="nobg">注册</a>
+  </div>
+
+    </div>
+
+    <div id="page">
+      <div id="branding" class="clearfix">
+        <div id="blog_name">
+          <h1><a href="http://tuozixuan.iteye.com/">拓子轩</a></h1>
+        </div>
+        <div id="fd"></div>
+        <div id="blog_navbar">
+          <ul>
+            <li class="blog_navbar_for"><a href="http://tuozixuan.iteye.com/"><strong>博客</strong></a></li>
+            <li><a href="http://tuozixuan.iteye.com/weibo">微博</a></li>
+            <li><a href="http://tuozixuan.iteye.com/album">相册</a></li>
+            <li><a href="http://tuozixuan.iteye.com/link">收藏</a></li>
+            <li><a href="http://tuozixuan.iteye.com/blog/guest_book">留言</a></li>
+            <li><a href="http://tuozixuan.iteye.com/blog/profile">关于我</a></li>
+          </ul>
+    
+          <div class="search">
+            <form action="http://tuozixuan.iteye.com/blog/search" method="get">
+              <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text" value="">
+              <input class="submit_search" type="submit" value="">
+            </form>
+          </div> 
+          <div id="fd"></div>         
+        </div>
+      </div>
+      
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="h-entry" style="display:none">
+  <a href="http://tuozixuan.iteye.com/" class="p-author" target="_blank">拓子轩</a>
+</div>
+
+
+<div class="blog_main">
+  <div class="blog_title">
+    <h3>
+      <a href="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站.htm">MongoDB数据库中数据的导出</a>
+      <em class="actions">      </em>
+    </h3>
+    <ul class="blog_categories"><strong>博客分类：</strong> <li><a href="http://tuozixuan.iteye.com/category/196391">nosql</a></li> </ul>
+        <div class="news_tag"><a href="http://www.iteye.com/blogs/tag/Mongodb">Mongodb</a><a href="http://www.iteye.com/blogs/tag/nosql">nosql</a><a href="http://www.iteye.com/blogs/tag/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a><a href="http://www.iteye.com/blogs/tag/%E6%95%B0%E6%8D%AE">数据</a><a href="http://www.iteye.com/blogs/tag/%E5%AF%BC%E5%87%BA">导出</a>&nbsp;</div>
+  </div>
+
+  <div id="blog_content" class="blog_content">
+    <p>&nbsp;</p>
+<p>1. 在mongodb安装目录的bin目录下有一个数据导出工具：mongoexport.exe，我们可以打开一个命令窗口，切换到该目录下并执行mongoexport，就可以看到使用该工具的很多参数说明。</p>
+<p>&nbsp;&nbsp;&nbsp; 假设mongodb的安装目录为D:\program\mongodb，那么可以通过以下方式了解导出工具的使用：</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span>d:</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span>D:\program\mongodb\bin</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span>mongoexport</p>
+<p>&nbsp;--help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; produce help message<br>&nbsp;-v [ --verbose ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be more verbose (include multiple time<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; verbosity e.g. -vvvvv)<br>&nbsp;--version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print the program's version and exit</p>
+<p>........</p>
+<p>&nbsp;</p>
+<p>2. 常用数据导出方式</p>
+<p>&nbsp;&nbsp;&nbsp; 首先，在MongoDB中新增一个localdb，以及创建集合user并插入一些对象。</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span>use localdb</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span>db.user.insert({"name" : "ming", "age" : 2 })</p>
+<p><strong><span style="color: #ff0000;">&gt;</span></strong>db.user.insert({"name" : "lisi", "age" : 20 })</p>
+<p>&nbsp;</p>
+<p>&nbsp; 那么，接下来就可以使用以下方式导出user表中的数据。其中，-d代表指明从哪个数据库中导出数据；-c代表从哪个集合中导出数据；-o指明导出的数据输出到哪个文件中。</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span><span style="color: #008000;">mongoexport -d localdb -c user -o user.dat</span></p>
+<p>&nbsp;</p>
+<p>&nbsp; 导出成功后，打开user.dat文件，导出的数据如下所示：</p>
+<p>{ "_id" : { "$oid" : "4eed9f9ca939118694cf05e4" }, "name" : "ming", "age" : 2 }<br>{ "_id" : { "$oid" : "4ef1f3cf3bd18218e6bdfa31" }, "name" : "lisi", "age" : "20" }</p>
+<p>&nbsp;</p>
+<p>3. 导出为CVS文件</p>
+<p>如果要导出集合中指定字段的数据存到CVS文件中，可以使用如下命令：</p>
+<p><span style="color: #ff0000;"><strong>&gt;</strong></span><span style="color: #008000;">mongoexport -d localdb -c user -f _id,name --csv&nbsp;-o user.csv&nbsp;</span></p>
+<p>导出的user.cvs文件的内容如下：</p>
+<p>{ "_id" : { "$oid" : "4eed9f9ca939118694cf05e4" }, "name" : "ming" }<br>{ "_id" : { "$oid" : "4ef1f3cf3bd18218e6bdfa31" }, "name" : "lisi" }</p>
+<p>&nbsp;</p>
+<p>4. mongoexport参数列表</p>
+<p>options:<br>&nbsp; --help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;produce help message<br>&nbsp; -v [ --verbose ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be more verbose (include multiple times for more verbosity e.g. -vvvvv)<br>&nbsp; --version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;print the program's version and exit<br>&nbsp; -h [ --host ] arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mongo host to connect to ( &lt;set name&gt;/s1,s2 for&nbsp;sets)<br>&nbsp; --port arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; server port. Can also use --host hostname:port<br>&nbsp; --ipv6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;enable IPv6 support (disabled by default)<br>&nbsp; -u [ --username ] arg&nbsp;&nbsp;&nbsp;&nbsp; username<br>&nbsp; -p [ --password ] arg&nbsp;&nbsp;&nbsp;&nbsp; password<br>&nbsp; --dbpath arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directly access mongod database files in the given<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path, instead of connecting to a mongod&nbsp; server -<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; needs to lock the data directory, so cannot be used<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a mongod is currently accessing the same path<br>&nbsp; --directoryperdb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if dbpath specified, each db is in a separate directory<br>&nbsp; --journal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enable journaling<br>&nbsp; -d [ --db ] arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; database to use<br>&nbsp; -c [ --collection ] arg&nbsp;&nbsp; collection to use (some commands)<br>&nbsp; -f [ --fields ] arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comma separated list of field names e.g. -f name,age<br>&nbsp; --fieldFile arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file with fields names - 1 per line<br>&nbsp; -q [ --query ] arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query filter, as a JSON string<br>&nbsp; --csv&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;export to csv instead of json<br>&nbsp; -o [ --out ] arg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output file; if not specified, stdout is used<br>&nbsp; --jsonArray&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output to a json array rather than one object per line<br>&nbsp; -k [ --slaveOk ] arg (=1) use secondaries for export if available, default&nbsp;true</p>
+<p>&nbsp;</p>
+  </div>
+
+  
+
+  
+  
+  <iframe src="about:blank" scrolling="no" width="0" height="0" frameborder="0" style="display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 468px 60px;"></iframe>
+  
+  <div id="bottoms" class="clearfix">
+    <div id="digg_bottom" class="clearfix"><div class="digged"><strong>0</strong> <br>顶</div><div class="digged"><strong>0</strong> <br>踩</div></div>
+    <div id="share_weibo">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/tec.jpg"></a>
+    </div>
+  </div>
+
+  <div class="blog_nav">
+    <div class="pre_next">
+      <a href="http://tuozixuan.iteye.com/blog/1322060" class="next" title="Eclipse常用快捷键 ">Eclipse常用快捷键 </a>
+      |
+      <a href="http://tuozixuan.iteye.com/blog/1315280" class="pre" title="Mongodb数据库入门">Mongodb数据库入门</a>
+    </div>
+  </div>
+  <div class="blog_bottom">
+    <ul>
+      <li>2011-12-22 21:50</li>
+      <li>浏览 4442</li>
+      <li><a href="http://tuozixuan.iteye.com/blog/1321994#comments">评论(0)</a></li>
+      
+      
+      <li>分类:<a href="http://www.iteye.com/blogs/category/database">数据库</a></li>      
+      <li class="last"><a href="http://www.iteye.com/wiki/blog/1321994" target="_blank" class="more">相关推荐</a></li>
+    </ul>
+  </div>
+
+  <div class="blog_comment">
+    <h5>评论</h5>
+    <a id="comments" name="comments"></a>
+    
+    
+    
+  </div>
+
+  <div class="blog_comment">
+    <h5>发表评论</h5>
+            <p style="text-align:center; margin-top:30px;margin-bottom:0px;"><a href="http://tuozixuan.iteye.com/login" style="background-color:white;"> <img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"></a><a href="http://tuozixuan.iteye.com/login">  您还没有登录,请您登录后再发表评论 </a></p>
+      </div>
+</div>
+
+
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+  $$('#main .blog_content pre[name=code]').each(function(pre, index){ // blog content
+    var post_id = 1321994;
+    var location = window.location;
+    source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+    pre.writeAttribute('codeable_id', post_id);
+    pre.writeAttribute('codeable_type', "Blog");
+    pre.writeAttribute('source_url', source_url);
+    pre.writeAttribute('pre_index', index);
+    pre.writeAttribute('title', 'MongoDB数据库中数据的导出');
+  });
+
+  fix_image_size($$('div.blog_content img'), 700);
+
+  function processComment() {
+    $$('#main .blog_comment > div').each(function(comment){// comment
+      var post_id = comment.id.substr(2);
+      $$("#"+comment.id+" pre[name=code]").each(function(pre, index){
+        var location = window.location;
+        source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+        source_url += "#" + comment.id;
+        pre.writeAttribute('codeable_id', post_id);
+        pre.writeAttribute('codeable_type', "BlogComment");
+        pre.writeAttribute('source_url', source_url);
+        pre.writeAttribute('pre_index', index);
+        pre.writeAttribute('title', 'MongoDB数据库中数据的导出');
+      });
+    });
+  }
+
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'BlogComment'},
+      onSuccess:function(response){editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+
+  code_favorites_init();
+  processComment();
+  new WeiboShare({share_buttons: $('share_weibo'), img_scope: $('blog_content')});
+</script>
+
+
+
+
+        </div>
+
+        <div id="local">
+          <div class="local_top"></div>
+          <div id="blog_owner">
+  <div id="blog_owner_logo"><a href="http://tuozixuan.iteye.com/"><img alt="拓子轩的博客" class="logo" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/470e4e7c-ce78-38be-867a-84161f92abe5.bmp" title="拓子轩的博客: 拓子轩" width=""></a></div>
+  <div id="blog_owner_name">拓子轩</div>
+</div>
+
+          <div id="blog_actions">
+            <ul>
+              <li>浏览: 35446 次</li>
+              <li>性别: <img alt="Icon_minigender_1" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/icon_minigender_1.gif" title="男"></li>
+              <li>来自: 深圳</li>
+              <li><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/offline.gif"></li>
+              
+            </ul>
+          </div>
+          <div id="user_visits" class="clearfix">
+            <h5>最近访客 <span style="font-weight:normal;font-size:12px;padding-left:30px;"><a href="http://tuozixuan.iteye.com/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://zx-code.iteye.com/" target="_blank"><img alt="zx_code的博客" class="logo" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/user-logo-thumb.gif" title="zx_code的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://zx-code.iteye.com/" target="_blank" title="zx_code">zx_code</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://jiangxuwen7515.iteye.com/" target="_blank"><img alt="jiangxuwen7515的博客" class="logo" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/user-logo-thumb.gif" title="jiangxuwen7515的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://jiangxuwen7515.iteye.com/" target="_blank" title="jiangxuwen7515">jiangxuwen7515</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://dylinshi126.iteye.com/" target="_blank"><img alt="dylinshi126的博客" class="logo" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/user-logo-thumb.gif" title="dylinshi126的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://dylinshi126.iteye.com/" target="_blank" title="dylinshi126">dylinshi126</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://daisydong.iteye.com/" target="_blank"><img alt="daisydong的博客" class="logo" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/user-logo-thumb.gif" title="daisydong的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://daisydong.iteye.com/" target="_blank" title="daisydong">daisydong</a></div>
+              </div>
+            
+          </div>
+
+          
+
+                      <div id="blog_menu">
+              <h5>文章分类</h5>
+              <ul>
+                <li><a href="http://tuozixuan.iteye.com/">全部博客 (62)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/155322">js (7)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/188307">java (7)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/190970">ssh (2)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/196391">nosql (4)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/196414">db (1)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/197488">note (15)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/198348">linux (3)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/199437">share (21)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/202158">python (2)</a></li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/category/203515">华山论剑 (3)</a></li>
+                
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>社区版块</h5>
+              <ul>
+                <li><a href="http://tuozixuan.iteye.com/blog/news">我的资讯</a> (0)</li>
+                <li>
+                  <a href="http://tuozixuan.iteye.com/blog/post">我的论坛</a> (1)
+                </li>
+                <li><a href="http://tuozixuan.iteye.com/blog/answered_problems">我的问答</a> (0)</li>
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>存档分类</h5>
+              <ul>
+                
+                  <li><a href="http://tuozixuan.iteye.com/blog/monthblog/2014-03">2014-03</a> (1)</li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/blog/monthblog/2013-05">2013-05</a> (1)</li>
+                
+                  <li><a href="http://tuozixuan.iteye.com/blog/monthblog/2013-02">2013-02</a> (1)</li>
+                
+                <li><a href="http://tuozixuan.iteye.com/blog/monthblog_more">更多存档...</a></li>
+              </ul>
+            </div>
+            
+            
+
+            <div id="guest_books">
+              <h5>最新评论</h5>
+              <ul>
+                
+                <li>
+                  <a href="http://liu47a.iteye.com/" target="_blank" title="liu47a">liu47a</a>： 
+                  1.首尾相连2.8天3.19990014.“我不会被烧死，我将 ...<br>
+                  <a href="http://tuozixuan.iteye.com/blog/1393747#bc2259346">思维测试题一</a>
+                </li>
+                
+                <li>
+                  <a href="http://liu47a.iteye.com/" target="_blank" title="liu47a">liu47a</a>： 
+                  3 1999001<br>
+                  <a href="http://tuozixuan.iteye.com/blog/1393747#bc2259343">思维测试题一</a>
+                </li>
+                
+                <li>
+                  <a href="http://tuozixuan.iteye.com/" target="_blank" title="拓子轩">拓子轩</a>： 
+                   ...<br>
+                  <a href="http://tuozixuan.iteye.com/blog/1323566#bc2240262">servlet基础</a>
+                </li>
+                
+                <li>
+                  <a href="http://ss321pp076.iteye.com/" target="_blank" title="ss321pp076">ss321pp076</a>： 
+                  总结的很全面但如果有的地方写得更加详细对初学者来理解帮助要大些 ...<br>
+                  <a href="http://tuozixuan.iteye.com/blog/1323566#bc2240057">servlet基础</a>
+                </li>
+                
+                <li>
+                  <a href="http://tuozixuan.iteye.com/" target="_blank" title="拓子轩">拓子轩</a>： 
+                  &nbsp;&nbsp;<br>
+                  <a href="http://tuozixuan.iteye.com/blog/1315280#bc2239387">Mongodb数据库入门</a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="local_bottom"></div>
+          
+        </div>
+      </div>
+
+      <div id="footer" class="clearfix">
+        <div id="copyright">
+          <hr>
+          声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br>
+          © 2003-2015 ITeye.com.   All rights reserved.  [ 京ICP证110151号  京公网安备110105010620 ]
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/saved_resource" width="0" height="0">
+
+<script src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/tracking.js" type="text/javascript"></script>
+
+    
+<script type="text/javascript" src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/tongji.js"></script><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/tongji.do" border="0" width="1" height="1"><a href="http://tongji.linezing.com/report.html?unit_id=2424335" target="_blank"><img src="./MongoDB数据库中数据的导出 - 拓子轩 - ITeye技术网站_files/icon1.gif" border="0" alt="量子统计"></a>
+      
+    
+  
+
+</body></html>

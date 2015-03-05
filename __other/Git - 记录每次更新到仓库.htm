@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<!-- saved from url=(0134)http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93 -->
+<html lang="en" class=" js fontface webkit chrome windows no-ie8"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta charset="utf-8">
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<script type="text/javascript" async="" id="gauges-tracker" data-site-id="4f919d1df5a1f504b3000026" src="./Git - 记录每次更新到仓库_files/track.js"></script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"beacon-6.newrelic.com","errorBeacon":"bam.nr-data.net","licenseKey":"20c4a8c482","applicationID":"454369","transactionName":"dl5cQkcLXF9XRBoHW1paQRlGAVNHW1lb","queueTime":4,"applicationTime":257,"ttGuid":"","agentToken":null,"agent":"js-agent.newrelic.com/nr-515.min.js"}</script>
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(n,t,e){function r(e){if(!t[e]){var o=t[e]={exports:{}};n[e][0].call(o.exports,function(t){var o=n[e][1][t];return r(o?o:t)},o,o.exports)}return t[e].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<e.length;o++)r(e[o]);return r}({QJf3ax:[function(n,t){function e(n){function t(t,e,a){n&&n(t,e,a),a||(a={});for(var u=c(t),f=u.length,s=i(a,o,r),p=0;f>p;p++)u[p].apply(s,e);return s}function a(n,t){f[n]=c(n).concat(t)}function c(n){return f[n]||[]}function u(){return e(t)}var f={};return{on:a,emit:t,create:u,listeners:c,_events:f}}function r(){return{}}var o="nr@context",i=n("gos");t.exports=e()},{gos:"7eSDFh"}],ee:[function(n,t){t.exports=n("QJf3ax")},{}],gos:[function(n,t){t.exports=n("7eSDFh")},{}],"7eSDFh":[function(n,t){function e(n,t,e){if(r.call(n,t))return n[t];var o=e();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(n,t,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return n[t]=o,o}var r=Object.prototype.hasOwnProperty;t.exports=e},{}],D5DuLP:[function(n,t){function e(n,t,e){return r.listeners(n).length?r.emit(n,t,e):(o[n]||(o[n]=[]),void o[n].push(t))}var r=n("ee").create(),o={};t.exports=e,e.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(n,t){t.exports=n("D5DuLP")},{}],XL7HBI:[function(n,t){function e(n){var t=typeof n;return!n||"object"!==t&&"function"!==t?-1:n===window?0:i(n,o,function(){return r++})}var r=1,o="nr@id",i=n("gos");t.exports=e},{gos:"7eSDFh"}],id:[function(n,t){t.exports=n("XL7HBI")},{}],loader:[function(n,t){t.exports=n("G9z0Bl")},{}],G9z0Bl:[function(n,t){function e(){var n=v.info=NREUM.info;if(n&&n.licenseKey&&n.applicationID&&f&&f.body){c(d,function(t,e){t in n||(n[t]=e)}),v.proto="https"===l.split(":")[0]||n.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var t=f.createElement("script");t.src=v.proto+n.agent,f.body.appendChild(t)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=n("handle"),c=n(1),u=window,f=u.document,s="addEventListener",p="attachEvent",l=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-515.min.js"},v=t.exports={offset:i(),origin:l,features:{}};f[s]?(f[s]("DOMContentLoaded",o,!1),u[s]("load",e,!1)):(f[p]("onreadystatechange",r),u[p]("onload",e)),a("mark",["firstbyte",i()])},{1:11,handle:"D5DuLP"}],11:[function(n,t){function e(n,t){var e=[],o="",i=0;for(o in n)r.call(n,o)&&(e[i]=t(o,n[o]),i+=1);return e}var r=Object.prototype.hasOwnProperty;t.exports=e},{}]},{},["G9z0Bl"]);</script>
+
+  <title>Git - 记录每次更新到仓库</title>
+
+  <link href="http://git-scm.com/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link rel="alternate" href="http://git-scm.com/blog.rss" type="application/rss+xml" title="Git - Blog">
+
+  <link rel="stylesheet" media="screen" href="http://git-scm.com/assets/git-scm-51dae02d97f150a7e22b24f0c7497beb.css">
+  <script src="./Git - 记录每次更新到仓库_files/modernizr-00467669c322384bf7496c4c8a3a9923.js"></script><style type="text/css"></style>
+<script src="./Git - 记录每次更新到仓库_files/modernizr-tests-ccd0969e74790fbc9b3b7aaf586aeb1a.js"></script>
+  <!--[if (gte IE 6)&(lte IE 8)]>
+  <script src="/javascripts/selectivizr-min.js"></script>
+  <![endif]-->
+
+  <script src="https://use.typekit.com/jsq2fql.js" type="text/javascript"></script>
+  <script>
+    //<![CDATA[
+      try{Typekit.load();}catch(e){}
+    //]]>
+  </script>
+
+</head>
+
+<body id="documentation">
+
+  <div class="inner">
+    <header>
+  <a href="http://git-scm.com/"><img src="./Git - 记录每次更新到仓库_files/logo@2x.png" width="110" height="46" alt="Git"></a>
+  <span id="tagline">
+    <em>--</em>fast-version-control
+  </span>
+
+  <form id="search" action="http://git-scm.com/search/results">
+    <input id="search-text" name="search" placeholder="Search entire site..." autocomplete="off" type="text">
+  </form>
+  <div id="search-results"></div>
+</header>
+  </div> <!-- .inner -->
+
+    <div class="inner">
+      <div id="content-wrapper">
+        <aside class="sidebar">
+  <nav>
+    <ul>
+      <li>
+        <a href="http://git-scm.com/about">About</a>
+      </li>
+      <li>
+        <a class="active" href="http://git-scm.com/doc">Documentation</a>
+        <ul class="expanded">
+          <li>
+            <a href="http://git-scm.com/docs">Reference</a>
+          </li>
+          <li>
+            <a href="http://git-scm.com/book">Book</a>
+          </li>
+          <li>
+            <a href="http://git-scm.com/videos">Videos</a>
+          </li>
+          <li>
+            <a href="http://git-scm.com/doc/ext">External Links</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="http://git-scm.com/blog">Blog</a>
+      </li>
+      <li>
+        <a href="http://git-scm.com/downloads">Downloads</a>
+        <ul class="">
+          <li>
+            <a href="http://git-scm.com/downloads/guis">GUI Clients</a>
+          </li>
+          <li>
+            <a href="http://git-scm.com/downloads/logos">Logos</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="http://git-scm.com/community">Community</a>
+      </li>
+    </ul>
+      <hr class="sidebar">
+        
+  <p>
+This book is translated into
+  <a href="http://git-scm.com/book/de">Deutsch</a>,
+  <a href="http://git-scm.com/book/zh">简体中文</a>,
+  <a href="http://git-scm.com/book/zh-tw">正體中文</a>,
+  <a href="http://git-scm.com/book/fr">Français</a>,
+  <a href="http://git-scm.com/book/ja">日本語</a>,
+  <a href="http://git-scm.com/book/nl">Nederlands</a>,
+  <a href="http://git-scm.com/book/ru">Русский</a>,
+  <a href="http://git-scm.com/book/ko">한국어</a>,
+  <a href="http://git-scm.com/book/pt-br">Português (Brasil)</a> and
+  <a href="http://git-scm.com/book/cs">Čeština</a>.
+</p>
+<p>
+Partial translations available in
+  <a href="http://git-scm.com/book/ar">Arabic</a>,
+  <a href="http://git-scm.com/book/es">Español</a>,
+  <a href="http://git-scm.com/book/id">Indonesian</a>,
+  <a href="http://git-scm.com/book/it">Italiano</a>,
+  <a href="http://git-scm.com/book/fi">Suomi</a>,
+  <a href="http://git-scm.com/book/mk">Македонски</a>,
+  <a href="http://git-scm.com/book/pl">Polski</a> and
+  <a href="http://git-scm.com/book/tr">Türkçe</a>.
+</p>
+<p>
+Translations started for
+  <a href="http://git-scm.com/book/az">Azərbaycan dili</a>,
+  <a href="http://git-scm.com/book/be">Беларуская</a>,
+  <a href="http://git-scm.com/book/ca">Català</a>,
+  <a href="http://git-scm.com/book/eo">Esperanto</a>,
+  <a href="http://git-scm.com/book/es-ni">Español (Nicaragua)</a>,
+  <a href="http://git-scm.com/book/fa" dir="rtl">فارسی</a>,
+  <a href="http://git-scm.com/book/hi">हिन्दी</a>,
+  <a href="http://git-scm.com/book/hu">Magyar</a>,
+  <a href="http://git-scm.com/book/no-nb">Norwegian Bokmål</a>,
+  <a href="http://git-scm.com/book/ro">Română</a>,
+  <a href="http://git-scm.com/book/sr">Српски</a>,
+  <a href="http://git-scm.com/book/th">ภาษาไทย</a>,
+  <a href="http://git-scm.com/book/vi">Tiếng Việt</a> and
+  <a href="http://git-scm.com/book/uk">Українська</a>.
+</p>
+<hr class="sidebar">
+<p>
+The source of this book is <a href="https://github.com/progit/progit2">hosted on GitHub.</a><br>
+Patches, suggestions and comments are welcome.
+</p>
+
+  
+
+  </nav>
+</aside>
+        <div id="content">
+          
+
+<div id="book-chapters">
+  <a class="dropdown-trigger" id="book-chapters-trigger" data-panel-id="chapters-dropdown" href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#">Chapters ▾</a>
+<div class="dropdown-panel" id="chapters-dropdown">
+  <div class="three-column">
+    <div class="column-left">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>1. <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5">起步</a></h2>
+    <ol>
+          <li>
+            1.1
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E5%85%B3%E4%BA%8E%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6">关于版本控制</a>
+          </li>
+          <li>
+            1.2
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-Git-%E7%AE%80%E5%8F%B2">Git 简史</a>
+          </li>
+          <li>
+            1.3
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-Git-%E5%9F%BA%E7%A1%80">Git 基础</a>
+          </li>
+          <li>
+            1.4
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git">安装 Git</a>
+          </li>
+          <li>
+            1.5
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E5%88%9D%E6%AC%A1%E8%BF%90%E8%A1%8C-Git-%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE">初次运行 Git 前的配置</a>
+          </li>
+          <li>
+            1.6
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E8%8E%B7%E5%8F%96%E5%B8%AE%E5%8A%A9">获取帮助</a>
+          </li>
+          <li>
+            1.7
+            <a href="http://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-%E5%B0%8F%E7%BB%93">小结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>2. <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80">Git 基础</a></h2>
+    <ol>
+          <li>
+            2.1
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E5%8F%96%E5%BE%97%E9%A1%B9%E7%9B%AE%E7%9A%84-Git-%E4%BB%93%E5%BA%93">取得项目的 Git 仓库</a>
+          </li>
+          <li>
+            2.2
+            <a href="./Git - 记录每次更新到仓库_files/Git - 记录每次更新到仓库.htm">记录每次更新到仓库</a>
+          </li>
+          <li>
+            2.3
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">查看提交历史</a>
+          </li>
+          <li>
+            2.4
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%92%A4%E6%B6%88%E6%93%8D%E4%BD%9C">撤消操作</a>
+          </li>
+          <li>
+            2.5
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8">远程仓库的使用</a>
+          </li>
+          <li>
+            2.6
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%89%93%E6%A0%87%E7%AD%BE">打标签</a>
+          </li>
+          <li>
+            2.7
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8">技巧和窍门</a>
+          </li>
+          <li>
+            2.8
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E5%B0%8F%E7%BB%93">小结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>3. <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF">Git 分支</a></h2>
+    <ol>
+          <li>
+            3.1
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E4%BD%95%E8%B0%93%E5%88%86%E6%94%AF">何谓分支</a>
+          </li>
+          <li>
+            3.2
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E6%96%B0%E5%BB%BA%E4%B8%8E%E5%90%88%E5%B9%B6">分支的新建与合并</a>
+          </li>
+          <li>
+            3.3
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E7%AE%A1%E7%90%86">分支的管理</a>
+          </li>
+          <li>
+            3.4
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%A9%E7%94%A8%E5%88%86%E6%94%AF%E8%BF%9B%E8%A1%8C%E5%BC%80%E5%8F%91%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">利用分支进行开发的工作流程</a>
+          </li>
+          <li>
+            3.5
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF">远程分支</a>
+          </li>
+          <li>
+            3.6
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88">分支的衍合</a>
+          </li>
+          <li>
+            3.7
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%88%86%E6%94%AF-%E5%B0%8F%E7%BB%93">小结</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class="column-middle">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>4. <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git">服务器上的 Git</a></h2>
+    <ol>
+          <li>
+            4.1
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E5%8D%8F%E8%AE%AE">协议</a>
+          </li>
+          <li>
+            4.2
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%83%A8%E7%BD%B2-Git">在服务器上部署 Git</a>
+          </li>
+          <li>
+            4.3
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E7%94%9F%E6%88%90-SSH-%E5%85%AC%E9%92%A5">生成 SSH 公钥</a>
+          </li>
+          <li>
+            4.4
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E6%9E%B6%E8%AE%BE%E6%9C%8D%E5%8A%A1%E5%99%A8">架设服务器</a>
+          </li>
+          <li>
+            4.5
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E5%85%AC%E5%85%B1%E8%AE%BF%E9%97%AE">公共访问</a>
+          </li>
+          <li>
+            4.6
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-GitWeb">GitWeb</a>
+          </li>
+          <li>
+            4.7
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Gitosis">Gitosis</a>
+          </li>
+          <li>
+            4.8
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Gitolite">Gitolite</a>
+          </li>
+          <li>
+            4.9
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Git-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B">Git 守护进程</a>
+          </li>
+          <li>
+            4.10
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Git-%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1">Git 托管服务</a>
+          </li>
+          <li>
+            4.11
+            <a href="http://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E5%B0%8F%E7%BB%93">小结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>5. <a href="http://git-scm.com/book/zh/v1/%E5%88%86%E5%B8%83%E5%BC%8F-Git">分布式 Git</a></h2>
+    <ol>
+          <li>
+            5.1
+            <a href="http://git-scm.com/book/zh/v1/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E5%88%86%E5%B8%83%E5%BC%8F%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">分布式工作流程</a>
+          </li>
+          <li>
+            5.2
+            <a href="http://git-scm.com/book/zh/v1/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E4%B8%BA%E9%A1%B9%E7%9B%AE%E4%BD%9C%E8%B4%A1%E7%8C%AE">为项目作贡献</a>
+          </li>
+          <li>
+            5.3
+            <a href="http://git-scm.com/book/zh/v1/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%AE%A1%E7%90%86">项目的管理</a>
+          </li>
+          <li>
+            5.4
+            <a href="http://git-scm.com/book/zh/v1/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E5%B0%8F%E7%BB%93">小结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>6. <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7">Git 工具</a></h2>
+    <ol>
+          <li>
+            6.1
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E4%BF%AE%E8%AE%A2%E7%89%88%E6%9C%AC%EF%BC%88Revision%EF%BC%89%E9%80%89%E6%8B%A9">修订版本（Revision）选择</a>
+          </li>
+          <li>
+            6.2
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%9A%82%E5%AD%98">交互式暂存</a>
+          </li>
+          <li>
+            6.3
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E5%82%A8%E8%97%8F%EF%BC%88Stashing%EF%BC%89">储藏（Stashing）</a>
+          </li>
+          <li>
+            6.4
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E9%87%8D%E5%86%99%E5%8E%86%E5%8F%B2">重写历史</a>
+          </li>
+          <li>
+            6.5
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E4%BD%BF%E7%94%A8-Git-%E8%B0%83%E8%AF%95">使用 Git 调试</a>
+          </li>
+          <li>
+            6.6
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97">子模块</a>
+          </li>
+          <li>
+            6.7
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A0%91%E5%90%88%E5%B9%B6">子树合并</a>
+          </li>
+          <li>
+            6.8
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%B7%A5%E5%85%B7-%E6%80%BB%E7%BB%93">总结</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class="column-right">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>7. <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git">自定义 Git</a></h2>
+    <ol>
+          <li>
+            7.1
+            <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-%E9%85%8D%E7%BD%AE-Git">配置 Git</a>
+          </li>
+          <li>
+            7.2
+            <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E5%B1%9E%E6%80%A7">Git属性</a>
+          </li>
+          <li>
+            7.3
+            <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git%E6%8C%82%E9%92%A9">Git挂钩</a>
+          </li>
+          <li>
+            7.4
+            <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E5%BC%BA%E5%88%B6%E7%AD%96%E7%95%A5%E5%AE%9E%E4%BE%8B">Git 强制策略实例</a>
+          </li>
+          <li>
+            7.5
+            <a href="http://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-%E6%80%BB%E7%BB%93">总结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>8. <a href="http://git-scm.com/book/zh/v1/Git-%E4%B8%8E%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F">Git 与其他系统</a></h2>
+    <ol>
+          <li>
+            8.1
+            <a href="http://git-scm.com/book/zh/v1/Git-%E4%B8%8E%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F-Git-%E4%B8%8E-Subversion">Git 与 Subversion</a>
+          </li>
+          <li>
+            8.2
+            <a href="http://git-scm.com/book/zh/v1/Git-%E4%B8%8E%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F-%E8%BF%81%E7%A7%BB%E5%88%B0-Git">迁移到 Git</a>
+          </li>
+          <li>
+            8.3
+            <a href="http://git-scm.com/book/zh/v1/Git-%E4%B8%8E%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F-%E6%80%BB%E7%BB%93">总结</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>9. <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86">Git 内部原理</a></h2>
+    <ol>
+          <li>
+            9.1
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4-Plumbing-%E5%92%8C%E9%AB%98%E5%B1%82%E5%91%BD%E4%BB%A4-Porcelain">底层命令 (Plumbing) 和高层命令 (Porcelain)</a>
+          </li>
+          <li>
+            9.2
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-Git-%E5%AF%B9%E8%B1%A1">Git 对象</a>
+          </li>
+          <li>
+            9.3
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-Git-References">Git References</a>
+          </li>
+          <li>
+            9.4
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-Packfiles">Packfiles</a>
+          </li>
+          <li>
+            9.5
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-The-Refspec">The Refspec</a>
+          </li>
+          <li>
+            9.6
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">传输协议</a>
+          </li>
+          <li>
+            9.7
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E7%BB%B4%E6%8A%A4%E5%8F%8A%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D">维护及数据恢复</a>
+          </li>
+          <li>
+            9.8
+            <a href="http://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E6%80%BB%E7%BB%93">总结</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+  </div>
+ </div>
+
+    <span class="light" id="edition">
+      1st Edition
+    </span>
+</div>
+
+<div id="main" class="book edition1">
+    <h1>2.2 Git 基础 - 记录每次更新到仓库</h1>
+  <div><h2>记录每次更新到仓库</h2>
+
+<p>现在我们手上已经有了一个真实项目的 Git 仓库，并从这个仓库中取出了所有文件的工作拷贝。接下来，对这些文件作些修改，在完成了一个阶段的目标之后，提交本次更新到仓库。</p>
+
+<p>请记住，工作目录下面的所有文件都不外乎这两种状态：已跟踪或未跟踪。已跟踪的文件是指本来就被纳入版本控制管理的文件，在上次快照中有它们的记录，工作一段时间后，它们的状态可能是未更新，已修改或者已放入暂存区。而所有其他文件都属于未跟踪文件。它们既没有上次更新时的快照，也不在当前的暂存区域。初次克隆某个仓库时，工作目录中的所有文件都属于已跟踪文件，且状态为未修改。</p>
+
+<p>在编辑过某些文件之后，Git 将这些文件标为已修改。我们逐步把这些修改过的文件放到暂存区域，直到最后一次性提交所有这些暂存起来的文件，如此重复。所以使用 Git 时的文件状态变化周期如图 2-1 所示。</p>
+
+<p></p><center><img src="./Git - 记录每次更新到仓库_files/18333fig0201-tn.png"></center><br>
+图 2-1. 文件的状态变化周期<p></p>
+
+<h3 id="检查当前文件状态"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#检查当前文件状态">检查当前文件状态</a></h3>
+
+<p>要确定哪些文件当前处于什么状态，可以用 <code>git status</code> 命令。如果在克隆仓库之后立即执行此命令，会看到类似这样的输出：</p>
+
+<pre><code>$ git status
+On branch master
+nothing to commit, working directory clean
+</code></pre>
+
+<p>这说明你现在的工作目录相当干净。换句话说，所有已跟踪文件在上次提交后都未被更改过。此外，上面的信息还表明，当前目录下没有出现任何处于未跟踪的新文件，否则 Git 会在这里列出来。最后，该命令还显示了当前所在的分支是 <code>master</code>，这是默认的分支名称，实际是可以修改的，现在先不用考虑。下一章我们就会详细讨论分支和引用。</p>
+
+<p>现在让我们用 vim 创建一个新文件 README，保存退出后运行 <code>git status</code> 会看到该文件出现在未跟踪文件列表中：</p>
+
+<pre><code>$ vim README
+$ git status
+On branch master
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+
+        README
+
+nothing added to commit but untracked files present (use "git add" to track)
+</code></pre>
+
+<p>在状态报告中可以看到新建的<code>README</code>文件出现在“Untracked files”下面。未跟踪的文件意味着Git在之前的快照（提交）中没有这些文件；Git 不会自动将之纳入跟踪范围，除非你明明白白地告诉它“我需要跟踪该文件”，因而不用担心把临时文件什么的也归入版本管理。不过现在的例子中，我们确实想要跟踪管理 README 这个文件。</p>
+
+<h3 id="跟踪新文件"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#跟踪新文件">跟踪新文件</a></h3>
+
+<p>使用命令 <code>git add</code> 开始跟踪一个新文件。所以，要跟踪 README 文件，运行：</p>
+
+<pre><code>$ git add README
+</code></pre>
+
+<p>此时再运行 <code>git status</code> 命令，会看到 README 文件已被跟踪，并处于暂存状态：</p>
+
+<pre><code>$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+</code></pre>
+
+<p>只要在 “Changes to be committed” 这行下面的，就说明是已暂存状态。如果此时提交，那么该文件此时此刻的版本将被留存在历史记录中。你可能会想起之前我们使用 <code>git init</code> 后就运行了 <code>git add</code> 命令，开始跟踪当前目录下的文件。在 <code>git add</code> 后面可以指明要跟踪的文件或目录路径。如果是目录的话，就说明要递归跟踪该目录下的所有文件。（译注：其实 <code>git add</code> 的潜台词就是把目标文件快照放入暂存区域，也就是 add file into staged area，同时未曾跟踪过的文件标记为需要跟踪。这样就好理解后续 add 操作的实际意义了。）</p>
+
+<h3 id="暂存已修改文件"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#暂存已修改文件">暂存已修改文件</a></h3>
+
+<p>现在我们修改下之前已跟踪过的文件 <code>benchmarks.rb</code>，然后再次运行 <code>status</code> 命令，会看到这样的状态报告：</p>
+
+<pre><code>$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+</code></pre>
+
+<p>文件 <code>benchmarks.rb</code> 出现在 “Changes not staged for commit” 这行下面，说明已跟踪文件的内容发生了变化，但还没有放到暂存区。要暂存这次更新，需要运行 <code>git add</code> 命令（这是个多功能命令，根据目标文件的状态不同，此命令的效果也不同：可以用它开始跟踪新文件，或者把已跟踪的文件放到暂存区，还能用于合并时把有冲突的文件标记为已解决状态等）。现在让我们运行 <code>git add</code> 将 benchmarks.rb 放到暂存区，然后再看看 <code>git status</code> 的输出：</p>
+
+<pre><code>$ git add benchmarks.rb
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
+</code></pre>
+
+<p>现在两个文件都已暂存，下次提交时就会一并记录到仓库。假设此时，你想要在 <code>benchmarks.rb</code> 里再加条注释，重新编辑存盘后，准备好提交。不过且慢，再运行 <code>git status</code> 看看：</p>
+
+<pre><code>$ vim benchmarks.rb
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+</code></pre>
+
+<p>怎么回事？ <code>benchmarks.rb</code> 文件出现了两次！一次算未暂存，一次算已暂存，这怎么可能呢？好吧，实际上 Git 只不过暂存了你运行 <code>git add</code> 命令时的版本，如果现在提交，那么提交的是添加注释前的版本，而非当前工作目录中的版本。所以，运行了 <code>git add</code> 之后又作了修订的文件，需要重新运行 <code>git add</code> 把最新版本重新暂存起来：</p>
+
+<pre><code>$ git add benchmarks.rb
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+        modified:   benchmarks.rb
+</code></pre>
+
+<h3 id="忽略某些文件"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#忽略某些文件">忽略某些文件</a></h3>
+
+<p>一般我们总会有些文件无需纳入 Git 的管理，也不希望它们总出现在未跟踪文件列表。通常都是些自动生成的文件，比如日志文件，或者编译过程中创建的临时文件等。我们可以创建一个名为 <code>.gitignore</code> 的文件，列出要忽略的文件模式。来看一个实际的例子：</p>
+
+<pre><code>$ cat .gitignore
+*.[oa]
+*~
+</code></pre>
+
+<p>第一行告诉 Git 忽略所有以 <code>.o</code> 或 <code>.a</code> 结尾的文件。一般这类对象文件和存档文件都是编译过程中出现的，我们用不着跟踪它们的版本。第二行告诉 Git 忽略所有以波浪符（<code>~</code>）结尾的文件，许多文本编辑软件（比如 Emacs）都用这样的文件名保存副本。此外，你可能还需要忽略 <code>log</code>，<code>tmp</code> 或者 <code>pid</code> 目录，以及自动生成的文档等等。要养成一开始就设置好 <code>.gitignore</code> 文件的习惯，以免将来误提交这类无用的文件。</p>
+
+<p>文件 <code>.gitignore</code> 的格式规范如下：</p>
+
+<ul>
+<li>所有空行或者以注释符号 <code>＃</code> 开头的行都会被 Git 忽略。</li>
+<li>可以使用标准的 glob 模式匹配。</li>
+<li>匹配模式最后跟反斜杠（<code>/</code>）说明要忽略的是目录。</li>
+<li>要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（<code>!</code>）取反。</li>
+</ul>
+
+<p>所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。星号（<code>*</code>）匹配零个或多个任意字符；<code>[abc]</code> 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（<code>?</code>）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 <code>[0-9]</code> 表示匹配所有 0 到 9 的数字）。</p>
+
+<p>我们再看一个 <code>.gitignore</code> 文件的例子：</p>
+
+<pre><code># 此为注释 – 将被 Git 忽略
+# 忽略所有 .a 结尾的文件
+*.a
+# 但 lib.a 除外
+!lib.a
+# 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO
+/TODO
+# 忽略 build/ 目录下的所有文件
+build/
+# 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
+doc/*.txt
+# ignore all .txt files in the doc/ directory
+doc/**/*.txt
+</code></pre>
+
+<p>A <code>**/</code> pattern is available in Git since version 1.8.2.</p>
+
+<h3 id="查看已暂存和未暂存的更新"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#查看已暂存和未暂存的更新">查看已暂存和未暂存的更新</a></h3>
+
+<p>实际上 <code>git status</code> 的显示比较简单，仅仅是列出了修改过的文件，如果要查看具体修改了什么地方，可以用 <code>git diff</code> 命令。稍后我们会详细介绍 <code>git diff</code>，不过现在，它已经能回答我们的两个问题了：当前做的哪些更新还没有暂存？有哪些更新已经暂存起来准备好了下次提交？ <code>git diff</code> 会使用文件补丁的格式显示具体添加和删除的行。</p>
+
+<p>假如再次修改 <code>README</code> 文件后暂存，然后编辑 <code>benchmarks.rb</code> 文件后先别暂存，运行 <code>status</code> 命令将会看到：</p>
+
+<pre><code>$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        new file:   README
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+</code></pre>
+
+<p>要查看尚未暂存的文件更新了哪些部分，不加参数直接输入 <code>git diff</code>：</p>
+
+<pre><code>$ git diff
+diff --git a/benchmarks.rb b/benchmarks.rb
+index 3cb747f..da65585 100644
+--- a/benchmarks.rb
++++ b/benchmarks.rb
+@@ -36,6 +36,10 @@ def main
+           @commit.parents[0].parents[0].parents[0]
+         end
+
++        run_code(x, 'commits 1') do
++          git.commits.size
++        end
++
+         run_code(x, 'commits 2') do
+           log = git.commits('master', 15)
+           log.size
+</code></pre>
+
+<p>此命令比较的是工作目录中当前文件和暂存区域快照之间的差异，也就是修改之后还没有暂存起来的变化内容。</p>
+
+<p>若要看已经暂存起来的文件和上次提交时的快照之间的差异，可以用 <code>git diff --cached</code> 命令。（Git 1.6.1 及更高版本还允许使用 <code>git diff --staged</code>，效果是相同的，但更好记些。）来看看实际的效果：</p>
+
+<pre><code>$ git diff --cached
+diff --git a/README b/README
+new file mode 100644
+index 0000000..03902a1
+--- /dev/null
++++ b/README2
+@@ -0,0 +1,5 @@
++grit
++ by Tom Preston-Werner, Chris Wanstrath
++ http://github.com/mojombo/grit
++
++Grit is a Ruby library for extracting information from a Git repository
+</code></pre>
+
+<p>请注意，单单 <code>git diff</code> 不过是显示还没有暂存起来的改动，而不是这次工作和上次提交之间的差异。所以有时候你一下子暂存了所有更新过的文件后，运行 <code>git diff</code> 后却什么也没有，就是这个原因。</p>
+
+<p>像之前说的，暂存 benchmarks.rb 后再编辑，运行 <code>git status</code> 会看到暂存前后的两个版本：</p>
+
+<pre><code>$ git add benchmarks.rb
+$ echo '# test line' &gt;&gt; benchmarks.rb
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        modified:   benchmarks.rb
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+</code></pre>
+
+<p>现在运行 <code>git diff</code> 看暂存前后的变化：</p>
+
+<pre><code>$ git diff
+diff --git a/benchmarks.rb b/benchmarks.rb
+index e445e28..86b2f7c 100644
+--- a/benchmarks.rb
++++ b/benchmarks.rb
+@@ -127,3 +127,4 @@ end
+ main()
+
+ ##pp Grit::GitRuby.cache_client.stats
++# test line
+</code></pre>
+
+<p>然后用 <code>git diff --cached</code> 查看已经暂存起来的变化：</p>
+
+<pre><code>$ git diff --cached
+diff --git a/benchmarks.rb b/benchmarks.rb
+index 3cb747f..e445e28 100644
+--- a/benchmarks.rb
++++ b/benchmarks.rb
+@@ -36,6 +36,10 @@ def main
+          @commit.parents[0].parents[0].parents[0]
+        end
+
++        run_code(x, 'commits 1') do
++          git.commits.size
++        end
++
+        run_code(x, 'commits 2') do
+          log = git.commits('master', 15)
+          log.size
+</code></pre>
+
+<h3 id="提交更新"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#提交更新">提交更新</a></h3>
+
+<p>现在的暂存区域已经准备妥当可以提交了。在此之前，请一定要确认还有什么修改过的或新建的文件还没有 <code>git add</code> 过，否则提交的时候不会记录这些还没暂存起来的变化。所以，每次准备提交前，先用 <code>git status</code> 看下，是不是都已暂存起来了，然后再运行提交命令 <code>git commit</code>：</p>
+
+<pre><code>$ git commit
+</code></pre>
+
+<p>这种方式会启动文本编辑器以便输入本次提交的说明。（默认会启用 shell 的环境变量 <code>$EDITOR</code> 所指定的软件，一般都是 vim 或 emacs。当然也可以按照第一章介绍的方式，使用 <code>git config --global core.editor</code> 命令设定你喜欢的编辑软件。）</p>
+
+<p>编辑器会显示类似下面的文本信息（本例选用 Vim 的屏显方式展示）：</p>
+
+<pre><code># Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#       new file:   README
+#       modified:   benchmarks.rb
+#
+~
+~
+~
+".git/COMMIT_EDITMSG" 10L, 283C
+</code></pre>
+
+<p>可以看到，默认的提交消息包含最后一次运行 <code>git status</code> 的输出，放在注释行里，另外开头还有一空行，供你输入提交说明。你完全可以去掉这些注释行，不过留着也没关系，多少能帮你回想起这次更新的内容有哪些。（如果觉得这还不够，可以用 <code>-v</code> 选项将修改差异的每一行都包含到注释中来。）退出编辑器时，Git 会丢掉注释行，将说明内容和本次更新提交到仓库。</p>
+
+<p>另外也可以用 -m 参数后跟提交说明的方式，在一行命令中提交更新：</p>
+
+<pre><code>$ git commit -m "Story 182: Fix benchmarks for speed"
+[master 463dc4f] Story 182: Fix benchmarks for speed
+ 2 files changed, 3 insertions(+)
+ create mode 100644 README
+</code></pre>
+
+<p>好，现在你已经创建了第一个提交！可以看到，提交后它会告诉你，当前是在哪个分支（master）提交的，本次提交的完整 SHA-1 校验和是什么（<code>463dc4f</code>），以及在本次提交中，有多少文件修订过，多少行添改和删改过。</p>
+
+<p>记住，提交时记录的是放在暂存区域的快照，任何还未暂存的仍然保持已修改状态，可以在下次提交时纳入版本管理。每一次运行提交操作，都是对你项目作一次快照，以后可以回到这个状态，或者进行比较。</p>
+
+<h3 id="跳过使用暂存区域"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#跳过使用暂存区域">跳过使用暂存区域</a></h3>
+
+<p>尽管使用暂存区域的方式可以精心准备要提交的细节，但有时候这么做略显繁琐。Git 提供了一个跳过使用暂存区域的方式，只要在提交的时候，给 <code>git commit</code> 加上 <code>-a</code> 选项，Git 就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 <code>git add</code> 步骤：</p>
+
+<pre><code>$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        modified:   benchmarks.rb
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$ git commit -a -m 'added new benchmarks'
+[master 83e38c7] added new benchmarks
+ 1 files changed, 5 insertions(+)
+</code></pre>
+
+<p>看到了吗？提交之前不再需要 <code>git add</code> 文件 benchmarks.rb 了。</p>
+
+<h3 id="移除文件"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#移除文件">移除文件</a></h3>
+
+<p>要从 Git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。可以用 <code>git rm</code> 命令完成此项工作，并连带从工作目录中删除指定的文件，这样以后就不会出现在未跟踪文件清单中了。</p>
+
+<p>如果只是简单地从工作目录中手工删除文件，运行 <code>git status</code> 时就会在 “Changes not staged for commit” 部分（也就是<em>未暂存</em>清单）看到：</p>
+
+<pre><code>$ rm grit.gemspec
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add/rm &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+        deleted:    grit.gemspec
+
+no changes added to commit (use "git add" and/or "git commit -a")
+</code></pre>
+
+<p>然后再运行 <code>git rm</code> 记录此次移除文件的操作：</p>
+
+<pre><code>$ git rm grit.gemspec
+rm 'grit.gemspec'
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        deleted:    grit.gemspec
+</code></pre>
+
+<p>最后提交的时候，该文件就不再纳入版本管理了。如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 <code>-f</code>（译注：即 force 的首字母），以防误删除文件后丢失修改的内容。</p>
+
+<p>另外一种情况是，我们想把文件从 Git 仓库中删除（亦即从暂存区域移除），但仍然希望保留在当前工作目录中。换句话说，仅是从跟踪清单中删除。比如一些大型日志文件或者一堆 <code>.a</code> 编译文件，不小心纳入仓库后，要移除跟踪但不删除文件，以便稍后在 <code>.gitignore</code> 文件中补上，用 <code>--cached</code> 选项即可：</p>
+
+<pre><code>$ git rm --cached readme.txt
+</code></pre>
+
+<p>后面可以列出文件或者目录的名字，也可以使用 glob 模式。比方说：</p>
+
+<pre><code>$ git rm log/\*.log
+</code></pre>
+
+<p>注意到星号 <code>*</code> 之前的反斜杠 <code>\</code>，因为 Git 有它自己的文件模式扩展匹配方式，所以我们不用 shell 来帮忙展开（译注：实际上不加反斜杠也可以运行，只不过按照 shell 扩展的话，仅仅删除指定目录下的文件而不会递归匹配。上面的例子本来就指定了目录，所以效果等同，但下面的例子就会用递归方式匹配，所以必须加反斜杠。）。此命令删除所有 <code>log/</code> 目录下扩展名为 <code>.log</code> 的文件。类似的比如：</p>
+
+<pre><code>$ git rm \*~
+</code></pre>
+
+<p>会递归删除当前目录及其子目录中所有 <code>~</code> 结尾的文件。</p>
+
+<h3 id="移动文件"><a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93#移动文件">移动文件</a></h3>
+
+<p>不像其他的 VCS 系统，Git 并不跟踪文件移动操作。如果在 Git 中重命名了某个文件，仓库中存储的元数据并不会体现出这是一次改名操作。不过 Git 非常聪明，它会推断出究竟发生了什么，至于具体是如何做到的，我们稍后再谈。</p>
+
+<p>既然如此，当你看到 Git 的 <code>mv</code> 命令时一定会困惑不已。要在 Git 中对文件改名，可以这么做：</p>
+
+<pre><code>$ git mv file_from file_to
+</code></pre>
+
+<p>它会恰如预期般正常工作。实际上，即便此时查看状态信息，也会明白无误地看到关于重命名操作的说明：</p>
+
+<pre><code>$ git mv README.txt README
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+        renamed:    README.txt -&gt; README
+</code></pre>
+
+<p>其实，运行 <code>git mv</code> 就相当于运行了下面三条命令：</p>
+
+<pre><code>$ mv README.txt README
+$ git rm README.txt
+$ git add README
+</code></pre>
+
+<p>如此分开操作，Git 也会意识到这是一次改名，所以不管何种方式都一样。当然，直接用 <code>git mv</code> 轻便得多，不过有时候用其他工具批处理改名的话，要记得在提交前删除老的文件名，再添加新的文件名。</p>
+
+<div id="nav"><a href="http://git-scm.com/book/zh/Git-%E5%9F%BA%E7%A1%80-%E5%8F%96%E5%BE%97%E9%A1%B9%E7%9B%AE%E7%9A%84-Git-%E4%BB%93%E5%BA%93">prev</a> | <a href="http://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">next</a></div></div>
+</div>
+
+        </div>
+      </div>
+      <footer>
+  <div class="site-source">
+    This <a href="https://github.com/git/git-scm.com/blob/master/README.md#license">open sourced</a> site is <a href="https://github.com/git/git-scm.com">hosted on GitHub.</a><br>
+    Patches, suggestions and comments are welcome.
+  </div>
+  <div class="sfc-member">
+    Git is a member of <a href="http://git-scm.com/sfc">Software Freedom Conservancy</a>
+  </div>
+</footer>
+
+<script src="./Git - 记录每次更新到仓库_files/jquery-1.7.1.min-be9a6d736d84f3afff832c45505a93ae.js"></script>
+<script src="./Git - 记录每次更新到仓库_files/jquery-ui-1.8.18.custom.min-b4925c900f94bfd386687eee6c7e641b.js"></script>
+<script src="./Git - 记录每次更新到仓库_files/jquery.defaultvalue-9dacb30fffc5f8c850fb08b580f804f5.js"></script>
+<script src="./Git - 记录每次更新到仓库_files/session.min-aa06ccb9184d9842c39f131ce822e02c.js"></script>
+<script src="./Git - 记录每次更新到仓库_files/site-0f10deab99d4bed911f2f2bb6cf24b5a.js"></script>
+
+    </div><script type="text/javascript" src="./Git - 记录每次更新到仓库_files/jsapi"></script>
+
+
+
+<script src="./Git - 记录每次更新到仓库_files/nr-515.min.js"></script><script type="text/javascript" src="./Git - 记录每次更新到仓库_files/20c4a8c482"></script></body></html>

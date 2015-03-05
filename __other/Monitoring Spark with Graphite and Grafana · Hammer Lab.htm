@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)http://www.hammerlab.org/2015/02/27/monitoring-spark-with-graphite-and-grafana/ -->
+<html lang="en-us" class="wf-adobecaslonpro-i4-active wf-adobecaslonpro-i7-active wf-adobecaslonpro-n4-active wf-adobecaslonpro-n7-active wf-freightsanspro-i4-active wf-freightsanspro-i7-active wf-freightsanspro-n4-active wf-freightsanspro-n7-active wf-freighttextpro-i4-active wf-freighttextpro-i7-active wf-freighttextpro-n4-active wf-freighttextpro-n7-active wf-museosans-i3-active wf-museosans-i7-active wf-museosans-n3-active wf-museosans-n7-active wf-p22underground-n4-active wf-p22underground-n5-active wf-p22underground-n9-active wf-p22undergroundsc-n4-active wf-p22undergroundsc-n5-active wf-p22undergroundsc-n9-active wf-proximanova-i4-active wf-proximanova-i7-active wf-proximanova-n4-active wf-proximanova-n7-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta name="google-site-verification" content="ZioMa8WJVOxfviW3fCi3DbNkrzBBShlWYeUhLnaBKl8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    Monitoring Spark with Graphite and Grafana · Hammer Lab
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="http://www.hammerlab.org/public/css/poole.css">
+  <link rel="stylesheet" href="http://www.hammerlab.org/public/css/syntax.css">
+  <link rel="stylesheet" href="http://www.hammerlab.org/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://www.hammerlab.org/public/css/hammerlab.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://www.hammerlab.org/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="http://www.hammerlab.org/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.hammerlab.org/atom.xml"><style type="text/css">.tk-proxima-nova{font-family:"proxima-nova",sans-serif;}.tk-museo-sans{font-family:"museo-sans",sans-serif;}.tk-p22-underground{font-family:"p22-underground",sans-serif;}.tk-p22-underground-sc{font-family:"p22-underground-sc",sans-serif;}.tk-adobe-caslon-pro{font-family:"adobe-caslon-pro",serif;}.tk-freight-sans-pro{font-family:"freight-sans-pro",sans-serif;}.tk-freight-text-pro{font-family:"freight-text-pro",sans-serif;}</style><link rel="stylesheet" href="http://use.typekit.net/c/72899f/1w;adobe-caslon-pro,2,XWq:R:i4,XWp:R:i7,XWr:R:n4,XWn:R:n7;freight-sans-pro,2,TJC:R:i4,TJK:R:i7,TJB:R:n4,TJJ:R:n7;freight-text-pro,2,WHZ:R:i4,WHc:R:i7,WHY:R:n4,WHb:R:n7;museo-sans,2,PyB:R:i3,PyG:R:i7,Py6:R:n3,PyF:R:n7;p22-underground,2,P23:R:n4,P24:R:n5,P26:R:n9;p22-underground-sc,2,P2m:R:n4,P2n:R:n5,P2q:R:n9;proxima-nova,2,b5x:R:i4,b61:R:i7,b5w:R:n4,bBh:R:n7/d?3bb2a6e53c9684ffdc9a9bf4135b2a625d2f4b913c6083f29a4114d597bbebc9197eb778938a0217f99614db9532deb63c74d061abe71fa969eeb384b5cd263ee793db80e39ab506f53377f55d8b930faeb18666cb32261579e2d27e7a87b0a4e40e2ed05685e92ae2824ed22798f6cfc6a7ebab2634a80838251e09d7f1726d3f">
+<style type="text/css"></style><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">.MathJax_Preview .MJXc-math {color: inherit!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXc-script {font-size: .8em}
+.MJXc-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXc-bold {font-weight: bold}
+.MJXc-italic {font-style: italic}
+.MJXc-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXc-largeop {font-size: 150%}
+.MJXc-largeop.MJXc-int {vertical-align: -.2em}
+.MJXc-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXc-display {display: block; text-align: center; margin: 1em 0}
+.MJXc-math span {display: inline-block}
+.MJXc-box {display: block!important; text-align: center}
+.MJXc-box:after {content: " "}
+.MJXc-rule {display: block!important; margin-top: .1em}
+.MJXc-char {display: block!important}
+.MJXc-mo {margin: 0 .15em}
+.MJXc-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXc-denom {display: inline-table!important; width: 100%}
+.MJXc-denom > * {display: table-row!important}
+.MJXc-surd {vertical-align: top}
+.MJXc-surd > * {display: block!important}
+.MJXc-script-box > *  {display: table!important; height: 50%}
+.MJXc-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXc-script-box > *:last-child > * {vertical-align: bottom}
+.MJXc-script-box > * > * > * {display: block!important}
+.MJXc-mphantom {visibility: hidden}
+.MJXc-munderover {display: inline-table!important}
+.MJXc-over {display: inline-block!important; text-align: center}
+.MJXc-over > * {display: block!important}
+.MJXc-munderover > * {display: table-row!important}
+.MJXc-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXc-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXc-mtr {display: table-row!important}
+.MJXc-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXc-mtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-mlabeledtr {display: table-row!important}
+.MJXc-mlabeledtr > .MJXc-mtd:first-child {padding-left: 0}
+.MJXc-mlabeledtr:first-child > .MJXc-mtd {padding-top: 0}
+.MJXc-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXc-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXc-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXc-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXc-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXc-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXc-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXc-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXc-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXc-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXc-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_CHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+
+  <body class="theme-base-sb"><div id="MathJax_Message" style="display: none;"></div>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>We're a lab within the <a href="https://icahn.mssm.edu/departments-and-institutes/genomics">Icahn Institute</a> at <a href="https://icahn.mssm.edu/">Mount Sinai</a> in NYC.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://www.hammerlab.org/">Blog</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://www.hammerlab.org/research/">Research</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://www.hammerlab.org/software/">Software</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://www.hammerlab.org/team/">Team</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://www.hammerlab.org/contact/">Contact</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://www.hammerlab.org/blog_archive/">Blog Archive</a>
+        
+      
+    
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      © 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <div class="inline">
+            <img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/ismms logo no text.png">
+            <a href="http://www.hammerlab.org/" title="Home">Hammer <span id="poc">Lab</span></a>
+            </div>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Monitoring Spark with Graphite and Grafana</h1>
+  <span class="post-date">27 Feb 2015</span>
+  <p>At Hammer Lab, we use <a href="http://spark.apache.org/docs/1.2.1/">Spark</a> to run analyses of genomic data in a distributed fashion. Distributed programs present unique challenges related to <strong>monitoring</strong> and <strong>debugging</strong> of code. Many standard approaches to <a href="http://kulakiko.com/Quotes/Details?id=8626">fundamental</a> questions of programming (what is my program doing? Why did it do what it did?) <a href="http://www.slideshare.net/SandyRyza/spark-job-failures-talk/49">do not apply</a> in a distributed context, leading to <a href="http://blog.explainmydata.com/2014/05/spark-should-be-better-than-mapreduce.html">considerable frustration and despair</a>.</p>
+
+<p>In this post, we’ll discuss using <a href="http://graphite.readthedocs.org/en/latest/overview.html">Graphite</a> and <a href="http://grafana.org/">Grafana</a> to graph metrics obtained from our Spark applications to answer these questions.</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/ss-tasks-3.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/ss-tasks-3.png" alt="Active and completed task counts"></a></p>
+
+<div class="caption">
+  Graphs of various metrics about the progress of a Spark application; read on for more info.
+</div>
+
+<h1 id="spark-web-ui">Spark Web UI</h1>
+<p>Spark ships with a <a href="http://eclipse.org/jetty/">Jetty</a> server that provides a wealth of information about running applications:</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/spark-web-ui.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/spark-web-ui.png" alt=""></a></p>
+
+<p>Here we see a page with information about a specific stage in a job: completed tasks, metrics per executor, and (below the fold) metrics per task.</p>
+
+<p>This interface seems to be the way that most users interact with Spark applications. It gives a good overview of the state of an application and allows for drilling into certain metrics, such as bytes read from HDFS or time spent <a href="http://en.wikipedia.org/wiki/Garbage_collection_%28computer_science%29">garbage collecting</a>.</p>
+
+<p>However, we hit <a href="https://issues.apache.org/jira/browse/SPARK-2017">issues</a> with its ability to <a href="https://issues.apache.org/jira/browse/SPARK-4598">scale</a> and its <a href="https://issues.apache.org/jira/browse/SPARK-5106">real-time experience</a>. Recognizing that reasonable people can (<a href="https://github.com/apache/spark/pull/2342">and do!</a>) <a href="https://issues.apache.org/jira/browse/SPARK-2132">disagree</a> about <a href="https://issues.apache.org/jira/browse/SPARK-1832">subjective preferences related to such UIs</a>, we sought a platform that better allowed us to experiment with ways to monitor our applications.</p>
+
+<h1 id="enter-metricssystem">Enter: <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/MetricsSystem.scala"><code>MetricsSystem</code></a></h1>
+<p>Buried in a rarely-explored corner of the Spark codebase is a component called <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/MetricsSystem.scala"><code>MetricsSystem</code></a>. A <code>MetricsSystem</code> instance lives on every driver and executor and optionally exposes metrics to a variety of <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/sink/Sink.scala"><code>Sink</code></a>s while applications are running.</p>
+
+<p>In this way, <code>MetricsSystem</code> offers the freedom to monitor Spark applications using a variety of third-party tools.</p>
+
+<h2 id="graphite">Graphite</h2>
+<p>In particular, <code>MetricsSystem</code> includes <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/sink/GraphiteSink.scala">bindings</a> to ship metrics to <a href="http://graphite.readthedocs.org/en/latest/overview.html">Graphite</a>, a popular open-source tool for collecting and serving time series data.</p>
+
+<p>This capability is <a href="http://spark.apache.org/docs/1.2.1/monitoring.html#metrics">discussed briefly</a> in the Spark docs, but there is little to no information on the internet about anyone <a href="http://stackoverflow.com/questions/23529404/spark-on-yarn-how-to-send-metrics-to-graphite-sink">using it</a>, so here is a quick digression about how to get Spark to report metrics to Graphite.</p>
+
+<h3 id="sending-metrics-spark-rarr-graphite">Sending Metrics: Spark → Graphite</h3>
+<p>Spark’s <code>MetricsSystem</code> is configured via a <code>metrics.properties</code> file; Spark ships with a <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/conf/metrics.properties.template">template</a> that provides examples of configuring a variety of <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/source/Source.scala"><code>Source</code></a>s and <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/sink/Sink.scala"><code>Sink</code></a>s. <a href="https://gist.github.com/ryan-williams/9bf8ae842e02dbc9ab93">Here</a> is an example like the one we use. Set up a <code>metrics.properties</code> file for yourself, accessible from the machine you’ll be starting your Spark job from.</p>
+
+<p>Next, pass the following flags to <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/bin/spark-submit"><code>spark-submit</code></a>:</p>
+
+<pre><code>--files=/path/to/metrics.properties \
+--conf spark.metrics.conf=metrics.properties
+</code></pre>
+
+<p>The <code>--files</code> flag will cause <code>/path/to/metrics.properties</code> to be sent to every executor, and <code>spark.metrics.conf=metrics.properties</code> will tell all executors to load that file when initializing their respective <code>MetricsSystem</code>s.</p>
+
+<h1 id="grafana">Grafana</h1>
+<p>Having thus configured Spark (and installed Graphite), we surveyed <a href="http://graphite.readthedocs.org/en/latest/tools.html#visualization">the many Graphite-visualization tools that exist</a> and began building custom Spark-monitoring dashboards using <a href="http://grafana.org/">Grafana</a>. Grafana is “an open source, feature rich metrics dashboard and graph editor for Graphite, InfluxDB &amp; OpenTSDB,” and includes some powerful features for <a href="http://grafana.org/docs/features/scripted_dashboards/">scripting</a> the creation of <a href="http://grafana.org/docs/features/templated_dashboards/">dynamic</a> dashboards, allowing us to experiment with many ways of visualizing the performance of our Spark applications in real-time.</p>
+
+<h1 id="examples">Examples</h1>
+
+<p>Below are a few examples illustrating the kinds of rich information we can get from this setup.</p>
+
+<h2 id="task-completion-rate">Task Completion Rate</h2>
+
+<p>These graphs show the number of active and completed tasks, per executor and overall, from a successful test of some toy <a href="https://github.com/hammerlab/guacamole/blob/5e060ae0e13434e42477ae0715e92103ab45baf9/src/main/scala/org/hammerlab/guacamole/commands/ReadDepthHist.scala">read depth histogram</a> functionality in a branch of our <a href="https://github.com/hammerlab/guacamole">Guacamole</a> variant calling project:</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/rdh-tasks.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/rdh-tasks.png" alt="Active and completed task counts"></a></p>
+
+<p>The leftmost panel shows close to 400 tasks in flight at once, which in this application corresponds to 4 “cores” on each of 100 executors. The “valley” in that leftmost panel corresponds to the transition between two <em>stages</em> of the one <em>job</em> in this application.</p>
+
+<p>The right two panels show the number of tasks completed and rate of task completion per minute for each executor.</p>
+
+<h2 id="hdfs-io">HDFS I/O</h2>
+
+<p><code>MetricsSystem</code> also reports all filesystem- and HDFS-I/O at per-executor granularity. Below are some graphs showing us our application’s HDFS read statistics:</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/hdfs-graphs.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/hdfs-graphs.png" alt="HDFS I/O Graphs"></a></p>
+
+<p>Clockwise from top left, we see:</p>
+
+<ul>
+  <li>a peak of ~100 HDFS reads per second (red line, right Y-axis), with individual executors topping out around ~2/s over any given 10s interval (thinner multi-colored lines),</li>
+  <li>a total of ~700 HDFS reads (red line, right Y-axis) over the application’s lifespan, with individual executors accounting for anywhere from ~20 to ~100,</li>
+  <li>a total of ~180&nbsp;GB of data read from HDFS  (red line, right Y-axis), which is in line with what was expected from this job, and</li>
+  <li>a peak total read throughput of around 1.5&nbsp;GB/s.</li>
+</ul>
+
+<p>Our applications are typically not I/O bound in any meaningful way, but we’ve nonetheless found access to such information useful, if only from a sanity-checking perspective.</p>
+
+<h2 id="jvm">JVM</h2>
+
+<p>The <a href="https://github.com/apache/spark/blob/9f603fce78fcc997926e9a72dec44d48cbc396fc/core/src/main/scala/org/apache/spark/metrics/source/JvmSource.scala">JVM statistics exported by Spark</a> are a treasure trove of information about what is going on in each executor. We’ve only begun to experiment with ways to distill this data; here’s an example of per-executor panels with information about garbage collection:</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/per-executor-jvm-metrics.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/per-executor-jvm-metrics.png" alt="8 per-executor JVM-metric graphs"></a></p>
+
+<h1 id="case-study-ill-fated-somaticstandardsomaticstandard-run">Case Study: Ill-Fated <a href="https://github.com/hammerlab/guacamole/blob/4c0381c6feba189ab605decaaea3c56a158ff565/src/main/scala/org/hammerlab/guacamole/commands/SomaticStandardCaller.scala"><code>SomaticStandard</code></a> Run</h1>
+
+<p>Let’s do some forensics on a recent failed run of our <a href="https://github.com/hammerlab/guacamole/blob/4c0381c6feba189ab605decaaea3c56a158ff565/src/main/scala/org/hammerlab/guacamole/commands/SomaticStandardCaller.scala">SomaticStandard variant caller</a> and use our Grafana dashboard to diagnose an issue that proved fatal to the application.</p>
+
+<p>The graphs below, similar to those in <a href="http://www.hammerlab.org/2015/02/27/monitoring-spark-with-graphite-and-grafana/#task-completion-rate-successful-run">the first example above</a>, show the number of active and completed tasks, per executor and overall, during a period in the middle of the doomed application’s lifetime:</p>
+
+<p><a href="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/ss-tasks-3.png"><img src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/ss-tasks-3.png" alt="Active and completed task counts"></a></p>
+
+<p>From experience, we have learned to note and infer several things from graphs like these:</p>
+
+<ul>
+  <li>All three graphs have a discontinuity toward the middle of the time window presented here.
+    <ul>
+      <li>This is likely due to the application master (AM) restarting.</li>
+      <li>Related: all “completed tasks per executor” (middle panel) counts restart from zero when the new AM spawns new executors.</li>
+    </ul>
+  </li>
+  <li>In the lead-up to the discontinuity / AM restart, forward progress had almost completely stopped.
+    <ul>
+      <li>The tooltip on the left graph shows that there were several minutes where only one task (and therefore executor) was active (out of <strong>1000</strong> total executors).</li>
+      <li>The “completed task” counts in the right two graphs show no movement.</li>
+    </ul>
+  </li>
+  <li>Finally, there are a suspicious couple of new lines starting from 0 in the middle graph around 15:31-15:32.
+    <ul>
+      <li>Why are executors coming to life this late in the application?</li>
+      <li>Answer: these new executors are replacing ones that have been lost.</li>
+      <li><em>Something during this flat-lined period is causing executors to die and be replaced.</em></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Putting all of this information together, we conclude that the issue here was one of a “hot potato” task inducing <a href="http://en.wikipedia.org/wiki/Garbage_collection_(computer_science)#Disadvantages">garbage collection stalls</a> (and subsequent deaths) in executors that attempted to perform it.</p>
+
+<p>This is a common occurrence when <a href="http://www.cs.cmu.edu/~kair/papers/bala.pdf">key skew</a> causes one or a few tasks in a distributed program to be too large (relative to the amount of memory that has been allocated to the the executors attempting to process them). The study of skew in MapReduce systems dates back to the <a href="http://static.googleusercontent.com/media/research.google.com/en/us/pubs/archive/32721.pdf">earliest days of MapReduce at Google</a>, and it is one of the most common causes of mysterious Spark-job-degradation-or-death that we observe today.</p>
+
+<h1 id="grafana-spark-dashboards"><a href="https://github.com/hammerlab/grafana-spark-dashboards">grafana-spark-dashboards</a></h1>
+
+<p>As usual, we’ve open-sourced the tools showcased here in the hopes that you’ll find them useful as well. The <a href="https://github.com/hammerlab/grafana-spark-dashboards">hammerlab/grafana-spark-dashboards</a> repo contains a script that you should be able to use off-the-shelf to bootstrap your own slick Grafana dashboards of Spark metrics.</p>
+
+<h1 id="future-work">Future Work</h1>
+
+<p>The development and standardization of sane tools for monitoring and debugging Spark jobs will be of utmost importance as Spark matures, and our work thus far represents only a tiny contribution toward that end.</p>
+
+<p>Though the <a href="https://github.com/hammerlab/grafana-spark-dashboards">grafana-spark-dashboards</a> previewed above have been useful, there’s still an ocean of relevant data we would love to get out of Spark and onto our graphs, including but not limited to:</p>
+
+<ul>
+  <li>Structured information about jobs and stages, particularly start-/end-times and failures.</li>
+  <li>Information about what host each executor is running on.</li>
+  <li><strong>Task- and record-level metrics!</strong>
+    <ul>
+      <li><a href="https://github.com/apache/spark/pull/4067">Spark #4067</a> added such metrics to the web UI, and it would be great to be able to see them over time, identify executors / tasks that are lagging, etc.</li>
+      <li>Reporting task failures, even one-offs, would be useful; it is sometimes surprising to behold how many of those occur when perusing the logs.</li>
+    </ul>
+  </li>
+  <li><a href="http://spark.apache.org/docs/1.2.1/programming-guide.html#accumulators">User-defined accumulators</a>.</li>
+</ul>
+
+<p>In addition, supporting other time series database or metrics collection servers (e.g. <a href="https://github.com/apache/spark/pull/4574">StatsD</a>, <a href="http://influxdb.com/">InfluxDB</a>, <a href="http://opentsdb.net/">OpenTSDB</a>) would open up more avenues for users to monitor Spark at scale.</p>
+
+<hr>
+
+<p>We hope this information, as well as the <a href="https://github.com/hammerlab/grafana-spark-dashboards">grafana-spark-dashboards</a> starter code, will be useful to you; happy monitoring!</p>
+
+<p><em>Thanks to <a href="https://github.com/ksakellis">Kostas Sakellis</a> @ Cloudera, <a href="https://github.com/ajsquared">Andrew Johnson</a> @ Etsy, <a href="https://github.com/astanway">Abe Stanway</a>, and <a href="https://github.com/torkelo">Torkel Ödegaard</a> of Grafana/Raintank for their input though this process, and to the Spark team for <a href="https://github.com/apache/spark/pull/4212">many</a> <a href="https://github.com/apache/spark/pull/4213">recent</a> <a href="https://github.com/apache/spark/pull/4218">MetricsSystem-related</a> <a href="https://github.com/apache/spark/pull/4571">code reviews</a>.</em></p>
+
+
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+      <!-- TypeKit -->
+  <script type="text/javascript" async="" src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/heap.js"></script><script src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/fst8ycj.js"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
+  <script>
+    (function(document) {
+    var toggle = document.querySelector('.sidebar-toggle');
+    var sidebar = document.querySelector('#sidebar');
+    var checkbox = document.querySelector('#sidebar-checkbox');
+
+    document.addEventListener('click', function(e) {
+    var target = e.target;
+
+    if(!checkbox.checked ||
+    sidebar.contains(target) ||
+    (target === checkbox || target === toggle)) return;
+
+    checkbox.checked = false;
+    }, false);
+    })(document);
+  </script>
+
+  <!-- Analytics -->
+  <script type="text/javascript">
+  window.heap=window.heap||[],heap.load=function(t,e){window.heap.appid=t,window.heap.config=e;var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(t){return function(){heap.push([t].concat(Array.prototype.slice.call(arguments,0)))}},p=["clearEventProperties","identify","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+  heap.load("2121658752");
+  </script>
+
+  <!-- MathJax -->
+  <script type="text/javascript" src="./Monitoring Spark with Graphite and Grafana · Hammer Lab_files/MathJax.js"></script>
+
+
+
+  
+
+
+</body></html>
