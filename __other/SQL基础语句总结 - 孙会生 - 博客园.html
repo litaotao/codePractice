@@ -1,0 +1,565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0060)http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./SQL基础语句总结 - 孙会生 - 博客园_files/analytics.js"></script><script async="" src="http://ad.cnblogs.com/ad/postmoduletext?callback=jQuery1707997142530512065_1423324369746&adModuleId=2&content=SQL%E5%9F%BA%E7%A1%80%E8%AF%AD%E5%8F%A5%E6%80%BB%E7%BB%93&_=1423324370061"></script>
+
+<title>SQL基础语句总结 - 孙会生 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./SQL基础语句总结 - 孙会生 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./SQL基础语句总结 - 孙会生 - 博客园_files/bundle-summerGarden.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/tunwa/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/tunwa/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/tunwa/wlwmanifest.xml">
+<script async="" type="text/javascript" src="./SQL基础语句总结 - 孙会生 - 博客园_files/gpt.js"></script><script src="./SQL基础语句总结 - 孙会生 - 博客园_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">var currentBlogApp = 'tunwa', cb_enable_mathjax=false;</script>
+<script src="./SQL基础语句总结 - 孙会生 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_56.js"></script></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/tunwa/"><img id="blogLogo" src="./SQL基础语句总结 - 孙会生 - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/tunwa/">风雨人生</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+	<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+	<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/tunwa/">首页</a></li>
+	<li><a href="http://news.cnblogs.com/">新闻</a></li>
+	<li><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+	<li><a id="MyLinks1_ContactLink" accesskey="9" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/%e5%ad%99%e4%bc%9a%e7%94%9f">联系</a></li>
+	<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+	<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/tunwa/rss">订阅</a>
+	<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/tunwa/rss"><img src="./SQL基础语句总结 - 孙会生 - 博客园_files/xml.gif" alt="订阅"></a></li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			
+<!--done-->
+随笔- 8&nbsp;
+文章- 0&nbsp;
+评论- 12&nbsp;
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./SQL基础语句总结 - 孙会生 - 博客园_files/SQL基础语句总结 - 孙会生 - 博客园.html">SQL基础语句总结</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><h3>写在前面</h3>
+<p>本节主要讲述一些基本的，常用的SQL语句，而非数据库方面的基本知识。数据库方面的知识留待以后再讲，现在就我们平常常用的一些SQL语句展开论述。</p>
+<p>本节会涉及到SQL的基本句法，SQL的执行顺序，SQL之间的组合，动态SQL语句四个方面。这四个方面之间没有前后顺序之分，是相辅相成，其内在还是有很多联系的。</p>
+<h3>一. 四种基本的SQL语句</h3>
+<h4>1. 查询</h4>
+<p>select * from table</p>
+<h4>2. 更新</h4>
+<p>update table set field=value</p>
+<h4>3. 插入</h4>
+<p>insert [into] table (field) values(value)</p>
+<h4>4. 删除</h4>
+<p>delete [from] table</p>
+<h3>二.语句的执行顺序</h3>
+<h4>1.语法分析</h4>
+<p>分析语句中语法是否符合规范，衡量语句中各表达式的意义。</p>
+<h4>2.语义分析</h4>
+<p>检查语句中涉及的所有数据库对象是否存在，且用户有相应的权限。</p>
+<h4>3.选择优化器</h4>
+<p>不同的数据库有不同的算法（这个涉及到数据结构），数据库会根据自己的理解（数据库本身）为 SQL语句选择不同的优化器，不同的优化器会选择不同的“执行计划”</p>
+<h4>4.运行“执行计划”</h4>
+<p>根据“执行计划”执行SQL语句。</p>
+<p>以上所述是数据执行时的大体路线。</p>
+<h4>5.select 语句的执行顺序</h4>
+<p>借用ItZik Ben-Gan、Lubor Kollar、Dejan Sarka所著的《Sql Server 2005 技术内幕：T-SQL查询》的一段话足以说明：</p>
+<p>(8) select (9) distinct (11) &lt;top_specification &gt; &lt;select_list&gt;</p>
+<p>(1)from&lt;lef t_table&gt;</p>
+<p>(3) &lt;join_type&gt; join &lt;right_table&gt;</p>
+<p>(2) on &lt;join _condition&gt;</p>
+<p>(4) where &lt;where_condition&gt;</p>
+<p>(5)group by &lt;group_by_list&gt;</p>
+<p>(6) with {cube|rollup}</p>
+<p>(7)having(having_condition)</p>
+<p>(10) order by &lt;order_by_condition&gt;</p>
+<p>从这个顺序可以看出，所有的查询语句都是从from开始执行的。在执行过程中，每个步骤都会为下一个步骤生成一个虚拟表，这个虚拟表将作为下一个执行步骤的基础。</p>
+<h5>第一步：from</h5>
+<p>首先对from子句中的前两个表执行一个笛卡尔乘积，此时生成虚拟表vt1 .</p>
+<h5>第二步：on</h5>
+<p>接下来便是应用on筛选器，on 中的逻辑表达式将应用到 vt1 中的各个行，筛选出满足on逻辑表达式的行，生成虚拟表 vt2 .</p>
+<h5>第三步：join</h5>
+<p>如果是outer join 那么这一步就将添加外部行，left outer jion 就把左表在第二步中过滤的添加进来，如果是right outer join 那么就将右表在第二步中过滤掉的行添加进来，这样生成虚拟表 vt3.</p>
+<h5>第四步：多表</h5>
+<p>如果 from 子句中的表数目多余两个表，那么就将vt3和第三个表连接从而计算笛卡尔乘积，生成虚拟表，该过程就是一个重复1-3的步骤，最终得到一个新的虚拟表 vt3.</p>
+<h5>第五步：where</h5>
+<p>应用where筛选器，对上一步生产的虚拟表引用where筛选器，生成虚拟表vt4，在这有个比较重要的细节不得不说一下，对于包含outer join子句的查询，就有一个让人感到困惑的问题，到底在on筛选器还是用where筛选器指定逻辑表达式呢？on和where的最大区别在于，如果在on应用逻辑表达式那么在第三步outer join中还可以把移除的行再次添加回来，而where的移除的最终的。</p>
+<h5>第六步：group by </h5>
+<p>分组，生成虚拟表 vt4</p>
+<h5>第七步：having</h5>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 对vt4应用having筛选器，生成虚拟表 vt5</p>
+<h5>第八步：select</h5>
+<p>处理select 列表，生成虚拟表vt6</p>
+<h5>第九步：distinct</h5>
+<p>将vt6 中重复的行去掉，生成虚拟表vt7</p>
+<h5>第十步：order&nbsp;&nbsp; by</h5>
+<p>将vt7中的行按order by 子句中的列列表排序，生成一个游标vc8</p>
+<h5>第十一步： top</h5>
+<p>从vc8的开始处选择指定数量或比例的行，生成虚拟表vt9,并返回给调用者</p>
+<p>三. SQL语句扩展</p>
+<h4>1.select</h4>
+<h5>1.1 选择性插入语句 </h5>
+<h6>1.1.1 Insert into&nbsp; table1 (field1 )&nbsp; Select field2 from table2</h6>
+<p>要求table1必须存在。</p>
+<h6>1.1.2 select field1 into table1 from table2</h6>
+<p>&nbsp;&nbsp; 要求table1不存在，在运行时会自动创建表名为table1,字段名为field1的一个表。</p>
+<h5>1.2打开其它数据源</h5>
+<p>/* OracleSvr为链接服务器名 ，本示例假定已经创建了一个名为 ORCLDB 的 Oracle 数据库别名。*/</p>
+<p>EXEC sp_addlinkedserver 'OracleSvr',&nbsp; --链接服务器名OracleSvr，sysname类型</p>
+<p>&nbsp;&nbsp; 'MSDAORA', --provider_name数据源提供程序，此处为oracle</p>
+<p>&nbsp;&nbsp; 'ORCLDB' --数据源名称</p>
+<p>GO</p>
+<p>Select * from OPENQUERY(OracleSvr, 'SELECT name, id FROM joe.titles')</p>
+<p>如果有多个sql server实例：</p>
+<p>SELECT *FROM&nbsp; [servername\instancename.]pubs.dbo.authors. </p>
+<p>注意：一个对象的完整名称包括四个标识符：服务器名称、数据库名称、所有者名称和对象名称。其格式如下：</p>
+<p>[ [ [ server. ] [ database ] .] [ owner_name ] .] object_name</p>
+<p>中间的名称可以省略，但是.不可以省略。如：server…object_name</p>
+<h4>2.update</h4>
+<h5>2.1多表更新</h5>
+<p>Update table1 set&nbsp; table1.field 1=table2.field2&nbsp; from</p>
+<p>table1，table2 /*猜测下连接方式全联接 FULL [OUTER] JOIN */</p>
+<p>where&nbsp; table1.field3= table2 .filed3</p>
+<p>知识：SQL Server的update语句中from后可跟多个表，Oracle则不支持该用法</p>
+<p>Oracle 中：Update&nbsp; table1&nbsp; set&nbsp; table1.field1=</p>
+<p>(select table2.field2 from table2 where .field3= table2 .filed3)</p>
+<h4>3.insert</h4>
+<h5>3.1 插入语句的规范问题</h5>
+<p>在sql server 2000,sql server 2005中</p>
+<p>标准语句：insert into&nbsp; table(field)&nbsp; values (value)</p>
+<p>提示：在access中不正确，原因sql语句不规范，因此在书写sql语句的过程中一定要按正规的语法来写。</p>
+<h4>4.delete</h4>
+<h5>4.1标准删除</h5>
+<p>标准语句：delete from table where condition</p>
+<p>提示：同insert</p>
+<h5>4.2其它删除</h5>
+<h6>4.2.1&nbsp; truncate</h6>
+<p>语法：truncate table&nbsp; table_name</p>
+<p>删除表中所有行，不记录单个行删除操作，不记录日志,，所有速度比Delete快。</p>
+<h6>4.2.2&nbsp; drop </h6>
+<p>语句： Drop table table_name</p>
+<p>删除表及相关，有fk约束的不能删，先去年fk;系统表不能使用。</p>
+<h4>5.order by</h4>
+<p>功能：排序</p>
+<p>技巧：order by newid() 随机排序</p>
+<h3>四. 动态SQL语句</h3>
+<h4>4.1基本原则</h4>
+<h5>4.1.1预编译问题</h5>
+<p>在EXECUTE执行之前，数据库不会编译 EXECUTE 语句内的语句，动态SQL语句就是放到存储过程中，它也不会预先编译。</p>
+<h5>4.1.2什么时候使用动态SQL语句</h5>
+<p>字段名，表名，数据库名作为变量时，必须用动态SQl语句</p>
+<h4>4.2.exec[ute]</h4>
+<h5>4.2.1语法</h5>
+<p>exec (‘select * from table_name where name=’’’+@name+’’’’) --括号不能少</p>
+<h5>4.2.2传递参数</h5>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --假设存储过程test_sp中需要一个参数：类型nvarchar(50) 名称 @parm</p>
+<p>Declare @parms nvarchar(50)</p>
+<p>Set @parms=’测试变量’</p>
+<p>Exec test_sp&nbsp; [@parm=]@parms –方括号内的可以省略</p>
+<p>如果是批处理中的第一句，则可以省略Exec</p>
+<h5>4.2.3输出参数</h5>
+<p>declare @num int, @field int,</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @sqls nvarchar(4000)</p>
+<p>Set @field=1</p>
+<p>set @sqls='select @a=count(*) from table_name&nbsp; where field=@field' </p>
+<p>exec sp_executesql @sqls,N'@a int output,@field int',@num output ,@field</p>
+<p>select @num</p>
+<h4>4.3.sp_executesql</h4>
+<p>语法：exec[ute] sp_executesql N’select * from table_name where field=@field’,N’@field int’,@field=1</p>
+<p>使用sp_exexutesql比使用exec更有效率.</p>
+<h3>结束语</h3>
+<p>以上是SQL中常用的语句，及其执行时的顺序。不管是SQL Server系列，mysql,access,Oracle系列这些都基本相同。如果要在数据库方面做高深的研究，则多看一下其自带的帮助，多练习，多看一些数据库原理方面的书。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(1977208,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/%e5%ad%99%e4%bc%9a%e7%94%9f" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./SQL基础语句总结 - 孙会生 - 博客园_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/tunwa/" target="_blank"><img src="./SQL基础语句总结 - 孙会生 - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/tunwa/">孙会生</a><br>
+<a href="http://home.cnblogs.com/u/tunwa/followees">关注 - 0</a><br>
+<a href="http://home.cnblogs.com/u/tunwa/followers">粉丝 - 3</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(1977208,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">5</span>
+    </div>
+	<div class="buryit" onclick="votePost(1977208,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/tunwa/archive/2011/02/21/1959667.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/tunwa/archive/2011/02/21/1959667.html" title="发布于2011-02-21 13:51">梦幻修仙QQ群</a><br><a href="http://www.cnblogs.com/tunwa/archive/2012/01/17/2324406.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/tunwa/archive/2012/01/17/2324406.html" title="发布于2012-01-17 10:45">Windows Image Acquisition (WIA) 服务在启动时暂停</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2011-03-08 14:10</span> <a href="http://www.cnblogs.com/tunwa/">孙会生</a> 阅读(<span id="post_view_count">8733</span>) 评论(<span id="post_comment_count">10</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=1977208" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#" onclick="AddToWz(1977208);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=25652,cb_entryId=1977208,cb_blogApp=currentBlogApp,cb_blogUserGuid='58703d0b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2011/3/8 14:10:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<br>
+<div class="feedback_area_title">发表评论</div>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041358" class="layer">#1楼</a><a name="2041358" id="comment_anchor_2041358"></a> <span class="comment_date">2011-03-08 14:28</span> | <a id="a_comment_author_2041358" href="http://www.cnblogs.com/liu-wei/" target="_blank">流流</a> <a href="http://msg.cnblogs.com/msg/send/%e6%b5%81%e6%b5%81" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041358" class="blog_comment_body">good</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041358,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041358,&#39;Bury&#39;,this)">反对(0)</a></div><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041369" class="layer">#2楼</a><a name="2041369" id="comment_anchor_2041369"></a> <span class="comment_date">2011-03-08 14:42</span> | <a id="a_comment_author_2041369" href="http://home.cnblogs.com/u/280197/" target="_blank">橡皮泥</a> <a href="http://msg.cnblogs.com/msg/send/%e6%a9%a1%e7%9a%ae%e6%b3%a5" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041369" class="blog_comment_body">呵呵 写的很细 费心了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041369,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041369,&#39;Bury&#39;,this)">反对(0)</a></div><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041390" class="layer">#3楼</a><a name="2041390" id="comment_anchor_2041390"></a> <span class="comment_date">2011-03-08 14:52</span> | <a id="a_comment_author_2041390" href="http://www.cnblogs.com/aspnetx/" target="_blank">哥本哈士奇(aspnetx)</a> <a href="http://msg.cnblogs.com/msg/send/%e5%93%a5%e6%9c%ac%e5%93%88%e5%a3%ab%e5%a5%87(aspnetx)" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041390" class="blog_comment_body">精辟</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041390,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041390,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041390_avatar" style="display:none;">http://pic.cnitblog.com/face/8622/20130526224329.png</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041449" class="layer">#4楼</a><a name="2041449" id="comment_anchor_2041449"></a> <span class="comment_date">2011-03-08 15:22</span> | <a id="a_comment_author_2041449" href="http://www.cnblogs.com/Simtice/" target="_blank">Simtice</a> <a href="http://msg.cnblogs.com/msg/send/Simtice" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041449" class="blog_comment_body">很不错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041449,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041449,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041449_avatar" style="display:none;">http://pic.cnitblog.com/face/u279975.jpg</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041459" class="layer">#5楼</a><a name="2041459" id="comment_anchor_2041459"></a> <span class="comment_date">2011-03-08 15:30</span> | <a id="a_comment_author_2041459" href="http://www.cnblogs.com/kevin-2012/" target="_blank">じ☆ve雪</a> <a href="http://msg.cnblogs.com/msg/send/%e3%81%98%e2%98%86ve%e9%9b%aa" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041459" class="blog_comment_body">  真的很有用啊，谢谢你的分享</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041459,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041459,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041459_avatar" style="display:none;">http://pic.cnitblog.com/face/u183704.gif</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041512" class="layer">#6楼</a><a name="2041512" id="comment_anchor_2041512"></a> <span class="comment_date">2011-03-08 16:17</span> | <a id="a_comment_author_2041512" href="http://www.cnblogs.com/muyoushui/" target="_blank">木由水</a> <a href="http://msg.cnblogs.com/msg/send/%e6%9c%a8%e7%94%b1%e6%b0%b4" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041512" class="blog_comment_body">感觉和《锋利的sql》着本书写的很像</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041512,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041512,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041512_avatar" style="display:none;">http://pic.cnitblog.com/face/u70248.jpg</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041528" class="layer">#7楼</a><a name="2041528" id="comment_anchor_2041528"></a> <span class="comment_date">2011-03-08 16:26</span> | <a id="a_comment_author_2041528" href="http://www.cnblogs.com/Rioyang/" target="_blank">Rio·Yang</a> <a href="http://msg.cnblogs.com/msg/send/Rio%26%23183%3bYang" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041528" class="blog_comment_body">精辟,楼主幸苦</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041528,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041528,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041528_avatar" style="display:none;">http://pic.cnitblog.com/face/u87418.jpg</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041574" class="layer">#8楼</a><a name="2041574" id="comment_anchor_2041574"></a> <span class="comment_date">2011-03-08 17:02</span> | <a id="a_comment_author_2041574" href="http://www.cnblogs.com/calljohnson/" target="_blank">xxx1013</a> <a href="http://msg.cnblogs.com/msg/send/xxx1013" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041574" class="blog_comment_body">简单实用 概括的很好</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041574,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041574,&#39;Bury&#39;,this)">反对(0)</a></div><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2041581" class="layer">#9楼</a><a name="2041581" id="comment_anchor_2041581"></a> <span class="comment_date">2011-03-08 17:05</span> | <a id="a_comment_author_2041581" href="http://www.cnblogs.com/zengxiangzhan/" target="_blank">曾祥展</a> <a href="http://msg.cnblogs.com/msg/send/%e6%9b%be%e7%a5%a5%e5%b1%95" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2041581" class="blog_comment_body"><a href="http://www.cnblogs.com/zengxiangzhan/archive/2010/05/12/1733758.html" target="_blank">【汇总】SQL CODE --- 经典·精彩</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2041581,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2041581,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2041581_avatar" style="display:none;">http://pic.cnitblog.com/face/u82235.jpg</span><br>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#2219056" class="layer">#10楼</a><a name="2219056" id="comment_anchor_2219056"></a><span id="comment-maxId" style="display:none;">2219056</span><span id="comment-maxDate" style="display:none;">2011/10/13 16:02:51</span> <span class="comment_date">2011-10-13 16:02</span> | <a id="a_comment_author_2219056" href="http://www.cnblogs.com/yang-csharp/" target="_blank">星小野</a> <a href="http://msg.cnblogs.com/msg/send/%e6%98%9f%e5%b0%8f%e9%87%8e" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2219056" class="blog_comment_body">sql 基础语句，楼主费心了...</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2219056,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2219056,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2219056_avatar" style="display:none;">http://pic.cnitblog.com/face/u332408.jpg?id=31103200</span><br>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); var googletag = googletag || {}; googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type="text/javascript">
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+    })();
+</script>
+<script type="text/javascript">
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function () {
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+                googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1410860226396-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    <script type="text/javascript">
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });            
+            } else {
+                $('#div-gpt-ad-1346480159711-0').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/514843/" target="_blank">苹果全新Swift编程语言发展势头良好 即将腾飞</a><br> ·  <a href="http://news.cnblogs.com/n/514842/" target="_blank">阿里报案揭露深圳公司造谣：曾称阿里偷税5万亿</a><br> ·  <a href="http://news.cnblogs.com/n/514841/" target="_blank">夏普电视工厂出售 日系电视品牌在海外节节败退</a><br> ·  <a href="http://news.cnblogs.com/n/514840/" target="_blank">美国社交网络用户报告：女性更青睐Facebook</a><br> ·  <a href="http://news.cnblogs.com/n/514839/" target="_blank">微软推出全景照片合成工具ICE 拼接照片图像可自动补全</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id="div-gpt-ad-1410860226396-0" style="width:468px; height:60px;">
+<script type="text/javascript">
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1410860226396-0'); });
+    } else {
+        $('#div-gpt-ad-1346480159711-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/514725/" target="_blank">设计中的变与不变</a><br> ·  <a href="http://kb.cnblogs.com/page/514361/" target="_blank">通俗解释「为什么数据库难以拓展」</a><br> ·  <a href="http://kb.cnblogs.com/page/514557/" target="_blank">手机淘宝高质量持续交付探索之路</a><br> ·  <a href="http://kb.cnblogs.com/page/514330/" target="_blank">高效运维最佳实践（01）：七字诀，不再憋屈的运维</a><br> ·  <a href="http://kb.cnblogs.com/page/512932/" target="_blank">什么是工程师文化？</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/tunwa/">孙会生</a><br>园龄：<a href="http://home.cnblogs.com/u/tunwa/" title="入园时间：2007-04-06">7年10个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/tunwa/followers/">3</a><br>关注：<a href="http://home.cnblogs.com/u/tunwa/followees/">0</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;58703d0b-63cf-dd11-9e4d-001cf0cd104b&#39;)">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="日历">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2011/02/01&#39;);return false;">&lt;</a></td><td align="center">2011年3月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2011/04/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">27</td><td class="CalOtherMonthDay" align="center">28</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td class="CalWeekendDay" align="center">5</td></tr><tr><td class="CalWeekendDay" align="center">6</td><td align="center">7</td><td align="center"><a href="http://www.cnblogs.com/tunwa/archive/2011/03/08.html"><u>8</u></a></td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td class="CalWeekendDay" align="center">12</td></tr><tr><td class="CalWeekendDay" align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td class="CalWeekendDay" align="center">19</td></tr><tr><td class="CalWeekendDay" align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td class="CalWeekendDay" align="center">26</td></tr><tr><td class="CalWeekendDay" align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<div class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+
+</div>
+
+
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/tunwa/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/tunwa/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/tunwa/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/tunwa/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/tunwa/tag/" title="我的博客的标签列表">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass(&#39;itemListLink&#39;, &#39;itemListLin_con&#39;);return false;" href="http://www.cnblogs.com/tunwa/archive/2011/03/08/1977208.html#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div>
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/tunwa/tag/js/">js</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/QQ/">QQ</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/xml/">xml</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/%E7%BC%96%E7%A8%8B/">编程</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/%E5%85%85%E5%80%BC/">充值</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/%E5%85%BC%E5%AE%B9/">兼容</a>(1)</li><li><a href="http://www.cnblogs.com/tunwa/tag/%E6%B7%98%E5%AE%9D/">淘宝</a>(1)</li>
+</ul>
+</div>
+<div class="catListPostArchive">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/tunwa/archive/2012/01.html">2012年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/tunwa/archive/2011/03.html">2011年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/tunwa/archive/2011/02.html">2011年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/tunwa/archive/2010/12.html">2010年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/tunwa/archive/2008/10.html">2008年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/tunwa/archive/2008/05.html">2008年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/tunwa/archive/2007/09.html">2007年9月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="recent_comments_wrap" style="display: none;">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"></div>
+</div>
+</div><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/tunwa/archive/2008/05/07/1186714.html">1. 我看IE与FF------Js读取xml文件(8791)</a></li><li><a href="./SQL基础语句总结 - 孙会生 - 博客园_files/SQL基础语句总结 - 孙会生 - 博客园.html">2. SQL基础语句总结(8732)</a></li><li><a href="http://www.cnblogs.com/tunwa/archive/2007/09/11/889187.html">3. 点击按钮后变灰提交页面(1111)</a></li><li><a href="http://www.cnblogs.com/tunwa/archive/2012/01/17/2324406.html">4. Windows Image Acquisition (WIA) 服务在启动时暂停(976)</a></li><li><a href="http://www.cnblogs.com/tunwa/archive/2012/01/17/2324408.html">5. 错误应用程序 iexplore.exe，版本 6.0.2900.2180，错误模块 mshtml.dll(420)</a></li></ul></div>
+</div>
+</div><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="./SQL基础语句总结 - 孙会生 - 博客园_files/SQL基础语句总结 - 孙会生 - 博客园.html">1. SQL基础语句总结(10)</a></li><li><a href="http://www.cnblogs.com/tunwa/archive/2008/10/29/1322534.html">2. 敢问路在何方?-----现状篇(1)(2)</a></li></ul></div>
+</div>
+</div><div id="topdigg_posts_wrap">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="./SQL基础语句总结 - 孙会生 - 博客园_files/SQL基础语句总结 - 孙会生 - 博客园.html">1. SQL基础语句总结(5)</a></li><li><a href="http://www.cnblogs.com/tunwa/archive/2008/05/07/1186714.html">2. 我看IE与FF------Js读取xml文件(1)</a></li></ul></div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script><iframe src="./SQL基础语句总结 - 孙会生 - 博客园_files/container.html" style="visibility: hidden; display: none;"></iframe>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2015 孙会生
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0"></body></html>
