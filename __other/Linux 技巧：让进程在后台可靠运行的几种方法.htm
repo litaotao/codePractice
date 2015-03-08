@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0054)http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN" class="dj_webkit dj_chrome dj_contentbox"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Linux 技巧：让进程在后台可靠运行的几种方法</title>
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+<link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico">
+<meta name="DC.Rights" content="© Copyright IBM Corporation 2008">
+<meta name="Keywords" content="disown,setsid,nohup,screen, tttlca, dddauca">
+<meta name="DC.Date" scheme="iso8601" content="2008-05-29">
+<meta name="Source" content="v17 delivery:developerWorks">
+<meta name="Security" content="Public">
+<meta name="Abstract" content="本文将向您介绍在不同的场景下，让进程在断开连接后依然保持运行的几种方法。">
+<meta name="Description" content="本文将向您介绍在不同的场景下，让进程在断开连接后依然保持运行的几种方法。">
+<meta name="IBM.Effective" scheme="W3CDTF" content="2008-05-29">
+<meta name="Owner" content="developerWorks/China/IBM">
+<meta name="DC.Language" scheme="rfc1766" content="zh-CN">
+<meta name="IBM.SpecialPurpose" content="SP001">
+<meta name="IBM.Country" content="CN">
+<meta name="Robots" content="index,follow">
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="CT316">
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="SWGC0">
+<meta name="dW.ContentArea" content="2,34">
+<meta name="dW.Topic" content="361,602,370,247">
+
+<meta scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCLNXCN">
+
+<link rel="canonical" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/index.html">
+<!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/www.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/cnzh.css" rel="stylesheet" title="www" type="text/css">
+<!-- Masthead/footer -->
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-mfN2015-01.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-article-6.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-common-features.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-local-site-v17-N2014-05.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/www.js">//</script><style type="text/css"></style><script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/eluminate.js"></script><script src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/head.js"></script><script language="javascript" type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/50200000.js"></script><script language="javascript" type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/rules_50200000.js"></script><script language="javascript" type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dispatcher-v3.js"></script><script src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/yahoo-min.js" type="text/javascript"></script><script src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/cp-v3.js" type="text/javascript"></script><script src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/json-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-www-v2.js">//</script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/Dialog.xd.js"></script> 
+<script type="text/javascript">
+//  ibmweb.config.set({ sbs: { enabled: false }});
+</script>
+<!-- Exp -->
+<script type="text/javascript">dojo.addOnLoad(function(){var dw_source="dwchina";var dw_register="注册免费的 Bluemix 试用版";var dw_connect="连接 Bluemix 开发者";var dw_vp="在 IBM Bluemix 云平台上开发并部署您的下一个应用。";var dw_cta="现在就开始免费试用";var dw_tile_alt="在 IBM Bluemix 云平台上开发并部署您的下一个应用。现在就开始免费试用";var dw_campaign="bluemix";var dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-2];if(dw_content=="library"){dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-1];dw_content=window.location.pathname.split("/")[window.location.pathname.split("/").length-3]+"-"+dw_content.substring(0,dw_content.indexOf(".html"))}var bluDevComURL="https://developer.ibm.com/bluemix/";var bluLink="https://www.bluemix.net/";var watsonLink="https://www.bluemix.net/#/solutions/solution=watson";var iotLink="http://www.bluemix.net/#/solutions/solution=internet_of_things";var lnkID;var lnkIDd;var lnkIDt;var bLinkEnd;var bLinkTemp;var idTrkr=[];var idCnt;var artTop=dojo.query("div.ibm-col-1-1")[0];var artChildren=dojo.query(artTop).children();var edgy=false;if(dojo.hasClass(artChildren[0],"ibm-inset"))edgy=true;if((artChildren[0].nodeName=="H2")&&(dojo.hasClass(artChildren[1],"ibm-inset")))edgy=true;if(dojo.hasClass(artChildren[0],"codesection"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"codesection")))edgy=true;if((artChildren[0].nodeName=="H5")&&(artChildren[1].width>=701))edgy=true;if(artChildren[1].width>=701)edgy=true;if(dojo.hasClass(artChildren[0],"ibm-data-table"))edgy=true;if((artChildren[0].nodeName=="H5")&&(dojo.hasClass(artChildren[1],"ibm-data-table")))edgy=true;if(!(edgy)){var sBarAB='<div class="dw-article-sidebar dw-bluemix" id="dwc-exp-a">'+'<img src="//dw1.s81c.com/developerworks/i/bluemix-graphic.png" height="64" width="64" alt=""/>'+'<p>'+dw_vp+'</p>'+'<p class="ibm-button-link-alternate dw-button-green">'+'<a id="tutc-sbar-bmix-home-btn-ABa" href="'+bluLink+'" class="dw-button-large">'+dw_cta+'</a></p></div>';dojo.place(sBarAB,artTop,"first");}dojo.forEach(dojo.query("#ibm-content-main a"),function(item,index){var dw_medium="article";var bLink=dojo.attr(item,"href");if((dojo.attr(item,"id")!=null)&&(dojo.attr(item,"id").indexOf("-sbar-")>-1)){if(bLink.indexOf("solution=internet_of_things")>-1){dw_medium="sidebar-iot"}else if(bLink.indexOf("solution=watson")>-1){dw_medium="sidebar-watson"}else{dw_medium="sidebar"}}if(bLink&&(bLink.indexOf("//bluemix.net")>-1))bLink=bLink.replace("//bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//ace.ng.bluemix.net")>-1))bLink=bLink.replace("//ace.ng.bluemix.net","//www.bluemix.net");if(bLink&&(bLink.indexOf("//console.ng.bluemix.net")>-1))bLink=bLink.replace("//console.ng.bluemix.net","//www.bluemix.net");if(bLink&&((bLink.indexOf("//www.bluemix.net")>-1)||(bLink.indexOf("//www.ng.bluemix.net")>-1)||(bLink.indexOf("//hub.jazz.net")>-1))){bLinkEnd="";bLink=bLink.split("?");if((bLink[1])&&(bLink[1].indexOf("/")!=-1))bLinkEnd=bLink[1].substring(bLink[1].indexOf("/"));bLink=bLink[0];if(bLink.indexOf("//hub.jazz.net")>-1){if((bLink.indexOf("//hub.jazz.net/git")>-1)||(bLink.indexOf("//hub.jazz.net/project")>-1)){bLink="https://login.jazz.net/psso/proxy/jazzregister?utm_source="+dw_source+"&utm_medium="+dw_medium+"&utm_content="+dw_content+"&utm_campaign="+dw_campaign+"&redirect_uri="+bLink}else{bLink=bLink+"?utm_source="+dw_source+"&utm_campaign="+dw_campaign+"&utm_content="+dw_content+"&utm_medium="+dw_medium}}else{if(bLink.indexOf("/#/")==-1){if(bLink.substring(bLink.length-7)=="/docs/#"){bLink=bLink.replace("/docs/#","/docs/"+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+"#")}else{bLink=bLink+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium}}else{bLink=bLink.substring(0,bLink.indexOf("#"))+"?cm_mmc="+dw_source+"-_-"+dw_campaign+"-_-"+dw_content+"-_-"+dw_medium+bLink.substring(bLink.indexOf("#")-1)}}if(bLinkEnd)bLink=bLink+bLinkEnd;dojo.attr(item,"href",bLink);}});});</script><!-- LEADSPACE_STYLES -->
+
+<script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/cnzh-utf8.js" id="dojoIoScript1" charset="utf-8"></script><script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/saved_resource" id="dojoIoScript2" charset="utf-8"></script><script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/profiling.js" id="dojoIoScript3" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/move.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/TimedMoveable.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/_CssStateMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/_FormMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/_DialogMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/DialogUnderlay.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/ContentPane.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/common.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/TooltipDialog.xd.js"></script><script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/blackwhite_lists.json" id="dojoIoScript4" charset="utf-8"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/Mover.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/Moveable.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/_ContentPaneResizeMixin.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/html.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/loading.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/_LayoutWidget.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/common.xd(1).js"></script><script type="text/javascript" charset="utf-8" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/autoscroll.xd.js"></script></head>
+
+<body id="ibm-com" class="v17" aria-busy="false">
+
+	<div id="ibm-top" class="ibm-landing-page ibm-no-scroll"><img src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/ibm_logo_print.png" width="43" height="15" id="ibm-print-masthead" alt="IBM Print">
+
+<!-- MASTHEAD_BEGIN -->		
+<div id="ibm-masthead" role="banner">
+
+    <!-- TOP ROW -->    
+	<div id="dw-masthead-top-row">
+		<ul id="ibm-mast-options-dw" role="toolbar" aria-label="Masthead navigation">
+			<li id="dw-mast-top-4" role="presentation">
+				<a href="http://www.ibm.com/developerworks/cn/" tabindex="0"><img src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dwn-dw-badge.png" width="43" height="22" alt="dW" aria-label="dW"></a>
+			</li>
+			<li id="dw-mast-top-0" role="presentation">
+				<div id="dw-mast-signin">
+					<a id="dw-mf-signin-link" class="" href="http://www.ibm.com/developerworks/dwwi/jsp/ssologin.jsp?d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&lang=zh_CN&a=dwmav" title="" tabindex="2">登录</a>
+					<span class="dw-mf-signin-spacer">|</span>
+					<a id="dw-mf-reg-link" class="" href="http://www.ibm.com/developerworks/dwwi/jsp/ssoregister.jsp?d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&lang=zh_CN&a=dwmav" title="" tabindex="3">注册</a>
+				</div>
+				<div id="dw-mast-auth-link" class="dw-mf-hide">
+					<a class="authenticated ibm-active" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" role="button" tabindex="2"></a>
+					<ul id="dw-mast-auth-menu" class="dw-mf-hide">
+						<li class="dw-mast-auth-menu-title" aria-hidden="true">developerWorks 社区</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/profiles/html/myProfileView.do?lang=zh" tabindex="3">我的概要信息</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/groups/service/html/mycommunities?lang=zh" tabindex="4">我的社区</a>
+						</li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a href="http://www.ibm.com/developerworks/community/news/?lang=zh" tabindex="5">设置</a>
+						</li>
+						<li class="dw-mast-auth-menu-divider"><hr></li>
+						<li>
+							<span class="dw-mast-auth-menu-arrow" aria-hidden="true">›</span><a id="dw-mast-signout-link" href="http://www.ibm.com/developerworks/dwwi/jsp/ssologout.jsp?d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2F&a=dwmav" tabindex="6">退出</a>
+						</li>
+					</ul>				
+				</div>
+			</li>
+			<li id="dw-mast-top-1">
+				<div></div>
+			</li>
+			<li id="dw-mast-top-3" role="presentation">
+				<a href="http://www.ibm.com/cn/zh/" tabindex="1">IBM</a>
+			</li>
+		</ul>
+	</div>
+
+    <!-- BOTTOM ROW -->
+	<div id="ibm-universal-nav-dw" aria-label="Site map">
+		<ul id="ibm-unav-links-dw">
+			<li id="ibm-unav-home-dwlogo">
+				<a href="http://www.ibm.com/developerworks/cn/"><img src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dwn-dw-wordmark.png" width="225" height="28" alt="developerWorks®"></a>
+			</li>
+		</ul>
+		<ul id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn" role="toolbar" aria-label="Site map">
+			<li id="dw-mast-nav-0" role="presentation"><a href="http://www.ibm.com/developerworks/cn/topics/" tabindex="0">技术主题</a></li>
+			<li id="dw-mast-nav-1" role="presentation"><a href="http://www.ibm.com/developerworks/cn/downloads/" tabindex="0">软件下载</a></li>
+			<li id="dw-mast-nav-2" role="presentation"><a href="http://www.ibm.com/developerworks/community/?lang=zh" tabindex="0">社区</a></li>
+			<li id="dw-mast-nav-3" role="presentation"><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&lang=zh" tabindex="0">技术讲座</a></li>
+		</ul>
+		<form id="ibm-search-form" action="http://www.ibm.com/search/csass/search/" method="get" name="form1" aria-label="搜索 developerWorks" role="search">
+			<p>
+				<label for="q"><span class="ibm-access">搜索 developerWorks</span></label>
+				<input id="q" type="text" name="q" value="搜索 developerWorks" maxlength="100">
+				<input type="hidden" name="sn" value="dw">
+				<input type="hidden" name="lang" value="zh">
+				<input type="hidden" name="cc" value="CN">
+				<input type="hidden" name="en" value="utf">
+				<input type="hidden" name="hpp" value="20">
+				<input type="hidden" name="dws" value="cndw">
+				<input type="hidden" name="lo" value="zh">
+				<input id="ibm-search" class="ibm-btn-search" type="submit" value="提交">
+			</p>
+		</form>
+	</div>    
+	
+<div id="ibm-social-tools" role="navigation" aria-label="社交工具" style="display: block;"><ul role="toolbar" aria-label="Social tool list"><li><a class="ibm-share-print" title="打印本页面" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" rel="print" dojoattrid="1" role="button" tabindex="0">打印本页面</a></li><li><a class="ibm-share-email" title="用电子邮件发送本页面" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" rel="email" dojoattrid="2" role="button" tabindex="-1">用电子邮件发送本页面</a></li><li></li><li></li><li><a class="ibm-share-weibo" tabindex="-1" role="button" dojoattrid="2" rel="新浪微博" title="新浪微博" href="http://service.weibo.com/share/share.php?title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&language=zh_cn" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://service.weibo.com/share/share.php?title=%{TITLE}&amp;url=%{URL}&amp;language=zh_cn&#39;});">新浪微博</a></li><li><a class="ibm-share-renren" tabindex="-1" role="button" dojoattrid="3" rel="人人网" title="人人网" href="http://share.renren.com/share/buttonshare?title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95&link=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://share.renren.com/share/buttonshare?title=%{TITLE}&amp;link=%{URL}&#39;});">人人网</a></li><li><a class="dwcn-tencent-link" tabindex="-1" role="button" dojoattrid="4" rel="腾讯微博" title="腾讯微博" href="http://v.t.qq.com/share/share.php?title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://v.t.qq.com/share/share.php?title=%{TITLE}&amp;url=%{URL}&#39;});">腾讯微博</a></li><li><a class="dwcn-sohu-link" tabindex="-1" role="button" dojoattrid="5" rel="搜狐微博" title="搜狐微博" href="http://t.sohu.com/third/post.jsp?title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95%20&link=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://t.sohu.com/third/post.jsp?title=%{TITLE}%20&amp;link=%{URL}&#39;});">搜狐微博</a></li><li><a class="dwcn-netease-link" tabindex="-1" role="button" dojoattrid="6" rel="网易微博" title="网易微博" href="http://t.163.com/article/user/checkLogin.do?info=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95%20http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://t.163.com/article/user/checkLogin.do?info=%{TITLE}%20%{URL}&#39;});">网易微博</a></li><li><a class="ibm-share-digg" title="Digg" href="http://digg.com/submit?phase=2&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95" rel="digg" dojoattrid="7" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://digg.com/submit?phase=2&amp;url=%{URL}&amp;title=%{TITLE}&#39;});">Digg</a></li><li><a class="ibm-share-facebook" title="Facebook" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&t=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95" rel="facebook" dojoattrid="8" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://www.facebook.com/sharer.php?u=%{URL}&amp;t=%{TITLE}&#39;});">Facebook</a></li><li><a class="ibm-share-twitter" title="Twitter" href="http://twitter.com/?status=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F%20-%20Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95" rel="twitter" dojoattrid="9" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://twitter.com/?status=%{URL}%20-%20%{TITLE}&#39;});">Twitter</a></li><li><a class="ibm-share-delicious" title="Delicious" href="http://delicious.com/post?url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95" rel="delicious" dojoattrid="10" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://delicious.com/post?url=%{URL}&amp;title=%{TITLE}&#39;});">Delicious</a></li><li><a class="ibm-share-linkedin" title="Linked In" href="http://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F&title=Linux%20%E6%8A%80%E5%B7%A7%EF%BC%9A%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95" rel="linkedin" dojoattrid="11" role="button" tabindex="-1" onclick="ibmweb.sbs.clickHandler(event,{url:&#39;http://www.linkedin.com/shareArticle?mini=true&amp;url=%{URL}&amp;title=%{TITLE}&#39;});">Linked In</a></li></ul></div></div>
+<div id="fdiv" class="ibm-access"></div><!-- MASTHEAD_END -->
+	    
+<!-- LAYOUT -->
+<!-- LEADSPACE_BEGIN --> 
+<div id="ibm-access-cntr" role="main"><div id="ibm-leadspace-head">
+	<!-- LEADSPACE_BODY_BEGIN --> 
+	<div id="ibm-leadspace-body">
+		<!-- Navigation_Trail_BEGIN -->
+      <ul id="ibm-navigation-trail" role="navigation" aria-label="Bread Crumbs"><li><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></li><li><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp">文档库</a></li></ul>
+		<!-- END_Navigation_Trail -->
+			<!-- Title_Subtitle -->
+			<h1>Linux 技巧：让进程在后台可靠运行的几种方法</h1>
+	</div>
+	<!-- LEADSPACE_BODY_END --> 
+	<!-- SUMMARY_BEGIN -->
+	<div id="dw-summary-area" class="dw-summary-columns">
+		<div class="ibm-col-6-4">
+		<p>想让进程在断开连接后依然保持运行？如果该进程已经开始运行了该如何补救？ 如果有大量这类需求如何简化操作？</p>
+		<p class="ibm-no-print ibm-ind-link">
+
+			
+			<span id="nCmts"><span>4</span><img class="dw-cmts-arrow" alt="" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-cmts-arrow.png" height="7" width="7"> <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#icomments" class="dw-cmt-link">评论：</a></span>
+		</p>
+		</div>
+		<div class="ibm-col-6-2 dw-toc-margin">
+			<p class="dw-summary-author"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#authorN10020" class="ibm-popup-link" onclick="ibmweb.overlay.show(&#39;authorN10020&#39;,this);return false;">申 毅</a>, 软件工程师, IBM 中国软件开发中心</p>
+<div id="authorN10020" class="ibm-common-overlay"><div class="ibm-head"><p><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+申毅，IBM 中国软件开发中心 WebSphere Portal 部门软件工程师。</p><br><br></div></div></div></div><div class="ibm-footer"><!----></div></div>
+			<p class="dw-summary-date">2008 年 5 月 29 日</p>
+			
+
+
+			<div aria-hidden="true" class="ibm-container" id="dw-toc"><div class="ibm-container-body"><ul class="ibm-twisty"><li><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#toggle" class="ibm-twisty-trigger ibm-twisty-trigger-closed"><img src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/c.gif" alt="+"></a><span class="ibm-twisty-head">内容</span><div class="ibm-twisty-body" style="display: none;"><ul style="font-size:0.8em" class="ibm-link-list">
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#N10039">nohup/setsid/&amp;</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#N100A4">disown</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#N10109">screen</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#N1015F">总结</a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#resources">参考资料 </a></li>
+<li><a class="ibm-anchor-down-em-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#icomments">评论</a></li></ul></div></li></ul></div></div>
+		</div>
+	</div>
+	<!-- SUMMARY_END -->
+</div><div id="ibm-pcon">
+
+<!-- BEGIN_IBM-CONTENT -->
+<div id="ibm-content">
+
+<!-- BEGIN_IBM-CONTENT-BODY -->
+<div id="ibm-content-body">
+
+<!-- BEGIN_IBM-CONTENT-MAIN -->
+<div id="ibm-content-main">
+
+<!-- 1_1_COLUMN_BEGIN -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1"><div class="dw-article-sidebar dw-bluemix" id="dwc-exp-a"><img src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/bluemix-graphic.png" height="64" width="64" alt=""><p>在 IBM Bluemix 云平台上开发并部署您的下一个应用。</p><p class="ibm-button-link-alternate dw-button-green"><a id="tutc-sbar-bmix-home-btn-ABa" href="https://www.bluemix.net/?cm_mmc=dwchina-_-bluemix-_-l-cn-nohup-_-sidebar" class="dw-button-large">现在就开始免费试用</a></p></div>
+
+<p>我们经常会碰到这样的问题，用 telnet/ssh 登录了远程的 Linux 服务器，运行了一些耗时较长的任务， 结果却由于网络的不稳定导致任务中途失败。如何让命令提交后不受本地关闭终端窗口/网络断开连接的干扰呢？下面举了一些例子， 您可以针对不同的场景选择不同的方式来处理这个问题。</p><h2 id="N10039">nohup/setsid/&amp;</h2><h3 id="N1003F">场景：</h3><p>		 
+        如果只是临时有一个命令需要长时间运行，什么方法能最简便的保证它在后台稳定运行呢？
+	  </p><div class="dw-sidebar ibm-inset"><h2 id="N10048">hangup 名称的来由</h2><p>在 Unix 的早期版本中，每个终端都会通过 modem 和系统通讯。当用户 logout 时，modem 就会挂断（hang up）电话。 同理，当 modem 断开连接时，就会给终端发送 hangup 信号来通知其关闭所有子进程。</p></div><h3 id="N1004E">解决方法：</h3><p>  我们知道，当用户注销（logout）或者网络断开时，终端会收到 HUP（hangup）信号从而关闭其所有子进程。因此，我们的解决办法就有两种途径：要么让进程忽略 HUP 信号，要么让进程运行在新的会话里从而成为不属于此终端的子进程。
+	  </p><p><strong>1. nohup</strong></p><p>nohup 无疑是我们首先想到的办法。顾名思义，nohup 的用途就是让提交的命令忽略 hangup 信号。让我们先来看一下 nohup 的帮助信息：</p><div class="codesection"><pre class="displaycode">NOHUP(1)                        User Commands                        NOHUP(1)
+
+NAME
+       nohup - run a command immune to hangups, with output to a non-tty
+
+SYNOPSIS
+       nohup COMMAND [ARG]...
+       nohup OPTION
+
+DESCRIPTION
+       Run COMMAND, ignoring hangup signals.
+
+       --help display this help and exit
+
+       --version
+              output version information and exit</pre></div><p>可见，nohup 的使用是十分方便的，只需在要处理的命令前加上 nohup 即可，标准输出和标准错误缺省会被重定向到 nohup.out 文件中。一般我们可在结尾加上<strong>"&amp;"</strong>来将命令同时放入后台运行，也可用<code>"&gt;<em>filename</em> 2&gt;&amp;1"</code>来更改缺省的重定向文件名。</p><h5 id="nohup">nohup 示例</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# nohup ping www.ibm.com &amp;
+[1] 3059
+nohup: appending output to `nohup.out'
+[root@pvcent107 ~]# ps -ef |grep 3059
+root      3059   <strong>984</strong>  0 21:06 pts/3    00:00:00 ping www.ibm.com
+root      3067   984  0 21:06 pts/3    00:00:00 grep 3059
+[root@pvcent107 ~]#</pre></div><p><strong>2。setsid</strong></p><p>nohup 无疑能通过忽略 HUP 信号来使我们的进程避免中途被中断，但如果我们换个角度思考，如果我们的进程不属于接受 HUP 信号的终端的子进程，那么自然也就不会受到 HUP 信号的影响了。setsid 就能帮助我们做到这一点。让我们先来看一下 setsid 的帮助信息：</p><div class="codesection"><pre class="displaycode">SETSID(8)                 Linux Programmer’s Manual                 SETSID(8)
+
+NAME
+       setsid - run a program in a new session
+
+SYNOPSIS
+       setsid program [ arg ... ]
+
+DESCRIPTION
+       setsid runs a program in a new session.</pre></div><p>可见 setsid 的使用也是非常方便的，也只需在要处理的命令前加上 setsid 即可。</p><h5 id="setsid">setsid 示例</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# setsid ping www.ibm.com
+[root@pvcent107 ~]# ps -ef |grep www.ibm.com
+root     31094     <strong>1</strong>  0 07:28 ?        00:00:00 ping www.ibm.com
+root     31102 29217  0 07:29 pts/4    00:00:00 grep www.ibm.com
+[root@pvcent107 ~]#</pre></div><p>值得注意的是，上例中我们的进程 ID(PID)为31094，而它的父 ID（PPID）为1（即为 init 进程 ID），并不是当前终端的进程 ID。请将此例与<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#nohup">nohup 例</a>中的父 ID 做比较。</p><p><strong>3。&amp;</strong></p><p>这里还有一个关于 subshell 的小技巧。我们知道，将一个或多个命名包含在“()”中就能让这些命令在子 shell 中运行中，从而扩展出很多有趣的功能，我们现在要讨论的就是其中之一。</p><p>当我们将"&amp;"也放入“()”内之后，我们就会发现所提交的作业并不在作业列表中，也就是说，是无法通过<code>jobs</code>来查看的。让我们来看看为什么这样就能躲过 HUP 信号的影响吧。</p><h5 id="N1009A">subshell 示例</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# (ping www.ibm.com &amp;)
+[root@pvcent107 ~]# ps -ef |grep www.ibm.com
+root     16270     <strong>1</strong>  0 14:13 pts/4    00:00:00 ping www.ibm.com
+root     16278 15362  0 14:13 pts/4    00:00:00 grep www.ibm.com
+[root@pvcent107 ~]#</pre></div><p>从上例中可以看出，新提交的进程的父 ID（PPID）为1（init 进程的 PID），并不是当前终端的进程 ID。因此并不属于当前终端的子进程，从而也就不会受到当前终端的 HUP 信号的影响了。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="N100A4">disown</h2><h3 id="N100AA">场景：</h3><p>        我们已经知道，如果事先在命令前加上 nohup 或者 setsid 就可以避免 HUP 信号的影响。但是如果我们未加任何处理就已经提交了命令，该如何补救才能让它避免 HUP 信号的影响呢？
+	  </p><h3 id="N100B1">解决方法：</h3><p>        这时想加 nohup 或者 setsid 已经为时已晚，只能通过作业调度和 disown 来解决这个问题了。让我们来看一下 disown 的帮助信息：
+	  </p><div class="codesection"><pre class="displaycode">disown [-ar] [-h] [jobspec ...]
+	Without options, each jobspec is  removed  from  the  table  of
+	active  jobs.   If  the -h option is given, each jobspec is not
+	removed from the table, but is marked so  that  SIGHUP  is  not
+	sent  to the job if the shell receives a SIGHUP.  If no jobspec
+	is present, and neither the -a nor the -r option  is  supplied,
+	the  current  job  is  used.  If no jobspec is supplied, the -a
+	option means to remove or mark all jobs; the -r option  without
+	a  jobspec  argument  restricts operation to running jobs.  The
+	return value is 0 unless a jobspec does  not  specify  a  valid
+	job.</pre></div><p>可以看出，我们可以用如下方式来达成我们的目的。</p><div class="dw-sidebar ibm-inset"><h2 id="N100C0">灵活运用 CTRL-z</h2><p>在我们的日常工作中，我们可以用 CTRL-z 来将当前进程挂起到后台暂停运行，执行一些别的操作，然后再用 fg 来将挂起的进程重新放回前台（也可用 bg 来将挂起的进程放在后台）继续运行。这样我们就可以在一个终端内灵活切换运行多个任务，这一点在调试代码时尤为有用。因为将代码编辑器挂起到后台再重新放回时，光标定位仍然停留在上次挂起时的位置，避免了重新定位的麻烦。</p></div><ul class="ibm-bullet-list"><li>用<code>disown -h <em>jobspec</em></code>来使<strong>某个作业</strong>忽略HUP信号。</li><li>用<code>disown -ah </code>来使<strong>所有的作业</strong>都忽略HUP信号。</li><li>用<code>disown -rh </code>来使<strong>正在运行的作业</strong>忽略HUP信号。</li></ul><p>需要注意的是，当使用过 disown 之后，会将把目标作业从作业列表中移除，我们将不能再使用<code>jobs</code>来查看它，但是依然能够用<code>ps -ef</code>查找到它。</p><p>但是还有一个问题，这种方法的操作对象是作业，如果我们在运行命令时在结尾加了<strong>"&amp;"</strong>来使它成为一个作业并在后台运行，那么就万事大吉了，我们可以通过<code>jobs</code>命令来得到所有作业的列表。但是如果并没有把当前命令作为作业来运行，如何才能得到它的作业号呢？答案就是用 CTRL-z（按住Ctrl键的同时按住z键）了！</p><p>CTRL-z 的用途就是将当前进程挂起（Suspend），然后我们就可以用<code>jobs</code>命令来查询它的作业号，再用<code>bg <em>jobspec</em></code>来将它放入后台并继续运行。需要注意的是，如果挂起会影响当前进程的运行结果，请慎用此方法。</p><h5 id="disown">disown 示例1（如果提交命令时已经用“&amp;”将命令放入后台运行，则可以直接使用“disown”）</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 build]# cp -r testLargeFile largeFile &amp;
+[1] 4825
+[root@pvcent107 build]# jobs
+[1]+  Running                 cp -i -r testLargeFile largeFile &amp;
+[root@pvcent107 build]# disown -h %1
+[root@pvcent107 build]# ps -ef |grep largeFile
+root      4825   968  1 09:46 pts/4    00:00:00 cp -i -r testLargeFile largeFile
+root      4853   968  0 09:46 pts/4    00:00:00 grep largeFile
+[root@pvcent107 build]# logout</pre></div><h5 id="N10104">disown 示例2（如果提交命令时未使用“&amp;”将命令放入后台运行，可使用 CTRL-z 和“bg”将其放入后台，再使用“disown”）</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 build]# cp -r testLargeFile largeFile2
+
+[1]+  Stopped                 cp -i -r testLargeFile largeFile2
+[root@pvcent107 build]# bg %1
+[1]+ cp -i -r testLargeFile largeFile2 &amp;
+[root@pvcent107 build]# jobs
+[1]+  Running                 cp -i -r testLargeFile largeFile2 &amp;
+[root@pvcent107 build]# disown -h %1
+[root@pvcent107 build]# ps -ef |grep largeFile2
+root      5790  5577  1 10:04 pts/3    00:00:00 cp -i -r testLargeFile largeFile2
+root      5824  5577  0 10:05 pts/3    00:00:00 grep largeFile2
+[root@pvcent107 build]#</pre></div><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="N10109">screen</h2><h3 id="N1010F">场景：</h3><p>		 
+        我们已经知道了如何让进程免受 HUP 信号的影响，但是如果有大量这种命令需要在稳定的后台里运行，如何避免对每条命令都做这样的操作呢？
+	  </p><h3 id="N10116">解决方法：</h3><p>        此时最方便的方法就是 screen 了。简单的说，screen 提供了 ANSI/VT100 的终端模拟器，使它能够在一个真实终端下运行多个全屏的伪终端。screen 的参数很多，具有很强大的功能，我们在此仅介绍其常用功能以及简要分析一下为什么使用 screen 能够避免 HUP 信号的影响。我们先看一下 screen 的帮助信息：</p><div class="codesection"><pre class="displaycode">SCREEN(1)                                                           SCREEN(1)
+
+NAME
+       screen - screen manager with VT100/ANSI terminal emulation
+
+SYNOPSIS
+       screen [ -options ] [ cmd [ args ] ]
+       screen -r [[pid.]tty[.host]]
+       screen -r sessionowner/[[pid.]tty[.host]]
+
+DESCRIPTION
+       Screen  is  a  full-screen  window manager that multiplexes a physical
+       terminal between several  processes  (typically  interactive  shells).
+       Each  virtual  terminal provides the functions of a DEC VT100 terminal
+       and, in addition, several control functions from the  ISO  6429  (ECMA
+       48,  ANSI  X3.64)  and ISO 2022 standards (e.g. insert/delete line and
+       support for multiple character sets).  There is a  scrollback  history
+       buffer  for  each virtual terminal and a copy-and-paste mechanism that
+       allows moving text regions between windows.</pre></div><p>使用 screen 很方便，有以下几个常用选项：</p><ul class="ibm-bullet-list"><li>用<code>screen -dmS <em>session name</em></code>来建立一个处于断开模式下的会话（并指定其会话名）。</li><li>用<code>screen -list </code>来列出所有会话。</li><li>用<code>screen -r <em>session name</em></code>来重新连接指定会话。</li><li>用快捷键<code>CTRL-a d </code>来暂时断开当前会话。</li></ul><h5 id="screen">screen 示例</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# screen -dmS Urumchi
+[root@pvcent107 ~]# screen -list
+There is a screen on:
+        12842.Urumchi   (Detached)
+1 Socket in /tmp/screens/S-root.
+
+[root@pvcent107 ~]# screen -r Urumchi</pre></div><p>当我们用“-r”连接到 screen 会话后，我们就可以在这个伪终端里面为所欲为，再也不用担心 HUP 信号会对我们的进程造成影响，也不用给每个命令前都加上“nohup”或者“setsid”了。这是为什么呢？让我来看一下下面两个例子吧。</p><h5 id="screen1">1. 未使用 screen 时新进程的进程树</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# ping www.google.com &amp;
+[1] 9499
+[root@pvcent107 ~]# pstree -H 9499
+init─┬─Xvnc
+     ├─acpid
+     ├─atd
+     ├─2*[sendmail]	
+     <strong>├─sshd─┬</strong>─sshd───bash───pstree
+     │      <strong> └─sshd───bash───ping</strong></pre></div><p>我们可以看出，未使用 screen 时我们所处的 bash 是 sshd 的子进程，当 ssh 断开连接时，HUP 信号自然会影响到它下面的所有子进程（包括我们新建立的 ping 进程）。</p><h5 id="screen2">2. 使用了 screen 后新进程的进程树</h5><div class="codesection"><pre class="displaycode">[root@pvcent107 ~]# screen -r Urumchi
+[root@pvcent107 ~]# ping www.ibm.com &amp;
+[1] 9488
+[root@pvcent107 ~]# pstree -H 9488
+init─┬─Xvnc
+     ├─acpid
+     ├─atd
+     <strong>├─screen───bash───ping</strong>
+     ├─2*[sendmail]</pre></div><p>而使用了 screen 后就不同了，此时 bash 是 screen 的子进程，而 screen 是 init（PID为1）的子进程。那么当 ssh 断开连接时，HUP 信号自然不会影响到 screen 下面的子进程了。</p><div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="N1015F">总结</h2><p>现在几种方法已经介绍完毕，我们可以根据不同的场景来选择不同的方案。nohup/setsid 无疑是临时需要时最方便的方法，disown 能帮助我们来事后补救当前已经在运行了的作业，而 screen 则是在大批量操作时不二的选择了。</p><!--CMA ID: 310828--><!--Site ID: 10--><!--XSLT stylesheet used to transform this file: dw-document-html-7.0.xsl-->
+
+
+</div>
+</div>
+<!-- 1_1_COLUMN_END -->
+
+<!-- SPLIT_COLUMNS_BEGIN -->
+<div class="ibm-columns">
+
+<!-- 6_4_COLUMN_BEGIN -->
+<div class="ibm-col-6-4">
+
+<h2 id="resources" class="ibm-rule">参考资料 </h2><ul class="ibm-bullet-list"><li>
+        “<a href="http://www.ibm.com/developerworks/cn/aix/library/es-unix-sysadmin1.html">系统管理员工具包：进程管理技巧</a>”（developerWorks 中国，2006 年 5 月）介绍了 Linux 进程管理的更多技巧。</li><li>
+        “<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-screen/">Linux 技巧：使用 screen 管理你的远程会话</a>”（developerWorks 中国，2007 年 7 月）介绍了 screen 的更多技巧。</li><li>在
+        <a href="http://www.ibm.com/developerworks/cn/linux/">developerWorks 中国网站 Linux 专区</a>中学习更多 Linux 方面的知识。</li></ul>
+
+<!-- INLINE_COMMENTS_BEGIN -->
+<h2 id="icomments" class="ibm-alternate-rule ibm-no-print">条评论</h2>
+    
+<div class="ibm-no-print" id="dw-icomments-container">	
+	<div id="threadShow"><img id="imgPlHdr" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/animated-progress-38x38c.gif" alt="" style="display: none;"><div id="cmtTog"><div class="ibm-container ibm-alternate-two dw-commentbox dw-noborder"><div class="ibm-container-body dw-commentbox dw-noborder"><p id="signInSect">请 <a onclick="var e=arguments[0] || window.event; dwsi.siInst &amp;&amp; dwsi.siInst.showSignIn(); if (e.stopPropagation){ e.stopPropagation();} else { e.cancelBubble = true; } e.preventDefault &amp;&amp; e.preventDefault(); return false;" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#">登录</a> 或 <a href="http://www.ibm.com/developerworks/dwwi/jsp/ssoregister.jsp?d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fl-cn-nohup%2F%23icomments&lang=cn&a=dwmav">注册</a>  后发表评论。</p><p id="cmtHead"><label for="newCmt"><strong>添加评论:</strong></label></p><p>注意：评论中不支持 HTML 语法</p><div id="infoCmt"></div><form focus="name" enctype="multipart/form-data" method="post" action="" name="form" class="ibm-column-form ibm-styled-form"><p class="6-4-textarea"><textarea rows="5" name="newCmt" id="newCmt" class="dw-inoperable" disabled=""></textarea><br></p><span class="ibm-input-group"><input type="checkbox" value="1" name="comment_notification" id="comment_notification" disabled="disabled"><label id="notifyText" class="ibm-form-note dw-btn-cancel-sec" for="comment_notification">有新评论时提醒我</label></span><span class="ibm-form-note dw-btn-cancel-sec notifySection" id="maxCharsCount">剩余 <span id="charCount">1000</span> 字符</span><p class="ibm-buttons-row"><input type="button" value="发布" name="postCmt" id="postCmt" class="ibm-btn-sec ibm-btn-small ibm-disabled" disabled="disabled"></p></form></div></div><div class="ibm-alternate-rule"><hr></div><div id="topControl" class="ibm-container ibm-alternate-two dw-comment-totals" style=""><div class="ibm-container-body"><form id="selectComments" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts">4</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts"><label for="howManyComments"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论 </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/short-btn.gif" alt="Go"><br></span></p></form></div></div><div id="cmtSect"><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>长枪短炮介绍的不少，比较实用。临时的、事后补救的、大批量的</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/Empty_Tank">Empty_Tank</a></strong>  于 2014年10月19日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E9%95%BF%E6%9E%AA%E7%9F%AD%E7%82%AE%E4%BB%8B%E7%BB%8D%E7%9A%84%E4%B8%8D%E5%B0%91%EF%BC%8C%E6%AF%94%E8%BE%83%E5%AE%9E%E7%94%A8%E3%80%82%E4%B8%B4%E6%97%B6%E7%9A%84%E3%80%81%E4%BA%8B%E5%90%8E%E8%A1%A5%E6%95%91%E7%9A%84%E3%80%81%E5%A4%A7%E6%89%B9%E9%87%8F%E7%9A%84%0D%E7%94%B1%20Empty_Tank%20%20%E4%BA%8E%202014%E5%B9%B410%E6%9C%8819%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>"内容非常实用，并且很全面啊</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/LongsonWang">LongsonWang</a></strong>  于 2013年11月09日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%22%E5%86%85%E5%AE%B9%E9%9D%9E%E5%B8%B8%E5%AE%9E%E7%94%A8%EF%BC%8C%E5%B9%B6%E4%B8%94%E5%BE%88%E5%85%A8%E9%9D%A2%E5%95%8A%0D%E7%94%B1%20LongsonWang%20%20%E4%BA%8E%202013%E5%B9%B411%E6%9C%8809%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>你好，我有个问题想请教一下。<br>我现在登录了机器A，想通过ssh在机器B中远程执行一个脚本work.sh，脚本中包含一个用nohup启动的服务，这个服务会一直运行，这样机器A中的命令就会一直等待，有什么办法可以让它直接结束，不要管nohup启动的服务。</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/bbfoot">bbfoot</a></strong>  于 2012年11月26日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%9C%89%E4%B8%AA%E9%97%AE%E9%A2%98%E6%83%B3%E8%AF%B7%E6%95%99%E4%B8%80%E4%B8%8B%E3%80%82%E6%88%91%E7%8E%B0%E5%9C%A8%E7%99%BB%E5%BD%95%E4%BA%86%E6%9C%BA%E5%99%A8A%EF%BC%8C%E6%83%B3%E9%80%9A%E8%BF%87ssh%E5%9C%A8%E6%9C%BA%E5%99%A8B%E4%B8%AD%E8%BF%9C%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%ACwork.sh%EF%BC%8C%E8%84%9A%E6%9C%AC%E4%B8%AD%E5%8C%85%E5%90%AB%E4%B8%80%E4%B8%AA%E7%94%A8nohup%E5%90%AF%E5%8A%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%8C%E8%BF%99%E4%B8%AA%E6%9C%8D%E5%8A%A1%E4%BC%9A%E4%B8%80%E7%9B%B4%E8%BF%90%E8%A1%8C%EF%BC%8C%E8%BF%99%E6%A0%B7%E6%9C%BA%E5%99%A8A%E4%B8%AD%E7%9A%84%E5%91%BD%E4%BB%A4%E5%B0%B1%E4%BC%9A%E4%B8%80%E7%9B%B4%E7%AD%89%E5%BE%85%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E5%8A%9E%E6%B3%95%E5%8F%AF%E4%BB%A5%E8%AE%A9%E5%AE%83%E7%9B%B4%E6%8E%A5%E7%BB%93%E6%9D%9F%EF%BC%8C%E4%B8%8D%E8%A6%81%E7%AE%A1nohup%E5%90%AF%E5%8A%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E3%80%82%0D%E7%94%B1%20bbfoot%20%20%E4%BA%8E%202012%E5%B9%B411%E6%9C%8826%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div><div class="ibm-rule"><hr></div><div class="comment"><div class="dw-icomment-container"><div class="dw-icomment-body dw-noborder"><div class="dw-icomment-body dw-noborder"><p>概念与示例结合，提供的信息精炼且完整。<br>看过很多相关的网页，才找到这个网页，相比之下，申毅的这篇文章\u201C好\u201D！</p><p class="ibm-item-note-alternate dw-item-note-alternate-left">由 <strong><a href="https://www.ibm.com/developerworks/community/profiles/user/fakeid">fakeid</a></strong>  于 2011年10月30日发布 </p><p class="ibm-ind-link ibm-item-note-alternate dw-item-note-alternate-right"><a class="ibm-caution-link dw-report-abuse" href="http://www.ibm.com/developerworks/community/report?lang=zh&referingURL=http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/&mymessage=%E8%AF%84%E8%AE%BA%EF%BC%9A%20%E6%A6%82%E5%BF%B5%E4%B8%8E%E7%A4%BA%E4%BE%8B%E7%BB%93%E5%90%88%EF%BC%8C%E6%8F%90%E4%BE%9B%E7%9A%84%E4%BF%A1%E6%81%AF%E7%B2%BE%E7%82%BC%E4%B8%94%E5%AE%8C%E6%95%B4%E3%80%82%E7%9C%8B%E8%BF%87%E5%BE%88%E5%A4%9A%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BD%91%E9%A1%B5%EF%BC%8C%E6%89%8D%E6%89%BE%E5%88%B0%E8%BF%99%E4%B8%AA%E7%BD%91%E9%A1%B5%EF%BC%8C%E7%9B%B8%E6%AF%94%E4%B9%8B%E4%B8%8B%EF%BC%8C%E7%94%B3%E6%AF%85%E7%9A%84%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%5Cu201C%E5%A5%BD%5Cu201D%EF%BC%81%0D%E7%94%B1%20fakeid%20%20%E4%BA%8E%202011%E5%B9%B410%E6%9C%8830%E6%97%A5%E5%8F%91%E5%B8%83%20%0D%0D--%E5%9C%A8%E4%B8%8B%E6%96%B9%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA--" target="_self">报告滥用</a></p><div class="dw-clear-both"></div></div></div></div></div></div></div><div id="bottomControl" class="ibm-container ibm-alternate-two dw-comment-totals" style="display:none"><div class="ibm-container-body"><form id="selectComments2" method="get" action=""><p>&nbsp;<span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts2">4</span>)</strong></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts2"><label for="howManyComments2"><strong>显示：</strong></label>&nbsp;<select name="comments" id="howManyComments2" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论 </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/short-btn.gif" alt="Go"><br></span></p></form></div></div></div>
+</div>
+<!-- Sign in OVERLAY STARTS HERE -->
+    
+<!-- Sign in OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="signin_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+
+ <div class="ibm-title">
+<h2>developerWorks: 登录</h2>
+<div id="ibm-overlay-error-signin" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form class="ibm-column-form" id="sFormId" action="" method="post" name="sForm" onsubmit="return false;">
+<p><label for="ibmid">IBM ID:<span class="ibm-required">*</span></label><span>
+    <input name="ibm-id" id="ibmid" size="25" value="" class="required" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);">
+    <br><a onclick="window.location=&#39;/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d=&#39;+encodeURIComponent(location.protocol + &#39;//&#39; + location.hostname + location.pathname + &#39;#icomments&#39;); return false;" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" class="ibm-forward-link">需要一个 IBM ID？</a> <br>
+    <a class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a> 
+</span>
+</p> 
+<p><label for="password">密码：<span class="ibm-required">*</span></label><span>
+    <input name="password" id="password" size="25" value="" class="required" type="password" onkeypress="dwsi.siInst.handleEP(event,this.form);">
+    <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" onclick="(function ()
+        {window.location=&#39;https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(dwsi.siInst.getAuthUrl())+&#39;%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D&#39;+encodeURIComponent(location.href);})();">忘记密码？</a>
+    <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+<p class="dw-perm-box">
+	<span><input id="perm" type="checkbox" name="perm_name"><label for="perm"> 保持登录。</label></span>
+</p>
+<p>单击提交则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>。</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide(&#39;signin_overlay&#39;);return false;"></p>
+</div>
+</form>
+ <div class="ibm-overlay-rule"><hr></div> 
+
+<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+<!-- Display name OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="displayname_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+<div class="ibm-title">
+<h2>选择您的昵称</h2><br><br>
+<div id="ibm-overlay-error-dname" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 
+    您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form id="dFormId" method="post" action="" name="dForm" onsubmit="return false;" class="ibm-column-form">
+<p><label for="displayname">昵称：<span class="ibm-required">*</span></label><span>
+    <input name="displayname" id="displayname" size="25" value="" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);"></span>
+    <span class="ibm-form-note">(昵称长度在 3 至 31 个字符之间)</span>
+</p>
+<p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide(&#39;displayname_overlay&#39;);return false;"></p>
+</div>
+</form>
+<div class="ibm-overlay-rule"><hr></div>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+
+
+<!-- INLINE_COMMENTS_END -->
+
+</div>
+<!-- 6_4_COLUMN_END -->
+
+<!-- 6_2_COLUMN_BEGIN -->
+<div class="ibm-col-6-2">
+
+<!-- Next_Steps -->
+<!-- Dig_Deeper -->
+
+
+<!-- Promotion_Module -->
+    
+<!-- PROMOTION_MODULE_START -->
+<div class="ibm-alternate-rule"><hr></div>
+<ul class="ibm-portrait-module-list">
+<li><a class="" href="http://www.ibm.com/developerworks/cn/puresystems/" tabindex="-1" role="presentation"><img height="60" width="60" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/sm-f-cl-puresystems70.jpg" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/puresystems/">IBM PureSystems</a></h3>
+<p>IBM PureSystems™ 系列解决方案是一个专家集成系统</p></li>
+<li><a class="" href="http://www.ibm.com/developerworks/cn/views/global/libraryview.jsp?type_by=Knowledge+paths" tabindex="-1" role="presentation"><img height="60" width="60" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/sm-f-knowledgepath50.jpg" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/views/global/libraryview.jsp?type_by=Knowledge+paths">developerWorks 学习路线图</a></h3>
+<p>通过学习路线图系统掌握软件开发技能</p></li>
+<li><a class="" href="http://www.ibm.com/developerworks/cn/downloads/" tabindex="-1" role="presentation"><img height="60" width="60" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/sm-f-evaluationsoftware60.png" alt=""></a>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/downloads/">软件下载资源中心</a></h3>
+<p>软件下载、试用版及云计算</p></li>
+</ul>
+<!-- PROMOTION_MODULE_END -->
+
+</div>
+<!-- 6_2_COLUMN_END -->
+
+</div>
+<!-- SPLIT_COLUMNS_END -->
+
+<!-- BOTTOM_BACK_TO_TOP -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+	<div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p>
+</div>
+</div>
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Linux, AIX and UNIX</div><div class="metavalue">ArticleID=310828</div><div class="metavalue">ArticleTitle=Linux 技巧：让进程在后台可靠运行的几种方法</div><div class="metavalue">publish-date=05292008</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g,  '%3C')+'</div>');</script><div class="metavalue">url=http://www.ibm.com/developerworks/cn/linux/l-cn-nohup/</div><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- END_IBM_CONTENT_MAIN -->
+
+</div>
+<!-- END_IBM_CONTENT_BODY -->
+
+</div>
+<!-- END_IBM_CONTENT -->
+
+</div></div>
+<!-- LEADSPACE_END -->
+
+
+<!-- END_IBM_PCON -->
+<!-- FOOTER_BEGIN -->
+<div id="ibm-footer" aria-label="页脚"><!-- IBM footer container; disabled --></div>
+
+<div id="ibm-footer-module-dwwrapper" role="contentinfo" aria-label="developerWorks Footer">
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-6-1 dw-footer-col-6-1-cn">
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina" tabindex="0">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/" tabindex="0">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina&start=true" tabindex="0">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/" tabindex="0">订阅源</a></li>
+			</ul>
+        </div>
+		<div class="dw-footer-col-6-2">
+			<ul>
+				<li><a href="http://www.ibm.com/vrm/newsletter/10104?S_TACT=105AGX52&S_CMP=dwcntop" tabindex="0">在线浏览每周时事通讯</a></li>
+				<li><a class="dwcn-sina-link" href="http://weibo.com/ibmdw/" target="_blank" tabindex="0">新浪微博</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh" tabindex="0">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh" tabindex="0">使用条款</a></li>
+				<li><a href="https://www.ibm.com/developerworks/cn/community/terms/thirdparty/" tabindex="0">第三方提示</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-3">
+			<ul>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/" tabindex="0">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/" tabindex="0">浏览辅助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/academic/" tabindex="0">IBM 教育学院教育培养计划</a></li><li><a href="http://www.ibm.com/developerworks/cn/gep/">IBM 创业企业全球扶持计划</a></li><li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-4"> 
+			<ul>
+				<li><a href="http://www.ibm.com/developerworks/cn/newsletter/" tabindex="0">dW 中国每周时事通讯</a></li>
+			</ul>
+			
+		</div>
+		<div class="dw-footer-col-6-5">
+			<ul>
+				<li class="dw-footer-lang-head">选择语言：</li>
+				<li><a href="http://www.ibm.com/developerworks/" tabindex="0">English</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/" lang="zh" tabindex="0">中文</a></li>
+				<li><a href="http://www.ibm.com/developerworks/jp/" lang="ja" tabindex="0">日本語</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ru/" lang="ru" tabindex="0">Русский</a></li>
+				<li><a href="http://www.ibm.com/developerworks/br/" lang="pt" tabindex="0">Português (Brasil)</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ssa/" lang="es" tabindex="0">Español</a></li>
+				<li><a href="http://www.ibm.com/developerworks/vn/" lang="vi" tabindex="0">Việt</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-6">
+			<img width="223" height="46" alt="IBM®" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dwn-ibm-logo-v17.png">
+			<img class="dw-preload" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/ibm_sprite_social_blue_ON.png" alt="" width="1" height="1">
+		</div>
+	</div>
+</div>
+
+</div><!-- FOOTER_END -->
+
+<!-- END_IBM-TOP -->
+</div>
+
+<!-- SCRIPTS_INCLUDE_BEGIN -->
+<script type="text/javascript" src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/dw-comments.js">//</script>
+<script type="text/javascript" language="JavaScript">
+	dojo.ready(function(){
+		rBHash = typeof rBHash == "undefined" ? {} : rBHash;
+		rBHash['viperLang'] = 'zh';
+		rBHash['urlLang'] = 'cn';
+		rBHash['dwwi2Lang'] = 'zh_CN';
+		rBHash['appCode'] = 'dwmav';
+		rBHash['signoutUrl'] = (location.host.toLowerCase() === "www.ibm.com" || location.host.toLowerCase() === "developer.ibm.com") ? 'http://www.ibm.com/developerworks/cn/' : ''; 
+		dwsi.siInst = new dwweb.dynnav.dwsi();
+		dwsi.siInst.initSI();		
+
+		// construct the comment widget
+dwc.cmts = '条评论';
+dwc.signInPreText = '请';
+dwc.signIn = '登录';
+dwc.or = '或';
+dwc.register = '注册';
+dwc.signInPostText = '';
+dwc.leaveCmt = '后发表评论。';
+dwc.view = '查看';
+dwc.totalCmts = '共有评论';
+dwc.postYourCmt = '添加您的评论';
+dwc.show = '显示：';
+dwc.recentCmts = '最新评论';
+dwc.allCmts = '所有评论';
+dwc.tooLongCmt = '您的评论超过了 1000 字符限制';
+dwc.numCharsLeft = '剩余 <span id="charCount">{1}</span> 字符';
+dwc.reportAbuse = '报告滥用';
+dwc.notifyMsg = '有新评论时提醒我';
+dwc.htmlWarning = '注意：评论中不支持 HTML 语法'; 
+dwc.cmt = '评论：';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.doNotErase = '--在下方添加评论--'; 
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+dwc.viperLang = 'zh';
+//dwc.abuseHref =  null;
+dwc.maxChars = 1000;
+dwc.cmtTxt =  '评论：';
+dwc.cmtsTxt =  '评论：';  
+		dwc && new dwc.comments('threadShow','95%',5,'nCmts','icomments');
+		});
+</script>
+
+
+
+<!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<script language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=3&ibmCmaId=310828&ibmContentAreas=linux,aix";</script>
+<!--END --><!-- SCRIPTS_INCLUDE_END -->
+
+<div id="ibm-metrics">
+<script src="./Linux 技巧：让进程在后台可靠运行的几种方法_files/stats.js" type="text/javascript">//</script>
+</div>
+
+
+
+</body></html>

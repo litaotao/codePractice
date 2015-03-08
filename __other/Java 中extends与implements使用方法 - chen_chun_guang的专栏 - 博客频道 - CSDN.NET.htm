@@ -1,0 +1,1076 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0060)http://blog.csdn.net/chen_chun_guang/article/details/6323201 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="http://recdm.csdn.net/getRecommendList.html?jsonp=jsonp1425437134953&userId=fake_userId&size=10&his=2%3A6323201&client=blog_cf_enhance&query=Java+%E4%B8%ADextends%E4%B8%8Eimplements%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%2Cjava%2C%E5%AE%89%E5%85%A8%2C%E5%AE%9E%E4%BE%8B%2Cstring%2C%E8%AF%AD%E8%A8%80&cid=5782890469491295591_20140819"></script>    
+    <script type="text/javascript" async="" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ga.js"></script><script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/tracking.js" charset="utf-8"></script><style type="text/css"></style>  
+
+    <script type="text/javascript">
+        var protocol = window.location.protocol;
+        document.write('<script type="text/javascript" src="' + protocol + '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></' + 'script>');
+    </script><script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/repoAddr2.js"></script>
+
+
+    <script id="allmobilize" charset="utf-8" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/allmobilize.min.js"></script><style type="text/css"></style>
+ <meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#">
+
+    <title>Java 中extends与implements使用方法 - chen_chun_guang的专栏
+        - 博客频道 - CSDN.NET</title>
+    
+    <meta name="description" content=" extends与implements的区别">
+    <script src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+       
+        <link rel="stylesheet" href="http://static.csdn.net/public/common/toolbar/css/index.css">
+        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/style.css">
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/chen_chun_guang/rss/list">
+    <link rel="shortcut icon" href="http://csdnimg.cn/public/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/default.css">
+ 
+
+
+<script src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/share.js"></script><link rel="stylesheet" type="text/css" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/job_reco.css"><script type="text/javascript" charset="utf-8" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/main.js"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/bdsstyle.css" rel="stylesheet" type="text/css"><script charset="utf-8" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/sm.min.js" async=""></script><link rel="stylesheet" type="text/css" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/style(1).css"><link type="text/css" rel="stylesheet" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/style(2).css"><script src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/logger.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=81615bb9.css"></head>
+<body><iframe frameborder="0" style="display: none;"></iframe><div id="MathJax_Message" style="display: none;"></div>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/html.js" type="text/javascript"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://blog.csdn.net/?ref=toolbar_logo" target="_blank" class="img blog-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input type="hidden" value="toolbar" name="ref" accesskey="2">                      <div class="border">                        <input placeholder="搜索" type="text" value="" name="q" accesskey="2"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input id="inputTitle" type="text" placeholder="" class="title form-control">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input id="input-url" type="text" placeholder="" class="url form-control">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" type="text" class="form-control tag">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input type="checkbox" name="share" checked="checked" class="share">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="about:block" frameborder="0" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info" style="border: none;"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-left" style="margin-left:132px; width:18px; height:27px; white-space:nowrap; overflow:hidden;"><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div id="chasnew123" class="hasnew"></div>                <div id="cappsarea123" class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="http://job.csdn.net/?ref=toolbar" target="_blank">招聘<img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/new.gif" style="margin-top: -26px; width: 23px;"></a></dd>                      <dd> <a href="http://edu.csdn.net/?ref=toolbar" target="_blank">学院<img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/new.gif" style="margin-top: -26px; width: 23px;"></a></dd>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                      <dd> <a href="http://mall.csdn.net/?ref=toolbar" target="_blank">C币兑换<img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/new.gif" style="margin-top: -26px; width: 23px;"></a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/chen_chun_guang">chen_chun_guang的专栏</a></h2>
+            <h3></h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+            
+                <li id="btnContents"><a href="http://blog.csdn.net/chen_chun_guang?viewmode=contents"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_mulu&#39;])">
+                    <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/chen_chun_guang?viewmode=list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_zhaiyao&#39;])">
+                    <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/chen_chun_guang/rss/list"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_RSS&#39;])">
+                    <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "chen_chun_guang";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/chen_chun_guang";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod="popu_3"> 
+
+
+<a href="http://blog.csdn.net/csdnproduct/article/details/43561659" target="_blank">
+<font color="blue">博客Markdown编辑器上线啦</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/42918959" target="_blank">
+<font color="red">那些年我们追过的Wrox精品红皮计算机图书
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://edu.csdn.net/lecturer/lecturer_detail?lecturer_id=95" target="_blank">
+<font color="blue">PMBOK第五版精讲视频教程
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://edu.csdn.net/course/detail/443" target="_blank">
+<font color="red">火星人敏捷开发1001问
+</font></a>
+
+
+</div>                        </div>
+                        
+
+  
+<link href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/comment1.css" type="text/css" rel="stylesheet">
+<link href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/style1.css" type="text/css" rel="stylesheet">
+<script language="JavaScript" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/jquery.cookie.js"></script>
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/main(1).js"></script>
+
+
+<link rel="stylesheet" href="http://static.blog.csdn.net/public/res-min/markdown_views.css">
+
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/MathJax.js"></script>
+
+
+
+
+
+
+
+
+
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET.htm">
+        Java 中extends与implements使用方法
+        </a></span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/chen_chun_guang/article/category/787599" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_fenlei&#39;]);">编程知识</a> 
+        </span>
+    <span class="link_postdate">2011-04-14 14:57</span>
+    <span class="link_view" title="阅读次数">17805人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#comments" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_pinglun&#39;])">评论</a>(6)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shoucang&#39;]);collectArticle(&#39;Java 中extends与implements使用方法&#39;,&#39;6323201&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_jubao&#39;]);report(6323201,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://www.csdn.net/tag/java" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">java</a><a href="http://www.csdn.net/tag/class" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">class</a><a href="http://www.csdn.net/tag/interface" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">interface</a><a href="http://www.csdn.net/tag/string" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">string</a><a href="http://www.csdn.net/tag/%e8%af%ad%e8%a8%80" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">语言</a><a href="http://www.csdn.net/tag/c" target="_blank" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_tag&#39;]);">c</a></div>
+
+  
+    
+<div id="article_content" class="article_content">
+<p>初学Java语言， 代码中的extends和implements让我感到很迷惑，现在终于弄明白它们之间的区别和用法了。</p>
+<p><div class="dp-highlighter bg_c-sharp"><div class="bar"><div class="tools"><b>[c-sharp]</b> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="ViewSource" title="view plain" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="CopyToClipboard" title="copy" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="PrintSource" title="print" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="About" title="?" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a><div style="position: absolute; left: 395px; top: 422px; width: 18px; height: 18px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="18" height="18" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=18&amp;height=18" wmode="transparent"></div></div></div><ol start="1" class="dp-c"><li class="alt"><span><span class="comment">//定义一个Runner接口&nbsp;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">public</span><span>&nbsp;inerface&nbsp;Runner&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">int</span><span>&nbsp;ID&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;<span class="keyword">void</span><span>&nbsp;run&nbsp;();&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;&nbsp;</span></li></ol></div><textarea cols="50" rows="15" name="code" class="c-sharp" style="display: none;">//定义一个Runner接口 
+public inerface Runner 
+{
+   int ID = 1;
+   void run ();
+} </textarea></p>
+<p>&nbsp;</p>
+<p><div class="dp-highlighter bg_java"><div class="bar"><div class="tools"><b>[java]</b> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="ViewSource" title="view plain" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="CopyToClipboard" title="copy" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="PrintSource" title="print" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="About" title="?" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a><div style="position: absolute; left: 373px; top: 625px; width: 18px; height: 18px; z-index: 99;"><embed id="ZeroClipboardMovie_2" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="18" height="18" name="ZeroClipboardMovie_2" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=18&amp;height=18" wmode="transparent"></div></div></div><ol start="1" class="dp-j"><li class="alt"><span><span class="comment">//定义一个interface&nbsp;Animal,它继承于父类Runner</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">interface</span><span>&nbsp;Animal&nbsp;</span><span class="keyword">extends</span><span>&nbsp;Runner&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">void</span><span>&nbsp;breathe&nbsp;();&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><textarea cols="50" rows="15" name="code" class="java" style="display: none;">//定义一个interface Animal,它继承于父类Runner
+interface Animal extends Runner
+{
+   void breathe ();
+}</textarea>
+ </p>
+<p><div class="dp-highlighter bg_c-sharp"><div class="bar"><div class="tools"><b>[c-sharp]</b> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="ViewSource" title="view plain" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">view plain</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="CopyToClipboard" title="copy" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;">copy</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="PrintSource" title="print" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">print</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="About" title="?" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">?</a><div style="position: absolute; left: 395px; top: 766px; width: 18px; height: 18px; z-index: 99;"><embed id="ZeroClipboardMovie_3" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="18" height="18" name="ZeroClipboardMovie_3" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=3&amp;width=18&amp;height=18" wmode="transparent"></div></div></div><ol start="1" class="dp-c"><li class="alt"><span><span class="comment">//定义Fish类，它实现了Animal接口的方法run()和breather()</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;Fish&nbsp;implements&nbsp;Animal&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;run&nbsp;()&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//实现了Animal方法run()</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"fish&nbsp;is&nbsp;swimming"</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;breather()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"fish&nbsp;is&nbsp;bubbing"</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">//定义了一个抽象类LandAnimal，它实现了接口Animal的方法。</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">abstract</span><span>&nbsp;LandAnimal&nbsp;implements&nbsp;Animal&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;breather&nbsp;()&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"LandAnimal&nbsp;is&nbsp;breathing"</span><span>);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span><span class="comment">//定义了一个类Student，它继承了类Person，并实现了Runner接口的方法run()。</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">class</span><span>&nbsp;Student&nbsp;extends&nbsp;Person&nbsp;implements&nbsp;Runner&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;......&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;run&nbsp;()&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"the&nbsp;student&nbsp;is&nbsp;running"</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;......&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">//定义了一个接口Flyer</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">interface</span><span>&nbsp;Flyer&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">void</span><span>&nbsp;fly&nbsp;();&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">//定义了一个类Bird，它实现了Runner和Flyer这两个接口定义的方法。</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">class</span><span>&nbsp;Bird&nbsp;implements&nbsp;Runner&nbsp;,&nbsp;Flyer&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;run&nbsp;()&nbsp;&nbsp;&nbsp;</span><span class="comment">//Runner接口定义的方法。</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"the&nbsp;bird&nbsp;is&nbsp;running"</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;fly&nbsp;()&nbsp;&nbsp;&nbsp;</span><span class="comment">//Flyer接口定义的方法。</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.<span class="keyword">out</span><span>.println(</span><span class="string">"the&nbsp;bird&nbsp;is&nbsp;flying"</span><span>);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;</span></li><li class=""><span><span class="comment">//TestFish类</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">class</span><span>&nbsp;TestFish&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;<span class="keyword">public</span><span>&nbsp;</span><span class="keyword">static</span><span>&nbsp;</span><span class="keyword">void</span><span>&nbsp;main&nbsp;(String&nbsp;args[])&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fish&nbsp;f&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Fish();&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">int</span><span>&nbsp;j&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;Runner.ID;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j&nbsp;=&nbsp;f.ID;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li></ol></div><textarea cols="50" rows="15" name="code" class="c-sharp" style="display: none;">//定义Fish类，它实现了Animal接口的方法run()和breather()
+class Fish implements Animal
+{
+   public void run ()    //实现了Animal方法run()
+ {
+    System.out.println("fish is swimming");
+ }
+public void breather()
+ {
+    System.out.println("fish is bubbing");   
+ }
+}
+//定义了一个抽象类LandAnimal，它实现了接口Animal的方法。
+abstract LandAnimal implements Animal
+{
+  
+   public void breather ()
+ {
+    System.out.println("LandAnimal is breathing");
+ }
+}
+//定义了一个类Student，它继承了类Person，并实现了Runner接口的方法run()。
+class Student extends Person implements Runner
+{
+    ......
+    public void run ()
+     {
+          System.out.println("the student is running");
+     }
+    ......
+}
+ 
+//定义了一个接口Flyer
+interface Flyer
+{
+   void fly ();
+}
+ 
+//定义了一个类Bird，它实现了Runner和Flyer这两个接口定义的方法。
+class Bird implements Runner , Flyer
+{
+   public void run ()   //Runner接口定义的方法。
+    {
+        System.out.println("the bird is running");
+    }
+   public void fly ()   //Flyer接口定义的方法。
+    {
+        System.out.println("the bird is flying");
+    }
+}
+ 
+//TestFish类
+class TestFish
+{
+   public static void main (String args[])
+    {
+       Fish f = new Fish();
+       int j = 0;
+       j = Runner.ID;
+       j = f.ID;
+    }
+}</textarea>
+ </p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 14px;"><span style="font-family: Arial;">接口实现的注意点：</span>
+</span>
+</strong>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">a）实现一个接口就是要实现该接口的所有的方法(抽象类除外)。<br>
+b）接口中的方法都是抽象的。<br>
+c）多个无关的类可以实现同一个接口，一个类可以实现多个无关的接口。</span>
+</span>
+</p>
+<p><strong><br>
+</strong>
+</p>
+<p><strong><span style="font-size: 14px;"><span style="font-family: Arial;">extends与implements的区别：</span>
+</span>
+</strong>
+</p>
+<p><span style="font-family: 宋体;">
+</span>
+<span style="font-size: 14px;"><span style="font-family: Arial;">extends
+是继承父类，只要那个类不是声明为final或者那个类定义为abstract的就能继承，JAVA中不支持多重继承，但是可以用接口来实现，这样就用到了implements，继承只能继承一个类，但implements可以实现多个接口，用逗号分开就行了。</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">
+比如：</span>
+</span>
+<span style="font-size: 14px;"><span style="font-family: Arial;"><br>
+</span>
+</span>
+</p>
+<p>
+<span style="font-size: 14px;"><span style="font-family: Arial;">
+class A extends B implements C,D,E {} &nbsp;&nbsp; （class 子类名 extends 父类名 implenments 接口名）</span>
+</span>
+</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>父类与子类继承关系上的不同：</strong>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">A a = new B(); 结果a是一个A类的实例，只能访问A中的方法，那么又和A a = new A();有什么区别呢？</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">***********************************************************************************************<br>
+</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">class B extends A<br>
+继承过后通常会定义一些父类没有的成员或者方法。<br>
+A a = new B();<br>
+这样是可以的，上传。<br>
+a是一个父类对象的实例，因而不能访问子类定义的新成员或方法。</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">***********************************************************************************************</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">假如这样定义：<br>
+class A</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">{<br>
+&nbsp;&nbsp;
+int i;<br>
+&nbsp;&nbsp;
+void f(){}<br>
+}<br>
+class B extends A</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">{<br>
+&nbsp;&nbsp;&nbsp;
+int j;<br>
+&nbsp;&nbsp;&nbsp;
+void f(){}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //重写<br>
+&nbsp;&nbsp;&nbsp;
+void g(){}<br>
+}<br>
+然后：<br>
+B b = new B();<br>
+b就是子类对象的实例，不仅能够访问自己的属性和方法，也能够访问父类的属性和方法。诸如b.i,b.j,b.f(),b.g()都是合法的。此时b.f()是访问的B中的f()</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;"><br>
+A a = new B();<br>
+a虽然是用的B的构造函数，但经过upcast，成为父类对象的实例，不能访问子类的属性和方法。a.i,a.f()是合法的，而a.j,a.g()非法。此时访问a.f()是访问B中的f()</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">***********************************************************************************************</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">A a = new B(); 这条语句，实际上有三个过程：<br>
+(1) A a;<br>
+将a声明为父类对象，只是一个引用，未分配空间<br>
+(2) B temp = new B();<br>
+通过B类的构造函数建立了一个B类对象的实例，也就是初始化<br>
+(3) a = (A)temp;<br>
+将子类对象temp转换未父类对象并赋给a，这就是上传(upcast)，是安全的。<br>
+经过以上3个过程，a就彻底成为了一个A类的实例。<br>
+子类往往比父类有更多的属性和方法，上传只是舍弃，是安全的；而下传(downcast)有时会增加，通常是不安全的。</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">***********************************************************************************************</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">a.f()对应的应该是B类的方法f()<br>
+调用构造函数建立实例过后，对应方法的入口已经确定了。<br>
+如此以来，a虽被上传为A类，但其中重写的方法f()仍然是B的方法f()。也就是说，每个对象知道自己应该调用哪个方法。<br>
+A a1 = new B();<br>
+A a2 = new C();<br>
+a1,a2两个虽然都是A类对象，但各自的f()不同。这正是多态性的体现。</span>
+</span>
+</p>
+<p><span style="font-size: 14px;"><span style="font-family: Arial;">***********************************************************************************************</span>
+</span>
+</p></div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+<div class="bdsharebuttonbox bdshare-button-style0-16" style="float: right;" data-bd-bind="1425437136755">
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" style="background-position:0 -52px !important"></a>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" style="background-position:0 -104px !important"></a>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博" style="background-position:0 -260px !important"></a>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_renren" data-cmd="renren" title="分享到人人网" style="background-position:0 -208px !important"></a>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" class="bds_weixin" data-cmd="weixin" title="分享到微信" style="background-position:0 -1612px !important"></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+<!--192.168.100.35-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shangyipian&#39;]);location.href=&#39;/chen_chun_guang/article/details/6323024&#39;;">上一篇</span><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323024" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_shangyipian&#39;])">什么是object？</a></li>
+            <li class="next_article"><span onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;]);location.href=&#39;/chen_chun_guang/article/details/6325833&#39;;">下一篇</span><a href="http://blog.csdn.net/chen_chun_guang/article/details/6325833" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_xiayipian&#39;])">生成release版本的Android系统</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/bds_s_v2.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+
+</div>
+      <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/java" target="_blank" class="blog-tage-red">java</a> 
+                <a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8" target="_blank" class="blog-tage-red">安全</a> 
+                <a href="http://www.csdn.net/tag/%E5%AE%9E%E4%BE%8B" target="_blank" class="blog-tage-red">实例</a> 
+                <a href="http://www.csdn.net/tag/string" target="_blank" class="blog-tage-red">string</a> 
+                <a href="http://www.csdn.net/tag/%E8%AF%AD%E8%A8%80" target="_blank" class="blog-tage-red">语言</a> 
+        </dd>
+    </dl> 
+
+
+<dl class="blog-ass-articl tracking-ad" data-mod="popu_36" id="res-relatived"> 
+     <dt><span>猜你在找</span></dt>    
+</dl>
+<div id="job_blog_reco"><dl class="blog-ass-articl tracking-ad" data-mod="popu_72"><dt><span>准备好了么？&nbsp;<label class="po_blg_detail_tiao">跳</label><label class="po_blg_detail_ba">吧</label><label class="po_blg_detail_th">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;！</label></span><a href="http://job.csdn.net/" target="_blank" class="po_blg_more">更多职位尽在&nbsp;<label class="po_blg_detail_csdn">CSDN JOB</label></a></dt><dd class="po_blg_dd"><div class="po_blg_po"><a href="http://job.csdn.net/Job/Index?jobID=82948" title="java工程师" strategy="DetailRecommend" target="_blank">java工程师</a></div><div class="po_blg_company"><a href="http://pr.csdn.net/enterprise/ent_home?orgid=435424" title="北京君捷科技有限公司" target="_blank">北京君捷科技有限公司</a></div><label class="po_blg_separator">|</label><div class="po_blg_salary"><a href="http://job.csdn.net/Job/Index?jobID=82948" target="_blank">8-15K/月</a></div><a class="po_blg_iwant" href="http://job.csdn.net/Job/Index?jobID=82948" target="_blank">我要跳槽</a></dd><dd class="po_blg_dd"><div class="po_blg_po"><a href="http://job.csdn.net/Job/Index?jobID=82940" title="java开发工程师" strategy="DetailRecommend" target="_blank">java开发工程师</a></div><div class="po_blg_company"><a href="http://pr.csdn.net/enterprise/ent_home?orgid=376074" title="北京瑞观嘉信国际投资管理有限公司" target="_blank">北京瑞观嘉信国际投资管理有限公司</a></div><label class="po_blg_separator">|</label><div class="po_blg_salary"><a href="http://job.csdn.net/Job/Index?jobID=82940" target="_blank">4-8K/月</a></div><a class="po_blg_iwant" href="http://job.csdn.net/Job/Index?jobID=82940" target="_blank">我要跳槽</a></dd><dd class="po_blg_dd"><div class="po_blg_po"><a href="http://job.csdn.net/Job/Index?jobID=82203" title="Java开发工程师" strategy="DetailRecommend" target="_blank">Java开发工程师</a></div><div class="po_blg_company"><a href="http://pr.csdn.net/enterprise/ent_home?orgid=435193" title="中软国际" target="_blank">中软国际</a></div><label class="po_blg_separator">|</label><div class="po_blg_salary"><a href="http://job.csdn.net/Job/Index?jobID=82203" target="_blank">8-15K/月</a></div><a class="po_blg_iwant" href="http://job.csdn.net/Job/Index?jobID=82203" target="_blank">我要跳槽</a></dd><dd class="po_blg_dd"><div class="po_blg_po"><a href="http://job.csdn.net/Job/Index?jobID=82922" title="Java软件开发工程师" strategy="DetailRecommend" target="_blank">Java软件开发工程师</a></div><div class="po_blg_company"><a href="http://pr.csdn.net/enterprise/ent_home?orgid=435418" title="北京恒鑫众盛信息技术有限公司" target="_blank">北京恒鑫众盛信息技术有限公司</a></div><label class="po_blg_separator">|</label><div class="po_blg_salary"><a href="http://job.csdn.net/Job/Index?jobID=82922" target="_blank">4-10K/月</a></div><a class="po_blg_iwant" href="http://job.csdn.net/Job/Index?jobID=82922" target="_blank">我要跳槽</a></dd></dl></div>
+
+<script type="text/javascript">
+    var searchtitletags = 'Java 中extends与implements使用方法' + ',' + 'java,安全,实例,string,语言';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 10,
+        size: 10,
+        appendTo: '#res-relatived',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    </div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_3754597"><dt class="comment_head" floor="6">6楼 <span class="user"><a class="username" href="http://blog.csdn.net/linanmengxiaoai" target="_blank">旧时明月</a> <span class="ptime">2014-04-19 12:53发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="3754597" username="linanmengxiaoai"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/linanmengxiaoai" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_linanmengxiaoai.jpg" width="40" height="40"></a></dd><dd class="comment_body">谢谢分享，说的挺好！</dd></dl><dl class="comment_item comment_topic" id="comment_item_2592379"><dt class="comment_head" floor="5">5楼 <span class="user"><a class="username" href="http://blog.csdn.net/sunfeilong1993" target="_blank">sunfeilong1993</a> <span class="ptime">2013-04-13 23:15发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2592379" username="sunfeilong1993"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/sunfeilong1993" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_sunfeilong1993.jpg" width="40" height="40"></a></dd><dd class="comment_body">不错，学习一下。</dd></dl><dl class="comment_item comment_topic" id="comment_item_2542655"><dt class="comment_head" floor="4">4楼 <span class="user"><a class="username" href="http://blog.csdn.net/lyglary" target="_blank">lyglary</a> <span class="ptime">2013-03-02 14:23发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2542655" username="lyglary"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/lyglary" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_lyglary.jpg" width="40" height="40"></a></dd><dd class="comment_body">2楼说的对啊</dd></dl><dl class="comment_item comment_topic" id="comment_item_2188923"><dt class="comment_head" floor="3">3楼 <span class="user"><a class="username" href="http://blog.csdn.net/lpplou" target="_blank">YUMOMO_L</a> <span class="ptime">2012-04-20 10:47发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2188923" username="lpplou"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/lpplou" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_lpplou.jpg" width="40" height="40"></a></dd><dd class="comment_body">了解下  观望~</dd></dl><dl class="comment_item comment_topic" id="comment_item_2075938"><dt class="comment_head" floor="2">2楼 <span class="user"><a class="username" href="http://blog.csdn.net/ants_jony" target="_blank">ants_jony</a> <span class="ptime">2012-01-09 11:11发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="2075938" username="ants_jony"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/ants_jony" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_ants_jony.jpg" width="40" height="40"></a></dd><dd class="comment_body">a.f()对应的应该是B类的方法f()<br>那如果B类里面的f方法调用了f1方法，但在a类中没有这个方法，这还能是安全的？</dd></dl><dl class="comment_item comment_topic" id="comment_item_1986001"><dt class="comment_head" floor="1">1楼 <span class="user"><a class="username" href="http://blog.csdn.net/duandqiji" target="_blank">duandqiji</a> <span class="ptime">2011-10-14 09:53发表</span>  <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="1986001" username="duandqiji"> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/duandqiji" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/3_duandqiji.jpg" width="40" height="40"></a></dd><dd class="comment_body">菜鸟一只的我学习了。</dd></dl><div class="clear"></div></div>
+    <div id="comment_bar" style="display: none;">
+    </div>
+    <div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:loginbox();">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fchen_chun_guang%2Farticle%2Fdetails%2F6323201">[注册]</a></div></div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '6323201';
+    var commentscount = 6;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top" style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop" style="display: none;" title="返回顶部" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_huidaodingbu&#39;])">         
+         <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);
+        
+        /*
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+        */
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone" target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace" target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });
+        },200);  
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }    
+
+</script>
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/chen_chun_guang" target="_blank">
+    <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/1_chen_chun_guang.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/chen_chun_guang" class="user_name" target="_blank">chen_chun_guang</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_guanzhu&#39;])"></a>
+
+ <a href="javascript:void(0);" class="letter" title="[发私信]" onclick="window.open(&#39;http://msg.csdn.net/letters/model?receiver=chen_chun_guang&#39;,&#39;_blank&#39;,&#39;height=350,width=700&#39;);_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_sixin&#39;])"></a>  
+</div>
+<div id="blog_medal">
+                <div id="bms_box">
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>112269次</span></li>
+    <li>积分：<span>1511</span> </li>    
+    <li>等级： <span style="position:relative;display:inline-block;z-index:1">
+            <img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/blog4.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：1511 </div>
+        </span>  </li>
+    <li>排名：<span>第12391名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>26篇</span></li>
+    <li>转载：<span>57篇</span></li>
+    <li>译文：<span>11篇</span></li>
+    <li>评论：<span>38条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script>
+<div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/760478" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Android 技术</a><span>(19)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/766697" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Android 编译原理</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/766720" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Linux</a><span>(19)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/779793" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">Sqlite3</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/787599" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">编程知识</a><span>(17)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/760474" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">财经</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/930431" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">多媒体知识</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/936154" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">UML</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/1079965" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">FFmpeg</a><span>(8)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/1345629" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">windows driver</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/1363968" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">c++</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/1363969" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">c语言</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/chen_chun_guang/article/category/1706539" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;function&#39;, &#39;onclick&#39;, &#39;blog_articles_wenzhangfenlei&#39;]); ">windows</a><span>(1)</span>
+            </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list"><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2014/12">2014年12月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2013/10">2013年10月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2013/09">2013年09月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2013/03">2013年03月</a><span>(7)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2013/02">2013年02月</a><span>(2)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2013/01">2013年01月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2012/11">2012年11月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2012/07">2012年07月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2012/06">2012年06月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2012/02">2012年02月</a><span>(17)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/12">2011年12月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/11">2011年11月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/09">2011年09月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/08">2011年08月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/05">2011年05月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/04">2011年04月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/03">2011年03月</a><span>(9)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/02">2011年02月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2011/01">2011年01月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2010/12">2010年12月</a><span>(13)</span></li><li><a href="http://blog.csdn.net/chen_chun_guang/article/month/2010/11">2010年11月</a><span>(4)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET.htm" title="Java 中extends与implements使用方法">Java 中extends与implements使用方法</a><span>(17795)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6325833" title="生成release版本的Android系统">生成release版本的Android系统</a><span>(14339)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6321614" title="Android Java Binder 通信机制">Android Java Binder 通信机制</a><span>(5085)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6147478" title="Android Sqlite3常用命令">Android Sqlite3常用命令</a><span>(3750)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6199932" title="标记化结构初始化语法(C语言)">标记化结构初始化语法(C语言)</a><span>(2789)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6294418" title="在Android系统中添加一款新铃声">在Android系统中添加一款新铃声</a><span>(2761)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6151791" title="linux驱动模块开机自动加载，以及应用程序开机自启动">linux驱动模块开机自动加载，以及应用程序开机自启动</a><span>(2506)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6220655" title="Java JNI编程之 JNIEnv设计哲学 ">Java JNI编程之 JNIEnv设计哲学 </a><span>(2095)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/7712189" title="输入正确的密码，依然无法登陆ubuntu系统">输入正确的密码，依然无法登陆ubuntu系统</a><span>(2078)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6078314" title="Android 编译系统分析">Android 编译系统分析</a><span>(2047)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6325833" title="生成release版本的Android系统">生成release版本的Android系统</a><span>(14)</span>
+</li>
+<li>
+<a href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET.htm" title="Java 中extends与implements使用方法">Java 中extends与implements使用方法</a><span>(6)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6199932" title="标记化结构初始化语法(C语言)">标记化结构初始化语法(C语言)</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6147478" title="Android Sqlite3常用命令">Android Sqlite3常用命令</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6158225" title="Android Sqlite3 编程详解">Android Sqlite3 编程详解</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6321614" title="Android Java Binder 通信机制">Android Java Binder 通信机制</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/7275262" title="软件知识体系">软件知识体系</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6151791" title="linux驱动模块开机自动加载，以及应用程序开机自启动">linux驱动模块开机自动加载，以及应用程序开机自启动</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6080570" title="Android 中运行GDB调试工具的方法">Android 中运行GDB调试工具的方法</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/chen_chun_guang/article/details/6046118" title="Android HAL 是如何被调用的">Android HAL 是如何被调用的</a><span>(1)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#comments">Java 中extends与implements使用方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/linanmengxiaoai" class="user_name">旧时明月</a>:
+谢谢分享，说的挺好！
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6325833#comments">生成release版本的Android系统</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/LikeSidehu" class="user_name">LakeSideHu</a>:
+灰常棒
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/7023638#comments">windows下编译ffmpeg的方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/lostcumt" class="user_name">lostcumt</a>:
+按照文章安装出现几个错误export PATH=""应该改为export PATH+=“”同时安装S...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/7023638#comments">生成release版本的Android系统</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/alexguitar" class="user_name">alexguitar</a>:
+楼主，請问一下make -j4 PRODUCT-product_modul-user dist结果会...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6199932#comments">标记化结构初始化语法(C语言)</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/Icutecapricorn" class="user_name">Icutecapricorn</a>:
+...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6199932#comments">生成release版本的Android系统</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/wys7250578" class="user_name">vicalwu</a>:
+Enter password for 'testkey' (blank for none; pass...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6199932#comments">Java 中extends与implements使用方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/sunfeilong1993" class="user_name">sunfeilong1993</a>:
+不错，学习一下。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6294418#comments">在Android系统中添加一款新铃声</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/xiaoxubo214" class="user_name">xiaoxubo214</a>:
+如果想删除的话是直接在.mk文件中将对应代码给删除掉就可以了么 ？我编译的时候删除掉了所有的铃声代码...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6294418#comments">Java 中extends与implements使用方法</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/lyglary" class="user_name">lyglary</a>:
+2楼说的对啊
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/chen_chun_guang/article/details/6294418#comments">生成release版本的Android系统</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/npjocj" class="user_name">吉祥衰宝</a>:
+@jcb316733855:有些有有些没有。gms-ics-signed-r7-20121004-4...
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/cnick.js"></script>
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/showblogmedal.ashx"></script>
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/JavaScript1.js"></script><link rel="stylesheet" type="text/css" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&uin=2251809102&site=qq&menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display: none; position: absolute; z-index: 9990; width: 170px;">  <iframe src="about:blank" frameborder="0" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void 0" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/notify.js"></script>
+
+    <script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="http://message.csdn.net/msg.popup.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/count.js"></script><iframe src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/logs.htm" frameborder="0" width="0" height="0"></iframe>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+    </div><input type="hidden" id="aa_g_data_ids">
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/toolbar.js"></script>
+     <!--new top-->
+   
+    <link href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ask_float_block.css" type="text/css" rel="stylesheet">
+    <script language="JavaScript" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/wmd.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/showdown.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/prettify.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ask_float_block.js"></script>
+
+
+
+<div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><link rel="stylesheet" type="text/css" media="screen" href="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/ask_float_fonts_css-6b30a53970eb5c3a2a045e3df585b475.css"><div data-mod="popu_64" class="tracking-ad" chg-blk="0"><a id="com-ask-float-block" title="提问按钮" style="top:804px"></a><a id="com-quick-reply" title="快速回复" style="top:845px"></a><a id="com-d-top-a" style="top: 886px; display: none;" title="返回顶部" onclick=""></a> </div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" type="text" style="font-size:14px;" placeholder="问题标题"></div><div class="cm_box"><div class="cm_dialog"></div> <div class="pop_cm cm_add_link"><input type="text" placeholder="链接内容" id="af_cm_link_txt"><input type="text" placeholder="链接地址" id="af_cm_link_url"><input type="text" placeholder="链接提示" id="af_cm_link_tit"><div class="text-right"><span class="btn btn-default btn-sm" id="add_link_btn">插入链接</span> </div> </div><div class="pop_cm cm_add_img"><div class="nav-tabs"><a class="img_tab active" href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#tab_upload">本地上传</a><a class="img_tab" href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#tab_weburl">网络图片</a></div><div class="tab_panel active" id="tab_upload"><div class="set_img"><iframe src="./Java 中extends与implements使用方法 - chen_chun_guang的专栏 - 博客频道 - CSDN.NET_files/upload.htm"></iframe></div></div><div class="tab_panel" id="tab_weburl"><input type="text" placeholder="图片地址" id="af_cm_img_url"><input type="text" placeholder="图片说明" id="af_cm_img_alt"><div class="text-right"><span class="btn btn-default btn-sm" id="add_img_btn">插入图片</span> </div></div> </div></div> <textarea id="editor_all" rows="8" style="display: none;"></textarea><div class="editor-toolbar"><i class="separator">|</i><a class="icon-headline" title="标题一（Ctrl+Alt+1）"></a><a class="icon-heading" title="标题二（Ctrl+Alt+2）"></a><a class="icon-bold" title="粗体（Ctrl+B）"></a><a class="icon-italic" title="斜体（Ctrl+I）"></a><i class="separator">|</i><a class="icon-quote-left" title="引用（Ctrl+’）"></a><a class="icon-code" title="插入代码片（Ctrl+,）"></a><a class="icon-list-ul" title="无序列表（Ctrl+L）"></a><a class="icon-list-ol" title="有序列表（Ctrl+Alt+L）"></a><i class="separator">|</i><a class="icon-link" title="添加链接（Ctrl+K）"></a><a class="icon-picture" title="添加图片（Ctrl+Alt+I）"></a><i class="separator">|</i><a class="icon-reply" title="撤退（Ctrl+Z）"></a><a class="icon-share-alt" title="前进（Ctrl+Shift+Z）"></a><i class="separator">|</i><a class="icon-info" href="http://ask.csdn.net/pages/markdown" target="_blank" title="markdown语法参考"></a><a class="icon-preview" title="预览"></a><i class="separator">|</i></div><div class="CodeMirror cm-s-paper CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="min-width: 33px;"><div style="position: relative;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>&nbsp;<span style="display: inline-block; width: 1px; margin-right: -1px;">&nbsp;</span></pre></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"></div><div class="CodeMirror-cursor" style="visibility: hidden;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="visibility: hidden;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px;"></div><div class="CodeMirror-gutters" style="display: none;"></div></div></div><div class="editor-statusbar"><span class="lines">0</span><span class="words">0</span><span class="cursor">0:0</span></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input type="hidden" name="txtSearchTags"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm tracking-ad" data-mod="popu_73"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" nodetype="cancel" class="cancel">取消</a><a href="http://blog.csdn.net/chen_chun_guang/article/details/6323201#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div></body></html>
