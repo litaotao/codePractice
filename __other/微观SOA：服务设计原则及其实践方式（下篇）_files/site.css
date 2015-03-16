@@ -91,14 +91,21 @@ i,em { font-style:italic;}
 b, strong { font-weight:bold;}
 
 pre {
-    border:1px solid #e8e8e8; background:#f4f4f4 url(i/green_border.jpg) repeat-y left top;
+    border:1px solid #e8e8e8;
+    /*background:#f4f4f4 url(i/green_border.jpg) repeat-y left top;*/
+    background-color: rgb(245, 242, 240);
     color: #314E64;
     padding: 10px 10px 10px 55px;
     line-height: 150%;
     margin: 10px 0 10px 0;
     width: 80%;
-    overflow:auto; float:left; text-align:left;
-    display:block; clear:both;}
+    overflow:auto;
+    float:left;
+    text-align:left;
+    display:block;
+    clear:both;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+}
 
 div.flat_comment_body pre { width: 523px; }
 #overlay_comments pre { width:482px; }
@@ -647,7 +654,7 @@ ul.share_this a.shareCount { margin: 0px; }
 .text_info { float:left; text-align:left; padding:0px; margin:10px 0; display:block; clear:both; width:100%; font-size:14px; color:#000; line-height:150%;}
 .text_info p { float:none; padding:0px; margin:0 0 10px 0;  font-size:14px; color:#000; line-height:150%; clear:both; display:block; width:100%;}
 .text_info_article p,pre,ol li,ul li,h3 { float:none; clear:none;}
-.text_info_article pre, .news_container > .text_info pre { font-size:11px; width:98%; background-position:-29px 0; padding-left:5px; float:none !important;}
+.text_info_article pre, .news_container > .text_info pre { font-size:14px; width:98%; background-position:-29px 0; padding-left:5px; float:none !important;}
 .text_info_article blockquote { float:none!important;}
 .text_info_article .related_sponsors.vcronly { margin-top:20px; }
 .text_info_article p.image-wide { overflow-x:scroll;}
@@ -1879,7 +1886,7 @@ ul.tabs2 li:last-child a:hover, ul.tabs2 li:last-child a.current { border-right:
 .related_sponsors .paid_section a:hover { text-decoration: none !important;}
 .related_sponsors .paid_section a.logo_paid { float:left; text-align:center; padding:0px; margin:0 0 10px 0; display:block; clear:both; width:100%; text-decoration:none; outline: none !important;}
 .related_sponsors .paid_section .links { padding: 0 10px; display:block;}
-.related_sponsors .paid_section .links p { font-weight:normal;}
+.related_sponsors .paid_section .links p { font-weight:normal; clear:none; float:none;}
 .related_sponsors .paid_section .links h3.whitepaper { background : url(i/whitepaper.png) no-repeat; }
 
 .related_sponsors .paid_section .links a.learn_more { height:31px; line-height:31px; padding: 0 10px; margin:0 auto; text-align:center; background:url(i/learn_bg.png) repeat-x left top; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; font-size:16px; font-weight:bold; color: #FFFFFF; border:1px solid #acb7bd;  display:inline-block; margin-bottom: 10px; }
@@ -2011,12 +2018,12 @@ div.center { margin:0 auto; text-align:center;}
 .homepage_grid .grid.ebooks_type .news > div a.ebooks span { font-size:12px; font-weight:normal; color:#222222; line-height:120%; float:left; text-align:left; padding:0px; margin: 0 0 5px 0; clear:both; width:100%;}
 .homepage_grid .grid.ebooks_type .news > div a.ebooks:hover p, .homepage_grid .grid.ebooks_type .news > div a.ebooks:hover span { color:#666666;}
 
-.sponsored_links_section { width:320px; float:left; text-align:left; padding:0px; margin:36px 0 10px 20px; display:block;}
+.sponsored_links_section { width:320px; float:left; text-align:left; padding:0px; margin:36px 0 10px 20px; display:none;}
 .sponsored_links_section .sp_title { border-bottom: 1px solid #ececec; padding:0 10px 10px 10px; margin:0 0 10px 0; display:block; font-size:14px; font-weight:bold;  color:#2160a7;}
 .sponsored_links_section div { margin: 0 auto; width:90%; padding:0px; margin-bottom:10px; display:block; text-align:left; font-size:12px; font-weight:bold;  float:none; line-height:130%;}
 .sponsored_links_section div a { color:#3b9747; display:block; clear:both;}
 .sponsored_links_section div a:hover { color:#000;}
-.sponsored_links_section_i18n { width:320px; float:right; text-align:left; padding:0px; margin:36px 0 10px 0; display:block;}
+.sponsored_links_section_i18n { width:320px; float:right; text-align:left; padding:0px; margin:36px 0 10px 0; display:none;}
 .sponsored_links_section_i18n .sp_title { border-bottom: 1px solid #ececec; padding:0 10px 10px 10px; margin:0 0 10px 0; display:block; font-size:14px; font-weight:bold;  color:#2160a7;}
 .sponsored_links_section_i18n div { margin: 0 auto; width:90%; padding:0px; margin-bottom:10px; display:block; text-align:left; font-size:12px; font-weight:bold;  float:none; line-height:130%;}
 .sponsored_links_section_i18n div a { color:#3b9747; display:block; clear:both;}
@@ -3350,8 +3357,8 @@ ol li p, ol li pre { float:right !important;}
 .qconflag.uk { background-position: -32px -11px; }
 .qconflag.us { background-position: -16px -22px; }
 /* Let QCon spread across the globe */
-.qconflag.de { background-position: -16px -11px; }
-.qconflag.fr { background-position: 0 -11px; }
+.qconflag.fr { background-position: -16px -11px; }
+.qconflag.de { background-position: 0 -11px; }
 
 /* RSS related */
 /* make the rss image half its original height */

@@ -1,0 +1,3486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0044)http://www.infoq.com/cn/articles/micro-soa-2 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>微观SOA：服务设计原则及其实践方式（下篇）</title>
+
+        
+        <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+
+<meta name="copyright" content="© 2006 C4Media">
+
+<meta name="google-site-verification" content="0qInQx_1WYOeIIbxnh7DnXlw1XOxNgAYakO2k4GhNnY">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/styles/i/logo.jpg">
+<meta property="wb:webmaster" content="3eac1729a8bbe046">
+
+
+        
+		
+			<link href="./微观SOA：服务设计原则及其实践方式（下篇）_files/css" rel="stylesheet" type="text/css">
+		
+		
+        <link rel="stylesheet" type="text/css" media="screen" href="./微观SOA：服务设计原则及其实践方式（下篇）_files/site.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="./微观SOA：服务设计原则及其实践方式（下篇）_files/site_zh.css">
+        <link rel="shortcut icon" href="http://cdn1.infoqstatic.com/favicon.ico?20150224-0055" type="image/x-icon">
+        <link rel="apple-touch-icon" href="http://cdn1.infoqstatic.com/apple-touch-icon.png?20150224-0055">
+
+        <link rel="stylesheet" href="./微观SOA：服务设计原则及其实践方式（下篇）_files/jquery.jscrollpane.css" type="text/css">
+
+        <script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/bfafe6a5f6"></script><script type="text/javascript" async="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/dc.js"></script><script async="" type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/gpt.js"></script><script type="text/javascript">
+            var InfoQConstants = {};
+            InfoQConstants.language = 'zh';
+            InfoQConstants.countryCode = '/cn';
+        </script>
+        <script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/combinedJs.js"></script>
+        <script type="text/javascript">
+            
+                var JSi18n = JSi18n || {}; // define only if not already defined
+                JSi18n.error='错误';
+                JSi18n.login_unverifiedAccount='未验证的账号';
+                JSi18n.contentSummary_showPresentations_1='整理准备中，敬请期待';
+                JSi18n.contentSummary_showPresentations_2='我们致力于为您提供来自全球业界及中国本土社区顶尖技术大会精彩的中英文专家演讲的视频，目前资料正在编辑整理中，将于近期发布。';
+                JSi18n.contentSummary_showPresentations_3='感谢您的支持与耐心等待！';
+                JSi18n.contentSummary_showInterviews_1='';
+                JSi18n.contentSummary_showInterviews_2='';
+                JSi18n.contentSummary_showInterviews_3='';
+                JSi18n.contentSummary_showMinibooks_1='';
+                JSi18n.contentSummary_showMinibooks_2='';
+                JSi18n.login_sendingRequest='发送请求……';
+                JSi18n.bookmark_saved='<q>&nbsp;&nbsp;&nbsp;已保存&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.bookmark_error='<q style=color:black;>&nbsp;&nbsp;&nbsp;出错&nbsp;&nbsp;&nbsp;&nbsp;</q>';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllPrefix='显示所有“';
+                JSi18n.categoryManagement_showpopup_viewAllLink_viewAllSuffix='”内容';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Exclude='过滤';
+                JSi18n.categoryManagement_showpopup_includeExcludeLink_Include='取消过滤';
+                JSi18n.login_invalid_email='请填写有效的电子邮箱';
+                JSi18n.login_email_not_found = '这个邮箱好像没在这儿注册过';
+            
+
+            var loggedIn=true;
+        </script>
+        
+        	<script type="text/javascript">
+        		// set this if logged in if not this will be set when login (see loginAction.jsp)
+        		InfoQConstants.isUserBlocked=false;
+        		InfoQConstants.isUserOutdated=false;
+        		InfoQConstants.loggedUserEmail='taotao.li@datayes.com';
+        	</script>
+        
+       
+        <script type="text/javascript">
+            function createOverFunction(i) {
+                var pixels = i * 129;
+                return function() {
+                    $('#personas_' + i).addClass('selected');
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-' + pixels + 'px');
+                }
+            };
+            function createOutFunction(i) {
+                return function() {
+                    $('ul.menu > li .top_submenu.c' + i).css('left','-999em');
+                    $('#personas_' + i).removeClass('selected');
+                }
+            }
+            $(function() {
+                for (var i = 0; i < 5; i++) {
+                    $('ul.menu > li').has('.top_submenu.c' + i).hoverIntent({
+                        sensitivity: 15,
+                        interval: 150,
+                        timeout:200,
+                        over: createOverFunction(i),
+                        out: createOutFunction(i)
+                    });
+                }
+            });
+        </script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+	var gads = document.createElement('script');
+	gads.async = true;
+	gads.type = 'text/javascript';
+	var useSSL = 'https:' == document.location.protocol;
+	gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+	var node = document.getElementsByTagName('script')[0];
+	node.parentNode.insertBefore(gads, node);
+})();
+
+
+googletag.cmd.push(function() {
+	googletag.defineSlot('/5286733/zh_geo_banner_bottom', [728, 90], 'id_geo_banner_ad').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_top', [300, 250], 'id_300x250_banner_top').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_bottom', [300, 250], 'id_300x250_banner_bottom').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink1', [250, 60], 'id_ad_textlink1').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink2', [250, 60], 'id_ad_textlink2').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink3', [250, 60], 'id_ad_textlink3').addService(googletag.pubads());
+/*	googletag.defineSlot('/5286733/zh_textlink4', [120, 100], 'id_ad_textlink4').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_textlink5', [120, 100], 'id_ad_textlink5').addService(googletag.pubads());*/
+	googletag.defineSlot('/5286733/zh_300x250_category', [300, 250], 'id_300x250_category').addService(googletag.pubads());
+	googletag.defineSlot('/5286733/zh_300x250_banner_searchResults', [300, 250], 'id_300x250_banner_searchResults').addService(googletag.pubads());
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+
+
+
+        
+
+	
+    
+<script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(n,e,t){function r(t){if(!e[t]){var o=e[t]={exports:{}};n[t][0].call(o.exports,function(e){var o=n[t][1][e];return r(o?o:e)},o,o.exports)}return e[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({QJf3ax:[function(n,e){function t(n){function e(e,t,a){n&&n(e,t,a),a||(a={});for(var u=c(e),f=u.length,s=i(a,o,r),p=0;f>p;p++)u[p].apply(s,t);return s}function a(n,e){f[n]=c(n).concat(e)}function c(n){return f[n]||[]}function u(){return t(e)}var f={};return{on:a,emit:e,create:u,listeners:c,_events:f}}function r(){return{}}var o="nr@context",i=n("gos");e.exports=t()},{gos:"7eSDFh"}],ee:[function(n,e){e.exports=n("QJf3ax")},{}],3:[function(n,e){function t(n){return function(){r(n,[(new Date).getTime()].concat(i(arguments)))}}var r=n("handle"),o=n(1),i=n(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit","noticeError"];o(a,function(n,e){window.NREUM[e]=t("api-"+e)}),e.exports=window.NREUM},{1:12,2:13,handle:"D5DuLP"}],gos:[function(n,e){e.exports=n("7eSDFh")},{}],"7eSDFh":[function(n,e){function t(n,e,t){if(r.call(n,e))return n[e];var o=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(n,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return n[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=t},{}],D5DuLP:[function(n,e){function t(n,e,t){return r.listeners(n).length?r.emit(n,e,t):(o[n]||(o[n]=[]),void o[n].push(e))}var r=n("ee").create(),o={};e.exports=t,t.ee=r,r.q=o},{ee:"QJf3ax"}],handle:[function(n,e){e.exports=n("D5DuLP")},{}],XL7HBI:[function(n,e){function t(n){var e=typeof n;return!n||"object"!==e&&"function"!==e?-1:n===window?0:i(n,o,function(){return r++})}var r=1,o="nr@id",i=n("gos");e.exports=t},{gos:"7eSDFh"}],id:[function(n,e){e.exports=n("XL7HBI")},{}],loader:[function(n,e){e.exports=n("G9z0Bl")},{}],G9z0Bl:[function(n,e){function t(){var n=h.info=NREUM.info;if(n&&n.licenseKey&&n.applicationID&&f&&f.body){c(l,function(e,t){e in n||(n[e]=t)}),h.proto="https"===d.split(":")[0]||n.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=f.createElement("script");e.src=h.proto+n.agent,f.body.appendChild(e)}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=n("handle"),c=n(1),u=(n(2),window),f=u.document,s="addEventListener",p="attachEvent",d=(""+location).split("?")[0],l={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-593.min.js"},h=e.exports={offset:i(),origin:d,features:{}};f[s]?(f[s]("DOMContentLoaded",o,!1),u[s]("load",t,!1)):(f[p]("onreadystatechange",r),u[p]("onload",t)),a("mark",["firstbyte",i()])},{1:12,2:3,handle:"D5DuLP"}],12:[function(n,e){function t(n,e){var t=[],o="",i=0;for(o in n)r.call(n,o)&&(t[i]=e(o,n[o]),i+=1);return t}var r=Object.prototype.hasOwnProperty;e.exports=t},{}],13:[function(n,e){function t(n,e,t){e||(e=0),"undefined"==typeof t&&(t=n?n.length:0);for(var r=-1,o=t-e||0,i=Array(0>o?0:o);++r<o;)i[r]=n[e+r];return i}e.exports=t},{}]},{},["G9z0Bl"]);</script><script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/forum.js"></script>
+    
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+
+
+    <meta property="og:image" content="https://www.infoq.com/resource/articles/micro-soa-2/zh/smallimage/help_logo.jpg">
+
+<meta property="og:title" content="微观SOA：服务设计原则及其实践方式（下篇） ">
+<meta property="og:description" content="本文试图从稍微不同的角度，以相对接地气的方式来讨论SOA，集中讨论SOA在微观实践层面中的缘起、本质和具体操作方式。本篇将对8种可操作的服务设计原则进行细化的分析，作为SOA实践的参考。">
+<meta property="og:site_name" content="InfoQ">
+	<link rel="image_src" href="./微观SOA：服务设计原则及其实践方式（下篇）_files/help_logo.jpg">
+    <link rel="stylesheet" href="http://cdn1.infoqstatic.com/styles/prism.css">
+	<meta name="keywords" content="micro soa 2,架构 &amp; 设计,语言 &amp; 开发,SOA平台,SOA,架构 ,设计,企业架构,体验设计,">
+	<meta name="description" content="本文试图从稍微不同的角度，以相对接地气的方式来讨论SOA，集中讨论SOA在微观实践层面中的缘起、本质和具体操作方式。本篇将对8种可操作的服务设计原则进行细化的分析，作为SOA实践的参考。">
+	<meta name="tprox" content="1412814660000">
+
+    
+    
+    	
+	    
+	        <script type="text/javascript">
+	            $(function() {
+	                var box = $('.related_sponsors.visible.stacked');
+	                if (box.length === 0) {
+	                    return;
+	                }
+	                var nextSibling = $(box).next();
+	                
+	                if ($('#lowerFullwidthVCR').length === 0) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                if (blockElement(nextSibling)) {
+	                    moveLowerInThePage(box);
+	                    return;
+	                }
+	                
+	                while (!blockElement($(nextSibling).next())) {
+	                        nextSibling = $(nextSibling).next();
+	                        if (firstLowerThanSecond(nextSibling, box)) {
+	                            return;
+	                        }
+	                }
+	                moveLowerInThePage(box);
+	
+	                function blockElement(elem) {
+	                    if ($(elem).prop('tagName') === 'BLOCKQUOTE'
+	                        || $(elem).prop('tagName') === 'IMG'
+	                        || $(elem).prop('tagName') === 'PRE'
+	                        || ($(elem).prop('tagName') === 'P' && $(elem).children().length === 1 && $(elem).children('img').length === 1)) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function firstLowerThanSecond(elem1, elem2) {
+	                    var elem1BottomYCoordinate = $(elem1).offset().top + $(elem1).height()
+	                    var elem2BottomYCoordinate = $(elem2).offset().top + $(elem2).height();
+	                    if (elem1BottomYCoordinate > elem2BottomYCoordinate) {
+	                        return true;
+	                    }
+	                    return false;
+	                }
+	
+	                function moveLowerInThePage(box) {
+	                    if ($('#lowerFullwidthVCR').length !== 0) {
+	                        $('#lowerFullwidthVCR').replaceWith(box);
+	                    }
+	                    $(box).removeClass('stacked');
+	                }
+	            });
+	        </script><script async="" type="text/javascript" src="http://partner.googleadservices.com/gpt/pubads_impl_57.js"></script><iframe src="about:blank" width="0" height="0" style="visibility: hidden !important; display: none !important; opacity: 0 !important;"></iframe><style type="text/css"></style>
+	    
+    
+
+        
+        
+			<link rel="image_src" href="http://cdn1.infoqstatic.com/styles/i/logo-big.jpg?20150224-0055">
+			<meta property="og:image" content="http://cdn2.infoqstatic.com/styles/i/logo-big.jpg?20150224-0055">
+		
+<meta property="qc:admins" content="1153773210716375636">
+    <script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/share.js"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_16.css?v=81615bb9.css"></head>
+
+    <body>
+
+        
+            <div class="intbt">
+                <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+            </div>
+        
+
+        
+            
+                
+            
+        
+
+        <div id="wrapper" style="background-color:#fff">
+            <!--	#######		SITE START	#########	 -->
+            <div id="site">
+                
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="topInfo">
+    <ul class="list1">
+        <li><a href="http://www.infoq.com/cn/contribute" title="投稿" style="color:#286BB3;font-weight:bold">
+                投稿
+            </a>
+        </li>
+        <li><a href="http://www.infoq.com/cn/aboutus" title="关于我们">
+                关于我们
+            </a>
+        </li>
+        
+        
+        
+        	<li><a href="http://www.infoq.com/cn/partners" title="合作伙伴"> 
+                        合作伙伴
+                    </a>
+                </li>
+        
+    </ul>
+    <ul class="list2">
+        <li>欢迎关注我们的：</li>
+        
+        
+        		<li><a href="http://e.weibo.com/infoqchina" target="_blank"><img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/weibo_16x16.png" alt="" border="0"></a></li>
+	        <li><a href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank"><img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/weixin_16_16.png" alt="" border="0"></a></li>
+        
+        <li><a id="headerRssLink" href="http://www.infoq.com/cn/feed?token=mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6" title="" target="_blank"><img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/rss.jpg" alt="" border="0"></a></li>
+    </ul>
+	<div class="clear"></div>
+</div>
+
+	
+<!--	#######		HEADER START	#########	 -->
+<div id="header">
+    <div class="top_explain">InfoQ - 促进软件开发领域知识与创新的传播</div>
+	<!--	#######		search	#########	 -->
+	<div class="search_cls">
+	
+		<form name="search" id="search" action="http://www.infoq.com/cn/search.action" method="get" enctype="multipart/form-data">
+			<fieldset>
+				<input type="text" id="keyword" name="queryString" class="searchInput" value="搜索关键词" onfocus="if(this.value==&#39;搜索关键词&#39;){ this.value = &#39;&#39;; }" onblur="if(this.value==&#39;&#39;){ this.value = &#39;搜索关键词&#39;; }">
+				<input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="searchOrder" size="15" name="searchOrder">
+				<input type="hidden" id="sst" name="sst" value="hHs9JmbR6Oag7sdd">
+				<input type="submit" value="" id="search" class="submitCls">
+			</fieldset>
+		</form>
+		
+	    
+
+
+
+
+
+
+
+
+
+
+	<div id="login">
+		<a class="logged_in" href="javascript:;" title="Login"><span>涛涛</span></a>
+		<div class="login_overlay">
+			<!--	html for login box	-->
+			<div id="popupLogin">
+				<div class="welcome_title">
+					欢迎，
+					涛涛
+					！
+				</div>
+				<ul class="logged_submenu">
+					<li><a href="http://www.infoq.com/cn/showbookmarks.action" title="My Bookmarks">我的阅读清单</a></li>
+					<li><a href="http://www.infoq.com/cn/edituser.action" title="Preferences">偏好设置</a></li>
+				</ul>
+				<div class="login-type-in">
+					定制您感兴趣的技术领域
+				</div>
+				
+											
+				
+
+
+
+
+
+
+<form>
+<fieldset>
+	<ul class="logged_submenu">
+		
+			<li>
+				<input type="checkbox" name="development" value="true" checked="checked" id="hpersona6820" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="development">
+					语言 &amp; 开发
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="architecture-design" value="true" checked="checked" id="hpersona6821" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="architecture-design">
+					架构 &amp; 设计
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="process-practices" value="true" checked="checked" id="hpersona6822" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="process-practices">
+					过程 &amp; 实践
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="hpersona6823" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="operations-infrastructure">
+					运维 &amp; 基础架构
+				</label>
+			</li>
+		
+			<li>
+				<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="hpersona6824" onclick="includeExcludeCommunity(this, true);">
+
+				<label class="label_logged_in" for="enterprise-architect">
+					企业架构
+				</label>
+			</li>
+		
+	</ul>
+</fieldset>
+</form>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+				<a id="logout" class="logout" href="http://www.infoq.com/cn/logout.action">
+					注销
+				</a>
+			</div>
+			
+		</div>	
+	</div>
+
+
+
+		
+	</div>
+	
+	<div class="clear"></div>
+	
+	<!--	#######		logo	#########	 -->
+	<div class="logo">
+		<a class="image" href="http://www.infoq.com/cn/" title="">
+            <img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/logo_bigger.jpg" alt="" border="0">
+        </a>
+		<div class="clear"></div>
+	    
+
+
+
+
+
+
+
+
+<ul class="langs">
+	<li><a href="http://www.infoq.com/">En</a> |</li>
+	<li><a class="active" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="return false;" title="InfoQ China">中文</a> |</li>
+	<li><a href="http://www.infoq.com/jp/">日本</a> |</li>
+	<li><a href="http://www.infoq.com/fr/">Fr</a> |</li>
+	<li><a href="http://www.infoq.com/br/">Br</a></li>
+</ul>
+<div class="clear"></div>
+<p>
+    
+	
+	    
+	    
+	482,381 二月 独立访问用户
+</p>
+
+		<div class="clear"></div>
+	</div>
+	
+    	
+
+
+
+
+
+
+
+
+		<!--	#######		menu	#########	 -->
+		<ul class="menu">
+			<li id="personas_0">
+				<a class="main" href="http://www.infoq.com/cn/development/" title="Development"><span>语言 &amp; 开发</span></a>
+				<div class="top_submenu c0">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                                    <li><a href="http://www.infoq.com/cn/java/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Java">Java</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dotnet/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title=".Net">.Net</a></li>
+                                    <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                                    <li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+                                    <li><a href="http://www.infoq.com/cn/HTML5Topic/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="HTML 5">HTML 5</a></li>
+                                    <li><a href="http://www.infoq.com/cn/javascript/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="JavaScript">JavaScript</a></li>
+                                    <li><a href="http://www.infoq.com/cn/ruby/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Ruby">Ruby</a></li>
+                                    <li><a href="http://www.infoq.com/cn/dsl/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DSLs">DSLs</a></li>
+                                    <li><a href="http://www.infoq.com/cn/python/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Python">Python</a></li>
+                                    <li><a href="http://www.infoq.com/cn/Topic_PHP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PHP">PHP</a></li>
+                                    <li><a href="http://www.infoq.com/cn/PaaS/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="PaaS">PaaS</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="developmentHDLabel">语言 &amp; 开发</span></h2>
+						<h3 id="developmentHDTitle"><a href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share">微博红包：大规模Docker集群实践经验分享</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="developmentHDImg" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/222.jpg" alt="" border="0">
+							<span id="developmentHDSummary">每年除夕看春晚，今年除夕抢红包。在整个羊年的春节假期里，大家都在忙着抢各种各样的电子红包，互联网用红包的方式革新了我们的拜年方式。为此，InfoQ策划了“春节红包”系列文章，以期为读者剖析各大平台的红包活动背后的技术细节。本文是微博篇。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/development/">
+								<span>浏览所有<b id="developmentHDLabel2">语言 &amp; 开发</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			
+			<li id="personas_1">
+				<a class="main" href="http://www.infoq.com/cn/architecture-design/" title="Architecture &amp; Design"><span>架构 &amp; 设计</span></a>
+				<div class="top_submenu c1">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+				            <li><a href="http://www.infoq.com/cn/Modeling/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="建模">建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/domain-driven-design/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领域驱动设计">领域驱动设计</a></li>              
+                            <li><a href="http://www.infoq.com/cn/AOP/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="AOP">AOP</a></li>
+                            <li><a href="http://www.infoq.com/cn/DesignPattern/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="设计模式">设计模式</a></li>
+                            <li><a href="http://www.infoq.com/cn/Security/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="安全">安全</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa_platforms/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="architecture-designHDLabel">架构 &amp; 设计</span></h2>
+						<h3 id="architecture-designHDTitle"><a href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share">微博红包：大规模Docker集群实践经验分享</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="architecture-designHDImg" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/222(1).jpg" alt="" border="0">
+							<span id="architecture-designHDSummary">每年除夕看春晚，今年除夕抢红包。在整个羊年的春节假期里，大家都在忙着抢各种各样的电子红包，互联网用红包的方式革新了我们的拜年方式。为此，InfoQ策划了“春节红包”系列文章，以期为读者剖析各大平台的红包活动背后的技术细节。本文是微博篇。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/architecture-design/">
+								<span>浏览所有<b id="architecture-designHDLabel2">架构 &amp; 设计</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_2">
+				<a class="main" href="http://www.infoq.com/cn/process-practices/" title="Process &amp; Practices"><span>过程 &amp; 实践</span></a>
+				<div class="top_submenu c2">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/agile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Agile">Agile</a></li>
+                            <li><a href="http://www.infoq.com/cn/Leadership/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="领导能力">领导能力</a></li>
+                            <li><a href="http://www.infoq.com/cn/team-collaboration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="团队协作">团队协作</a></li>
+                            <li><a href="http://www.infoq.com/cn/agile_techniques/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="敏捷技术">敏捷技术</a></li>
+                            <li><a href="http://www.infoq.com/cn/methodologies/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="方法论">方法论</a></li>
+                            <li><a href="http://www.infoq.com/cn/continuous_integration/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="持续集成">持续集成</a></li>
+                            <li><a href="http://www.infoq.com/cn/lean/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="精益">精益</a></li>
+                            <li><a href="http://www.infoq.com/cn/cust_requirements/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="客户及需求">客户及需求</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="process-practicesHDLabel">过程 &amp; 实践</span></h2>
+						<h3 id="process-practicesHDTitle"><a href="http://www.infoq.com/cn/articles/conversation-patterns-2">软件专家的对话模式（第二部分）</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="process-practicesHDImg" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/logo.jpg" alt="" border="0">
+							<span id="process-practicesHDSummary">我们面对的业务人员常常不知道他们想要什么。本文是该系列文章的第二篇，Michael在文中探讨了如何设计问题才能够挖掘出真正的需求以及背后的动机。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/process-practices/">
+								<span>浏览所有<b id="process-practicesHDLabel2">过程 &amp; 实践</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_3">
+				<a class="main" href="http://www.infoq.com/cn/operations-infrastructure/" title="Operations &amp; Infrastructure"><span>运维 &amp; 基础架构</span></a>
+				<div class="top_submenu c3">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/performance-scalability/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="性能和可伸缩性">性能和可伸缩性</a></li>
+                            <li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+                            <li><a href="http://www.infoq.com/cn/devops/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="DevOps">DevOps</a></li>
+                            <li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+                            <li><a href="http://www.infoq.com/cn/virtualization/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="虚拟化">虚拟化</a></li>
+                            <li><a href="http://www.infoq.com/cn/NoSQL/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="NoSQL">NoSQL</a></li>
+                            <li><a href="http://www.infoq.com/cn/ApplicationServers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="应用服务器">应用服务器</a></li>
+				            <li><a href="http://www.infoq.com/cn/operations/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="运维">运维</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="operations-infrastructureHDLabel">运维 &amp; 基础架构</span></h2>
+						<h3 id="operations-infrastructureHDTitle"><a href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share">微博红包：大规模Docker集群实践经验分享</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="operations-infrastructureHDImg" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/222(1).jpg" alt="" border="0">
+							<span id="operations-infrastructureHDSummary">每年除夕看春晚，今年除夕抢红包。在整个羊年的春节假期里，大家都在忙着抢各种各样的电子红包，互联网用红包的方式革新了我们的拜年方式。为此，InfoQ策划了“春节红包”系列文章，以期为读者剖析各大平台的红包活动背后的技术细节。本文是微博篇。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/operations-infrastructure/">
+								<span>浏览所有<b id="operations-infrastructureHDLabel2">运维 &amp; 基础架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+			<li id="personas_4" class="last">
+				<a class="main" href="http://www.infoq.com/cn/enterprise-architect/" title="Enterprise Architecture"><span>企业架构</span></a>
+				<div class="top_submenu c4">
+					<div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 225px;">
+						
+					<div class="jspContainer" style="width: 225px; height: 325px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 225px;"><ul class="top_submenu_links">
+                            <li><a href="http://www.infoq.com/cn/enterprise-architecture/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="企业架构">企业架构</a></li>
+                            <li><a href="http://www.infoq.com/cn/bpm/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务流程建模">业务流程建模</a></li>
+                            <li><a href="http://www.infoq.com/cn/business_it_alignment/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="业务/IT整合">业务/IT整合</a></li>
+                            <li><a href="http://www.infoq.com/cn/EAI/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Integration (EAI)">Integration (EAI)</a></li>
+                            <li><a href="http://www.infoq.com/cn/Governance/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="治理">治理</a></li>
+                            <li><a href="http://www.infoq.com/cn/web20/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Web 2.0">Web 2.0</a></li>
+                            <li><a href="http://www.infoq.com/cn/soa/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="SOA">SOA</a></li>
+						</ul></div></div></div>
+					
+					<div class="menu_article">
+						<h2>特别专题<span id="enterprise-architectHDLabel">企业架构</span></h2>
+						<h3 id="enterprise-architectHDTitle"><a href="http://www.infoq.com/cn/articles/Teaching-Kids-Java">教孩子Java编程</a></h3>
+						<div class="clear"></div>
+						<p>
+							<img id="enterprise-architectHDImg" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/logo.png" alt="" border="0">
+							<span id="enterprise-architectHDSummary">节假日里我们总是想着我们的家庭、孩子和他们的未来。Yakov Fain写了一本新书“教孩子Java编程”，目前已经可以免费下载了，在本文中，他和我们深入分享了他写此书的动机，以及此书的节选。</span>
+						</p>
+						<div class="clear"></div>	
+						<div class="alignCenter">
+							<a class="view_all_categ" href="http://www.infoq.com/cn/enterprise-architect/">
+								<span>浏览所有<b id="enterprise-architectHDLabel2">企业架构</b></span>
+							</a>
+						</div>
+						<div class="clear"></div>	
+					</div>
+					
+					<div class="clear"></div>
+				</div>
+			</li>
+		</ul>
+
+		
+     	
+
+
+
+
+
+
+
+
+<!--	#######		qcon	#########	 -->
+
+<img border="0" alt="" src="http://cdn1.infoqstatic.com/images/ads/banners/qcon/cn/2015/20150305_banner.png?20150224-0055" usemap="#qconmap" style="margin-top: -25px; display: none !important; visibility: hidden !important; opacity: 0 !important; background-position: 1px 1px;" width="0" height="0">
+<map name="qconmap">
+  <area shape="rect" coords="0,0,200,54" href="http://2015.qconbeijing.com/" target="_blank" alt="ArchSummit">
+  <area shape="rect" coords="0,55,200,110" href="http://sz2015.archsummit.com/" target="_blank" alt="QCon">
+</map> 
+
+		
+		<div class="clear"></div>
+		
+    	
+
+
+
+
+
+
+
+
+<!--	#######		submenu	#########	 -->
+<ul class="submenu" style="padding: 3px;">
+	<li><a href="http://www.infoq.com/cn/mobile/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="移动">移动</a></li>
+	<li><a href="http://www.infoq.com/cn/dockers/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Docker">Docker</a></li>
+	<li><a href="http://www.infoq.com/cn/nodejs/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Node.js">Node.js</a></li>
+	<li><a href="http://www.infoq.com/cn/cloud-computing/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="云计算">云计算</a></li>
+	<li><a href="http://www.infoq.com/cn/bigdata/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="大数据">大数据</a></li>
+	<li><a href="http://www.infoq.com/cn/architect/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="架构师">架构师</a></li>
+	<li><a href="http://www.infoq.com/cn/qcon/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="QCon">QCon</a></li>
+	<li><a href="http://www.infoq.com/cn/archsummit?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="ArchSummit">ArchSummit</a></li>	
+    <li><a href="http://www.infoq.com/cn/zones/aws/" title="AWS">AWS</a></li>	
+	<li><a href="http://www.infoq.com/cn/zones/azure/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Azure">Azure</a></li>
+	<li><a href="http://www.infoq.com/cn/zones/hp-helion/?utm_source=infoq&utm_medium=header_graybar&utm_campaign=topic_clk" title="Helion">Helion</a></li>
+</ul>
+
+    <div class="all_topics"><a href="http://www.infoq.com/cn/topics">全部话题</a></div>
+    
+    
+
+	
+		
+		
+	<div class="clear"></div>
+
+	
+
+
+
+
+
+
+
+
+
+<div class="breadcrumbs">
+	<span class="first">您目前处于：</span>
+	<a class="normal" href="http://www.infoq.com/cn?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="InfoQ首页">InfoQ首页</a>
+	
+		
+            
+            
+                <a class="normal" href="http://www.infoq.com/cn/articles?utm_source=infoq&utm_medium=breadcrumbs_feature&utm_campaign=breadcrumbs" title="文章">文章</a>
+                
+		
+		<span class="last">微观SOA：服务设计原则及其实践方式（下篇）</span>
+	
+	
+    
+</div>
+
+	
+	<div class="clear"></div>
+</div>		
+<!--	#######		HEADER END	#########	 -->
+	
+
+                <!--	#######		CONTENT START	#########	 -->
+                <div id="content">
+                    
+		<!--	#######		left side START	#########	 -->
+	
+        <h1 class="general with_pic">
+            微观SOA：服务设计原则及其实践方式（下篇）
+            <span class="article_image_title">
+                <img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/help_logo.jpg">
+            </span>
+        </h1>
+	<span class="author_general">
+		作者
+		
+			
+		
+		<a href="http://www.infoq.com/cn/author/%E6%B2%88%E7%90%86" class="editorlink f_taxonomyEditor">
+沈理</a>
+
+        
+        发布于
+        2014年10月8日
+        <em>|</em>
+		
+        
+
+
+
+
+
+
+
+
+
+
+       
+        
+        
+	<a id="noOfComments" title="" href="http://www.infoq.com/cn/articles/micro-soa-2#theCommentsSection" class="comments_like">
+		
+	        <span class="comments_counts">
+	        	<span class="nr">
+	        		20
+	        	</span>
+	        </span>
+			讨论
+	    
+	    
+	</a></span>
+       
+   	
+
+
+
+
+
+
+
+
+<ul class="share_this">
+    <li>
+		<div class="bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1425866992188">
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_more" data-cmd="more">分享到：</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_tsina" data-cmd="tsina" title="分享到微博">微博</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook">Facebook</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_twi" data-cmd="twi" title="分享到Twitter">Twitter</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_youdao" data-cmd="youdao" title="分享到有道云笔记">有道云笔记</a>
+			<a href="http://www.infoq.com/cn/articles/micro-soa-2#" class="bds_mail" data-cmd="mail" title="分享到邮件分享">邮件分享</a>
+		</div>
+	</li>
+    
+        
+        
+            <li><a id="bookmarkBtn" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="Bookmarks.bookmarkContent(&#39;articles&#39;, &#39;micro-soa-2&#39;);return false;" class="read_later" title=""><q>稍后阅读</q></a></li>
+        
+        <li><a class="reading_list" style="margin-right:104px;" href="http://www.infoq.com/cn/showbookmarks.action"><q>我的阅读清单</q></a></li>
+    
+</ul>
+			
+	<div class="clear"></div>
+<div class="article_page_left text_content_container">
+	
+			
+	<div class="text_info text_info_article">
+		
+			
+	       	<p>在<a href="http://www.infoq.com/cn/articles/micro-soa-1">上一篇文章</a>中，我说到SOA是一个特别大的话题，不但没有绝对统一的原则，而且很多原则本身的内容也具备相当模糊性和宽泛性。虽然我们可以说SOA ≈ 模块化开发 + 分布式计算，但由于其原则的模糊性，我们仍然很难说什么应用是绝对符合SOA的，只能识别出哪些是不符合SOA的。</p>
+
+<p>本篇将对8种可操作的服务设计原则进行细化的分析，作为SOA实践的参考。</p>
+
+<h2>服务设计原则1：优化远程调用</h2>
+
+<p>这里的远程调用特指RPC（Remote Procedure Call）。当然更面向对象的说法应该是远程方法调用或者远程服务调用等等。</p>
+			<div class="clear"></div>
+	        
+	            
+
+
+
+
+
+
+
+
+
+    <div class="related_sponsors visible stacked">
+        
+        
+                       
+            <div class="gray_section_related only1 fullWidth">
+	            <div class="related_editorial sponsored only2">
+	                <p class="title">相关厂商内容</p>
+	                <div class="links">
+	                    
+	                    
+	                        
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6699&t=f" target="_blank">
+	                                    敏捷咨询师吴穹《从复杂理论到自组织团队》
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6700&t=f" target="_blank">
+	                                    移动互联网浪潮下网易云音乐技术和开发经验
+	                                </a>
+	                            </h3>
+	                        
+	                            <h3 title="" class="entrypdf">
+	                                <a href="http://www.infoq.com/infoq/url.action?i=6701&t=f" target="_blank">
+	                                    中国顶尖白帽黑客团队Keen Team代码保护 [案例：内核]
+	                                </a>
+	                            </h3>
+	                        
+	                    
+	                    
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3143,&quot;title&quot;:&quot;指数级增长业务下的服务架构改造&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3143&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                指数级增长业务下的服务架构改造
+	                            </a>
+	                        </h3>
+	                    
+	                        
+	                            
+	                        
+	                        <h3 title="" class="entrypdf f_vcrbottom" jsh="{&quot;id&quot;:3142,&quot;title&quot;:&quot;平民软件CEO楼方鑫解读基于SQL的秒杀解决方案&quot;}">
+	                            <a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3142&utm_source=infoq&utm_medium=VCR&utm_campaign=vcr_articles_click" target="_blank">
+	                                平民软件CEO楼方鑫解读基于SQL的秒杀解决方案
+	                            </a>
+	                        </h3>
+	                    
+	                    
+	                    
+	                    <div class="clear"></div>
+	                </div>
+	            </div>
+            </div>
+        
+        
+        
+        
+            <div class="paid_section  only2">
+                <p class="title">相关赞助商</p>
+                
+                    <a href="http://www.infoq.com/infoq/url.action?i=6489&t=f" target="_blank">
+                        <img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/QCon VCR Box.png" border="0" style="margin: 0 0 5px 5px; float:right;">
+                    </a>
+                
+                
+                <div class="links">
+                    <p><font face="Verdana">全球软件开发大会，4月23-25日，北京，</font><a href="http://www.infoq.com/infoq/url.action?i=6488&t=f" target="_blank"><font face="Verdana">敬请期待</font></a>！</p>
+
+                </div>
+            </div>
+        
+        <div class="clear"></div>
+    </div>
+
+	        
+	        
+
+<p>由于SO接口通常要被远程访问，而网络传输，对象序列化/反序列化等开销都远远超过本地Object访问几个数量级，所以要加快系统的响应速度、减少带宽占用和提高吞吐量，选择高性能的远程调用方式经常是很重要的。</p>
+
+<p>但是远程调用方式往往又要受限于具体的业务和部署环境，比如内网、外网、同构平台、异构平台等等。有时还要考虑它对诸如分布式事务，消息级别签名/加密，可靠异步传输等方面的支持程度（这些方面通常被称为SLA：service level agreement），甚至还包括开发者的熟悉和接受程度等等。</p>
+
+<p>因此，远程调用方式往往需要根据具体情况做出选择和权衡。</p>
+	        
+	        
+	            <div id="lowerFullwidthVCR"></div>
+	        
+	       	
+
+<p>以Java远程Service为例分析不同场景下，传输方式的某些可能较好选择：</p>
+
+<ul>
+	<li>内网 + 同框架Java客户端 + 大并发：多路复用的TCP长连接 + kryo （二进制序列化） （kryo也可以用Protostuff，FST等代替）</li>
+	<li>内网 + 不同框架Java客户端：TCP + Kryo</li>
+	<li>内网 + Java客户端 + 2PC分布式事务：RMI/IIOP （TCP + 二进制）</li>
+	<li>内网 + Java客户端 + 可靠异步调用：JMS + Kryo （TCP + 二进制）</li>
+	<li>内网 + 不同语言客户端：thrift（TCP + 二进制序列化）</li>
+	<li>外网 + 不同语言客户端 + 企业级特性：HTTP + WSDL + SOAP （文本）</li>
+	<li>外网 + 兼顾浏览器、手机等客户端：HTTP + JSON （文本）</li>
+	<li>外网 + 不同语言客户端 + 高性能：HTTP + ProtocolBuffer （二进制）</li>
+</ul>
+
+<p>简单来说，从性能上讲，tcp协议 + 二进制序列化更适合内网应用。从兼容性、简单性上来说，http协议 + 文本序列化更适合外网应用。当然这并不是绝对的。另外，tcp协议在这里并不是限定远程调用协议一定只能是位于OSI网络模型的第四层的原始tcp，它可以包含tcp之上的任何非http协议。</p>
+
+<p>所以，回答上面提到的问题，WebServices （经典的WSDL+SOAP+HTTP）虽然是最符合前述SOA设计原则的技术，但并不等同于SOA，我认为它只是满足了SOA的底线，而未必是某个具体场景下的最佳选择。这正如一个十项全能选手在每个单项上是很难和单项冠军去竞争的。更理想的SOA Service最好能在可以支持WebServices的同时，支持多种远程调用方式，适应不同场景，这也是Spring Remoting，SCA，Dubbo，Finagle等分布式服务框架的设计原则。</p>
+
+<h3>远程调用技术解释：HTTP + JSON适合SOA吗？</h3>
+
+<p>JSON简单易读，通用性极佳，甚至能很好支持浏览器客户端，同时也常被手机APP使用，大有取代XML之势。</p>
+
+<p>但JSON本身缺乏像XML那样被广泛接受的标准schema，而一般的HTTP + JSON的远程调用方式也缺乏像Thrift，CORBA，WebServices等等那样标准IDL（接口定义语言），导致服务端和客户端之间不能形成强的服务契约，也就不能做比如自动代码生成。所以HTTP + JSON在降低了学习门槛的同时，可能显著的增加复杂应用的开发工作量和出错可能性。</p>
+
+<p>例如，新浪微博提供了基于HTTP + JSON的Open API，但由于业务操作比较复杂，又在JSON上封装实现了各种语言的客户端类库，来减少用户的工作量。</p>
+
+<p>为了解决这方面的问题，业界有很多不同方案来为HTTP + JSON补充添加IDL，如RSDL、JSON-WSP、WADL、WSDL 2.0等等，但事实上它们的接受度都不太理想。</p>
+
+<p>另外值得一提的是，JSON格式和XML一样有冗余，即使做GZIP压缩之类的优化，传输效率通常也不如很多二进制格式，同时压缩、解压还会引入额外的性能开销。</p>
+
+<h3>远程调用技术解释：Apache Thrift多语言服务框架</h3>
+
+<p>Thrift是最初来自facebook的一套跨语言的service开发框架，支持C++, Java, Python, PHP, Ruby, Erlang, Perl, Haskell, C#, JavaScript, Node.js, Smalltalk, Delphi等几乎所有主流编程语言，具有极好的通用性。</p>
+
+<p>Thrift被facebook，twitter等巨头以及开源社区都广泛使用，是非常成熟的技术。</p>
+
+<p>Thrift的服务契约通过类似如下形式的IDL定义：</p>
+
+<pre>struct User {
+    1: i32 id,
+    2: string name,
+    3: string password
+}
+
+service UserService {
+    void store(1: User user),
+    UserProfile retrieve(1: i32 id)
+}
+</pre>
+
+<p>非常类似于C语言，易读易写，比WSDL简单明了得多。比用java之类的编程语言也更方便，有时候可以把所有相关的接口和数据结构定义放到同一个文件，发布出去的时候不用再打一个压缩包之类，甚至可以直接粘贴到文档中</p>
+
+<p>Thrift还提供工具，可以基于IDL自动生成各种语言对应的服务端和客户端代码：</p>
+
+<pre>[lishen@dangdang thrift]thrift --gen java user.thrift
+[lishen@dangdang thrift]$ thrift --gen cpp user.thrift
+[lishen@dangdang thrift]$ thrift --gen php user.thrift
+[lishen@dangdang thrift]$ thrift --gen csharp user.thrift
+</pre>
+
+<p>我认为thrift是比WebServices更简单高效的技术，是在SOA中对WebServices最具有替代性的技术之一。</p>
+
+<h3>远程调用技术解释：多路复用的TCP长连接</h3>
+
+<p>这是一种追求极致高性能高伸缩的方式，这里只做简要介绍。</p>
+
+<p>比较典型的是twitter的Mux RPC协议以及google的SPDY协议，在其中多个请求同时共用同一个长连接，即一个连接交替传输不同请求的字节块。它既避免了反复建立连接开销，也避免了连接的等待闲置从而减少了系统连接总数，同时还避免了TCP顺序传输中的线头阻塞（head-of-line blocking）问题。</p>
+
+<p>另外，国内比较著名的开源dubbo框架的默认RPC协议，以及业界许多小型开源RPC框架也都是类似的思路。</p>
+
+<p>采用多路复用机制后，一般就要求服务器端和客户端都支持额外的类似于会话层（即OSI网络模型第六层）的语义，导致它们必须要依赖于同一套RPC框架。</p>
+
+<p>其他很多RPC机制都是使用TCP短连接。即使有些RPC使用了长连接，但一个连接同一时间只能发送一个请求，然后连接就处于闲置状态，来等待接收该请求的响应，待响应完毕，该连接才能被释放或者复用。</p>
+
+<p>HTTP 1.1也支持一种基于pipeline模式的长连接，其中多个HTTP请求也可共用一个连接，但它要求响应（response）也必须按照请求（request）的顺序传输返回，即FIFO先进先出。而在完全多路复用的连接中，哪个的响应先ready就可以先传输哪个，不用排队。</p>
+
+<p>当然，短连接、长连接和多路复用长连接之间不存在绝对的好坏，需要取决于具体业务和技术场景，在此不详细展开了。</p>
+
+<h3>远程调用技术解释：Java高效序列化</h3>
+
+<p>最近几年，各种新的Java高效序列化方式层出不穷，不断刷新序列化性能的上限，例如Kryo，FST等开源框架。它们提供了非常高效的Java对象的序列化和反序列化实现，相比JDK标准的序列化方式（即基于Serializable接口的标准序列化，暂不考虑用诸如Externalizable接口的定制序列化），在典型场景中，其序列化时间开销可能缩短20倍以上，生成二进制字节码的大小可能缩减4倍以上。</p>
+
+<p>另外，这些高效Java序列化方式的开销也显著少于跨语言的序列化方式如thrift的二进制序列化，或者JSON等等</p>
+
+<h3>远程调用技术解释：RMI/IIOP和分布式事务</h3>
+
+<p>RMI/IIOP是Java EE中标准的远程调用方式，IIOP是CORBA的协议，只有IIOP上的RMI才支持两阶段提交的分布式事务，同时提供和CORBA的互操作。</p>
+
+<p>当然，严格的两阶段提交事务并不高效，还可能严重影响系统伸缩性甚至可用性等等，一般只应用在非常关键的业务中。</p>
+
+<h3>远程调用技术解释：Google ProtocolBuffer跨语言序列化</h3>
+
+<p>ProtocolBuffer是google开发的跨语言的高效二进制序列化方式，其序列化性能和thrift比较类似。事实上thrift最初就是ProtocolBuffer的仿制品。但它和thrift最大的不同是他没有自带的RPC实现（因为google没有将RPC部分开源，但有大量第三方实现）。</p>
+
+<p>由于不和RPC方式耦合，反而使得ProtocolBuffer能被方便的集成进大量已有的系统和框架中。在国内它也被百度、淘宝等广泛的应用在Open API中，和HTTP搭配作为一种高效的跨平台跨组织的集成方式。</p>
+
+<h2>服务设计原则2：消除冗余数据</h2>
+
+<p>同样由于service的远程调用开销很高，所以在它的输入参数和返回结果中，还要尽量避免携带当前业务用例不需要的冗余的字段，来减少序列化和传输的开销。同时，去掉冗余字段也可以简化接口，避免给外部用户带来不必要的业务困惑。</p>
+
+<p>比如article service中有个返回article list的方法</p>
+
+<pre>List&lt;Article&gt; getArticles(...)</pre>
+
+<p>如果业务需求仅仅是要列出文章的标题，那么在返回的article中就要避免携带它的contents等等字段。</p>
+
+<p>这里经典解决方案就是引入OO中常用的Data Transfer Object (DTO)模式，专门针对特定service的用例来定制要传输的数据字段。这里就是添加一个AriticleSummary的额外数据传输对象：</p>
+
+<pre>List&lt;ArticleSummary&gt; getArticleSummaries(...)</pre>
+
+<p>额外的DTO确实是个麻烦，而一般OO程序通常则可直接返回自己的包含冗余的业务模型。</p>
+
+<h2>服务设计原则3：粗粒度契约</h2>
+
+<p>同样由于远程调用开销高，同时service的外部使用者对特定业务流程的了解也比不上组织内部的人，所以service的契约（接口）通常需要是粗粒度的，其中的一个操作就可能对应到一个完整的业务用例或者业务流程，这样既能减少远程调用次数，同时又降低学习成本和耦合度。</p>
+
+<p>而OO接口通常可以是非常细粒度的，提供最好的灵活性和重用性。</p>
+
+<p>例如，article service支持批量删除文章，OO接口中可以提供</p>
+
+<pre>deleteArticle(long id)</pre>
+
+<p>供用户自己做循环调用（暂不考虑后端SQL之类优化），但SO接口中，则最好提供</p>
+
+<pre>deleteArticles(Set&lt;Long&gt; ids)</pre>
+
+<p>供客户端调用，将可能的N次远程调用减少为一次。</p>
+
+<p>例如，下订单的用例，要有一系列操作</p>
+
+<pre>addItem -&gt; addTax -&gt; calculateTotalPrice -&gt; placeOrder
+</pre>
+
+<p>OO中我们完全可以让用户自己来灵活选择，分别调用这些细粒度的可复用的方法。但在SO中，我们需要将他们封装到一个粗粒度的方法供用户做一次性远程调用，同时也隐藏了内部业务的很多复杂性。另外，客户端也从依赖4个方法变成了依赖1个方法，从而大大降低了程序耦合度。</p>
+
+<p>顺便值得一提的是，如果上面订单用例中每个操作本身也是远程的service（通常在内网之中），这种粗粒度封装就变成了经典的service composition（服务组合）甚至service orchestration（服务编排）了。这种情况下粗粒度service同样可能提高了性能，因为对外网客户来说，多次跨网的远程调用变成了一次跨网调用 + 多次内网调用。</p>
+
+<p>对这种粗粒度service封装和组合，经典解决方案就是引入OO中常用的Facade模式，将原来的对象屏蔽到专门的“外观”接口之后。同时，这里也很可能要求我们引入新的service参数/返回值的数据结构来组合原来多个操作的对象模型，这就同样用到前述的DTO模式。</p>
+
+<p>一个简单Facade示例（FooService和BarService是两个假想的本地OO service，façade将它们的结果值组合返回）：</p>
+
+<pre>class FooBarFacadeImpl implements FooBarFacade {
+    private FooService fooService;
+    private BarService barService;
+
+    public FooBarDto getFooBar() {
+        FooBarDto fb = new FooBarDto();
+        fb.setFoo(fooService.getFoo());
+        fb.setBar(barService.getBar());
+        return fb;
+    }
+}   </pre>
+
+<p>当然，有的时候也可以不用facade和DTO，而在是FooService和BarService之外添加另一个本地service和domain model，这要和具体业务场景有关。</p>
+
+<h2>服务设计原则4：通用契约</h2>
+
+<p>由于service不假设用户的范围，所以一般要支持不同语言和平台的客户端。但各种语言和平台在功能丰富性上有很大差异，这就决定了服务契约必须取常见语言、平台以及序列化方式的最大公约数，才能保证service广泛兼容性。由此，服务契约中不能有某些语言才具备的高级特性，参数和返回值也必须是被广泛支持的较简单的数据类型（比如不能有对象循环引用）。</p>
+
+<p>如果原有的OO接口不能满足以上要求，则在此我们同样需要上述的Facade和DTO，将OO接口转换为通用的SO契约。</p>
+
+<p>例如原有对象模型</p>
+
+<pre>class Foo {
+   private Pattern regex;
+}</pre>
+
+<p>Pattern是Java特有的预编译好的，可序列化的正则表达式（可提高性能），但在没有特定框架支持下，可能不好直接被其他语言识别，所以可添加DTO：</p>
+
+<pre>class FooDto {
+   private String regex;
+}</pre>
+
+<h2>服务设计原则5：隔离变化</h2>
+
+<p>虽然OO和SO都追求低耦合，但SO由于使用者范围极广，就要求了更高程度的低耦合性。</p>
+
+<p>比如前述的article service，OO中可以直接返回article对象，而这个article对象在OO程序内部可能做为核心的建模的domain model，甚至作为O/R mapping等等。而在SO如果还直接返回这个article，即使没有前面所说的冗余字段，复杂类型等问题，也可能让外部用户与内部系统的核心对象模型，甚至O/R mapping机制，数据表结构等等产生了一定关联度，这样一来，内部的重构经常都会可能影响到外部的用户。</p>
+
+<p>所以，这里再次对Facade和DTO产生了需求，用它们作为中介者和缓冲带，隔离内外系统，把内部系统变化对外部的冲击减少到最小程度。</p>
+
+<h2>服务设计原则6：契约先行</h2>
+
+<p>Service是往往涉及不同组织之间的合作，而按照正常逻辑，两个组织之间合作的首要任务，就是先签订明确的契约，详细规定双方合作的内容，合作的形式等等，这样才能对双方形成强有力的约束和保障，同时大家的工作也能够并行不悖，不用相互等待。因此SOA中，最佳的实践方式也是契约先行，即先做契约的设计，可以有商务，管理和技术等不同方面的人员共同参与，并定义出相应的WSDL或者IDL，然后在开发的时候再通过工具自动生成目标语言的对应代码。</p>
+
+<p>对于WSDL来说，做契约先行的门槛略高，如果没有好的XML工具很难手工编制。但对于Thrift IDL或者ProtocolBuffer等来说，由于它们和普通编程语言类似，所以契约设计相对是比较容易的。另外，对于简单的HTTP + JSON来说（假设不补充使用其他描述语言），由于JSON没有标准的schema，所以是没法设计具有强约束力的契约的，只能用另外的文档做描述或者用JSON做输入输出的举例。</p>
+
+<p>但是，契约先行，然后再生成服务提供端的代码，毕竟给service开发工作带来了较大的不便，特别是修改契约的时候导致代码需要重写。因此，这里同样可能需要引入Facade和DTO，即用契约产生的都是Facade和DTO代码，它们负责将请求适配和转发到其他内部程序，而内部程序则可以保持自己的主导性和稳定性。</p>
+
+<p>另外，契约先行可能会给前面提到的多远程调用支持带来一些麻烦。</p>
+
+<p>当然契约先行也许并不是能被广泛接受的实践方式，就像敏捷开发中“测试先行”（也就是测试驱动开发）通常都是最佳实践，但真正施行的团队却非常之少，这方面还需要不断摸索和总结。但我们至少可以认为Echo中Java2WSDL并不被认为是SOA的最佳实践。</p>
+
+<h2>服务设计原则7：稳定和兼容的契约</h2>
+
+<p>由于用户范围的广泛性，所以SO的服务契约和Java标准API类似，在公开发布之后就要保证相当的稳定性，不能随便被重构，即使升级也要考虑尽可能的向下兼容性。同时，如果用契约先行的方式，以后频繁更改契约也导致开发人员要不断重做契约到目标语言映射，非常麻烦。</p>
+
+<p>这就是说SO对契约的质量要求可能大大高于一般的OO接口，理想的情况下，甚至可能需要专人（包括商务人员）来设计和评估SO契约（不管是否用契约先行的方式），而把内部的程序实现交给不同的人，而两者用Facade和DTO做桥梁。</p>
+
+<h2>服务设计原则8：契约包装</h2>
+
+<p>前述原则基本都是针对service提供端来讲的，而对service消费端而言，通过契约生成对应的客户端代码，经常就可以直接使用了。当然，如果契约本身就是Java接口之类（比如在Dubbo，Spring Remoting等框架中），可以略过代码生成的步骤。</p>
+
+<p>但是，service的返回值（DTO）和service接口（Facade），可能被消费端的程序到处引用到。</p>
+
+<p>这样消费端程序就较强的耦合在服务契约上了，如果服务契约不是消费端定义的，消费端就等于把自己程序的部分主导权完全让渡给了别人。</p>
+
+<p>一旦契约做更改，或者消费端要选择完全不同的service提供方（有不同的契约），甚至改由本地程序自己来实现相关功能，修改工作量就可能非常大了。</p>
+
+<p>另外，通过契约生成的客户端代码，经常和特定传输方式是相关的（比如webservices stub），这样给切换远程调用方式也会带来障碍。</p>
+
+<p>因此，就像在通常应用中，我们要包装数据访问逻辑（OO中的DAO或者Repository模式），或者包装基础服务访问逻辑（OO中的Gateway模式）一样，在较理想的SOA设计中，我们也可以考虑包装远程service访问逻辑，由于没有恰当的名称，暂时称之为Delegate Service模式，它由消费端自己主导定义接口和参数类型，并将调用转发给真正的service客户端生成代码，从而对它的使用者完全屏蔽了服务契约，这些使用者甚至不知道这个服务到底是远程提供的的还是本地提供的。</p>
+
+<p>此外，即使我们在消费端是采用某些手工调用机制（如直接构建和解析json等内容，直接收发JMS消息等等），我们同样可以用delegate service来包装相应的逻辑。</p>
+
+<p>delegate service示例1：</p>
+
+<pre>// ArticlesService是消费端自定义的接口
+class ArticleServiceDelegate implements ArticlesService {
+    // 假设是某种自动生成的service客户端stub类
+    private ArticleFacadeStub stub;
+
+    public void deleteArticles(List&lt;Long&gt; ids) {
+        stub.deleteArticles(ids);
+    }
+}   </pre>
+
+<p>delegate service示例2：</p>
+
+<pre>// ArticlesService是消费端自定义的接口
+class ArticleServiceDelegate implements ArticlesService {
+
+    public void deleteArticles(List&lt;Long&gt; ids) {
+        // 用JMS和FastJson手工调用远程service
+        messageClient.sendMessage(queue, JSON.toJSONString(ids));
+    }
+}   </pre>
+
+<h2>从面向对象到面向服务，再从面向服务到面向对象</h2>
+
+<p>总结上面的几个原则，虽然只是谈及有限的几个方面，但大致也可看出OO和SO在实际的设计开发中还是有不少显著的不同之处，而且我们没有打算用SO的原则来取代过去的OO设计，而是引入额外的层次、对象和OO设计模式，来补充传统的OO设计。</p>
+
+<p>其实就是形成了这种调用流程：</p>
+
+<ul>
+	<li>
+	<p>service提供端：OO程序 &lt;- SOA层（Facade和DTO）&lt;- 远程消费端</p>
+	</li>
+	<li>
+	<p>service消费端：OO程序 -&gt; Delegate Service -&gt; SOA层（Facade和DTO 或者 其他动态调用机制）-&gt; 远程提供端</p>
+	</li>
+</ul>
+
+<p>Facade、DTO和Delegate Service负责做OO到SO和SO到OO的中间转换。</p>
+
+<p>现在，可以回答Echo示例中的问题：通过“透明的”配置方式，将OO程序发布为远程Service，虽然可能较好的完成了从本地对象到远程对象的跨越，但通常并不能较好的完成OO到SO的真正跨越。</p>
+
+<p>同时，透明配置方式也通常无法直接帮助遗留应用（如ERP等）转向SOA。</p>
+
+<p>当然，在较为简单和使用范围确定很有限应用（比如传统和局部的RPC）中，透明式远程service发布会带来极大的便利。</p>
+
+<p>另外，上面对SO的所有讨论都集中在RPC的方式，其实SO中也用message的方式做集成，它也是个大话题，暂时不在此详论了。</p>
+
+<h2>为什么不能放弃面向对象？</h2>
+
+<p>SO是有它的特定场景的，比如远程的，范围不定的客户端。所以它的那些设计原则并不能被借用来指导一般性的程序开发，比如很多OO程序和SO原则完全相反，经常都要提供细粒度接口和复杂参数类型以追求使用的使用灵活性和功能的强大性。</p>
+
+<p>就具体架构而言，我认为SOA层应该是一个很薄的层次（thin layer），将OO应用或者其他遗留性应用加以包装和适配以帮助它们面向服务。其实在通常的web开发中，我们也是用一个薄的展现层（或者叫Web UI层之类）来包装OO应用，以帮助它们面向浏览器用户。因此，Façade、DTO等不会取代OO应用中核心的Domain Model、Service等等 （这里的service是OO中service，未必是SO的）。</p>
+
+<p>综合起来，形成类似下面的体系结构：</p>
+
+<p><img _href="img://null" _p="true" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/soa-architecture.png" width="600"></p>
+
+<h2>理想和现实</h2>
+
+<p>需要特别指出的是，上面提到的诸多SO设计原则是在追求一种相对理想化的设计，以达到架构的优雅性，高效性，可重用性，可维护性，可扩展性等等。</p>
+
+<p>而在现实中任何理论和原则都可能是需要作出适当妥协的，因为现实是千差万别的，其情况远比理论复杂，很难存在放之四海而皆准的真理。</p>
+
+<p>而且很多方面似乎本来也没有必要追求完美和极致，比如如果有足够能力扩充硬件基础设施，就可以考虑传输一些冗余数据，选择最简单传输方式，并多来几次远程调用等等，以减轻设计开发的工作量。</p>
+
+<p>那么理想化的原则就没有意义了吗？比如领域驱动设计（Domain-Driven Design）被广泛认为是最理想的OO设计方式，但极少有项目能完全采用它；测试驱动开发也被认为是最佳的敏捷开发方式，但同样极少有团队能彻底采用它。但是，恐怕没有多少人在了解它们之后会否认它们巨大的意义。</p>
+
+<p>理想化的原则可以更好的帮助人们理解某类问题的本质，并做为好的出发点或者标杆，帮助那些可以灵活运用，恰当取舍的人取得更大的成绩，应付关键的挑战。这正如孔子说的“取乎其上，得乎其中；取乎其中，得乎其下；取乎其下，则无所得矣”。</p>
+
+<p>另外，值得一提的是，SOA从它的理念本身来说，就带有一些的理想主义的倾向，比如向“全世界”开放，不限定客户端等等。如果真愿意按SOA的路径走，即使你是个土豪，偷个懒比浪费网络带宽重要，但说不定你的很多用户是土鳖公司，浪费几倍的带宽就大大的影响他们的利润率。</p>
+
+<h2>延伸讨论：SOA和敏捷软件开发矛盾吗？</h2>
+
+<p>SOA的服务契约要求相当的稳定性，一旦公开发布（或者双方合同商定）就不应该有经常的变更，它需要对很多方面有极高的预判。而敏捷软件开发则是拥抱变化，持续重构的。软件设计大师Martin Fowler把它们归结为计划式设计和演进式设计的不同。</p>
+
+<p>计划理论（或者叫建构理论）和演进理论是近代哲学的两股思潮，影响深远，派生出了比如计划经济和市场经济，社会主义和自由主义等等各种理论。</p>
+
+<p>但是，计划式设计和演进式设计并不绝对矛盾，就像计划经济和市场经济也不绝对矛盾，非此即彼，这方面需要在实践中不断摸索。前面我们讨论的设计原则和架构体系，就是将SOA层和OO应用相对隔离，分而治之，在SOA层需要更多计划式设计，而OO应用可以相对独立的演进，从而在一定程度缓解SOA和敏捷开发的矛盾。</p>
+
+<h2>延伸讨论：SOA和REST是一回事吗？</h2>
+
+<p>从最本质的意义上讲，REST（Representational State Transfer）实际是一种面向资源架构（ROA），和面向服务架构（SOA）是有根本区别的。</p>
+
+<p>例如，REST是基于HTTP协议，对特定资源做增（HTTP POST）、删（HTTP DELETE）、改（HTTP PUT）、查（HTTP GET）等操作，类似于SQL中针对数据表的INSERT、DELETE、UPDATE、SELECT操作，故REST是以资源（资源可以类比为数据）为中心的。而SOA中的service通常不包含这种针对资源（数据）的细粒度操作，而是面向业务用例、业务流程的粗粒度操作，所以SOA是以业务逻辑为中心的。</p>
+
+<p>但是在实际使用中，随着许多REST基本原则被不断突破，REST的概念被大大的泛化了，它往往成为很多基于HTTP的轻量级远程调用的代名词（例如前面提到过的HTTP + JSON）。比如，即使是著名的Twitter REST API也违反不少原始REST的基本原则。</p>
+
+<p>在这个泛化的意义上讲，REST也可以说是有助于实现SOA的一种轻量级远程调用方式。</p>
+
+<h2>SOA架构的进化</h2>
+
+<p>前面讨论的SOA的所有问题，基本都集中在service本身的设计开发。但SOA要真正发挥最大作用，还需要不断演进成更大的架构（也就是从微观SOA过渡到宏观SOA），在此略作说明：</p>
+
+<ul>
+	<li>
+	<p><strong>第一个层次是service架构</strong>：开发各种独立的service并满足前面的一些设计原则，我们前面基本都集中在讨论这种架构。这些独立的service有点类似于小孩的积木。</p>
+	</li>
+	<li>
+	<p><strong>第二个层次是service composition（组合）架构</strong>：独立的service通过不同组合来构成新的业务或者新的service。在理想情况下，可以用一种类似小孩搭积木的方式，充分发挥想象力，将独立的积木（service）灵活的拼装组合成新的形态，还能够自由的替换其中的某个构件。这体现出SOA高度便捷的重用性，大大提高企业的业务敏捷度。</p>
+	</li>
+	<li>
+	<p><strong>第三个层次是service inventory（清单）架构</strong>：通过标准化企业服务清单（或者叫注册中心）统一的组织和规划service的复用和组合。当积木越来越多了，如果还满地乱放而没有良好的归类整理，显然就玩不转了。</p>
+	</li>
+	<li>
+	<p><strong>第四个层次是service-oriented enterprise架构</strong>……</p>
+	</li>
+</ul>
+
+<h2>总结</h2>
+
+<p>至此，我们只是简要的探讨了微观层面的SOA，特别是一些基本设计原则及其实践方式，以期能够略微展示SOA在实践中的本质，以有助于SOA更好的落地，进入日常操作层面。</p>
+
+<p>最后，打个比方：SOA不分贵贱（不分语言、平台、组织），不远万里（通过远程调用）的提供服务（service），这要求的就是一种全心全意为人民服务的精神……</p>
+
+<h2>作者简介</h2>
+
+<p>沈理，当当网架构师和技术委员会成员，主要负责当当网的SOA实施（即服务化）以及分布式服务框架的开发。以前也有在BEA、Oracle、Redhat等外企的长期工作经历，从事过多个不同SOA相关框架和容器的开发。他的邮箱：<a href="mailto:shenli@dangdang.com">shenli@dangdang.com</a></p>
+
+<hr>
+<p>感谢<a href="http://www.infoq.com/cn/author/%E9%A9%AC%E5%9B%BD%E8%80%80">马国耀</a>对本文的审校。</p>
+
+<p>给InfoQ中文站投稿或者参与内容翻译工作，请邮件至<a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a>。也欢迎大家通过新浪微博（<a href="http://www.weibo.com/infoqchina">@InfoQ</a>）或者腾讯微博（<a href="http://t.qq.com/infoqchina">@InfoQ</a>）关注我们，并与我们的编辑和其他读者朋友交流。</p>
+
+	       	
+       	
+		<div class="clear"></div>
+				
+		<div style="margin-bottom:5px">【QCon北京2015大会】“<a href="http://www.qconbeijing.com/track/2504" target="_blank">可扩展、高可用架构设计</a>”专题，由新浪微博技术总监杨卫华出品，邀请不同领域实践者，分享系统架构设计方面的思考及启发，探讨解决思路的共性。6场演讲已确认，涵盖：“基于SQL的秒杀解决方案”，“搜狗商业广告流式计算实践”，“你的网站是高可用的吗？”等话题。<a href="http://qconbeijing.com/" target="_blank">了解详情</a>。</div><div class="random_links">
+			<ul>
+				
+					
+					
+					
+					
+					<li><a><span class="gray_color">领域</span></a></li>
+				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture-design" name="architecture-design" id="6,821"><b>架构 &amp; 设计</b></a></li>				<li><a class="f_taxonomy" href="http://www.infoq.com/cn/development" name="development" id="6,820"><b>语言 &amp; 开发</b></a></li>
+	<li><a><span class="gray_color">专栏</span></a></li>
+					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/experience-design" name="experience-design" id="6,682">体验设计</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/soa_platforms" name="soa_platforms" id="824">SOA平台</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/architecture" name="architecture" id="1,390">架构 </a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/soa" name="soa" id="742">SOA</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/Design" name="Design" id="859">设计</a></li>					<li><a class="f_taxonomy" href="http://www.infoq.com/cn/enterprise-architecture" name="enterprise-architecture" id="786">企业架构</a></li>
+			</ul>							
+		</div>
+      
+		
+		
+		
+			
+			
+
+
+
+
+
+
+
+
+<div class="related_sponsors relEdRelRes" style="display: block;">
+	<div class="gray_section_related only1 fullWidth">
+	    <div class="related_editorial recommended only1" style="display: block;">
+	        <p class="title">相关内容</p>
+	        <div id="editorial_links" class="links">
+	            <div class="clear"></div>
+	        <h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/micro-soa-1?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">微观SOA：服务设计原则及其实践方式（上篇）</a></h3><h3 title="" class="articles">
+                                    <a title="" href="http://www.infoq.com/cn/articles/soa-api-unification?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">SOA与API的分裂和统一</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2014/06/microservices-soa?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">微服务与SOA</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2013/07/soa-dependency?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">SOA的依赖原则</a></h3><h3 title="" class="news">
+                                    <a title="" href="http://www.infoq.com/cn/news/2013/07/meet_nanoko?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk">了解Nanoko：JavaScript SOA平台和构建过程</a></h3></div>
+	    </div>
+    </div>
+    <div class="clear"></div>
+    <div class="related_research"></div>
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: "/api/recommendationlinks.action",
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        type: 'POST',
+        data: {"topicIds": "686,2,735,2410,-1000,-1000", "title": "微观SOA：服务设计原则及其实践方式（下篇）", "contentPath": "/articles/micro-soa-2", "language": "zh"},
+        success: displayRelatedEditorial,
+        async: false
+    });
+    
+    function displayRelatedEditorial(data) {
+        var trackingCode = "?utm_source=infoq&utm_medium=related_content_link&utm_campaign=relatedContent_articles_clk";
+        if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+                if (i === 5) {
+                    break;
+                }
+                var link = $('<h3 title="" class="' + data[i].contentType + '">\n\
+                                    <a title="" href="' + data[i].url + trackingCode +
+                        '">' + data[i].title + '</a></h3>');
+                $('#editorial_links').append(link);
+            }
+            $('.gray_section_related > .related_editorial.recommended').css('display', 'block');
+        }
+    }
+</script> 
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: '/widgets/researchHorizontalWidget.action',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {
+            "path": 'micro-soa-2',
+            "uriMapping": 'articles'
+        },
+        success: displayRelatedResearch,
+        error: function() {
+            // fail silently
+        },
+        async: false
+    });
+    
+    function displayRelatedResearch(data) {
+        if (InfoQConstants.language != 'en') {
+            return;
+        }
+        if (data.matchedList && data.matchedList.length > 0) {
+            $('.related_research').append('<p class="title">相关调查</p>')
+            for (var i = 0; i < data.matchedList.length; i++) {
+                var link = $('<a class="rel_results" title="" href="' + data.matchedList[i][0] +
+                        '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                        '<img border="0" alt="" src="' + data.matchedList[i][2] + '">' +
+                        data.matchedList[i][1] +
+                        '</a>');
+                $('.related_research').append(link);
+            }
+            if (data.latestList) {
+                for (var i = 0; i < data.latestList.length; i++) {
+                    var link = $('<a class="rel_results" title="" href="' + data.latestList[i][0] +
+                            '?utm_source=infoqresearch&utm_campaign=rr-content">' +
+                            '<img border="0" alt="" src="' + data.latestList[i][2] + '">' +
+                            data.latestList[i][1] +
+                            '</a>');
+                    $('.related_research').append(link);
+                }
+            }
+            $('.related_research').show();
+        }
+    }
+</script>	
+
+
+<script type="text/javascript">
+    
+        $(function() {
+        	var grayBox = $('.gray_section_related');
+            var recommendedColumn = $('.gray_section_related > .related_editorial.recommended');
+            var recommendedExists = $(recommendedColumn).css('display') === 'block';
+            var researchRow = $('.related_research');
+            var researchExists = $(researchRow).css('display') === 'block';
+
+            if (recommendedExists || researchExists) {
+                $('.related_sponsors.relEdRelRes').show(); // show the big related box
+            }
+
+            // in case all three available, leave now
+            if (recommendedExists) {
+            	$(grayBox).show(); // show the gray box for vcr and recommendations
+                return;
+            }
+        });
+</script>
+<div class="clear"></div>
+		
+		
+
+		<div class="clear"></div>
+				
+		
+		
+			
+		
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var JSi18n = JSi18n || {}; // define only if not already defined
+    JSi18n.re='Re:';
+    JSi18n.errorSubject='Please enter a subject.';
+    JSi18n.errorBody='You can not post a blank message. Please type your message and try again.';
+    JSi18n.errorInvalidLinks='您的回复中包含无效的链接，请检查后重试';
+    JSi18n.stopWatchText='Stop Watching Thread';
+    JSi18n.startWatchText='Watch Thread';
+    JSi18n.timeExpiredMessage='已超出允许的5分钟编辑时长，我们为给您带来的不便深表抱歉。';
+    JSi18n.repostButtonFormat='重新发送 ($m 剩余)';
+    JSi18n.timeExpiredButton='超时';
+    JSi18n.sessionExpiredMessage='您的会话已超时，请登录后重新提交';
+    JSi18n.editLinkFormat='编辑 ($m 分钟剩余)';
+    JSi18n.enter_subject='请输入主题';
+    JSi18n.enter_message='信息';
+    JSi18n.content_datetime_format='yyyy年M月d日';
+
+var forumID=1;
+var threadID=38750;
+var ctxPath= '';
+var postAddress= ctxPath + '/forum/post!post.action?language=' + 'zh';
+var repostAddress= ctxPath + '/forum/repost.action?language=' + 'zh';
+var postAddWatches= ctxPath + '/forum/watches!add.action';
+var postRemoveWatches= ctxPath + '/forum/watches!remove.action';
+var loggedIn=true;
+var threadWatched=false;
+
+var forumNotificationDefault=false;
+
+
+var commentEditPeriod=5;
+</script>
+
+<script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/ForumNotifications.js"></script>
+<script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/jquery.autosize.js"></script>
+<script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/date.js"></script>
+
+    <div class="comment_here">
+        <div id="postFormDeck">
+            <div id="deckText">
+                <h2>您好，朋友！</h2>
+                您需要 <a href="http://www.infoq.com/reginit.action">注册一个InfoQ账号</a> 或者
+                <a class="login" href="javascript:;">登录</a> 才能进行评论。在您完成注册后还需要进行一些设置。<br>
+                <div id="getMost"><h2>获得来自InfoQ的更多体验。</h2></div>
+            </div>
+        </div>
+        <a id="theCommentsSection"></a>
+        <h3>告诉我们您的想法</h3>
+        <form onsubmit="return false;" target="" enctype="multipart/form-data" method="post" action="" name="">
+            <div class="area" name="comments">
+                <input type="text" id="subject" value="">
+                <textarea id="body"></textarea>
+            </div>
+
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply" id="emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" value="发送信息" class="submit" id="subButton">
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="comments">
+        <div class="comments_title">社区评论 
+                <span id="watch">
+                    <a href="javascript:void(0)" class="watch_thread">Watch Thread</a>
+                </span>
+            </div>
+        <div class="clear"></div>
+        
+            
+
+                <div class="comment_title lvl0" id="com114911">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114911" title="">
+                        <strong>不错的总结</strong>
+                        <span>
+                            by
+                            lau patrick
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 03:50</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114912">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114912" title="">
+                        <strong>非常深入的SOA分析文章</strong>
+                        <span>
+                            by
+                            Deng Shawn
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 04:39</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114855">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114855" title="">
+                        <strong>拜读大作，获益匪浅</strong>
+                        <span>
+                            by
+                            Hei cm
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 04:58</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114913">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114913" title="">
+                        <strong>拜读大作，获益匪浅</strong>
+                        <span>
+                            by
+                            Hei cm
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 05:04</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114931">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114931" title="">
+                        <strong>写的不错</strong>
+                        <span>
+                            by
+                            预 流
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 05:52</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114914">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114914" title="">
+                        <strong>果真细致入微</strong>
+                        <span>
+                            by
+                            Z YW
+                            Posted
+                            <span class="treeRelativeTime">2014年10月10日 06:21</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114935">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114935" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114936">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114936" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114937">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114937" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114938">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114938" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114939">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114939" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114940">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114940" title="">
+                        <strong>微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            guo jinfei
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 10:31</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl1" id="com114970">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114970" title="">
+                        <strong>Re: 微观SOA的服务设计和原则总结的很好!</strong>
+                        <span>
+                            by
+                            沈 理
+                            Posted
+                            <span class="treeRelativeTime">2014年10月12日 01:27</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114966">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114966" title="">
+                        <strong>大赞</strong>
+                        <span>
+                            by
+                            凌 晞
+                            Posted
+                            <span class="treeRelativeTime">2014年10月11日 12:06</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl1" id="com114971">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114971" title="">
+                        <strong>Re: 大赞</strong>
+                        <span>
+                            by
+                            沈 理
+                            Posted
+                            <span class="treeRelativeTime">2014年10月12日 01:37</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com114991">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114991" title="">
+                        <strong>整体思路清晰</strong>
+                        <span>
+                            by
+                            许 汝全
+                            Posted
+                            <span class="treeRelativeTime">2014年10月13日 04:10</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl1" id="com114994">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch114994" title="">
+                        <strong>Re: 整体思路清晰</strong>
+                        <span>
+                            by
+                            沈 理
+                            Posted
+                            <span class="treeRelativeTime">2014年10月14日 10:51</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl1" id="com115023">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch115023" title="">
+                        <strong>Re: 整体思路清晰</strong>
+                        <span>
+                            by
+                            沈 理
+                            Posted
+                            <span class="treeRelativeTime">2014年10月14日 11:12</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com119434">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch119434" title="">
+                        <strong>想听到很多现实部分的故事</strong>
+                        <span>
+                            by
+                            桃 子
+                            Posted
+                            <span class="treeRelativeTime">2015年2月15日 04:14</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+            
+
+                <div class="comment_title lvl0" id="com119435">
+
+                    <a href="http://www.infoq.com/cn/articles/micro-soa-2#anch119435" title="">
+                        <strong>微观SOA的定义不严谨</strong>
+                        <span>
+                            by
+                            桃 子
+                            Posted
+                            <span class="treeRelativeTime">2015年2月15日 04:32</span>
+                        </span>
+                    </a>
+                </div>
+
+            
+        
+    </div>
+
+    <div class="all_comments">
+        
+            
+                <div class="answers" id="ans114911">
+                    <a name="anch114911"></a>
+                    
+                    <p>
+                        <b class="title">不错的总结</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 03:50</span>
+                            by
+                            <q>lau patrick</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        很不错, 把之前了解到的零散知识, 都总结起来了
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412927412398">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114912">
+                    <a name="anch114912"></a>
+                    
+                    <p>
+                        <b class="title">非常深入的SOA分析文章</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 04:39</span>
+                            by
+                            <q>Deng Shawn</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        作者对SOA的理解非常深入，看完此文章，大有收获。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412930397893">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114855">
+                    <a name="anch114855"></a>
+                    
+                    <p>
+                        <b class="title">拜读大作，获益匪浅</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 04:58</span>
+                            by
+                            <q>Hei cm</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        拜读大作，获益匪浅
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412931535718">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114913">
+                    <a name="anch114913"></a>
+                    
+                    <p>
+                        <b class="title">拜读大作，获益匪浅</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 05:04</span>
+                            by
+                            <q>Hei cm</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        又看了一遍，很有实用价值。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412931865922">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114931">
+                    <a name="anch114931"></a>
+                    
+                    <p>
+                        <b class="title">写的不错</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 05:52</span>
+                            by
+                            <q>预 流</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        看出作者有相当的工程实践经验。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412934760828">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114914">
+                    <a name="anch114914"></a>
+                    
+                    <p>
+                        <b class="title">果真细致入微</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月10日 06:21</span>
+                            by
+                            <q>Z YW</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        微观SOA，原来是这样的
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412936497403">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114935">
+                    <a name="anch114935"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994706313">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114936">
+                    <a name="anch114936"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994706728">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114937">
+                    <a name="anch114937"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994707493">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114938">
+                    <a name="anch114938"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994707850">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114939">
+                    <a name="anch114939"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994710171">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114940">
+                    <a name="anch114940"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 10:31</span>
+                            by
+                            <q>guo jinfei</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        目前很多公司的SOA都只落地到第一个层次--服务架构，第二个层次的经验很少，模式及最佳实践也很少，期待作者对这一层次的分享。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1412994713474">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114966">
+                    <a name="anch114966"></a>
+                    
+                    <p>
+                        <b class="title">大赞</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月11日 12:06</span>
+                            by
+                            <q>凌 晞</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        拜读大作，顿觉醍醐灌顶，这样的好文需要保存下时常阅读！也给自己一个提醒，技术文档需要向大侠这般去写！
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413000392938">
+                    <input type="hidden" name="createdOn" value="2014年10月10日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114970">
+                    <a name="anch114970"></a>
+                    
+                    <p>
+                        <b class="title">Re: 微观SOA的服务设计和原则总结的很好!</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月12日 01:27</span>
+                            by
+                            <q>沈 理</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        这方面我的经验很少，希望以后能不断学习了解和实践，随便先说点自己的粗浅理解吧<br><br>上面那些层次的名字也是从维基百科看来的，其实就我个人来讲，我都不是非常确定在*具体的*设计和开发中，有没有太大的意义去明确的区分比如原子服务（好像也叫基本服务之类）和组合服务，并把它归入不同架构层次。<br><br>比如程序开发中一个对象要调用其他对象来协作，基本就是天经地义的事情，是除了helloworld式应用外都会自然去做的。同样开发远程服务会用到其他远程服务，也比较自然和基本的吧，特别是在所谓微服务架构中？另外，尤其是在服务的客户看来，一个服务是原子服务还是组合服务也是完全不知道的和没有区别的，如果客户还明确知道这是一个组合服务，那我觉得反而违背了基本的抽象和封装原则。<br><br>所以，我觉得无需SOA的概念，从OO设计的基本理念出发，比如单一职责原则和strategy模式，我自然就会把可复用和单一内聚的业务逻辑放入到原子服务中，然后在所谓组合服务中把部分逻辑委托给原子服务去实现。只是在OO中各种单一复用逻辑基本都可以拆分出来，而在分布式环境中，由于调用开销大，有些逻辑就不是适合拆分成远程服务，比如，我个人一直觉得所谓data service之类*通常*就不太好，因为data service差不多等于是把DAO和repository之类变成了远程服务。当然如果是某些基础PAAS平台可能不在此考虑中。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413091665521">
+                    <input type="hidden" name="createdOn" value="2014年10月12日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114971">
+                    <a name="anch114971"></a>
+                    
+                    <p>
+                        <b class="title">Re: 大赞</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月12日 01:37</span>
+                            by
+                            <q>沈 理</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        实在过奖了啊。我的知识了解和实践经验都很欠缺<br><br>前文中也有大量谬误，只当是抛砖引玉。比如OO+SO架构图中就把domain model和service错画成了两个组件，其实我印象中在一般的领域驱动设计中，domain model包括了service，图中的domain model原意实际上是指entity，VO一类的对象
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413092220906">
+                    <input type="hidden" name="createdOn" value="2014年10月12日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114991">
+                    <a name="anch114991"></a>
+                    
+                    <p>
+                        <b class="title">整体思路清晰</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月13日 04:10</span>
+                            by
+                            <q>许 汝全</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        写得真好，看完后整体思路清晰了不少。如果能把“SOA架构的进化”这一块展开讲一讲就更好了。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413187842491">
+                    <input type="hidden" name="createdOn" value="2014年10月13日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans114994">
+                    <a name="anch114994"></a>
+                    
+                    <p>
+                        <b class="title">Re: 整体思路清晰</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月14日 10:51</span>
+                            by
+                            <q>沈 理</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        前面comments中讨论的原子服务和组合服务其实也就是我对这个架构进化的某些维度的粗浅理解吧。我比较喜欢的方式是从一些经典的、简单朴素的理念出发，就应该可以尝试推导一些更大的SOA架构进化中的原则和实践方式，而尽量避免陷入SOA中无穷无尽的新概念的漩涡。<br><br>总的来说，对于维基百科上定义的这几个架构层次的分类和进化，我个人觉得是相对传统的，还有一点偏学院派的。我不觉得在具体实践中有*特别*大的指导价值。<br><br>其实不同类型企业的服务架构进化可能也有很多显著的不同吧，比如常说的服务治理，传统企业的信息化中可能是更着重于服务注册管理、服务监控、服务权限控制等等，而面临高并发的大型互联网企业还尤其需要服务路由分流，服务流量控制，服务降级等等。这方面我没有多少发言权，还是BAT等等大公司的人有经验。另外京东王晓钟先生网上有个交易架构ppt，京东的吴博先生在infoq上也有个讲座，我觉得都很有启发。<br><br>所以我个人的看法是，服务架构进化是个比较复杂的东西，未必有简单统一的路线图，再加上服务架构越走向宏观层次，技术的比重可能就越低，业务、管理等等的比重可能就越高，就更难简单概括，而且说起来也比较容易走向务虚，我目前也不具备这个融会贯通的能力，就不敢班门弄斧了。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413255083101">
+                    <input type="hidden" name="createdOn" value="2014年10月13日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans115023">
+                    <a name="anch115023"></a>
+                    
+                    <p>
+                        <b class="title">Re: 整体思路清晰</b>
+                        <span>
+                            <span class="bodyRelativeTime">2014年10月14日 11:12</span>
+                            by
+                            <q>沈 理</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        有时候看回复好像会丢失一段时间
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1413256336336">
+                    <input type="hidden" name="createdOn" value="2014年10月13日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans119434">
+                    <a name="anch119434"></a>
+                    
+                    <p>
+                        <b class="title">想听到很多现实部分的故事</b>
+                        <span>
+                            <span class="bodyRelativeTime">2015年2月15日 04:14</span>
+                            by
+                            <q>桃 子</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        如果真愿意按SOA的路径走，即使你是个土豪，偷个懒比浪费网络带宽重要，但说不定你的很多用户是土鳖公司，浪费几倍的带宽就大大的影响他们的利润率。<br><br>可以和大家分享分享，都应该怎么偷懒
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1423988059068">
+                    <input type="hidden" name="createdOn" value="2015年2月15日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+            
+                <div class="answers" id="ans119435">
+                    <a name="anch119435"></a>
+                    
+                    <p>
+                        <b class="title">微观SOA的定义不严谨</b>
+                        <span>
+                            <span class="bodyRelativeTime">2015年2月15日 04:32</span>
+                            by
+                            <q>桃 子</q>
+                        </span>
+                    </p>
+                    <div class="flat_comment_body">
+                        微观SOA：面向有限的、局部的团队和个人；涉及独立的、具体的服务在业务、架构、开发上的考虑。<br><br>读了上下两篇，认为更多的是一些SOA的开发和实现中的细节。面向的并非有限和局部的团队和个人，还是大部分的开发。至于业务好像没有谈及。<br><br>本来认为作者拿SO和OO做对比是一个不错的视角，不过，看完第二篇，感觉在SO方面没有什么收获，好像被作者弱化了一样，仅仅是一个遵守松耦合原则的更高层次的层。
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="help_links">
+                        
+                        
+                            <li><a class="reply_flat" href="javascript:;" title="">回复</a></li>
+                        
+                        <li><a class="backtop" href="http://www.infoq.com/cn/articles/micro-soa-2#" title="">回到顶部</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                    <input type="hidden" name="tmstmp" value="1423989175136">
+                    <input type="hidden" name="createdOn" value="2015年2月15日">
+                    <input type="hidden" name="isNotificationOn" value="false">
+                </div>
+            
+        
+    </div>
+
+    <!-- overlay -->
+    <div id="overlay_comments">
+        <a href="javascript:;" class="close_comment" title="">关闭</a>
+        <h4><strong></strong> by <span id="author"></span> <span id="timepast"></span></h4>
+        <p id="body">
+        </p><div class="alt">
+            <span>发布于 <span id="timestamp"></span></span>
+        </div>
+
+        <div class="clear"></div>
+        <ul class="help_links">
+            <li><a title="" class="view">查看</a></li>
+            <li><a title="" href="javascript:;" class="reply">回复</a></li>
+            <li><a title="" href="http://www.infoq.com/cn/articles/micro-soa-2#" class="backtop">回到顶部</a></li>
+        </ul>
+
+        <div class="clear"></div>
+
+    </div>
+    <!-- reply box -->
+    <div id="replyPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">
+            	您的回复
+            	<a style="float: right; text-decoration: underline; font-weight: normal; color: grey;" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="CommentsHandler.quoteOriginalMessage();return false;">
+            		引用原消息
+            	</a>
+            </label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <input type="button" id="submit-reply" name="submit-reply" value="发送信息">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- edit comment box -->
+    <div id="editCommentPopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+
+        <form onsubmit="return false;" target="" action="" name="tpopup-reply" method="post">
+            <label class="label_login">主题</label>
+            <input type="text" class="login_text subject" name="subject">
+            <label class="label_login">您的回复</label>
+            <textarea class="commentsReply" name="commentsReply"></textarea>
+            <div class="clear"></div>
+            <p class="error allowed"></p>
+            <div class="clear"></div>
+            <p class="allowed">允许的HTML标签: a,b,br,blockquote,i,li,pre,u,ul,p</p>
+            <input type="checkbox" class="checkReply emailMe" name="emailMe">
+            <span class="tocheck">当有人回复此评论时请E-mail通知我</span>
+            <div class="clear"></div>
+            <p class="time_expired allowed"></p>
+            <input type="button" id="resubmit-reply" name="submit-reply" value="">
+            <input type="reset" class="reset-reply" name="reset-reply" value="取消">
+        </form>
+    </div>
+    <!-- notification popup -->
+    <div id="messagePopup" class="popupLoginComments">
+        <a title="" class="close_login_popup" href="javascript:;">关闭</a>
+        <div class="clear"></div>
+        <p class="allowed"></p>
+        <div class="clear"></div>
+        <input type="reset" class="reset-reply" name="reset-reply" value="OK">
+    </div>
+    <div id="responseContent"></div>
+	
+
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--	#######		left side end	#########	 -->
+
+<!--	#######		right side START	#########	 -->
+<div class="article_page_right">
+	<script type="application/javascript">
+		// used for most popular tracking codes
+		var pageForWidget = 'article';
+	</script>
+    
+
+
+
+
+
+
+
+<div id="mostPopularSection" class="news_in_tabs" style="display: block;">
+	<!-- the tabs -->
+	<ul class="tabs">
+		
+			<li><div class="tab_title">热点内容</div></li>
+			<li><a href="javascript:;" class="current">10天</a></li>
+			<li><a href="javascript:;">40天</a></li>
+			<li><a href="javascript:;">近6个月</a></li>
+				
+	</ul>
+	<!-- tab "panes" -->
+	<div class="panes">
+	<div style="display: block;"><h3 class="h3articles" <!--pageviews:3144="" publication="" date:="" 2015-02-26--="">
+<a href="http://www.infoq.com/cn/articles/innovative-high-performance-mobile-ui-framework-canvas?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">创新高性能移动 UI 框架-Canvas UI 框架</a><a href="http://www.infoq.com/cn/articles/innovative-high-performance-mobile-ui-framework-canvas?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:2043="" publication="" date:="" 2015-02-27--="">
+<a href="http://www.infoq.com/cn/news/2015/02/wal-mart-choose-openstack?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">为什么沃尔玛会选择OpenStack</a></h3><h3 class="h3minibooks" <!--pageviews:1922="" publication="" date:="" 2015-03-02--="">
+<a href="http://www.infoq.com/cn/minibooks/cloudecosystem201501?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">云生态专刊2015年01期</a></h3><h3 class="h3news" <!--pageviews:1817="" publication="" date:="" 2015-02-28--="">
+<a href="http://www.infoq.com/cn/news/2015/02/performance-tuning-suggestions?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">关于有效的性能调优的一些建议</a></h3><h3 class="h3articles" <!--pageviews:1747="" publication="" date:="" 2015-02-27--="">
+<a href="http://www.infoq.com/cn/articles/web-apis-business-perspective?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">从商业角度探讨API设计</a></h3><h3 class="h3articles" <!--pageviews:1689="" publication="" date:="" 2015-03-04--="">
+<a href="http://www.infoq.com/cn/articles/rest-reading-list?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">有关REST知识的阅读清单</a></h3><h3 class="h3news" <!--pageviews:1607="" publication="" date:="" 2015-03-02--="">
+<a href="http://www.infoq.com/cn/news/2015/03/grpc-google-http2-protobuf?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">gRPC：Google开源的基于HTTP/2和ProtoBuf的通用RPC框架</a><a href="http://www.infoq.com/cn/news/2015/03/grpc-google-http2-protobuf?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:1589="" publication="" date:="" 2015-03-02--="">
+<a href="http://www.infoq.com/cn/news/2015/03/apache-hbase-1-release?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">七年磨一剑：Apache HBase 1.0正式发布</a></h3><h3 class="h3news" <!--pageviews:1423="" publication="" date:="" 2015-03-03--="">
+<a href="http://www.infoq.com/cn/news/2015/03/apache-kafka-stream-data?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">用Apache Kafka构建流数据平台</a></h3><h3 class="h3articles" <!--pageviews:1376="" publication="" date:="" 2015-02-28--="">
+<a href="http://www.infoq.com/cn/articles/Web-APIs-From-Start-to-Finish?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">系列文章——Web API从开始到结束</a></h3></div><div style="display: none;"><h3 class="h3minibooks" <!--pageviews:9117="" publication="" date:="" 2015-02-06--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201502?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2015年2月）</a></h3><h3 class="h3news" <!--pageviews:7328="" publication="" date:="" 2015-01-28--="">
+<a href="http://www.infoq.com/cn/news/2015/01/memcached-store-session?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">为什么不能用memcached存储Session</a><a href="http://www.infoq.com/cn/news/2015/01/memcached-store-session?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">7</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:5995="" publication="" date:="" 2015-02-12--="">
+<a href="http://www.infoq.com/cn/articles/2014-review-front-end-part?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">解读2014之前端篇：任性的颠覆式改变</a><a href="http://www.infoq.com/cn/articles/2014-review-front-end-part?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:5656="" publication="" date:="" 2015-01-29--="">
+<a href="http://www.infoq.com/cn/articles/effective-ops-part-01?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">高效运维最佳实践（01）：七字诀，不再憋屈的运维</a><a href="http://www.infoq.com/cn/articles/effective-ops-part-01?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">4</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:5450="" publication="" date:="" 2015-02-02--="">
+<a href="http://www.infoq.com/cn/articles/github-chinese-developers-annual-analysis-report?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">GitHub中国开发者年度分析报告</a></h3><h3 class="h3news" <!--pageviews:4990="" publication="" date:="" 2015-02-06--="">
+<a href="http://www.infoq.com/cn/news/2015/02/mongodb-3-will-release?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">MongoDB 3.0 正式版即将发布，将进入全新发展阶段</a><a href="http://www.infoq.com/cn/news/2015/02/mongodb-3-will-release?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:4484="" publication="" date:="" 2015-02-13--="">
+<a href="http://www.infoq.com/cn/articles/bad-mouthing-docker?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">唱衰Docker，给大红大火的Docker泼点冷水</a><a href="http://www.infoq.com/cn/articles/bad-mouthing-docker?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">2</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:4323="" publication="" date:="" 2015-02-06--="">
+<a href="http://www.infoq.com/cn/articles/netty-version-upgrade-history-thread-part?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Netty版本升级血泪史之线程篇</a><a href="http://www.infoq.com/cn/articles/netty-version-upgrade-history-thread-part?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">8</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4190="" publication="" date:="" 2015-02-05--="">
+<a href="http://www.infoq.com/cn/news/2015/02/bowery-node-js-turn-to-go?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Bowery为什么从Node.js转向 Go</a><a href="http://www.infoq.com/cn/news/2015/02/bowery-node-js-turn-to-go?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">1</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:4136="" publication="" date:="" 2015-02-02--="">
+<a href="http://www.infoq.com/cn/news/2015/02/react-native-facebook-javascript?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">React Native：Facebook出品，可用JavaScript开发移动原生应用</a></h3></div><div style="display: none;"><h3 class="h3news" <!--pageviews:26303="" publication="" date:="" 2014-09-20--="">
+<a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">阿里巴巴上市背后的技术力量</a><a href="http://www.infoq.com/cn/news/2014/09/alibaba-ipo-tech-power?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">5</span></span>                        </a></h3><h3 class="h3news" <!--pageviews:25334="" publication="" date:="" 2014-12-31--="">
+<a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">从0到100——知乎架构变迁史</a><a href="http://www.infoq.com/cn/news/2014/12/zhihu-architecture-evolution?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">10</span></span>                        </a></h3><h3 class="h3articles" <!--pageviews:20970="" publication="" date:="" 2014-12-15--="">
+<a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">颠覆式前端UI开发框架：React</a><a href="http://www.infoq.com/cn/articles/subversion-front-end-ui-development-framework-react?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">21</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:20719="" publication="" date:="" 2014-09-26--="">
+<a href="http://www.infoq.com/cn/minibooks/alibaba-techman?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">阿里巴巴上市背后的技术力量</a></h3><h3 class="h3articles" <!--pageviews:20692="" publication="" date:="" 2014-09-25--="">
+<a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">Docker源码分析（一）：Docker架构</a><a href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part1?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">6</span></span>                        </a></h3><h3 class="h3minibooks" <!--pageviews:18384="" publication="" date:="" 2014-10-15--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201410?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年10月）</a></h3><h3 class="h3minibooks" <!--pageviews:17208="" publication="" date:="" 2014-09-12--="">
+<a href="http://www.infoq.com/cn/minibooks/architect-201409?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">架构师（2014年9月刊）</a></h3><h3 class="h3minibooks" <!--pageviews:16002="" publication="" date:="" 2014-10-10--="">
+<a href="http://www.infoq.com/cn/minibooks/toptech01?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">中国顶尖技术团队访谈录·第一季</a></h3><h3 class="h3articles" <!--pageviews:13829="" publication="" date:="" 2014-09-19--="">
+<a href="http://www.infoq.com/cn/articles/what-is-coreos?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">CoreOS 实战：CoreOS 及管理工具介绍</a></h3><h3 class="h3articles" <!--pageviews:12891="" publication="" date:="" 2014-09-27--="">
+<a href="http://www.infoq.com/cn/articles/cache-coherency-primer?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list">缓存一致性（Cache Coherency）入门</a><a href="http://www.infoq.com/cn/articles/cache-coherency-primer?utm_source=infoq&utm_medium=popular_widget&utm_content=article&utm_campaign=popular_content_list#theCommentsSection">                            <span class="comments_counts"><span class="nr">3</span></span>                        </a></h3></div></div>
+	<div class="clear"></div>
+</div>
+    <div class="banner_type3" id="id_300x250_banner_top">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+        </script>
+    </div>  
+    
+
+
+
+
+
+
+
+    <div class="clear"></div>
+    
+        <h2 title="深度内容">深度内容</h2>
+    
+    <!-- the tabs -->
+    <ul class="tabs">
+        <li id="ALL_EXCEPT_NEWS" class="current"><a href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="ContentSummary.switchTab(&#39;ALL_EXCEPT_NEWS&#39;);return false;" class="current">全部</a></li>
+        <li id="ARTICLE"><a href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="ContentSummary.switchTab(&#39;ARTICLE&#39;);return false;">文章</a></li>
+        <li id="PRESENTATION"><a href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="ContentSummary.switchTab(&#39;PRESENTATION&#39;);return false;">演讲</a></li>
+        <li id="INTERVIEW"><a href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="ContentSummary.switchTab(&#39;INTERVIEW&#39;);return false;">访谈</a></li>
+        <li id="MINIBOOK"><a href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="ContentSummary.switchTab(&#39;MINIBOOK&#39;);return false;">迷你书</a></li>
+        
+    </ul>
+
+    <!-- tab "panes" -->
+    <div class="panes">
+        <div id="rightbarcontentbox">
+            
+                
+                
+            
+
+
+
+
+
+
+
+
+
+			
+<form id="tabstateform" onsubmit="customOnsubmit(); return true;" action="">
+<div id="tabstateformelements">
+		<input id="startIndex" type="hidden" name="startIndex" value="0">
+		<input id="selectedTab" type="hidden" name="selectedTab" value="ALL_EXCEPT_NEWS">
+		<input id="rightBarLanguage" type="hidden" name="language" value="zh">
+	</div><table class="wwFormTable">
+
+	
+</table>
+</form>
+
+
+<script>
+	function customOnsubmit() {
+		
+	}
+</script>
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="微博红包：大规模Docker集群实践经验分享" href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share">
+					微博红包：大规模Docker集群实践经验分享
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E9%99%88%E9%A3%9E" class="editorlink" title="陈飞">
+陈飞</a>
+
+				3月7日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="微博红包：大规模Docker集群实践经验分享" href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/222.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="Aurora、Lambda与亚马逊AWS高可用性架构设计最佳实践" href="http://www.infoq.com/cn/presentations/aurora-lambda-and-amazon-aws-high-availability-architecture-design">
+					Aurora、Lambda与亚马逊AWS高可用性架构设计最佳实践
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%BC%A0%E8%8D%A3%E5%85%B8" class="editorlink" title="张荣典">
+张荣典</a>
+
+				3月6日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Aurora、Lambda与亚马逊AWS高可用性架构设计最佳实践" href="http://www.infoq.com/cn/presentations/aurora-lambda-and-amazon-aws-high-availability-architecture-design">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/zhangrongdian_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+		<div class="banner_type3" id="id_300x250_banner_top" style="display: none;">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_top'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="presentations">
+				<a title="无意的内部威胁：社会工程" href="http://www.infoq.com/cn/presentations/the-unintentionally-insider-threat-social-engineering">
+					无意的内部威胁：社会工程
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E6%A8%8A%E5%B1%B1" class="editorlink" title="樊山">
+樊山</a>
+
+				3月6日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="无意的内部威胁：社会工程" href="http://www.infoq.com/cn/presentations/the-unintentionally-insider-threat-social-engineering">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/fanshan_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="实现超媒体" href="http://www.infoq.com/cn/articles/implementing-hypermedia">
+					实现超媒体
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/Steve-Klabnik" class="editorlink" title="Steve Klabnik">
+Steve Klabnik</a>
+
+				3月6日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="实现超媒体" href="http://www.infoq.com/cn/articles/implementing-hypermedia">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/logo-webapi4.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="articles">
+				<a title="Docker源码分析（九）：Docker镜像" href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part9">
+					Docker源码分析（九）：Docker镜像
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%AD%99%E5%AE%8F%E4%BA%AE" class="editorlink" title="孙宏亮">
+孙宏亮</a>
+
+				3月6日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="Docker源码分析（九）：Docker镜像" href="http://www.infoq.com/cn/articles/docker-source-code-analysis-part9">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/whole_logo.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+
+
+	
+	
+		
+	
+
+    <div class="tab_article">
+        <div class="txxt">
+			<h2 class="interviews">
+				<a title="阿里云虚拟化技术总监谈虚拟化和开源的现状和前景" href="http://www.infoq.com/cn/interviews/interview-alibaba-cloud-virtualization-technology-director-zhangxiantao">
+					阿里云虚拟化技术总监谈虚拟化和开源的现状和前景
+				</a>
+			</h2>
+			<div class="clear"></div>
+            
+                
+            
+			<p>
+				<a href="http://www.infoq.com/cn/author/%E5%BC%A0%E7%8C%AE%E6%B6%9B" class="editorlink" title="张献涛">
+张献涛</a>
+
+				3月6日
+			</p>
+        </div>
+		<div class="immg">
+			<a title="阿里云虚拟化技术总监谈虚拟化和开源的现状和前景" href="http://www.infoq.com/cn/interviews/interview-alibaba-cloud-virtualization-technology-director-zhangxiantao">
+				<img border="0" alt="" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/zhangxiantao_100.jpg">
+			</a>
+		</div>
+        <div class="clear"></div>
+    </div>
+        
+	
+	
+		<div class="banner_type3" id="id_300x250_banner_bottom">
+			<script type="text/javascript">
+				googletag.cmd.push(function() { googletag.display('id_300x250_banner_bottom'); });
+			</script>
+		</div>
+	    <div class="clear"></div>
+	
+
+
+
+
+
+
+    <ul id="paginationRightbar" class="newsnav link-col">
+    <li>
+        
+        
+            <a onclick="ContentSummary.setStartIndex(&#39;6&#39;);return false;" href="http://www.infoq.com/cn/articles/micro-soa-2#" class="right"><span>更早的 &gt;</span></a>
+        
+    </li>
+</ul>
+
+
+
+<!-- rightbarInfoQrightbar -->
+
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+
+    
+
+
+
+
+
+
+
+
+	<script type="application/javascript">
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function (event) {
+//				console.log('Slot has been rendered:' + event);
+//				console.log(event);
+				// only treat textlinks
+				if (event.slot.getName().indexOf('textlink') != -1) {
+					if (!event.isEmpty) {
+						$('.sponsored_links_section').css('display', 'block'); // International site
+						$('.sponsored_links_section_i18n').css('display', 'block'); // all but the international site
+					}
+				}
+			});
+		});
+	</script>
+ 	
+ 	
+ 		<div class="sponsored_links_section_i18n">
+ 	
+		 	<div class="sp_title">赞助商链接</div>
+		 	<div id="id_ad_textlink1">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink1'); });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink2">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink2');  });
+		 		</script>
+		 	</div>
+		 	<div id="id_ad_textlink3">
+		 		<script type="text/javascript">
+		 			googletag.cmd.push(function() { googletag.display('id_ad_textlink3');  });
+		 		</script>
+		 	</div>
+ 		</div>
+
+    <script type="text/javascript">
+    	$($('.banner_type3').get(1)).css('display','none');
+    </script>
+</div>
+
+
+
+
+
+
+
+
+<div class="newsletter ">
+	<h3>InfoQ每周精要</h3>
+	<p>
+		通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。
+		<span id="floatingNewsletterEmailSuccess" style="color:green;"></span>
+		<span id="floatingNewsletterEmailError" style="color:red;"></span>
+	</p>
+	<div class="click2view">
+		<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+			<img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/click2view_zh.png" alt="" border="0">
+		</a>
+	</div>
+	<div class="clear"></div>
+	<form name="floatingNewsletterForm" id="floatingNewsletteForm" action="http://www.infoq.com/cn/articles/micro-soa-2#" onsubmit="floatingNewsletter.saveSubscription(); return false;">
+		<fieldset>
+			<input type="text" class="input_text" id="floatingNewsletterEmail" name="floatingNewsletterEmail" value="您的邮箱" onclick="floatingNewsletter.clearEmailText();" onblur="floatingNewsletter.resetEmailText();">
+			<input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return floatingNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+		</fieldset>
+	</form>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	var floatingNewsletter = new Newsletter('您的邮箱', 'floatingNewsletterEmail', 'floatingNewsletterForm', 'floatingNewsletterEmailError', 'floatingNewsletterEmailSuccess');
+</script>
+
+<!--	#######		right side end	#########	 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+	<script>window._bd_share_config={"common":{"bdSnsKey":{"tsina":"577532191"},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+	    <script charset="utf-8" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/infoqcn.js"></script>
+
+<script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/prism.js"></script>
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"applicationID":"5582901","applicationTime":208,"beacon":"bam.nr-data.net","queueTime":0,"licenseKey":"bfafe6a5f6","transactionName":"YAFWMEEAW0RUVk1cCllLfjdjTlRFQVxaWQBES0cMXBYbXUZF","agent":"js-agent.newrelic.com\/nr-593.min.js","errorBeacon":"bam.nr-data.net"}</script>
+                </div>
+                <!--	#######		CONTENT END	#########	 -->
+
+                <div class="clear"></div>
+            </div>
+            <!--	#######		SITE END	#########	 -->
+
+            
+
+
+
+
+
+
+
+
+
+
+<!--	#######		FOOTER START	#########	 -->
+<div id="footer">
+	<div class="footer_bg">
+		<div id="latestContent" class="footer_class"><div class="fcls"><div class="title">语言 &amp; 开发</div><p><a href="http://www.infoq.com/cn/news/2015/03/docker-open-source" title="以Docker为例，看开源生态系统的力量">以Docker为例，看开源生态系统的力量</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/redhat-docker-linux" title="Red Hat推出专为Docker定制的Linux发行版">Red Hat推出专为Docker定制的Linux发行版</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/microsoft-spartan-rendering-info" title="微软披露了Spartan中所使用的渲染引擎的细节">微软披露了Spartan中所使用的渲染引擎的细节</a></p></div><div class="fcls"><div class="title">架构 &amp; 设计</div><p><a href="http://www.infoq.com/cn/news/2015/03/docker-open-source" title="以Docker为例，看开源生态系统的力量">以Docker为例，看开源生态系统的力量</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/redhat-docker-linux" title="Red Hat推出专为Docker定制的Linux发行版">Red Hat推出专为Docker定制的Linux发行版</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/microsoft-spartan-rendering-info" title="微软披露了Spartan中所使用的渲染引擎的细节">微软披露了Spartan中所使用的渲染引擎的细节</a></p></div><div class="fcls"><div class="title">过程 &amp; 实践</div><p><a href="http://www.infoq.com/cn/news/2015/03/bdd-ddd" title="行为驱动开发与领域驱动设计相结合">行为驱动开发与领域驱动设计相结合</a></p><p><a href="http://www.infoq.com/cn/articles/conversation-patterns-2" title="软件专家的对话模式（第二部分）">软件专家的对话模式（第二部分）</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/qconbeijing2015-ops-prospect" title="QCon北京2015：自动化运维专题前瞻">QCon北京2015：自动化运维专题前瞻</a></p></div><div class="fcls"><div class="title">运维 &amp; 基础架构</div><p><a href="http://www.infoq.com/cn/articles/large-scale-docker-cluster-practise-experience-share" title="微博红包：大规模Docker集群实践经验分享">微博红包：大规模Docker集群实践经验分享</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/qconbeijing2015-ops-prospect" title="QCon北京2015：自动化运维专题前瞻">QCon北京2015：自动化运维专题前瞻</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/mirantis-kubernetes-openstack" title="Mirantis与谷歌合作集成Kubernetes与OpenStack">Mirantis与谷歌合作集成Kubernetes与OpenStack</a></p></div><div class="fcls"><div class="title">企业架构</div><p><a href="http://www.infoq.com/cn/news/2015/03/characteristics-microservices-ap" title="微服务、应用和系统的特征">微服务、应用和系统的特征</a></p><p><a href="http://www.infoq.com/cn/articles/Teaching-Kids-Java" title="教孩子Java编程">教孩子Java编程</a></p><p><a href="http://www.infoq.com/cn/news/2015/03/qconbeijing2015-ops-prospect" title="QCon北京2015：自动化运维专题前瞻">QCon北京2015：自动化运维专题前瞻</a></p></div></div>
+		<div class="clear"></div>
+	</div>
+			
+	<div class="footer">
+		<ul class="footerMenu">
+		  	<li class="l1"><a class="active" href="http://www.infoq.com/cn/" title="首页">首页</a></li>
+		  	<li class="l2"><a class="active" href="http://www.infoq.com/cn/topics" title="全部话题">全部话题</a></li>
+			<li class="l3"><a href="http://www.qconferences.com/" target="_blank" title="QCon全球软件开发大会">QCon全球软件开发大会</a></li>
+	        
+			
+				
+				<li class="l7"><a href="http://www.infoq.com/cn/aboutus" title="关于我们">关于我们</a></li>
+		    	<li class="l7"><a href="http://www.infoq.com/cn/contribute" title="投稿">投稿</a></li>
+			
+		  	
+				<li class="l5"><a href="http://www.infoq.com/cn/logout.action" title="注销">注销</a></li>
+			
+			
+		</ul>
+			
+      	
+
+
+
+
+
+
+
+<ul class="footerTxt1">
+	<li><strong>全球QCon</strong></li>	
+	<li><img class="qconflag uk"><a href="http://www.qconlondon.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="伦敦 2015年3月2-6日">伦敦 2015年3月2-6日</a></li>
+    <li><img class="qconflag br"><a href="http://www.qconsp.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="圣保罗 2015年3月23-27日">圣保罗 2015年3月23-27日</a></li>
+    <li><img class="qconflag cn"><a href="http://www.qconbeijing.com/" target="_blank" title="北京 2015年4月23-25日">北京 2015年4月23-25日</a></li>
+    <li><img class="qconflag jp"><a href="http://qcontokyo.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" title="东京 2015年4月 21">东京 2015年4月 21</a></li>
+    <li><img class="qconflag us"><a href="http://qconnewyork.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="纽约 2015年6月8-12日">纽约 2015年6月8-12日</a></li>
+    <li><img class="qconflag br"><a href="http://qconrio.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="里约 2015年8月24-28日">里约 2015年8月24-28日</a></li>
+    <li><img class="qconflag cn"><a href="http://qconshanghai.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="">上海 2015年10月15-17日</a></li>
+    <li><img class="qconflag us"><a href="http://qconsf.com/?utm_source=infoq&utm_medium=listing&utm_campaign=footer" target="_blank" title="旧金山 2015年11月16-20日">旧金山 2015年11月16-20日</a></li>
+</ul>
+
+      	
+		
+
+
+
+
+
+
+
+
+<div class="ftxt3">
+	<div class="newsletter">
+		<div class="txtNews">
+			<h3>InfoQ每周精要</h3>
+			<p>通过个性化定制的新闻邮件、RSS Feeds和InfoQ业界邮件通知，保持您对感兴趣的社区内容的时刻关注。</p>
+			<span id="footerNewsletterEmailSuccess" style="color:green;"></span>
+			<span id="footerNewsletterEmailError" style="color:red;"></span>
+		</div>
+		<div class="click2view">
+			<a target="_blank" href="http://www.infoq.com/cn/newsletter_sample.html">
+                <img src="./微观SOA：服务设计原则及其实践方式（下篇）_files/click2view2_zh.jpg" alt="" border="0">
+			</a>
+		</div>
+		<div class="clear"></div>
+		<form name="footerNewsletterForm" id="footerNewsletteForm" action="http://www.infoq.com/cn/articles/micro-soa-2#" onsubmit="footerNewsletter.saveSubscription(); return false;">
+			<fieldset>
+				<input type="text" class="input_text" id="footerNewsletterEmail" name="footerNewsletterEmail" value="您的邮箱" onclick="footerNewsletter.clearEmailText();" onblur="footerNewsletter.resetEmailText();">
+                <input type="submit" value="订阅" id="sbs" name="sbs" class="input_submit" onclick="return footerNewsletter.validateEmail(&#39;无效的邮件地址&#39;);">
+			</fieldset>
+		</form>
+		<div class="clear"></div>
+	</div>
+	<ul class="footerTxt3">
+		<li><a class="rss" id="footerNewsletterRssLink" href="http://www.infoq.com/cn/feed?token=mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6">属于您的个性化RSS</a></li>
+	    
+			<li><a class="weibo" href="http://weibo.com/infoqchina" target="_blank">InfoQ官方微博</a></li>
+            <li><a class="we_chat" href="http://www.infoq.com/cn/news/2013/02/infoq-wechat" target="_blank">InfoQ官方微信</a></li>
+	    
+	    
+		<li><a class="fb" href="http://www.facebook.com/InfoQ" target="_blank">社区新闻和热点</a></li>
+		
+	</ul>
+</div>
+<script type="text/javascript">
+	var footerNewsletter = new Newsletter('您的邮箱', 'footerNewsletterEmail', 'footerNewsletterForm', 'footerNewsletterEmailError', 'footerNewsletterEmailSuccess');
+</script>
+			
+			
+		<div class="our_events">
+	      	
+
+
+
+
+
+
+
+<p class="title">特别专题</p>
+<ul style="font-weight:bold;font-size:12px;font-family:Lucida Grande, Lucida Sans Unicode, sans-serif">
+	<li><a href="http://www.infoq.com/cn/vendorcontent/show.action?vcr=3153"><strong>QClub：Docker专场</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/architect/"><strong>月刊：《架构师》</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/aws/"><strong>AWS专区</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/azure/"><strong>Azure专区</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/hp-helion/"><strong>Helion专区</strong></a></li>
+	<li><a href="http://www.infoq.com/cn/zones/hexun/"><strong>环信专区</strong></a></li>
+	
+</ul>
+
+			
+			<div id="footerPref" class="communities">
+				<p>定制您感兴趣的技术领域</p>
+				<br><br><br>
+				<fieldset>
+					<ul>
+			        	
+
+
+
+
+
+
+
+<fieldset>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+		
+			<tbody><tr>
+				<td valign="middle">
+					<input type="checkbox" name="development" value="true" checked="checked" id="persona6820" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>语言 &amp; 开发</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="architecture-design" value="true" checked="checked" id="persona6821" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>架构 &amp; 设计</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="process-practices" value="true" checked="checked" id="persona6822" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>过程 &amp; 实践</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="operations-infrastructure" value="true" checked="checked" id="persona6823" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>运维 &amp; 基础架构</span>
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="middle">
+					<input type="checkbox" name="enterprise-architect" value="true" checked="checked" id="persona6824" class="chb" onclick="includeExcludeCommunity(this, false);">
+
+					<span>企业架构</span>
+				</td>
+			</tr>
+		
+	</tbody></table>
+</fieldset>
+
+					</ul>						
+				</fieldset>
+				<p class="notes">这会影响您在主页和RSS订阅中看到的内容。点击“偏好设置”可选择更多精彩定制内容。</p>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--	#######		FOOTER END	#########	 -->
+
+<div class="bottomContent">
+	<table cellpadding="0" cellspacing="0" border="0" width="100%" class="last_content">
+		<tbody><tr>
+			<td>
+				<div>提供反馈</div> 
+				<div><a href="mailto:feedback@cn.infoq.com">feedback@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>错误报告</div> 
+				<div><a href="mailto:bugs@cn.infoq.com">bugs@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>商务合作</div> 
+				<div><a href="mailto:sales@cn.infoq.com">sales@cn.infoq.com</a></div>
+			</td>
+			<td>
+				<div>内容合作</div> 
+				<div><a href="mailto:editors@cn.infoq.com">editors@cn.infoq.com</a></div>
+			</td>
+			<td class="text">
+				<span>InfoQ.com及所有内容，版权所有 © 2006-2015 C4Media Inc. InfoQ.com 服务器由 <a href="http://www.contegix.com/">Contegix</a>提供, 我们最信赖的ISP伙伴。<br>
+                                    
+                                        北京创新网媒广告有限公司   京ICP备09022563号-7
+                                    
+                                    <a href="http://www.infoq.com/cn/privacypolicy" target="_blank">隐私政策</a></span>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+            
+                <div class="intbt">
+                    <a href="http://www.infoq.com/int/bt" title="bt">BT</a>
+                </div>
+            
+
+            
+
+
+
+
+
+
+
+
+<div id="id_geo_banner" style="display:none;position:fixed;bottom:0;left:0;width:100%;z-index:100000;">
+	<div id="id_geo_banner_ad" style="display:none;">
+		<script type="text/javascript">
+		if(CookieManager.readCookie("igabgt") == null) {
+			// use the jquery.watch method to see when GAM changes the display css attribute of id_geo_banner_ad
+			// whenever an ad is placed there GAM will chnage the display which is init as none. This is the safest way to determine when an ad is fetched by GAM!
+			$("#id_geo_banner_ad").watch('display',showAd,1000);		
+			googletag.cmd.push(function() { googletag.display('id_geo_banner_ad');});
+		}
+		function showAd() {
+			try {
+				$('#id_geo_banner iframe:first').attr('width', '100%');
+				$('#id_geo_banner iframe:first').attr('height', '100%');
+				$('#id_geo_banner iframe:first').css('min-width', '1024px');
+			}catch(err){}
+			$('#id_geo_banner').show('slow');
+			setTimeout("$('#id_geo_banner').hide('slow');", 30000);
+		}
+		</script>
+	</div>
+</div>
+
+            <script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/engine.js" type="text/javascript"></script>
+            <script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/UserCategoryUtil.js" type="text/javascript"></script>
+            <script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/DWRRewriteAction.js" type="text/javascript"></script>
+            
+            
+
+
+
+
+
+
+
+<iframe name="loginFrame" id="loginFrame" style="width:0;height:0;border:0;"></iframe>
+<div class="login_overlay" id="loginWidget" style="display:none;">
+	<!--	html for login box	-->
+	<input type="hidden" id="loginWidgetOrigin">
+	<div id="popupLogin">
+		<a title="" class="close_login_flat" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="UserActions_Login.hideLoginWidget();return false;">Close</a>
+		<form method="post" id="login_formLogin" action="https://www.infoq.com/cn/login.action" target="loginFrame" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">E-mail</label>
+			<input type="text" name="username" id="login_username" class="login_text">
+			<label class="label_login">密码</label>
+			<input type="password" name="password" id="login_password" class="login_text">
+			<input type="submit" value="" name="submit-login" class="submit-login">
+			
+			<div id="socialLogin">
+	            	        	
+	        		<a class="social-idp google" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/googleLogin.action?fl=login" title="使用Google账号登录">使用Google账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	        	
+	        		
+	        	
+	           		<a class="social-idp microsoft" onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/social/liveLogin.action?fl=login" title="使用Microsoft账号登录">使用Microsoft账号登录</a>
+	        		<div class="clearer" style="height: 0px;"></div>
+	            
+	        </div>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="UserActions_Login.showForgotPasswordForm();return false;">
+						忘记密码？
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		
+		<form method="post" id="login_formPasswordReset" action="http://www.infoq.com/cn/resetpasswordinit.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">InfoQ账号使用的E-mail</label>
+			<input type="text" name="email" id="login_email" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">发送邮件</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<form method="post" id="login_formEmailVerification" action="http://www.infoq.com/cn/reactivate.action" target="loginFrame" style="display:none;" onsubmit="UserActions_Login.showMessage(JSi18n.login_sendingRequest);">
+			<label class="label_login">重新发送激活信息</label>
+			<input type="text" name="email" id="login_emailVerification" class="login_text">
+			<button type="submit" name="submit-login" style="border: 1px solid #CCCCCC; width: 100%; padding: 8px 5px;" on="">重新发送</button>
+			<div class="more_links">
+				<p>
+					<a style="text-decoration:none;" href="http://www.infoq.com/cn/articles/micro-soa-2#" onclick="UserActions_Login.showLoginForm();return false;">
+						重新登录
+					</a>
+					<br><br>
+				</p>
+			</div>
+		</form>
+		<div class="more_links">
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">没有用户名？</a></p>
+			<p><a onclick="return addLoginInfo(this);" href="http://www.infoq.com/cn/reginit.action?" title="">点击注册</a></p>
+			<div style="padding:5px;background:#EBF0F3;margin-top:45px;display:none;" id="loginPopupMessage"></div>
+		</div>
+	</div>
+	<!--	html for login box 	-->
+    <script type="text/javascript">
+        function addLoginInfo(link){
+            var v = $('#loginWidgetOrigin').val();
+            if(v !== undefined && v != ''){
+                addOrigin(link);
+                link.href += '%23' + v;
+                return true;
+            } else {
+                return addOrigin(link);
+            }
+        }
+    </script>
+</div>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+	var includeName = 'content.inline_personalization.include.label';
+	var excludeName = 'content.inline_personalization.exclude.label';
+	var includeHint = 'content.inline_personalization.include.hint';
+	var excludeHint = 'content.inline_personalization.exclude.hint';
+	var excludeCategoryMessage = 'content.inline_personalization.exclude.message';
+	var viewallCategoryMessage = 'content.inline_personalization.view_all.hint';
+	var busyMessage = 'content.inline_personalization.busy.message';
+	var contextPath = '' + '/';
+	var viewallCategoryPath= '';
+	var includeExcludeLink= true;
+</script>
+
+            
+
+
+
+
+
+
+<script type="text/javascript">
+  var gaProfile="UA-6608133-2";
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', gaProfile]);
+  
+  if($('#home_list').size() > 0) {
+      _gaq.push(['_setCustomVar', 2, 'Grid vs list view', 'List', 3]);
+  }
+  if($('#home_grid').size() > 0) {
+      _gaq.push(['_setCustomVar', 2, 'Grid vs list view', 'Grid', 3]);
+  }
+  
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  $.getScript("/scripts/__hd.ifq?hdt=hHs9JmbR6Oag7sdd");
+  
+</script>
+
+    <script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/tracker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+Tracker.safeExec(Tracker.doTrackVcrImpressions);
+</script>
+
+
+    <script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5101210b73a0e033d1509b3e487c929c' type='text/javascript'%3E%3C/script%3E"));</script><script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/h.js" type="text/javascript"></script>
+
+
+            
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    if(window.location.hash){
+        var hash = window.location.hash.substring(1);
+        if(hash == 'subscribe'){
+            $('html,body').animate({scrollTop: $('.ftxt3 > .newsletter').offset().top}, 'slow');
+        }
+    }
+</script>
+<script type="text/javascript">
+	var newsletterSubscriptionURL ='/cn/newsletter/subscribe.action';
+	DynamicLinks.updateRssLinks('mXvnzPYU7Q09Zhi8Jry3vNUhkeHAU2Z6');
+	ContentTools.updateLatestContentSection();
+	ContentTools.updatePersonaDropdowns();
+	
+	// only get the most popular links if they are used in the current page
+	//(so far they are used on homepage, inteview and presentation pages)
+	if($('#mostPopularSection').length){
+		ContentTools.updateMostPopular();
+	}
+
+	ContentSummary.setSelectedTab('zh');
+	//when user enters the main content area show default topics in the topics bar
+	$("#content-wrapper").mouseenter(function() {	
+	        showDefaultTopics();
+	});
+	
+	
+	Bookmarks.contentTitle = "微观SOA：服务设计原则及其实践方式（下篇）";
+	Bookmarks.apiUrl = '/widgets/bookmark.action';
+</script>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:6,f:1,o:10.1,s:1}} 
+$buoop.ol = window.onload; 
+$(document).ready(function() {
+	 try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+	 var e = document.createElement("script"); 
+	 e.setAttribute("type", "text/javascript"); 
+	 e.setAttribute("src", "http://cdn2.infoqstatic.com/scripts/lib/browser-update-org/update.js?20150224-0055");
+	 document.body.appendChild(e); 
+});
+</script>
+            
+        </div>
+    
+
+<!-- S1 -->
+<script type="text/javascript" src="./微观SOA：服务设计原则及其实践方式（下篇）_files/update.js"></script><script src="./微观SOA：服务设计原则及其实践方式（下篇）_files/nr-593.min.js"></script></body></html>

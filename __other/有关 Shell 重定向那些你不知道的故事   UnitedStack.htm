@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<!-- saved from url=(0162)https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/ -->
+<html lang="zh-CN"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>有关 Shell 重定向那些你不知道的故事 | UnitedStack</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.ustack.com/xmlrpc.php">
+<script src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/jquery.min.js"></script>
+
+
+<!--[if lt IE 9]>
+<script src="https://www.ustack.com/wp-content/themes/officalsite/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+<link rel="alternate" type="application/rss+xml" title="UnitedStack » Feed" href="https://www.ustack.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="UnitedStack » 评论Feed" href="https://www.ustack.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="UnitedStack » 有关 Shell 重定向那些你不知道的故事评论Feed" href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/feed/">
+<link rel="stylesheet" id="toc-screen-css" href="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/screen.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentytwelve-style-css" href="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/style.css" type="text/css" media="all">
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentytwelve-ie-css'  href='https://www.ustack.com/wp-content/themes/officalsite/css/ie.css?ver=20121010' type='text/css' media='all' />
+<![endif]-->
+<script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/jquery.js"></script>
+<script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/jquery-migrate.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.ustack.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.ustack.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Neutron Performance Test" href="https://www.ustack.com/blog/neutron-performance-test-2/">
+<link rel="next" title="OpenStack社区周报(10.4 – 10.11)" href="https://www.ustack.com/blog/openstack_newsletter3/">
+<meta name="generator" content="WordPress 4.0">
+<link rel="canonical" href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/">
+<link rel="shortlink" href="https://www.ustack.com/?p=1645">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<link rel="stylesheet" href="https://www.ustack.com/wp-content/themes/officalsite/css/style.css">
+<link rel="stylesheet" href="https://www.ustack.com/wp-content/themes/officalsite/css/normalize.css">
+<link rel="stylesheet" href="https://www.ustack.com/wp-content/themes/officalsite/css/post.css">
+<link rel="short icon" href="https://www.ustack.com/wp-content/themes/officalsite/css/images/favicon.ico" type="image/x-icon">
+<script type="text/javascript">
+  var userAgent = navigator.userAgent.toLowerCase();
+  var browser = { 
+    version: (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1], 
+    msie: /msie/.test(userAgent) && !/opera/.test(userAgent)
+  };
+  if (parseFloat(browser.version) < 10 && browser.msie) {
+        window.location = 'https://www.ustack.com/compatibility/';
+  }
+</script>
+<style type="text/css"></style></head>
+
+<body class="single single-post postid-1645 single-format-standard">
+<div class="nav">
+	<a class="logo" href="https://www.ustack.com/" title="UnitedStack" rel="home"></a>
+    <div class="nav-inner-r">
+	<ul id="menu-main-menu" class="nav-menu"><li><a href="https://www.ustack.com/">首页</a></li>
+<li><a title="UOS" href="https://www.ustack.com/uos/function/">UOS</a>
+<div class="dropdown-wp">
+	<div class="dropdown arrow"></div>
+	<ul class="dropdown">
+		<li><a href="https://www.ustack.com/uos/function/">功能</a></li>
+		<li><a href="https://www.ustack.com/uos/tech/">技术</a></li>
+	</ul>
+</div></li>
+<li><a href="https://www.ustack.com/cloudservice/public-cloud/">云服务</a>
+<div class="dropdown-wp">
+	<div class="dropdown arrow"></div>
+	<ul class="dropdown">
+		<li><a href="https://www.ustack.com/cloudservice/public-cloud/">公有云</a></li>
+		<li><a href="https://www.ustack.com/cloudservice/private-cloud/">托管云</a></li>
+		<li><a href="https://www.ustack.com/cloudservice/our-clients/">客户案例</a></li>
+	</ul>
+</div></li>
+<li><a href="https://console.ustack.com/">控制台</a></li>
+<li><a href="http://docs.ustack.com/">文档</a>
+<div class="dropdown-wp"><div class="dropdown arrow"></div><ul class="dropdown">
+	<li><a href="http://docs.ustack.com/quickstart.html">快速入门</a></li>
+	<li><a href="http://docs.ustack.com/uos_services/index.html">UOS云服务</a></li>
+	<li><a href="http://docs.ustack.com/price_n_quota.html">价格与配额</a></li>
+	<li><a href="http://docs.ustack.com/icp.html">ICP备案</a></li>
+	<li><a href="http://docs.ustack.com/api_doc/index.html">UOS API手册</a></li>
+	<li><a href="http://docs.ustack.com/cli.html">CLI手册</a></li>
+	<li><a href="http://docs.ustack.com/faq.html">常见问题</a></li>
+</ul></div>
+</li>
+<li><a href="https://www.ustack.com/company/">关于</a>
+<div class="dropdown-wp"><div class="dropdown arrow"></div><ul class="dropdown">
+	<li><a href="https://www.ustack.com/company/">公司介绍</a></li>
+	<li><a href="https://www.ustack.com/partners/">合作伙伴</a></li>
+	<li><a href="https://www.ustack.com/jobs/">招聘信息</a></li>
+	<li><a href="https://www.ustack.com/contact-us/">联系我们</a></li>
+	<li><a href="https://www.ustack.com/blog/">博客</a></li>
+	<li><a href="https://www.ustack.com/news/">新闻</a></li>
+	<li><a href="https://www.ustack.com/logo-download/">品牌标识</a></li>
+</ul></div>
+</li>
+</ul>        <ul>
+            <li class="register">
+                <a href="https://www.ustack.com/accounts/register/" class="btn">
+                    注册                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="banner fw">
+   <div class="wrapper">
+     <h6>博客</h6>
+   </div>
+</div>
+<div id="page" class="hfeed ustack-body">
+
+	<div id="main" class="wrapper">
+	<div id="primary" class="site-content">
+    	<script src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/poster.js"></script>
+		<div id="content" role="main" class="content-post">
+
+			
+				
+	<article id="post-1645" class="post-1645 post type-post status-publish format-standard hentry category-blog">
+				<header class="entry-header">
+			
+						<h1 class="entry-title">有关 Shell 重定向那些你不知道的故事</h1>
+			<span class="post-meta-details is-single-post">
+                <span class="author vcard">
+                    <a href="https://www.ustack.com/author/freedomhui/" rel="author">
+                        Cheng, Hui                    </a>
+                    |
+                    2013.10.11                </span>
+            </span>
+										<div class="comments-link">
+					<a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comments" title="《有关 Shell 重定向那些你不知道的故事》上的评论">8条回复</a>				</div><!-- .comments-link -->
+					</header><!-- .entry-header -->
+
+				<div class="entry-content">
+			<div id="toc_container" class="toc_wrap_right no_bullets"><p class="toc_title">Contents <span class="toc_toggle">[<a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#">hide</a>]</span></p><ul class="toc_list"><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i"><span class="toc_number toc_depth_1">1</span> 基础知识</a><ul><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i-2"><span class="toc_number toc_depth_2">1.1</span> 数字的含义</a></li><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i-3"><span class="toc_number toc_depth_2">1.2</span> 什么是重定向</a></li></ul></li><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i-4"><span class="toc_number toc_depth_1">2</span> 重定向小技巧</a><ul><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i-5"><span class="toc_number toc_depth_2">2.1</span> 输出分类</a></li><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#_Process_Substitution"><span class="toc_number toc_depth_2">2.2</span> 进程代入 (Process Substitution)</a></li></ul></li><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#i-6"><span class="toc_number toc_depth_1">3</span> 重定向的本质与实现</a></li><li><a href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#STDIN"><span class="toc_number toc_depth_1">4</span> STDIN 偷盗</a></li></ul></div>
+
+<div role="main">
+<p>（本文主要讨论 BaSH，并且基于 Linux 系统讨论）</p>
+<p>在 shell 编程里，说起重定向大家恐怕都用过&nbsp;<code>2&gt;&amp;1</code>&nbsp;或者&nbsp;<code>&gt; log</code>&nbsp;这样的操作。在执行这些操作的时候，你是否偶尔也想过，<wbr>/2/ 和&nbsp;<i>1</i>&nbsp;代表什么？/3/ 和&nbsp;<i>4</i>&nbsp;又能做什么的？是否可能困惑过，为什么&nbsp;<code>&gt;/dev/<wbr>null 2&gt;&amp;1=和 =&gt;2&gt;&amp;1 /dev/null</code>&nbsp;的行为是完全不同的？如果你有这些问题，<wbr>请听我讲述 shell 重定向里你不知道的那些故事。</p>
+<div>
+<h2><span id="i">基础知识</span></h2>
+<div>
+<p>首先，先来介绍一些基础知识。<wbr>这些东西基本在大学的计算机系课程中都有涉及，<wbr>计算机专业的同学可以完全略过。</p>
+</div>
+<div>
+<h3><span id="i-2">数字的含义</span></h3>
+<div>
+<p>重定向里用到的数字被称作文件描述符(File Descriptor)。文件描述符与一个具体的文件相关联，<wbr>它的作用就是给相应的文件操作函数提供一个目标即操作哪个文件。<wbr>在 POSIX 标准中，文件描述符都是一个数字，<wbr>并且有三个特殊的文件描述符他们是:</p>
+<ul>
+<li>0，Standard Input 也称 stdin 中文名称是标准输入</li>
+<li>1，Standard Output 也称 stdout 中文名称是标准输出</li>
+<li>2，Standard Error 也称 stderr 中文名称是标准错误</li>
+</ul>
+<p>当你通过&nbsp;<code>open(2)</code>&nbsp;系统调用打开一个文件文件时，&nbsp;<code>op<wbr>en(2)</code>&nbsp;会返回一个新建的文件描述符。<wbr>描述符的数字在每次调用&nbsp;<code>open(2)</code>&nbsp;时递增。所以，<wbr>一个程序第一次调用&nbsp;<code>open(2)</code>&nbsp;时得到的返回值就是&nbsp;<i>3</i>&nbsp;<wbr>。</p>
+</div>
+</div>
+<div>
+<h3><span id="i-3">什么是重定向</span></h3>
+<div>
+<p>通常情况下，&nbsp;<i>0</i>&nbsp;号描述符会从键盘获取输入数据而&nbsp;<i>1</i>&nbsp;，&nbsp;<i>2</i><wbr>&nbsp;号描述符会把数据输出到显示设备上。<wbr>重定向就是要改变数据来源或者目的的一种操作。比如，<wbr>把一个程序输出的数据放到文件里就可以用，</p>
+<div>
+<pre>date 1&gt;readme.txt</pre>
+</div>
+<p>特别注意，由于&nbsp;<i>1</i>&nbsp;、&nbsp;<i>2</i>&nbsp;号描述符都是输出到显示器上的。<wbr>所以有时如果在重定向了&nbsp;<i>1</i>&nbsp;号描述符时仍有数据显示在屏幕上，<wbr>则说明这些数据是标准错误里的信息。</p>
+<p>对于输出重定向，&nbsp;<code>date 1&gt;readme.txt</code>&nbsp;和&nbsp;<code>date &gt;readme.txt</code>&nbsp;是等价的。对于输入重定向&nbsp;<code>cat 0&lt;readme.txt</code>&nbsp;和&nbsp;<code>cat &lt;readme.txt</code>&nbsp;也是等价的。</p>
+<p>特别地，当采用&nbsp;<code>&gt;&gt;</code>&nbsp;符号做输出重定向时，<wbr>新的内容会追加在目标文件的尾部。</p>
+</div>
+</div>
+</div>
+<div>
+<h2><span id="i-4">重定向小技巧</span></h2>
+<div></div>
+<div>
+<h3><span id="i-5">输出分类</span></h3>
+<div>
+<p>虽然我们可以通过 STDOUT 和 STDERR 将程序输出分成一般输出和错误输出两类，<wbr>但很多时候还是不能满足需求。比如，我们希望程序把 DEBUG，VERBOSE，INFO 三种类型的信息分别输出到三个文件。<wbr>这个时候我们就需要自己创建新的描述符并把他们关联到对应的文件<wbr>去了。举例来说，</p>
+<div>
+<pre># open three more fds for funnelling information of various levels
+exec 3&gt;/tmp/debug.log
+exec 4&gt;/tmp/verbose.log
+exec 5&gt;/tmp/info.log
+
+echo &gt;&amp;3 I am a debug message
+echo &gt;&amp;4 I am a verbose message
+echo &gt;&amp;5 I am an info message
+
+# close them after we finish
+exec 5&gt;&amp;-
+exec 4&gt;&amp;-
+exec 3&gt;&amp;-</pre>
+</div>
+<p>注：虽然程序退出后描述符会自动被关闭，<wbr>但写程序的时候善始善终总是个好习惯</p>
+<p>上面的程序引入了两个语法，&nbsp;<code>exec n&gt;filename</code>&nbsp;以及&nbsp;<code>exec n&gt;&amp;-</code>&nbsp;前者用来开启新的描述符并把目标指向对应的文件。<wbr>后者用来关闭之前打开的描述符</p>
+</div>
+</div>
+<div>
+<h3><span id="_Process_Substitution">进程代入 (Process Substitution)</span></h3>
+<div>
+<p>说实话我不知道这东西应该怎么翻译，<wbr>毕竟没见它过以中文名称出现过。这里我们就暂且叫它进程代入吧。</p>
+<p>进程代入的意思就是把一个命令的输出直接重定向给另外一个命令作<wbr>为输出，例如：</p>
+<div>
+<pre>diff &lt;(ssh server1 rpm -ql) &lt;(ssh server2 rpm -ql)</pre>
+</div>
+<p>这条命令的作用就是把命令&nbsp;<code>ssh server1 rpm -ql</code>&nbsp;的输出与&nbsp;<code>ssh server2 rpm -ql</code>&nbsp;的输出做&nbsp;<i>diff</i>&nbsp;比较。</p>
+<p>进程代入的实现方式颇有意思，可以通过 echo 来一探究竟，</p>
+<div>
+<pre>echo &lt;(date)</pre>
+</div>
+<p>这条命令会输出一个类似&nbsp;<code>/dev/fd/12</code>&nbsp;之类的东西。<wbr>你可能已经想到了，进程代入的实现方式就是由 shell 创建一个临时文件。<wbr>然后把被代入命令的标准输出定向到这个临时文件，<wbr>再把这个文件重定向成代入进程的标准输入。</p>
+</div>
+</div>
+</div>
+<div>
+<h2><span id="i-6">重定向的本质与实现</span></h2>
+<div>
+<p>为什么&nbsp;<code>&gt;/dev/null 2&gt;&amp;1</code>&nbsp;和&nbsp;<code>2&gt;&amp;1 /dev/null</code>&nbsp;的效果不同呢？为了解决这个问题，<wbr>我们先要从内核里文件描述符和文件的关系说起。<wbr>理解重定向的背后到底发生了什么。</p>
+<p>我们先来看看文件描述符与文件的关系。<wbr>内核通过三张表来对把一个文件描述符对应到具体的文件，</p>
+<div>
+<p><img alt="file_sharing_linux2.png" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/file_sharing_linux2.png"></p>
+</div>
+<p>首先，通过最左边的文件描述符表（File Descriptor Table）将一个文件描述符数字对应到一个文件表（File Table）中的文件项。<wbr>再通过文件表将一个文件项对应到磁盘上具体的 inode 。</p>
+<p>所谓“重定向”本质上就是通过修改文件描述符表中的文件指针（<wbr>file table descriptor）将对一个描述符的操作落到其他文件上去。</p>
+<div>
+<p><img alt="file_dup.png" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/file_dup.png"></p>
+</div>
+<p>比如，&nbsp;<code>3&gt;&amp;1</code>&nbsp;就会导致上图的结果。也就是将描述符&nbsp;<i>3</i>&nbsp;<wbr>的文件指针指向和描述符&nbsp;<i>0</i>&nbsp;相同的地方。这个操作在 Linux 系统是通过一个叫&nbsp;<code>dup2(2)</code>&nbsp;的系统调用完成的。<wbr>举例来说：&nbsp;<code>2&gt;&amp;1</code>&nbsp;在程序实现上就是</p>
+<div>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char *argv[])
+{
+    dup2(1, 2);
+    fprintf(stderr, "hello, worldn");
+    return 0;
+}</pre>
+</div>
+<p>理解了&nbsp;<code>dup2(2)</code>&nbsp;做的工作后，我们再来看看&nbsp;<code>2&gt;&amp;1 &gt;/dev/null</code>&nbsp;和&nbsp;<code>&gt;/dev/null 2&gt;&amp;1</code>&nbsp;的实现，</p>
+<div>
+<pre>int fd = open("/dev/null", "w+");
+dup2(fd, 1);
+dup2(1, 2);</pre>
+</div>
+<p>以上就是&nbsp;<code>&gt;/dev/null 2&gt;&amp;1</code>&nbsp;的实现。我们先把描述符&nbsp;<i>1</i>&nbsp;指向和&nbsp;<code>/dev/<wbr>null</code>&nbsp;的位置，然后再把描述符&nbsp;<i>2</i>&nbsp;指向描述符&nbsp;<i>1</i>&nbsp;<wbr>对应文件的位置。由于之前描述符&nbsp;<i>1</i>&nbsp;的对应文件已经被&nbsp;<code>dup<wbr>2(2)</code>&nbsp;修改为了&nbsp;<code>/dev/null</code>&nbsp;因此描述符&nbsp;<i>2</i>&nbsp;<wbr>现在也指向&nbsp;<code>/dev/null</code>&nbsp;了。<wbr>后续的所有标准输出与标准错误的数据都被定向到了&nbsp;<code>/dev/<wbr>null</code>&nbsp;。</p>
+<p>再来看&nbsp;<code>2&gt;&amp;1 &gt;/dev/null</code>&nbsp;的实现，</p>
+<div>
+<pre>int fd = open("/dev/null", "w+");
+dup2(1, 2);
+dup2(fd, 1);</pre>
+</div>
+<p>这里仅仅就是把两条&nbsp;<code>dup2(2)</code>&nbsp;语句的顺序调换了一下。<wbr>但是却产生了完全不同的结果。首先，我们把描述符&nbsp;<i>2</i>&nbsp;<wbr>指向描述符&nbsp;<i>1</i>&nbsp;对应的文件，也就是标准输出，然后再把描述符&nbsp;<i><wbr>1</i>&nbsp;指向&nbsp;<code>/dev/null</code>&nbsp;。结果是描述符&nbsp;<i>1</i>&nbsp;指向了&nbsp;<code>/<wbr>dev/null</code>&nbsp;而描述符&nbsp;<i>2</i>&nbsp;仍然指向标准输出。<wbr>如果还不是理解得很清楚，可以画一下类似上面的描述符指向图，<wbr>来模拟一下每一步文件描述符和文件的关系。</p>
+<p>理解了重定向的原理后，就很容易理解在 shell 中重定向的顺序是至关重要的。</p>
+</div>
+</div>
+<div>
+<h2><span id="STDIN">STDIN 偷盗</span></h2>
+<div>
+<p>在理解了上面的内容之后，我们就可以解释并解决一个 shell 编程中的难题了，这就是“被盗窃的标准输入”（好吧，<wbr>这名字好矬）。</p>
+<p>先来看一个有意思的程序，<wbr>为了说明重点问题这个程序被简化到了无聊的地步，</p>
+<div>
+<pre>while read filename; do
+  rm -iv $filename
+done &lt; &lt;(ls)</pre>
+</div>
+<p>从外观上看，这是想把&nbsp;<code>ls</code>&nbsp;<wbr>命令的输出也就是当前目录的文件列表逐行读取出来，然后使用&nbsp;<code>r<wbr>m -iv</code>&nbsp;在获得你许可的情况下，优雅地删除他们。<wbr>假设我们的测试目录下存在名为：1、2、3的三个文件。<wbr>那么运行这个程序后你会发现，虽然&nbsp;<code>rm</code>&nbsp;<wbr>命令显示了询问是否删除的信息，但是&nbsp;<code>rm</code>&nbsp;<wbr>完全没有关心你的回答。并且整个程序也没有删除一个文件。<wbr>这是为什么呢？</p>
+<p>答案是&nbsp;<code>rm -iv</code>&nbsp;偷了&nbsp;<code>read</code>&nbsp;的数据！因为&nbsp;<code>rm -iv</code>&nbsp;期待用户从标准输入给出一个 y 或 n 的答案以确认是否删除，但标准输入被&nbsp;<code>&lt; &lt;(ls)</code>&nbsp;重定向了。于是&nbsp;<code>rm -iv</code>&nbsp;开始在&nbsp;<code>&lt; &lt;(ls)</code>&nbsp;里寻找答案。如果找不到 y 或者 n 就一直寻找下去，直到把&nbsp;<code>&lt; &lt;(ls)</code>&nbsp;的内容消耗完。<wbr>这时在下一轮的循环中由于数据没有了，&nbsp;<code>read</code>&nbsp;读不出数据，<wbr>程序也就退出了。</p>
+<p>如何应对这个情况呢？这就需要我们利用之前讲到的知识了。<wbr>我们先把标准输入复制一份出来，然后让&nbsp;<code>rm -iv</code>&nbsp;使用复制出来的标准输入。再把原来的标准输入重定向给&nbsp;<code><wbr>&lt; &lt;(ls)</code>&nbsp;。请看修改后的程序：</p>
+<div>
+<pre>exec 3&lt;&amp;0
+while read filename; do
+  rm -iv $filename &lt;&amp;3
+done &lt; &lt;(ls)</pre>
+</div>
+<p>由于在&nbsp;<code>exec 3&lt;&amp;0</code>&nbsp;放在了&nbsp;<code>&lt; &lt;(ls)</code>&nbsp;之前，描述符&nbsp;<i>3</i>&nbsp;很好地保留了原来的标准输入（<wbr>也就是键盘输入）。之后再运行&nbsp;<code>rm</code>&nbsp;时，我们把通过&nbsp;<code>&lt;&amp;3</code>&nbsp;<wbr>把&nbsp;<code>rm</code>&nbsp;自身的标准输入再重定向回键盘输入。</p>
+</div>
+</div>
+</div>
+<style><!--
+h1, h2, h3, h4, h5, h6 {clear: none; }
+--></style>
+								<div class="share clear" style="float:left;width:300px;margin-top: -2px;margin-bottom: 20px;">
+                <em class="share-plain-text">分享到:</em>
+                <span class="twitter-ico"></span>
+                <span class="sina-ico"></span>
+                <span class="facebook-ico"></span>
+                <span class="google-ico"></span>
+            </div>
+				</div><!-- .entry-content -->
+				<footer class="entry-meta">
+			本条目发布于<a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/" title="8:03 下午" rel="bookmark"><time class="entry-date" datetime="2013-10-11T20:03:28+00:00">2013年10月11日</time></a>。属于<a href="https://www.ustack.com/category/blog/" rel="category tag">博客</a>分类。<span class="by-author">作者是<span class="author vcard"><a class="url fn n" href="https://www.ustack.com/author/freedomhui/" title="查看所有由Cheng, Hui发布的文章" rel="author">Cheng, Hui</a></span>。</span>								</footer><!-- .entry-meta -->
+	</article><!-- #post -->
+
+				<nav class="nav-single">
+					<h3 class="assistive-text">文章导航</h3>
+					<span class="nav-previous"><a href="https://www.ustack.com/blog/neutron-performance-test-2/" rel="prev"><i></i> Neutron Performance Test</a></span>
+					<span class="nav-next nav-link"><a href="https://www.ustack.com/blog/openstack_newsletter3/" rel="next">OpenStack社区周报(10.4 – 10.11) <i></i></a></span>
+				</nav><!-- .nav-single -->
+
+				
+<div id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			《<span>有关 Shell 重定向那些你不知道的故事</span>》上有8条评论		</h2>
+
+		<ol class="commentlist">
+			        <li class="comment even thread-even depth-1" id="li-comment-175">
+            <article id="comment-175" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/f02fe57e29eb996a9b0cf88a5fc51f4a" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn">kino</b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-175"><time datetime="2013-10-15T12:12:00+00:00">2013年10月15日12:12 下午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>讲的很透彻，非学棒！</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=175#respond" onclick="return addComment.moveForm(&quot;comment-175&quot;, &quot;175&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-176">
+            <article id="comment-176" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/56d262e8fdbc766f5412f284499e8060" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn">iCyOMiK</b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-176"><time datetime="2013-10-15T18:20:00+00:00">2013年10月15日6:20 下午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>非常感谢这么详细的解说，受益了！</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=176#respond" onclick="return addComment.moveForm(&quot;comment-176&quot;, &quot;176&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-177">
+            <article id="comment-177" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/8d5db95a791dea0319e392b24c8e349c" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn"><a href="http://biaobiaoqi.me/" rel="external nofollow" class="url">biaobiaoqi</a></b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-177"><time datetime="2013-10-16T19:55:00+00:00">2013年10月16日7:55 下午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>赞一发。文件描述符原来在重定向中使用了。</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=177#respond" onclick="return addComment.moveForm(&quot;comment-177&quot;, &quot;177&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-178">
+            <article id="comment-178" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/ed8c61f60c588eabd9ddf3d1cd7b1540" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn">oilbeater</b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-178"><time datetime="2013-10-18T09:45:00+00:00">2013年10月18日9:45 上午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>赞一下，讲的很清晰</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=178#respond" onclick="return addComment.moveForm(&quot;comment-178&quot;, &quot;178&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-238">
+            <article id="comment-238" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/5c59af821fbca3863370fcac62a3c5db" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn">ZhiQiang Fan</b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-238"><time datetime="2013-10-21T17:18:00+00:00">2013年10月21日5:18 下午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>写的很好，学到东西了，谢谢</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=238#respond" onclick="return addComment.moveForm(&quot;comment-238&quot;, &quot;238&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-179">
+            <article id="comment-179" class="comment">
+                <header class="comment-meta comment-author vcard">
+                    <img alt="" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/83b67c61ce936578575c33c5c9298ac5" class="avatar avatar-44 photo" height="44" width="44"><cite><b class="fn">kyle</b> </cite><a href="https://www.ustack.com/blog/%e6%9c%89%e5%85%b3-shell-%e9%87%8d%e5%ae%9a%e5%90%91%e9%82%a3%e4%ba%9b%e4%bd%a0%e4%b8%8d%e7%9f%a5%e9%81%93%e7%9a%84%e6%95%85%e4%ba%8b/#comment-179"><time datetime="2013-10-27T13:43:00+00:00">2013年10月27日1:43 下午</time></a>                    </header><!-- .comment-meta -->
+
+                    
+                <section class="comment-content comment">
+                    <p>哈哈，看懂了，都是指针指来指去</p>
+                                    </section><!-- .comment-content -->
+
+                <div class="reply">
+                    <a class="comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/?replytocom=179#respond" onclick="return addComment.moveForm(&quot;comment-179&quot;, &quot;179&quot;, &quot;respond&quot;, &quot;1645&quot;)">回复</a> <span>↓</span>                </div><!-- .reply -->
+            </article><!-- #comment-## -->
+            </li><!-- #comment-## -->
+    <li class="pingback even thread-even depth-1" id="comment-180">
+        <p>Pingback引用通告： <a href="http://1.wayofseeking.sinaapp.com/?p=169" rel="external nofollow" class="url">Shell重定向 | BASICS</a> </p>
+        </li><!-- #comment-## -->
+    <li class="trackback odd alt thread-odd thread-alt depth-1" id="comment-181">
+        <p>Pingback引用通告： <a href="http://www.ahandyloan.com/" rel="external nofollow" class="url">car title loans</a> </p>
+        </li><!-- #comment-## -->
+		</ol><!-- .commentlist -->
+
+		
+		
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://www.ustack.com/blog/%E6%9C%89%E5%85%B3-shell-%E9%87%8D%E5%AE%9A%E5%90%91%E9%82%A3%E4%BA%9B%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84%E6%95%85%E4%BA%8B/#respond" style="display:none;">取消回复</a></small></h3>
+									<form action="https://www.ustack.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes">电子邮件地址不会被公开。 必填项已用<span class="required">*</span>标注</p>							<p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="text" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">您可以使用这些<abbr title="HyperText Markup Language">HTML</abbr>标签和属性： <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="发表评论">
+							<input type="hidden" name="comment_post_ID" value="1645" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="220ec96719"></p><script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/form.js"></script>
+<p style="display: none;"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1425870569637"></form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments .comments-area -->
+			
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="secondary" class="widget-area" role="complementary">
+    <aside id="search-2" class="widget widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://www.ustack.com/">
+				<div>
+					<label class="screen-reader-text" for="s">搜索：</label>
+					<input type="text" value="" name="s" id="s">
+					<input type="submit" id="searchsubmit" value="搜索">
+				</div>
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h3 class="widget-title">近期博客</h3>		<ul>
+					<li>
+				<a href="https://www.ustack.com/blog/topic-vote/">OpenStack温哥华峰会的topic投票We want you!</a>
+						</li>
+					<li>
+				<a href="https://www.ustack.com/blog/volume-burst/">如何让云硬盘拥有澎湃动力</a>
+						</li>
+					<li>
+				<a href="https://www.ustack.com/blog/embracing-cloud/">拥抱变化——如何用好云计算平台</a>
+						</li>
+					<li>
+				<a href="https://www.ustack.com/blog/openstack-market/">程辉对话开源大师Marten Mickos | 探讨OpenStack市场现状</a>
+						</li>
+					<li>
+				<a href="https://www.ustack.com/blog/coreos/">从运维角度看CoreOS</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h3 class="widget-title">近期评论</h3><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="http://apps.neucloud.cn/" rel="external nofollow" class="url">董岩</a></span>发表在《<a href="https://www.ustack.com/blog/openstack-business-ecosystem/#comment-289">OpenStack商业生态圈分析</a>》</li><li class="recentcomments"><span class="comment-author-link"><a href="http://www.bugpointer.com/?p=244" rel="external nofollow" class="url">[转]OpenStack的数据库开发基础 — SQLAlchemy - 其他 - BUG指针</a></span>发表在《<a href="https://www.ustack.com/blog/sqlalchemy/#comment-268">OpenStack的数据库开发基础 — SQLAlchemy</a>》</li><li class="recentcomments"><span class="comment-author-link">Heng Jiang</span>发表在《<a href="https://www.ustack.com/blog/ceph-service/#comment-265">如何基于Ceph构建高性能块存储服务？</a>》</li><li class="recentcomments"><span class="comment-author-link">gong yong sheng</span>发表在《<a href="https://www.ustack.com/blog/ceph-service/#comment-263">如何基于Ceph构建高性能块存储服务？</a>》</li><li class="recentcomments"><span class="comment-author-link">Jiang</span>发表在《<a href="https://www.ustack.com/blog/ceph-service/#comment-261">如何基于Ceph构建高性能块存储服务？</a>》</li></ul></aside><aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">文章归档</h3>		<ul>
+	<li><a href="https://www.ustack.com/2015/02/">2015年二月</a></li>
+	<li><a href="https://www.ustack.com/2015/01/">2015年一月</a></li>
+	<li><a href="https://www.ustack.com/2014/12/">2014年十二月</a></li>
+	<li><a href="https://www.ustack.com/2014/11/">2014年十一月</a></li>
+	<li><a href="https://www.ustack.com/2014/10/">2014年十月</a></li>
+	<li><a href="https://www.ustack.com/2014/09/">2014年九月</a></li>
+	<li><a href="https://www.ustack.com/2014/08/">2014年八月</a></li>
+	<li><a href="https://www.ustack.com/2014/07/">2014年七月</a></li>
+	<li><a href="https://www.ustack.com/2014/06/">2014年六月</a></li>
+	<li><a href="https://www.ustack.com/2014/04/">2014年四月</a></li>
+	<li><a href="https://www.ustack.com/2014/01/">2014年一月</a></li>
+	<li><a href="https://www.ustack.com/2013/12/">2013年十二月</a></li>
+	<li><a href="https://www.ustack.com/2013/11/">2013年十一月</a></li>
+	<li><a href="https://www.ustack.com/2013/10/">2013年十月</a></li>
+	<li><a href="https://www.ustack.com/2013/09/">2013年九月</a></li>
+	<li><a href="https://www.ustack.com/2013/08/">2013年八月</a></li>
+	<li><a href="https://www.ustack.com/2013/07/">2013年七月</a></li>
+	<li><a href="https://www.ustack.com/2013/05/">2013年五月</a></li>
+	<li><a href="https://www.ustack.com/2013/04/">2013年四月</a></li>
+		</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h3 class="widget-title">分类目录</h3>		<ul>
+	<li class="cat-item cat-item-6"><a href="https://www.ustack.com/category/blog/ceph-blog/">Ceph</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://www.ustack.com/category/blog/devops/">DevOps</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="https://www.ustack.com/category/blog/neutron/">Neutron</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="https://www.ustack.com/category/blog/opensource/">OpenSource</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="https://www.ustack.com/category/blog/openstack-dev/">OpenStack</a>
+</li>
+	<li class="cat-item cat-item-77"><a href="https://www.ustack.com/category/blog/openstack%e5%b3%b0%e4%bc%9a/">OpenStack峰会</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="https://www.ustack.com/category/news/press-room/">Press Room</a>
+</li>
+	<li class="cat-item cat-item-12"><a href="https://www.ustack.com/category/blog/stacklab/">StackLab</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://www.ustack.com/category/uncategorized/">Uncategorized</a>
+</li>
+	<li class="cat-item cat-item-13"><a href="https://www.ustack.com/category/blog/unitedstack-os/">UOS</a>
+</li>
+	<li class="cat-item cat-item-14"><a href="https://www.ustack.com/category/blog/cloud-computing/">云计算</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="https://www.ustack.com/category/blog/front-end/">前端</a>
+</li>
+	<li class="cat-item cat-item-2"><a href="https://www.ustack.com/category/blog/">博客</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="https://www.ustack.com/category/blog/storage-blog/">存储</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="https://www.ustack.com/category/blog/network/">网络</a>
+</li>
+		</ul>
+</aside><aside id="meta-2" class="widget widget_meta"><h3 class="widget-title">功能</h3>			<ul>
+						<li><a href="https://www.ustack.com/wp-login.php">登录</a></li>
+			<li><a href="https://www.ustack.com/feed/">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://www.ustack.com/comments/feed/">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>			</ul>
+</aside></div>    </div><!-- #main .wrapper -->
+    <div class="footer-ref">
+        <div class="items">
+            <ul>
+                <li class="item first">
+                    <h6 class="logo"></h6>
+                    <ul>
+                        <li>Copyright © 2014</li>
+                        <li>优思得云计算科技（北京）有限公司</li>
+                        <li class="lang">
+                            Language:
+                            <a href="https://www.ustack.com/us">English</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul id="menu-footer_menu_list" class=""><li class="item"><h6>UOS</h6>
+<ul>
+<li class="item"><a href="https://www.ustack.com/uos/function/">功能</a></li>
+<li class="item"><a href="https://www.ustack.com/uos/tech/">技术</a></li>
+</ul></li>
+<li class="item"><h6>云服务</h6>
+<ul>
+<li class="item"><a href="https://www.ustack.com/cloudservice/public-cloud/">公有云</a></li>
+<li class="item"><a href="https://www.ustack.com/cloudservice/private-cloud/">托管云</a></li>
+<li class="item"><a href="https://www.ustack.com/cloudservice/our-clients/">客户案例</a></li>
+</ul></li>
+<li class="item"><h6>文档</h6>
+<ul>
+	<li class="item"><a href="http://docs.ustack.com/quickstart.html">快速入门</a></li>
+	<li class="item"><a href="http://docs.ustack.com/uos_services/index.html">UOS云服务</a></li>
+	<li class="item"><a href="http://docs.ustack.com/price_n_quota.html">价格与配额</a></li>
+	<li class="item"><a href="http://docs.ustack.com/cli.html">CLI手册</a></li>
+	<li class="item"><a href="http://docs.ustack.com/icp.html">ICP备案</a></li>
+	<li class="item"><a href="http://docs.ustack.com/api_doc/index.html">UOS API手册</a></li>
+	<li class="item"><a href="http://docs.ustack.com/faq.html">常见问题</a></li>
+</ul>
+</li>
+<li class="item"><h6>关于</h6>
+<ul>
+	<li class="item"><a href="https://www.ustack.com/company/">公司介绍</a></li>
+	<li class="item"><a href="https://www.ustack.com/partners/">合作伙伴</a></li>
+	<li class="item"><a href="https://www.ustack.com/jobs/">招聘信息</a></li>
+	<li class="item"><a href="https://www.ustack.com/contact-us/">联系我们</a></li>
+	<li class="item"><a href="https://www.ustack.com/blog/">博客</a></li>
+	<li class="item"><a href="https://www.ustack.com/news/">新闻</a></li>
+	<li class="item"><a href="https://www.ustack.com/logo-download/">品牌标识</a></li>
+</ul>
+</li>
+</ul>            <ul>
+                <li class="last item">
+                    <h6>联系我们</h6>
+                    <div class="tele clearfix">
+                        <i></i>
+                    <div class="con">400-898-5401</div>
+                    </div>
+                    <div class="mail clearfix">
+                        <i></i>
+                    <div class="con">contact@unitedstack.com</div>
+                    </div>
+                    <div class="weibo clearfix">
+                        <i></i>
+                    <div class="con"><a href="http://weibo.com/unitedstack" target="_blank">@UnitedStack</a></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        © 2014 UnitedStack Inc. All Rights Reserved.        <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备13015821号</a>
+    </div>
+    <a href="javascript:;" class="backToTop hide"></a>
+    <script src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/global.js"></script>
+</div><!-- #page -->
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var tocplus = {"visibility_show":"show","visibility_hide":"hide","width":"Auto"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/front.js"></script>
+<script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/navigation.js"></script>
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F314a8b89f08af7522545eae893ab2179' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=314a8b89f08af7522545eae893ab2179" target="_blank"><img border="0" src="./有关 Shell 重定向那些你不知道的故事   UnitedStack_files/21.gif" width="20" height="20"></a>
+
+</body></html>

@@ -1195,10 +1195,12 @@ var ContentTools = {
 	},
 	
 	updateMostPopularTabsContent : function(data) {
-        var isHomepage = $('.news_type > .news').length > 0;
         var cutPoint = undefined;
 
-        if (!isHomepage || InfoQConstants.language == 'zh') {
+		// for Chinese homepage grid, always display 10 items
+		// for all other languages versions of homepage grid adjust the height so that it fits the height of the news section to the right
+		// for homepage list, article, presentation and interview content pages, display specific number of items: 10 for Chinese, 8 for Japanese, 7 for the rest
+        if (pageForWidget != 'homepage_grid' || InfoQConstants.language == 'zh') {
             if(InfoQConstants.language == 'ja') {
                 cutPoint = 8;
             }else if(InfoQConstants.language == 'zh'){
@@ -1215,12 +1217,12 @@ var ContentTools = {
         }
 
 		if(data && data['tendays'].length>0 && data['fortydays'].length>0 && data['sixmonths'].length>0){
-			ContentTools.addMostPopularTab(data['tendays'],"none", isHomepage);
-			ContentTools.addMostPopularTab(data['fortydays'],"none", isHomepage);
-			ContentTools.addMostPopularTab(data['sixmonths'],"none", isHomepage);
+			ContentTools.addMostPopularTab(data['tendays'],"none");
+			ContentTools.addMostPopularTab(data['fortydays'],"none");
+			ContentTools.addMostPopularTab(data['sixmonths'],"none");
 			$('div.news_in_tabs').show();
 			// jquery tabs plugin init
-            if (isHomepage) {
+            if (pageForWidget == 'homepage_grid') {
                 $("#mostPopularSection > ul.tabs").tabs("#mostPopularSection > div.panes > div",
                     {
                         onClick: function (evt, tabIdx) {
@@ -1252,20 +1254,37 @@ var ContentTools = {
         $(pane).addClass('adjusted');
     },
 
-	addMostPopularTab : function(list, tabDisplay, isHomepage) {
-		var newTabPane = $('<div style="display: '+tabDisplay+';">');
-		var trackingCode = "?utm_source=infoq&utm_medium=popular_links_homepage";
-		for(var it=0;it<list.length;it++){
-            var text = '<h3 class="h3'+list[it]['contentType']+'"'+ (isHomepage ? 'style="display:none">' : '') + '\n\
-                        <!--pageviews:'+ list[it]['pageviews'] + 
-                        ' publication date: ' + list[it]['publicationDateString'] +'-->\n\
-                        <a href="http://www.infoq.com'+list[it]['path']+trackingCode+'">'+list[it]['title']+'</a>';
-            if (list[it]['noOfComments'] > 0) {
-                text += '<a href="http://www.infoq.com' + list[it]['path'] + trackingCode + '#theCommentsSection">\
+	/**
+	 *
+	 * @param list data for specific widget tab
+	 * @param tabDisplay css display property value (usually start with none
+	 * @param pageForWidget what page is the widget displayed on. Accepted values: [homepage, article, interview, presentation]
+	 */
+	addMostPopularTab : function(list, tabDisplay) {
+		if (pageForWidget == 'undefined') {
+			alert("error: pageForWidget is undefined");
+		}
+		var newTabPane = $('<div style="display: ' + tabDisplay + ';">');
+		// different tracking codes for different pages the widget is displayed on
+		var utmContent = (pageForWidget == 'homepage_list' || pageForWidget == 'homepage_grid') ? 'homepage' : pageForWidget;
+		var trackingCode = '?utm_source=infoq&utm_medium=popular_widget&utm_content=' + utmContent + '&utm_campaign=popular_content_list';
+
+		for (var it = 0; it < list.length; it++) {
+			var text = '<h3 class="h3' + list[it]['contentType'] + '"' +
+					// for homepage, a height adjustment algorithm is implemented. That implies that all the items in the active tab are set to invisible on first display,
+					// the algorithm sets to visible those that visually fit in the widget.
+				(pageForWidget == 'homepage_grid' ? 'style="display:none">' : '') +
+					// put some information on the item: publication date and number of views so issues with ordering and most popular race can be tracked
+				'\n<!--pageviews:' + list[it]['pageviews'] +
+				' publication date: ' + list[it]['publicationDateString'] +
+				'-->\n<a href="' + list[it]['path'] + trackingCode + '">' + list[it]['title'] + '</a>';
+
+			if (list[it]['noOfComments'] > 0) {
+				text += '<a href="http://www.infoq.com' + list[it]['path'] + trackingCode + '#theCommentsSection">\
                             <span class="comments_counts"><span class="nr">' + list[it]['noOfComments'] + '</span></span>\
                         </a>';
-            }
-            text+='</h3>';			
+			}
+			text += '</h3>';
 			newTabPane.append($(text));
 		}
 		$('#mostPopularSection > div.panes').append(newTabPane);
@@ -1559,9 +1578,22 @@ UserActions_Profile = {
 	
 	updateStatesList : function(countryDropdownId, stateDropdownId, defaultValue) {
 		$('#'+stateDropdownId).empty();
+		var orderedIds; // some zone lists may require reordering
 		var zoneList = this.getCountryZoneList($('#'+countryDropdownId).val());
 		if(zoneList) {
 //		    $('#'+stateDropdownId).append($('<option></option>'));
+			// sort to specific order
+			if ($('#'+countryDropdownId).val() == 47 || $('#'+countryDropdownId).val() == 30) { // China or Brazil
+				if ($('#'+countryDropdownId).val() == 47) { // China
+					orderedIds = [672, 692, 702, 678, 686, 700, 687, 688, 701, 681, 679, 680, 683, 682, 675, 674, 676, 689,
+						690, 691, 677, 695, 694, 696, 693, 697, 698, 685, 684, 699, 673];
+				} else if ($('#'+countryDropdownId).val() == 30) { // Brazil
+					orderedIds = [437, 438, 439, 440, 441, 442, 443, 444, 461, 446, 447, 445, 448, 449, 450, 451, 462,
+						452, 454, 455, 453, 456, 457, 458, 459, 460, 463];
+				}
+				zoneList = UserActions_Profile.sortZones(zoneList, orderedIds);
+			}
+
 			$.each(zoneList, function(idx, state) {
 				if(state.i == defaultValue){
 					$('#'+stateDropdownId).append($('<option selected="selected"></option>').val(state.i).html(state.n));
@@ -1571,6 +1603,23 @@ UserActions_Profile = {
 				}
 			});
 		}
+	},
+
+	sortZones : function(unorderedStatesArr, orderedIdsArr) {
+		var orderedStatesArr = [];
+		for (var i = 0; i < orderedIdsArr.length; i++) {
+			for (var j = 0; j < unorderedStatesArr.length; j++) {
+				if (orderedIdsArr[i] === unorderedStatesArr[j].i) {
+					orderedStatesArr[i] = unorderedStatesArr[j];
+					break;
+				}
+			}
+
+			if (!orderedStatesArr[i]) {
+				console.error('Error ordering states: no state with id ' + orderedIdsArr[i] + ' in the unordered list ' + unorderedStatesArr);
+			}
+		}
+		return orderedStatesArr;
 	},
 
     updateStates : function(element, targetId, defaultValue){
@@ -1844,14 +1893,22 @@ UserActions_Profile = {
 					$('#currentCountryIdSpan').html(userCurrentCountryName);
 					$('#countrySavedId').val(userCurrentCountryId);
 					$('#currentStateIdSpan').html(userCurrentStateName);
-					$('#stateSavedId').val(userCurrentStateId);
+					$('#stateSavedId').val(userCurrentStateId);					
+					//show the newsletter and industry subscriptions
+					if(userSubscribedNewsletter){
+						$('#newsletterSection').hide();
+					}
+					if(userSubscribedIndustry){
+						$('#indemailSection').hide();
+					}
+					
 				}
 				
 				var forceUpdateColobox = jQuery("#forceupdate");
 				// always show the form and hide the validate email messgae(just in case the user closes and reopens the form)
 				$("#updateUserForm").show();
 				$("#validateMessage").hide();	
-				forceUpdateColobox.colorbox({inline:true, opacity: 0.5, fixed:true, overlayClose:false});
+				forceUpdateColobox.colorbox({inline:true, opacity: 0.5, fixed:false, overlayClose:false});
 				forceUpdateColobox.click();
 								
 				// log the display popup action as metric on the server
@@ -2908,7 +2965,7 @@ if(ay.arrowScrollOnHover){ax.bind("mouseover.jsp",aD(-1,0,ax));x.bind("mouseover
 	});
 
 	$('#listView').click(function() {
-        CookieManager.createCookie('homepage_list', true);
+		CookieManager.createDayCookie('homepage_list', true,365);
         document.location.reload();
 	});
 
