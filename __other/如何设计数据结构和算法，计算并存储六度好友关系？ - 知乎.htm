@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://www.zhihu.com/question/21477117 -->
+<html lang="zh-CN" dropeffect="none" class="js no-touch cssanimations cssgradients csstransforms no-mobile"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+
+<title>如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎</title>
+
+<meta name="apple-itunes-app" content="app-id=432274380, app-argument=zhihu://questions/21477117">
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="mobile-agent" content="format=html5;url=http://www.zhihu.com/question/21477117">
+<meta id="znonce" name="znonce" content="f574be63e006444db611fdc0f3471b15">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(57px).png">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(72px).png" sizes="72x72">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(76px).png" sizes="76x76">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(114px).png" sizes="114x114">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(120px).png" sizes="120x120">
+<link rel="apple-touch-icon-precomposed" href="http://static.zhihu.com/static/img/ios/zhihu(152px).png" sizes="152x152">
+
+
+<link rel="shortcut icon" href="http://static.zhihu.com/static/favicon.ico" type="image/x-icon">
+
+<link rel="search" type="application/opensearchdescription+xml" href="http://static.zhihu.com/static/search.xml" title="知乎">
+<link rel="stylesheet" href="http://static.zhihu.com/static/ver/2593086e680559ece0bce9fb1d32875f.z.css">
+
+
+
+<!--[if lt IE 9]>
+<script src="http://static.zhihu.com/static/components/respond/dest/respond.min.js"></script>
+<link href="http://static.zhihu.com/static/components/respond/cross-domain/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/static/components/respond/cross-domain/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/static/components/respond/cross-domain/respond.proxy.js"></script>
+<![endif]-->
+
+<script async="" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/analytics.js"></script><script type="text/javascript" async="" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/ga.js"></script><script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/07d60fc999b2336ce99022af4dd35819.instant.min.js"></script><style type="text/css"></style>
+
+
+
+
+</head>
+
+<body class="zhi">
+<div role="navigation" class="zu-top">
+<div class="zg-wrap" id="zh-top-inner">
+<a href="http://www.zhihu.com/" class="zu-top-link-logo" id="zh-top-link-logo">知乎</a>
+
+<div class="top-nav-profile">
+<a href="http://www.zhihu.com/people/charles-li-70" class="zu-top-nav-userinfo " id=":0" role="button" aria-haspopup="true" aria-activedescendant="">
+<span class="name">charles li</span>
+<img class="avatar" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg">
+<span id="zh-top-nav-new-pm" class="zg-noti-number zu-top-nav-pm-count" style="visibility:hidden" data-count="0">
+
+</span>
+</a>
+<ul class="top-nav-dropdown" id="top-nav-profile-dropdown" aria-labelledby=":0">
+<li>
+<a href="http://www.zhihu.com/people/charles-li-70" tabindex="-1" id=":1">
+<i class="zg-icon zg-icon-dd-home"></i>我的主页
+</a>
+</li>
+
+<li>
+<a href="http://www.zhihu.com/inbox" tabindex="-1" id=":2">
+<i class="zg-icon zg-icon-dd-pm"></i>私信
+<span id="zh-top-nav-pm-count" class="zu-top-nav-pm-count zg-noti-number" style="visibility:hidden" data-count="0">
+
+</span>
+</a>
+</li>
+<li>
+<a href="http://www.zhihu.com/settings" tabindex="-1" id=":3">
+<i class="zg-icon zg-icon-dd-settings"></i>设置
+</a>
+</li>
+<li>
+<a href="http://www.zhihu.com/logout" tabindex="-1" id=":4">
+<i class="zg-icon zg-icon-dd-logout"></i>退出
+</a>
+</li>
+</ul>
+
+</div>
+
+
+<div role="search" id="zh-top-search" class="zu-top-search">
+<form method="GET" action="http://www.zhihu.com/search" id="zh-top-search-form" class="zu-top-search-form form-with-magnify">
+
+<input type="text" class="zu-top-search-input" id="q" name="q" autocomplete="off" value="" placeholder="搜索话题、问题或人..." aria-haspopup="true">
+<input type="hidden" name="type" value="question">
+<label for="q" class="hide-text">知乎搜索</label>
+<button type="submit" class="magnify-button"><i class="icon icon-magnify-q"></i><span class="hide-text">搜索</span></button>
+</form>
+<button class="zu-top-add-question" id="zu-top-add-question">提问</button>
+</div>
+
+
+
+<div id="zg-top-nav" class="zu-top-nav">
+<ul class="zu-top-nav-ul zg-clear">
+
+<li class="zu-top-nav-li " id="zh-top-home-link">
+<a class="zu-top-nav-link" href="http://www.zhihu.com/" id="zh-top-link-home">首页</a>
+</li>
+<li class="top-nav-topic-selector zu-top-nav-li " id="zh-top-nav-item-topic">
+<a class="zu-top-nav-link" href="http://www.zhihu.com/topic" id="top-nav-dd-topic">话题</a>
+
+</li>
+<li class="zu-top-nav-li ">
+<a class="zu-top-nav-link" href="http://www.zhihu.com/explore">发现</a>
+</li>
+
+<li class="top-nav-noti zu-top-nav-li ">
+<a class="zu-top-nav-link" href="javascript:;" id="zh-top-nav-count-wrap" role="button"><span class="mobi-arrow"></span>消息<span id="zh-top-nav-count" class="zu-top-nav-count zg-noti-number" style="display: none;">0</span></a>
+</li>
+
+
+
+</ul>
+<div class="zu-top-nav-live zu-noti7-popup zg-r5px no-hovercard" id="zh-top-nav-live-new" role="popup" tabindex="0">
+<div class="zu-top-nav-live-inner zg-r5px">
+<div class="zu-top-live-icon">&nbsp;</div>
+<div class="zu-home-noti-inner" id="zh-top-nav-live-new-inner">
+<div class="zm-noti7-popup-tab-container clearfix" tabindex="0" role="tablist">
+<button class="zm-noti7-popup-tab-item message" role="tab">
+<span class="icon">消息</span>
+</button>
+<button class="zm-noti7-popup-tab-item user" role="tab">
+<span class="icon">用户</span>
+</button>
+<button class="zm-noti7-popup-tab-item thanks" role="tab">
+<span class="icon">赞同和感谢</span>
+</button>
+</div>
+</div>
+<div class="zm-noti7-frame-border top"></div>
+<div class="zm-noti7-frame">
+<div class="zm-noti7-content zh-scroller" style="position: relative; overflow: hidden;"><div class="zh-scroller-inner" style="height: 100%; width: 150%; overflow: auto;"><div class="zh-scroller-content" style="position: static; display: block; visibility: visible; overflow: hidden; width: 315px; min-height: 100%;">
+<div class="zm-noti7-content-inner">
+<div class="zm-noti7-popup-refresh" style="display:none;">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/spinner2.gif">
+</div>
+<div class="zm-noti7-content-body">
+<div class="zm-noti7-popup-loading">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/noti-loading.gif">
+</div>
+</div>
+</div>
+</div></div><div class="zh-scroller-bar-container" style="position: absolute; right: 1px; top: 0px; height: 98px; width: 6px; border: 1px solid rgb(68, 68, 68); opacity: 0; cursor: default; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; -webkit-user-select: none; background: rgb(102, 102, 102);"><div style="-webkit-user-select: none;"></div></div><div class="zh-scroller-bar" style="position: absolute; right: 2px; top: 2px; opacity: 0.5; width: 6px; border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; cursor: default; -webkit-user-select: none; display: none; background: rgb(0, 0, 0);"></div></div>
+<div class="zm-noti7-content zh-scroller" style="display: none; position: relative; overflow: hidden;"><div class="zh-scroller-inner" style="height: 100%; width: 150%; overflow: auto;"><div class="zh-scroller-content" style="position: static; display: block; visibility: visible; overflow: hidden; width: 315px; min-height: 100%;">
+<div class="zm-noti7-content-inner">
+<div class="zm-noti7-popup-refresh" style="display:none;">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/spinner2.gif">
+</div>
+<div class="zm-noti7-content-body">
+<div class="zm-noti7-popup-loading">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/noti-loading.gif">
+</div>
+</div>
+</div>
+</div></div><div class="zh-scroller-bar-container" style="position: absolute; right: 1px; top: 0px; height: 98px; width: 6px; border: 1px solid rgb(68, 68, 68); opacity: 0; cursor: default; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; -webkit-user-select: none; background: rgb(102, 102, 102);"><div style="-webkit-user-select: none;"></div></div><div class="zh-scroller-bar" style="position: absolute; right: 2px; top: 2px; opacity: 0.5; width: 6px; border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; cursor: default; -webkit-user-select: none; display: none; background: rgb(0, 0, 0);"></div></div>
+<div class="zm-noti7-content zh-scroller" style="display: none; position: relative; overflow: hidden;"><div class="zh-scroller-inner" style="height: 100%; width: 150%; overflow: auto;"><div class="zh-scroller-content" style="position: static; display: block; visibility: visible; overflow: hidden; width: 315px; min-height: 100%;">
+<div class="zm-noti7-content-inner">
+<div class="zm-noti7-popup-refresh" style="display:none;">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/spinner2.gif">
+</div>
+<div class="zm-noti7-content-body">
+<div class="zm-noti7-popup-loading">
+<img class="noti-spinner" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/noti-loading.gif">
+</div>
+</div>
+</div>
+</div></div><div class="zh-scroller-bar-container" style="position: absolute; right: 1px; top: 0px; height: 98px; width: 6px; border: 1px solid rgb(68, 68, 68); opacity: 0; cursor: default; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; -webkit-user-select: none; background: rgb(102, 102, 102);"><div style="-webkit-user-select: none;"></div></div><div class="zh-scroller-bar" style="position: absolute; right: 2px; top: 2px; opacity: 0.5; width: 6px; border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; cursor: default; -webkit-user-select: none; display: none; background: rgb(0, 0, 0);"></div></div>
+</div>
+<div class="zm-noti7-frame-border bottom"></div>
+<div class="zm-noti7-popup-footer">
+<a href="http://www.zhihu.com/notifications" class="zm-noti7-popup-footer-all zg-right">查看全部 »</a>
+<a href="http://www.zhihu.com/settings/notification" class="zm-noti7-popup-footer-set" title="通知设置"><i class="zg-icon zg-icon-settings"></i></a>
+</div>
+</div>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+<div class="zu-global-notify" id="zh-global-message" style="display:none">
+<div class="zg-wrap">
+<div class="zu-global-nitify-inner">
+<a class="zu-global-notify-close" href="javascript:;" title="关闭" name="close">x</a>
+<span class="zu-global-notify-icon"></span>
+<span class="zu-global-notify-msg"></span>
+</div>
+</div>
+</div>
+
+
+
+<div class="zu-global-notify zu-global-notify-info" id="zh-question-redirect-info" style="display:none"></div>
+
+
+<div class="zu-global-notify zu-global-notify-info" id="zh-question-notification-summary" style="display:none;">
+<div class="zg-wrap">
+<div class="zu-global-nitify-inner">
+<span class="zu-global-notify-icon"></span>
+<ul class="zu-question-notify-wrap">
+</ul>
+</div>
+</div>
+</div>
+<div class="zg-wrap zu-main question-page" itemscope="" itemtype="http://schema.org/Question" id="zh-single-question-page" data-urltoken="21477117" role="main">
+<meta itemprop="isTopQuestion" content="false">
+<meta itemprop="visitsCount" content="6827">
+<div class="zu-main-content">
+<div class="zu-main-content-inner with-indention-votebar">
+
+
+<div id="zh-message-container" class="zg-info-message" style="display:none;"></div>
+
+
+
+
+<div class="zm-tag-editor zg-section">
+<div class="zm-tag-editor-labels zg-clear"><a data-tip="t$b$19553510" class="zm-item-tag" href="http://www.zhihu.com/topic/19553510">算法</a><a data-tip="t$b$19580017" class="zm-item-tag" href="http://www.zhihu.com/topic/19580017">六度分隔理论</a><a data-tip="t$b$19591797" class="zm-item-tag" href="http://www.zhihu.com/topic/19591797">数据结构</a><a href="javascript:;" class="zu-edit-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a></div>
+</div>
+<div id="zh-question-title" data-editable="true" class="zm-editable-status-normal">
+
+<h2 class="zm-item-title zm-editable-content">如何设计数据结构和算法，计算并存储六度好友关系？<a href="javascript:;" class="zu-edit-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a></h2>
+</div>
+<div id="zh-question-detail" class="zm-item-rich-text zm-editable-status-normal" data-resourceid="771526" data-action="/question/detail">
+
+<div class="zm-editable-content">假设用户总数是一千万，平均有好友 25 个。如何能够计算任意两个用户是否为六度之内的好友，度数是多少？<br><br>此外，以下要求哪些容易实现，哪些无法实现：<br><br><ul><li>1. 能否快速获取任意两个用户的好友关系度数（最大为六）<br></li><ul><li>1a. 是否能够将度数最大为六的限制任意提高？如计算得到某两个用户的关系度数是 100，两个完全不连通的用户关系度数可定义为正无穷。</li></ul><li>2. 能否存储或快速获取任意两个用户之间的最短路径？<br></li><ul><li>2a. 能否同时存储多条最短路径？（最短距离为 2 时，即为快速获取全部共同好友；最短距离为 3 时，路径数量的上升应该会非常快）</li></ul><li>3. 当用户好友关系发生变化时，是否能增量更新之前的计算结果？抑或全局重新计算的效率比增量更新的效率更高？<br></li><li>4. 「进阶」对于单向好友关系（如关注），六度理论的表述应该是什么？<br></li><ul><li>4a. 如果对于两个关注方向，分别计算关系度数，算法应该如何设计？</li></ul></ul><br>我在其他网站见过<a href="http://www.dewen.org/q/13778/" class=" wrap external" target="_blank" rel="nofollow noreferrer">相似的问题<i class="icon-external"></i></a>，但是没有令人满意的回答，希望可以和大家在这里讨论一下。<br>上面第 4 点中的单向关系可能需要对模型做较大修改，如果需要的话，可以分离出来单独提问。<a href="javascript:;" class="zu-edit-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a></div>
+
+
+</div>
+<div class="zm-item-meta zm-item-comment-el clearfix" id="zh-question-meta-wrap">
+<div class="zm-meta-panel">
+
+<a href="http://www.zhihu.com/question/21477117#" name="report-question" class="report zg-right goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class="toggle-comment meta-item">
+<i class="z-icon-comment"></i>添加评论
+</a>
+<a href="http://www.zhihu.com/question/21477117#" name="share" class="share meta-item">
+<i class="z-icon-share"></i>分享
+</a>
+
+
+<span class="zg-bull">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="invite" class="meta-item">邀请回答</a>
+
+
+
+
+</div>
+<div class="panel-container">
+
+<div class="question-invite-panel" style="display: none;"></div><div class="zm-comment-box" style="display: none;"></div></div>
+</div>
+
+<div class="zh-answers-title clearfix">
+
+<div id="zh-answers-filter" class="answers-sorter">
+
+<span class="lbl">按投票排序</span>
+<a class="lbl" href="http://www.zhihu.com/question/21477117?sort=created">按时间排序</a>
+
+<i class="zg-icon zg-icon-double-arrow"></i>
+</div>
+
+<h3 data-num="6" id="zh-question-answer-num">6 个回答</h3>
+</div>
+<div class="zh-question-answer-summary-wrap zm-item-rich-text" id="zh-question-answer-summary-wrap" style="display:none;">
+<h3>
+<a href="http://www.zhihu.com/question/20014415" target="_blank" class="zg-right zg-link-litblue" style="font-weight:normal">什么是答案总结？</a>
+答案总结</h3>
+<div id="zh-question-answer-summary" class="zg-section zm-editable-status-normal" data-resourceid="771526" data-action="/question/summary">
+
+<div class="zm-editable-content" style="display: none;"><a href="javascript:;" class="zu-edit-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a></div>
+
+</div>
+</div>
+
+<div id="zh-question-answer-wrap" data-pagesize="50" class="zh-question-answer-wrapper navigable" data-widget="navigable" data-navigable-options="{&quot;items&quot;: &quot;&gt;.zm-item-answer&quot;}" data-init="{&quot;params&quot;: {&quot;url_token&quot;: 21477117, &quot;pagesize&quot;: 50, &quot;offset&quot;: 0}, &quot;nodename&quot;: &quot;QuestionAnswerListV2&quot;}" data-fixed-summary="1"><div tabindex="-1" class="zm-item-answer" itemprop="topAnswer" itemscope="" itemtype="http://schema.org/Answer" data-aid="2494374" data-atoken="18362781" data-collapsed="0" data-created="1376491975" data-deleted="0" data-helpful="1" data-isowner="0" data-score="136.126218743">
+<a class="zg-anchor-hidden" name="answer-2494374"></a>
+
+
+<div class="zm-votebar goog-scrollfloater">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">74</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$pb612" class="zm-item-link-avatar" href="http://www.zhihu.com/people/pb612">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8634b469e0570578aefaa50b94254493_s.jpg" class="zm-list-avatar" data-source="http://pic4.zhimg.com/8634b469e0570578aefaa50b94254493_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$pb612" href="http://www.zhihu.com/people/pb612">黄涛</a>，<strong title="产品设计 金融 运动 自然科学" class="zu-question-my-bio">产品设计 金融 运动 自然科学</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info " data-votecount="74">
+
+<span class="voters">
+<span class="user-block"><a data-tip="p$t$wang-jin-peng-75" href="http://www.zhihu.com/people/wang-jin-peng-75" class="zg-link" title="王锦鹏">王锦鹏</a>、</span><span class="user-block"><a data-tip="p$t$jian-zhao-wen" href="http://www.zhihu.com/people/jian-zhao-wen" class="zg-link" title="蹇兆文">蹇兆文</a>、</span><span class="user-block"><a data-tip="p$t$luo-zhi-ren" href="http://www.zhihu.com/people/luo-zhi-ren" class="zg-link" title="罗智仁">罗智仁</a></span>
+</span>
+
+
+<a href="javascript:;" class="more"> 等人赞同</a>
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix">我来抛砖引玉。<br>以下讨论同时适用于无向关系和有向关系。一般社交产品中，主动的关注关系比被动的关注关系对用户更重要，因此以下只考虑主动关注。<br><br>如果用特征矩阵存储用户的关注关系（好友关系表示相互关注，矩阵为对称矩阵）<br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation" alt="\mathrm{A}: A_{ij} = \left\{ \begin{array}{l l}
+  1, &amp; \text{i 关注 j} \\
+  0, &amp; \text{otherwise}
+\end{array} \right ." eeimg="1"><br>则使用逻辑运算求得的矩阵自乘结果就是用户间二度关系的特征矩阵<br>矩阵元素间的乘法为逻辑与运算，元素间的加法为逻辑或运算<br><br>令 D(i,j) 表示用户 i,j 之间关系的度数（距离），再定义 <img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(1)" alt="A^k, B^k" eeimg="1"> 如下<br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(2)" alt="\{ A^k | A^k_{ij} = 1 \text{ 表示 } D(i,j) \leq k \} \\
+\{ B^k | B^k_{ij} = 1 \text{ 表示 } D(i,j) = k \}" eeimg="1"><br>则有<br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(3)" alt="\begin{align}
+A^{k+1} &amp;= A^k \cdot  A^1 \, , (k \geq 1) \\
+B^1 &amp;= A^1 \\
+B^{k+1} &amp;= A^{k+1} - A^{k} = A^k \cdot (A^1 - I) \, , (k \geq 2)
+\end{align}" eeimg="1"><br><br>例子如下：<br>设 N = 6，用户间有双向关注关系 (1,4) (2,4) (2,5) (3,6) (5,6) 表示成特征矩阵即为<br>（用户默认关注自己）<br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(4)" alt="A^1 = \left( \begin{matrix}
+  1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 \\
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\
+  0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1
+\end{matrix} \right)" eeimg="1"><br>则有<br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(5)" alt="A^2 = A^1 \cdot A^1 = \left( \begin{matrix}
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \\
+  0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 1
+\end{matrix} \right) \\
+B^2 = A^2 - A^1 = \left( \begin{matrix}
+  0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+  1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+  0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+\end{matrix} \right)" eeimg="1"><br>所有二度关系有 (1,2) (2,6) (3,5) (4,5)<br><br><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(6)" alt="A^3 = A^2 \cdot A^1 = \left( \begin{matrix}
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \\
+  1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\
+  1 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 1 \\
+  1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 \\
+  0 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1
+\end{matrix} \right) \\
+B^3 = A^3 - A^2 = \left( \begin{matrix}
+  0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 \\
+  1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0
+\end{matrix} \right)" eeimg="1"><br>三度关系有 (1,5) (2,3) (4,6)<br>继续计算得到 <img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(7)" alt="A^4 = (1)_{6\times 6}" eeimg="1"> 所有人都在四度关系内相连通<br><br>对于单向关系，计算是类似的，而且不用考虑矩阵的左乘右乘问题，因为二度好友的一度好友和一度好友的二度好友都是你的三度好友，左乘与右乘是完全等价的。<br><br>对于一千万用户平均关注 25 人的实际问题，只需要一种数据结构，实现<u>稀疏逻辑</u>矩阵的高效存储和矩阵逻辑加法、逻辑乘法、代数减法的高效计算，即可较高效的计算用户间的关系度数。<br>在常用的稀疏矩阵模型(CSR/CSC)基础之上，由于只需要做逻辑运算，数据结构显然有巨大的优化空间。而且用户并非随机关注，一个圈子内的用户会互相关注，也许可以找到合适的矩阵分区方法，简化计算。<br>基于以上说明，比起重新设计数据结构，挑选一个稀疏矩阵模型做优化更可取。这一点在 <a class="member_mention" data-hash="b39df78e4ca09b99211606795f8a1f96" href="http://www.zhihu.com/people/b39df78e4ca09b99211606795f8a1f96" data-tip="p$b$b39df78e4ca09b99211606795f8a1f96">@Adder</a> 之前的回答里也提到了。<br><br>若最多计算到 k=6 则令 <img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(8)" alt="C = 1A^1+2A^2+3A^3+\dotsc+6A^6, C_{ij}" eeimg="1"> 即表示用户 i,j 之间的距离<br>C 仍然是一个稀疏矩阵（但不再是逻辑矩阵）存储 C 之后即可实现用户关系度数的快速查询<br>如果让 k 进一步提高，C 会越来越稠密，主要的瓶颈应该是存储，计算的代价也会增加。希望能有高手给出详细的分析。<br><br>然后是 2，计算用户间的关系路径<br>如果存储，当用户间的距离较大时，空间代价极高，不可取。即使只对距离为 2 的用户预计算并存储共同好友，代价目测也比较高，不易实现。<br>我特地看了一下 LinkedIn，访问了一些明显和我没有交集，关系度数不会太低的用户，但在首次访问对方页面时 LinkedIn 就显示出了我们的关系路径，页面加载只要几百 ms，也没有 Ajax。如下图<br><noscript>&lt;img src="http://pic1.zhimg.com/3173dcdde2045f1588e4fbf7db236650_b.jpg" data-rawwidth="884" data-rawheight="446" class="origin_image zh-lightbox-thumb" width="884" data-original="http://pic1.zhimg.com/3173dcdde2045f1588e4fbf7db236650_r.jpg"&gt;</noscript><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/3173dcdde2045f1588e4fbf7db236650_b.jpg" data-rawwidth="884" data-rawheight="446" class="origin_image zh-lightbox-thumb lazy" width="884" data-original="http://pic1.zhimg.com/3173dcdde2045f1588e4fbf7db236650_r.jpg" data-actualsrc="http://pic1.zhimg.com/3173dcdde2045f1588e4fbf7db236650_b.jpg" style="width: 584px; height: 294.642533936652px; display: block;"><br>我想了一下，要实现这个效果，还是有可能的。<br>如前面叙述，现在我们已经有了快速获取任意两个用户间距离的方法（除非用户之间的距离太大），所以在我的好友中找到所有到目标用户的距离是我到目标用户距离减一的人，即可显示出上图中的结果。<br><br>如果只需要找一条最短路径，每次从好友中取出到目标用户距离比我少一的人，几步之内就可以得出结果。这个计算应该无法在线实时进行，但是耗时应该不会太长。前提还是大部分用户之间的距离已经事先经过计算和存储。<br><br>所以为了实现快速获取最短路径的功能，在第 1 步的稀疏矩阵模型基础上，除了单个元素的高效读取和高效的矩阵运算之外，还需要能够高效地基于行/列进行检索。<br><br>接下来是 3<br>当新的关注关系建立时，可以增量更新受影响的节点，但是原有关系删除时，则无法高效的增量更新。同时考虑到每个新关系建立时，需要计算和修改的关系量都会很大（<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/equation(9)" alt="10^3\sim 10^5?" eeimg="1">），增量更新也许得不偿失。<br><br>最后是 4<br>前文说明中的所有矩阵运算，对于无向关系和有向关系都是适用的。只要选定一种关系方向作为「关注」，所有的讨论都直接成立。上面的运算中应该没有能用到矩阵对称性的地方，所以计算复杂度也不会增加。<br>而且如果不做增量更新，不需要额外计算反向关系。<br><br>以上为抛砖，并没有真正解决这个问题的核心，也就是支持逻辑运算的系数矩阵的数据结构设计，也无法确定这是不是正确的方向。希望能引得玉来。
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="2494374-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel goog-scrollfloater focusin">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link last_updated meta-item" data-tip="s$t$发布于 2013-08-14" target="_blank" href="http://www.zhihu.com/question/21477117/answer/18362781">编辑于 2013-08-14</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>收起评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+<div class="zm-comment-box" data-count="7">
+<i class="icon icon-spike zm-comment-bubble" style="display: inline; left: 145.734375px;"></i>
+<a class="zg-anchor-hidden" name="comment-0"></a>
+<div class="zm-comment-list">
+<div class="zm-item-comment" data-id="3460883">
+<a class="zg-anchor-hidden" name="comment-3460883"></a>
+<a title="Adder" data-tip="p$t$nordom0x50" class="zm-item-link-avatar" href="http://www.zhihu.com/people/nordom0x50">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/a837b4fa8f8ef2415aa9eee27ff27c23_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$nordom0x50" href="http://www.zhihu.com/people/nordom0x50" class="zg-link" title="Adder">Adder</a>
+
+</div>
+<div class="zm-comment-content">
+”大部分用户之间的距离已经计算之后“的矩阵可能不再是稀疏的了？
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-15</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  nil" data-tip="s$r$0 人觉得这个很赞">
+<em>0</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="3461052">
+<a class="zg-anchor-hidden" name="comment-3461052"></a>
+<a title="黄涛" data-tip="p$t$pb612" class="zm-item-link-avatar" href="http://www.zhihu.com/people/pb612">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8634b469e0570578aefaa50b94254493_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$pb612" href="http://www.zhihu.com/people/pb612" class="zg-link" title="黄涛">黄涛</a><span class="desc">（作者）</span>
+<span class="desc">回复 </span><a data-tip="p$t$nordom0x50" href="http://www.zhihu.com/people/nordom0x50" class="zg-link" title="Adder">Adder</a>
+</div>
+<div class="zm-comment-content">
+这个确实需要实际计算后才能知道了。我的判断是，如果只计算到 k=6，应该还是比较稀疏的。此时要允许，对大量用户无法判断他们间的度数和路径。<br>LinkedIn 做到今天有两亿多用户，猜测要用分布式的方法来计算和存储用户间的高度数关系数据。
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-15</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  nil" data-tip="s$r$0 人觉得这个很赞">
+<em>0</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="3461133">
+<a class="zg-anchor-hidden" name="comment-3461133"></a>
+<a title="黄涛" data-tip="p$t$pb612" class="zm-item-link-avatar" href="http://www.zhihu.com/people/pb612">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8634b469e0570578aefaa50b94254493_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$pb612" href="http://www.zhihu.com/people/pb612" class="zg-link" title="黄涛">黄涛</a><span class="desc">（作者）</span>
+<span class="desc">回复 </span><a data-tip="p$t$nordom0x50" href="http://www.zhihu.com/people/nordom0x50" class="zg-link" title="Adder">Adder</a>
+</div>
+<div class="zm-comment-content">
+需要根据具体产品形态，选择一个合适的 k，在计算存储成本和效果之间找平衡
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-15</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  " data-tip="s$r$2 人觉得这个很赞">
+<em>2</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="3493715">
+<a class="zg-anchor-hidden" name="comment-3493715"></a>
+<a title="Kenneth" data-tip="p$t$kennethtse" class="zm-item-link-avatar" href="http://www.zhihu.com/people/kennethtse">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8397fb443fca174cb2445f491649591b_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$kennethtse" href="http://www.zhihu.com/people/kennethtse" class="zg-link" title="Kenneth">Kenneth</a>
+<span class="desc">回复 </span><a data-tip="p$t$pb612" href="http://www.zhihu.com/people/pb612" class="zg-link" title="黄涛">黄涛</a><span class="desc">（作者）</span>
+</div>
+<div class="zm-comment-content">
+给你个参考，我在400w的节点数据(均出度为不到5)上跑simrank，复杂度递增是一模一样的，到iteration 8的时候中间数据是400tb
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-18</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  " data-tip="s$r$1 人觉得这个很赞">
+<em>1</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="3493732">
+<a class="zg-anchor-hidden" name="comment-3493732"></a>
+<a title="Kenneth" data-tip="p$t$kennethtse" class="zm-item-link-avatar" href="http://www.zhihu.com/people/kennethtse">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8397fb443fca174cb2445f491649591b_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$kennethtse" href="http://www.zhihu.com/people/kennethtse" class="zg-link" title="Kenneth">Kenneth</a>
+
+</div>
+<div class="zm-comment-content">
+这种问题通常不是这么解决的，真正应用的时候。通常求的是次优解和热门路径。
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-18</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  " data-tip="s$r$1 人觉得这个很赞">
+<em>1</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="3520995">
+<a class="zg-anchor-hidden" name="comment-3520995"></a>
+<a title="chifung cheung" data-tip="p$t$chifung-cheung" class="zm-item-link-avatar" href="http://www.zhihu.com/people/chifung-cheung">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/c48dd0b3f_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$chifung-cheung" href="http://www.zhihu.com/people/chifung-cheung" class="zg-link" title="chifung cheung">chifung cheung</a>
+
+</div>
+<div class="zm-comment-content">
+同意楼上的，应该使用启发式算的，而且利用的知识肯定不只一个没有权重的无向图这么简单。比如说李开复人脉广，随便找个国外大牛都是他三度内好友，那我搜索时肯定先搜你跟李开复的距离<br>10,000,000的矩阵太大了，运算虽然简单但是order大。<br><br>另外我想说每个人认识25个人如果不重复的话25^6就得上两亿了。再考虑到有小圈子这种东西假设有40%重复估计广度搜索所以六度节点大概就在25*((25*60%)^5)~=2千万左右，感觉也能覆盖你所有用户了。
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-08-20</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  " data-tip="s$r$1 人觉得这个很赞">
+<em>1</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+
+<div class="zm-item-comment" data-id="50971020">
+<a class="zg-anchor-hidden" name="comment-50971020"></a>
+<a title="未知" data-tip="p$t$wei-zhi-9" class="zm-item-link-avatar" href="http://www.zhihu.com/people/wei-zhi-9">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-item-img-avatar">
+</a>
+<div class="zm-comment-content-wrap">
+<div class="zm-comment-hd">
+<a data-tip="p$t$wei-zhi-9" href="http://www.zhihu.com/people/wei-zhi-9" class="zg-link" title="未知">未知</a>
+
+</div>
+<div class="zm-comment-content">
+有没有哪本书是讲这种计算关系的算法的？很想深入了解
+</div>
+<div class="zm-comment-ft">
+<span class="date">2013-11-24</span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="reply zm-comment-op-link" name="reply_comment">
+<i class="zg-icon zg-icon-comment-reply"></i>回复</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="like zm-comment-op-link " name="like_comment">
+<i class="zg-icon zg-icon-comment-like"></i>赞</a>
+<span class="like-num  nil" data-tip="s$r$0 人觉得这个很赞">
+<em>0</em> <span>赞</span></span>
+
+
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="report zm-comment-op-link needsfocus goog-inline-block goog-menu-button" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon z-icon-no-help"></i>举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+</div>
+</div>
+</div>
+</div>
+<div class="zm-comment-form zm-comment-box-ft">
+<div class="zm-comment-editable editable" aria-label="写下你的评论…" contenteditable="true"><p style="color:#999">写下你的评论…</p></div>
+<div class="zm-command zg-clear">
+<a href="http://www.zhihu.com/question/21477117#" name="addnew" class="zg-right zg-btn-blue">评论</a>
+<a href="http://www.zhihu.com/question/21477117#" name="closeform" class="zm-command-cancel">取消</a>
+</div>
+<div class="zm-comment-info">
+
+</div>
+</div>
+</div></div>
+</div><div tabindex="-1" class="zm-item-answer " itemscope="" itemtype="http://schema.org/Answer" data-aid="5895480" data-atoken="26461825" data-collapsed="0" data-created="1401953930" data-deleted="0" data-helpful="1" data-isowner="0" data-score="32.1244076381">
+<a class="zg-anchor-hidden" name="answer-5895480"></a>
+
+
+<div class="zm-votebar goog-scrollfloater">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">16</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$cydu" class="zm-item-link-avatar" href="http://www.zhihu.com/people/cydu">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/65d7ead8c_s.jpg" class="zm-list-avatar" data-source="http://pic1.zhimg.com/65d7ead8c_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$cydu" href="http://www.zhihu.com/people/cydu">杜传赢</a>，<strong title="微博系统研发技术专家" class="zu-question-my-bio">微博系统研发技术专家</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info " data-votecount="16">
+
+<span class="voters">
+<span class="user-block"><a data-tip="p$b$lyroe-chan" href="http://www.zhihu.com/people/lyroe-chan" class="zg-link" data-original_title="Lyroe Chan">Lyroe Chan</a>、</span><span class="user-block"><a data-tip="p$t$xiao-en-yan" href="http://www.zhihu.com/people/xiao-en-yan" class="zg-link" title="肖恩言">肖恩言</a>、</span><span class="user-block"><a data-tip="p$t$wang-zi-ran-73" href="http://www.zhihu.com/people/wang-zi-ran-73" class="zg-link" title="王子然">王子然</a></span>
+</span>
+
+
+<a href="javascript:;" class="more"> 等人赞同</a>
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix">这是一个非常有趣的问题, 现实工程中也被人实现较多, 其实不是那么的难! <br><br>最关键的优化点其实是:  <br><br>1. 双向广搜, 把 六度 直接降为 三度, 计算量一下就减化非常非常的多了, 虽然其实还是指数级的复杂度. <br>2. 缓存 二度/三度 好友的结果, 用空间换时间<br><br><ul><li>1. 能否快速获取任意两个用户的好友关系度数（最大为六）</li></ul>能, 假设最坏的情况, 即 两个用户刚好是 六度, (如果是三度, 四度, 更容易算出来): <br><br>一度好友是 25个, 那三度好友最多是:  15625 个好友,  由于现实数据一定有很多的交集, 可能最终是 8000, 甚至不到5000个好友.  两个用户都先算出他的 5000 个三度好友, 然后相交一下, 看有无交集? <br><br>如果有交集, 那就是 六度好友(其实也可能是 四度, 甚至 二度好友, 所以要先把这种情况算出来), 如果没有, 那一定不是 六度好友. <br><br>如何求 三度好友?  对于 1kw 用户来说, 其实预计算 缓存三度的结果也挺简单的, 数据量没有多大. <br>5000个用户id, 压缩压缩10K肯定能搞定, 乘以1kw, 也就是 不到100GB的数据. <br><br>按用户去做hash存储, 大多数据用不到, 缓存命中率能很高, 真这个数据规模的话, 单机已经基本能够做到了 准实时的查询了(50ms以内返回).  <br><br>预处理的时候, 确实需要一些时间. <br><br><ul><li>1a. 是否能够将度数最大为六的限制任意提高？如计算得到某两个用户的关系度数是 100，两个完全不连通的用户关系度数可定义为正无穷。</li></ul><br>这个我的理解是不可能的, 好在这是指数的增长, 所以现实中, 超过 6度, 到 8度, 甚至更高的几乎完全没有意义, 几乎一定互联!  允许一定误差的话, 不计算, 直接告诉互联就OK了! <br><br>特殊场景, 或者 刻意构造数据是有可能的, 但是类似 孤岛 数据, 链式数据... 这个可以特殊处理, 一般线上系统就是舍弃这种精度了.  <br><br><ul><li>2. 能否存储或快速获取任意两个用户之间的最短路径？<br></li></ul>能, 类似 1.  的解法, 还是 双向广搜, 记路径, 存储空间会适当增加, 或者得到中间人后, 重新算到每个中间人的最短路径, 得到最终的最短路径.  计算时间和存储空间肯定要增加不少.  但是量级应该不变! <br><br><ul><li>3. 当用户好友关系发生变化时，是否能增量更新之前的计算结果？抑或全局重新计算的效率比增量更新的效率更高？</li></ul>前面的方案是 缓存一度, 二度, 甚至是直接缓存三度的关系, 所以一条关系改变, 修改量会放大几千倍,  对于修改量不是特别夸张的, 也能接受, 否则的话, 不如 定期 重新计算效率高. <br><br>工程中更多的折衷后的结果很可能是:  缓存二度 的好友关系, 三度好友实时算. 好友关系变化时, 更新一度好友列表的同时, 也立即更新二度好友.  <br><ul><li>4. 「进阶」对于单向好友关系（如关注），六度理论的表述应该是什么？</li></ul>这个更多的像是一个 环, 就不能直接用 前面说的 双向广搜的优化了.  因为他依赖于两边关系是一样的. 但是适当变形, 其实也能做, 就是  A 关注的人列表  和  B的 粉丝列表 去算...
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="5895480-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link last_updated meta-item" data-tip="s$t$发布于 2014-06-05" target="_blank" href="http://www.zhihu.com/question/21477117/answer/26461825">编辑于 2014-06-05</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>添加评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+</div>
+</div><div tabindex="-1" class="zm-item-answer " itemscope="" itemtype="http://schema.org/Answer" data-aid="2489784" data-atoken="18351553" data-collapsed="0" data-created="1376454316" data-deleted="0" data-helpful="1" data-isowner="0" data-score="2.12622176501">
+<a class="zg-anchor-hidden" name="answer-2489784"></a>
+
+
+<div class="zm-votebar goog-scrollfloater">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">1</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$nordom0x50" class="zm-item-link-avatar" href="http://www.zhihu.com/people/nordom0x50">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/a837b4fa8f8ef2415aa9eee27ff27c23_s.jpg" class="zm-list-avatar" data-source="http://pic4.zhimg.com/a837b4fa8f8ef2415aa9eee27ff27c23_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$nordom0x50" href="http://www.zhihu.com/people/nordom0x50">Adder</a>，<strong title="加和" class="zu-question-my-bio">加和</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info " data-votecount="1">
+
+<span class="voters">
+<span class="user-block"><a data-tip="p$t$pb612" href="http://www.zhihu.com/people/pb612" class="zg-link" title="黄涛">黄涛</a></span>
+</span>
+
+
+<span>赞同</span>
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix">路径长度限制的比较短时还是比较可做的<br>1：对于长度不超过六的情况，求出每个点三步可达的点集作成有序表，每个点度期望为25的话，表的大小只有25^3，比较两个有序表是否有共同元素可以在线性时间内完成。（如果关系是有向边，除了该点三步可达的点集，还要将边反向求一个三步可达该点的点集）<br>2：存储应该是不可行的，即时计算可能用A*比较合适，具体可以先用问题1存储的点集尝试建立一个非最优的初始解，迭代一下最短路径长度的上限大概会好些。<br>3：与变化的关系两端的点不存在三步可达关系的点集不需要更新。<br>4：六度理论的表述不清楚，不过这种情况下期望的步数似乎比十二少吧？<br>—————————————————————————————————————————————<br>似乎可以查阅一下复杂网络的相关资料
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="2489784-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link last_updated meta-item" data-tip="s$t$发布于 2013-08-14" target="_blank" href="http://www.zhihu.com/question/21477117/answer/18351553">编辑于 2013-08-14</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>3 条评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+</div>
+</div><div tabindex="-1" class="zm-item-answer " itemscope="" itemtype="http://schema.org/Answer" data-aid="2490885" data-atoken="18354285" data-collapsed="0" data-created="1376462741" data-deleted="0" data-helpful="1" data-isowner="0" data-score="-4.87377879077">
+<a class="zg-anchor-hidden" name="answer-2490885"></a>
+
+
+<div class="zm-votebar">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">0</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$richardhly" class="zm-item-link-avatar" href="http://www.zhihu.com/people/richardhly">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/9c04225de_s.jpg" class="zm-list-avatar" data-source="http://pic3.zhimg.com/9c04225de_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$richardhly" href="http://www.zhihu.com/people/richardhly">和林跃</a>，<strong title="码畜~~~~" class="zu-question-my-bio">码畜~~~~</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info empty" data-votecount="0">
+
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix">1 建立无向图，连线表示有关系，点表示每个用户。 出于存储空间节省的考虑，使用连接表。 执行宽度优先搜索即可，或迭代加深搜索。<br>2 估计空间撑不住，如果提前存了各个用户之间的关系，1kw * 1kw太大了<br>3 可以，参考spfa算法吧，这个具体怎么做还是要设计。<br>4 用有向图应该可以了吧？
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="2490885-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link last_updated meta-item" data-tip="s$t$发布于 2013-08-14" target="_blank" href="http://www.zhihu.com/question/21477117/answer/18354285">编辑于 2013-08-14</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>添加评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+</div>
+</div><div tabindex="-1" class="zm-item-answer " itemscope="" itemtype="http://schema.org/Answer" data-aid="5896345" data-atoken="26463917" data-collapsed="0" data-created="1401956700" data-deleted="0" data-helpful="1" data-isowner="0" data-score="0.124407504243">
+<a class="zg-anchor-hidden" name="answer-5896345"></a>
+
+
+<div class="zm-votebar">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">0</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$sibelius" class="zm-item-link-avatar" href="http://www.zhihu.com/people/sibelius">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-list-avatar" data-source="http://pic1.zhimg.com/da8e974dc_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$sibelius" href="http://www.zhihu.com/people/sibelius">sibelius</a>，<strong title="茫茫人海一个小书童" class="zu-question-my-bio">茫茫人海一个小书童</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info empty" data-votecount="0">
+
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix">传赢分析得很全面了，在纯算法上这个问题没有难度了八（因为可以有很多近似方法，不需要实时计算，圈子结构微观上几乎是稳定的，否则就是姜粉哈哈）。挑战在于工程上，微博提供类似功能的API每秒的调用次数可能是5000W/s，都要保证50ms的SLA，所以用redis实现了多级cache，再者 地理/ISP上也是分布的，为了保证健壮性还有更多更多考虑。。我臆测下可能有70%的代码是这方面的。。应该让daoru和企盼说说这部分
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="5896345-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link meta-item" target="_blank" href="http://www.zhihu.com/question/21477117/answer/26463917">发布于 2014-06-05</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>添加评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+</div>
+</div><div tabindex="-1" class="zm-item-answer " itemscope="" itemtype="http://schema.org/Answer" data-aid="2503440" data-atoken="18384524" data-collapsed="0" data-created="1376601306" data-deleted="0" data-helpful="1" data-isowner="0" data-score="2.12620978681">
+<a class="zg-anchor-hidden" name="answer-2503440"></a>
+
+
+<div class="zm-votebar">
+<button class="up" aria-pressed="false" title="赞同">
+<i class="icon vote-arrow"></i>
+<span class="label">赞同</span>
+<span class="count">2</span>
+</button>
+<button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+<i class="icon vote-arrow"></i>
+<span class="label">反对，不会显示你的姓名</span>
+</button>
+</div>
+
+
+<div class="answer-head">
+<div class="zm-item-answer-author-info">
+<h3 class="zm-item-answer-author-wrap">
+
+
+<a data-tip="p$t$deng-jie-44" class="zm-item-link-avatar" href="http://www.zhihu.com/people/deng-jie-44">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-list-avatar" data-source="http://pic1.zhimg.com/da8e974dc_s.jpg">
+</a>
+
+
+
+<a data-tip="p$t$deng-jie-44" href="http://www.zhihu.com/people/deng-jie-44">邓杰</a>，<strong title="网络工程师" class="zu-question-my-bio">网络工程师</strong>
+
+</h3>
+<a href="javascript:;" name="collapse" class="collapse meta-item zg-right"><i class="z-icon-fold"></i>收起</a>
+</div>
+<div class="zm-item-vote-info " data-votecount="2">
+
+<span class="voters">
+<span class="user-block"><a data-tip="p$t$fan-qie-50" href="http://www.zhihu.com/people/fan-qie-50" class="zg-link" title="番茄">番茄</a>、</span><span class="user-block"><a data-tip="p$t$zhu-xiao-nian" href="http://www.zhihu.com/people/zhu-xiao-nian" class="zg-link" title="朱小年">朱小年</a></span>
+</span>
+
+
+<span>赞同</span>
+
+
+</div>
+</div>
+<div class="zm-item-rich-text" data-resourceid="771526" data-action="/answer/content">
+
+<div class=" zm-editable-content clearfix"><a href="http://tech.qq.com/a/20120322/000423.htm" class=" wrap external" target="_blank" rel="nofollow noreferrer">QQ产品团队解读QQ圈子：打破社交顿巴数魔咒<i class="icon-external"></i></a><br>".......只有大部分圈子成员对某一个圈子成员都使用严格相同的备注名，这个备注名才会被聚合出来。而且这个备注名也仅仅只展现给这个圈子中的核心成员……"<br>1，既然是通过少部分核心节点链接的，那就用链表好了吧。<br>2，为了限制搜索量，将用户预先按照来源（像人人那样的学校？地区？单位？）排序好。
+
+
+</div>
+
+</div>
+<a class="zg-anchor-hidden ac" name="2503440-comment"></a>
+<div class="zm-item-meta zm-item-comment-el answer-actions clearfix">
+<div class="zm-meta-panel">
+
+<span class="answer-date-link-wrap">
+<a class="answer-date-link meta-item" target="_blank" href="http://www.zhihu.com/question/21477117/answer/18384524">发布于 2013-08-16</a>
+</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="addcomment" class=" meta-item toggle-comment">
+<i class="z-icon-comment"></i>添加评论</a>
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="thanks"><i class="z-icon-thank"></i>感谢</a>
+
+
+
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="share">
+<i class="z-icon-share"></i>分享</a>
+<a href="http://www.zhihu.com/question/21477117#" class="meta-item zu-autohide" name="favo">
+<i class="z-icon-collect"></i>收藏</a>
+
+
+
+
+<span class="zg-bull zu-autohide">•</span>
+
+<a href="http://www.zhihu.com/question/21477117#" name="nohelp" class="meta-item zu-autohide">没有帮助</a>
+
+<span class="zg-bull zu-autohide">•</span>
+<a href="http://www.zhihu.com/question/21477117#" name="report" class="meta-item zu-autohide goog-inline-block goog-menu-button" aria-expanded="false" role="button" style="-webkit-user-select: none;" tabindex="0" aria-haspopup="true"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption">举报</div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></a>
+
+
+
+<span class="copyright zu-autohide"></span>
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div id="zh-question-collapsed-link" class="zu-question-collap-title" style="display:">
+<a href="javascript:;" name="expand" class="zg-link-gray" id="zh-question-collapsed-switcher">
+<span id="zh-question-collapsed-num">3</span> 个回答被折叠
+</a>
+（<a target="_blank" href="http://www.zhihu.com/question/20120168" class="zg-link-gray">为什么？</a>）
+</div>
+<div id="zh-question-collapsed-wrap" class="zh-question-answer-wrapper" style="display:none"></div>
+<a name="draft"></a>
+<div id="zh-question-answer-form-wrap" class="zh-question-answer-form-wrap">
+<div class="zm-editable-tip zu-answer-form-disabled-wrap" style="display: none;"></div>
+<div class="zm-editable-content" style="display: none;"><a href="javascript:;" class="zu-edit-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a></div><div class="zm-editable-editor-wrap" style=""><div class="zh-answer-form clearfix"><a href="http://www.zhihu.com/people/charles-li-70" title="charles li" class="zm-item-link-avatar" data-tip="p$t$charles-li-70"><img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-list-avatar"></a><div><div class="zu-answer-form-title"><a href="http://www.zhihu.com/people/charles-li-70" title="charles li" data-tip="p$t$charles-li-70">charles li</a><span>，初到上海呢~<a name="edit_bio" class="zu-edit-button" href="javascript:;"><i class="zu-edit-button-icon"></i>修改话题经验</a></span></div></div></div><div class="zm-editable-editor-outer"><div class="zm-editable-toolbar-container goog-scrollfloater"><div class="goog-toolbar goog-toolbar-horizontal" role="toolbar" tabindex="-1" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button" title="写作模式" role="button" id="toggleFullScreen" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-max" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="粗体 (ctrl+b)" aria-pressed="false" role="button" id="+bold" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-bold" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="斜体 (ctrl+i)" aria-pressed="false" role="button" id="+italic" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-italic" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="下划线 (ctrl+u)" aria-pressed="false" role="button" id="+underline" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-underline" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-toolbar-separator goog-inline-block" role="separator" id=":12" style="-webkit-user-select: none;">&nbsp;</div><div class="goog-inline-block goog-toolbar-button" title="引用内容" aria-pressed="false" role="button" id="+blockquote" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-blockquote" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="插入代码" aria-pressed="false" role="button" id="+code" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-code" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="有序列表" aria-pressed="false" role="button" id="+insertOrderedList" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-insertOrderedList" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="无序列表" aria-pressed="false" role="button" id="+insertUnorderedList" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-insertUnorderedList" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="插入公式" role="button" id="+equation" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-equation" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-toolbar-separator goog-inline-block" role="separator" id=":13" style="-webkit-user-select: none;">&nbsp;</div><div class="goog-inline-block goog-toolbar-button" title="插入图片" role="button" id="image" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-image" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-inline-block goog-toolbar-button" title="插入视频" role="button" id="video" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-video" style="-webkit-user-select: none;"></div></div></div></div><div class="goog-toolbar-separator goog-inline-block" role="separator" id=":14" style="-webkit-user-select: none;">&nbsp;</div><div class="goog-inline-block goog-toolbar-button" title="清除格式" role="button" id="+removeFormat" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-outer-box" style="-webkit-user-select: none;"><div class="goog-inline-block goog-toolbar-button-inner-box" style="-webkit-user-select: none;"><div class="tr-icon tr-removeFormat" style="-webkit-user-select: none;"></div></div></div></div><div class="tr-spinner spinner-gray" style="display: none;"></div></div></div><div class="zm-editable-editor-field-wrap"><div id="mock:11" class="zm-editable-editor-field-element editable" g_editable="true" contenteditable="true" style="font-style: italic;"><p><span style="font-style: normal;color: #999;">写回答…</span></p></div><div class="editable-dropzone"><div class="row"><div class="cell"><div>拖拽至此处上传</div></div></div></div></div><div class="mention-popup" style="display: none;"><div class="writing-bg"><input aria-haspopup="true" autocomplete="off"></div><div class="tip">想用 @ 提到谁？</div></div></div><div class="zm-command clearfix"><div class="draft-controls zg-left"><span class="draft-saved-info" style="display: none;"><a class="draft-clear-button goog-inline-block" href="http://www.zhihu.com/question/21477117#" data-tip="s$b$删除草稿"><i class="zg-icon zg-icon-bin"></i><span class="hide-text">清除草稿</span></a><span class="draft-saved-time"></span></span></div><span class=""><label style="cursor: pointer; -webkit-user-select: none;"><input name="anno-checkbox" type="checkbox" style="-webkit-user-select: none;">匿名</label> <a class="submit-button zg-btn-blue" name="save" href="javascript:;">发布回答</a></span></div></div>
+</div>
+
+<div id="answer-my-question-tip" style="display:none;margin-top:10px;">
+<h4>感谢在知乎写下对他人困惑的思考，你在知乎的第一个回答已成功提交。</h4>
+每位用户提交的第一个回答会进入「<a href="http://www.zhihu.com/debuts/">首场秀</a>」页面。只要你的回答足够精彩，很可能将一举成为社区的焦点哦。<br>
+用户通过点击「赞同」/「反对」按钮（在每个回答的左侧）来筛选高质量内容，使得有价值的回答的排序更靠前。尽可能提供详细的解释和说明的回答对他人更有帮助。<br>
+在知乎，认真的人才能赢。问题有千千万万，试着探索哪些将构建新的你。
+</div>
+
+
+
+<!-- end of content -->
+</div>
+</div>
+<div class="zu-main-sidebar">
+
+
+
+
+<div class="zm-side-section">
+<div class="zm-side-section-inner" id="zh-question-side-header-wrap">
+<button data-follow="q:m:button" class="follow-button zg-follow zg-btn-green" data-id="771526">关注问题</button>
+
+<div class="zg-btn-white goog-inline-block goog-menu-button" id="zh-question-operation-menu" aria-expanded="false" role="button" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;"><div class="goog-inline-block goog-menu-button-outer-box"><div class="goog-inline-block goog-menu-button-inner-box"><div class="goog-inline-block goog-menu-button-caption"><i class="zg-icon-dropdown-menu zg-icon"></i><b class="hide-text">设置</b></div><div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div></div></div>
+
+<div class="zh-question-followers-sidebar">
+<div class="zg-gray-normal">
+
+<a href="http://www.zhihu.com/question/21477117/followers"><strong>632</strong></a>
+人关注该问题
+
+</div>
+
+<div class="list zu-small-avatar-list zg-clear">
+
+<a data-tip="p$b$pb612" class="zm-item-link-avatar" href="http://www.zhihu.com/people/pb612" data-original_title="黄涛">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8634b469e0570578aefaa50b94254493_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a data-tip="p$b$shen" class="zm-item-link-avatar" href="http://www.zhihu.com/people/shen" data-original_title="李申申">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/e14d48805_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="曾智升" data-tip="p$t$ceng-zhi-sheng" class="zm-item-link-avatar" href="http://www.zhihu.com/people/ceng-zhi-sheng">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/487d2871096f33dbb35d4bb6518b0681_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="饶培泽" data-tip="p$t$rao-pei-ze" class="zm-item-link-avatar" href="http://www.zhihu.com/people/rao-pei-ze">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/c57b69ecb99cb64474ac26ff26a75462_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="王王" data-tip="p$t$wang-wang-1-46" class="zm-item-link-avatar" href="http://www.zhihu.com/people/wang-wang-1-46">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/aa02b6a14_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="安心远" data-tip="p$t$an-xin-yuan-63" class="zm-item-link-avatar" href="http://www.zhihu.com/people/an-xin-yuan-63">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/f55152be9bfb8134fd432ae65f05e2b8_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="代林" data-tip="p$t$dailin23" class="zm-item-link-avatar" href="http://www.zhihu.com/people/dailin23">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/6a50c024d_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="雷雨" data-tip="p$t$sean_lei" class="zm-item-link-avatar" href="http://www.zhihu.com/people/sean_lei">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/7a33f762f_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="李浩然" data-tip="p$t$idontwantit" class="zm-item-link-avatar" href="http://www.zhihu.com/people/idontwantit">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="艮离" data-tip="p$t$west-lake-singer" class="zm-item-link-avatar" href="http://www.zhihu.com/people/west-lake-singer">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/bcb1a1372_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="Muffin Yep" data-tip="p$t$muffin-yep" class="zm-item-link-avatar" href="http://www.zhihu.com/people/muffin-yep">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="王珏" data-tip="p$t$wang-jue-81" class="zm-item-link-avatar" href="http://www.zhihu.com/people/wang-jue-81">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/a1ad2869c24260b1aa88241c8d2ff20d_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="李荣蔚" data-tip="p$t$lirongwei" class="zm-item-link-avatar" href="http://www.zhihu.com/people/lirongwei">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/da8e974dc_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="酸性沼泽软泥怪" data-tip="p$t$liangjiaxing" class="zm-item-link-avatar" href="http://www.zhihu.com/people/liangjiaxing">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8b88f062a_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="isfish" data-tip="p$t$isfish" class="zm-item-link-avatar" href="http://www.zhihu.com/people/isfish">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/25d87b355_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="王振民" data-tip="p$t$wzm1990" class="zm-item-link-avatar" href="http://www.zhihu.com/people/wzm1990">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/7c88a8466c70814fe5cb0d4827a5ee24_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="周舜" data-tip="p$t$zhou-shun-91" class="zm-item-link-avatar" href="http://www.zhihu.com/people/zhou-shun-91">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/f1b480935_s.jpg" class="zm-item-img-avatar">
+</a>
+
+<a title="Lu Frank" data-tip="p$t$franklu" class="zm-item-link-avatar" href="http://www.zhihu.com/people/franklu">
+<img src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/9b81322ab_s.jpg" class="zm-item-img-avatar">
+</a>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="shameimaru-placeholder" data-class="QuestionUpShameimaruV2" data-params="{&quot;token&quot;:21477117}"></div>
+<div class="zm-side-section">
+<div class="zm-side-section-inner">
+<div id="zh-question-related-questions" class="zh-question-related-questions clearfix">
+
+<h3>相关问题</h3>
+<ul itemprop="relatedQuestion" itemscope="" itemtype="http://schema.org/ItemList">
+
+<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/Question"><a class="question_link" href="http://www.zhihu.com/question/20066988">如何将数据结构和算法应用到实际之中？</a> <span class="num">10 个回答</span><meta itemprop="followerCount" content="304"></li>
+
+<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/Question"><a class="question_link" href="http://www.zhihu.com/question/20176446">数据结构与算法中，树一般会应用在哪些方面？为什么？</a> <span class="num">7 个回答</span><meta itemprop="followerCount" content="50"></li>
+
+<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/Question"><a class="question_link" href="http://www.zhihu.com/question/19763318">国内的《数据结构》与麻省开设的《算法导论》相比哪个更好？</a> <span class="num">3 个回答</span><meta itemprop="followerCount" content="31"></li>
+
+<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/Question"><a class="question_link" href="http://www.zhihu.com/question/19889750">有哪些用 Python 语言讲算法和数据结构的书？</a> <span class="num">7 个回答</span><meta itemprop="followerCount" content="204"></li>
+
+<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/Question"><a class="question_link" href="http://www.zhihu.com/question/19833105">海量数据排序，内存足够大，用哪种排序算法好？为什么？</a> <span class="num">7 个回答</span><meta itemprop="followerCount" content="98"></li>
+
+</ul>
+</div>
+</div>
+</div>
+
+<div class="zm-side-section">
+<div class="zm-side-section-inner">
+<h3>分享问题</h3>
+<div id="zh-question-webshare-container" data-title="分享问题" data-type="question" data-id="771526" data-url-token="21477117" class="zh-question-webshare-links clearfix">
+<a href="http://www.zhihu.com/question/21477117#" name="sina"><i class="zg-icon zg-icon-webshare-weibo"></i>微博</a>
+
+<a href="http://www.zhihu.com/question/21477117#" name="letter"><i class="zg-icon zg-icon-webshare-letter"></i>站内私信</a>
+</div>
+</div>
+</div>
+
+<div class="zm-side-section">
+<div class="zm-side-section-inner">
+<h3>问题状态</h3>
+<div class="zg-gray-normal">
+最近活动于 <span class="time">昨天 09:58</span>
+<span class="zg-bull">•</span>
+<a href="http://www.zhihu.com/question/21477117/log">查看问题日志</a>
+</div>
+<div class="zg-gray-normal">
+被浏览 <strong>6827</strong> 次，相关话题关注者 <strong>25819</strong> 人
+</div>
+</div>
+</div>
+
+</div>
+<div class="zg-clear"></div>
+<div class="mention-popup" style="display: none;"><div class="writing-bg"><input aria-haspopup="true" autocomplete="off"></div><div class="tip">想用 @ 提到谁？</div></div></div>
+
+<div id="zh-footer" class="zh-footer">
+<div class="zg-wrap clearfix">
+<ul>
+
+<li><a href="http://www.zhihu.com/question/19581624" target="_blank">知乎指南</a></li>
+<li><a href="javascript:;" id="js-feedback-button">建议反馈</a></li>
+
+<li><a href="http://www.zhihu.com/app" target="_blank">移动应用</a></li>
+<li><a href="http://www.zhihu.com/careers">加入知乎</a></li>
+<li><a href="http://www.zhihu.com/terms" target="_blank">知乎协议</a></li>
+<li><a href="mailto:bd@zhihu.com">商务合作</a></li>
+</ul>
+<span class="copy">© 2015 知乎</span>
+</div>
+</div>
+
+
+<script type="text/json" class="json-inline" data-name="current_user">["charles li","charles-li-70","http:\/\/pic1.zhimg.com\/da8e974dc_s.jpg","94fb824a443d9fbf43144d9dcf1affd3","\u521d\u5230\u4e0a\u6d77\u5462~",0,0,1,"lllgyt@126.com","http:\/\/www.126.com",1,false,false]</script>
+<script type="text/json" class="json-inline" data-name="env">["zhihu.com","comet.zhihu.com",false,null]</script>
+<script type="text/json" class="json-inline" data-name="permissions">[]</script>
+
+
+<script type="text/json" class="json-inline" data-name="ga_vars">{"user_created":1384862631000,"now":1426732076000,"abtest_mask":"---------0--------------------","user_attr":[1,0,0,"-",1],"user_hash":"94fb824a443d9fbf43144d9dcf1affd3"}</script>
+
+<script type="text/json" class="json-inline" data-name="current_question">{"status":"normal","isLocked":0,"detailEditReasonRequired":true,"editPermission":false,"isAnon":0,"qid":771526,"urlToken":21477117,"showInvitePanel":false,"askAboutMember":0}</script>
+<script type="text/json" class="json-inline" data-name="current_question_owner">false</script>
+<script type="text/json" class="json-inline" data-name="draft">[]</script>
+<script type="text/json" class="json-inline" data-name="my_answer">{}</script>
+<script type="text/json" class="json-inline" data-name="need_first_answer_guide">true</script>
+
+<script type="text/json" class="json-inline" data-name="redirect_to">""</script>
+
+
+
+<script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/82cfd3bf774281811fa8287dc189988f.extern_src.min.js"></script>
+<script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/d583b757aa64c93e0cd15237ec6e5668.app_core.js"></script>
+<script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/d133ddc34e42d73c92615e8679220ad1.sign.js"></script>
+<script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/9660a39fc60da531ba7a9fb4d0eeb575.app.js"></script>
+<script src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/6750b25bea29a99059297f45aebd49fa.rich_text_editor.js"></script>
+
+<script type="text/zscript" znonce="f574be63e006444db611fdc0f3471b15">
+ZH.entrySQ();
+</script>
+
+<input type="hidden" name="_xsrf" value="5c03cafacaa4cc86eb4aa7f9a55da295">
+
+<div class="zh-backtotop" style="opacity: 0; display: none;"><a data-action="backtotop" data-tip="s$r$回到顶部" href="javascript:;" class="btn-backtotop btn-action"><div class="arrow"></div><div class="stick"></div></a></div><div id="zh-tooltip" class="goog-hovercard popover bottom" style="visibility: hidden; left: 1092px; top: 179px; display: none;"><div class="popover-content no-hovercard"><div class="zh-profile-card member">
+<div class="upper">
+<a class="avatar-link" href="http://www.zhihu.com/people/pb612">
+<img class="avatar" src="./如何设计数据结构和算法，计算并存储六度好友关系？ - 知乎_files/8634b469e0570578aefaa50b94254493_m.jpg">
+<span class="name">黄涛</span>
+</a>
+
+<i class="icon icon-profile-male"></i>
+
+
+<div class="tagline">产品设计 金融 运动 自然科学</div>
+
+
+<div class="personal"><i class="icon icon-profile-company"></i><span class="info-wrap"><span class="item">知乎</span><span class="item">产品设计师</span></span></div>
+
+
+
+
+</div>
+<div class="lower clearfix">
+<div class="meta">
+<a class="item" target="_blank" href="http://www.zhihu.com/people/pb612/answers">
+<span class="value">135</span>
+<span class="key">回答</span>
+</a>
+<a class="item" target="_blank" href="http://www.zhihu.com/people/pb612/posts">
+<span class="value">2</span>
+<span class="key">文章</span>
+</a>
+<a class="item" target="_blank" href="http://www.zhihu.com/people/pb612/followers">
+<span class="value">23K</span>
+<span class="key">关注者</span>
+</a>
+</div>
+<div class="operation">
+
+
+<button data-follow="m:button" data-id="aaaa3df4d279f80c6fd797f6861b6011" class="zg-btn zg-btn-follow zm-rich-follow-btn">关注他</button>
+
+
+<a href="http://www.zhihu.com/inbox/5976134000" class="zg-btn-white member-profile-card-pm" data-pm-name="黄涛" data-pm-hash="aaaa3df4d279f80c6fd797f6861b6011"><i class="zg-icon pm">私信</i></a>
+
+
+</div>
+</div>
+</div></div><div class="arrow" style="left: 82.5px;"></div><div class="arrow2" style="left: 82.5px;"></div></div><div style="display: none;"><div class="lang-select collapsed"><div class="title-button" style="-webkit-user-select: none;">选择语言</div><i class="zg-icon zg-icon-double-arrow"></i><div class="input-wrapper"><input class="filter-input zg-form-text-input" placeholder="搜索语言" aria-haspopup="true"></div></div></div><div></div><div id="zh-global-spinner" style="display: none;">加载中…</div><div></div></body></html>
